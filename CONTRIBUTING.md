@@ -20,8 +20,7 @@ from real use — not through good intentions, clever reasoning, or enthusiasm.
 | Commons Entries | `philosophy/the-commons.md` | Outside wisdom that illuminates something the Soul reaches for. |
 | Registry Entries | `registry/` | Record of a project that used the system. |
 
-Each folder's README describes its entry shape. Suggestions based on reasoning
-alone — however compelling — are not evidence.
+Suggestions based on reasoning alone — however compelling — are not evidence.
 
 ---
 
