@@ -1,0 +1,388 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   viewBox="0 0 1200 600"
+   font-family="Georgia, serif"
+   version="1.1"
+   id="svg29"
+   sodipodi:docname="architecture.svg"
+   inkscape:version="1.4.2 (f4327f4, 2025-05-13)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs29" />
+  <sodipodi:namedview
+     id="namedview29"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="0.33958333"
+     inkscape:cx="-593.37423"
+     inkscape:cy="510.92025"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="1912"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg29" />
+  <title
+     id="title1">Soul System Architecture</title>
+  <desc
+     id="desc1">The Universe contains everything. Inside the Universe, the Body inhabits the system and bears responsibility for the whole. The Soul (top) holds timeless philosophy; the Witness (left) observes and records; the Council (centre) synthesises across time; the Judge (right) decides in the moment. The Council is a chamber of voices represented symbolically as twelve members around the circle, grouped into three core tiers by colour family: Magistrates (amber), Tribunes (green), Censors (blue). Shade variation within each family represents individual members. The Panel of Experts (the Consults tier) sits outside the Council, parallel to the Witness, summoned when domain authority is required — like the Witness it is a factual source that informs but does not decide. The Hands (produce the work) sit under the Body's authority, directed by the Judge and evaluated by the Council.</desc>
+  <!-- THE UNIVERSE: outer frame, contains everything -->
+  <rect
+     x="103.19606"
+     y="3.3594363"
+     width="993.60791"
+     height="595.36346"
+     rx="19.5173"
+     fill="#daedff"
+     stroke="#2c3e50"
+     stroke-width="2.35869"
+     id="rect1" />
+  <text
+     x="600"
+     y="41.50771"
+     text-anchor="middle"
+     font-size="27.7654px"
+     font-weight="bold"
+     fill="#2c3e50"
+     letter-spacing="5"
+     id="text1"
+     style="stroke-width:1.26206">THE UNIVERSE</text>
+  <text
+     x="600"
+     y="66.748947"
+     text-anchor="middle"
+     font-size="15.1447px"
+     font-style="italic"
+     fill="#5d6d7e"
+     id="text2"
+     style="stroke-width:1.26206">reality · domain · truth</text>
+  <!-- THE BODY: inner dashed frame, inhabits all layers -->
+  <rect
+     x="135.42169"
+     y="91.842957"
+     width="929.15637"
+     height="475.44901"
+     rx="16.081554"
+     fill="#fbf7ec"
+     stroke="#5d6d7e"
+     stroke-width="1.16765"
+     stroke-dasharray="2, 4"
+     id="rect2" />
+  <text
+     x="600"
+     y="122.27965"
+     text-anchor="middle"
+     font-size="16.4068px"
+     font-weight="bold"
+     fill="#5d6d7e"
+     letter-spacing="4"
+     id="text3"
+     style="stroke-width:1.26206">THE BODY</text>
+  <text
+     x="600"
+     y="144.99677"
+     text-anchor="middle"
+     font-size="12.6206px"
+     font-style="italic"
+     fill="#7a8896"
+     id="text4"
+     style="stroke-width:1.26206">the human · inhabits all · bears responsibility</text>
+  <!-- THE SOUL: own box at top centre (not a container) -->
+  <rect
+     x="486.41446"
+     y="170.23799"
+     width="227.17111"
+     height="88.344322"
+     rx="12.620617"
+     fill="#ffffff"
+     stroke="#2c3e50"
+     stroke-width="1.76689"
+     id="rect4" />
+  <text
+     x="600"
+     y="208.09985"
+     text-anchor="middle"
+     font-size="18.9309px"
+     font-weight="bold"
+     fill="#2c3e50"
+     letter-spacing="2"
+     id="text5"
+     style="stroke-width:1.26206">THE SOUL</text>
+  <text
+     x="600"
+     y="233.34108"
+     text-anchor="middle"
+     font-size="12.6206px"
+     font-style="italic"
+     fill="#5d6d7e"
+     id="text6"
+     style="stroke-width:1.26206">timeless philosophy</text>
+  <!-- THE WITNESS: top-left (factual source) -->
+  <rect
+     x="169.96986"
+     y="270.02606"
+     width="239.79173"
+     height="100.96493"
+     rx="12.620617"
+     fill="#ffffff"
+     stroke="#2c3e50"
+     stroke-width="1.76689"
+     id="rect6" />
+  <text
+     x="289.86572"
+     y="315.05762"
+     text-anchor="middle"
+     font-size="18.9309px"
+     font-weight="bold"
+     fill="#2c3e50"
+     letter-spacing="2"
+     id="text7"
+     style="stroke-width:1.26206">THE WITNESS</text>
+  <text
+     x="289.86572"
+     y="341.56091"
+     text-anchor="middle"
+     font-size="12.6206px"
+     font-style="italic"
+     fill="#5d6d7e"
+     id="text8"
+     style="stroke-width:1.26206">observes · records</text>
+  <!-- PANEL OF EXPERTS: bottom-left, parallel to Witness (also a factual source) -->
+  <rect
+     x="168.11165"
+     y="404.20724"
+     width="239.79173"
+     height="100.96493"
+     rx="12.620617"
+     fill="#ffffff"
+     stroke="#b7472a"
+     stroke-width="1.76689"
+     id="rect8"
+     style="stroke-dasharray:10.6014, 10.6014;stroke-dashoffset:0" />
+  <text
+     x="288.00751"
+     y="444.5932"
+     text-anchor="middle"
+     font-size="16.4068px"
+     font-weight="bold"
+     fill="#2c3e50"
+     letter-spacing="1"
+     id="text9"
+     style="stroke-width:1.26206">PANEL OF EXPERTS</text>
+  <text
+     x="288.00751"
+     y="471.0965"
+     text-anchor="middle"
+     font-size="12.6206px"
+     font-style="italic"
+     fill="#5d6d7e"
+     id="text10"
+     style="stroke-width:1.26206">summoned when required</text>
+  <!-- THE JUDGE: top-right -->
+  <rect
+     x="778.70172"
+     y="341.87839"
+     width="239.79173"
+     height="100.96493"
+     rx="12.620617"
+     fill="#ffffff"
+     stroke="#2c3e50"
+     stroke-width="1.76689"
+     id="rect10" />
+  <text
+     x="900.45587"
+     y="388.76398"
+     text-anchor="middle"
+     font-size="18.9309px"
+     font-weight="bold"
+     fill="#2c3e50"
+     letter-spacing="2"
+     id="text11"
+     style="stroke-width:1.26206">THE JUDGE</text>
+  <text
+     x="900.45587"
+     y="415.2673"
+     text-anchor="middle"
+     font-size="12.6206px"
+     font-style="italic"
+     fill="#5d6d7e"
+     id="text12"
+     style="stroke-width:1.26206">decides in the moment</text>
+  <!-- THE HANDS: bottom-right, under the Body (directed by Judge, evaluated by Council) -->
+  <circle
+     cx="897.66986"
+     cy="492.06372"
+     r="61.563091"
+     fill="#fff8cc"
+     stroke="#2c3e50"
+     stroke-width="2.46253"
+     id="rect12" />
+  <text
+     x="897.66986"
+     y="489.53964"
+     text-anchor="middle"
+     font-size="13.8827px"
+     font-weight="bold"
+     fill="#2c3e50"
+     letter-spacing="1"
+     id="text13"
+     style="stroke-width:1.26206">THE HANDS</text>
+  <text
+     x="897.66986"
+     y="510.99466"
+     text-anchor="middle"
+     font-size="11.3585px"
+     font-style="italic"
+     fill="#5d6d7e"
+     id="text14"
+     style="stroke-width:1.26206">produce the work</text>
+  <!-- THE COUNCIL: centre -->
+  <circle
+     cx="600"
+     cy="392.36087"
+     r="115.71536"
+     fill="#ffffff"
+     stroke="#2c3e50"
+     stroke-width="2.0193"
+     id="circle14" />
+  <text
+     x="600"
+     y="386.05054"
+     text-anchor="middle"
+     font-size="17.6689px"
+     font-weight="bold"
+     fill="#2c3e50"
+     letter-spacing="2"
+     id="text15"
+     style="stroke-width:1.26206">THE COUNCIL</text>
+  <text
+     x="600"
+     y="408.76767"
+     text-anchor="middle"
+     font-size="12.6206px"
+     font-style="italic"
+     fill="#5d6d7e"
+     id="text16"
+     style="stroke-width:1.26206">synthesizes across time</text>
+  <!-- Council members: 12 symbolic circles around the perimeter, color families by tier -->
+  <!-- Magistrates tier (amber shades), top arc -->
+  <circle
+     cx="582.81677"
+     cy="160.76279"
+     fill="#f5d78e"
+     stroke="#8a5a09"
+     stroke-width="1.00964"
+     id="circle16"
+     r="9.4676218"
+     transform="rotate(15.426781)" />
+  <circle
+     cx="624.89496"
+     cy="118.68459"
+     fill="#e5b14c"
+     stroke="#8a5a09"
+     stroke-width="1.00964"
+     id="circle17"
+     r="9.4676218"
+     transform="rotate(15.426781)" />
+  <circle
+     cx="682.75269"
+     cy="102.90519"
+     fill="#c8860d"
+     stroke="#8a5a09"
+     stroke-width="1.00964"
+     id="circle18"
+     r="9.4676218"
+     transform="rotate(15.426781)" />
+  <circle
+     cx="740.61047"
+     cy="118.68459"
+     fill="#8a5a09"
+     stroke="#5a3d06"
+     stroke-width="1.00964"
+     id="circle19"
+     r="9.4676218"
+     transform="rotate(15.426781)" />
+  <!-- Censors tier (blue shades), right arc -->
+  <circle
+     cx="782.68878"
+     cy="160.76279"
+     fill="#a7bbd9"
+     stroke="#2c4670"
+     stroke-width="1.00964"
+     id="circle20"
+     r="9.4676218"
+     transform="rotate(15.426781)" />
+  <circle
+     cx="798.46808"
+     cy="218.62042"
+     fill="#6d8bc0"
+     stroke="#2c4670"
+     stroke-width="1.00964"
+     id="circle21"
+     r="9.4676218"
+     transform="rotate(15.426781)" />
+  <circle
+     cx="782.68878"
+     cy="276.47812"
+     fill="#4a6fa5"
+     stroke="#2c4670"
+     stroke-width="1.00964"
+     id="circle22"
+     r="9.4676218"
+     transform="rotate(15.426781)" />
+  <circle
+     cx="740.61047"
+     cy="318.55646"
+     fill="#2c4670"
+     stroke="#1a2d4a"
+     stroke-width="1.00964"
+     id="circle23"
+     r="9.4676218"
+     transform="rotate(15.426781)" />
+  <!-- Tribunes tier (green shades), bottom-left arc -->
+  <circle
+     cx="682.75269"
+     cy="334.33585"
+     fill="#a3d4a8"
+     stroke="#1e4528"
+     stroke-width="1.00964"
+     id="circle24"
+     r="9.4676218"
+     transform="rotate(15.426781)" />
+  <circle
+     cx="624.89496"
+     cy="318.55646"
+     fill="#5da86b"
+     stroke="#1e4528"
+     stroke-width="1.00964"
+     id="circle25"
+     r="9.4676218"
+     transform="rotate(15.426781)" />
+  <circle
+     cx="582.81677"
+     cy="276.47812"
+     fill="#2f6b40"
+     stroke="#1e4528"
+     stroke-width="1.00964"
+     id="circle26"
+     r="9.4676218"
+     transform="rotate(15.426781)" />
+  <circle
+     cx="567.03741"
+     cy="218.62042"
+     fill="#1e4528"
+     stroke="#0d2614"
+     stroke-width="1.00964"
+     id="circle27"
+     r="9.4676218"
+     transform="rotate(15.426781)" />
+  <!-- Tier labels near their arcs -->
+</svg>

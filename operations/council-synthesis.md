@@ -118,10 +118,10 @@ What territory does this finding or amendment cover?
 What adjacent territory does it touch that the Council has not yet mapped?
 What boundary does it establish or shift?
 
-**12. Support Roles — if summoned**
-Accountant: what are the real constraints on any proposed change?
-Advocate: what does this mean for the humans the system serves?
-Panel of Experts: what does domain authority say about this question?
+**12. Tribunes and Consults**
+Accountant *(tribune)*: what are the real constraints on any proposed change?
+Advocate *(tribune)*: what does this mean for the humans the system serves?
+Panel of Experts *(summoned when domain authority is required)*: what does the Expert say on this question?
 
 **13. The Skeptic — always last among the voices**
 Challenge every position that has been stated.

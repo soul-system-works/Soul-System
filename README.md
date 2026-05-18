@@ -7,6 +7,13 @@ Not a prompt collection. Not a workflow template. A craft tradition — principl
 forged from real failure patterns, designed to make AI-assisted work more
 principled and self-correcting.
 
+<p align="center">
+  <img src="architecture.svg" alt="Soul System architecture: the Universe wraps the Body, which wraps the Soul, Witness, Council, and Judge. The Council is a chamber of twelve symbolic voices in tiers. The Hands sit beneath the Judge; the Panel of Experts sits parallel to the Witness, summoned when needed." width="100%">
+</p>
+
+*The Soul governs. The Witness and the Panel inform; the Council synthesises; the Judge decides; the Hands produce.*
+*The Body — the human — inhabits all of it and bears responsibility for the whole.*
+
 ---
 
 ## Install
@@ -49,8 +56,8 @@ logs/           Contributed Witness logs
 
 ---
 
-## Governance · Contributing
+## Governance · Contributing · License
 
-See `GOVERNANCE.md` and `CONTRIBUTING.md`
+See `GOVERNANCE.md`, `CONTRIBUTING.md`, and `LICENSE` (MIT)
 
 *The philosophy evolves. That is the point.*

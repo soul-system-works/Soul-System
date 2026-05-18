@@ -8,9 +8,9 @@ Current: **0.1.2**
 
 | Version | Date | What Changed |
 |---|---|---|
-| 0.1.0 | 2026-05-15 | Initial system — all founding documents |
-| 0.1.1 | 2026-05-15 | Soul 1.1 — Artificer role and pairing added |
 | 0.1.2 | 2026-05-15 | Soul 1.2 — Adversary, Critic, Craftsman, The Hands added. Artificer moved to Hands. Versioned filenames removed. |
+| 0.1.1 | 2026-05-15 | Soul 1.1 — Artificer role and pairing added |
+| 0.1.0 | 2026-05-15 | Initial system — all founding documents |
 
 ---
 

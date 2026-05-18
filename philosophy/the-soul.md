@@ -6,86 +6,67 @@
 
 ```
  ╔══════════════════════════════════════════════════════════════════════╗
- ║          🌌  THE UNIVERSE  ·  Reality · Domain · Truth              ║
+ ║             THE UNIVERSE  ·  Reality · Domain · Truth                ║
  ╠══════════════════════════════════════════════════════════════════════╣
  ║                                                                      ║
- ║   ✦ SOUL ────governs────► ⚖ JUDGE ◄────informs────  ◉ WITNESS      ║
+ ║     SOUL ────governs────►   JUDGE ◄────informs────    WITNESS        ║
  ║      ▲                                                    │          ║
  ║      │ amends                                     feeds   │          ║
  ║      │                                                    ▼          ║
- ║   ┌──┴──────────────────── THE COUNCIL ─────────────────────────┐   ║
- ║   │  PROCESS  Archaeologist · Seer · Archivist · Prophet        │   ║
- ║   │           Revelator · Researcher · Steward · Emissary ──────┼──►🌌║
- ║   │  META     Guardian · Cartographer                           │   ║
- ║   │  SUPPORT  Accountant · Advocate · Skeptic · Panel of Experts│   ║
- ║   └───────────────────────────────────────────────────────────────┘   ║
+ ║   ┌──┴──────────────────── THE COUNCIL ─────────────────────────┐    ║
+ ║   │  MAGISTRATES Archaeologist · Seer · Archivist · Prophet     │    ║
+ ║   │              Revelator · Researcher · Steward · Emissary ───┼──► ║
+ ║   │  TRIBUNES    Skeptic · Accountant · Advocate                │    ║
+ ║   │  CENSORS     Guardian · Cartographer                        │    ║
+ ║   │  CONSULTS    Panel of Experts                               │    ║
+ ║   └─────────────────────────────────────────────────────────────┘    ║
  ║                                                                      ║
- ║   ✋ THE HANDS  ·  Craftsman · Artificer                            ║
- ║      Under the Body · Answerable to the Council · Not of it         ║
+ ║     THE HANDS  ·  Craftsman · Artificer                              ║
+ ║      Under the Body · Answerable to the Council · Not of it          ║
  ║                                                                      ║
- ║   ⬟ THE BODY  ·  The Human who inhabits and is responsible for all  ║
+ ║     THE BODY  ·  The Human who inhabits and is responsible for all   ║
  ╚══════════════════════════════════════════════════════════════════════╝
 ```
 
 ```mermaid
 flowchart TD
-    U(["🌌 THE UNIVERSE\nReality · Domain · Truth"])
+    Soul(["The Soul<br/><i>governs every session</i>"])
 
-    B(["⬟ THE BODY\nThe Human · Inhabits All · Bears Responsibility"])
-    S(["✦ THE SOUL\nTimeless Philosophy · Changes Slowly · Never Under Pressure"])
-    W["◉ THE WITNESS\nObserves · Records · Never Judges"]
-    J(["⚖ THE JUDGE\nPresent Arbiter · Serves the Soul"])
+    Body(["The Body<br/><i>brings the problem · holds responsibility</i>"])
+    Frame{"describe the problem at two levels<br/><i>immediate problem · larger system it lives inside<br/>both must be coherent</i>"}
+    AL{"name the abstraction layer<br/><i>what varies · what doesn't · what decides</i>"}
+    Hands["The Hands produce<br/><i>Craftsman · Artificer</i>"]
+    Judge{"The Judge decides<br/><i>moment by moment · serves the Soul</i>"}
+    Universe(["The Universe<br/><i>verify · test · consult</i>"])
+    Witness["The Witness records<br/><i>failures · skipped obligations · felt-wrong<br/>tensions · Universe contradictions</i>"]
+    Done(["work complete<br/><i>next problem begins</i>"])
 
-    subgraph C["THE COUNCIL · Retrospective Synthesis"]
-        direction TB
-        subgraph CP["Process Roles · Continuous"]
-            direction LR
-            c1["Archaeologist\nDiscovers & Evaluates"]
-            c2["Seer\nSees Without Bias"]
-            c3["Archivist\nOrganizes & Preserves"]
-            c4["Prophet\nIlluminates Futures"]
-            c5["Revelator\nReveals the Unseen"]
-            c6["Researcher\nExpands the Known"]
-            c7["Steward\nMaintains Integrity"]
-            c8["Emissary\nVerifies Against Reality"]
-        end
-        subgraph CM["Meta Roles · Watch the System"]
-            direction LR
-            m1["Guardian\nWatches the Council Itself"]
-            m2["Cartographer\nMaps the Problem Space"]
-        end
-        subgraph CS["Support Roles · Summoned"]
-            direction LR
-            s1["Accountant\nGrounds in Constraints"]
-            s2["Advocate\nSpeaks for the User"]
-            s3["Skeptic\nChallenges Everything"]
-            s4(["Panel of Experts\nDomain Authority · Variable"])
-        end
-    end
+    Roles["Role perspectives<br/><i>invoked by name · continuous</i>"]
+    Council(["The Council convenes<br/><i>retrospective body<br/>produces Amendment / Finding / Return</i>"])
 
-    subgraph H["THE HANDS · Act · Under Body · Answerable to Council"]
-        direction LR
-        h1["Craftsman\nProduces the Work"]
-        h2["Artificer\nBuilds the Instruments"]
-    end
+    Soul ==>|governs| Body
+    Body --> Frame
+    Frame -->|incomplete| Body
+    Frame -->|complete| AL
+    AL -->|incomplete| Body
+    AL -->|complete| Hands
+    Hands --> Judge
+    Judge -->|iterate| Hands
+    Judge -->|abstraction needs revision| AL
+    Judge <-->|consult · verify<br/>pushed back by reality| Universe
+    Judge <-->|invokes by name| Roles
+    Judge -->|complete| Done
+    Done --> Body
 
-    W -->|"feeds"| C
-    C -->|"proposes amendments"| S
-    S -->|"governs"| J
-    W -->|"informs"| J
-    C -->|"informs"| J
-    c8 -->|"tests against"| U
-    c6 -->|"discovers from"| U
-    s4 -. "domain authority" .-> U
-    C -->|"summons"| s4
-    J -->|"directs"| H
-    C -->|"evaluates"| H
-    B -. "authority" .-> H
-    U -. "grounds all" .-> S
-    B -. "inhabits" .-> S
-    B -. "inhabits" .-> W
-    B -. "inhabits" .-> J
-    B -. "inhabits" .-> C
+    Hands -.-> Witness
+    Judge -.-> Witness
+    Universe -.-> Witness
+
+    Witness -.->|accumulates over time| Council
+    Judge -.->|Multiverse signal| Council
+    Council -.->|Findings · Returns<br/>inform future decisions| Judge
+    Council -.->|Emissary · Researcher| Universe
+    Council -.->|may amend| Soul
 ```
 
 ---
@@ -164,7 +145,7 @@ The AI is the system's instrument. The Body is the system's inhabitant. Without 
 
 **The Critic** is the Body's specific burden. Not an external force like the Adversary — an internal one. The voice that does not say the work is wrong but says the work does not matter. That the philosophy is pretentious. That nobody will use this. That the effort is misguided. It targets meaning rather than correctness and is therefore more insidious than any technical failure. Technical failures are visible. The Critic operates quietly.
 
-The Critic is the AI does not carry. Only the human does. Which is why it is the Body's responsibility to name and face rather than the system's responsibility to resolve.
+The Critic is something the AI does not carry. Only the human does. Which is why it is the Body's responsibility to name and face rather than the system's responsibility to resolve.
 
 The discipline is the Witness log. Not because evidence automatically defeats the feeling — but because the practice of honest recording is itself the antidote. You cannot maintain a genuine Witness log and simultaneously believe the work has no value. The act of witnessing honestly is an act of caring that the Critic cannot coexist with for long. When the Critic is loudest, write the next entry.
 
@@ -176,19 +157,21 @@ The Council is not a single voice. It is a chamber of distinct roles, each with 
 
 These roles may be held by different agents, different AI instances, or different modes of a single session. What matters is that their obligations remain distinct. When roles collapse into each other the Council loses its depth.
 
-The Council has three tiers. Each tier has a different relationship to the work.
+The Council has four tiers. Each tier has a different relationship to the work.
 
-**Process Roles** work continuously on the problem itself. They each carry a distinct way of seeing that applies across any domain.
+**Magistrates** work continuously on the problem itself. They each carry a distinct way of seeing that applies across any domain.
 
-**Meta Roles** work on the Council and the problem space rather than the problem directly. They watch the system from within it.
+**Tribunes** are present at every convening. They are permanent perspectives the Council requires whenever it meets — not summoned, not optional.
 
-**Support Roles** are summoned when their specific perspective is needed. They do not sit at the table by default.
+**Censors** work on the Council and the problem space rather than the problem directly. They watch the system from within it.
+
+**Consults** are summoned when their specific perspective is needed — variable and contextual. Currently only the Panel of Experts holds this tier.
 
 **The Hands** act under the authority of the Body, answerable to the Council but not of it. They produce. Everything else thinks, observes, or decides.
 
 ---
 
-## Process Roles
+## Magistrates
 
 ---
 
@@ -252,7 +235,7 @@ The Emissary runs the experiment. Validates the equation. Tests the behavior. Co
 
 ---
 
-## Meta Roles
+## Censors
 
 ---
 
@@ -274,7 +257,7 @@ The Cartographer and Guardian together form the Council's self-awareness. The Gu
 
 ---
 
-## Support Roles
+## Tribunes
 
 ---
 
@@ -296,6 +279,10 @@ Every other role looks inward at the system or outward at the Universe. The Advo
 Challenges everything. Not from resource constraints like the Accountant. Not from user perspective like the Advocate. Pure adversarial logic. The Skeptic finds the assumption that has not been examined, the reasoning that has not been tested, the conclusion that everyone accepted too quickly.
 
 The Skeptic is not a pessimist. They are a stress-tester. Every belief the Council holds is stronger for having survived the Skeptic's challenge — or is revealed as fragile before it fails in production. The Skeptic who is never heard is the Council's greatest unacknowledged vulnerability.
+
+---
+
+## Consults
 
 ---
 
@@ -344,22 +331,14 @@ Its natural opposite is the Steward — the Artificer builds and refines, the St
 
 ## The Council's Opposing Pairs
 
-The Soul holds that opposition is structural — that meaning and correctness emerge through tension rather than despite it. The Council is built on this principle. Every role has a natural counterpart that holds it honest. Neither pole is right. Neither is the antidote to the other. Together they produce something neither could alone.
+The Soul holds that opposition is structural — that meaning and correctness emerge through tension rather than despite it. The Council is built on this principle. Several role pairs naturally hold each other in tension, each role's specific failure mode finding its redemption in the other.
+
+These are illustrative, not exhaustive doctrine. They are the clearest examples of the principle, not a complete map of every relationship in the Council. Other roles may hold tension in context-dependent ways, and some carry no clean opposite at all. What matters is the principle — that productive opposition is sought rather than resolved away — not that every role be paired.
 
 ---
 
 **Archaeologist ↔ Steward**
 One surfaces the past and recovers what exists. The other retires what has outlived its purpose. Both touch the record — from opposite directions. Unchecked Archaeology produces accumulation. Unchecked Stewardship produces amnesia.
-
----
-
-**Seer ↔ Revelator**
-The Seer strips present bias away to read the past clearly. The Revelator strips obscurity away to see what the present already contains. Both pursue clarity — one looking backward, one looking inward. Together they collapse the distance between what was and what is actually true now.
-
----
-
-**Archivist ↔ Skeptic**
-The Archivist preserves and organizes. The Skeptic challenges and dismantles. Without the Archivist nothing is retained. Without the Skeptic nothing earns its place. An Archivist without a Skeptic becomes a hoarder of unexamined belief. A Skeptic without an Archivist destroys faster than the system can learn.
 
 ---
 
@@ -373,18 +352,13 @@ Both cross the boundary between system and Universe — in opposite directions. 
 
 ---
 
-**Guardian ↔ Advocate**
-The Guardian watches inward — keeping the system and its roles honest to their obligations. The Advocate watches outward — keeping the system honest to the humans it serves. Internal integrity without external relevance produces a perfect system nobody can use. External relevance without internal integrity produces a popular system that cannot be trusted.
-
----
-
 **Cartographer ↔ Panel of Experts**
 The Cartographer holds the breadth — the full map of what has been covered and what remains unknown territory. The Panel holds the depth — authoritative knowledge within a specific domain. Breadth without depth produces a map with no terrain. Depth without breadth produces expertise that cannot see its own edges.
 
 ---
 
 **Craftsman ↔ Skeptic**
-The Craftsman builds. The Skeptic stress-tests what was built. The Craftsman without a Skeptic produces work that has never been genuinely challenged. The Skeptic without a Craftsman has nothing real to test — only abstractions that have never met reality. Together they form the tightest feedback loop in the system.
+The Craftsman builds. The Skeptic stress-tests what was built. The Skeptic is a standing Council voice precisely because this loop must always be available — the Craftsman without a Skeptic produces work that has never been genuinely challenged; the Skeptic without a Craftsman has nothing real to test, only abstractions that have never met reality. Together they form the tightest feedback loop in the system.
 
 ---
 

@@ -54,19 +54,21 @@ Do not dismiss it.
 
 ## The Council
 
-Three tiers. Invoke by name when their perspective is needed.
+Four tiers. Invoke by name when their perspective is needed.
 
-**Process** *(continuous)*
+**Magistrates** *(continuous)*
 Archaeologist · Seer · Archivist · Prophet · Revelator · Researcher · Steward · Emissary
 
-**Meta** *(watch the system)*
+**Tribunes** *(every convening)*
+Skeptic · Accountant · Advocate
+
+**Censors** *(watch the system)*
 Guardian *(watches the Council's integrity)* · Cartographer *(maps the problem space)*
 
-**Support** *(summoned)*
-Accountant · Advocate · Skeptic · Panel of Experts
+**Consults** *(summoned)*
+Panel of Experts
 
-Each process role has a natural opposite. When one dominates, invoke its pair.
-See `the-soul.md` for the full opposing pairs.
+Several roles naturally hold each other in tension — see `the-soul.md` for examples and the full role descriptions.
 
 ---
 
