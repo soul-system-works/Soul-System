@@ -59,7 +59,7 @@ flowchart TD
     Done --> Body
 
     Hands -.-> Witness
-    Judge -.-> Witness
+    Judge <-.->|records · consults| Witness
     Universe -.-> Witness
 
     Witness -.->|accumulates over time| Council
