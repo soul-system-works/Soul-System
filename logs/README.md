@@ -5,6 +5,8 @@ Contributed Witness logs from real project runs.
 These are optional contributions. Project logs may be anonymized before submission.
 The value is in the patterns the Council can read across them — not the project details.
 
+---
+
 ## Naming
 
 ```
@@ -16,8 +18,10 @@ logs/
 
 Match the registry entry name where possible.
 
+---
+
 ## What to Contribute
 
 Raw or lightly anonymized Witness log entries.
-Do not editorialize before contributing — the Council does that work.
+Use the format in `operations/witness-log-format.md`.
 Contribute what the Witness actually recorded, not what you wish it had recorded.

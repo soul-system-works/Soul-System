@@ -1,7 +1,10 @@
 # Skills
 
 Compressed, reusable activations of specific Council roles.
-Built by the Artificer through real use. Empty until the first run produces evidence that a skill is needed.
+Built by the Artificer through real use. Empty until the first run produces
+evidence that a skill is needed.
+
+---
 
 ## Entry Format
 
@@ -15,9 +18,9 @@ skills/
     ...
 ```
 
+---
+
 ## When to Add a Skill
 
-When the Witness log shows a role failing to activate reliably across multiple sessions,
-the Artificer builds a skill for it. Not before.
-
-See `CONTRIBUTING.md` for how to submit a skill upstream.
+When the Witness log shows a role failing to activate reliably across multiple
+sessions, the Artificer builds a skill for it. Not before.
