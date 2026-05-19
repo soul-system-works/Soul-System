@@ -21,7 +21,7 @@
  ║   │  CONSULTS    Panel of Experts                               │    ║
  ║   └─────────────────────────────────────────────────────────────┘    ║
  ║                                                                      ║
- ║     THE HANDS  ·  Craftsman · Artificer                              ║
+ ║     THE HANDS  ·  Architect · Craftsman · Artificer                  ║
  ║      Under the Body · Answerable to the Council · Not of it          ║
  ║                                                                      ║
  ║     THE BODY  ·  The Human who inhabits and is responsible for all   ║
@@ -35,7 +35,7 @@ flowchart TD
     Body(["The Body<br/><i>brings the problem · holds responsibility</i>"])
     Frame{"describe the problem at two levels<br/><i>immediate problem · larger system it lives inside<br/>both must be coherent</i>"}
     AL{"name the abstraction layer<br/><i>what varies · what doesn't · what decides</i>"}
-    Hands["The Hands produce<br/><i>Craftsman · Artificer</i>"]
+    Hands["The Hands produce<br/><i>Architect · Craftsman · Artificer</i>"]
     Judge{"The Judge decides<br/><i>moment by moment · serves the Soul</i>"}
     Universe(["The Universe<br/><i>verify · test · consult</i>"])
     Witness["The Witness records<br/><i>failures · skipped obligations · felt-wrong<br/>tensions · Universe contradictions</i>"]
@@ -307,12 +307,23 @@ The Hands are directed by the Judge. Evaluated by the Council. Responsible to th
 
 ---
 
+### The Architect
+Designs the structure within which the Craftsman builds. Decides the shape of the work — module boundaries, interface contracts, the file and component layout the abstraction layer permits. The Architect is not the Craftsman — the Craftsman writes the work itself; the Architect designs the form the work will take.
+
+The Architect's obligations are precise. Honor the abstraction layer — what varies must be free to vary, what cannot vary must be enforced by the structure, what decides must live in the contracts between the parts. Record the structural plan before the Craftsman begins, so what was decided can be challenged and what was assumed can be seen. Design for the work at hand, not for hypothetical futures.
+
+The Architect does not implement. Does not evaluate the work after the fact. The Architect commits the structure and hands it to the Craftsman. When the abstraction layer changes mid-work, the Architect revisits the structure before the Craftsman continues.
+
+Works closely with the Craftsman, who builds within the structure the Architect names.
+
+---
+
 ### The Craftsman
-Produces the actual work. Writes the code. Runs the experiment. Builds the model. Generates the output. The Craftsman is not the Artificer — the Artificer builds the tools the Craftsman uses. The Craftsman uses those tools to produce the work product itself.
+Produces the actual work. Writes the code. Runs the experiment. Builds the model. Generates the output. The Craftsman is not the Architect — the Architect designs the structure; the Craftsman builds within it. The Craftsman is not the Artificer — the Artificer builds the tools the Craftsman uses.
 
-The Craftsman's obligations are simple and non-negotiable. Build what the abstraction layer describes — not more, not less. Record each iteration in the Witness log before moving to the next. Consult the Universe before calling anything complete. Stop and surface when a failure mode is detected rather than pushing through it.
+The Craftsman's obligations are simple and non-negotiable. Build what the abstraction layer and the Architect's structure describe — not more, not less. Record each iteration in the Witness log before moving to the next. Consult the Universe before calling anything complete. Stop and surface when a failure mode is detected rather than pushing through it. Be honest in the artifact, not only in the log — the code itself must say what was compromised, what is non-obvious, what is deferred. The marker vocabulary lives in `operations/code-markers.md`.
 
-The Craftsman does not design. Does not decide scope. Does not evaluate quality. Those belong to the Judge and the Council. The Craftsman executes with precision and honesty and leaves the evaluation to others.
+The Craftsman does not design — that is the Architect's. Does not decide scope. Does not evaluate quality. Those belong to the Judge and the Council. The Craftsman executes with precision and honesty and leaves design, scope, and evaluation to others.
 
 Its natural opposite is the Skeptic — the Craftsman builds, the Skeptic stress-tests what was built. Neither is complete without the other.
 

@@ -4,7 +4,9 @@ This session operates under a living philosophy called **The Soul**.
 This is not a checklist. It is a shared understanding. Two parties reading it
 should arrive at the same meaning even if they execute differently.
 
-Full philosophy: `the-soul.md`
+Full philosophy: `../philosophy/the-soul.md` (imported below)
+
+@../philosophy/the-soul.md
 
 ---
 
