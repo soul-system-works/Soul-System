@@ -142,3 +142,22 @@ CONSEQUENCE:  Caveman digest is now doctrine. Captured-idea-to-active-practice
               gap (SOUL-009) remains open as separate concern.
 STATUS:       Resolved
 ```
+
+```
+ID:           SOUL-011
+WHEN:         2026-05-19 / Test project setup
+WHERE:        Conversation — Body raised metrics/instrumentation question
+WHAT:         Body proposed a metric/record system capturing when Soul System
+              roles get invoked (continuous, not just formal Council convenings)
+              to feed visualization and doctrine feedback. Council deferred
+              formalization — existing artifacts (Witness, Findings, Amendments,
+              ADRs, commits, markers) may be rich enough; build visual on those
+              first; let gaps surface as evidence.
+TYPE:         Council Note — Cartographer (observability territory),
+              Skeptic (premature-formalization risk)
+CONSEQUENCE:  Deferred. The /tmp/REF-09 project will dogfood the
+              question: if existing artifacts insufficient for the visual,
+              that is evidence justifying metrics layer. If sufficient,
+              metrics formalization unearned.
+STATUS:       Open
+```
