@@ -172,4 +172,4 @@ Cross-references between entries use the full ID: `[resolves THERMAL-004]`
 
 ---
 
-*This format is Version 1.0. The Council will refine it as evidence accumulates.*
+*The Council will refine this format as evidence accumulates.*

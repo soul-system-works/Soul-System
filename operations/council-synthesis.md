@@ -78,6 +78,8 @@ What has already been seen that bears on what is being examined now?
 What does the record actually reveal, free from present assumptions?
 What are we reading into this that the evidence does not say?
 What is the evidence saying that we are not hearing?
+Where did we get lucky? What outcomes were favorable not because of design
+but because of contingency that could have gone otherwise?
 
 **4. The Archivist**
 Are these entries correctly filed and cross-referenced?
@@ -188,6 +190,27 @@ The prior version is retained by the Archivist — never discarded.
 
 ---
 
+## Filing a Finding
+
+When the Council synthesizes an observation that matters but does not yet warrant amending the Soul, the Judge issues a Finding. The Archivist files it:
+
+```
+FINDING ID:      [project-code]-F[sequential number]
+DATE:            [date of convening or surfacing]
+WITNESS IDS:     [IDs of entries that informed this finding, if any]
+WHAT:            [the observation, synthesized in compressed form]
+WHY NOT YET AMENDMENT:  [what evidence is missing, or why this is not yet a Soul-change]
+FILED BY:        Archivist
+RELATED:         [other findings, returns, or open witness entries]
+STATUS:          Open / Closed
+```
+
+A Finding lives in `findings/open/` and moves to `findings/closed/` when it resolves — by escalation into a Proposed Amendment, by becoming moot, or by being absorbed into other Findings.
+
+Findings are not failures. They are the Council doing honest work at the edge of what it currently understands.
+
+---
+
 ## Returning an Amendment
 
 When an amendment cannot answer all three questions
@@ -256,4 +279,41 @@ Evidence is what the Council acts on.
 
 ---
 
-*This process is Version 1.0. The Council will refine it as evidence accumulates.*
+## Pre-Mortem Mode
+
+The Council's default mode is retrospective. The Pre-Mortem is a named exception.
+
+A Pre-Mortem convening is held *before* non-trivial work begins. The Council
+assumes the work failed and asks why. The goal is to surface possible failure
+causes while they can still be designed around.
+
+**When to convene a Pre-Mortem:**
+- Before committing to a structural decision the Architect cannot easily reverse
+- Before adopting a methodology, tool, or convention with broad reach
+- Before any work whose failure would be expensive to discover late
+
+**The order is shortened:**
+
+1. **The Body** states the work that is about to begin.
+2. **The Skeptic leads.** Assume the work failed. List the most plausible reasons.
+3. **The Prophet** speaks to which failure modes are most likely given the trajectory.
+4. **The Cartographer** names unmapped territory the work depends on.
+5. **The Judge** synthesizes — issues either *Findings* to inform the work, or a
+   *Return* sending the proposal back for revision before work begins.
+
+Pre-Mortems do not produce Amendments. They produce Findings or Returns.
+The retrospective Council remains the only path to Soul amendment.
+
+---
+
+**Source:** Gary Klein, "Performing a Project Premortem," _Harvard Business Review_ (2007), https://hbr.org/2007/09/performing-a-project-premortem
+**Shapes:** Pre-Mortem Mode section
+**Adopted:** 2026-05-19
+**Status:** active
+
+**Source:** Google SRE Book, "Postmortem Culture: Learning from Failure," https://sre.google/sre-book/postmortem-culture/
+**Shapes:** "Where did we get lucky?" prompt in the Seer voice (§ The Order of Voices)
+**Adopted:** 2026-05-19
+**Status:** active
+
+*The Council will refine this process as evidence accumulates.*

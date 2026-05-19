@@ -41,4 +41,40 @@ and line where the marker lives.
 
 ---
 
-*Version 1.0. Refines as evidence accumulates.*
+## When Using Source Control
+
+Commits follow Conventional Commits — the same spirit as in-code markers, applied to git history.
+
+**Format:** `<type>(<scope>): <description>`
+
+Types:
+- **`feat`** — a new feature
+- **`fix`** — a bug fix
+- **`refactor`** — code change that neither fixes a bug nor adds a feature
+- **`docs`** — documentation only
+- **`test`** — adding or correcting tests
+- **`style`** — formatting, whitespace
+- **`perf`** — performance improvement
+- **`build`** — build system or dependencies
+- **`ci`** — CI configuration
+- **`chore`** — maintenance, no production code change
+
+A commit with `!` after the type or scope is a breaking change: `feat!:` or `feat(api)!:`.
+Body and footer follow the standard Conventional Commits format.
+
+This section applies when source control is in use. It is not required.
+
+---
+
+**Source:** TODO/FIXME marker tradition, originating in code commentary practices that predate modern source control. Documented in Steve Maguire, _Writing Solid Code_ (Microsoft Press, 1993), and reinforced by widespread industry use across decades.
+**Shapes:** The Five Markers, Rules
+**Adopted:** 2026-05-19
+**Status:** active
+
+**Source:** Conventional Commits 1.0.0, https://www.conventionalcommits.org/en/v1.0.0/
+**Reinforced by:** ~94.5% adoption across popular NPM repos per ICSE 2025 study, https://conf.researchr.org/details/icse-2025/icse-2025-research-track/28/A-First-Look-at-Conventional-Commits-Classification
+**Shapes:** When Using Source Control section
+**Adopted:** 2026-05-19
+**Status:** active
+
+*Refines as evidence accumulates.*

@@ -14,50 +14,77 @@ principled and self-correcting.
 *The Soul governs. The Witness and the Panel inform; the Council synthesises; the Judge decides; the Hands produce.*
 *The Body — the human — inhabits all of it and bears responsibility for the whole.*
 
+**Composes, does not replace.** The Soul System layers above how you already work — BMAD, TDD, Cursor Rules, your own conventions. Adopt what helps. Ignore what does not.
+
 ---
 
-## Install
+## Quick Start
+
+Clone the Soul System repo to a stable path on your machine, once.
+
+In any project you want to bring under the Soul, create a `CLAUDE.md` with one line:
+
+```
+@/path/to/Soul-System/operations/CLAUDE.md
+```
+
+Or run `/soul-init` from a Claude Code session in the project — the slash command writes that line for you.
+
+That is the entire install. Edits to the philosophy propagate immediately to every project that imports it.
+
+---
+
+## Alternative: Snapshot Install
+
+If you prefer a self-contained snapshot copied into the project (no upstream dependency, no auto-updates):
 
 ```bash
 ./install.sh /path/to/your/project
 ```
 
-This copies the operational documents into your project and records the system version.
+This copies `operations/` into the project and records the system version.
+
+---
+
+## Other Agent Tools
+
+`AGENTS.md` at the repo root is a cross-vendor convention (Cursor, Aider, OpenAI Codex, Gemini CLI, Jules, Zed, others) that points any agent tool at the right entry points. Soul-following projects are legible to any tool that reads `AGENTS.md`.
 
 ---
 
 ## Start
 
-1. Read `philosophy/the-soul.md` — once, slowly, before anything else
-2. Open `autonomous-session-template.md` in your project
-3. Fill in the problem slot
-4. Start your Claude Code session
+1. Read `philosophy/the-soul.md` — once, slowly, before anything else.
+2. Open a session in your project.
+3. State the problem at two levels (the Frame gate). The session continues from there.
 
 ---
 
 ## After Your Run
 
 Read the Witness log. Not the output — the log.
-If you found something worth sharing see `CONTRIBUTING.md`.
+If you found something worth sharing, see `CONTRIBUTING.md`.
 
 ---
 
 ## Structure
 
 ```
-philosophy/     The Soul and outside wisdom — read, don't copy
-operations/     Installed into your project by install.sh
+philosophy/     The Soul, the Commons (outside wisdom that earned its place)
+operations/     The operational seed — imported by @ or copied by install.sh
 skills/         Role activations — built through use
 hooks/          Trigger definitions — built through use
-amendments/     Full record of how the system has evolved
+amendments/     Council Amendments to the Soul, by lifecycle state
 registry/       Where the system has been used
 logs/           Contributed Witness logs
+AGENTS.md       Cross-vendor entry point for any agent tool
+install.sh      Snapshot installer (alternative path)
 ```
 
 ---
 
 ## Governance · Contributing · License
 
-See `GOVERNANCE.md`, `CONTRIBUTING.md`, and `LICENSE` (MIT)
+See `GOVERNANCE.md`, `CONTRIBUTING.md`, and `LICENSE` (MIT).
 
 *The philosophy evolves. That is the point.*

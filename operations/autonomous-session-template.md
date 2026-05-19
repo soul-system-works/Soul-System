@@ -266,4 +266,4 @@ is a successful first exercise.
 
 ---
 
-*Template Version 1.0 — Refine after first run.*
+*Refine after first run.*

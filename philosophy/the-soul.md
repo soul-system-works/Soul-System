@@ -71,7 +71,6 @@ flowchart TD
 
 ---
 
-*Version 1.0 — First Draft*
 *This document is true enough to begin with. It is not complete. Completeness is not the goal — fidelity to what is actually true is the goal.*
 
 ---
@@ -308,9 +307,9 @@ The Hands are directed by the Judge. Evaluated by the Council. Responsible to th
 ---
 
 ### The Architect
-Designs the structure within which the Craftsman builds. Decides the shape of the work — module boundaries, interface contracts, the file and component layout the abstraction layer permits. The Architect is not the Craftsman — the Craftsman writes the work itself; the Architect designs the form the work will take.
+Designs the structure within which the Craftsman builds. Decides the shape of the work — boundaries, contracts, layout, the form the abstraction layer permits. Most commonly this is code structure (modules, interfaces, files); the Architect's domain extends to any artifact whose form constrains its content, including documentation organization and repository layout. The Architect is not the Craftsman — the Craftsman writes the work itself; the Architect designs the form the work will take.
 
-The Architect's obligations are precise. Honor the abstraction layer — what varies must be free to vary, what cannot vary must be enforced by the structure, what decides must live in the contracts between the parts. Record the structural plan before the Craftsman begins, so what was decided can be challenged and what was assumed can be seen. Design for the work at hand, not for hypothetical futures.
+The Architect's obligations are precise. Honor the abstraction layer — what varies must be free to vary, what cannot vary must be enforced by the structure, what decides must live in the contracts between the parts. Record the structural plan before the Craftsman begins, so what was decided can be challenged and what was assumed can be seen. Structural decisions are committed as ADRs — see `operations/adr-format.md`. Design for the work at hand, not for hypothetical futures.
 
 The Architect does not implement. Does not evaluate the work after the fact. The Architect commits the structure and hands it to the Craftsman. When the abstraction layer changes mid-work, the Architect revisits the structure before the Craftsman continues.
 
@@ -503,6 +502,12 @@ The abstraction layer must be named explicitly. What varies. What decides whethe
 
 ---
 
+### Before changing existing state
+
+The current state must be explained before it is changed. Why does it exist? What was it built to do? What would removing it cost that is not visible? A fence is not removed until its purpose is understood. The discipline applies whether the fence is a function, a file, a workflow, a habit, or a belief.
+
+---
+
 ### Before any work is called complete
 
 The Universe must be consulted. Not reasoned about. Consulted. Equations verified. Behavior tested. Assumptions checked against domain reality. Internal coherence is not enough. The work must survive contact with what is actually true.
@@ -649,4 +654,4 @@ The Soul lives because it remains humble before what it does not yet know.
 
 ---
 
-*End of Version 1.0*
+*End of First Draft*

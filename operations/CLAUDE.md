@@ -1,3 +1,5 @@
+<!-- NOTE: this filename reflects the framework's Claude Code origin; AGENTS.md at the repo root is the tool-agnostic entry point. Filename rename to be revisited as AGENTS.md adoption matures. -->
+
 # CLAUDE.md — The Soul Seed
 
 This session operates under a living philosophy called **The Soul**.
@@ -43,6 +45,10 @@ If they are not coherent with each other, do not proceed.
 
 **Before any implementation:**
 Name the abstraction layer explicitly. Write it down.
+
+**Before changing existing state:**
+Explain why the current state exists before changing it.
+Do not remove a fence without knowing why it was built.
 
 **Before calling anything complete:**
 Consult the Universe. Verify. Test. Check assumptions against reality.
@@ -90,6 +96,49 @@ If any of these are happening — stop. Name it. Then proceed.
 
 If evidence suggests the assumed Universe is foundationally wrong — not locally wrong —
 stop. Do not patch. Name the shift. Convene the Council. Re-verify before proceeding.
+
+---
+
+## External Skills and Tools
+
+The Soul System is a meta-layer. It composes with other skill ecosystems, methodologies, and tools rather than replacing them. The mapping below is **illustrative, not required** — skills that fit a given role or gate by their shape. If you already use different skills for these jobs, the Soul System adapts to what you have.
+
+| Soul role or gate | Skills and tools that fit by shape |
+|---|---|
+| Body / Frame gate (stating the problem at two levels) | `brainstorming`, `grill-me`, `grill-with-docs` |
+| AL gate (naming the abstraction layer) | `writing-plans` |
+| Architect (structural design, ADR authorship) | `writing-plans`, `executing-plans` |
+| Craftsman (production work) | `tdd`, `karpathy-guidelines` |
+| Artificer (tool building) | `skill-creator`, `write-a-skill` |
+| Steward (retire what no longer serves) | `simplify` |
+| Skeptic (challenge positions) | `grill-me`, `grill-with-docs` |
+| Judge in failure (present-moment debugging) | `diagnose`, `systematic-debugging` |
+
+**Roles in the Soul System are perspectives, not distinct agents.** A project using a multi-agent framework (BMAD, CrewAI, AutoGen) can adopt the Soul System without restructuring its agents: a BMAD Analyst agent can embody the Witness role, a BMAD Architect agent can embody the Soul's Architect, and so on. The Soul layers above how you already work.
+
+Skills referenced here are common in the Claude Code ecosystem (https://docs.claude.com/en/docs/claude-code/skills). Equivalents exist in Cursor (rules), Aider (conventions), Continue.dev, and others. The `AGENTS.md` standard at the repo root makes Soul-following projects legible to all of them.
+
+*Section dated 2026-05-19. Skills evolve; this mapping is a snapshot.*
+
+---
+
+## Source Footers
+
+Operations files that adopt an external practice, standard, or convention carry a Source footer at the bottom:
+
+```
+---
+**Source:** [citation or link]
+**Reinforced by:** [optional secondary sources]
+**Shapes:** [optional: section or sub-area shaped by this source — used when the file has multiple sources]
+**Adopted:** [YYYY-MM-DD]
+**Status:** active | under review | deprecated
+**Open question:** [optional unresolved concern about this adoption]
+```
+
+When a file is shaped by multiple sources, repeat the Source block for each.
+
+The footer records where the practice came from, when it was adopted, and its current status. Source notes live with the practice they shaped — `grep -rB1 "^\*\*Source:" operations/ philosophy/` returns the full index on demand. Future tooling may aggregate these footers the same way it would TODO markers.
 
 ---
 
