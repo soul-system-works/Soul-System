@@ -162,6 +162,33 @@ A log with no failures is a log that stopped witnessing.
 
 ---
 
+## Log Location and Lifecycle
+
+The active witness log lives at the project root as `witness.md`. One file,
+append-only, chronological. Entries are added, never modified (except `STATUS`
+updates).
+
+The log moves through three phases. Cadence is project-dependent — never time-fixed.
+
+**Active** — `witness.md` at project root. Append-only. Recent context.
+
+**Archived** — `witness/<name>.md`. Triggered when the Steward judges the active
+log impedes navigation, or when a natural phase ends (milestone, release,
+doctrine amendment). Resolved entries move out of active; Open entries stay.
+Archive names follow the project's rhythm — `witness/dogfood.md`, `witness/v1.md`,
+`witness/2026-Q2.md` — Steward's call. Archive files are read-only once written.
+
+**Retired** — archived files moved out of the working repo (or pruned). Reserved
+for long timescales (project completion plus years, organizational change,
+doctrine evolution making old entries reference outdated structures). Git
+history preserves what was there. Default is to keep archives indefinitely;
+retirement is deliberate and rare.
+
+This preserves the witness record where it's needed, sheds noise where it
+isn't, and never makes evidence irretrievable while git history exists.
+
+---
+
 ## Naming Convention
 
 `[PROJECT-CODE]-[NNN]`

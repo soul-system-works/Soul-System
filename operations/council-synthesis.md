@@ -58,6 +58,37 @@ Rejection closes the question. A return keeps it alive and honest.
 
 ---
 
+## Output Format
+
+The Council produces two views of the same convening.
+
+**The artifact** — full record. Lives in `amendments/accepted/`, `findings/open/`,
+or wherever the convening's output goes. Contains the Witness IDs consulted,
+the voice-by-voice synthesis, the Three Questions if an Amendment, the Judge's
+reasoning. This is the permanent record.
+
+**The conversation digest** — 3 to 7 lines. The user-facing distillation that
+appears in real-time conversation. Names the tension, the resolution, the
+mechanism, and the artifact ID. Designed to be skimmable; the artifact carries
+the depth.
+
+Template for the digest:
+
+    COUNCIL → AMENDMENT (or FINDING, RETURN)
+    Tension: <what the conflict was, one line>
+    Resolution: <the synthesis, one or two lines>
+    Mechanism: <what changes operationally, one line>
+    Filed as <ID> → <path/to/artifact>
+
+The digest is not a summary of the artifact. It is the Council speaking to the
+Body in the moment. The artifact speaks to future readers — including future
+Council convenings.
+
+A Council that produces only an artifact has skipped the Body. A Council that
+produces only a digest has skipped the record. Both views are obligations.
+
+---
+
 ## The Order of Voices
 
 Order matters. Earlier voices shape later ones.

@@ -70,7 +70,7 @@ WHAT:         Caveman-style Council summaries to the user. When the Council conv
               linked artifacts (findings/, amendments/, ADRs).
 TYPE:         Council Note — Advocate (user experience of Council outputs)
 CONSEQUENCE:  Captured. Depends on findings/ + witness.md existing as artifacts.
-STATUS:       Open
+STATUS:       Resolved [by SOUL-A002]
 ```
 
 ```
@@ -97,4 +97,48 @@ WHAT:         Visual session map — dots-on-circle or Warcraft-style agent-acti
 TYPE:         Council Note — Artificer (instrument), Advocate (user observation)
 CONSEQUENCE:  Captured. Far downstream of current dogfood phase.
 STATUS:       Open
+```
+
+```
+ID:           SOUL-008
+WHEN:         2026-05-19 / Decision 5 finalization
+WHERE:        Conversation — Council convened on witness log file lifecycle
+WHAT:         Body surfaced lifecycle gap (write → archive → cleanup vs. doctrine's
+              "never delete"). Council convened (7 voices). Synthesis: never-delete
+              applies to entries, not files; file-level lifecycle added — Active /
+              Archived / Retired. Filed as SOUL-A001 (accepted).
+TYPE:         Council Note — Archivist (first Amendment filed; mechanism dogfooded)
+CONSEQUENCE:  Doctrine extended; lifecycle codified; Amendment mechanism validated
+              in practice rather than only in council-synthesis.md.
+STATUS:       Resolved
+```
+
+```
+ID:           SOUL-009
+WHEN:         2026-05-19 / Council convening on lifecycle
+WHERE:        Conversation — Council output style
+WHAT:         User observed that Council output was not caveman-compressed
+              (per SOUL-005). System captured the practice but had not operationalized
+              it — full deliberation appeared in conversation instead of digest.
+              Caveman digest demonstrated retroactively.
+TYPE:         Obligation Skipped — captured-idea-to-active-practice promotion missing
+CONSEQUENCE:  Gap between Findings (captured) and operational practice surfaced.
+              SOUL-005 partially resolved by SOUL-A002. The meta-question
+              (Finding promotion pathway) remains open pending more evidence.
+STATUS:       Open
+```
+
+```
+ID:           SOUL-010
+WHEN:         2026-05-19 / Council convening on output format
+WHERE:        Conversation — adopting two-track Council output
+WHAT:         Body authorized promoting SOUL-005 to active practice. Brief
+              Council pass with caveman digest. Synthesis: artifact + digest as
+              two views of one convening. Filed as SOUL-A002 (accepted) —
+              first instance of the new digest format used to file itself.
+TYPE:         Council Note — Advocate (digest practice operationalized),
+              Archivist (self-referential Amendment)
+CONSEQUENCE:  Caveman digest is now doctrine. Captured-idea-to-active-practice
+              gap (SOUL-009) remains open as separate concern.
+STATUS:       Resolved
 ```
