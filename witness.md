@@ -356,3 +356,25 @@ CONSEQUENCE:  hooks/skills territory gets its first content (commands/). F012
               stays open until the gate auto-fires without Body invocation.
 STATUS:       Resolved
 ```
+
+```
+ID:           SOUL-023
+WHEN:         2026-05-20 / Artificer — auto-firing activation hook
+WHERE:        hooks/pre-completion-verify.py; ~/.claude/settings.json (Stop hook)
+WHAT:         Built the scoped-blocking Stop hook — the auto-firing form of the
+              pre-completion gate (F012's true fix). Self-scopes to Soul projects;
+              fires only when a turn ships an artifact AND claims completion;
+              loop-safe via stop_hook_active; fail-open. Unit-tested across 6
+              scope cases (non-soul/loop-guard/ship+claim/ship-only/claim-only/
+              malformed) — all correct. settings.json validated. hooks/ gets its
+              first content.
+TYPE:         Council Note — Artificer (auto-firing instrument), Emissary (unit
+              verification)
+CONSEQUENCE:  Running /soul-verify on this very work caught an overclaim: "the
+              hook works live" is an absolute claim with no external anchor yet
+              (no in-session fire has happened). Unit-verified, NOT live-verified.
+              F012 stays OPEN pending a real-session fire (possibly at this turn's
+              end). The gate caught my own premature-completion claim — the first
+              evidence the activation discipline works on its author.
+STATUS:       Open — live verification pending
+```

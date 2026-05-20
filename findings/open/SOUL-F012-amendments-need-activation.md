@@ -39,9 +39,19 @@ CONVENING:       2026-05-20. Recognized as the Ad Hoc Methodology failure mode a
                  invoked form — a partial fix. The auto-firing form (a Claude Code
                  Stop hook that fires without Body invocation) is the stronger
                  upgrade, deferred to a Body decision and to hooks/.
-STATUS:          Open — partial fix shipped (/soul-verify). Stays open until the
-                 gate AUTO-fires without Body invocation (the Stop-hook upgrade).
-                 That is the true close of the activation gap.
+UPGRADE:         2026-05-20. Built the auto-firing form — hooks/pre-completion-
+                 verify.py, a scoped-blocking Claude Code Stop hook, wired into
+                 ~/.claude/settings.json. Self-scopes to Soul projects; fires only
+                 when a turn both ships an artifact AND claims completion; loop-safe
+                 (stop_hook_active); fail-open. Unit-verified across 6 scope cases
+                 in isolation; settings.json validated. FIRST content in hooks/.
+                 HONEST LIMIT (per /soul-verify on this very work): "the hook fires
+                 correctly in a live session" is an ABSOLUTE claim whose external
+                 anchor — an actual in-session fire — has NOT yet happened. Unit
+                 behavior is verified; live behavior is not.
+STATUS:          Open — auto-firing form built, wired, unit-verified. Stays open
+                 until a real session confirms it fires-and-blocks correctly
+                 (live verification pending; may occur at this session's end).
 ```
 
 The deepest result of the whole dogfood program: the doctrine evolved to
