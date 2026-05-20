@@ -81,6 +81,8 @@ Panel of Experts
 
 Several roles naturally hold each other in tension — see `the-soul.md` for examples and the full role descriptions.
 
+The role-set scales to the problem. Small bounded work invokes a subset — often Architect, Craftsman, Skeptic, Emissary, Witness, Steward — not the full chamber. The full Council is for complex work and retrospective convenings. Invoking all roles on a small task is theatre, not rigor.
+
 ---
 
 ## Naming Roles in the Moment

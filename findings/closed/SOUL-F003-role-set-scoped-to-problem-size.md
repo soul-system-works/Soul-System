@@ -21,5 +21,7 @@ WHY NOT YET AMENDMENT:  Two distinct fixes are conflated and need separating:
                  or formalize problem-size scoping.
 FILED BY:        Archivist
 RELATED:         [[SOUL-F002]], [[SOUL-F006]]
-STATUS:          Open
+STATUS:          Closed [scaling note resolved by SOUL-A006, 2026-05-20; the
+                 deeper Magistrate-count / retrospective-only question is deferred,
+                 not resolved — needs more evidence across session types]
 ```

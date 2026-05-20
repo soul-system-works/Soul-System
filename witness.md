@@ -231,3 +231,19 @@ CONSEQUENCE:  Completion gate now escalates local → global → outward. Theme 
               remain.
 STATUS:       Resolved
 ```
+
+```
+ID:           SOUL-016
+WHEN:         2026-05-20 / Theme C Council convening
+WHERE:        operations/CLAUDE.md (Council section); operations/code-markers.md
+WHAT:         SOUL-A006 accepted (operations-level). Role-set scales to problem
+              size (small work → subset, not full chamber). Docstrings blessed as
+              a complementary in-artifact honesty channel alongside markers.
+              F003 (scaling part) and F004 closed. F003's Magistrate-count
+              question and F009 (artifact drift) left open — insufficient evidence.
+TYPE:         Council Note — Archivist
+CONSEQUENCE:  Theme C partially processed (clear parts adopted, deeper structural
+              questions deferred). Theme D (visual Witness) next; E (multi-agent)
+              awaits outward research.
+STATUS:       Resolved
+```

@@ -21,6 +21,13 @@ WHY NOT YET AMENDMENT:  Two candidates: (a) a Steward-maintained reconciliation
                  project convenience. Council must decide whether to enforce
                  structure at scale or formally bless narrative-at-scale.
 FILED BY:        Archivist
-RELATED:         [[SOUL-F004]] (marker adoption also erodes at scale)
-STATUS:          Open
+RELATED:         [[SOUL-F004]] (marker adoption also erodes at scale), [[SOUL-A006]]
+COUNCIL NOTE:    Considered in Theme C (2026-05-20); NOT escalated. Two resolutions
+                 compete (enforce structure at scale vs bless narrative-at-scale
+                 with a Steward drift-reconciliation duty); insufficient evidence
+                 to choose. Interim guidance: the Steward owns keeping stated facts
+                 (counts, statuses, claims) honest; narrative form is acceptable at
+                 scale provided it does not drift from reality.
+STATUS:          Open — revisit when more scaled projects provide evidence on which
+                 resolution holds
 ```

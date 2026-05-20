@@ -66,6 +66,17 @@ This section applies when source control is in use. It is not required.
 
 ---
 
+## Markers and Docstrings
+
+Markers are not the only honesty channel in the artifact. Docstrings and comments carry a complementary kind of truth:
+
+- **Markers** flag compromise and deferral (`TODO` / `FIXME` / `DEBT` / `HACK`) and non-obvious local context (`NOTE`). Short and scannable.
+- **Docstrings** carry derivations, validity ranges, named approximations, sign conventions — the "how and why this is correct" a future reader needs. Longer, and they live with the definition.
+
+Both are "honest in the artifact." A high-discipline codebase may carry most of its honesty in docstrings and few markers — that is not a failure of the marker doctrine, provided compromise and deferral are still flagged where they live. Use the marker when the truth is "this is incomplete or compromised"; use the docstring when the truth is "this is how and why this works."
+
+---
+
 **Source:** TODO/FIXME marker tradition, originating in code commentary practices that predate modern source control. Documented in Steve Maguire, _Writing Solid Code_ (Microsoft Press, 1993), and reinforced by widespread industry use across decades.
 **Shapes:** The Five Markers, Rules
 **Adopted:** 2026-05-19

@@ -19,5 +19,5 @@ WHY NOT YET AMENDMENT:  Two readings, opposite implications. Either (a) markers
                  two channels rather than assume one is correct.
 FILED BY:        Archivist
 RELATED:         [[SOUL-F009]] (artifact discipline erodes at scale)
-STATUS:          Open
+STATUS:          Closed [resolved by SOUL-A006, 2026-05-20]
 ```
