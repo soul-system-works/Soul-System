@@ -498,3 +498,23 @@ CONSEQUENCE:  Evidence for task #15. Decision pending (Body's pause stance):
               (value + cooldown cap the cost). Captured, not acted on.
 STATUS:       Open
 ```
+
+```
+ID:           SOUL-030
+WHEN:         2026-05-20 / Council convening on the event-standard proposal (#16)
+WHERE:        REF-09 proposal; findings/open/SOUL-F018-*
+WHAT:         Convened on REF-09's proposal to formalize the event
+              standard into the parent. Synthesis (SOUL-F018): endorse the layering
+              split (standard=methodology, hook=adapter); DEFER adoption (one
+              consumer + one adapter = no coordination problem yet; trigger = a
+              second independent adapter/consumer; same shape as F011); RESOLVE §4
+              — continuous activity is NOT a Soul event ("the Witness is not a
+              transcript"); it is optional adapter-emitted telemetry, a separate
+              stream.
+TYPE:         Council Note — Accountant + Skeptic (defer; premature), Cartographer
+              (semantic events vs activity telemetry are different territories)
+CONSEQUENCE:  Captured I004 (context-cheap idea capture) and I005 (measure the
+              token-economics value claim) as ideas this turn. Body to confirm the
+              defer-vs-adopt-now call. Hook left as-is (gather evidence, task #15).
+STATUS:       Resolved
+```

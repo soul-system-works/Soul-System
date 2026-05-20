@@ -81,3 +81,36 @@ WHY:       The Soul System is tool-agnostic; continuity across tools would make
 PRIORITY:  low
 DEVELOP:   Cartographer / Researcher
 ```
+
+```
+ID:        SOUL-I004
+WHEN:      2026-05-20
+IDEA:      A context-cheap / semi-automated idea-capture path — capture an idea
+           with near-zero token/context cost, since ideas tend to occur exactly
+           when you are deep in work and context is already tight.
+STATUS:    Raw
+WHY:       /soul-idea today reads ideas.md into context to append; that cost lands
+           precisely when context is scarce. Capture should be cheapest when it is
+           needed most. Candidate: a fire-and-forget hook or append-only writer
+           that does not load the file into the working context.
+PRIORITY:  medium
+DEVELOP:   Artificer (mechanism) / Researcher
+```
+
+```
+ID:        SOUL-I005
+WHEN:      2026-05-20
+IDEA:      Measure the Soul System's token/context economics over a project's life
+           — does it cost tokens short-term but SAVE significant tokens/context as
+           the project matures (accumulated structure prevents rework,
+           re-derivation, re-exploration)?
+STATUS:    Raw
+WHY:       This is the system's core value proposition. If true, the upfront cost
+           is an investment; if false, the doctrine is net overhead. Worth
+           validating/refuting with real measurement rather than assertion — to
+           believe it unmeasured is itself a Coherent Falsehood risk.
+PRIORITY:  high
+DEVELOP:   Researcher / Emissary / Accountant — needs a measurement method
+           (e.g. tokens per comparable task over time; Soul vs non-Soul runs of
+           similar work; re-derivation rate). Currently unmeasured.
+```
