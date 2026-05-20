@@ -72,9 +72,14 @@ If you found something worth sharing, see `CONTRIBUTING.md`.
 ```
 philosophy/     The Soul, the Commons (outside wisdom that earned its place)
 operations/     The operational seed — imported by @ or copied by install.sh
+commands/       Slash commands (/soul-init, /soul-verify, /soul-expand, /soul-idea)
+hooks/          Activation instruments (e.g. the pre-completion Stop hook)
+amendments/     Council Amendments to the Soul, by lifecycle state (accepted/proposed/returned)
+findings/       Council Findings, open/ and closed/
+witness.md      The repo's own Witness log (what happened, backward)
+ideas.md        The idea inbox (what might, forward) — graduates into findings/
+docs/           Design specs and proposals
 skills/         Role activations — built through use
-hooks/          Trigger definitions — built through use
-amendments/     Council Amendments to the Soul, by lifecycle state
 registry/       Where the system has been used
 logs/           Contributed Witness logs
 AGENTS.md       Cross-vendor entry point for any agent tool

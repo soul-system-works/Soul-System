@@ -438,3 +438,43 @@ CONSEQUENCE:  Added a per-project cooldown (15 min): fire at most once per windo
               against it within the same session — the discipline working live.
 STATUS:       Resolved
 ```
+
+```
+ID:           SOUL-027
+WHEN:         2026-05-20 / Stop hook false positive (logged post-brainstorm)
+WHERE:        ~/.claude/settings.json Stop hook; mid-brainstorming exchange
+WHAT:         The pre-completion hook fired during a brainstorming turn that
+              shipped no completion — a design QUESTION awaiting Body input. Two
+              heuristic weaknesses combined: (1) keyword false-positive — the
+              conversation was ABOUT the completion gate, so "complete"/"completion"
+              appeared in assistant text; (2) scan-window bleed — earlier-turn
+              edits (memory files) still sat in the 80-record window, so "shipped"
+              read true across a multi-turn exploration.
+TYPE:         Universe Contradiction — the scope heuristic cannot distinguish
+              "discussing completion" from "claiming completion," nor "edited this
+              turn" from "edited recently."
+CONSEQUENCE:  Refinement target for the hook (not patched yet — gathering evidence
+              per the pause). Cooldown (SOUL-026) caps the cost of false fires to
+              one per window. Candidate fixes: scope edits to the current turn only
+              (since last user message); require a stronger completion phrase.
+STATUS:       Open
+```
+
+```
+ID:           SOUL-028
+WHEN:         2026-05-20 / Idea inbox built
+WHERE:        ideas.md; commands/soul-idea.md; operations/CLAUDE.md; README.md;
+              docs/specs/2026-05-20-idea-inbox-design.md
+WHAT:         Built the idea inbox via the brainstorming skill (explore-before-
+              execute, per new feedback) rather than rushing. ideas.md (forward
+              twin of witness.md), /soul-idea capture command, minimal-at-capture
+              entries that graduate into findings/, manual maturation, no new role
+              (Archivist tends, Prophet works). Seeded with 3 real deferred ideas
+              (SOUL-I001..I003). Doctrine touch: Capturing Ideas section in the
+              seed; README structure refreshed (it had drifted — F009 in action).
+TYPE:         Council Note — Artificer (capture instrument), Body (explore-first honored)
+CONSEQUENCE:  The expansion engine's PERSISTENCE half exists. Generative-role
+              question filed separately (SOUL-F017). Followed brainstorm → spec →
+              build; skipped writing-plans by Body choice given the small size.
+STATUS:       Resolved
+```

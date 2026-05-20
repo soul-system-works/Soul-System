@@ -96,6 +96,18 @@ Otherwise leave the roles silent. Selective visibility, not ceremony.
 
 ---
 
+## Capturing Ideas
+
+Forward possibilities — things that *might* be worth doing — go in `ideas.md` at the project root (the forward twin of the Witness log). Jot with `/soul-idea`, enrich later, graduate to a Finding when earned.
+
+```
+WITNESS (what happened, backward) ─┐
+                                    ├─→ FINDING → AMENDMENT
+IDEAS   (what might, forward)     ─┘
+```
+
+---
+
 ## The Primary Failure Modes
 
 **Premature Sophistication** — solution appears before constraints are named.
