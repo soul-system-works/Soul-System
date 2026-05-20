@@ -200,3 +200,18 @@ CONSEQUENCE:  SOUL-F001 resolved by SOUL-A003 (moved to findings/closed/).
               named counter to ratchet-not-engine. System version → 0.3.0.
 STATUS:       Resolved
 ```
+
+```
+ID:           SOUL-014
+WHEN:         2026-05-20 / Theme A operations corollary
+WHERE:        operations/CLAUDE.md (Naming Roles in the Moment)
+WHAT:         SOUL-A004 accepted (operations-level). Selective role visibility:
+              name the Judge at gate-overrides, name the Emissary when evidence
+              overturns a belief, otherwise silent. F002 resolved and closed;
+              F006 (session-end pass) deferred — ceremony risk — stays open
+              pending evidence.
+TYPE:         Council Note — Archivist
+CONSEQUENCE:  Theme A fully processed: F001 → A003 (Soul), F002 → A004 (ops),
+              F006 deferred. Themes B/C/D/E remain.
+STATUS:       Resolved
+```

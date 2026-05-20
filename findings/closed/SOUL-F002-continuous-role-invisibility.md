@@ -23,5 +23,5 @@ WHY NOT YET AMENDMENT:  Naming every continuous role at every moment would be
                  Needs Council to choose the minimal effective set.
 FILED BY:        Archivist
 RELATED:         [[SOUL-F001]], [[SOUL-F003]], [[SOUL-F006]]
-STATUS:          Open
+STATUS:          Closed [resolved by SOUL-A004, 2026-05-20]
 ```

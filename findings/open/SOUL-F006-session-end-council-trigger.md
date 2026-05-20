@@ -18,6 +18,10 @@ WHY NOT YET AMENDMENT:  Candidate: a mandatory minimal Council pass at session
                  schedule"). Council must decide whether a minimal end-pass is
                  reflection or ritual.
 FILED BY:        Archivist
-RELATED:         [[SOUL-F001]], [[SOUL-F005]]
-STATUS:          Open
+RELATED:         [[SOUL-F001]], [[SOUL-F005]], [[SOUL-A004]]
+COUNCIL NOTE:    Considered in Theme A convening (2026-05-20) alongside SOUL-A004;
+                 NOT escalated — the Skeptic's ceremony risk stands. A deferral,
+                 not a rejection.
+STATUS:          Open — revisit if Witness logs show end-of-session reflection
+                 consistently skipped (the evidence that would justify escalation)
 ```

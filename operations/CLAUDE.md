@@ -81,6 +81,17 @@ Several roles naturally hold each other in tension — see `the-soul.md` for exa
 
 ---
 
+## Naming Roles in the Moment
+
+Most role work is continuous and silent. Naming every role at every step is Council theatre. Name a role only when its visibility changes what happens:
+
+- **Name the Judge** when overriding an explicit gate or obligation — and say why. An unnamed override is Ad Hoc Methodology wearing the mask of autonomy.
+- **Name the Emissary** when the Universe contradicts a prior belief — the moment evidence overturns an assumption, not at every routine check.
+
+Otherwise leave the roles silent. Selective visibility, not ceremony.
+
+---
+
 ## The Primary Failure Modes
 
 **Premature Sophistication** — solution appears before constraints are named.
