@@ -182,3 +182,21 @@ CONSEQUENCE:  First real multi-session, multi-domain evidence base. Convening
               convene on SOUL-F001..F010.
 STATUS:       Open
 ```
+
+```
+ID:           SOUL-013
+WHEN:         2026-05-20 / Theme A Council convening
+WHERE:        philosophy/the-soul.md (Failure Vocabulary + completion obligation);
+              operations/CLAUDE.md (seed mirror)
+WHAT:         Council convened on Theme A (Findings F001/F002/F006), framed by
+              F010. Judge synthesized; Body accepted SOUL-A003 — the first
+              philosophy-level amendment. Added the Universe Collapse failure
+              mode; sharpened "consult the Universe" to require outward reach for
+              non-trivial work. Revelator's reframe: name the latent principle,
+              do not bolt on an ambition gate.
+TYPE:         Council Note — Archivist (first Soul amendment recorded)
+CONSEQUENCE:  SOUL-F001 resolved by SOUL-A003 (moved to findings/closed/).
+              F002/F006 split to follow-on SOUL-A004. Doctrine now carries a
+              named counter to ratchet-not-engine. System version → 0.3.0.
+STATUS:       Resolved
+```

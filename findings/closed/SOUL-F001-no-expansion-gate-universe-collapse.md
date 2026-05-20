@@ -26,7 +26,7 @@ WHY NOT YET AMENDMENT:  This is philosophy-level — it likely amends the Soul
 FILED BY:        Archivist
 RELATED:         [[SOUL-F002]] (continuous-role invisibility), [[SOUL-F006]]
                  (session-end Council pass)
-STATUS:          Open
+STATUS:          Closed [resolved by SOUL-A003, accepted 2026-05-20]
 ```
 
 The headline finding. Of the eight candidate amendments harvested, this is the

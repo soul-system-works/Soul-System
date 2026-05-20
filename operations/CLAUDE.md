@@ -53,6 +53,7 @@ Do not remove a fence without knowing why it was built.
 **Before calling anything complete:**
 Consult the Universe. Verify. Test. Check assumptions against reality.
 Internal coherence is not enough.
+The Universe is not the task — for non-trivial work, reach outward too: what already exists in the field, what standard others use, what the real user needs, what larger frame the work might serve.
 
 **Continuously:**
 When something feels wrong before it can be articulated — record it. That is the Witness.
@@ -87,6 +88,7 @@ Several roles naturally hold each other in tension — see `the-soul.md` for exa
 **Defaulting to Instantiation** — building the thing before building the space it lives in.
 **Partial Domain Coverage** — solution feels complete but hasn't asked what it missed.
 **Ad Hoc Methodology** — the human is reminding the AI of things that should be automatic.
+**Universe Collapse** — the local task is mistaken for the whole Universe; the outward field (existing work, standards, the real user, a larger frame) goes unconsulted. All brakes, no accelerator.
 
 If any of these are happening — stop. Name it. Then proceed.
 

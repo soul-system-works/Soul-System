@@ -430,6 +430,15 @@ The process of working becomes reactive rather than principled. Verification, va
 
 ---
 
+### Universe Collapse
+Treating the local context as the whole Universe. The work in front of you is mistaken for all that is real, and the outward field goes unconsulted — external knowledge that already exists, the standards others have converged on, the actual user, the larger possibility the work could serve. The system reasons beautifully about a Universe it has shrunk to the size of its current task.
+
+**The tell:** Every improvement comes from outside — the Body, a reviewer, a late discovery — rather than from the work reaching outward on its own. The expansion roles (Researcher, Revelator, Advocate, Prophet) are listed but never fire unless summoned. The system is all brakes, no accelerator.
+
+**The discipline:** The Universe is not the task. Before non-trivial work is called complete, reach outward explicitly — has the Researcher looked for what already exists? Has the Revelator asked whether the frame itself is too small? Has the Advocate represented the real user, not the proxy? Naming the outward reach as an obligation is what converts the expansion roles from optional perspectives into active ones.
+
+---
+
 ## The Named Tensions
 
 Some failures come in opposing pairs. The temptation is to treat one as the antidote to the other. That is itself a failure. The true resolution of each tension lives in the philosophy, not in finding the middle of two wrong answers.
@@ -510,7 +519,7 @@ The current state must be explained before it is changed. Why does it exist? Wha
 
 ### Before any work is called complete
 
-The Universe must be consulted. Not reasoned about. Consulted. Equations verified. Behavior tested. Assumptions checked against domain reality. Internal coherence is not enough. The work must survive contact with what is actually true.
+The Universe must be consulted. Not reasoned about. Consulted. Equations verified. Behavior tested. Assumptions checked against domain reality. Internal coherence is not enough. The work must survive contact with what is actually true. And the Universe is not the task — for non-trivial work the consultation reaches outward: what already exists in the field, what standard others have converged on, what the real user needs, what larger frame the work might serve. A Universe shrunk to the size of the current task is the failure named Universe Collapse.
 
 ---
 

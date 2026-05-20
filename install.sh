@@ -5,7 +5,7 @@
 
 set -e
 
-SYSTEM_VERSION="0.2.0"
+SYSTEM_VERSION="0.3.0"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 TARGET="${1}"
 

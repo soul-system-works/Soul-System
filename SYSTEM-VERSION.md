@@ -1,6 +1,6 @@
 # System Version
 
-Current: **0.2.0**
+Current: **0.3.0**
 
 This is the single source of system version. Per-file versions were removed in 0.2.0 — git history and Source footers (`Adopted` / `Status` fields in operations files) cover provenance at finer granularity.
 
@@ -10,6 +10,7 @@ This is the single source of system version. Per-file versions were removed in 0
 
 | Version | Date | What Changed |
 |---|---|---|
+| 0.3.0 | 2026-05-20 | **First philosophy-level amendment.** Four autonomous dogfood test runs (visual, markers, heat, REF-08) harvested into Findings SOUL-F001..F011. Theme A Council convening accepted SOUL-A003: added the **Universe Collapse** failure mode and sharpened the completion obligation to require outward consultation for non-trivial work (counters "ratchet not engine"). |
 | 0.2.0 | 2026-05-19 | Architect role added to Hands. Operations expanded: `code-markers.md`, `adr-format.md`, `AGENTS.md` at root, root `CLAUDE.md` for self-dogfood. New gate: Chesterton's Fence. New Council mode: Pre-Mortem. New conventions: Source Footers, Conventional Commits. External Skills mapping. `/soul-init` slash command. Per-file `Version 1.0/1.1` footers removed. |
 | 0.1.2 | 2026-05-15 | Soul 1.2 — Adversary, Critic, Craftsman, The Hands added. Artificer moved to Hands. Versioned filenames removed. |
 | 0.1.1 | 2026-05-15 | Soul 1.1 — Artificer role and pairing added |
