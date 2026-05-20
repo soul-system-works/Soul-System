@@ -396,3 +396,25 @@ CONSEQUENCE:  F012 CLOSED and moved to findings/closed/ — the activation gap i
               open under F014. First end-to-end proof the doctrine can self-enact.
 STATUS:       Resolved
 ```
+
+```
+ID:           SOUL-025
+WHEN:         2026-05-20 / Pre-Mortem on F014 (the expansion gate)
+WHERE:        commands/soul-expand.md
+WHAT:         Convened a Pre-Mortem on the ambition/expansion gap. Chose the
+              engine over more ratchet (per the findings' own warning). Built
+              /soul-expand — a forced expansion-role asking at the frame gate
+              (Revelator/Researcher/Prophet/Advocate/Accountant). Surfaced the
+              completion/expansion ASYMMETRY: completion auto-fires (ship+claim is
+              detectable, F012's hook); expansion CANNOT — "a framing moment" and
+              "insufficient ambition" resist mechanical detection. /soul-expand is
+              Body-invoked by necessity, not deferral.
+TYPE:         Council Note — Revelator + Prophet (expansion roles, finally
+              instrumented), Skeptic (no-regex-for-ambition), Artificer
+CONSEQUENCE:  F014 partial fix shipped (/soul-expand). The asymmetry is the
+              finding: expansion is intrinsically harder to activate than
+              contraction — which is WHY the system defaults to "correct but
+              small." Auto-firing expansion stays open as a genuine hard problem,
+              not a pending build.
+STATUS:       Resolved
+```

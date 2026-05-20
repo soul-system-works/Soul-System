@@ -17,6 +17,22 @@ WHY NOT YET AMENDMENT:  Partly the same root as F012 (a gate added as text may
                  inviting Premature Sophistication.
 FILED BY:        Archivist
 RELATED:         [[SOUL-F001]] (the original — only half-resolved by A003),
-                 [[SOUL-F012]] (activation)
-STATUS:          Open — reopens the unaddressed half of F001
+                 [[SOUL-F012]] (activation — the completion-side analog)
+PRE-MORTEM:      2026-05-20. Built /soul-expand (commands/soul-expand.md): a
+                 forced expansion-role asking at the frame gate (Revelator: frame
+                 too small? Researcher: what exists? Prophet: where does it lead?
+                 Advocate: real user? Accountant: right-sized scope?). Partial fix.
+                 KEY INSIGHT — the completion/expansion ASYMMETRY: the completion
+                 gate (F012) could AUTO-fire because "shipped + claimed" is
+                 mechanically detectable; the expansion gate CANNOT auto-fire the
+                 same way because "a new framing moment" and "insufficient
+                 ambition" resist mechanical detection (no regex for "did you
+                 think big enough?"). So /soul-expand is Body-invoked by necessity,
+                 not by deferral. Auto-firing expansion is an OPEN PROBLEM, not a
+                 pending build. Expansion is intrinsically harder to activate than
+                 contraction — which is itself why the system defaults to "correct
+                 but small."
+STATUS:          Open — /soul-expand built (Body-invoked partial fix). Stays open
+                 on the genuinely-hard question: can expansion be activated without
+                 the Body? (Unlike F012, there is no obvious instrument.)
 ```
