@@ -20,5 +20,5 @@ WHY NOT YET AMENDMENT:  Candidate: acknowledge visual/non-automatable Witness as
                  note on tooling.
 FILED BY:        Archivist
 RELATED:         [[SOUL-F007]] (the inverse — domains WITH ground truth)
-STATUS:          Open
+STATUS:          Closed [resolved by SOUL-A007, 2026-05-20]
 ```

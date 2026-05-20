@@ -247,3 +247,19 @@ CONSEQUENCE:  Theme C partially processed (clear parts adopted, deeper structura
               awaits outward research.
 STATUS:       Resolved
 ```
+
+```
+ID:           SOUL-017
+WHEN:         2026-05-20 / Theme D Council convening
+WHERE:        operations/witness-log-format.md (Visual and Non-Automatable Witness)
+WHAT:         SOUL-A007 accepted (operations-level). Names visual/cosmetic/
+              legibility/aesthetic observation as a Witness category tests cannot
+              catch, with an active method: capture + inspect. Deferring to "the
+              Body will eyeball it" when a capture tool exists is Universe Collapse
+              (applies A003 to the visual case). F008 closed.
+TYPE:         Council Note — Archivist
+CONSEQUENCE:  Themes A/B/C/D processed. Open: F006 (deferred), F009 (deferred),
+              F010 (protective, stays open), F011 (multi-agent — awaits outward
+              research + a test). Eight amendments accepted (A001-A007 + the wave).
+STATUS:       Resolved
+```

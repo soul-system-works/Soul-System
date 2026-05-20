@@ -162,6 +162,14 @@ A log with no failures is a log that stopped witnessing.
 
 ---
 
+## Visual and Non-Automatable Witness
+
+Some observations cannot be automated: visual correctness, cosmetic and legibility defects, aesthetic and layout judgment. Unit tests catch none of these — only looking does. Across the test runs, every cosmetic and legibility defect was caught by a human eye or a screenshot, never by a passing test.
+
+This does not license "ask the Body to look." When a capture tool exists — a headless browser, a screenshot harness, an image diff — reaching for it is the Emissary's consultation. Deferring to "the Body will eyeball it" when such a tool is available is Universe Collapse: the tool was in the outward Universe and went unused. Capture the artifact, inspect the capture, record what was seen. Reserve the Body's eye for judgment the tool cannot make — not for observation the tool could have automated.
+
+---
+
 ## Log Location and Lifecycle
 
 The active witness log lives at the project root as `witness.md`. One file,
