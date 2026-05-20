@@ -37,15 +37,31 @@ TRIGGER TO ADOPT: a SECOND independent adapter (e.g. a Cursor/Aider emitter) OR 
 FILED BY:        Archivist
 RELATED:         [[SOUL-F011]] (the deferral pattern), SOUL-011 + VISUAL-F001
                  (continuous-activity demand, now scoped to telemetry)
-STATUS:          Open — endorsement + §4 stand. Adoption deferral is PROVISIONAL:
-                 the Body's probe (2026-05-20) showed the deferral applied an
-                 infrastructure pattern (F011) to a STANDARD, but standards are
-                 anticipatory coordination devices ("publish before adoption to
-                 enable it") with different economics — "wait for a second adapter"
-                 is a chicken-and-egg trap. Ecosystem research launched to decide
-                 adopt / align-with-existing / defer on evidence (does a Soul
-                 process-event standard fill a real gap vs. the existing LLM/agent
-                 observability stack?).
+RESEARCH OUTCOME (2026-05-20): Two independent agents scanned the field and
+                 converged from opposite directions. (a) The telemetry layer
+                 (LLM-call mechanics) is consolidated on OpenTelemetry GenAI
+                 semconv — settled; it records HOW work executed and its own spec
+                 has "no provisions for decisions, approvals, verification gates,
+                 or process methodology." (b) The SEMANTIC process/decision event
+                 layer the Soul standard targets is WHITE SPACE: CloudEvents is
+                 envelope-only (semantics explicitly out of scope); W3C PROV is a
+                 generic model needing a binding; BPMN/DMN/XES are wrong-phase; the
+                 only semantic-decision-provenance work (PROV-AGENT, AER) is
+                 unadopted research preprints. External anchor: EU AI Act Art. 12
+                 mandates lifecycle event logging by Aug 2026 with NO finalized
+                 technical standard yet (prEN 18229-1, ISO/IEC DIS 24970 still
+                 drafts). The two layers COMPLEMENT (one methodology event ↔ zero
+                 or many LLM calls), they do not duplicate.
+                 RECOMMENDATION FLIPS defer → ADOPT, with alignment: publish the
+                 Soul methodology-event vocabulary as a CloudEvents v1.0 profile +
+                 a W3C PROV binding, reusing OTel identity keys (gen_ai.agent.id,
+                 gen_ai.conversation.id) for correlation. Claim the empty vocabulary
+                 slot on settled primitives; do NOT reinvent the envelope. The
+                 Claude Code hook stays in REF-09 as the reference adapter.
+STATUS:          Open — Council now RECOMMENDS adopt-with-alignment (evidence-based,
+                 flipping the provisional defer). Body to confirm the direction; on
+                 confirmation, draft operations/event-standard.md (vocabulary +
+                 CloudEvents profile + PROV binding + OTel identity reuse).
 ```
 
 Note for the Body: this is the Judge's recommendation. You are invested in the

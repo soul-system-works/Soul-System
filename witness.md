@@ -518,3 +518,25 @@ CONSEQUENCE:  Captured I004 (context-cheap idea capture) and I005 (measure the
               defer-vs-adopt-now call. Hook left as-is (gather evidence, task #15).
 STATUS:       Resolved
 ```
+
+```
+ID:           SOUL-031
+WHEN:         2026-05-20 / Outward research on the event-standard landscape
+WHERE:        2 background research agents (telemetry layer; process/decision layer)
+WHAT:         Body probed the F018 deferral; research launched (A003 outward reach).
+              Both agents converged: the LLM-call TELEMETRY layer is settled (OTel
+              GenAI); the SEMANTIC process/decision event layer the Soul standard
+              targets is WHITE SPACE (CloudEvents=envelope-only, PROV=generic-needs-
+              binding, BPMN/DMN/XES=wrong-phase, OTel decision events="open gap",
+              only research preprints model it). External anchor: EU AI Act Art. 12
+              demands it; no finalized standard exists. The layers COMPLEMENT.
+TYPE:         Council Note — Researcher (outward reach, dogfooded), Emissary
+              (external anchor: regulation + standards bodies)
+CONSEQUENCE:  F018 recommendation FLIPPED defer → adopt-with-alignment (publish as
+              a CloudEvents profile + PROV binding + OTel identity reuse). The
+              Body's chicken-and-egg probe was correct: a standard's value is
+              anticipatory, and the deferral wrongly applied the F011 infrastructure
+              pattern. Body to confirm the direction before drafting
+              operations/event-standard.md.
+STATUS:       Resolved
+```
