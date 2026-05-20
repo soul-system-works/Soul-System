@@ -83,6 +83,25 @@ is part of the record the next Architect needs.
 
 ---
 
+## Execution Topology and Delegation
+
+Execution topology is a structural decision and belongs in the ADR: whether the
+work runs as a single agent, an orchestrator with independent workers, or a
+communicating team. Single-agent is the default; record a multi-agent choice
+only when genuine subproblem independence justifies it (judged at the
+abstraction-layer gate against independence, cross-talk need, context-window
+pressure, verification needs, and cost — multi-agent runs roughly an order of
+magnitude more expensive and underperform on tightly-coupled work).
+
+When work is delegated across an agent boundary — a subagent, a parallel
+session, another tool's agent — the handoff package is self-contained: it
+carries the goal, the context, and the success criteria the fresh-context worker
+needs, because the worker inherits none of the delegator's history. A vague
+handoff is the named cause of duplicated work and gaps. Provide context and
+goals, not instructions.
+
+---
+
 **Source:** Michael Nygard, "Documenting Architecture Decisions" (2011), https://www.cognitect.com/blog/2011/11/15/documenting-architecture-decisions
 **Reinforced by:** Martin Fowler, https://martinfowler.com/bliki/ArchitectureDecisionRecord.html; MADR template (https://adr.github.io/madr/); ThoughtWorks Technology Radar, Adopt ring; AWS Prescriptive Guidance on ADRs
 **Adopted:** 2026-05-19

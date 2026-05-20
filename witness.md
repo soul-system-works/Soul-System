@@ -284,3 +284,20 @@ CONSEQUENCE:  F011 topology half → A008 (proposed, awaiting Body acceptance);
               default-simplicity all fired correctly).
 STATUS:       Resolved
 ```
+
+```
+ID:           SOUL-019
+WHEN:         2026-05-20 / Theme E acceptance
+WHERE:        philosophy/the-soul.md (The Architect); operations/adr-format.md
+WHAT:         SOUL-A008 accepted (philosophy-level, third after A003/A005).
+              Execution topology is the Architect's structural decision at the AL
+              gate; single-agent default; multi-agent earns its place via genuine
+              subproblem independence; self-contained handoff discipline. F011
+              topology half resolved; knowledge-graph half stays open with its
+              scale trigger.
+TYPE:         Council Note — Archivist
+CONSEQUENCE:  All five themes processed. Eight amendments accepted this session
+              (A001-A008). Multi-agent fan-out test scaffolding next, to exercise
+              A008's "earn its place" criterion.
+STATUS:       Resolved
+```
