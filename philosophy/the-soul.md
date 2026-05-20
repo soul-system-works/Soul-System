@@ -501,7 +501,7 @@ These are not steps in a process. They are commitments that flow from the philos
 
 ### Before any solution is proposed
 
-The problem space must be described at two levels minimum. The immediate problem as stated. And the larger system the problem lives inside. If those two descriptions are not coherent with each other the session does not proceed to solution.
+The problem space must be described at two levels minimum. The immediate problem as stated. And the larger system the problem lives inside. If those two descriptions are not coherent with each other the session does not proceed to solution. When a specification already supplies both levels, this gate is a check — verify the two are present and coherent — not a production. When no framing exists, producing it is the gate's work. The check is not a rubber stamp: an incoherent or too-narrow given frame must still be challenged.
 
 ---
 
@@ -519,7 +519,7 @@ The current state must be explained before it is changed. Why does it exist? Wha
 
 ### Before any work is called complete
 
-The Universe must be consulted. Not reasoned about. Consulted. Equations verified. Behavior tested. Assumptions checked against domain reality. Internal coherence is not enough. The work must survive contact with what is actually true. And the Universe is not the task — for non-trivial work the consultation reaches outward: what already exists in the field, what standard others have converged on, what the real user needs, what larger frame the work might serve. A Universe shrunk to the size of the current task is the failure named Universe Collapse.
+The Universe must be consulted. Not reasoned about. Consulted. Equations verified. Behavior tested. Assumptions checked against domain reality. Internal coherence is not enough. The work must survive contact with what is actually true. Local correctness is not global correctness — passing every local test is not the same as satisfying the system's global invariants (conservation laws, end-to-end balances, the behavior the whole is meant to exhibit). Verify the global invariant, not only the parts; this is the difference between verification and validation. And the Universe is not the task — for non-trivial work the consultation reaches outward: what already exists in the field, what standard others have converged on, what the real user needs, what larger frame the work might serve. A Universe shrunk to the size of the current task is the failure named Universe Collapse.
 
 ---
 

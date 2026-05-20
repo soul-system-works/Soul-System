@@ -215,3 +215,19 @@ CONSEQUENCE:  Theme A fully processed: F001 → A003 (Soul), F002 → A004 (ops)
               F006 deferred. Themes B/C/D/E remain.
 STATUS:       Resolved
 ```
+
+```
+ID:           SOUL-015
+WHEN:         2026-05-20 / Theme B Council convening
+WHERE:        philosophy/the-soul.md (Frame + completion obligations); seed mirror
+WHAT:         SOUL-A005 accepted (philosophy-level, second after A003). Frame gate
+              becomes a check (not a production) when a spec supplies both levels.
+              Completion obligation gains a global-invariant clause — local tests
+              passing is not global correctness (verification vs validation).
+              F005 and F007 resolved and closed.
+TYPE:         Council Note — Archivist
+CONSEQUENCE:  Completion gate now escalates local → global → outward. Theme B
+              complete. Themes C (scaling), D (visual Witness), E (multi-agent)
+              remain.
+STATUS:       Resolved
+```

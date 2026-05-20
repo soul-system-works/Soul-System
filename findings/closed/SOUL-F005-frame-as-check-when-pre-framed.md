@@ -17,5 +17,5 @@ WHY NOT YET AMENDMENT:  Candidate refinement surfaced by the heat session:
                  production is exactly the point.
 FILED BY:        Archivist
 RELATED:         [[SOUL-F006]]
-STATUS:          Open
+STATUS:          Closed [resolved by SOUL-A005, 2026-05-20]
 ```

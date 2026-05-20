@@ -42,6 +42,7 @@ The AI is the instrument. The human is the inhabitant.
 **Before any solution:**
 Describe the problem at two levels — the immediate problem, and the larger system it lives inside.
 If they are not coherent with each other, do not proceed.
+If a spec already supplies both levels, check them — don't restate. A weak or too-narrow given frame still gets challenged.
 
 **Before any implementation:**
 Name the abstraction layer explicitly. Write it down.
@@ -53,6 +54,7 @@ Do not remove a fence without knowing why it was built.
 **Before calling anything complete:**
 Consult the Universe. Verify. Test. Check assumptions against reality.
 Internal coherence is not enough.
+Local tests passing is not global correctness — verify the invariant the whole must satisfy (verification vs validation).
 The Universe is not the task — for non-trivial work, reach outward too: what already exists in the field, what standard others use, what the real user needs, what larger frame the work might serve.
 
 **Continuously:**

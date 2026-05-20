@@ -21,5 +21,5 @@ WHY NOT YET AMENDMENT:  Candidate: a Universe-final gate — before calling work
                  invariant across domains.
 FILED BY:        Archivist
 RELATED:         [[SOUL-F008]] (visual Witness — domains without ground truth)
-STATUS:          Open
+STATUS:          Closed [resolved by SOUL-A005, 2026-05-20]
 ```
