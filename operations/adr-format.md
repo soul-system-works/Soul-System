@@ -94,11 +94,14 @@ pressure, verification needs, and cost — multi-agent runs roughly an order of
 magnitude more expensive and underperform on tightly-coupled work).
 
 When work is delegated across an agent boundary — a subagent, a parallel
-session, another tool's agent — the handoff package is self-contained: it
-carries the goal, the context, and the success criteria the fresh-context worker
-needs, because the worker inherits none of the delegator's history. A vague
-handoff is the named cause of duplicated work and gaps. Provide context and
-goals, not instructions.
+session, another tool's agent — the handoff package is self-contained *for
+correctness*: it carries the goal, the context, and the success criteria the
+fresh-context worker needs to produce a correct result, because the worker
+inherits none of the delegator's history. Self-contained for correctness does
+not mean hermetic — a worker may still read the surrounding repo for consistency
+cues; what the packet must guarantee is that the result is correct from the
+packet alone. A vague handoff is the named cause of duplicated work and gaps.
+Provide context and goals, not instructions.
 
 ---
 

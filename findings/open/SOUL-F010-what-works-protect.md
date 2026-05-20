@@ -20,12 +20,21 @@ WHAT:            What the four runs show is genuinely WORKING — to be protecte
                  5. Body-Judge dynamic is healthy at its best — Judge has a spine
                     but updates on a real argument (REF-08 §29-32).
                  6. Accountant fires reliably at every cost/scope fork (REF-08).
+                 7. [Added 2026-05-20, FANOUT] A008's self-contained-handoff
+                    discipline works in practice: five isolated worker subagents,
+                    no shared context, integrated first-try with zero drift (70
+                    tests green). Confirmed dependency: the discipline works
+                    BECAUSE the AL gate fixed the interface contract first —
+                    topology discipline rests on abstraction discipline. Protect
+                    both, and protect their ordering (contract first, then fan out).
 WHY NOT YET AMENDMENT:  Not an amendment candidate — a protective Finding. Its
                  purpose is to constrain the Council: whatever amendments come
-                 from F001-F009 must not weaken these six. The First Principle
+                 from the open findings must not weaken these. The First Principle
                  (understand the abstraction before the instantiation) is
-                 empirically validated; do not trade it away for ergonomics.
+                 empirically validated — including, now, that A008's handoff
+                 discipline is downstream of it. Do not trade it away for ergonomics.
 FILED BY:        Archivist
-RELATED:         [[SOUL-F001]] through [[SOUL-F009]] (the changes this constrains)
+RELATED:         [[SOUL-F001]] through [[SOUL-F009]] (the changes this constrains),
+                 [[SOUL-A008]], [[SOUL-A009]] (validated by FANOUT)
 STATUS:          Open
 ```

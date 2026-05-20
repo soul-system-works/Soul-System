@@ -301,3 +301,22 @@ CONSEQUENCE:  All five themes processed. Eight amendments accepted this session
               A008's "earn its place" criterion.
 STATUS:       Resolved
 ```
+
+```
+ID:           SOUL-020
+WHEN:         2026-05-20 / FANOUT dogfood + harvest
+WHERE:        /tmp/REF-12/ (5 worker subagents); operations/adr-format.md
+WHAT:         Ran the FANOUT test as orchestrator with five real worker subagents
+              — first actual multi-agent dogfood. Built a 5-transformer toolkit;
+              70 tests pass, integration first-try, zero handoff drift. A008
+              validated: topology decided deliberately at the AL gate, recorded in
+              ADR, self-contained handoffs held. Key insight: A008 rests on the AL
+              gate (contract-first is what made handoffs composable). One
+              refinement → SOUL-A009 (handoff is self-contained for CORRECTNESS,
+              not hermetic).
+TYPE:         Council Note — Archivist; Emissary (machinery validated in practice)
+CONSEQUENCE:  SOUL-A009 accepted (operations). F010 updated with the validated
+              evidence (item 7). A008's "single-agent default" also vindicated —
+              the run had to explicitly override the cost axis for test value.
+STATUS:       Resolved
+```
