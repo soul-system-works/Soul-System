@@ -25,6 +25,12 @@ import re
 import sys
 
 _EDIT_TOOLS = {"Write", "Edit", "MultiEdit", "NotebookEdit"}
+# NOTE: claim detection is a heuristic regex — it can false-positive (e.g. "done"
+# in an unrelated sentence) or false-negative (completion phrased unusually). This
+# is acceptable because the hook is fail-open and fires at most once per turn, so a
+# spurious fire costs only one verification pass and a missed fire degrades to the
+# pre-hook status quo. A precise "claim" signal would need model-level intent, not
+# a regex; deliberately not attempted here.
 _CLAIM_RE = re.compile(
     r"(complete|completed|\bdone\b|finished|all tests pass|tests pass|"
     r"tests passed|definition of done|shipped|✓)",

@@ -49,9 +49,18 @@ UPGRADE:         2026-05-20. Built the auto-firing form — hooks/pre-completion
                  correctly in a live session" is an ABSOLUTE claim whose external
                  anchor — an actual in-session fire — has NOT yet happened. Unit
                  behavior is verified; live behavior is not.
-STATUS:          Open — auto-firing form built, wired, unit-verified. Stays open
-                 until a real session confirms it fires-and-blocks correctly
-                 (live verification pending; may occur at this session's end).
+LIVE VERIFICATION: 2026-05-20. The Stop hook FIRED in a real session — it blocked
+                 the stop and injected the verification checklist, with no Body
+                 invocation, in the Soul System repo itself. The close condition
+                 ("the gate auto-fires without Body invocation") is met and
+                 externally anchored by the actual fire (not a unit test). The loop
+                 guard then allowed the subsequent stop, as designed. The activation
+                 gap — loaded doctrine that describes but does not fire — is closed
+                 for the completion-side checks: they now fire structurally.
+                 Remaining open elsewhere: the EXPANSION side (ambition/possibility)
+                 has no firing instrument yet — tracked separately as [[SOUL-F014]].
+STATUS:          Closed [auto-firing gate built and LIVE-VERIFIED 2026-05-20;
+                 expansion-side activation continues under SOUL-F014]
 ```
 
 The deepest result of the whole dogfood program: the doctrine evolved to

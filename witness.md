@@ -376,5 +376,23 @@ CONSEQUENCE:  Running /soul-verify on this very work caught an overclaim: "the
               F012 stays OPEN pending a real-session fire (possibly at this turn's
               end). The gate caught my own premature-completion claim — the first
               evidence the activation discipline works on its author.
-STATUS:       Open — live verification pending
+STATUS:       Resolved [live fire occurred — see SOUL-024]
+```
+
+```
+ID:           SOUL-024
+WHEN:         2026-05-20 / Stop hook LIVE FIRE
+WHERE:        ~/.claude/settings.json Stop hook → this session, at turn end
+WHAT:         The pre-completion Stop hook FIRED in a real session — blocked the
+              stop and injected the verification checklist, with no Body
+              invocation, in the Soul System repo. The session ran the five checks,
+              found one gap (heuristic claim-detection unmarked → added a NOTE
+              marker), and only then ended. The loop guard then allowed the stop.
+TYPE:         Council Note — Emissary (Universe pushed back, literally), Artificer
+CONSEQUENCE:  F012 CLOSED and moved to findings/closed/ — the activation gap is
+              closed for completion-side checks; loaded doctrine now FIRES, not
+              just describes. External anchor for the close is the actual fire, not
+              a unit test. Expansion-side activation (ambition/possibility) remains
+              open under F014. First end-to-end proof the doctrine can self-enact.
+STATUS:       Resolved
 ```
