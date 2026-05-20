@@ -320,3 +320,39 @@ CONSEQUENCE:  SOUL-A009 accepted (operations). F010 updated with the validated
               the run had to explicitly override the cost axis for test value.
 STATUS:       Resolved
 ```
+
+```
+ID:           SOUL-021
+WHEN:         2026-05-20 / Continued-run investigation
+WHERE:        REF-09 (27 entries, +portfolio layer, golden tests),
+              REF-08 (1206-line retro, +literature references, methods paper,
+              VERA code-comparison)
+WHAT:         Both continued projects investigated (2 agents, claims verified;
+              tests green: visual 49, REF-08 107). Headline: the amendments are
+              ACCURATE but not CAUSAL. Both re-derived amendment content; the
+              behavior fired on Body/expert trigger, not from loaded doctrine.
+              REF-08 loaded v0.3.0 yet never used "Universe Collapse" — re-coined
+              it "Coherent Falsehood." Strong validation of A005/A006/A007/A008;
+              the gap is activation. Harvested as SOUL-F012..F016.
+TYPE:         Council Note — Archivist; Guardian (Ad Hoc Methodology at doctrine
+              level)
+CONSEQUENCE:  Five Findings filed. The central one (F012) is the activation gap.
+STATUS:       Resolved
+```
+
+```
+ID:           SOUL-022
+WHEN:         2026-05-20 / Council convening on the activation gap
+WHERE:        commands/soul-verify.md (new); ~/.claude/commands/soul-verify.md
+WHAT:         Council convened on F012/F013. Recognized the activation gap as the
+              Ad Hoc Methodology failure mode at the doctrine level and as the
+              Artificer's summons (per the Soul's own definition). Judge: the fix
+              is an instrument, not prose. Artificer built the FIRST instrument —
+              /soul-verify, a forced pre-completion gate operationalizing A005,
+              F013, A003, A007, F016. Portable Body-invoked form (partial fix);
+              auto-firing Stop-hook form deferred.
+TYPE:         Council Note — Artificer (first instrument built), Archivist
+CONSEQUENCE:  hooks/skills territory gets its first content (commands/). F012
+              stays open until the gate auto-fires without Body invocation.
+STATUS:       Resolved
+```

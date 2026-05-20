@@ -1,0 +1,53 @@
+---
+description: Pre-completion verification gate. Run before calling any non-trivial work complete. Forces the Universe-consultation checks the doctrine describes but does not reliably auto-fire (Soul Finding SOUL-F012).
+---
+
+# /soul-verify — the pre-completion gate, made to fire
+
+You are about to call work complete (or just did). Before that stands, run these
+checks explicitly and answer each **in writing, concretely** — not "yes."
+
+This command exists because the doctrine's completion obligations *describe* these
+checks but do not reliably fire on their own. Across four-plus autonomous runs the
+outward and verification passes fired only when the Body insisted; one project
+even loaded the doctrine and re-derived its content from scratch without
+recognizing it. Loaded text is not live behavior (SOUL-F012). This gate converts
+the obligation into an invokable step.
+
+For the work just completed, answer each:
+
+1. **Global invariant — verification ≠ validation (SOUL-A005).** What invariant
+   must the WHOLE satisfy (a conservation law, an end-to-end balance, the behavior
+   the whole is meant to exhibit)? Is it verified — not just local unit tests? If
+   there is no global invariant, say why.
+
+2. **External anchor for absolute claims (SOUL-F013).** Does the work make any
+   ABSOLUTE claim — a number, "this is correct / complete / conformant"? If so,
+   name the EXTERNAL anchor that grounds it: a benchmark, a published value, a
+   standard, a domain expert, a spec. Internal consistency over an absolute claim
+   is a **Coherent Falsehood** — self-consistent and wrong. No anchor → not yet
+   verified. Say so.
+
+3. **Outward reach — Universe Collapse (SOUL-A003).** Did the work reach outward
+   (what already exists in the field, the standard others use, the real user's
+   need, a larger frame), or did it treat the local task as the whole Universe?
+
+4. **Visual / non-automatable Witness (SOUL-A007).** Is there a visual or other
+   non-test-checkable artifact? If so, was it CAPTURED and INSPECTED (screenshot,
+   render, image diff) — not deferred to "the human will look"?
+
+5. **Honest markers (SOUL-F016).** Is unfinished business flagged with a marker
+   (`TODO`/`FIXME`/`DEBT`/`HACK`) where it lives, and standing limitations noted
+   in docstrings? Or is something compromised and silent?
+
+If any check fails, the work is **not** complete. Name the gap; fix it or record
+it honestly (Witness entry / marker); do not claim completion until the checks
+pass or their failure is explicitly accepted by the Body.
+
+---
+
+**Source:** Built by the Artificer in response to SOUL-F012 (amendments describe
+but do not fire). The portable, Body-invoked form of the pre-completion gate. The
+auto-firing form is a harness Stop hook (Claude Code), deferred. **Adopted:**
+2026-05-20. **Status:** active — partial fix; F012 stays open until the gate
+auto-fires without Body invocation.
