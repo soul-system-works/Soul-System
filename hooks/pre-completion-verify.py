@@ -12,6 +12,10 @@ Scoping (so it is not noise):
 - Fires only when this turn both SHIPPED an artifact (a Write/Edit tool use)
   and CLAIMED completion (completion language in assistant text).
 - Loop-safe: honors `stop_hook_active` so it blocks at most once per stop.
+- Cooldown: fires at most once per COOLDOWN_SECONDS per project, so a high-commit
+  iterative session (where ship+claim matches every turn) is not flooded — the
+  gate marks genuine completion moments, not every increment (real-world evidence:
+  SOUL-026, fired on consecutive turns).
 - Fail-open: any error or uncertainty allows the stop (exit 0).
 
 Claude Code specific (Stop-hook contract). The OBLIGATION it enforces is
@@ -19,10 +23,15 @@ tool-agnostic; this is the reference implementation. Reference implementation
 for SOUL-F012; see commands/soul-verify.md for the manual form.
 """
 
+import hashlib
 import json
 import os
 import re
 import sys
+import tempfile
+import time
+
+COOLDOWN_SECONDS = 900  # 15 min — fire at most once per window per project
 
 _EDIT_TOOLS = {"Write", "Edit", "MultiEdit", "NotebookEdit"}
 # NOTE: claim detection is a heuristic regex — it can false-positive (e.g. "done"
@@ -61,8 +70,39 @@ def main() -> None:
     if not (shipped and claimed):
         sys.exit(0)
 
+    # Cooldown: in a high-commit session the scope (ship + claim) matches nearly
+    # every turn. Fire at most once per COOLDOWN_SECONDS per project, so the gate
+    # marks genuine completion moments rather than every increment. Real-world
+    # evidence: the gate fired on consecutive turns in an iterative session
+    # (SOUL-026). The cost of a missed fire is low (fail toward the pre-hook
+    # status quo); the cost of firing every turn is friction that gets it disabled.
+    cooldown = _cooldown_path(cwd)
+    if _within_cooldown(cooldown):
+        sys.exit(0)
+    _mark_fire(cooldown)
+
     print(_checklist(), file=sys.stderr)
     sys.exit(2)  # block the stop; stderr is fed back to the session
+
+
+def _cooldown_path(cwd: str) -> str:
+    h = hashlib.sha1((cwd or "").encode("utf-8")).hexdigest()[:12]
+    return os.path.join(tempfile.gettempdir(), f"soul-verify-cooldown-{h}")
+
+
+def _within_cooldown(path: str) -> bool:
+    try:
+        return os.path.exists(path) and (time.time() - os.path.getmtime(path)) < COOLDOWN_SECONDS
+    except Exception:
+        return False
+
+
+def _mark_fire(path: str) -> None:
+    try:
+        with open(path, "w") as fh:
+            fh.write(str(time.time()))
+    except Exception:
+        pass
 
 
 def _is_soul_project(cwd: str) -> bool:

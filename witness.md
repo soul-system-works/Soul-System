@@ -418,3 +418,23 @@ CONSEQUENCE:  F014 partial fix shipped (/soul-expand). The asymmetry is the
               not a pending build.
 STATUS:       Resolved
 ```
+
+```
+ID:           SOUL-026
+WHEN:         2026-05-20 / Stop hook real-world fire-rate
+WHERE:        ~/.claude/settings.json Stop hook; hooks/pre-completion-verify.py
+WHAT:         The pre-completion Stop hook fired on TWO consecutive turns in this
+              high-commit doctrine-building session — confirming the predicted
+              scope eagerness: "ship + claim" matches nearly every turn when work
+              commits frequently, so the gate can't tell "increment done" from
+              "task done." Friction real enough to risk the gate being disabled.
+TYPE:         Universe Contradiction — the gate's scope assumption (ship+claim ≈
+              a completion moment) met an iterative session and was too broad.
+CONSEQUENCE:  Added a per-project cooldown (15 min): fire at most once per window,
+              so the gate marks genuine completion moments not every commit.
+              Cooldown unit-tested (fires once, then skips within window); this
+              project pre-marked so the gate stays quiet for the rest of the
+              session. The hook caught real Universe feedback and was corrected
+              against it within the same session — the discipline working live.
+STATUS:       Resolved
+```
