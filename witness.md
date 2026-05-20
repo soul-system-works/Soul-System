@@ -478,3 +478,23 @@ CONSEQUENCE:  The expansion engine's PERSISTENCE half exists. Generative-role
               build; skipped writing-plans by Body choice given the small size.
 STATUS:       Resolved
 ```
+
+```
+ID:           SOUL-029
+WHEN:         2026-05-20 / Cross-session hook evidence
+WHERE:        REF-09 (witness, now 30 entries); REF-08; ~/.claude/settings.json
+WHAT:         The pre-completion Stop hook (user-global, self-scoping to any Soul
+              project) fires across ALL concurrent Soul sessions, not only the one
+              being worked. REF-09 confirmed a fire (gate honored, 65
+              tests green) AND reported /soul-verify "forced two honest markers I'd
+              have skated past" — real value, not pure friction. REF-08 would
+              also fire (its CLAUDE.md matches the soul scope) but records no
+              complaint in its retrospective.
+TYPE:         Universe Contradiction — hook blast radius (user-global) is broader
+              than the working session; it imposes on unrelated concurrent
+              sessions. Counterweight: genuine value where it fired.
+CONSEQUENCE:  Evidence for task #15. Decision pending (Body's pause stance):
+              narrow blast radius (Soul-repo-only / per-project opt-in) vs leave it
+              (value + cooldown cap the cost). Captured, not acted on.
+STATUS:       Open
+```
