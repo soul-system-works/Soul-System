@@ -263,3 +263,24 @@ CONSEQUENCE:  Themes A/B/C/D processed. Open: F006 (deferred), F009 (deferred),
               research + a test). Eight amendments accepted (A001-A007 + the wave).
 STATUS:       Resolved
 ```
+
+```
+ID:           SOUL-018
+WHEN:         2026-05-20 / Theme E Pre-Mortem convening
+WHERE:        Conversation — F011; two background research agents (orchestration
+              topologies; knowledge-graph memory tooling)
+WHAT:         Pre-Mortem on F011 ran the outward research the new A003 obligation
+              demands (dogfooded). Both halves converged on one shape: default
+              simple, advanced capability earns its place against a trigger,
+              decided by existing roles, tool-agnostic. Topology → SOUL-A008
+              proposed (Architect names topology at AL gate; single-agent default;
+              self-contained handoff discipline). Knowledge graphs → deferred with
+              a defined scale trigger (Premature Sophistication at current scale).
+TYPE:         Council Note — Researcher (outward reach), Skeptic + Accountant
+              (cost guards), Cartographer (the shared shape)
+CONSEQUENCE:  F011 topology half → A008 (proposed, awaiting Body acceptance);
+              KG half deferred, F011 stays open with trigger. The doctrine
+              predicted its own answer (Premature Sophistication + Accountant +
+              default-simplicity all fired correctly).
+STATUS:       Resolved
+```

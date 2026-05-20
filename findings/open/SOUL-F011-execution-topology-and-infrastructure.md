@@ -36,8 +36,26 @@ FILED BY:        Archivist
 RELATED:         [[SOUL-F003]] (role-set by problem size — topology is the agent
                  analog of role-set), [[SOUL-F001]] (Researcher reaching outward —
                  knowledge graphs are the tool that enables it), [[SOUL-F002]]
-                 (orchestration would make continuous-role activity observable)
-STATUS:          Open
+                 (orchestration would make continuous-role activity observable),
+                 [[SOUL-A008]]
+PRE-MORTEM:      Convened 2026-05-20 with outward research (orchestration + memory
+                 tooling). Outcome:
+                 - TOPOLOGY half → SOUL-A008 (proposed): Architect names topology
+                   at the AL gate; single-agent default; multi-agent earns its
+                   place; self-contained handoff discipline. Production-proven win
+                   is orchestrator-worker fan-out for INDEPENDENT subproblems
+                   (Anthropic +90.2% on research, ~15x cost, bad for coupled work).
+                 - KNOWLEDGE-GRAPH half → DEFER. Graphiti is the philosophical
+                   twin (bi-temporal invalidate-don't-delete = supersede-with-care)
+                   but adoption now is Premature Sophistication (~600k tokens/write,
+                   3-4 person-months/yr upkeep; the record fits one context window).
+                   TRIGGER to revisit: record no longer fits a single context
+                   window, OR multi-project cross-hop queries become routine.
+                   DECISION HOME: Artificer proposes/builds; Council ratifies vs
+                   Accountant cost-reality + Steward "does it still serve."
+STATUS:          Open — topology half addressed by SOUL-A008; knowledge-graph half
+                 deferred with a defined trigger (above). Stays open until the
+                 trigger is crossed.
 ```
 
 This finding has the widest blast radius of the eleven: execution topology touches
