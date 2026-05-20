@@ -37,7 +37,15 @@ TRIGGER TO ADOPT: a SECOND independent adapter (e.g. a Cursor/Aider emitter) OR 
 FILED BY:        Archivist
 RELATED:         [[SOUL-F011]] (the deferral pattern), SOUL-011 + VISUAL-F001
                  (continuous-activity demand, now scoped to telemetry)
-STATUS:          Open — endorsement + §4 recorded; adoption deferred to the trigger
+STATUS:          Open — endorsement + §4 stand. Adoption deferral is PROVISIONAL:
+                 the Body's probe (2026-05-20) showed the deferral applied an
+                 infrastructure pattern (F011) to a STANDARD, but standards are
+                 anticipatory coordination devices ("publish before adoption to
+                 enable it") with different economics — "wait for a second adapter"
+                 is a chicken-and-egg trap. Ecosystem research launched to decide
+                 adopt / align-with-existing / defer on evidence (does a Soul
+                 process-event standard fill a real gap vs. the existing LLM/agent
+                 observability stack?).
 ```
 
 Note for the Body: this is the Judge's recommendation. You are invested in the
