@@ -161,3 +161,24 @@ CONSEQUENCE:  Deferred. The /tmp/REF-09 project will dogfood the
               metrics formalization unearned.
 STATUS:       Open
 ```
+
+```
+ID:           SOUL-012
+WHEN:         2026-05-20 / Post-test harvest
+WHERE:        4 autonomous test projects — REF-09, REF-11,
+              REF-10, /home/fig/REF-08
+WHAT:         Four autonomous Soul-governed test runs completed and were
+              investigated (agents verified claims against artifacts — ran tests,
+              executed scripts, grepped markers). Cross-project synthesis
+              harvested into 10 Findings (SOUL-F001..F010, findings/open/).
+              Headline: the doctrine is a strong ratchet and a weak engine. Root
+              cause subsuming several failures (VISUAL-024): collapsing "the
+              Universe" to "the local context." Strongest positive: the AL gate
+              is load-bearing in all four runs; the honesty mechanism self-
+              diagnoses.
+TYPE:         Council Note — Archivist (findings filed for convening)
+CONSEQUENCE:  First real multi-session, multi-domain evidence base. Convening
+              trigger met (shared TYPE across WHERE, across sessions). Council to
+              convene on SOUL-F001..F010.
+STATUS:       Open
+```
