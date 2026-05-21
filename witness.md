@@ -749,3 +749,26 @@ CONSEQUENCE:  The standard now expresses multi-agent lineage. PER F020 (dogfoode
 STATUS:       Resolved — adoption verified + harvested; owed reference-adapter lineage
                          re-verification tracked in F020 (Open).
 ```
+
+```
+ID:           SOUL-040
+WHEN:         2026-05-21 / Verified REF-09's lineage re-sync (F020 first instance)
+WHERE:        /tmp/REF-09 (soul/schema.py, hooks/soul_emit.py, tests); a direct
+              functional check run from the parent
+WHAT:         The owed re-verification (F020) landed and is DISCHARGED. REF-09
+              re-added the parent slot: parent_agent_id → genaiparentagentid (optional,
+              omitted single-agent) in _IDENTITY_KEYS, plus a PROV actedOnBehalfOf edge
+              in to_prov(). Verified NOT by trusting their tests but by producing a
+              lineage event from their code (Emissary): genaiparentagentid=parent
+              carried; omitted when no parent; PROV edge delegate=child /
+              responsible=parent. Their suite: 74 tests green.
+TYPE:         Emissary (produced the artifact from their code, not merely ran their tests).
+CONSEQUENCE:  The SOUL-F018 → F019 round-trip closed cleanly across the repo boundary:
+              parent added the slot + flagged the owed re-verify (F020) → handoff →
+              adapter implemented → parent verified. F020's own mechanism worked on its
+              first instance — evidence the process addition earns its place. The standard
+              now has a conformant reference for multi-agent lineage; a second adapter can
+              copy a reference that matches. F020 the doctrine proposal stays Open (Body
+              confirmation); its first owed instance is discharged.
+STATUS:       Resolved
+```

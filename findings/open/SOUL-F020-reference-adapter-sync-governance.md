@@ -32,6 +32,9 @@ WHY NOT YET AMENDMENT:  A process proposal awaiting Body/Council confirmation; m
 FILED BY:        Archivist
 RELATED:         [[SOUL-F007]], [[SOUL-F012]], [[SOUL-F015]], [[SOUL-F018]],
                  [[SOUL-F019]] (the change that re-triggers it)
-STATUS:          Open — process addition proposed; the lineage re-verification of the
-                 REF-09 adapter is the first owed instance.
+STATUS:          Open as a doctrine proposal (awaiting Body confirmation) — but its
+                 FIRST owed instance is DISCHARGED: the REF-09 adapter
+                 re-synced to the genaiparentagentid slot and the parent verified it by
+                 producing a lineage event from the adapter's own code (SOUL-040,
+                 2026-05-21). The mechanism worked on its first real run.
 ```
