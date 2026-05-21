@@ -790,3 +790,24 @@ CONSEQUENCE:  F020 accepted + closed; first owed instance already discharged (SO
               that names a reference). #19 done; moving to #20 (handoff).
 STATUS:       Resolved
 ```
+
+```
+ID:           SOUL-042
+WHEN:         2026-05-21 / #20 — built /soul-handoff (grow-own, thin)
+WHERE:        commands/soul-handoff.md; docs/specs/2026-05-21-soul-handoff-design.md;
+              .soul/handoff.md (first dogfood cursor)
+WHAT:         Built the context-limit handoff (SOUL-I007) as a thin grow-own command.
+              Body chose grow-own over point-to (Pocock's skill is intentionally trivial;
+              the value is all Soul-specific). Two guardrails held: don't rebuild /compact
+              (lean on it for the prose recap), and keep it thin — the durable records
+              already persist most state, so the handoff = flush volatile→durable + a small
+              cursor at .soul/handoff.md (references, not duplicates). Dogfooded: produced a
+              real cursor for this session — it came out THIN precisely because the records
+              were already current, validating the design thesis.
+TYPE:         Architect (AL/spec), Artificer (the command), Emissary (dogfooded the artifact).
+              Explore-first honored: studied Pocock → framed → Body chose → spec → build.
+CONSEQUENCE:  /soul-handoff exists (+ installed to ~/.claude/commands/). SOUL-I007 graduated.
+              Deferred (YAGNI; no seed bloat post-C-lite): auto-resume seed wiring, secret
+              redaction, multi-agent handoff. Real test is the next actual handoff. #20 done.
+STATUS:       Resolved
+```

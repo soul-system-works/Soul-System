@@ -148,7 +148,7 @@ IDEA:      Smartly handle context limits as a first-class Soul-System concern �
            disciplined handoff/continuation when a session nears its context ceiling,
            preserving the live abstraction layer, open gates, and witness tail so the
            next session resumes without re-derivation.
-STATUS:    Raw
+STATUS:    Graduated [to SOUL-042 / /soul-handoff — grow-own thin handoff command]
 WHY:       Context exhaustion is exactly when the Soul System should pay off most —
            the accumulated structure is what survives a handoff — yet today handoff
            is ad hoc. A disciplined handoff is the moment the "good ratchet" proves
