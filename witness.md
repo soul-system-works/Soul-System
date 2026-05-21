@@ -1138,3 +1138,26 @@ CONSEQUENCE:  Measurement design exists as a spec; answers I005's "needs a measu
               research -> spec, no building yet.
 STATUS:       Resolved (design specced; execution pending — Step 1 next)
 ```
+
+```
+ID:           SOUL-052
+WHEN:         2026-05-21 / Step 1 (resume-cost) — instrument + first datum
+WHERE:        hooks/resume-cost.py; .soul/events.jsonl (soul.resume.cost)
+WHAT:         Built the resume-cost instrument (spec Step 1) and ran it. First datum
+              (static byte/token PROXY, est = bytes/4): resume path (handoff + witness
+              tail + ideas + open findings) ~= 11.6k tokens vs cold re-read (full witness
+              + ideas + all findings) ~= 37.9k — ratio 0.31, ~26k est tokens saved at a
+              session boundary (~69% less context to re-establish state). Honest limits:
+              byte proxy, not in-session tokens; ideas.md is loaded in BOTH (no saving
+              there) — the saving is concentrated in witness-tail-vs-full and open-vs-all
+              findings; the cold alternative is modeled as a full-record re-read, not
+              conversation re-derivation. A lower bound, not the Soul-vs-non-Soul test.
+TYPE:         Emissary (first real measurement of the savings claim), Artificer (the
+              instrument), Accountant (cheapest cut first).
+CONSEQUENCE:  Step 1 produces signal: the cursor saves ~2/3 of state-re-establishment
+              context at a boundary (proxy). One datum, not a trend — re-run across
+              future resumes to accumulate. Step 2 (sequential task stream) remains the
+              primary, harder test. I005 now has a first FOR-the-bet measurement beyond
+              the static-footprint data point.
+STATUS:       Resolved (Step 1 instrument live + first datum; accumulate over resumes)
+```
