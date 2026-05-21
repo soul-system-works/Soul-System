@@ -984,3 +984,65 @@ CONSEQUENCE:  SOUL-046's "sampled, not exhausted" gap is closed. Meta-lesson and
 STATUS:       Resolved (re-scan complete; F023 + 2 augments carry it; 2 promotion
               candidates flagged)
 ```
+
+```
+ID:           SOUL-048
+WHEN:         2026-05-21 / Council synthesis — retrospective convening over 12 open findings
+WHERE:        findings/open/ (all 12 read in full); → amendments/proposed/SOUL-A010;
+              new findings/open/SOUL-F025; dispositions on F006/F009/F011/F014/F016/F017
+WHAT:         Body-called convening (itself evidence for F006: it did NOT auto-fire
+              though convening conditions were met — 3+ entries sharing TYPE Archivist,
+              a session phase ending). Read all 12 open findings fully (applying
+              SOUL-047: no sampling). Clusters: ANCHOR FAMILY (F013 anchor absolutes,
+              F015 Coherent-Falsehood vocabulary, F021 probe absence, F023 use available
+              verifier, + this session's F024 ungrounded magnitude claim, + F022
+              gate-theater); RATCHET/ENGINE (F014 ambition+role-economics, F017
+              Dreamer); DRIFT/SCALE (F009 artifact discipline, F016 marker-vs-docstring);
+              PARKED (F011 topology/infra trigger-gated, F006 Council trigger);
+              PROTECTIVE (F010, constrains all amendments).
+              Voices that moved the outcome: Archaeologist — the anchor pattern has
+              recurred since F001, re-derived 5+ times. Seer — those are not 5 problems
+              but ONE principle in 5 masks (prediction/absence/magnitude/verifier/the
+              name); never named at the CLAIM level (Universe Collapse is named only at
+              the TASK level); every instance was caught by Body trigger, not a firing
+              instrument (where we got lucky). Revelator — the unnamed principle is the
+              ANCHOR OBLIGATION; its violation is COHERENT FALSEHOOD, the claim-level
+              twin of Universe Collapse. Prophet — unaddressed: findings keep accreting
+              and the gate keeps hollowing (F022); addressed: one name + an anchor-per-
+              claim check de-theaters the gate AND gives F013/F021/F023/F024 the
+              instrument each lacked (the F012 trap). Steward — 5 findings collapsing
+              into 1 amendment is a NET reduction; don't also amend F014/F017/F006 (not
+              ripe). Emissary — the NAMING is evidence-backed (every instance a real
+              catch); the MECHANISM is a SHARPENING of checks the hook already fires
+              (checks 1 & 2), so low-risk, but measure it finds more gaps (SOUL-I011).
+              Skeptic — not mere re-naming (Universe Collapse is task-scope; absence/
+              magnitude/verifier are not); keep the seed addition MINIMAL (name only),
+              put the operational checks in operations/completion-gate.md (no-bloat,
+              F020 precedent); fold F024 as an instance, not its own finding.
+JUDGE:        PROPOSED AMENDMENT SOUL-A010 — name Coherent Falsehood + the Anchor
+              Obligation (claim-level twin of Universe Collapse); operationalize by
+              sharpening the existing completion-gate checks to NAME the anchor per
+              claim (or state "no anchor + the risk") instead of yes/no, de-theatering
+              F022. Collapses F013, F015, F021, F023; addresses F022; folds F024 +
+              "capability-outruns-battle-testing" as instances. Seed touch minimal;
+              mechanism in the ops doc. Three Questions answered in the A010 artifact.
+              HOLD (route forward): F014 + F017 → SOUL-I011 experiment (test the
+              role-economics counterweight + whether a generative role changes behavior,
+              not just adds a dormant role). F009 → interim Steward duty stands. F011 →
+              trigger-gated. F006 → SHARPENED to an ACTIVATION problem (conditions
+              exist, nothing fires them — F012 family); candidate = a convening-
+              conditions detector; not built now (ceremony risk). READY, separate
+              touch: F016 (marker=unfinished / docstring=standing-limitation) — its own
+              micro-amendment, NOT bundled into A010. NEW: F025 (second-adapter
+              implementability test). PROTECTIVE held: F010 confirms A010 strengthens
+              Universe consultation, weakens nothing.
+TYPE:         Council (full retrospective convening), Judge (synthesis), Archivist.
+CONSEQUENCE:  A010 PROPOSED — awaits Body sign-off to APPLY to the-soul.md + the seed
+              failure-mode list + operations/completion-gate.md (then version increment
+              + move to accepted/). On acceptance: F013/F015/F021/F023 close; F022
+              resolved by A010's mechanism; open set goes 12 → ~8 (net reduction — the
+              meta-engine working). F025 opened. F024 captured as an A010 instance + a
+              feedback memory. F006's own gap was live-evidenced by this convening
+              needing a Body call.
+STATUS:       Resolved (synthesis complete; A010 proposed, awaiting Body sign-off)
+```
