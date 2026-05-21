@@ -540,3 +540,24 @@ CONSEQUENCE:  F018 recommendation FLIPPED defer → adopt-with-alignment (publis
               operations/event-standard.md.
 STATUS:       Resolved
 ```
+
+```
+ID:           SOUL-032
+WHEN:         2026-05-21 / Body confirmed event-standard adoption
+WHERE:        operations/event-standard.md (new);
+              docs/specs/2026-05-21-event-standard-design.md
+WHAT:         Body confirmed adopt-with-alignment (SOUL-F018). Spec-first design pass
+              written, then the standard published: a CloudEvents v1.0 profile + W3C
+              PROV binding + OTel GenAI identity reuse for the Soul methodology-event
+              vocabulary. Kept OUT of the always-loaded seed (no @-import, no seed
+              pointer) — consult-on-demand reference, consistent with how other
+              operations/ files (code-markers, adr-format) are handled, and with the
+              Body's seed-size/noise concern (SOUL-I006, SOUL-I008).
+TYPE:         Council Note — Architect (the standard's structure), Steward (kept it
+              out of the always-loaded path)
+CONSEQUENCE:  SOUL-F018 graduated → closed. operations/event-standard.md is the
+              neutral contract any adapter/consumer targets. Next: update the
+              reference adapter hook in REF-09 to emit the profile
+              (deferred until touched).
+STATUS:       Resolved
+```

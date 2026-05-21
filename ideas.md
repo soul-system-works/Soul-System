@@ -114,3 +114,73 @@ DEVELOP:   Researcher / Emissary / Accountant — needs a measurement method
            (e.g. tokens per comparable task over time; Soul vs non-Soul runs of
            similar work; re-derivation rate). Currently unmeasured.
 ```
+
+```
+ID:        SOUL-I006
+WHEN:      2026-05-21
+IDEA:      the-soul.md is large (~500 lines) and is @-imported into the always-loaded
+           seed, so Claude Code shows the "large CLAUDE.md may impact performance"
+           warning at every session start. Keep the philosophy present without paying
+           the full-file context cost each session.
+STATUS:    Raw
+WHY:       The seed (operations/CLAUDE.md) was designed to BE the compressed,
+           always-loaded layer — it literally says "this is a seed, not the full
+           philosophy; when in doubt consult the-soul.md." But line 11
+           `@../philosophy/the-soul.md` force-imports the entire philosophy anyway,
+           defeating the seed's purpose AND causing the perf warning. The compression
+           layer already exists — it is just being bypassed.
+PRIORITY:  high
+DEVELOP:   Architect (the layering) / Steward (always-on vs consult-on-demand) / Artificer (mechanism)
+NOTES:     Candidate fix: drop the @-import; reference the-soul.md as a consult-on-
+           demand path (the seed already summarizes every section). Chesterton's
+           Fence — the import was added so the full philosophy is always in context;
+           removing it trades guaranteed presence for lower cost + honoring the seed
+           design. Other options: split the-soul.md into core + appendix; lazy-load
+           via a skill; keep the import but trim the-soul.md itself. Decide at the AL
+           gate: what MUST be always-loaded vs available-on-demand. Related to
+           SOUL-I005 (token economics).
+```
+
+```
+ID:        SOUL-I007
+WHEN:      2026-05-21
+IDEA:      Smartly handle context limits as a first-class Soul-System concern — a
+           disciplined handoff/continuation when a session nears its context ceiling,
+           preserving the live abstraction layer, open gates, and witness tail so the
+           next session resumes without re-derivation.
+STATUS:    Raw
+WHY:       Context exhaustion is exactly when the Soul System should pay off most —
+           the accumulated structure is what survives a handoff — yet today handoff
+           is ad hoc. A disciplined handoff is the moment the "good ratchet" proves
+           it saves tokens (SOUL-I005). Pairs with SOUL-I004 (cheap capture under
+           context pressure).
+PRIORITY:  high
+DEVELOP:   Researcher / Artificer / Archivist
+NOTES:     Inspiration / candidate tool: Matt Pocock's "handoff" skill
+           (https://github.com/mattpocock/skills/blob/main/skills/productivity/handoff/SKILL.md).
+           Study its shape, then decide: does the Soul System point to it (External
+           Skills mapping) or grow its own handoff-by-shape? A Soul handoff must carry
+           the AL, open gates, witness tail, and findings/ideas deltas. Don't reinvent
+           if the skill fits by shape. Related: SOUL-I004, SOUL-I005.
+```
+
+```
+ID:        SOUL-I008
+WHEN:      2026-05-21
+IDEA:      Reduce terminal-output noise from Soul instruments (gate messages, Stop
+           hook output, role announcements) so the actual project work stays legible
+           — without compromising the behavior the instruments provide.
+STATUS:    Raw
+WHY:       Gate info + hook output currently crowd out the work-in-progress; signal
+           is lost in ceremony and the noise costs tokens. The "Naming Roles in the
+           Moment" doctrine already warns against ceremony — this is its operational/
+           UX echo at the terminal. Quieter instruments are more likely to be kept on
+           (people disabling the system for noise is an unforced error).
+PRIORITY:  medium
+DEVELOP:   Artificer (instrument verbosity) / Steward (what output earns its place) / Advocate (the Body's experience)
+NOTES:     Candidates: quiet-by-default with a verbose opt-in; collapse routine gate
+           confirmations to one terse line; emit machine-readable events (the event
+           standard, SOUL-F018) instead of prose so the terminal stays clean while the
+           record stays rich. Measure noise vs token cost. Do NOT trade away the
+           activation guarantee (SOUL-F012) for quiet — quiet AND effective.
+```

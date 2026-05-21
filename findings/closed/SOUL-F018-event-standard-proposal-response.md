@@ -58,10 +58,11 @@ RESEARCH OUTCOME (2026-05-20): Two independent agents scanned the field and
                  gen_ai.conversation.id) for correlation. Claim the empty vocabulary
                  slot on settled primitives; do NOT reinvent the envelope. The
                  Claude Code hook stays in REF-09 as the reference adapter.
-STATUS:          Open — Council now RECOMMENDS adopt-with-alignment (evidence-based,
-                 flipping the provisional defer). Body to confirm the direction; on
-                 confirmation, draft operations/event-standard.md (vocabulary +
-                 CloudEvents profile + PROV binding + OTel identity reuse).
+STATUS:          Graduated → operations/event-standard.md (2026-05-21). Body confirmed
+                 adopt-with-alignment; a spec-first design pass
+                 (docs/specs/2026-05-21-event-standard-design.md) preceded the
+                 standard (CloudEvents profile + PROV binding + OTel identity reuse).
+                 Closed.
 ```
 
 Note for the Body: this is the Judge's recommendation. You are invested in the
