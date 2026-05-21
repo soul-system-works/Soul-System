@@ -811,3 +811,20 @@ CONSEQUENCE:  /soul-handoff exists (+ installed to ~/.claude/commands/). SOUL-I0
               redaction, multi-agent handoff. Real test is the next actual handoff. #20 done.
 STATUS:       Resolved
 ```
+
+```
+ID:           SOUL-043
+WHEN:         2026-05-21 / First real /soul-handoff invocation
+WHERE:        .soul/handoff.md
+WHAT:         Body invoked /soul-handoff for real (not the dogfood). Flush check found the
+              records already current (SOUL-037..042 committed; no live AL; no uncaptured
+              ideas; task tracker accurate), so the handoff was thin — as the design
+              predicts when the durable discipline is kept. Refreshed the cursor at an
+              actual session boundary.
+TYPE:         Emissary — the WRITING side of the handoff confirmed in real use.
+CONSEQUENCE:  Partially discharges SOUL-042's flagged limit: writing side verified in real
+              use; the RESUME side (a fresh session reads the cursor and continues without
+              re-derivation) is verified only when the next session actually does so —
+              still pending. /soul-handoff works as designed.
+STATUS:       Resolved
+```
