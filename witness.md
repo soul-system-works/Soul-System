@@ -1106,3 +1106,35 @@ CONSEQUENCE:  I012 + I013 graduated. Soul command set is now soul-init / idea / 
               so it is Body-invoked like /soul-expand. Real test is actual use.
 STATUS:       Resolved
 ```
+
+```
+ID:           SOUL-051
+WHEN:         2026-05-21 / Token-economics measurement — research-first then a spec
+WHERE:        docs/specs/2026-05-21-token-economics-measurement-design.md;
+              ideas SOUL-I005 (the claim) / SOUL-I011 (the apparatus)
+WHAT:         Body chose to frame #21 / I005 (does the Soul System pay for itself?).
+              Ran /soul-expand (the expansion gate), then research-first (Researcher
+              subagent). Key reframe the research forced: the savings claim is a
+              CARRYOVER claim — the "can't repeat a task" confound cannot be neutralized
+              (counterbalancing assumes symmetric carryover, false for an artifact-
+              leaving methodology), so CONVERT the confound into the signal (cost vs
+              position in a task sequence; prior art: DeepMind Evo-Memory 2025). The null
+              is live (scaffold-ablation studies show methodology often buys little — the
+              system may be net overhead). Three proof-faking traps: confounded single
+              A/B, conformance-illusion (label vs measured gate-fire — our event log
+              already emits the gate event), vanity metrics (doc-count as value — we are
+              especially prone). Designed a cheapest->gated sequence: (1) resume-cost A/B
+              (near-zero; cold start vs /soul-resume), (2) one sequential task stream (the
+              primary), (3) standalone benchmark NOT YET (evidence-gated — building it
+              first is the Premature Sophistication the system warns against). Wrote it up
+              as a spec (AL gate + don't-strand).
+TYPE:         Researcher + Emissary (outward research reshaped the design and answered the
+              separate-project question: not yet), Architect (the spec / AL), Accountant
+              (cheapest-first; benchmark gated).
+CONSEQUENCE:  Measurement design exists as a spec; answers I005's "needs a measurement
+              method." The Body's "separate project like the visualizer" instinct was
+              right in shape, premature in timing (start in-situ + one stream). NEXT:
+              execute Step 1 (resume-cost A/B). Honored explore-before-execute: expand ->
+              research -> spec, no building yet.
+STATUS:       Resolved (design specced; execution pending — Step 1 next)
+```
