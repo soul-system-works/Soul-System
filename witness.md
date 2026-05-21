@@ -848,3 +848,42 @@ CONSEQUENCE:  /soul-handoff (write cursor) + /soul-resume (read cursor + continu
               from this session's cursor.
 STATUS:       Resolved
 ```
+
+```
+ID:           SOUL-045
+WHEN:         2026-05-21 / #17 skill-wiring — research-first, then a light edit
+WHERE:        operations/CLAUDE.md (External Skills section); research via 2 subagents
+WHAT:         #17's frame shifted in the framing: the Body did not want a wiring strategy
+              picked from the armchair — wanted it decided empirically (sandbox
+              experiments + external research). Chose research-first. Two probes
+              (in-platform: Claude Code skill/hook mechanisms; external: Cursor/Continue/
+              Windsurf rules, agent-framework routing, tool-retrieval literature)
+              CONVERGED:
+              (1) the field independently settled on exactly our fork — always-on /
+                  glob-auto-attach / description-decided (nudge) / manual pull;
+              (2) HARD evidence that always-on candidate sets DEGRADE selection
+                  (RAG-MCP 13.6%->43.1%; Anthropic Tool Search Opus4 49%->74%; degrades
+                  past ~10 candidates) — the same lesson SOUL-033 recorded for the-soul.md;
+              (3) in-platform reality: Claude Code has NO conditional auto-invocation;
+                  external skills can only be NUDGED (description match / hook context
+                  injection), not force-fired. Deterministic firing is reserved for
+                  instruments the system OWNS (Stop hook, /soul-* commands).
+              Research largely SHORTCUT the sandbox experiment for the architecture
+              question; our table is 8 rows (under the ~10 threshold) so heavy machinery
+              is YAGNI. Acted light: added a "Surface when…" trigger column (the
+              reliability lever), a one-line "consult on relevance, never always-on"
+              fence, and a Source footer citing the convergence.
+TYPE:         Researcher + Archaeologist (went outward; found the field had already run
+              the experiment), Emissary (outward evidence reshaped the plan — confirmed
+              the fork, shortcut a build), Steward + Judge (right-sized: overrode the
+              brainstorming skill's spec-doc/writing-plans tail for an 8-row doc edit).
+CONSEQUENCE:  The mapping is now active-by-description (the lever we control) without
+              bloating the always-loaded seed. Validation worth keeping: the Soul System
+              had independently arrived at the field's best practice (discovery/activation
+              split, SOUL-033). Held to the lean record, NOT the seed: the nudge-tier vs
+              Soul-owned-deterministic distinction; a Soul-side file-pattern nudge hook
+              (candidate, unbuilt). The sandbox-experiment apparatus the Body pictured is
+              re-aimed at #21 (token economics), where the field can't supply our numbers —
+              captured as SOUL-I011. #17 done (light).
+STATUS:       Resolved
+```

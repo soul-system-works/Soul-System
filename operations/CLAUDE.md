@@ -149,22 +149,32 @@ stop. Do not patch. Name the shift. Convene the Council. Re-verify before procee
 
 The Soul System is a meta-layer. It composes with other skill ecosystems, methodologies, and tools rather than replacing them. The mapping below is **illustrative, not required** — skills that fit a given role or gate by their shape. If you already use different skills for these jobs, the Soul System adapts to what you have.
 
-| Soul role or gate | Skills and tools that fit by shape |
-|---|---|
-| Body / Frame gate (stating the problem at two levels) | `brainstorming`, `grill-me`, `grill-with-docs` |
-| AL gate (naming the abstraction layer) | `writing-plans` |
-| Architect (structural design, ADR authorship) | `writing-plans`, `executing-plans` |
-| Craftsman (production work) | `tdd`, `karpathy-guidelines` |
-| Artificer (tool building) | `skill-creator`, `write-a-skill` |
-| Steward (retire what no longer serves) | `simplify` |
-| Skeptic (challenge positions) | `grill-me`, `grill-with-docs` |
-| Judge in failure (present-moment debugging) | `diagnose`, `systematic-debugging` |
+The **Surface when…** column is the trigger that makes a row fire instead of sit inert — keep each a concrete *use when X*.
+
+| Soul role or gate | Surface when… | Skills that fit by shape |
+|---|---|---|
+| Body / Frame gate | starting a new or fuzzy feature/design, or before locking scope — to state the problem at two levels | `brainstorming`, `grill-me`, `grill-with-docs` |
+| AL gate | about to implement and the abstraction layer isn't yet named and written down | `writing-plans` |
+| Architect | designing structure, boundaries, or contracts, or authoring an ADR — before the Craftsman builds | `writing-plans`, `executing-plans` |
+| Craftsman | writing or changing production code (especially test-first) | `tdd`, `karpathy-guidelines` |
+| Artificer | building or maintaining an instrument (skill, hook, command) | `skill-creator`, `write-a-skill` |
+| Steward | code or process has grown and you're deciding what to retire | `simplify` |
+| Skeptic | a plan or position needs adversarial stress-testing before commit | `grill-me`, `grill-with-docs` |
+| Judge in failure | a bug, test failure, or performance regression appears | `diagnose`, `systematic-debugging` |
+
+**Consult on relevance, never always-on:** piling candidates into context degrades the selection it is meant to help past ~10 always-present entries (RAG-MCP; Anthropic Tool Search) — the same reason `the-soul.md` stays out of every session (SOUL-033).
 
 **Roles in the Soul System are perspectives, not distinct agents.** A project using a multi-agent framework (BMAD, CrewAI, AutoGen) can adopt the Soul System without restructuring its agents: a BMAD Analyst agent can embody the Witness role, a BMAD Architect agent can embody the Soul's Architect, and so on. The Soul layers above how you already work.
 
 Skills referenced here are common in the Claude Code ecosystem (https://docs.claude.com/en/docs/claude-code/skills). Equivalents exist in Cursor (rules), Aider (conventions), Continue.dev, and others. The `AGENTS.md` standard at the repo root makes Soul-following projects legible to all of them.
 
-*Section dated 2026-05-19. Skills evolve; this mapping is a snapshot.*
+---
+**Source:** Field convergence on rule/skill-activation taxonomy — Cursor rule types (Always / Auto-Attached / Agent-Requested / Manual), Continue.dev & Windsurf rules, Claude Agent Skills progressive disclosure.
+**Reinforced by:** Tool-retrieval evidence that always-on candidate sets degrade selection — RAG-MCP (arXiv 2505.03275); Anthropic "Advanced tool use" / Tool Search.
+**Shapes:** the Surface-when trigger column and the "never always-on" note.
+**Adopted:** 2026-05-21
+**Status:** active
+**Open question:** at what row count does our own selection start to degrade — measure under #21 (token economics).
 
 ---
 

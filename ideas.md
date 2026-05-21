@@ -240,3 +240,28 @@ NOTES:     Substrate already exists in three places: (a) the harness task list
            (over-suggesting mid-question); this is under-suggesting at breakpoints —
            both are calibration of helpfulness.
 ```
+
+```
+ID:        SOUL-I011
+WHEN:      2026-05-21
+IDEA:      A reusable "Soul experiment harness": run candidate doctrine / wiring /
+           process changes as safe sandboxed trials (subagents in worktrees) that emit
+           machine-readable findings via the event standard, so design choices get
+           decided by gathered evidence instead of armchair reasoning.
+STATUS:    Raw
+WHY:       Surfaced reframing #17: the Body's instinct was to DISCOVER the right answer
+           empirically, not pick it. Research-first answered #17's architecture fork
+           from the field — but the field can't answer system-specific questions (our
+           token cost, our table's degradation point, whether a given gate change
+           helps). A standing apparatus for safe self-experiment serves those, and
+           directly feeds F014 / Universe Collapse (an accelerator, not just brakes).
+PRIORITY:  medium
+DEVELOP:   Researcher + Emissary (run trials against reality) / Artificer (the harness) /
+           Archivist (analyse the findings)
+NOTES:     Substrate already exists: subagents + worktree isolation (sandbox); the event
+           standard (SOUL-F018) as the findings channel; witness/findings as the record.
+           Best first client: #21 token-economics measurement (SOUL-I005) — build the
+           harness THERE on a concrete need, not abstractly. Don't build the generic
+           harness before a second concrete use earns it (default simplicity).
+           Related: [[SOUL-I005]], F014.
+```
