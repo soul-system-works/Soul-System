@@ -887,3 +887,52 @@ CONSEQUENCE:  The mapping is now active-by-description (the lever we control) wi
               captured as SOUL-I011. #17 done (light).
 STATUS:       Resolved
 ```
+
+```
+ID:           SOUL-046
+WHEN:         2026-05-21 / Cross-project finding harvest (4 dogfood projects)
+WHERE:        REF-04, REF-09, REF-02 (REF-02), REF-03 (UE);
+              new findings/open/SOUL-F021, SOUL-F022
+WHAT:         Body asked to harvest ungathered findings from four dogfood projects
+              before moving on. Two paths were stale, corrected by the Body to
+              /mnt/d/Projects/REF-02 and /mnt/d/Projects/REF-03.
+              Sweep:
+              - REF-02: 2 Soul findings its own M8 plan flagged for upstream
+                (recording marked "optional", so stranded) → harvested. F021: the
+                Emissary must fire on ABSENCE/IMPOSSIBILITY claims ("X doesn't exist"
+                was wrong 3x; probe, don't assert). Plus a validation instance (verify
+                classification before trusting an aggregate — the inflated FY24 0.989
+                caught pre-report; folded here, not its own finding). Bonus: a THIRD
+                independent real use of /soul-handoff (its .soul/handoff.md) — cross-
+                project confirmation of the handoff/resume loop (SOUL-042/043).
+              - REF-09: closing verdict mostly already harvested upstream
+                (F008/F012/F013/F014 + the F018/F019/F020 arc). Genuinely ungathered →
+                F022 (completion-gate THEATER drift, also self-observed this session);
+                and the "meta-engine" verdict — the system's clearest engine-like
+                behavior appeared ACROSS the repo boundary (this project's friction
+                drove the parent's doctrine): a meta-engine for turning honest dogfood
+                friction into methodology. Refines the ratchet-not-engine thread
+                (F001/F014/F017); recorded here, not yet named in main doctrine.
+              - REF-03 (UE/thermal): imports the seed; ADOPTS the code-markers
+                vocabulary (TODO/FIXME/DEBT/HACK/Ref/NOTE) in real C++/UE — a
+                wild-the-field validation of operations/code-markers.md. Its findings
+                are domain-specific (thermal); no Soul-meta, no .soul/ events.
+              - REF-04: telemetry only (3 completion-gate events), bare seed
+                import, no written findings.
+              Cross-cutting (Archivist): the dogfood projects have INCONSISTENT
+              finding-capture setup — visual-test mandates a closing finding,
+              REF-02 captures in-plan but marks upstreaming optional, julia
+              captures nothing — which is WHY findings strand. A generalization of F020
+              (reference-adapter sync) to reference-PROJECT finding sync.
+TYPE:         Archivist (harvest + dedupe against main), Emissary (cross-repo evidence),
+              Steward (right-sized: 2 findings + 1 witness, not a finding per observation).
+CONSEQUENCE:  F021 + F022 opened. Meta-engine verdict, validation instance, 3rd
+              /soul-handoff use, REF-03 code-markers, and the inconsistent-capture gap
+              recorded here (watched, not promoted). Telemetry confirms the Stop hook
+              fires across all 4 live projects. Open process gap: no routine syncs
+              reference-project findings upstream (candidate: a periodic harvest, or
+              each project's CLAUDE.md mandating a closing finding like visual-test's;
+              relates to SOUL-I011 / a harvest instrument). The two earlier /tmp-style
+              paths are a reminder not to home harvestable records in /tmp.
+STATUS:       Resolved (harvest complete; F021/F022 carry the open questions forward)
+```
