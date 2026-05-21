@@ -205,3 +205,31 @@ NOTES:     Captured as feedback memory [[clarification-drift]] for immediate beh
            explore-before-execute feedback (both "don't over-do"), but distinct: that is
            don't rush to BUILD; this is don't drift the PLAN while answering.
 ```
+
+```
+ID:        SOUL-I010
+WHEN:      2026-05-21
+IDEA:      The AI should proactively surface next steps / milestones at natural
+           breakpoints rather than the Body having to ASK — possibly via a live task
+           tracker and/or a forward "what next" gate (the forward twin of the
+           backward-looking completion gate).
+STATUS:    Raw
+WHY:       Having to ask for next steps is a symptom of the system's known weak spot:
+           F014 / Universe Collapse — strong at verification/contraction (Witness,
+           completion gate, Council), weak at proactively driving forward ("all brakes,
+           no accelerator"). A forward-momentum instrument would address it directly.
+PRIORITY:  medium
+DEVELOP:   Prophet (trajectory / what-next) / Cartographer (roadmap, milestones) /
+           Artificer (the tracker/gate); relates to F014, F017 (Dreamer)
+NOTES:     Substrate already exists in three places: (a) the harness task list
+           (TaskCreate/TaskList) — activates when the AI maintains tasks; the #15-18 the
+           Body has seen are it, gone stale this session; (b) ideas.md (durable forward
+           inbox); (c) open findings (formal open questions). Tension: forward state
+           scattered across all three. Candidate: task list = ephemeral "active now"
+           view pointing to the durable records, PLUS a habit/gate of offering next
+           steps at breakpoints unprompted. Decide whether this earns a doctrine-level
+           forward gate (twin of the completion gate) or stays behavior + tracker
+           hygiene. Related: [[clarification-drift]] is the OPPOSITE failure
+           (over-suggesting mid-question); this is under-suggesting at breakpoints —
+           both are calibration of helpfulness.
+```
