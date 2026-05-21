@@ -18,6 +18,16 @@ WHY NOT YET AMENDMENT:  Partly the same root as F012 (a gate added as text may
 FILED BY:        Archivist
 RELATED:         [[SOUL-F001]] (the original — only half-resolved by A003),
                  [[SOUL-F012]] (activation — the completion-side analog)
+ROLE ECONOMICS:  2026-05-21 (REF-09 F003, via SOUL-047). The MECHANISM
+                 behind the contraction default: scope-CUTTING roles (Accountant,
+                 Skeptic, Steward) are cheap to invoke and feel responsible;
+                 scope-GROWING roles (Prophet, Revelator, Researcher) cost more and
+                 risk being wrong, so contraction wins by default even when the
+                 expansion roles exist ("the Accountant won every scope decision").
+                 Candidate remedy distinct from /soul-expand (a framing-moment gate):
+                 a per-decision COUNTERWEIGHT rule, where Prophet/Researcher are
+                 invoked with equal weight to the Accountant at any scope decision,
+                 else contraction wins. Role-invocation economics, not a gate.
 PRE-MORTEM:      2026-05-20. Built /soul-expand (commands/soul-expand.md): a
                  forced expansion-role asking at the frame gate (Revelator: frame
                  too small? Researcher: what exists? Prophet: where does it lead?

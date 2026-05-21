@@ -17,6 +17,8 @@ WHY NOT YET AMENDMENT:  This sharpens A003/A005 from description into a testable
                  instrument that enforces it (the pre-completion check), not as
                  standalone text. Council to decide the pairing.
 FILED BY:        Archivist
-RELATED:         [[SOUL-F012]] (activation), [[SOUL-A003]], [[SOUL-A005]]
+RELATED:         [[SOUL-F012]] (activation), [[SOUL-A003]], [[SOUL-A005]],
+                 [[SOUL-F021]] (Emissary on absence/impossibility — the negative-
+                 space twin: an asserted "X doesn't exist" is an absolute claim too)
 STATUS:          Open
 ```

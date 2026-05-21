@@ -311,3 +311,31 @@ NOTES:     Forward twin of the completion gate (which fires backward via the Sto
            durable records. Don't duplicate state — surface it. Forward twin of I012
            (describe vs decide). Related: SOUL-I010, [[proactive-next-steps]], SOUL-I012.
 ```
+
+```
+ID:        SOUL-I014
+WHEN:      2026-05-21
+IDEA:      A routine that syncs reference-project (dogfood) Soul-meta findings
+           UPSTREAM into the Soul-System repo, so observations made in adopting
+           projects don't strand. Either a doc-convention (every project's CLAUDE.md
+           mandates a closing Finding + non-optional upstreaming) or a /soul-harvest
+           command that sweeps known project paths for ungathered items.
+STATUS:    Raw
+WHY:       SOUL-046 found REF-02's 2 Soul findings stranded (its plan marked
+           upstreaming "optional"); julia captured nothing; only REF-09
+           mandated a closing Finding. Field findings are the system's richest
+           evolution fuel (the "meta-engine" verdict) — losing them loses the
+           engine's input. Same shape as F020 (reference-adapter sync) generalized
+           from a standard's adapter to a project's findings.
+PRIORITY:  medium
+DEVELOP:   Archivist (findability/sync) / Steward (what's worth upstreaming) /
+           Emissary (cross-repo evidence) / Artificer (the command, if one)
+NOTES:     Two levers: (1) CAPTURE-side, cheap/doc-only — every adopting project's
+           CLAUDE.md mandates a closing Finding + treats Soul-meta upstreaming as
+           non-optional; (2) HARVEST-side, richer — a /soul-harvest that sweeps known
+           project paths' .soul/events.jsonl + findings + handoff cursors for
+           ungathered Soul-meta items, folding into SOUL-I011's experiment-harness
+           substrate. Don't build the command before the doc-convention proves
+           insufficient (default simplicity). This session's manual sweep (SOUL-046)
+           is the v0. Related: [[SOUL-I011]], F020, SOUL-046.
+```

@@ -15,6 +15,10 @@ WHAT:            The completion gate (F012, auto-fired by the Stop hook) is tren
                  restores the very narration-without-substance failure the gate was
                  built to prevent. It has surfaced real gaps so far (not theater
                  YET); the Finding is about the trajectory, not a present collapse.
+                 TRIPWIRE (the falsifiable test, REF-09 F004 via SOUL-047):
+                 the gate IS theater the moment it stops finding gaps — while it keeps
+                 surfacing real gaps it is still working. (This very Finding was caught
+                 by the gate flagging a real "sampled, not exhausted" gap — SOUL-047.)
 WHY NOT YET AMENDMENT:  The fix is neither "remove the gate" (it works) nor "more
                  ceremony". Candidates: (a) each check must cite a CONCRETE
                  artifact/diff, not answer yes/no; (b) fire less often (substantive

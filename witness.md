@@ -936,3 +936,51 @@ CONSEQUENCE:  F021 + F022 opened. Meta-engine verdict, validation instance, 3rd
               paths are a reminder not to home harvestable records in /tmp.
 STATUS:       Resolved (harvest complete; F021/F022 carry the open questions forward)
 ```
+
+```
+ID:           SOUL-047
+WHEN:         2026-05-21 / Exhaustive re-scan closing SOUL-046's sampling gap
+WHERE:        REF-09/witness.md (full: 38 entries + F001-F004); REF-03
+              NOTES/RESEARCH (confirmed Soul-meta-empty); F014 + F022 augmented;
+              new findings/open/SOUL-F023
+WHAT:         The completion-gate self-check (F022) caught a real gap: SOUL-046 had
+              SAMPLED REF-09's 1593-line witness rather than reading it
+              fully. An exhaustive re-read (subagent) found 11 Soul-meta observations
+              the sample missed; REF-03' NOTES/RESEARCH confirmed Soul-meta-empty (pure
+              domain logs). Right-sized the 11 into 2 augments + 1 new finding + this
+              record (NOT 11 finding files — Steward against the hoard):
+              - F022 augmented with the THEATER TRIPWIRE: the gate is theater the
+                moment it stops finding gaps (a falsifiable test, not just a worry).
+              - F014 augmented with ROLE ECONOMICS: contraction roles are cheap and
+                feel responsible, expansion roles cost more and risk being wrong, so
+                contraction wins by default even when expansion roles exist; candidate
+                remedy = a per-scope-decision counterweight (Prophet/Researcher at
+                equal weight to the Accountant).
+              - F023 (new): an available, unused verifier is itself an Obligation
+                Skipped (the active twin of F013/F021).
+              Flagged as the NEXT promotion candidates (recorded, not yet findings):
+              (a) "built capability outruns battle-testing" — the tool can display
+              more than the dogfood has produced; constructed fixtures != live corpus;
+              (b) the "second-adapter test" — two independent adapters converging on
+              one wire shape proves a standard is implementable-from-the-document (the
+              general verification criterion behind the F018/F019/F020 arc).
+              Noted (strengthen existing, no new finding): proactive-convening trigger
+              (Council convenes at decision points, not on Body demand — cf. F006);
+              Chesterton's-Fence-over-applied = creativity cage / the Revelator never
+              fired in 4 sessions (cf. F014/F017); "reading a lesson is not
+              internalising it" (an Ad Hoc Methodology smell); and two EVIDENCE points
+              from live data — the dogfood out-rigored the parent (76%/89% gate/role-
+              explicit vs the parent log's 52%/63%), and the no-DONE-gate-event flag
+              reproduced in a real corpus (upgrades F001's GATE-field gap from inferred
+              to observed).
+TYPE:         Emissary (the self-check's flagged gap was real — verified by acting on
+              it), Archivist + Steward (harvest then right-size against the hoard),
+              Witness (F022's own discipline caught F022's enabling failure).
+CONSEQUENCE:  SOUL-046's "sampled, not exhausted" gap is closed. Meta-lesson and
+              direct evidence for SOUL-I014's harvest-side lever: SAMPLING a long
+              witness misses real material — a thorough upstream-sync routine must read
+              fully, not skim. The two promotion candidates and the convening/
+              Revelator/internalising notes await the Body's call.
+STATUS:       Resolved (re-scan complete; F023 + 2 augments carry it; 2 promotion
+              candidates flagged)
+```
