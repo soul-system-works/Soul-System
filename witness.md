@@ -1161,3 +1161,29 @@ CONSEQUENCE:  Step 1 produces signal: the cursor saves ~2/3 of state-re-establis
               the static-footprint data point.
 STATUS:       Resolved (Step 1 instrument live + first datum; accumulate over resumes)
 ```
+
+```
+ID:           SOUL-053
+WHEN:         2026-05-21 / Step 2 stream experiment — run + result (against the bet)
+WHERE:        /tmp/soulbench/{on,off}; pre-reg docs/specs/2026-05-21-token-economics-
+              stream-experiment.md; finding SOUL-F026
+WHAT:         Ran the pre-registered 8-task ledger stream: Soul-on (carried + re-read a
+              growing RECORDS.md each task) vs Soul-off (code only), 16 sonnet
+              subagents, total_tokens per task. Result: off 129.5k, on 140.3k — on
+              +8.4% overall, and the slope went the WRONG way (parity t1-5 at +0.5%; on
+              +20% over the compounding tasks t6-8). The bet (on cheaper later) FAILED
+              in this configuration. Cause: on re-read + appended a monotonically
+              growing record (5.6k bytes by t8) every task; that maintain-cost
+              compounded past any re-derivation it saved.
+TYPE:         Emissary (a measured result that contradicts the hopeful prior — reported
+              straight, no spin; the A010 Anchor Obligation + the null-honored spec).
+CONSEQUENCE:  → SOUL-F026. Reconciles with Step 1 (targeted cursor SAVED ~69%): the
+              savings come from TARGETED retrieval, not carried full-record. Honest
+              confounds: quality (on did more) + the run was unfair to on (full-read vs
+              the real system's cursors). NOT a refutation of the Soul System as
+              practiced (cursors + code-as-document); IS evidence that naive full-record
+              carry is net-negative on code tasks. Fairer rerun needed before doctrine.
+              The experiment itself cost ~270k subagent tokens — a measurement-cost
+              datum (don't over-measure).
+STATUS:       Resolved (Step 2 run; result recorded honestly; fairer rerun flagged)
+```
