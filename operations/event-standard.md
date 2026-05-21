@@ -19,6 +19,13 @@ Stop hook (`hooks/pre-completion-verify.py`) emits `soul.gate.completion.flagged
 to `.soul/events.jsonl`. The REF-09 hook remains a reference adapter.
 The Council governs this standard's version.
 
+**Governance (SOUL-F020).** A change to this standard is **not complete** until its
+named reference adapter (REF-09) is re-verified against it — or the owed
+re-verification is explicitly recorded. (Twice a change left the reference
+contradicting the standard, the most expensive Coherent Falsehood: the next adapter
+is told "copy the reference" and copies the lie. The named reference travels with
+the standard.)
+
 ---
 
 ## What cannot vary (the contract) vs. what adapters control

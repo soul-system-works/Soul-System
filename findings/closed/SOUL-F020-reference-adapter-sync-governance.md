@@ -32,9 +32,12 @@ WHY NOT YET AMENDMENT:  A process proposal awaiting Body/Council confirmation; m
 FILED BY:        Archivist
 RELATED:         [[SOUL-F007]], [[SOUL-F012]], [[SOUL-F015]], [[SOUL-F018]],
                  [[SOUL-F019]] (the change that re-triggers it)
-STATUS:          Open as a doctrine proposal (awaiting Body confirmation) — but its
-                 FIRST owed instance is DISCHARGED: the REF-09 adapter
-                 re-synced to the genaiparentagentid slot and the parent verified it by
-                 producing a lineage event from the adapter's own code (SOUL-040,
-                 2026-05-21). The mechanism worked on its first real run.
+STATUS:          ACCEPTED (Body, 2026-05-21) — adopted at the OPERATIONS level: encoded
+                 as a Governance note in operations/event-standard.md (a change to the
+                 standard is not complete until its named reference is re-verified, or
+                 the lag recorded). Generalization into the philosophy-level completion
+                 obligation is DEFERRED until a SECOND standard with a named reference
+                 exists (default simplicity; threshold logic per F011/F018; no seed
+                 bloat after C-lite). First owed instance already discharged (SOUL-040).
+                 Closed.
 ```

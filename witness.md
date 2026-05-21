@@ -772,3 +772,21 @@ CONSEQUENCE:  The SOUL-F018 → F019 round-trip closed cleanly across the repo b
               confirmation); its first owed instance is discharged.
 STATUS:       Resolved
 ```
+
+```
+ID:           SOUL-041
+WHEN:         2026-05-21 / Body accepted F020 (#19) — operations-scoped
+WHERE:        operations/event-standard.md (Governance note); findings/closed/SOUL-F020
+WHAT:         Body confirmed #19: adopt F020. Right-sized — encoded as a one-line
+              Governance note in event-standard.md (a change to the standard is not
+              complete until its named reference adapter is re-verified, or the lag
+              recorded), NOT a philosophy/seed change. Generalization to the
+              philosophy-level completion obligation deferred until a SECOND standard
+              with a named reference exists (default simplicity; threshold logic per
+              F011/F018; avoid seed bloat after C-lite).
+TYPE:         Steward (right-sized adoption — resisted philosophy bloat), Archivist.
+CONSEQUENCE:  F020 accepted + closed; first owed instance already discharged (SOUL-040).
+              The reference-sync obligation now bites where it applies (the only standard
+              that names a reference). #19 done; moving to #20 (handoff).
+STATUS:       Resolved
+```
