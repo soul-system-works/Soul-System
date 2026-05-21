@@ -719,3 +719,33 @@ CONSEQUENCE:  Closes Tier-1 "quiet, structured instruments". The standard is no 
               own follow-up. First real repo emit lands at this session's next Stop.
 STATUS:       Resolved
 ```
+
+```
+ID:           SOUL-039
+WHEN:         2026-05-21 / Checked in on REF-09's standard adoption; harvested feedback
+WHERE:        /tmp/REF-09 (ADR-0006, conformance tests, feedback proposal);
+              operations/event-standard.md
+WHAT:         REF-09 adopted the event standard faithfully (ADR-0006: type →
+              soul.*, source → project URI, id → UUIDv5, subject → artifact id,
+              correlation → genai*, dropped profile + parentagentid, PROV reference
+              projection; conformance tests 5/5; emitted event valid CloudEvents).
+              Cross-project bonus: the parent's own completion hook fired in their
+              session and wrote a conformant soul.gate.completion.flagged to their
+              .soul/events.jsonl. They filed a parent-addressed feedback proposal
+              (3 items + an observability-instrument offer). Harvested: F019 (lineage
+              slot) + F020 (reference-adapter sync); item 3 folded into F020/F007.
+DECISION:     F019 ADOPTED — added optional genaiparentagentid + PROV actedOnBehalfOf to
+              the standard (reserve the name now, emit on first real multi-agent use).
+TYPE:         Emissary (verified the adoption against reality — ran their tests),
+              Archaeologist + Archivist (harvested the proposal into the parent record).
+              Closes #18's parent-addressed-proposal watch for this round.
+CONSEQUENCE:  The standard now expresses multi-agent lineage. PER F020 (dogfooded
+              immediately): this standard change re-triggers the reference-adapter-sync
+              gap — the REF-09 adapter must add genaiparentagentid support;
+              that re-verification is OWED and recorded (F020), not silently skipped.
+              Meta-note: SOUL-I009 + feedback memory clarification-drift captured from
+              this exchange (the AI shifted its recommendation while answering a
+              clarifying question).
+STATUS:       Resolved — adoption verified + harvested; owed reference-adapter lineage
+                         re-verification tracked in F020 (Open).
+```

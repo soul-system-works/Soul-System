@@ -87,6 +87,12 @@ alphanumeric, so the OTel keys are carried under CE-legal names:
 |---|---|---|
 | `genaiagentid` | which agent/role instance acted | `gen_ai.agent.id` |
 | `genaisessionid` | the session / conversation | `gen_ai.conversation.id` |
+| `genaiparentagentid` | the agent that spawned this one — multi-agent lineage (**optional**) | — (no OTel key; mirrors `genaiagentid`; cf. OpenInference `graph.node.parent_id`) |
+
+`genaiparentagentid` is **reserved and optional** (SOUL-F019): single-agent runs omit
+it; a multi-agent run emits it so a consumer can place a subagent under its spawning
+agent (the lane / fan-out view). Naming it once stops adapters inventing divergent
+parent fields; emitting it is required only when a parent actually exists.
 
 `type` is canonical as `soul.*` across all adopters (recognizable across tools).
 Adopters namespace `source`, not `type`.
@@ -112,6 +118,12 @@ marker  ──wasDerivedFrom──►  witness  ──wasDerivedFrom──►  f
 
 The doctrine's existing chain already *is* provenance — the binding fits because
 the structure was already there.
+
+Multi-agent **delegation** is the PROV-native relation `actedOnBehalfOf` (a subagent
+`prov:Agent` acted on behalf of its parent `prov:Agent`) — the durable-graph twin of
+the `genaiparentagentid` envelope attribute (SOUL-F019). Envelope attribute for the
+live consumer; PROV relation for the durable record — the same envelope/graph split
+as `type` and the PROV Activity.
 
 ---
 

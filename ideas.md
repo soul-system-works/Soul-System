@@ -184,3 +184,24 @@ NOTES:     Candidates: quiet-by-default with a verbose opt-in; collapse routine 
            record stays rich. Measure noise vs token cost. Do NOT trade away the
            activation guarantee (SOUL-F012) for quiet — quiet AND effective.
 ```
+
+```
+ID:        SOUL-I009
+WHEN:      2026-05-21
+IDEA:      Name and guard against "Clarification Drift" — when asked a clarifying
+           question, the AI subtly re-frames/shifts the next step or options instead of
+           just answering, leaving the Body unsure whether the plan changed.
+STATUS:    Raw
+WHY:       A recurring over-helpfulness pattern, distinct from rushing-to-build: the
+           "help" subtracts clarity. The Body wants helpful-but-not-overly-helpful —
+           answer the question, then optionally restate EXISTING options, not new ones.
+PRIORITY:  medium
+DEVELOP:   Guardian (obligation/role integrity) / Steward / Artificer (any guard)
+NOTES:     Captured as feedback memory [[clarification-drift]] for immediate behavior.
+           Live instance: the lineage adopt-vs-defer clarification, where the
+           recommendation silently shifted A+B -> "reserve now". Decide later whether it
+           earns a named failure mode in the-soul.md (like Universe Collapse) via
+           witness->finding->amendment, or stays operational guidance. Related to the
+           explore-before-execute feedback (both "don't over-do"), but distinct: that is
+           don't rush to BUILD; this is don't drift the PLAN while answering.
+```
