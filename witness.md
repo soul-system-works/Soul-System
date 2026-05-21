@@ -665,3 +665,32 @@ CONSEQUENCE:  C-lite confirmed on its two hard claims: the mechanical win (warni
               fully landed.
 STATUS:       Resolved
 ```
+
+```
+ID:           SOUL-037
+WHEN:         2026-05-21 / Tier-1 Step 1 — Stop hook precision + verbosity
+WHERE:        hooks/pre-completion-verify.py
+WHAT:         Fixed the false-positive root cause and cut the noise. ROOT CAUSE of the
+              false fires (SOUL-026/027 + this session's pure-recommendation turn):
+              _scan inspected the last 80 RECORDS, spanning multiple turns, so an edit
+              from an earlier turn + a completion word in a later analysis turn
+              cross-triggered the gate. FIX: turn-scope the scan to records after the
+              last genuine user message (tool_result user records do NOT count as a
+              turn boundary). Also made the checklist terse (one line/check) and it now
+              asks for a terse reply (SOUL-I008). Verified against crafted transcripts:
+              genuine same-turn ship+claim fires (exit 2); the false-positive pattern
+              no longer fires (exit 0); a tool_result mid-turn does not split the turn
+              (still fires). Fail-open / loop-guard / cooldown / self-scope unchanged.
+TYPE:         Artificer (instrument precision), Craftsman (tested against reality).
+CONSEQUENCE:  Addresses #15 fire-rate and SOUL-I008 noise — Step 1 of the Tier-1
+              "quiet, structured instruments". The gate now fires only on genuine
+              same-turn ship+claim, terser when it does. Hook code is re-read from disk
+              each invocation, so this takes effect on the NEXT Stop (no session restart
+              needed — unlike the seed, SOUL-035). NOTE: #15's "blast radius" (a global
+              settings.json hook fires in every Soul project) is by-design, not this
+              bug; mitigating it would mean per-project install — a separate choice.
+              REMAINING (Tier-1 Step 2): emit the event profile (soul.gate.*) to a sink
+              so the rich record lives in structured events, not terminal prose
+              (dogfoods the standard / SOUL-032). SOUL-I008 → Maturing.
+STATUS:       Resolved
+```

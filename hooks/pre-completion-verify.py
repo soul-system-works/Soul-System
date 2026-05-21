@@ -9,8 +9,9 @@ verification checklist; the session must address gaps before ending.
 
 Scoping (so it is not noise):
 - Self-scopes to Soul-governed projects only (witness.md or a soul CLAUDE.md).
-- Fires only when this turn both SHIPPED an artifact (a Write/Edit tool use)
-  and CLAIMED completion (completion language in assistant text).
+- Fires only when the CURRENT turn (records after the last genuine user message)
+  both SHIPPED an artifact (a Write/Edit tool use) and CLAIMED completion
+  (completion language in assistant text). Turn-scoped, not a flat tail — see _scan.
 - Loop-safe: honors `stop_hook_active` so it blocks at most once per stop.
 - Cooldown: fires at most once per COOLDOWN_SECONDS per project, so a high-commit
   iterative session (where ship+claim matches every turn) is not flooded — the
@@ -45,7 +46,7 @@ _CLAIM_RE = re.compile(
     r"tests passed|definition of done|shipped|✓)",
     re.IGNORECASE,
 )
-_SCAN_TAIL = 80  # records from the end to inspect
+_SCAN_TAIL = 200  # records from the end to read; scan is then sliced to the CURRENT turn
 
 
 def main() -> None:
@@ -121,7 +122,14 @@ def _is_soul_project(cwd: str) -> bool:
 
 
 def _scan(transcript_path: str):
-    """Return (shipped_artifact, claimed_completion) for the recent transcript tail."""
+    """Return (shipped_artifact, claimed_completion) for the CURRENT turn only.
+
+    The scan is sliced to records after the last genuine user turn — not a flat
+    multi-record tail. Without this, an edit from an earlier turn plus a completion
+    word in a later analysis turn cross-trigger the gate (false-positive evidence:
+    SOUL-027, and a pure-recommendation turn in this session). Turn-scoping is the
+    precision fix for SOUL-F012's blast radius.
+    """
     try:
         with open(transcript_path, "r", encoding="utf-8", errors="ignore") as fh:
             lines = fh.readlines()
@@ -138,9 +146,19 @@ def _scan(transcript_path: str):
         except Exception:
             continue
 
+    # Slice to the current turn: everything after the last genuine user message.
+    # Tool results also arrive as role "user", so a genuine turn is a user message
+    # carrying actual text, not only tool_result blocks.
+    start = 0
+    for i in range(len(records) - 1, -1, -1):
+        if _is_real_user_turn(records[i]):
+            start = i + 1
+            break
+    turn = records[start:]
+
     shipped = False
     claim_text = []
-    for rec in records:
+    for rec in turn:
         for block in _content(rec):
             if not isinstance(block, dict):
                 continue
@@ -151,6 +169,22 @@ def _scan(transcript_path: str):
 
     claimed = bool(_CLAIM_RE.search(" ".join(claim_text)))
     return (shipped, claimed)
+
+
+def _is_real_user_turn(record) -> bool:
+    """A genuine user turn — a user message with actual text, not just tool_result."""
+    msg = record.get("message", record)
+    if not isinstance(msg, dict) or msg.get("role") != "user":
+        return False
+    content = msg.get("content")
+    if isinstance(content, str):
+        return content.strip() != ""
+    if isinstance(content, list):
+        return any(
+            isinstance(b, dict) and b.get("type") == "text" and b.get("text", "").strip()
+            for b in content
+        )
+    return False
 
 
 def _content(record):
@@ -166,19 +200,18 @@ def _content(record):
 
 
 def _checklist() -> str:
+    # Terse by design (SOUL-I008): the gate must reach the agent to be actionable,
+    # but verbose prose on every fire is noise and tokens. One line per check; the
+    # agent is asked to reply tersely (flag gaps only), not restate the checks.
     return (
-        "[Soul System pre-completion gate — SOUL-F012] This turn shipped "
-        "artifacts and signaled completion in a Soul-governed project. Before "
-        "ending, run these checks and address any gap (this fires once):\n"
-        "1. Global invariant verified, not just local tests? (verification vs validation)\n"
-        "2. Any ABSOLUTE claim grounded by an EXTERNAL anchor (benchmark / "
-        "published value / standard / expert)? Internal consistency over an "
-        "absolute claim is a Coherent Falsehood.\n"
-        "3. Outward reach done (field / standards / real user), not Universe Collapse?\n"
-        "4. Visual / non-automatable artifact CAPTURED and INSPECTED, not deferred "
-        "to 'the human will look'?\n"
-        "5. Unfinished business marked (TODO/FIXME/DEBT/HACK); standing limits in docstrings?\n"
-        "Address gaps, then end. See commands/soul-verify.md."
+        "[Soul gate · SOUL-F012] Shipped + claimed complete this turn — verify, then "
+        "end (fires once). Reply terse: one line/check, flag only gaps.\n"
+        "1. Global invariant, not just local tests?\n"
+        "2. Absolute claims have an EXTERNAL anchor? (else Coherent Falsehood)\n"
+        "3. Outward reach done (field/standard/user)? (else Universe Collapse)\n"
+        "4. Visual artifact captured & inspected, not deferred?\n"
+        "5. Unfinished business marked (TODO/FIXME/DEBT/HACK)?\n"
+        "Full form: commands/soul-verify.md."
     )
 
 
