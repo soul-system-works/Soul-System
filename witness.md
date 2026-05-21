@@ -614,7 +614,7 @@ CONSEQUENCE:  Kills the session-start performance warning; lightens every subage
               REMAINING: clean-room confirmation — a fresh session in a project that
               imports the lensed seed (no ambient philosophy) should still hit the gates
               AND show role-breadth. Body has a REF-06 project for this.
-STATUS:       Open
+STATUS:       Resolved — clean-room confirmed in REF-04 (see SOUL-036).
 ```
 
 ```
@@ -640,6 +640,28 @@ CONSEQUENCE:  (1) C-lite's benefit and the clean room only materialize in a FRES
               the ambient philosophy, so this does not isolate the lenses' effect.
               Clean confirmation still owed: a fresh session in a consumer project
               that @-imports the lensed seed (the REF-06).
-STATUS:       Open — clean-room test handed off to a fresh session in the
-              REF-06 project.
+STATUS:       Resolved — clean-room confirmed in REF-04 (see SOUL-036).
+```
+
+```
+ID:           SOUL-036
+WHEN:         2026-05-21 / Clean-room confirmation of C-lite
+WHERE:        /home/fig/REF-04 — a real consumer, fresh top-level session
+WHAT:         First genuinely clean test of C-lite. Wiring verified: REF-04/
+              CLAUDE.md is a single @-import of the lensed seed (operations/CLAUDE.md),
+              which no longer imports the-soul.md — the chain carries NO full
+              philosophy. In a fresh session there the Body confirmed: (1) the
+              session-start performance warning is GONE; (2) the point-blank "what
+              methodology are you under?" returned the lensed seed with no full
+              the-soul.md in context; (3) behavior "seems to work" on informal use.
+TYPE:         Emissary — C-lite verified against reality in a clean room, resolving
+              the confound that defeated every subagent test (SOUL-033 / SOUL-035).
+CONSEQUENCE:  C-lite confirmed on its two hard claims: the mechanical win (warning
+              gone, ~845 → ~196 lines) and the clean context (no ambient philosophy).
+              Role-breadth on a real task is confirmed informally, not yet scored —
+              the lenses are present by construction and prior (contaminated) runs hit
+              12/12, so confidence is good; a rigorous scored task-run remains optional
+              if depth is ever doubted. Resolves SOUL-034 and SOUL-035; SOUL-I006 has
+              fully landed.
+STATUS:       Resolved
 ```
