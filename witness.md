@@ -828,3 +828,23 @@ CONSEQUENCE:  Partially discharges SOUL-042's flagged limit: writing side verifi
               still pending. /soul-handoff works as designed.
 STATUS:       Resolved
 ```
+
+```
+ID:           SOUL-044
+WHEN:         2026-05-21 / Built /soul-resume — the handoff's twin
+WHERE:        commands/soul-resume.md; docs/specs/2026-05-21-soul-handoff-design.md
+WHAT:         Added /soul-resume, the symmetric twin of /soul-handoff: reads the cursor
+              (.soul/handoff.md), loads the durable records it points to, restates where
+              we are + next step, and continues — pausing to confirm if the next step is a
+              non-trivial build (explore-before-execute) and never silently changing the
+              recorded plan (clarification-drift). Falls back to witness tail + ideas +
+              findings + tasks if no cursor exists. Completes the handoff pair (the resume
+              side SOUL-042/043 flagged as pending).
+TYPE:         Artificer (the command), Architect (the resume protocol). The command encodes
+              the calibration memories (explore-first; no plan-drift).
+CONSEQUENCE:  /soul-handoff (write cursor) + /soul-resume (read cursor + continue) are now
+              symmetric; installed to ~/.claude/commands/. The resume side is still only
+              verified by inspection — the real test is a fresh session running /soul-resume
+              from this session's cursor.
+STATUS:       Resolved
+```

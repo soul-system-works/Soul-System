@@ -59,12 +59,15 @@ Steps the agent runs:
 2. **WRITE `.soul/handoff.md`** with the sections above — references, not duplicates.
 3. **Defer the prose recap to `/compact`** — do not reproduce the transcript.
 
-## Resuming (v1: manual)
+## Resuming (via `/soul-resume`)
 
-Next session: read `.soul/handoff.md`, then the pointers it names. **Auto-resume wiring**
-(a seed note "if `.soul/handoff.md` exists, read it first") is **deferred** — it would
-touch the always-loaded seed (bloat, just after C-lite); add only once the writing side
-proves useful. YAGNI.
+Next session: run **`/soul-resume`** — it reads `.soul/handoff.md`, loads the pointers it
+names (witness tail, findings, ideas, tasks, specs), restates where we are + the next
+step, and continues (pausing to confirm if the next step is a non-trivial build, and never
+silently changing the recorded plan). The manual equivalent is "read `.soul/handoff.md`
+and continue." **Auto-resume wiring** (a seed note "if `.soul/handoff.md` exists, read it
+first") remains **deferred** — it would touch the always-loaded seed (bloat, post-C-lite);
+add only if running `/soul-resume` by hand proves annoying. YAGNI.
 
 ## Out of scope (v1)
 
