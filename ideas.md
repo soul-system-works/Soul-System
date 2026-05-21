@@ -170,7 +170,7 @@ WHEN:      2026-05-21
 IDEA:      Reduce terminal-output noise from Soul instruments (gate messages, Stop
            hook output, role announcements) so the actual project work stays legible
            — without compromising the behavior the instruments provide.
-STATUS:    Maturing — Step 1 done (hook precision + terse output, SOUL-037); Step 2 (emit events) pending
+STATUS:    Graduated [to SOUL-037/038 — Tier-1: hook precision + terse output + event emission]
 WHY:       Gate info + hook output currently crowd out the work-in-progress; signal
            is lost in ceremony and the noise costs tokens. The "Naming Roles in the
            Moment" doctrine already warns against ceremony — this is its operational/

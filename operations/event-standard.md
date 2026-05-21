@@ -14,7 +14,9 @@ an envelope, a provenance model, or a telemetry layer — it claims the empty
 > One methodology event ↔ zero-or-many LLM calls. They join on shared identity
 > keys; neither owns the other.
 
-**Status:** v1. Reference adapter: the Claude Code Stop hook in REF-09.
+**Status:** v1, with a first live emitter — the Soul System's own pre-completion
+Stop hook (`hooks/pre-completion-verify.py`) emits `soul.gate.completion.flagged`
+to `.soul/events.jsonl`. The REF-09 hook remains a reference adapter.
 The Council governs this standard's version.
 
 ---
@@ -43,7 +45,8 @@ Soul events are the doctrine's existing semantic moments, named `soul.<category>
 | `soul.gate.frame.evaluated` | the two-level problem frame is stated/checked | — |
 | `soul.gate.abstraction_layer.named` | the AL is recorded before implementation | ADR / spec id |
 | `soul.gate.fence.examined` | existing state is explained before change | the fence |
-| `soul.gate.completion.verified` | the Universe is consulted before "complete" | the work id |
+| `soul.gate.completion.flagged` | the completion gate fires — completion claimed, verification demanded (the Stop hook's moment) | the work id |
+| `soul.gate.completion.verified` | verification actually passed — the Universe was consulted before "complete" | the work id |
 | `soul.witness.recorded` | a Witness entry is filed | `SOUL-029` |
 | `soul.council.convened` | the Council meets | — |
 | `soul.finding.filed` | a Finding is filed | `SOUL-F018` |

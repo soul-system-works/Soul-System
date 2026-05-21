@@ -31,6 +31,8 @@ import re
 import sys
 import tempfile
 import time
+import uuid
+from datetime import datetime, timezone
 
 COOLDOWN_SECONDS = 900  # 15 min — fire at most once per window per project
 
@@ -82,6 +84,9 @@ def main() -> None:
         sys.exit(0)
     _mark_fire(cooldown)
 
+    _emit_event(cwd, data)  # reference emitter for the Soul event standard
+                            # (SOUL-F018); fail-safe — never affects the exit path.
+
     print(_checklist(), file=sys.stderr)
     sys.exit(2)  # block the stop; stderr is fed back to the session
 
@@ -104,6 +109,42 @@ def _mark_fire(path: str) -> None:
             fh.write(str(time.time()))
     except Exception:
         pass
+
+
+def _emit_event(cwd: str, data: dict) -> None:
+    """Emit one Soul event-standard record for this gate firing (reference adapter).
+
+    Writes a CloudEvents v1.0 line (the soul.gate.completion.flagged profile,
+    SOUL-F018) to the project event sink (.soul/events.jsonl, or $SOUL_EVENT_LOG).
+    Fully fail-safe: any error is swallowed so emission can never change whether the
+    gate blocks. The hook FLAGS completion for verification — it cannot observe
+    whether verification then happened — so the type is .flagged, not .verified.
+    """
+    try:
+        sink = os.environ.get("SOUL_EVENT_LOG") or os.path.join(cwd, ".soul", "events.jsonl")
+        event = {
+            "specversion": "1.0",
+            "id": str(uuid.uuid4()),
+            "source": f"urn:soul:project:{os.path.basename(os.path.abspath(cwd)) or 'unknown'}",
+            "type": "soul.gate.completion.flagged",
+            "time": datetime.now(timezone.utc).isoformat(),
+            "datacontenttype": "application/json",
+            "data": {
+                "gate": "completion",
+                "finding": "SOUL-F012",
+                "shipped": True,
+                "claimed": True,
+                "outcome": "checklist_injected",
+            },
+        }
+        session_id = data.get("session_id")
+        if session_id:
+            event["genaisessionid"] = session_id
+        os.makedirs(os.path.dirname(sink), exist_ok=True)
+        with open(sink, "a", encoding="utf-8") as fh:
+            fh.write(json.dumps(event) + "\n")
+    except Exception:
+        pass  # fail-safe: emission never affects the gate
 
 
 def _is_soul_project(cwd: str) -> bool:

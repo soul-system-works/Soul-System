@@ -694,3 +694,28 @@ CONSEQUENCE:  Addresses #15 fire-rate and SOUL-I008 noise — Step 1 of the Tier
               (dogfoods the standard / SOUL-032). SOUL-I008 → Maturing.
 STATUS:       Resolved
 ```
+
+```
+ID:           SOUL-038
+WHEN:         2026-05-21 / Tier-1 Step 2 — Stop hook emits the event standard
+WHERE:        hooks/pre-completion-verify.py, operations/event-standard.md, .gitignore
+WHAT:         Made the parent's own completion-gate hook the event standard's FIRST
+              live emitter. On a genuine fire it writes a CloudEvents v1.0 line
+              (soul.gate.completion.flagged) to .soul/events.jsonl (or $SOUL_EVENT_LOG),
+              fully fail-safe (emission errors never change the gate's exit). Dogfooding
+              revealed a vocabulary gap: the hook can only observe "completion claimed /
+              verification demanded," NOT "verification passed" — so added
+              soul.gate.completion.flagged to the standard, distinct from .verified.
+              Verified against reality: fires → emits a valid CloudEvents record (all
+              required fields + identity key); an unwritable sink still exits 2.
+TYPE:         Artificer (the emitter), Emissary (validated the standard against a real
+              emitter — it had zero before), Steward (.flagged vs .verified honesty).
+CONSEQUENCE:  Closes Tier-1 "quiet, structured instruments". The standard is no longer
+              published-but-unproven — it has a working emitter, and the rich completion
+              record now lives in structured events rather than only terminal prose. The
+              standard improved THROUGH USE (the .flagged refinement). SOUL-I008
+              graduated; #15 fully addressed (fire-rate precise; blast-radius is
+              by-design). The REF-09 reference adapter (SOUL-032) remains its
+              own follow-up. First real repo emit lands at this session's next Stop.
+STATUS:       Resolved
+```
