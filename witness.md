@@ -616,3 +616,30 @@ CONSEQUENCE:  Kills the session-start performance warning; lightens every subage
               AND show role-breadth. Body has a REF-06 project for this.
 STATUS:       Open
 ```
+
+```
+ID:           SOUL-035
+WHEN:         2026-05-21 / Clean-room attempt revealed the stale-context mechanism
+WHERE:        A fresh subagent launched from THIS session, post-C-lite commit
+WHAT:         Tried to confirm C-lite cleanly by launching a subagent — the seed no
+              longer imports the philosophy, so a subagent "should" now be clean. It
+              was NOT: its self-report showed the full the-soul.md STILL in context.
+              Cause: the CLAUDE.md system-reminder is snapshotted at the PARENT
+              session's start (when the @-import still existed) and inherited by every
+              subagent; it does not refresh on a file change. The subagent's Read of
+              operations/CLAUDE.md was fresh (lensed), but the ambient injection was
+              stale (full philosophy). This is the same mechanism behind ALL prior
+              contamination (SOUL-033).
+TYPE:         Emissary — reality overturned the assumption that C-lite would make
+              subagents clean immediately. Universe pushback.
+CONSEQUENCE:  (1) C-lite's benefit and the clean room only materialize in a FRESH
+              top-level session — not mid-session, not in subagents of a session that
+              started pre-change. (2) A clean-room confirmation CANNOT be done via
+              subagents from this session at all. (3) Still-contaminated bonus: the
+              lensed-seed agent scored 12/12 with full role-breadth, but it also had
+              the ambient philosophy, so this does not isolate the lenses' effect.
+              Clean confirmation still owed: a fresh session in a consumer project
+              that @-imports the lensed seed (the REF-06).
+STATUS:       Open — clean-room test handed off to a fresh session in the
+              REF-06 project.
+```
