@@ -265,3 +265,49 @@ NOTES:     Substrate already exists: subagents + worktree isolation (sandbox); t
            harness before a second concrete use earns it (default simplicity).
            Related: [[SOUL-I005]], F014.
 ```
+
+```
+ID:        SOUL-I012
+WHEN:      2026-05-21
+IDEA:      A /soul-explain command: on demand, DESCRIBE what is going on / what was
+           just shared — a read-only explanatory lens that explains without deciding,
+           re-planning, or emitting new suggestions.
+STATUS:    Raw
+WHY:       Makes an implicit behavior explicitly invokable. Two pulls: (a) system
+           verbosity (SOUL-I008) — sometimes the Body wants a clean description without
+           gate ceremony or role announcements; (b) clarification-drift — the failure
+           where, asked to describe, the AI drifts into changing the plan/options. An
+           explicit "describe, don't decide" mode guarantees the read-only stance the
+           [[clarification-drift]] memory asks for. Pattern: smart-by-default PLUS an
+           explicit skill for the explicit scenario.
+PRIORITY:  medium
+DEVELOP:   Seer / Revelator (explain what the record means, free of present bias) /
+           Artificer (the command) / Advocate (the Body just wanted a description)
+NOTES:     Sibling of /soul-idea (cheap, on-demand). Read-only by contract: no edits,
+           no new suggestions, no plan changes — at most restate EXISTING options if
+           asked. Adjacent but different axis: caveman (terse) vs explain (fuller).
+           Related: [[clarification-drift]], SOUL-I008, SOUL-I013 (its forward twin).
+```
+
+```
+ID:        SOUL-I013
+WHEN:      2026-05-21
+IDEA:      A /soul-tasks command: ensure the task tracker is current, then quickly share
+           a TIERED list of likely next options (now / next / later, or by value/effort)
+           — the forward-momentum view on demand.
+STATUS:    Raw
+WHY:       The operational instrument for SOUL-I010 / [[proactive-next-steps]]: the Body
+           shouldn't have to ASK for next steps, and the harness task list goes stale
+           across sessions (it did this very session — the resume found it empty). A
+           command that refreshes the tracker AND emits a tiered next-options list makes
+           the forward view reliable instead of ad hoc. Same pattern as I012:
+           smart-by-default PLUS an explicit skill for the explicit moment.
+PRIORITY:  medium
+DEVELOP:   Prophet (trajectory) / Cartographer (tiers, milestones) / Artificer (the
+           command) / Archivist (point the ephemeral list at the durable records)
+NOTES:     Forward twin of the completion gate (which fires backward via the Stop hook).
+           Should reconcile the three forward stores I010 names (harness task list /
+           ideas.md / open findings): task list = ephemeral "active now" pointing at the
+           durable records. Don't duplicate state — surface it. Forward twin of I012
+           (describe vs decide). Related: SOUL-I010, [[proactive-next-steps]], SOUL-I012.
+```
