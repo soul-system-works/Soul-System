@@ -122,7 +122,7 @@ IDEA:      the-soul.md is large (~500 lines) and is @-imported into the always-l
            seed, so Claude Code shows the "large CLAUDE.md may impact performance"
            warning at every session start. Keep the philosophy present without paying
            the full-file context cost each session.
-STATUS:    Raw
+STATUS:    Graduated [to SOUL-034 — C-lite: dropped the @-import, added role lenses]
 WHY:       The seed (operations/CLAUDE.md) was designed to BE the compressed,
            always-loaded layer — it literally says "this is a seed, not the full
            philosophy; when in doubt consult the-soul.md." But line 11

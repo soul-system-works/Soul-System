@@ -561,3 +561,58 @@ CONSEQUENCE:  SOUL-F018 graduated → closed. operations/event-standard.md is th
               (deferred until touched).
 STATUS:       Resolved
 ```
+
+```
+ID:           SOUL-033
+WHEN:         2026-05-21 / A/B test: seed-only vs seed+full doctrine (SOUL-I006)
+WHERE:        2 parallel sonnet subagents, identical payments-retry task, differing
+              ONLY in the doctrine each was told to follow
+WHAT:         Tested whether the 178-line seed alone sustains Soul-adherence vs the
+              seed + 666-line philosophy. Both arms hit ALL four mandatory gates
+              (frame / AL / fence / Universe) + failure-mode naming. Score: SEED
+              11/12, FULL 12/12. FULL's only edge was role-driven BREADTH (Advocate
+              caught caller-latency budget; added observability/metrics; Skeptic
+              caught thundering-herd) — not gate adherence. CONTAMINATION CONFIRMED:
+              both agents' self-reports show subagents inherit the RESOLVED @-import
+              (full the-soul.md was in the SEED agent's context despite instruction
+              to ignore it).
+TYPE:         Council Note — Emissary (experiment against reality), Cartographer
+              (mapped seed-vs-full coverage). Dogfooded the evidence→decision flow.
+CONSEQUENCE:  Two takeaways. (a) The @-import cost hits EVERY subagent too, not just
+              main sessions — strengthens the case to drop it. (b) Gate-enforcement
+              value survives heavy context reduction (good for SOUL-I005); the
+              context-sensitive value is expansion/role-breadth — the system's
+              already-weak engine (SOUL-F014). Contamination biases toward SEED≈FULL,
+              yet SEED was still thinner, so the true clean-room gap is ≥ observed.
+              Recommendation shifts from plain A → "C-lite": drop the @-import AND add
+              terse one-line role lenses to the seed, keeping gates + role perspectives
+              always-loaded while the 666-line narrative goes consult-on-demand.
+              Clean-room isolation needs a temp project WITHOUT the @-import (not
+              achievable via subagents). Body to choose.
+STATUS:       Resolved — Body chose C-lite; implemented in SOUL-034. Clean-room
+              confirmation pending on a REF-06 project.
+```
+
+```
+ID:           SOUL-034
+WHEN:         2026-05-21 / C-lite implemented (SOUL-I006 graduated)
+WHERE:        operations/CLAUDE.md — the always-loaded seed
+WHAT:         Dropped the `@../philosophy/the-soul.md` import (the seed no longer
+              auto-loads the 666-line philosophy) AND added terse one-line role lenses
+              for every Council role + the Hands. the-soul.md is now consult-on-demand.
+              Always-loaded doctrine: was ~845 lines (root + seed + philosophy), now
+              ~200 (root + lensed seed). Evidence: SOUL-033 — gates survive context
+              reduction; role-breadth was the context-sensitive value, preserved here
+              via lenses.
+TYPE:         Council Note — Architect (re-layered always-on vs on-demand), Steward
+              (retired the always-on full philosophy), Artificer (the seed as
+              instrument). Chesterton honored: the import existed to guarantee full
+              presence; replaced by lenses (perspective) + a consult pointer (reasoning).
+CONSEQUENCE:  Kills the session-start performance warning; lightens every subagent too.
+              Also fixes snapshot installs (operations/ is now self-sufficient; the old
+              import to ../philosophy/ was unresolvable when only operations/ is copied).
+              REMAINING: clean-room confirmation — a fresh session in a project that
+              imports the lensed seed (no ambient philosophy) should still hit the gates
+              AND show role-breadth. Body has a REF-06 project for this.
+STATUS:       Open
+```
