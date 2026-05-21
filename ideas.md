@@ -113,6 +113,13 @@ PRIORITY:  high
 DEVELOP:   Researcher / Emissary / Accountant — needs a measurement method
            (e.g. tokens per comparable task over time; Soul vs non-Soul runs of
            similar work; re-derivation rate). Currently unmeasured.
+DATA:      2026-05-21 — a long, artifact-heavy Soul session reached 39% (390.7k/1m).
+           Messages = 362.9k (36.3%) — the bulk. The Soul DOCTRINE overhead was only
+           ~17.2k memory files (1.7%), and 14.1k of THAT was the-soul.md still loaded
+           pre-C-lite (SOUL-035; a fresh session drops it, ~3k total). Reading:
+           in-session cost is the WORK (message history), not the doctrine — the Soul
+           context tax is small. Weak EARLY signal FOR the bet (doctrine != the cost),
+           but not the comparative Soul-vs-non-Soul measurement the claim still needs.
 ```
 
 ```
