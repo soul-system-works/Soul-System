@@ -339,3 +339,14 @@ NOTES:     Two levers: (1) CAPTURE-side, cheap/doc-only — every adopting proje
            insufficient (default simplicity). This session's manual sweep (SOUL-046)
            is the v0. Related: [[SOUL-I011]], F020, SOUL-046.
 ```
+
+```
+ID:        SOUL-I015
+WHEN:      2026-05-21
+IDEA:      A /soul-help escape hatch for when the user is lost — "I don't know what
+           to do / what you're saying" — and doesn't want to write a long meandering
+           note. When things are very fuzzy, it orients and gets the user going:
+           activates likely next steps/actions and presents the most-relevant
+           information succinctly and clearly.
+STATUS:    Raw
+```
