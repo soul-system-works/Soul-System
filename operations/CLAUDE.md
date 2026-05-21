@@ -133,6 +133,7 @@ IDEAS   (what might, forward)     ─┘
 **Partial Domain Coverage** — solution feels complete but hasn't asked what it missed.
 **Ad Hoc Methodology** — the human is reminding the AI of things that should be automatic.
 **Universe Collapse** — the local task is mistaken for the whole Universe; the outward field (existing work, standards, the real user, a larger frame) goes unconsulted. All brakes, no accelerator.
+**Coherent Falsehood** — a claim that passes every internal check while being false against reality (self-consistent and wrong); the claim-level twin of Universe Collapse. The discipline is the Anchor Obligation: any claim about reality — prediction, absence, magnitude, completion — needs an external anchor proportionate to its weight; internal coherence is not one.
 
 If any of these are happening — stop. Name it. Then proceed.
 

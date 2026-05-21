@@ -1046,3 +1046,37 @@ CONSEQUENCE:  A010 PROPOSED — awaits Body sign-off to APPLY to the-soul.md + t
               needing a Body call.
 STATUS:       Resolved (synthesis complete; A010 proposed, awaiting Body sign-off)
 ```
+
+```
+ID:           SOUL-049
+WHEN:         2026-05-21 / A010 applied to the Soul + a numbering correction
+WHERE:        philosophy/the-soul.md, operations/CLAUDE.md, operations/completion-gate.md,
+              SYSTEM-VERSION.md (0.3.0 -> 0.4.0); A010 -> accepted/; F013/F015/F021/F022
+              + the unused-verifier finding (now F024) -> closed/
+WHAT:         Body approved applying A010. Applied: named Coherent Falsehood + the
+              Anchor Obligation beside Universe Collapse in the-soul.md; added the
+              one-line failure mode to the seed; sharpened completion-gate.md with the
+              anchor-per-claim rule + the F022 tripwire; bumped the Soul to 0.4.0; moved
+              A010 to accepted/ and closed F013, F015, F021, F022, and F024.
+              NUMBERING CORRECTION (an Anchor-Obligation miss, caught at apply time):
+              the unused-verifier finding I filed as F023 (in 418a2b5) COLLIDED with the
+              Body's F023 (disaggregate-before-trusting-an-aggregate, committed
+              concurrently in bfdb897, between my harvest and re-scan commits). I had
+              asserted the next free number instead of checking the filesystem — exactly
+              the failure A010 names. Renumbered MINE to F024 (file + ID + the references
+              in A010 and SYSTEM-VERSION). The Body's F023 stands untouched. Earlier
+              entries (SOUL-046/047/048) that say "F023" for the unused verifier mean
+              F024 — not rewritten (annotate, don't rewrite history).
+              OPEN FOR THE BODY: F023 (disaggregate) is itself an Anchor-Obligation
+              instance — A010 RELATES it but did NOT close it (it is the Body's
+              concurrent finding). Decide whether it closes under A010 like the others.
+TYPE:         Archivist (apply + reconcile the record), Emissary (the filesystem
+              contradicted my assumed numbering), Judge (named the gate-override:
+              applied a Soul amendment, with Body sign-off).
+CONSEQUENCE:  Soul at 0.4.0. Open findings now F006, F009, F010, F011, F014, F016, F017,
+              F023 (Body's), F025 — i.e. ~9. The collision is first-day evidence FOR
+              A010: the Anchor Obligation, applied to my own numbering claim, would have
+              caught it. A010 earns its place on its first live test.
+STATUS:       Resolved (A010 applied; collision corrected; F023-disaggregate disposition
+              pending Body)
+```

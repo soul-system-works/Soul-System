@@ -27,6 +27,7 @@ RELATED:         [[SOUL-F013]] (external anchor for absolutes — the positive t
                  [[SOUL-F012]] (activation — prose won't fire on its own),
                  [[SOUL-F014]] (expansion: probing absence is generative, not only
                  corrective)
-STATUS:          Open — strong cross-project signal (3 instances, one project);
+STATUS:          Closed — folded into SOUL-A010 as an Anchor-Obligation instance
+                 (absence is a claim to probe), 2026-05-21. Was: — strong cross-project signal (3 instances, one project);
                  watch for a second independent project before amending.
 ```

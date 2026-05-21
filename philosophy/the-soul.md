@@ -439,6 +439,15 @@ Treating the local context as the whole Universe. The work in front of you is mi
 
 ---
 
+### Coherent Falsehood
+The claim-level twin of Universe Collapse. Where Universe Collapse shrinks the *task* until the outward field is never consulted, Coherent Falsehood is a single *claim* that passes every internal consistency check while being false against reality — self-consistent and wrong. It hides inside good reasoning: the prediction that balances internally, the "X doesn't exist" asserted without probing, the "we've done a lot" said without checking, the result validated only on a fixture its author built.
+
+**The tell:** confidence resting on internal coherence where an external check was available or owed — the verifier that existed but went unused, the absence asserted instead of probed, the magnitude claimed instead of measured.
+
+**The discipline — the Anchor Obligation:** any claim about external reality — a prediction, an *absence* or impossibility, a *magnitude*, a completion — requires an external anchor proportionate to its weight. Internal coherence is not an anchor. An available verifier is itself an obligation to use it; an asserted absence is a claim to be probed, not stated; a constructed fixture is a weaker anchor than a live corpus and must be weighted as one.
+
+---
+
 ## The Named Tensions
 
 Some failures come in opposing pairs. The temptation is to treat one as the antidote to the other. That is itself a failure. The true resolution of each tension lives in the philosophy, not in finding the middle of two wrong answers.

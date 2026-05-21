@@ -31,6 +31,7 @@ FILED BY:        Witness (self-observed this session) + Archivist (harvested fro
 RELATED:         [[SOUL-F012]] (the gate this watches), [[SOUL-I008]] (verbosity —
                  adjacent but different axis), [[SOUL-F009]] (discipline erodes at
                  scale — same shape)
-STATUS:          Open — two instances (one self-observed); promote to a guard if it
+STATUS:          Closed — resolved by SOUL-A010's mechanism (anchor-per-claim +
+                 the tripwire now live in completion-gate.md), 2026-05-21. Was: — two instances (one self-observed); promote to a guard if it
                  recurs, or the moment a "no gaps" answer is caught hiding a real gap.
 ```

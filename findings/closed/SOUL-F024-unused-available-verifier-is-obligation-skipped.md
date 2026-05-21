@@ -1,5 +1,5 @@
 ```
-FINDING ID:      SOUL-F023
+FINDING ID:      SOUL-F024
 DATE:            2026-05-21
 WITNESS IDS:     REF-09 F003 ("an available, unused verification tool is
                  itself an Obligation Skipped" — playwright was installed the whole
@@ -23,6 +23,7 @@ FILED BY:        Archivist (harvested from REF-09 via the exhaustive re-scan)
 RELATED:         [[SOUL-F013]] (external anchor — same family), [[SOUL-F021]] (probe
                  absence), [[SOUL-F012]] (activation), [[SOUL-F008]] (perceptual
                  verification needs eyes — the visual case of this)
-STATUS:          Open — single project (REF-09), crisp and transferable;
+STATUS:          Closed — folded into SOUL-A010 as an Anchor-Obligation instance
+                 (an available verifier IS the anchor), 2026-05-21. Was: — single project (REF-09), crisp and transferable;
                  watch for a second project, and decide gate-vs-guidance.
 ```

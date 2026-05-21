@@ -18,5 +18,5 @@ WHY NOT YET AMENDMENT:  Small, clear vocabulary improvement — fold "Coherent
                  recognizing it is itself evidence for [[SOUL-F012]].)
 FILED BY:        Archivist
 RELATED:         [[SOUL-A003]], [[SOUL-A005]], [[SOUL-F012]]
-STATUS:          Open
+STATUS:          Closed — escalated into SOUL-A010 (named in the-soul.md), 2026-05-21
 ```
