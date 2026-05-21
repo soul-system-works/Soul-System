@@ -350,3 +350,57 @@ IDEA:      A /soul-help escape hatch for when the user is lost — "I don't know
            information succinctly and clearly.
 STATUS:    Raw
 ```
+
+```
+ID:        SOUL-I016
+WHEN:      2026-05-21
+IDEA:      A freshly soul-init'd project dumps a wall of machinery on the user's first
+           interaction — the Stop hook (pre-completion-verify.py) fires the SOUL-F012
+           gate, then the assistant emits a full 5-check soul-gate verification block.
+           Heavy/noisy onboarding for an empty project where the user only ran
+           /soul-init. Soften or suppress the verification gate for trivial mechanical
+           commands like /soul-init (or on a project's first turn) for a friendlier
+           first-run experience. Observed dogfooding on /home/fig/blog.
+STATUS:    Raw
+```
+
+```
+ID:        SOUL-I017
+WHEN:      2026-05-21
+IDEA:      The Soul System should help AUTOMATE identifying + creating PROJECT-SPECIFIC
+           skills (outside the Soul System) that capture hard-won "how to do X"
+           knowledge so it is not forgotten across sessions/projects — and let them
+           float up to global skills with refinement. Examples the Body has solved
+           repeatedly: run Unreal Engine headless from WSL (build on Windows), HTTP
+           access from Python to UE, run Dymola on Windows + Linux from WSL, learning to
+           run tools effectively. Over time, grab e.g. a "dymola skill" that accelerates
+           the work and builds a coherent codebase. May lead toward tool-specific
+           skillsets / MCP.
+STATUS:    Raw
+NOTES:     Body: too often a new session/project forgets how to do these things; an
+           organically-grown skillset would be a boon. Some tools adopt AI directly (the
+           skill becomes lean over time); others (e.g. Dymola) may never get AI
+           integration, so the skill stays load-bearing. "I'm sure this exists / has
+           been looked at extensively" — a Researcher pass on prior art (skill
+           auto-generation, MCP, tool-knowledge capture) before designing. Distinct from
+           the Soul's own /soul-* skills: these are DOMAIN/TOOL skills the Soul helps grow.
+```
+
+```
+ID:        SOUL-I018
+WHEN:      2026-05-21
+IDEA:      Improve the UX of what the Body actually has to read and do. Two observations:
+           (1) when the Body complained about word vomit, the AI switched to a cleaner
+           text-OPTIONS format ("go" / "changes: ..." style) — the Body liked it; worth
+           adopting as a default flavor. (2) The per-turn completion-gate / Verify output
+           at the END is of minimal use to the BODY (maybe useful in some scenarios, not
+           others) and BURIES the actual ask — the Body keeps scrolling above the hook to
+           find what was wanted and the context, even when it is repeated at the bottom.
+STATUS:    Raw
+NOTES:     Candidates: surface the actual ask / next-step in a consistent, easy-to-find
+           place (top, or clearly delimited), not buried by the gate reply; make the gate
+           output AI-facing / collapsible or terser for the user; per-scenario verbosity.
+           Related: [[SOUL-I008]] (instrument verbosity), [[SOUL-I016]] (suppress gate
+           for trivial commands), F022 (gate theater). Also a behavior cue the AI can
+           heed immediately (cleaner options; surface the ask).
+```
