@@ -272,7 +272,7 @@ WHEN:      2026-05-21
 IDEA:      A /soul-explain command: on demand, DESCRIBE what is going on / what was
            just shared — a read-only explanatory lens that explains without deciding,
            re-planning, or emitting new suggestions.
-STATUS:    Raw
+STATUS:    Graduated [to /soul-explain — commands/soul-explain.md, 2026-05-21]
 WHY:       Makes an implicit behavior explicitly invokable. Two pulls: (a) system
            verbosity (SOUL-I008) — sometimes the Body wants a clean description without
            gate ceremony or role announcements; (b) clarification-drift — the failure
@@ -295,7 +295,7 @@ WHEN:      2026-05-21
 IDEA:      A /soul-tasks command: ensure the task tracker is current, then quickly share
            a TIERED list of likely next options (now / next / later, or by value/effort)
            — the forward-momentum view on demand.
-STATUS:    Raw
+STATUS:    Graduated [to /soul-tasks — commands/soul-tasks.md, 2026-05-21]
 WHY:       The operational instrument for SOUL-I010 / [[proactive-next-steps]]: the Body
            shouldn't have to ASK for next steps, and the harness task list goes stale
            across sessions (it did this very session — the resume found it empty). A

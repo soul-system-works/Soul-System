@@ -1080,3 +1080,29 @@ CONSEQUENCE:  Soul at 0.4.0. Open findings now F006, F009, F010, F011, F014, F01
 STATUS:       Resolved (A010 applied; collision corrected; F023-disaggregate closed
               under A010 per Body)
 ```
+
+```
+ID:           SOUL-050
+WHEN:         2026-05-21 / Built /soul-explain + /soul-tasks (graduated I012, I013)
+WHERE:        commands/soul-explain.md, commands/soul-tasks.md (+ installed to
+              ~/.claude/commands/)
+WHAT:         Built the describe/decide twins as thin slash commands modeled on the
+              existing soul-* commands. /soul-explain: a read-only explanatory lens —
+              describe the target without deciding, re-planning, or proposing new
+              options (the explicit form of the [[clarification-drift]] stance + the
+              verbosity concern SOUL-I008). /soul-tasks: refresh the harness task list
+              against the durable stores (ideas/findings/witness/handoff) and emit a
+              tiered now/next/later view that POINTS at the durable records rather than
+              duplicating them (operationalizes SOUL-I010 / proactive-next-steps; the
+              forward complement of the completion gate). Mutual twins: describe vs
+              decide, read-only vs forward.
+TYPE:         Artificer (the commands). Both turn an existing calibration memory into
+              an explicit on-demand instrument (smart-by-default PLUS an explicit skill
+              for the explicit moment).
+CONSEQUENCE:  I012 + I013 graduated. Soul command set is now soul-init / idea / expand /
+              verify / handoff / resume / explain / tasks. Deferred (YAGNI): a hook that
+              auto-offers next-options at breakpoints — the auto-firing /soul-tasks shares
+              F006/F014's activation asymmetry (a breakpoint resists mechanical detection),
+              so it is Body-invoked like /soul-expand. Real test is actual use.
+STATUS:       Resolved
+```
