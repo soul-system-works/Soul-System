@@ -20,6 +20,9 @@ WHY NOT YET AMENDMENT:  Refines A006. Cheap. The risk: if markers are always
                  unfinished / docstring = standing-limitation split, and (b)
                  whether unfinished business specifically still warrants a marker.
 FILED BY:        Archivist
-RELATED:         [[SOUL-A006]], [[SOUL-F004]] (the original markers-vs-docstrings)
-STATUS:          Open
+RELATED:         [[SOUL-A006]], [[SOUL-F004]] (the original markers-vs-docstrings),
+                 [[SOUL-A011]] (the graduation — the will-it-change test)
+STATUS:          Closed — graduated into SOUL-A011 (the will-it-change test:
+                 standing limitation -> docstring/NOTE; unfinished business -> marker),
+                 2026-05-21
 ```

@@ -75,6 +75,8 @@ Markers are not the only honesty channel in the artifact. Docstrings and comment
 
 Both are "honest in the artifact." A high-discipline codebase may carry most of its honesty in docstrings and few markers — that is not a failure of the marker doctrine, provided compromise and deferral are still flagged where they live. Use the marker when the truth is "this is incomplete or compromised"; use the docstring when the truth is "this is how and why this works."
 
+**The test — unfinished business vs standing limitation.** The dividing line is *will it change?* A **standing limitation** — a deliberate, accepted property that is not going to change (a named approximation, a validity range, "calibrated, not production") — belongs in a docstring/`NOTE` and earns *no* marker; a `TODO` on something you will never do is noise. **Unfinished business** — work that *should* still happen — earns a **marker** even when a docstring also describes it, so it stays greppable. A docstring-heavy codebase is honest about what it *is*; without markers it is silent about what it still *owes*.
+
 ---
 
 **Source:** TODO/FIXME marker tradition, originating in code commentary practices that predate modern source control. Documented in Steve Maguire, _Writing Solid Code_ (Microsoft Press, 1993), and reinforced by widespread industry use across decades.
