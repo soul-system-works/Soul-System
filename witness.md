@@ -1077,6 +1077,6 @@ CONSEQUENCE:  Soul at 0.4.0. Open findings now F006, F009, F010, F011, F014, F01
               F023 (Body's), F025 — i.e. ~9. The collision is first-day evidence FOR
               A010: the Anchor Obligation, applied to my own numbering claim, would have
               caught it. A010 earns its place on its first live test.
-STATUS:       Resolved (A010 applied; collision corrected; F023-disaggregate disposition
-              pending Body)
+STATUS:       Resolved (A010 applied; collision corrected; F023-disaggregate closed
+              under A010 per Body)
 ```

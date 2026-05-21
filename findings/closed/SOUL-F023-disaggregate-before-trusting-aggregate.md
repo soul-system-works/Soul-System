@@ -32,8 +32,10 @@ FILED BY:        Archivist (harvested from REF-02 M8; the Validation lesson
 RELATED:         [[SOUL-F007]] (verification != validation — the parent family),
                  [[SOUL-F021]] (same project; the FY24 contamination is its sibling
                  lesson), [[SOUL-F012]] / [[SOUL-F022]] (the completion gate any guard
-                 would attach to)
-STATUS:          Open — single instance; promote toward a gate prompt if a second
+                 would attach to), [[SOUL-A010]] (the Anchor Obligation it folds into)
+STATUS:          Closed — folded into SOUL-A010 (an aggregate is internal coherence
+                 until disaggregated; a claim needing an anchor), 2026-05-21 per Body.
+                 Was: Open — single instance; promote toward a gate prompt if a second
                  independent project shows an inflated aggregate that disaggregation
                  would have caught.
 ```

@@ -57,8 +57,9 @@ QUESTION THREE (Coherence):
                  No contradiction. Coherent Falsehood is the claim-level twin of
                  Universe Collapse (same family, finer grain). It STRENGTHENS F010's
                  protected "Universe consultation works" rather than weakening it.
-                 Default-simplicity is served: it COLLAPSES five findings into one
-                 named failure (net reduction of the open set).
+                 Default-simplicity is served: it COLLAPSES six findings (F013, F015,
+                 F021, F023, F024, F022) into one named failure (net reduction of the
+                 open set).
 CAVEAT (Emissary + Skeptic):
                  The NAMING is evidence-backed and adopt-now. The MECHANISM is a
                  SHARPENING of checks the gate already fires (low-risk), but whether
