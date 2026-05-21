@@ -26,6 +26,11 @@ WHY NOT YET AMENDMENT:  One small, confounded experiment. Confounds: (a) QUALITY
 FILED BY:        Archivist (from the token-economics experiment)
 RELATED:         [[SOUL-I005]] (the claim), [[SOUL-I011]] (the apparatus),
                  [[SOUL-F009]] (record discipline at scale)
-STATUS:          Open — directional first signal; rerun fairer (targeted retrieval +
-                 quality-controlled) before amending.
+RERUN:           2026-05-21 (SOUL-054). The fairer run — thin rewritten cursor +
+                 quality control — avoided run-1's late blowup entirely (on never
+                 diverged expensive at the compounding tasks), CONFIRMING the
+                 directional claim: thin/targeted retrieval >> carrying a full record.
+                 The token magnitude, though, is noise-dominated at n=1 (see F027).
+STATUS:          Open — direction supported (thin cursor beats carried record); token
+                 magnitude unsettled at n=1. Needs n>1 + quality scoring (F027).
 ```

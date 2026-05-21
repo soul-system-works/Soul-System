@@ -1187,3 +1187,34 @@ CONSEQUENCE:  → SOUL-F026. Reconciles with Step 1 (targeted cursor SAVED ~69%)
               datum (don't over-measure).
 STATUS:       Resolved (Step 2 run; result recorded honestly; fairer rerun flagged)
 ```
+
+```
+ID:           SOUL-054
+WHEN:         2026-05-21 / Step 2 FAIR rerun (thin cursor + quality-controlled) + quality check
+WHERE:        /tmp/soulbench2/{on,off}; findings SOUL-F026 (updated), SOUL-F027 (new)
+WHAT:         Reran the 8-task stream fixing run-1's two confounds: Soul-on used a THIN
+              rewritten cursor (~20 lines, the /soul-handoff discipline) not a growing
+              append-log, and both conditions got a tight "exactly this, nothing extra"
+              spec. 16 sonnet subagents. Tokens: off 142.1k, on 130.5k (on -8.2%) — BUT
+              ~10k of that is a single off-thrash at t4 (off had let the CLI drift across
+              ledger.py + __main__.py and spent 36 tool-uses re-discovering it);
+              excluding that one outlier it is on -1.0% (parity). Then VERIFIED quality
+              by running both codebases: off shipped a real DEFECT — `convert`
+              unreachable via `python -m ledger` (stranded by the dual-entry drift) +
+              rawer errors; on functional (convert/report/errors clean).
+TYPE:         Emissary (ran it against reality AND inspected the artifact, not the
+              agents' self-reports — closing the quality-counter-metric gap flagged at
+              the completion gate last turn).
+CONSEQUENCE:  Honest verdict: TOKENS are noise-dominated at n=1 (run 1 said on +8%, run 2
+              said on -8%/parity — opposite headlines; the effect is within variance) ->
+              SOUL-F027. QUALITY is the more telling axis: the no-structure path drifted
+              into a mess and a shipped defect; the cursor-guided path stayed clean —
+              suggestive of the bet's MECHANISM (structure prevents drift), but n=1. The
+              thin cursor avoided run-1's late blowup -> CONFIRMS F026 (targeted retrieval
+              >> carried full record). NOT a clean token win; a real quality signal + a
+              hard methodological lesson (replicate n>1, score quality). Run 2 cost ~273k
+              subagent tokens — another don't-over-measure datum. /tmp/soulbench{,2} are
+              disposable.
+STATUS:       Resolved (fair rerun done; tokens inconclusive/noise, quality suggestive;
+              F026 confirmed, F027 opened)
+```
