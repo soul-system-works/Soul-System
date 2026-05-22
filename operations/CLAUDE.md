@@ -125,6 +125,23 @@ IDEAS   (what might, forward)     ─┘
 
 ---
 
+## Reference Projects (dogfood adopters)
+
+A project that adopts this seed by `@import` is a **reference project** — it runs the
+Soul in the wild, and its Soul-meta observations (what worked, where a gate misfired, a
+doctrine gap) are the system's richest evolution fuel. That fuel strands unless it is
+sent home. So a reference project owes, **non-optionally**:
+
+- **A closing Finding** when work reaches a milestone or stops — what worked and what did
+  not in the Soul System's application here, beyond the artifact itself.
+- **Upstreaming** its Soul-meta findings into the Soul System repo's `findings/` — not
+  "optional." The handoff cursor names any not-yet-upstreamed items so they survive the
+  session boundary.
+
+This does not apply to the Soul System repo itself (it is the upstream).
+
+---
+
 ## The Primary Failure Modes
 
 **Premature Sophistication** — solution appears before constraints are named.

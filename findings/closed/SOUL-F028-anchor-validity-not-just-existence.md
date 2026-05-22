@@ -40,7 +40,11 @@ RELATED:         [[SOUL-A010]] (Anchor Obligation — this names its blind spot)
                  hollow-via-no-specifics), [[SOUL-F023]] (disaggregate before trusting
                  an aggregate — a SPECIFIC case of anchor-invalidity),
                  [[SOUL-F013]] (external anchor for absolutes — the rule this stress-tests)
-STATUS:          Open — convergent cross-project gap; needs a Council choice of guard
-                 (validity-basis in the anchor check, a Skeptic-on-assumption pass, or
-                 an explicitly stated limit).
+STATUS:          Closed — resolved 2026-05-22 by the validity-basis guard folded into
+                 A010 (EXTENSION) + completion-gate.md + the gate hook (check 2) +
+                 soul-verify.md; no new amendment (the F022 pattern). The anchor check
+                 now asks for the anchor's validity basis (trusted why / wrong if), and
+                 the gate's limit is stated (sourcing, not measurement validity).
+                 TRIPWIRE for this finding: a green gate later caught resting on a
+                 flawed/unstated anchor means the validity-basis check is being skipped.
 ```

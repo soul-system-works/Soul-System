@@ -320,7 +320,10 @@ IDEA:      A routine that syncs reference-project (dogfood) Soul-meta findings
            projects don't strand. Either a doc-convention (every project's CLAUDE.md
            mandates a closing Finding + non-optional upstreaming) or a /soul-harvest
            command that sweeps known project paths for ungathered items.
-STATUS:    Raw
+STATUS:    Graduated [partial — 2026-05-22, SOUL-057. Capture-side lever taken: a
+           reference-project obligation (closing Finding + non-optional upstreaming)
+           added to the seed. Harvest-side /soul-harvest still DEFERRED until the
+           doc-convention proves insufficient (default simplicity).]
 WHY:       SOUL-046 found REF-02's 2 Soul findings stranded (its plan marked
            upstreaming "optional"); julia captured nothing; only REF-09
            mandated a closing Finding. Field findings are the system's richest

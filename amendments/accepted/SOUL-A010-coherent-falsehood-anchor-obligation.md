@@ -65,6 +65,17 @@ CAVEAT (Emissary + Skeptic):
                  SHARPENING of checks the gate already fires (low-risk), but whether
                  anchor-per-claim actually finds MORE gaps should be measured before
                  it is called proven — route to SOUL-I011 (experiment harness).
+EXTENSION:       2026-05-22 (SOUL-F028, harvested cross-project: REF-04 + REF-03).
+                 The Anchor Obligation as written secures that an anchor EXISTS and is
+                 EXTERNAL — not that it is VALID. Two reference projects shipped a green
+                 gate on a flawed anchor (a mis-taken measurement; a quietly-collapsed
+                 assumption), each caught by a human, not the gate. The anchor-per-claim
+                 check is sharpened: name the anchor's VALIDITY BASIS (trusted why /
+                 wrong if), not just the anchor, and state the limit (the gate guarantees
+                 sourcing, not measurement validity). Folded into completion-gate.md +
+                 the hook + soul-verify.md; no new amendment (the F022 pattern). Partially
+                 answers this amendment's CAVEAT — the validity dimension is where
+                 anchor-per-claim earns its keep over a yes/no.
 ACCEPTED BY:     Judge (Body-confirmed 2026-05-21)
 FILED BY:        Archivist (Council synthesis SOUL-048)
 ```

@@ -21,12 +21,17 @@ For the work just completed, answer each:
    the whole is meant to exhibit)? Is it verified — not just local unit tests? If
    there is no global invariant, say why.
 
-2. **External anchor for absolute claims (SOUL-F013).** Does the work make any
-   ABSOLUTE claim — a number, "this is correct / complete / conformant"? If so,
-   name the EXTERNAL anchor that grounds it: a benchmark, a published value, a
-   standard, a domain expert, a spec. Internal consistency over an absolute claim
-   is a **Coherent Falsehood** — self-consistent and wrong. No anchor → not yet
-   verified. Say so.
+2. **A valid external anchor for absolute claims (SOUL-F013, SOUL-F028).** Does the
+   work make any ABSOLUTE claim — a number, "this is correct / complete / conformant"?
+   If so, name the EXTERNAL anchor that grounds it (a benchmark, a published value, a
+   standard, a domain expert, a spec) **and its validity basis** — why that anchor is
+   trusted, and how it could be wrong. A named-but-flawed anchor (a mis-taken
+   measurement, a collapsed assumption) still passes if you only check that it EXISTS:
+   that is **Coherent Falsehood** wearing the anchor's uniform (SOUL-F028) — and it
+   needs a Skeptic's eye on the load-bearing assumption, not just on the claim. Internal
+   consistency over an absolute claim is a Coherent Falsehood — self-consistent and
+   wrong. No anchor, or no validity basis → not yet verified. Say so. (The gate
+   guarantees sourcing, not measurement validity.)
 
 3. **Outward reach — Universe Collapse (SOUL-A003).** Did the work reach outward
    (what already exists in the field, the standard others use, the real user's

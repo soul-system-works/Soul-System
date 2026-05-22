@@ -1302,3 +1302,45 @@ CONSEQUENCE:  SOUL-F028 opened (anchor VALIDITY, not just existence — the next
               SOUL-056 is the next one's.
 STATUS:       Resolved (harvest #2 complete; F028 + F014 evidence + I020/I021 recorded)
 ```
+
+```
+ID:           SOUL-057
+WHEN:         2026-05-22 / Tackled I014 (capture-side) + F028 (validity-basis guard)
+WHERE:        operations/CLAUDE.md (new Reference Projects section); completion-gate.md +
+              hooks/pre-completion-verify.py + commands/soul-verify.md (anchor check);
+              amendments/accepted/SOUL-A010 (EXTENSION); findings/open→closed/SOUL-F028;
+              ideas.md (I014 partial-graduate); SYSTEM-VERSION.md 0.4.1→0.4.2
+WHAT:         Two SOUL-056 harvest outputs taken to ground (Body picked both recommended
+              forms; F028's sources verified DIRECTLY first — closing the anchor I had
+              flagged as subagent-relayed, which is itself an F028 move).
+              - I014 (capture-side, partial): the elegant lever — adopting projects
+                @import the SHARED seed (soul-init writes only that line), so the
+                upstreaming obligation goes in operations/CLAUDE.md ONCE and every
+                reference project inherits it (retroactively, no per-project setup, no
+                soul-init change). Added a short "Reference Projects" section: owe a
+                closing Finding + non-optional Soul-meta upstreaming; handoff names
+                ungathered items; N/A to the Soul repo itself. Harvest-side /soul-harvest
+                DEFERRED (default simplicity — not until the convention proves insufficient).
+              - F028 (closed): folded the validity-basis guard into A010 + the gate (the
+                F022 no-new-amendment pattern). The anchor check now asks not just "name
+                the anchor" but "name its VALIDITY BASIS — trusted why / wrong if", and
+                states the gate's limit (sourcing, not measurement validity; a green gate
+                is not a truth certificate). Applied to completion-gate.md, hook check 2,
+                soul-verify.md; A010 got an EXTENSION; F028 → closed with a tripwire.
+TYPE:         Architect (the seed-import lever for I014; the existence-vs-validity AL for
+              F028), Artificer (the four-instrument edits), Emissary (verified both F028
+              sources directly — julia SOUL-F-a "external-anchor ≠ correct-anchor"; REF-03
+              handoff L40 "make it Unlit = hollow gate-✓, Scott caught it"), Steward
+              (fold-in not a new amendment; harvest-side deferred), Skeptic (named the
+              gate's honest limit).
+CONSEQUENCE:  F028 closed; I014 partially graduated (capture lever live, harvest deferred);
+              A010 extended; Soul → 0.4.2. The completion gate now distinguishes anchor
+              EXISTENCE from anchor VALIDITY — the next refinement of A010's de-theater
+              mechanism. FALSIFIABLE PREDICTION (the anchor for the I014 bet): because
+              every reference project now inherits the upstreaming obligation via the seed
+              import, harvest #3 should find FEWER stranded items than #2 — check at the
+              next sweep against the SOUL-056 baseline. SIDE FINDING (unfixed): soul-init.md
+              exists in ~/.claude/commands/ but NOT in the repo's commands/ — a source-of-
+              truth gap; the repo should hold its own command.
+STATUS:       Resolved (I014 capture lever + F028 guard shipped; F028 closed; 0.4.2)
+```

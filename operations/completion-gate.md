@@ -86,6 +86,16 @@ verifier) — or states plainly "no anchor available" and the residual risk. A n
 anchor is far harder to fake than a yes/no "no gaps"; an unanchored pass is
 **Coherent Falsehood** wearing the gate's uniform.
 
+**Anchor validity, not just existence (SOUL-F028):** naming an anchor is not enough —
+the anchor itself can be wrong. Two reference projects shipped a green gate resting on a
+*flawed* anchor (a measurement taken the wrong way; an assumption that had quietly
+collapsed); each was caught by a human, not the gate. So each anchor states its
+**validity basis** — *trusted because…* and *would be wrong if…* — not merely that it
+exists. An external-but-invalid anchor is Coherent Falsehood wearing the anchor's
+uniform. State the gate's reach honestly: it guarantees **sourcing discipline, not
+measurement validity** — a green gate is not a truth certificate, and the load-bearing
+assumption still needs a Skeptic's eye.
+
 **The tripwire (SOUL-F022):** the gate is theatre the moment it stops finding gaps.
 While it keeps surfacing real ones it is working; a run of reflexive "no gaps"
 answers is the signal to audit it, not to relax.
