@@ -1520,3 +1520,68 @@ CONSEQUENCE:  /soul-skill validated against reality on the UPDATE-EXISTING path;
               NOT COMMITTED yet (awaiting Body).
 STATUS:       Resolved (Emissary test passed on the update path; contract refined; fresh-path residual noted)
 ```
+
+```
+ID:           SOUL-063
+WHEN:         2026-05-22 / Cross-project harvest from greenwoodms06.github.io (reference project)
+WHERE:        blog repo — src/pages/projects/[...slug].astro, src/content/projects/* (new
+              Soul-System entry + two hand-authored SVG icons), .soul/events.jsonl; this
+              repo — findings/open/SOUL-F030.
+WHAT:         Brought the blog (a seed-importing reference project) to its first successful
+              GitHub-Pages deploy + a content pass. On every turn that shipped a VISUAL
+              change — repo/demo button restyle, the new Soul-System project page with an
+              embedded architecture SVG, two bespoke SVG card icons — the F012 hook fired
+              check #4 (visual capture+inspect). The agent answered it in prose ("GAP → not
+              eyeballed") and shipped on a green build, deferring the look to the live
+              site / Body. The gap only genuinely closed on the icons, when the agent
+              rasterized the SVGs via sharp and Read the PNGs back (caught nothing wrong
+              this time — but proved the method). Harvested into SOUL-F030.
+TYPE:         Archivist (cross-project harvest — FIRST from outside the Soul/dogfood
+              families); Emissary (rasterize+Read finally consulted the Universe on the
+              pixels); Guardian (the gate WORKED as a detector of the repeated deferral,
+              but had no method to enforce the fix — the F030 gap).
+CONSEQUENCE:  SOUL-F030 opened (activation+technique gap: A007/F008 present, check #4
+              named, yet capture-and-inspect defaults to deferral without a one-step
+              recipe). Reference-project closing obligation (seed §Reference Projects)
+              discharged on the upstream side: Soul-meta finding sent home. Blog's own
+              closing record lives in its .soul/handoff.md cursor. NOT COMMITTED yet
+              (awaiting Body — repo also carries unrelated pending LICENSE/amendment edits).
+STATUS:       Resolved (harvested; SOUL-F030 carries the open work)
+```
+
+```
+ID:           SOUL-064
+WHEN:         2026-05-22 / Fresh-capture path tested — /soul-skill create-new on REF-03 UE-headless
+              (renumbered from 063: a CONCURRENT session claimed SOUL-063 + SOUL-F030 mid-work)
+WHERE:        /mnt/d/Projects/REF-03/.claude/skills/ue-headless-wsl-run/SKILL.md (new draft)
+WHAT:         Closed SOUL-062's residual (the fresh-capture / create-new path was untested).
+              Per the Body's pick, exercised /soul-skill's create-new branch against the REF-03 UE
+              project. Primary-verified the anchor FIRST rather than trusting the Explore subagent's
+              secondary reading (the F028 discipline applied to a delegated investigation): confirmed
+              commit f628a83, read run_stage_headless.sh in full, found "S07_AutoRealism 8/8" in
+              REF-03/.soul/handoff.md. Distilled the WSL-headless-UE PATTERN (stable across many NOTES
+              G-entries) — NOT the thermal results — into a project-local SKILL.md: launch invocation,
+              Development-not-DebugGame hang, explicit-map-path (G18), WSL→Windows networking +
+              firewall, stale-recording cleanup, taskkill. Steward-check: no existing skill → genuine
+              create-new. Validated by YAML-parse vs the standard: PASSED (name==dir; desc 434≤1024;
+              compatibility 168≤500; metadata string→string map; enums valid; 64 lines).
+TYPE:         Emissary (create-new path tested against a real project — held), Archaeologist (read
+              primary sources to distill faithfully), Skeptic + Emissary (primary-verified the anchor
+              vs trusting the subagent — F028 on a delegated result), Steward (no overlap → create-new),
+              Artificer (the capture), Guardian (caught the concurrent-write / ID-collision — stopped
+              rather than clobbering the parallel session's SOUL-063/F030).
+CONSEQUENCE:  /soul-skill now validated on BOTH paths — update-existing (SOUL-062) + create-new
+              (this) — the MVP's residual is closed. ue-headless-wsl-run captured as a DRAFT for
+              curation in REF-03 (uncommitted there; the Body curates). Anchor honestly dated
+              2026-05-21 (last-known 8/8; later #96/#97 material work MAY have disturbed S07 — the
+              skill's Verify step is the re-confirm handle; a live re-run is the optional gold
+              upgrade). SPOTTED (I014, live): REF-03 carries an un-upstreamed Soul-meta lesson (the
+              "make-it-Unlit = Universe-Collapse miss + hollow gate-✓, Scott caught it" —
+              auto_realism_baseline_decided.md / handoff L40), the same hollow-gate evidence that fed
+              F028 — a candidate to harvest upstream. CONCURRENCY GAP SURFACED: a parallel session
+              edited witness.md (SOUL-063 + F030) uncommitted on top of my committed dcdacf2 — the
+              durable records assume a single writer; concurrent agents collide on IDs and risk
+              lost updates. Worth an idea/finding (offered to the Body, not auto-created).
+STATUS:       Resolved (fresh-capture path tested + passed; both /soul-skill paths validated; REF-03
+              skill drafted; renumbered around the concurrent SOUL-063; I014 + concurrency items flagged)
+```
