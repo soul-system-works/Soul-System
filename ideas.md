@@ -379,7 +379,7 @@ IDEA:      The Soul System should help AUTOMATE identifying + creating PROJECT-S
            run tools effectively. Over time, grab e.g. a "dymola skill" that accelerates
            the work and builds a coherent codebase. May lead toward tool-specific
            skillsets / MCP.
-STATUS:    Maturing [deep-dived 2026-05-22, SOUL-060; build direction chosen — MVP capture command]
+STATUS:    Graduated [to /soul-skill — commands/soul-skill.md, 2026-05-22, SOUL-061]
 NOTES:     Body: too often a new session/project forgets how to do these things; an
            organically-grown skillset would be a boon. Some tools adopt AI directly (the
            skill becomes lean over time); others (e.g. Dymola) may never get AI
@@ -530,4 +530,48 @@ DEVELOP:   Artificer (routing/flag) / Archivist (two inboxes, findability). Cand
            always-local and have the [[SOUL-I014]] upstream sweep also harvest soul-meta
            IDEAS, not just findings. Related: [[SOUL-I014]], [[SOUL-I004]] (cheap capture),
            [[SOUL-F029]] (also a where-does-it-live / how-does-it-propagate question).
+```
+
+```
+ID:        SOUL-I024
+WHEN:      2026-05-22
+IDEA:      A /soul-finding capture command — a low-ceremony way for projects (and
+           the Soul repo itself) to record a Finding, parallel to /soul-idea for
+           ideas. Open: does it help or is it unnecessary?
+STATUS:    Raw
+NOTES:     Asymmetry to resolve before building: /soul-idea captures FORWARD ideas
+           cheaply, but findings are meant to be EARNED/deliberate — a frictionless
+           finding inbox risks finding-inflation (cheapening the witness->finding
+           graduation that makes a finding mean something). The true cheap-capture
+           twin of /soul-idea may be /soul-witness (backward observations), with
+           /soul-finding being a SCAFFOLDER/ROUTER (assign next ID, apply the
+           SOUL-F### format, place in findings/open/, and — for reference projects —
+           route upstream per [[SOUL-I014]]/[[SOUL-I023]]) rather than a frictionless
+           inbox. Directly serves the I014 non-optional closing-Finding obligation
+           (lower friction on a non-optional duty) and shares the project-vs-soul-meta
+           routing question with [[SOUL-I023]]. Surfaced during the /soul-skill (I017)
+           grill — both are capture commands facing the same routing fork.
+```
+
+```
+ID:        SOUL-I025
+WHEN:      2026-05-22
+IDEA:      A GUI / summary / access layer over the Soul System (e.g. Obsidian) for
+           users who want a higher layer — read/summarize/navigate the durable
+           records (witness, findings, ideas, events) from a GUI, tied in via the
+           STANDARDS rather than baked in. Could be its own dogfood side project.
+STATUS:    Raw
+WHY:       The Body's "standards enable external tools" thesis made concrete: the
+           Soul records are ALREADY a clean substrate (markdown + events.jsonl, the
+           SOUL-F018 event standard), so a loosely-coupled presentation/access layer
+           can ride on top without coupling into the core — the same shape as the
+           visual dogfood (REF-09). A GUI summary/access layer serves users
+           who want a higher view than raw files. Builds the case that standards-first
+           design pays off: external tools attach cheaply.
+NOTES:     Reinforces a design constraint for [[SOUL-I017]]/soul-skill: keep the
+           SKILL.md artifacts standards-legible (structured/parseable provenance) so a
+           future access layer can surface them too. Distinct from [[SOUL-I003]]
+           (cross-TOOL session continuity) — this is a presentation/access layer, not
+           continuity. Could be a dogfood side project (its own repo, @import the seed).
+           Related: [[SOUL-F018]] (event standard), REF-09, [[SOUL-I003]].
 ```

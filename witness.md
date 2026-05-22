@@ -1436,3 +1436,87 @@ CONSEQUENCE:  I017 → Maturing, build direction chosen. Reference-repository us
               name with the folder this dogfood family lives under (/REF-02).
 STATUS:       Resolved (deep dive done; research verified + captured; build teed up)
 ```
+
+```
+ID:           SOUL-061
+WHEN:         2026-05-22 / I017 graduated — /soul-skill governed-capture command built
+WHERE:        commands/soul-skill.md (new); ~/.claude/commands/soul-skill.md (symlink,
+              F029); ideas.md (I017→Graduated; +I024, +I025); SYSTEM-VERSION 0.4.3→0.4.4
+WHAT:         Built the /soul-skill MVP from the SOUL-060 deep dive, via a grill + a
+              scoped Council the Body requested. Resolved the contract by grilling: Q1
+              self-contained (write-a-skill's discipline-wrapper, not a 2nd engine), Q2
+              manual-fire + a two-part verified bar (F028 anchor OR low-confidence; AND
+              playbook-sized not note-sized), Q3 provenance. Reached outward FIRST (the
+              I019 instinct) — read the Agent Skills open standard + Anthropic's
+              large-codebase best-practices blog — then convened. KEY EMISSARY MOMENT:
+              the full agentskills.io/specification OVERTURNED my mid-grill Q3
+              recommendation. I had argued provenance-in-frontmatter was non-standard;
+              the spec DEFINES an optional `metadata:` map (spec example = author+version)
+              plus `compatibility`, `license`, and an official `skills-ref` validator. So
+              provenance flipped INTO frontmatter `metadata:` (soul-* keys) —
+              standards-native + portable + zero discovery cost — not a Source-Footer
+              body block. Also surfaced/captured I024 (/soul-finding scaffolder?) and
+              I025 (Obsidian/GUI access layer riding the standards).
+TYPE:         Artificer (the command) + Architect (the SKILL.md contract); Researcher +
+              Emissary (read the standard + blog; the /specification overturned my own Q3
+              rec — the F028/Anchor discipline applied to my recommendation, as SOUL-060
+              did to its citations); Skeptic (kept Q1=B honest — without the verify gate +
+              provenance + retire handle, /soul-skill IS redundant with write-a-skill);
+              Steward (the 3–6mo retire cadence + never-always-on); Council (the scoped
+              synthesis the Body asked for — Architect/Steward/Skeptic/Researcher/
+              Advocate/Accountant/Cartographer, not the full chamber).
+CONSEQUENCE:  I017 graduated; Soul → 0.4.4. First instrument that GOVERNS external,
+              non-Soul artifacts (tool-knowledge SKILL.md files in other projects):
+              verify-first (two-part bar + skills-ref), standards-native provenance
+              (`metadata.soul-*`), retirement (`soul-status` + the 3–6mo/post-model-release
+              cadence). Live-load CONFIRMED — /soul-skill appeared in the session skill
+              listing through the symlink (F029 holds for the new command). EXTERNAL
+              CORROBORATION of SOUL-033 (twice over): the harness's own description-budget
+              eviction AND Anthropic's review-cadence guidance — never-always-on is no
+              longer just our theory. DEFERRED: auto-distillation, auto-promote,
+              plugin-packaging. RESIDUAL (honest): skills-ref not installed (manual-checklist
+              fallback active, as the contract anticipates); the command is UNTESTED on a
+              real capture — its first real use (capturing e.g. the dymola or UE-headless
+              know-how) is its Emissary test. NOT COMMITTED yet (awaiting Body).
+STATUS:       Resolved (MVP built + symlinked + live-loaded; I017 graduated; 0.4.4)
+```
+
+```
+ID:           SOUL-062
+WHEN:         2026-05-22 / Emissary test — /soul-skill run against the real dymola-sim-debug skill
+WHERE:        ~/.claude/skills/dymola-sim-debug/SKILL.md (provenance retrofit);
+              commands/soul-skill.md (2 refinements folded in: steps 4 + 5)
+WHAT:         First real exercise of /soul-skill (its Emissary test), per the Body's
+              choice. Ran the contract against the existing hand-built dymola-sim-debug
+              skill (born 2026-05-01, no provenance). Trigger gate PASSED (verified
+              anchor "Esdirk45a→Dassl, 535s→38s, measured"; playbook-sized; confidence
+              high). Steward overlap-check correctly routed to UPDATE the existing
+              (global) skill, not duplicate. Retrofitted `metadata.soul-*` + `compatibility`,
+              then VALIDATED by parsing the frontmatter as YAML against the standard
+              (skills-ref absent → manual + parse fallback): PASSED — `metadata` is the
+              spec's string→string map; name==dir; description 336≤1024; compatibility
+              78≤500; soul-confidence/status in their enums. THE CONTRACT HELD.
+TYPE:         Emissary (took the instrument out to a real artifact and tested it — held),
+              Steward (the overlap→update branch fired correctly), Skeptic (caught that
+              the contract over-defaulted `paths:`), Artificer (folded the refinements back).
+CONSEQUENCE:  /soul-skill validated against reality on the UPDATE-EXISTING path; contract
+              refined: (1) step 5 now says update-existing edits the skill where it lives
+              (overrides the project-local default when global); (2) step 4 softened
+              `paths:` to optional-with-reasoning (a Python-driven Modelica skill's `.mo`
+              glob could suppress wanted activation); (3) provenance could NOT be fully
+              reconstructed retroactively — soul-captured recovered from the filesystem
+              birthdate, soul-last-verified inferred from the build run — which PROVES the
+              value of capture-time stamping going forward. dymola-sim-debug now carries
+              governed provenance (last-verified 2026-05-01 = 3 weeks old, well inside the
+              3–6mo retire window). EXTERNAL CORROBORATION (byproduct of the build research):
+              SOUL-033 never-always-on is independently confirmed by Anthropic's own
+              description-budget eviction + 3–6mo review cadence — recorded HERE, not
+              inflated into a separate Finding (the I024 anti-inflation discipline:
+              findings are earned, not frictionless). RESIDUAL (honest): the FRESH-CAPTURE
+              path (distill-from-just-happened → create-new) is still UNTESTED; the next
+              genuine in-session tool success should exercise it (a dymola agent is
+              available for small-model runs if a fresh test is wanted). NO Finding opened
+              — refinements fixed inline (no open work), corroboration is confirmation.
+              NOT COMMITTED yet (awaiting Body).
+STATUS:       Resolved (Emissary test passed on the update path; contract refined; fresh-path residual noted)
+```
