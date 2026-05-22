@@ -1374,3 +1374,33 @@ CONSEQUENCE:  → SOUL-F029 (open): the copies-without-sync gap. No fix made (Bo
               ~/.claude/commands/.
 STATUS:       Resolved (mechanism mapped; F029 opened; no fix yet by choice)
 ```
+
+```
+ID:           SOUL-059
+WHEN:         2026-05-22 / F029 resolved — commands on the symlink (live-reference) model
+WHERE:        commands/soul-init.md (added to repo); ~/.claude/commands/soul-*.md (8
+              symlinks → repo); findings/open→closed/SOUL-F029; SYSTEM-VERSION 0.4.2→0.4.3
+WHAT:         Body picked the symlink model for F029 (AL: only COMMANDS violated the
+              run-the-current-instrument invariant; doctrine @import + the hook's absolute
+              path already satisfy it — left untouched, Chesterton's fence). Implemented:
+              brought soul-init.md into the repo (it had lived only in ~/.claude/commands/
+              — the SOUL-057 side-note), then symlinked all 8 ~/.claude/commands/soul-*.md
+              → the repo. Every instrument is now live-reference; command drift is
+              structurally impossible. Two of F029's three faces closed at once (stale
+              soul-verify + soul-init repo-absence); the third (install.sh snapshot /
+              multi-machine sync) DEFERRED as YAGNI with a re-open trigger.
+TYPE:         Architect (one live-reference model for all instruments), Artificer (the
+              symlinks + soul-init-to-repo), Emissary (verified the installed soul-verify
+              now serves the 58-line F028 version THROUGH the symlink — drift gone, by
+              evidence not assumption), Accountant (deferred multi-machine sync — cheap
+              moment, no 2nd machine yet), Skeptic (named the residual honestly).
+CONSEQUENCE:  F029 closed; Soul → 0.4.3. The system now has ONE distribution model for its
+              instruments — live-reference (doctrine via @import; hook + commands via the
+              filesystem) — instead of two unreconciled regimes. soul-verify drift fixed
+              live. DEFERRED: install.sh still 0.3.0 + operations-only; address when a 2nd
+              machine/snapshot exists. RESIDUAL (an F028 validity-basis flag on my own
+              fix): "the loader follows symlinks" is filesystem-confirmed but not yet
+              reload-confirmed — low risk. Symlinks are machine-local (~/.claude), not
+              committed; the repo change is soul-init.md + records.
+STATUS:       Resolved (symlink model applied + verified; F029 closed; 0.4.3)
+```

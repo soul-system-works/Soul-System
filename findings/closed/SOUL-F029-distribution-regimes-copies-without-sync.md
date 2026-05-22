@@ -41,9 +41,14 @@ FILED BY:        Archaeologist (surfaced the existing mechanism) + Emissary (the
 RELATED:         [[SOUL-F020]] (reference-adapter sync governance — same family: keeping a
                  derived copy in step with its source), SYSTEM-VERSION.md (the version the
                  copy artifacts should track), the SOUL-057 soul-init side-note
-STATUS:          Open — distribution model undecided; copy artifacts (commands, snapshot
-                 installs) have no sync, reference artifacts (doctrine `@import`, hook path)
-                 are fine. Decide before commands change often or a second machine/install
-                 exists. Practical residual carried here: soul-verify is stale in
-                 ~/.claude/commands/ right now.
+STATUS:          Closed — 2026-05-22 (SOUL-059). Model decided + applied: the /soul-*
+                 commands are now distributed by SYMLINK to the repo (live-reference, like
+                 the hook), so all instruments are live and command drift is structurally
+                 impossible. soul-init brought into the repo and linked (closes its
+                 repo-absence). Stale soul-verify fixed (installed symlink now serves the
+                 58-line F028 version — verified). DEFERRED (YAGNI; re-open trigger = a 2nd
+                 machine or a snapshot install actually exists): a soul-update / install.sh
+                 that syncs the COPY path (install.sh is still pinned 0.3.0 and copies only
+                 operations/). RESIDUAL to confirm: the command loader follows symlinks
+                 end-to-end (filesystem read confirmed; full confirm on next reload).
 ```
