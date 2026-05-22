@@ -464,3 +464,47 @@ WHY:       Cross-project CONFIRMATION of the verbosity/gate-output thread: REF-0
 DEVELOP:   Artificer (the layers) / Steward (what output earns its place) / Advocate
            (the Body's experience). Related: [[SOUL-I008]], [[SOUL-I018]], SOUL-055.
 ```
+
+```
+ID:        SOUL-I022
+WHEN:      2026-05-22
+IDEA:      Should idea ANALYSIS / maturation be part of /soul-tasks, or a separate pass?
+           /soul-tasks today only SURFACES already-ripe ideas as next-options — it does
+           not work the backlog (assess ripeness, enrich, spawn research, move
+           Raw→Maturing). Decide: fold backlog-analysis into /soul-tasks, or keep it a
+           separate /soul-ideas review-pass.
+STATUS:    Raw
+WHY:       Raised by the Body noticing /soul-tasks reads ideas.md but does not work it.
+           The "analyze the backlog" function is already gestured at by [[SOUL-I002]] (a
+           /soul-ideas review-pass: Prophet/Cartographer survey + optionally spawn
+           research) and [[SOUL-I001]] (background subagents working the backlog) — both
+           unbuilt. The open fork is WHERE it lives: one forward command vs two. Cadence
+           argues separate (you don't re-mature 20+ ideas at every "what's next?");
+           proliferation argues fold-in.
+DEVELOP:   Prophet / Cartographer (ripeness, trajectory) / Steward (command
+           proliferation) / Artificer. Related: [[SOUL-I002]], [[SOUL-I001]],
+           [[SOUL-I013]] (/soul-tasks itself).
+```
+
+```
+ID:        SOUL-I023
+WHEN:      2026-05-22
+IDEA:      /soul-idea should distinguish PROJECT-specific ideas (common) from SOUL-SYSTEM
+           meta ideas (rarer) and route each to the right inbox — project ideas to the
+           project's ideas.md, soul-meta ideas UPSTREAM to the Soul-System repo — instead
+           of always writing to the current project root.
+STATUS:    Raw
+WHY:       How it works NOW: /soul-idea always appends to ideas.md at the CURRENT project
+           root with that project's code — project-local, no routing. So a Soul-meta idea
+           captured while working in another project (e.g. REF-03) strands in that
+           project's inbox and must be upstreamed by hand. This is the IDEA-twin of
+           [[SOUL-I014]] (Soul-meta FINDINGS stranding in adopting projects) — same root,
+           different artifact. The Soul repo itself is fine (cwd IS the repo); the common
+           case the Body describes (in a project, mostly project ideas, sometimes a
+           soul-meta one) has no path home for the soul-meta one.
+DEVELOP:   Artificer (routing/flag) / Archivist (two inboxes, findability). Candidates: a
+           flag/prompt at capture (project vs soul) → write the right ideas.md; OR keep it
+           always-local and have the [[SOUL-I014]] upstream sweep also harvest soul-meta
+           IDEAS, not just findings. Related: [[SOUL-I014]], [[SOUL-I004]] (cheap capture),
+           [[SOUL-F029]] (also a where-does-it-live / how-does-it-propagate question).
+```
