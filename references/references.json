@@ -1,0 +1,62 @@
+[
+  {
+    "id": "voyager-2023",
+    "type": "article",
+    "title": "Voyager: An Open-Ended Embodied Agent with Large Language Models",
+    "author": [
+      {"family": "Wang", "given": "Guanzhi"},
+      {"family": "Xie", "given": "Yuqi"},
+      {"family": "Jiang", "given": "Yunfan"},
+      {"family": "Mandlekar", "given": "Ajay"},
+      {"family": "Xiao", "given": "Chaowei"},
+      {"family": "Zhu", "given": "Yuke"},
+      {"family": "Fan", "given": "Linxi"},
+      {"family": "Anandkumar", "given": "Anima"}
+    ],
+    "issued": {"date-parts": [[2023, 5, 25]]},
+    "URL": "https://arxiv.org/abs/2305.16291",
+    "number": "arXiv:2305.16291"
+  },
+  {
+    "id": "coala-2023",
+    "type": "article",
+    "title": "Cognitive Architectures for Language Agents",
+    "author": [
+      {"family": "Sumers", "given": "Theodore R."},
+      {"family": "Yao", "given": "Shunyu"},
+      {"family": "Narasimhan", "given": "Karthik"},
+      {"family": "Griffiths", "given": "Thomas L."}
+    ],
+    "issued": {"date-parts": [[2023, 9, 5]]},
+    "URL": "https://arxiv.org/abs/2309.02427",
+    "number": "arXiv:2309.02427"
+  },
+  {
+    "id": "agent-skills-survey-2026",
+    "type": "article",
+    "title": "Agent Skills for Large Language Models: Architecture, Acquisition, Security, and the Path Forward",
+    "author": [
+      {"family": "Xu", "given": "Renjun"},
+      {"family": "Yan", "given": "Yang"}
+    ],
+    "issued": {"date-parts": [[2026, 2, 12]]},
+    "URL": "https://arxiv.org/abs/2602.12430",
+    "number": "arXiv:2602.12430"
+  },
+  {
+    "id": "agentic-skills-wild-2026",
+    "type": "article",
+    "title": "How Well Do Agentic Skills Work in the Wild: Benchmarking LLM Skill Usage in Realistic Settings",
+    "author": [
+      {"family": "Liu", "given": "Yujian"},
+      {"family": "Ji", "given": "Jiabao"},
+      {"family": "An", "given": "Li"},
+      {"family": "Jaakkola", "given": "Tommi"},
+      {"family": "Zhang", "given": "Yang"},
+      {"family": "Chang", "given": "Shiyu"}
+    ],
+    "issued": {"date-parts": [[2026, 4, 6]]},
+    "URL": "https://arxiv.org/abs/2604.04323",
+    "number": "arXiv:2604.04323"
+  }
+]

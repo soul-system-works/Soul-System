@@ -379,7 +379,7 @@ IDEA:      The Soul System should help AUTOMATE identifying + creating PROJECT-S
            run tools effectively. Over time, grab e.g. a "dymola skill" that accelerates
            the work and builds a coherent codebase. May lead toward tool-specific
            skillsets / MCP.
-STATUS:    Raw
+STATUS:    Maturing [deep-dived 2026-05-22, SOUL-060; build direction chosen — MVP capture command]
 NOTES:     Body: too often a new session/project forgets how to do these things; an
            organically-grown skillset would be a boon. Some tools adopt AI directly (the
            skill becomes lean over time); others (e.g. Dymola) may never get AI
@@ -387,6 +387,29 @@ NOTES:     Body: too often a new session/project forgets how to do these things;
            been looked at extensively" — a Researcher pass on prior art (skill
            auto-generation, MCP, tool-knowledge capture) before designing. Distinct from
            the Soul's own /soul-* skills: these are DOMAIN/TOOL skills the Soul helps grow.
+           ---
+           DEEP DIVE (2026-05-22, SOUL-060; Researcher pass + framing). VERDICT: don't
+           build a skill engine — Agent Skills (SKILL.md + progressive disclosure) already
+           IS one. The field's UNSOLVED part is I017's exact need and is the Soul's home
+           turf: a 2026 survey ([[agent-skills-survey-2026]], arXiv 2602.12430) names
+           "model-internal learned skills → portable, AUDITABLE, GOVERNED SKILL.md" as
+           open; a benchmark ([[agentic-skills-wild-2026]], arXiv 2604.04323) shows
+           ungoverned proliferation DEGRADES selection (relevant skill loaded ~49%;
+           irrelevant skills push weak models BELOW no-skill) — corroborating SOUL-033
+           never-always-on. Whitespace nobody covers: tool-operation know-how for tools
+           with NO machine-readable spec (Dymola, UE-headless). MAPPING (Revelator): the
+           gap = the Soul ratchet (witness→finding), idea ladder (Raw→Graduated), Steward
+           (retire), Anchor/[[SOUL-F028]] (capture only VERIFIED how-to). CHOSEN BUILD
+           (MVP): a thin governed layer — an explicit capture command that DRAFTS a
+           project-local SKILL.md after a verified success (draft-for-curation, not
+           auto-final), a ratchet-gated local→global promote convention, and Steward
+           retirement/selection hygiene from day one; DEFER auto-distillation
+           (over-generation risk + default simplicity). Reuse, don't reinvent:
+           generate-by-doing→verify→store ([[voyager-2023]]); auto-draft then prune the
+           when/why by hand; progressive disclosure + confidence/decay ([[coala-2023]] =
+           procedural-memory vocabulary). Refs saved to references/ (the reference
+           repository's FIRST use). Related: [[SOUL-I023]] (idea routing), [[SOUL-I014]]
+           (float-up), SOUL-033.
 ```
 
 ```

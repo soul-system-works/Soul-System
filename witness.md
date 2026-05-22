@@ -1404,3 +1404,35 @@ CONSEQUENCE:  F029 closed; Soul → 0.4.3. The system now has ONE distribution m
               committed; the repo change is soul-init.md + records.
 STATUS:       Resolved (symlink model applied + verified; F029 closed; 0.4.3)
 ```
+
+```
+ID:           SOUL-060
+WHEN:         2026-05-22 / I017 deep dive — Researcher pass + framing + reference-repo bootstrap
+WHERE:        ideas.md (I017 → Maturing + DEEP DIVE notes); references/ (FIRST use —
+              references.json + INDEX.md + 4 sidecars)
+WHAT:         Body asked for a deep dive into I017 (auto-grow tool/skill knowledge),
+              Researcher-first. Spawned a web research subagent (prior-art sweep), then
+              framed. KEY RESULT: don't build a skill engine — Agent Skills already IS one;
+              the field's UNSOLVED part IS I017's need and is the Soul's home turf. A 2026
+              survey (agent-skills-survey-2026) names "model-internal learning → portable,
+              auditable, GOVERNED SKILL.md" as open; a 2026 benchmark
+              (agentic-skills-wild-2026) shows ungoverned proliferation DEGRADES selection
+              (relevant skill loaded ~49%) — corroborating SOUL-033 never-always-on.
+              Whitespace: tool-operation know-how for tools with no machine-readable spec
+              (Dymola, UE-headless). MAPPING: the gap = the Soul ratchet + idea ladder +
+              Steward + Anchor/F028. Body chose the MVP build (explicit capture command,
+              draft-for-curation, ratchet-gated promote, Steward retirement; defer
+              auto-distill) + capture via enrich-I017 + the reference-repository.
+TYPE:         Researcher (the prior-art subagent — outward reach), Revelator (the
+              gap = Soul's-home-turf reframe), Archaeologist (Voyager/CoALA lineage),
+              Emissary + Skeptic (VERIFIED all 4 citations against arXiv BEFORE enshrining
+              them — an F028/Anchor move on my own research; the subagent's IDs held, exact
+              titles corrected), Archivist (first reference-repository use).
+CONSEQUENCE:  I017 → Maturing, build direction chosen. Reference-repository used for the
+              FIRST time (was "proposed", unused) — bootstrapped with 4 verified refs +
+              honest validity-basis notes (specific figures flagged secondary-reading, not
+              yet primary-confirmed — F028 in practice). Next: build the /soul-skill
+              capture-command MVP. Resonance: the landmark prior art (Voyager) shares its
+              name with the folder this dogfood family lives under (/REF-02).
+STATUS:       Resolved (deep dive done; research verified + captured; build teed up)
+```
