@@ -1344,3 +1344,33 @@ CONSEQUENCE:  F028 closed; I014 partially graduated (capture lever live, harvest
               truth gap; the repo should hold its own command.
 STATUS:       Resolved (I014 capture lever + F028 guard shipped; F028 closed; 0.4.2)
 ```
+
+```
+ID:           SOUL-058
+WHEN:         2026-05-22 / Distribution-mechanism investigation → SOUL-F029
+WHERE:        install.sh; ~/.claude/settings.json; commands/ vs ~/.claude/commands/
+              (drift check); new findings/open/SOUL-F029
+WHAT:         Body asked the consequences of fixing soul-init's repo-absence (SOUL-057):
+              would projects get stuck on an old Soul System; do we need a soul-update?
+              Investigated the real mechanism instead of asserting from memory. Found TWO
+              distribution regimes: REFERENCE (operations/ via @import; the hook via an
+              absolute path in settings.json) = live, never stale — which is why all five
+              @import dogfood projects already carry the I014/F028 doctrine edits; and COPY
+              (the /soul-* commands in ~/.claude/commands/; install.sh snapshot) = frozen,
+              no sync. Live anchors: editing commands/soul-verify.md this session left the
+              INSTALLED soul-verify stale (drift, proven by diff); install.sh is pinned to
+              v0.3.0 (vs 0.4.2) and copies only operations/ — no commands, no hooks. So the
+              Body's "stuck on old soul-system" fear is FALSE for @import doctrine, TRUE
+              (narrowly) for the copy-distributed commands.
+TYPE:         Archaeologist (read the existing distribution mechanism), Emissary (ran the
+              drift diff — evidence over memory, an F028 validity-basis move applied to my
+              own answer), Cartographer (the two-regime map), Accountant (named the "cheap
+              moment" — one machine, all @import).
+CONSEQUENCE:  → SOUL-F029 (open): the copies-without-sync gap. No fix made (Body chose
+              capture-first, decide deliberately). My prior-turn answer corrected the scary
+              framing with real evidence rather than the intuitive "yes, build a
+              soul-update" — the update need is real but scoped to the COPY regime, not the
+              doctrine. Practical residual now tracked by F029: soul-verify is stale in
+              ~/.claude/commands/.
+STATUS:       Resolved (mechanism mapped; F029 opened; no fix yet by choice)
+```
