@@ -32,8 +32,13 @@ problem: small bounded work runs a subset and says so. The point is not ceremony
 on every task — it is that the outward reach is no longer optional on work where
 being wrong matters.
 
-The gate is **run in the open**: the checks appear in the response, answered with
-specifics. A silent gate is an unrun gate.
+The gate is **run in the open** — but *in the open* is not *in the way*. The reply
+leads with the actual ask or result; the gate lands **last, as one compact line**
+that names its anchor (or the specific gap), and expands to the failing check only
+when a gap is real. A silent gate is an unrun gate — yet a rote multi-line "no gaps"
+recitation is the very theatre the gate exists to prevent (SOUL-F022) *and* it buries
+the ask (SOUL-I018). Visible therefore means **specific and anchored**, not verbose:
+checkmarks without specifics are not "open", they are ceremony.
 
 ---
 

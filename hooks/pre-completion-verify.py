@@ -241,18 +241,26 @@ def _content(record):
 
 
 def _checklist() -> str:
-    # Terse by design (SOUL-I008): the gate must reach the agent to be actionable,
-    # but verbose prose on every fire is noise and tokens. One line per check; the
-    # agent is asked to reply tersely (flag gaps only), not restate the checks.
+    # Terse by design (SOUL-I008): the gate must reach the AGENT to be actionable,
+    # but verbose prose on every fire is noise and tokens.
+    # Two audiences (SOUL-I018): the agent RUNS all five checks (rigor: F012, F022);
+    # the BODY-facing reply must LEAD with the ask, not a rote 5-line recitation that
+    # buries it. So render the result as ONE compact, specific line — name the anchor
+    # or the gap — and expand only when a gap is real. A reflexive "no gaps × 5"
+    # recitation is itself the F022 theater; the doctrine wants specifics, not
+    # checkmarks, and "run in the open" is satisfied by a compact, anchored line.
     return (
-        "[Soul gate · SOUL-F012] Shipped + claimed complete this turn — verify, then "
-        "end (fires once). Reply terse: one line/check, flag only gaps.\n"
+        "[Soul gate · SOUL-F012] Shipped + claimed complete this turn — fires once.\n"
+        "Run ALL of these honestly before ending:\n"
         "1. Global invariant, not just local tests?\n"
         "2. Absolute claims have an EXTERNAL anchor? (else Coherent Falsehood)\n"
         "3. Outward reach done (field/standard/user)? (else Universe Collapse)\n"
         "4. Visual artifact captured & inspected, not deferred?\n"
         "5. Unfinished business marked (TODO/FIXME/DEBT/HACK)?\n"
-        "Full form: commands/soul-verify.md."
+        "REPLY (Body-facing): lead with the ask / next step; place the gate LAST as ONE "
+        "compact line — `— Verify: clean (<anchor>)` or `— Verify: GAP → <specific>`. "
+        "Expand to the failing check(s) only when a gap is real; do not recite passing "
+        "checks. Full form: commands/soul-verify.md."
     )
 
 

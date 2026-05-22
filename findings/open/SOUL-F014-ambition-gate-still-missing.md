@@ -42,6 +42,14 @@ PRE-MORTEM:      2026-05-20. Built /soul-expand (commands/soul-expand.md): a
                  pending build. Expansion is intrinsically harder to activate than
                  contraction — which is itself why the system defaults to "correct
                  but small."
+FIELD EVIDENCE:  2026-05-22 (REF-04 SOUL-F-f, via SOUL-056). A POSITIVE datum:
+                 the EXPANSION half (outward-reach-before-building) fired and PAID OFF —
+                 Emissary research before any code found that MethodOfLines hit the same
+                 scalarization wall, INVERTING the plan before effort was spent. Evidence
+                 that when the expansion gate DOES fire it is an accelerator, not
+                 ceremony (the A003/F014 hope). It confirms the PAYOFF, not the
+                 ACTIVATION — firing was still Body/practice-driven, so the open question
+                 (can expansion fire WITHOUT the Body) is untouched.
 STATUS:          Open — /soul-expand built (Body-invoked partial fix). Stays open
                  on the genuinely-hard question: can expansion be activated without
                  the Body? (Unlike F012, there is no obvious instrument.)

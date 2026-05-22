@@ -1218,3 +1218,87 @@ CONSEQUENCE:  Honest verdict: TOKENS are noise-dominated at n=1 (run 1 said on +
 STATUS:       Resolved (fair rerun done; tokens inconclusive/noise, quality suggestive;
               F026 confirmed, F027 opened)
 ```
+
+```
+ID:           SOUL-055
+WHEN:         2026-05-22 / gate-output UX (SOUL-I018) — compact, ask-first completion gate
+WHERE:        hooks/pre-completion-verify.py (_checklist); operations/completion-gate.md
+              ("run in the open" wording); ideas.md (I018 graduated)
+WHAT:         The per-turn completion gate rendered a rote 5-line "verify" block at the
+              END of the turn — low value to the Body and it BURIED the actual ask (the
+              Body scrolled ABOVE the hook to find it). Reframed the gate as having TWO
+              audiences: the AGENT still runs all five checks (rigor unchanged — F012
+              firing, F022 anti-theater), but the BODY-facing reply now LEADS with the
+              ask and renders the gate LAST as ONE compact, anchored line
+              (`— Verify: clean (<anchor>)` / `— Verify: GAP → <specific>`), expanding
+              only on a real gap. Aligned completion-gate.md so "run in the open" means
+              specific-and-anchored, not a verbose recitation. Key reframe: I018 (don't
+              bury) + F022 (specifics not checkmarks) + the doctrine (stay visible)
+              CONVERGE — a rote "no gaps × 5" recitation was already drifting toward the
+              F022 theater, so compressing it BOTH fixes UX and shrinks theater surface.
+TYPE:         Architect (two-audience AL + the convergence reframe), Artificer (the hook
+              instruction), Skeptic/Archaeologist (named the "a silent gate is an unrun
+              gate" fence before touching it; Body chose compact-but-visible over fully
+              hidden precisely to not cross it), Emissary (ran the actual hook).
+CONSEQUENCE:  Graduated SOUL-I018. Gate stays load-bearing but stops burying the work.
+              Body chose compact-but-visible + instrument-and-doctrine align. Behavior
+              cue adopted too: lead with the ask, clean "go / changes:" options flavor.
+              Anchor: isolation test (synthetic transcript) — ship+claim still blocks
+              (exit 2) and injects the new instruction; ship-only still allows (exit 0).
+              A real in-session fire is the stronger anchor and may occur naturally as
+              the gate keeps firing. Disposable test at /tmp/gate_test/run_test.py.
+STATUS:       Resolved (instrument + doctrine shipped; hook isolation-tested, then
+              LIVE-fired in-session 2026-05-22 with the NEW compact instruction — the
+              stronger anchor flagged here as pending is now closed; the reply that
+              tripped it already complied, ask-led with a compact Verify line).
+```
+
+```
+ID:           SOUL-056
+WHEN:         2026-05-22 / Cross-project finding harvest #2 (5 dogfood projects)
+WHERE:        REF-09, REF-08, REF-04, REF-02 (REF-02),
+              REF-03 (UE); new findings/open/SOUL-F028; F014 (FIELD EVIDENCE added);
+              ideas SOUL-I020, I021
+WHAT:         Body asked to harvest ungathered findings since SOUL-046 (2026-05-21).
+              Swept all five via parallel Explore agents, deduped against the 046
+              baseline (F021/F022/F023, code-markers, meta-engine). Result:
+              - CONVERGENT CATCH (the headline): TWO projects independently found the
+                SAME gap → SOUL-F028. REF-04 (SOUL-F-a): the gate passed a
+                Coherent Falsehood anchored to a real-but-FLAWED measurement; REF-03
+                (active): "make it Unlit" gate-✓ rested on a COLLAPSED assumption
+                (skylight leakage), caught by the Body. A010 closed "no anchor"; it did
+                NOT close "anchored to a BAD anchor." Both caught by human/domain
+                skepticism, not the gate.
+              - REF-04 GREW findings since the sweep (was telemetry-only on
+                046): 6 findings + CLOSEOUT + SJUL-I001. SOUL-F-f = the expansion gate
+                fired before building and INVERTED the plan (accelerator paid off) →
+                added as FIELD EVIDENCE to open F014 (confirms payoff, not activation).
+              - REF-08 (frozen): most recs ALREADY absorbed — "name the Judge on
+                override / Emissary on contradiction" is already the seed's "Naming
+                Roles in the Moment"; "visual Witness ≠ test Witness" is already F008.
+                Genuinely open → the role-set-SIZE question (5 Magistrates barely fired)
+                → idea I020.
+              - SJUL-I001 (silent-gate-by-default verbosity) converges with I008 and
+                this session's I018/SOUL-055 → idea I021.
+              - REF-02 (M8 milestone): nothing new (F021/F023 already up);
+                still marks upstreaming "optional" (I014 evidence).
+              - REF-09 (stopped): nothing new; clean closure, capture-setup
+                good (mandates + honored a closing finding).
+              - REF-03: .soul/events.jsonl now EXISTS (absent on 046) — 8 gate fires,
+                latest today; gate live in sustained UE use. No findings/ dir yet.
+TYPE:         Archivist (harvest + dedupe), Emissary (cross-repo evidence, ran the
+              actual projects' records), Revelator (the two-project convergence was the
+              real finding, not any single report), Steward (right-sized: 1 finding +
+              1 evidence-append + 2 ideas, not a finding per observation).
+CONSEQUENCE:  SOUL-F028 opened (anchor VALIDITY, not just existence — the next refinement
+              of A010). F014 strengthened with a positive expansion-gate datum. I020/I021
+              captured. I014 REINFORCED: julia + REF-03 both had ungathered Soul-meta 24h
+              after the 046 sweep, and REF-03/REF-02 still lack a closing-finding
+              mandate — manual harvest remains the only sync; the doc-convention lever
+              (every adopting CLAUDE.md mandates a closing finding + non-optional
+              upstream) is looking earned. Capture-setup spectrum confirmed: visual-test
+              best (mandates), julia/REF-08 captured by culture, REF-02
+              optional-stranded, REF-03 telemetry-only. SOUL-046 is this sweep's baseline;
+              SOUL-056 is the next one's.
+STATUS:       Resolved (harvest #2 complete; F028 + F014 evidence + I020/I021 recorded)
+```

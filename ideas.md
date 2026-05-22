@@ -396,11 +396,68 @@ IDEA:      Improve the UX of what the Body actually has to read and do. Two obse
            at the END is of minimal use to the BODY (maybe useful in some scenarios, not
            others) and BURIES the actual ask — the Body keeps scrolling above the hook to
            find what was wanted and the context, even when it is repeated at the bottom.
-STATUS:    Raw
+STATUS:    Graduated [to SOUL-055 — compact, ask-first completion gate (hook _checklist + completion-gate.md align); 2026-05-22]
 NOTES:     Candidates: surface the actual ask / next-step in a consistent, easy-to-find
            place (top, or clearly delimited), not buried by the gate reply; make the gate
            output AI-facing / collapsible or terser for the user; per-scenario verbosity.
            Related: [[SOUL-I008]] (instrument verbosity), [[SOUL-I016]] (suppress gate
            for trivial commands), F022 (gate theater). Also a behavior cue the AI can
            heed immediately (cleaner options; surface the ask).
+```
+
+```
+ID:        SOUL-I019
+WHEN:      2026-05-22
+IDEA:      A good way to bring in lessons learned and EVOLVE the Soul System as the
+           tools we use evolve — find, test, and integrate emerging best practices as
+           we identify them (official blogs, docs, and highly-trusted field voices).
+STATUS:    Raw
+NOTES:     Seed source the Body named: Anthropic's "How Claude Code works in large
+           codebases — best practices" (https://claude.com/blog/how-claude-code-works-
+           in-large-codebases-best-practices-and-where-to-start), plus official docs and
+           trusted practitioners. The "find → test → integrate" loop is the Researcher
+           (acquire) + Emissary (test against reality) + Steward (retire what's
+           superseded) cycle, made standing rather than ad hoc. Distinct from
+           [[SOUL-I014]] (upstream lessons from OUR dogfood PROJECTS) — this is inbound
+           from the EXTERNAL field/ecosystem. Related: [[SOUL-I011]] (experiment harness
+           = the "test" stage), [[SOUL-I017]] (tool-skill autogrow), and the External
+           Skills mapping in the seed (where adopted practices land). Watch the
+           always-on cost (SOUL-033 / RAG-MCP) when integrating.
+```
+
+```
+ID:        SOUL-I020
+WHEN:      2026-05-22
+IDEA:      Revisit the role-set SIZE. REF-08's closing retrospective found the five
+           Magistrates barely appeared (≈3 implicit, 0 explicit invocations across a
+           whole project), against the doctrine's "Magistrates are continuous" — so:
+           are 8 Magistrates the right number, or should some MERGE? Are some
+           "continuous" only in retrospectives, not in build sessions?
+STATUS:    Raw
+WHY:       A counter-claim to a doctrine assertion, from real use — the Steward's
+           question (what still serves) applied to the Council itself. Right-sizing the
+           role-set serves the "selective visibility, not ceremony" principle and the
+           always-on-cost concern (SOUL-033): roles that never fire are dead weight.
+DEVELOP:   Steward (what still serves) / Cartographer (the map of which roles fire
+           when) / Guardian (collapsing-roles watch). Harvested via SOUL-056 from
+           /home/fig/REF-08's retrospective. Related: [[SOUL-F002]] (continuous-role
+           invisibility — the same observation; this asks the harder structural follow-up).
+```
+
+```
+ID:        SOUL-I021
+WHEN:      2026-05-22
+IDEA:      Switchable VERBOSITY LAYERS for the Soul instruments (terse / normal / full),
+           with the completion gate SILENT-by-default — surface only on a gap.
+STATUS:    Raw
+WHY:       Cross-project CONFIRMATION of the verbosity/gate-output thread: REF-04
+           independently raised this (its SJUL-I001) as Body-felt friction, converging
+           with [[SOUL-I008]] (instrument verbosity) and the SOUL-055 / [[SOUL-I018]]
+           work just done (compact, ask-first gate). Two projects asking for the same
+           thing is signal the default is too loud. NOTE: a fully-silent gate crosses the
+           completion-gate.md "a silent gate is an unrun gate" fence — SOUL-055 chose
+           compact-but-visible for that reason; "silent by default" would need the same
+           Council care (visible-on-gap, quiet-on-clean). Harvested via SOUL-056.
+DEVELOP:   Artificer (the layers) / Steward (what output earns its place) / Advocate
+           (the Body's experience). Related: [[SOUL-I008]], [[SOUL-I018]], SOUL-055.
 ```
