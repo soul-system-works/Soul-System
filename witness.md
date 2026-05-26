@@ -1675,3 +1675,52 @@ CONSEQUENCE:  Two open findings → closed. Hook now nudges agents toward an act
 STATUS:       Resolved (F030 + F031 closed; hook + soul-verify.md carry the recipe + split +
               non-pass rule; SYSTEM-VERSION → 0.4.5)
 ```
+
+```
+ID:           SOUL-067
+WHEN:         2026-05-26 / "Now"-tier triple: /soul-finding, /soul-help, I027 protocol.
+WHERE:        commands/soul-finding.md (NEW); commands/soul-help.md (NEW);
+              commands/soul-idea.md (back-port: new step 3 = I027 re-read-verify);
+              ~/.claude/commands/soul-finding.md + soul-help.md (NEW symlinks per F029);
+              ideas.md (SOUL-I015 → Built; SOUL-I024 → Built; SOUL-I027 → Partially
+              delivered); SYSTEM-VERSION.md → 0.4.6.
+WHAT:         Shipped the three "now"-tier instruments in one batch.
+              (1) /soul-finding (I024 graduated). Built as a SCAFFOLDER, not a
+              frictionless inbox — the asymmetry the original NOTES surfaced. Body
+              decides the witness→finding graduation; the command does the mechanical
+              work: confirm Body's call, gather inputs, re-read-verify ID via the I027
+              protocol, write to findings/open/SOUL-F###-<slug>.md in standard format,
+              flag the I014 upstream route for reference-project Soul-meta findings.
+              Refuses to scaffold without explicit Body call (anti-inflation guard).
+              (2) /soul-help (I015 graduated, MVP shape). Runtime roster of every
+              /soul-* command + one-line summary + pointers to philosophy/findings/
+              ideas/witness. Reads commands/ live so it cannot drift. The "lost-user
+              orient" half deferred — overlaps with /soul-tasks and needs a definition
+              of "lost" to ground it.
+              (3) /soul-idea back-ported with the I027 re-read-verify-before-write
+              step (new step 3): re-scan ideas.md, confirm assigned ID is free,
+              increment+retry if collided, stop+tell-Body after three collisions.
+              Single-filesystem only; documented scope.
+              I027 itself goes Partially delivered: detect-only option (4) landed
+              where there's a command; cross-machine (option 2, git-as-arbiter),
+              command-less witness writes, and direct-file-edit bypass all still
+              open. /soul-skill needed no change — skill names aren't auto-numbered.
+TYPE:         Artificer (built the two commands + the back-port), Steward (chose
+              scaffolder over inbox for finding; chose detect-only over UUID-change
+              or lock for I027 — preserves human-friendly IDs, no stuck-lock failure
+              mode), Architect (the symlink-per-F029 distribution pattern reused;
+              I027 protocol declared minimally portable across commands).
+CONSEQUENCE:  Three ideas closed/advanced in one session: I015 + I024 Built; I027
+              Partially delivered. /soul-finding will lower the friction on the
+              non-optional I014 closing-Finding obligation — every reference project
+              that finishes work owes a Soul-meta finding upstream; the scaffolder
+              makes that mechanical rather than a 40-line manual recreation each
+              time. I027 protocol now baked into /soul-finding from creation (won't
+              repeat the SOUL-064 collision for findings) and into /soul-idea
+              (won't repeat for ideas). Next big-rock: SOUL-I026 (The Mind),
+              flagged by the Body as the next thread after this "now"-tier batch.
+              NOT COMMITTED yet (awaiting Body).
+STATUS:       Resolved (three deliverables shipped; symlinks live + verified via
+              the system-reminder skill-list refresh showing soul-finding +
+              soul-help; SYSTEM-VERSION → 0.4.6)
+```
