@@ -743,7 +743,10 @@ IDEA:      A /soul-witness slash command — append an observation to witness.md
            → witness entry. The cheap-capture twin of /soul-idea but pointed at
            the BACKWARD record (what happened) rather than the FORWARD inbox
            (what might).
-STATUS:    Raw
+STATUS:    Graduated [to /soul-witness — commands/soul-witness.md, 2026-05-26].
+           Shape: hybrid (frictionless input, scaffolded output, draft-shown-
+           before-write). Adopts I027 re-read-verify protocol from day one.
+           Symlinked to ~/.claude/commands/ per F029.
 WHY:       Witness entries today are written by hand (every SOUL-NNN this session
            was a `cat >> witness.md << EOF` heredoc). The friction discourages
            in-the-moment capture, exactly the moments most worth catching —
@@ -817,4 +820,53 @@ NOTES:     Open shape questions: (1) WHICH roles convene by default — all
            [[SOUL-F012]] (the same family — doctrine present, gate must
            fire), philosophy/the-soul.md §The Council's Process (this
            would be its explicit invocation handle).
+```
+
+```
+ID:        SOUL-I031
+WHEN:      2026-05-26
+IDEA:      Council role observability — over the course of a project the Body
+           does not have visibility into which Council roles have actually run
+           vs sat idle (e.g. is the Steward actively retiring + improving as
+           we go, or silent for weeks?). Possibly tied to an opt-in metric
+           system that tracks role invocations and pairs with the visual /
+           GUI direction.
+STATUS:    Raw
+WHY:       The Council exists as doctrine but its activation is implicit and
+           invisible. The Body cannot tell whether a role is doing its job or
+           has gone silent. The Soul System's own answer to "is the doctrine
+           firing where intended" — the F012 family + the Mind — has been
+           about gates and rules; this is the same question pointed at ROLES.
+           Without visibility, a role that has gone silent looks identical to
+           a role that is satisfied. Related to F002 (continuous-role
+           invisibility — the same concern from a different angle).
+NOTES:     Open shape questions:
+           (1) AUTOMATIC vs RETROSPECTIVE — hook-emitted events tagged with
+               role on every invocation (always-on, structural), OR a periodic
+               retrospective that surveys recent work for role evidence
+               (lower-cost, Body-driven). The first scales but adds ceremony;
+               the second risks the very invisibility it tries to fix.
+           (2) OPT-IN vs ALWAYS-ON — Body's framing flagged this directly. The
+               metric system should not add per-turn cost unless explicitly
+               enabled. Could be a `.soul/metrics.jsonl` event log + a
+               `/soul-roles` viewer command that only renders when invoked.
+           (3) DASHBOARD / VISUAL — pairs with [[SOUL-I025]] (GUI access
+               layer) and [[SOUL-I028]] (doctrine-stack figure). A role-firing
+               dashboard is a natural fifth tile alongside witness/ideas/
+               findings/Mind.
+           (4) METRIC HONESTY — F028 anchor-validity discipline applies here
+               too: a role "firing" measured by self-report (the agent says
+               "as Steward..." in text) is a weak anchor; firing measured by
+               an action with a role tag (a hook-emitted event from
+               /soul-finding tagged "Skeptic", from /soul-distill tagged
+               "Distiller") is a strong one. Self-report risks Council
+               theatre; structural events resist it.
+           Related: [[SOUL-F002]] (continuous-role-invisibility — the
+           same problem, role-perspective), [[SOUL-I025]] (GUI), [[SOUL-I026]]
+           (the Mind — already a meta-observability layer for doctrine; this
+           extends it to roles), [[SOUL-F014]] (activation-in-doctrine vs
+           activation-in-code — the role version), [[SOUL-I010]] /
+           [[SOUL-I013]] (proactive next steps + /soul-tasks — the forward
+           visibility pattern this complements). Body's framing: "idk" —
+           flagged not-yet-shaped, captured to thaw later.
 ```

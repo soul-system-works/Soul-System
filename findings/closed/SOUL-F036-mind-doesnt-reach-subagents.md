@@ -71,8 +71,56 @@ RELATED:         [[SOUL-I026]] (The Mind — the architectural claim this challe
                  in doctrine + deployed on disk, but doesn't fire where intended),
                  docs/specs/2026-05-26-the-mind-design.md (the spec whose
                  architecture claim this challenges).
-STATUS:          Open — operational. Re-test in progress with explicit mind.md
-                 feed to subagent prompts (workaround path (a) above) to settle
-                 whether the Mind adds value when actually present. The
-                 architectural fix (which path of a-d) decides after that evidence.
+STATUS:          Resolved — RE-DISCOVERY of SOUL-035, not a new architectural
+                 defect. See RESOLUTION below and witness SOUL-072.
+
+RESOLUTION:      Settled 2026-05-26 by Architect + Skeptic per the F028 anchor-
+                 validity discipline. The original F036 evidence came from a
+                 session started 2026-05-22 (per .soul/handoff.md "Long resume
+                 from the prior 2026-05-22 cursor"). The `@mind.md` line was
+                 added to root CLAUDE.md at 2026-05-26 10:25:43 (commit 05eabc1)
+                 — mid-session, 4 days after that session started. Per
+                 [[SOUL-035]] ("the CLAUDE.md system-reminder is snapshotted at
+                 the PARENT session's start … and inherited by every subagent;
+                 it does not refresh on a file change"), the May 22 snapshot
+                 captured only `@operations/CLAUDE.md`, and the subagents in
+                 Tier 3a inherited that stale snapshot — fully explaining the
+                 observed evidence without invoking any new harness behavior.
+
+                 Clean-room confirmation (witness SOUL-072): a diagnostic
+                 subagent spawned from a fresh session started AFTER 05eabc1
+                 reports the full Mind content inlined in its CLAUDE.md system
+                 reminder — both `@operations/CLAUDE.md` and `@mind.md` resolve
+                 and propagate. Distinctive Mind markers (Rule 4 generation-
+                 couples-retirement, Rule 9 symlinks, Tensions section
+                 "Default-simplicity ↔ outward-reach") were directly visible.
+
+                 The Mind's "always-on at the project layer" claim therefore
+                 HOLDS for any session started after the `@mind.md` import is
+                 in place. The operational caveat is the same as for ANY
+                 CLAUDE.md change: the session in which the file is modified
+                 sees a stale snapshot; subsequent sessions are clean. This is
+                 already documented doctrine via SOUL-035.
+
+                 Disposition of the four candidate fix paths in WHY NOT YET
+                 AMENDMENT above:
+                 (a) Manual injection — unnecessary for the steady state;
+                     workaround only for the in-session-deployment edge case.
+                 (b) Move `@mind.md` inside seed — REJECTED (layering violation,
+                     and unnecessary now that the gap is shown to not exist).
+                 (c) Wait for harness — unnecessary; current behavior is fine.
+                 (d) Narrow the Mind's value claim — REJECTED as a permanent
+                     narrowing; the claim was correct. A one-line operational
+                     note ("after deploying or modifying the Mind, restart the
+                     session for it to reach this session and its subagents")
+                     belongs near the deployment doctrine — already implicit
+                     via SOUL-035; possibly worth surfacing in the Mind spec
+                     §Deployment as a courtesy note.
+
+                 RESIDUAL: A Distiller-tier candidate contrast case for mind.md
+                 — "F036 vs SOUL-035: apparent architectural defect vs known
+                 stale-snapshot mechanism. Disambiguating rule: when a CLAUDE.md
+                 change appears not to take effect, FIRST anchor when the parent
+                 session started relative to the change (F028 timing discipline)
+                 before declaring it architectural." Defer to next `/soul-distill`.
 ```

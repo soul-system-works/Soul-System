@@ -1979,3 +1979,82 @@ STATUS:       Resolved (Tier 3b artifact written + deployed cross-repo; F033
               two pending commits: this entry + ideas update + experimental artifact
               in soul-system, AND mind.md + CLAUDE.md in REF-05 by Body)
 ```
+
+```
+ID:           SOUL-072
+WHEN:         2026-05-26 / F036 settled — re-discovery of SOUL-035, not new defect
+WHERE:        findings/closed/SOUL-F036-mind-doesnt-reach-subagents.md (moved from
+              open/ with RESOLUTION block added); this entry. No spec or doctrine
+              edits — SOUL-035 already covers the underlying mechanism.
+WHAT:         F036 fix-path evaluation triggered the F028 anchor-validity
+              discipline before path selection. Skeptic surfaced the missing
+              timing anchor: WHEN did the Tier 3a parent session start relative
+              to commit 05eabc1 (which added `@mind.md` to root CLAUDE.md)?
+              .soul/handoff.md records "Long resume from the prior 2026-05-22
+              cursor" — the session ran continuously from May 22 to May 26.
+              05eabc1 landed at 2026-05-26 10:25:43, i.e. MID-SESSION, 4 days
+              after that session started. Per SOUL-035's documented mechanism
+              ("the CLAUDE.md system-reminder is snapshotted at the PARENT
+              session's start ... and inherited by every subagent; it does not
+              refresh on a file change"), the May 22 snapshot held only
+              `@operations/CLAUDE.md` and propagated that stale view to the
+              Tier 3a subagents — fully explaining F036's evidence without
+              invoking any new harness behavior. Clean-room diagnostic from
+              THIS session (started after 05eabc1): a subagent given
+              introspect-only instructions (no file reads, no tool calls)
+              reports the FULL Mind content inlined in its CLAUDE.md system
+              reminder — both imports resolve and propagate, with distinctive
+              markers visible (Rule 4 generation-couples-retirement, Rule 9
+              symlinks, Tensions "Default-simplicity ↔ outward-reach"). The
+              Mind's "always-on at the project layer" claim holds for any
+              session started after the @mind.md import is in place.
+TYPE:         Skeptic (forced the timing anchor before fix-path selection),
+              Emissary (the clean-room subagent diagnostic against reality),
+              Guardian (F028 anchor-validity discipline applied to a TEST's
+              own evidence, not just to a product claim — second instance after
+              the Tier 3a re-test arc). Architect (path disposition: a/b/c/d
+              all collapse).
+CONSEQUENCE:  (1) F036 closed as RESOLVED — re-discovery of SOUL-035, not a new
+              architectural defect. Moved to findings/closed/.
+              (2) The Mind's value claim is NOT narrowed; the spec's lens-layer
+              architecture works as designed. The operational caveat is
+              identical to SOUL-035: the session that DEPLOYS a new Mind sees
+              a stale snapshot until restart.
+              (3) Tier 3a's "Mind sharpens citation, doesn't change direction"
+              verdict STILL STANDS — that A/B was effectively seed-alone vs
+              seed+record-tools (not seed-vs-Mind as designed), so a cleaner
+              Mind-vs-seed measurement is still owed on questions whose
+              doctrine lives ONLY in the Mind (e.g. Rule 9 symlinking, I024
+              anti-inflation logic). Listed in I026's residual.
+              (4) Distiller-tier candidate contrast case identified for the
+              next /soul-distill: "F036 vs SOUL-035 — apparent architectural
+              defect vs known stale-snapshot mechanism. Disambiguating rule:
+              when a CLAUDE.md change appears not to take effect, FIRST anchor
+              when the parent session started relative to the change (F028
+              timing discipline) before declaring it architectural." NOT
+              written into mind.md by hand — the Distiller's job.
+              (5) Methodological win: this is the second time F028's anchor-
+              validity discipline has caught a test result before it became
+              a precedent (first: SOUL-070's re-test; second: this resolution).
+              F028 is earning its keep beyond product claims.
+STATUS:       Resolved (F036 closed + moved; Mind architectural claim affirmed;
+              residual contrast case logged for next /soul-distill)
+```
+
+```
+ID:           SOUL-073
+WHEN:         2026-05-26 / dogfood test of /soul-witness (first invocation)
+WHERE:        Body-facing output across recent turns of this session — not a
+              specific file; the pattern is in the agent's response composition
+              before AskUserQuestion or other input requests.
+WHAT:         Output before asking for user input is typically very verbose:
+              restates the "next" steps a couple times, shows the hook running,
+              the descriptions (though often informative) are quite long. There
+              has to be an elegant way to handle this. Bulleted next steps /
+              ideas are recommended over sentences.
+TYPE:         Council Note — for Artificer (the instrument-output-style call)
+              and Steward (what to retire/compress from current default response
+              shape).
+CONSEQUENCE:  unresolved
+STATUS:       Open
+```
