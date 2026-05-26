@@ -2244,3 +2244,90 @@ STATUS:       Resolved (Q2 result clean; reproduction-fidelity claim has
               its first verified-clean positive sample; method substrate
               proven; @-import bug ready for graduation).
 ```
+
+```
+ID:           SOUL-077
+WHEN:         2026-05-26 / SOUL-F038 scope-probe (semi-autonomous, Scope Manifest pattern)
+WHERE:        /tmp/soul-experiment/probe1-in-project.txt, probe3-add-dir.txt,
+              replay-{1..5}.txt; Agent tool transcript for Probe 4. This
+              entry. F038 updated with bounded scope + quantitative failure
+              rate.
+WHAT:         Body authorized a Scope Manifest (Council convening synthesis;
+              Cartographer cluster pass) to close SOUL-F038's open scope
+              questions via bounded autopilot. 4 probes specified, 3
+              autonomous, 1 deferred to Body. Probes 1/3/4 returned ✓; but
+              Probe 3 used IDENTICAL command sequence to Q1 v1 sentinel
+              (which had confabulated) and got CORRECT result — tripwire
+              fired ("probe reveals directional conflict with record").
+              Body authorized N=5 replay of the Q1 v1 command sequence.
+              Result across N=7 total (Q1 v1 + Probe 3 + 5 replays):
+              4/7 correct verbatim quote of Rule 9, 3/7 different
+              confabulations. Each confabulation was a DIFFERENT plausible-
+              sounding Soul rule (Distillation cadence; Pre-completion
+              verification with named anchors F012 + /soul-verify; Reuse
+              before invention). Strongly disfavors Hypothesis A (pure
+              model hallucination with Mind always loaded) — if Mind were
+              always loaded, verbatim-quote prompt would not produce
+              wildly different content; though pure hallucination is hard
+              to fully rule out from this evidence alone. The more
+              parsimonious explanation is Hypothesis B (probabilistic
+              import resolution + confabulation when resolution fails).
+TYPE:         Emissary (the probes + the N=5 replication against reality);
+              Skeptic (tripwire-firing — refused to ratify Probe 3's
+              clean result against Q1 v1's evidence without replication);
+              Guardian (F028 anchor-validity discipline applied at the
+              autopilot tripwire — fourth instance in this arc);
+              Cartographer (cluster pass that prompted the bounded scope);
+              Architect (Scope Manifest pattern execution); Artificer
+              (the manifest as substrate, not a new process).
+CONSEQUENCE:  (1) F038 NEITHER RETRACTED NOR DETERMINISTIC — sharpened.
+              Point estimate ~43% in the failure topology (3 confab in
+              N=7); binomial 95% CI is wide (~10-80%). Direction
+              (intermittent, not zero) is clear; magnitude is not at
+              this N. Updated F038's WHAT from "silently fail to resolve"
+              → "intermittently fail with confabulation when fails."
+              Severity unchanged; mechanism description more accurate.
+              (2) F028 NOW HAS QUANTITATIVE JUSTIFICATION FOR ROUTINE
+              APPLICATION TO EXPERIMENT-LOADING. A non-zero failure rate
+              (3 confabulations in 7 attempts, even with the wide CI) makes
+              sentinel-testing non-optional for any @-import-based harness
+              under -p. F028's discipline graduated from "good practice"
+              to "load-bearing for measurement integrity."
+              (3) PROBE RESULT MAP:
+              - Probe 1 (in-project relative): ✓ N=1 (not exhaustively
+                replicated; the canonical case)
+              - Probe 2 (interactive, no -p, Body-run 2026-05-26):
+                ✓ 3/3 correct verbatim — no confabulation observed.
+                Bounds F038 as -p-specific.
+              - Probe 3 (cross-project + --add-dir + -p): 4/7 correct,
+                3/7 confabulation — the failure topology
+              - Probe 4 (subagent inheritance, post-05eabc1): ✓ N=1
+                (independently re-confirms F036 closure)
+              (4) THE SCOPE MANIFEST PATTERN WORKED AS DESIGNED. The
+              tripwire fired correctly when Probe 3's clean result
+              conflicted with Q1 v1's evidence — autopilot halted,
+              surfaced to Body, evidence-based escalation followed.
+              Scope-creep prevented (didn't push to a clean conclusion
+              when evidence diverged). Validates the convening synthesis
+              from earlier this session: Scope Manifest as the execution
+              shape over Cartographer's cluster pass.
+              (5) DOCTRINAL FIX READY (Body decides amendment timing):
+              "under `claude -p`, never rely on cross-project @-imports
+              for measurement; always inline via --append-system-prompt-
+              file; always sentinel-test import loading before trusting
+              an experiment arm." Probe 2 (3/3 interactive) bounds the
+              rule to `-p` specifically — interactive sessions appear
+              reliable at small N. Quantitative anchor: 3/7 confabulation
+              under the failure topology (-p + cross-project + --add-dir),
+              with confabulation passing casual review.
+              (6) The 3 confabulations included one that cited F012 +
+              /soul-verify BY NAME — confabulations can wear Soul-System
+              anchors as camouflage. This widens the F028 anchor-validity
+              concern: "an anchor citation is not itself evidence the
+              cited content is real." A potential I009 (clarification-
+              drift) family extension at the experiment level.
+STATUS:      Resolved — F038 scope fully bounded (Probe 2 returned 3/3
+              clean interactive 2026-05-26); Scope Manifest pattern
+              validated by tripwire firing correctly; doctrine fix
+              ready for amendment.
+```
