@@ -351,7 +351,14 @@ IDEA:      A /soul-help escape hatch for when the user is lost — "I don't know
            note. When things are very fuzzy, it orients and gets the user going:
            activates likely next steps/actions and presents the most-relevant
            information succinctly and clearly.
-STATUS:    Raw
+STATUS:    Built [2026-05-26, via SOUL-067 → 0.4.6]. MVP shipped as a roster: lists
+           every /soul-* command by reading commands/ at runtime + one-line summary
+           each + pointers to philosophy/findings/ideas/witness. The "lost-user
+           orient" half (activate next steps, surface most-relevant context) is
+           deferred — overlaps with /soul-tasks (forward-momentum view) and would
+           need to know what "lost" means contextually. If a future session shows
+           the roster isn't enough to unblock a confused Body, re-open as a richer
+           orient command.
 ```
 
 ```
@@ -538,7 +545,13 @@ WHEN:      2026-05-22
 IDEA:      A /soul-finding capture command — a low-ceremony way for projects (and
            the Soul repo itself) to record a Finding, parallel to /soul-idea for
            ideas. Open: does it help or is it unnecessary?
-STATUS:    Raw
+STATUS:    Built [2026-05-26, via SOUL-067 → 0.4.6]. Shipped as a SCAFFOLDER (the
+           asymmetry resolved per the original NOTES): the Body decides graduation;
+           the command does the mechanical work — confirm Body's call, gather inputs,
+           re-read-verify ID via the SOUL-I027 protocol, write to findings/open/, flag
+           the SOUL-I014 upstream route for reference-project Soul-meta findings. NOT
+           a frictionless inbox — refuses to scaffold without explicit Body call.
+           Deferred: /soul-witness cheap-capture twin (backward observations).
 NOTES:     Asymmetry to resolve before building: /soul-idea captures FORWARD ideas
            cheaply, but findings are meant to be EARNED/deliberate — a frictionless
            finding inbox risks finding-inflation (cheapening the witness->finding
@@ -630,7 +643,20 @@ IDEA:      The durable records (witness.md, ideas.md, findings/) assume a SINGLE
            session can silently clobber another's witness entry on save. Need a
            concurrency model — at minimum a collision DETECTOR, ideally a
            protocol that lets parallel agents share the record safely.
-STATUS:    Raw
+STATUS:    Partially delivered [2026-05-26, via SOUL-067 → 0.4.6]. Option (4) —
+           detect-only re-read-verify-before-write protocol — landed in the two
+           commands that auto-number IDs: /soul-finding (new; baked in from
+           creation) and /soul-idea (back-ported). The protocol: just before
+           write, re-scan the directory/file, confirm the assigned ID is still
+           free, increment + retry if collided, stop and tell the Body if three
+           re-scans keep colliding. Single-filesystem only. /soul-skill needed no
+           change (skill names are user-chosen, not auto-numbered). Witness.md
+           still writes without a command — when /soul-witness eventually ships
+           (deferred from SOUL-I024), it must adopt the same protocol. STILL OPEN:
+           (a) cross-machine concurrency — needs option (2), git-as-arbiter —
+           deferred; (b) Body-driven witness writes are still unprotected; (c) no
+           backstop if the Body or a subagent edits a record file directly
+           bypassing the commands.
 WHY:       Surfaced live in SOUL-064: a parallel session claimed SOUL-063 +
            SOUL-F030 mid-work, uncommitted on top of my committed dcdacf2 —
            caught by the Guardian noticing the ID mismatch, NOT by tooling.

@@ -15,14 +15,19 @@ Witness log). Minimal at capture — just the thought; enrichment accrues later.
 2. Determine the next idea ID: `[PROJECT-CODE]-I###`, incrementing the highest
    existing `-I` number. Project code comes from the file header (default to the
    project's witness-log code).
-3. Append a minimal entry:
+3. **I027 protocol — re-read-verify before write.** Right before appending, re-scan
+   `ideas.md` to confirm your assigned ID is still free (a concurrent session may
+   have claimed it between step 2 and now). If taken, increment and retry. If three
+   re-scans keep colliding, stop and tell the Body — do not silently clobber. Scope:
+   single-filesystem; cross-machine concurrency still needs git arbitration.
+4. Append a minimal entry:
    ```
    ID:        [CODE]-I###
    WHEN:      [today's date, YYYY-MM-DD]
    IDEA:      [the user's idea text, one line]
    STATUS:    Raw
    ```
-4. Report the ID assigned and confirm capture. Do NOT add WHY/PRIORITY/DEVELOP
+5. Report the ID assigned and confirm capture. Do NOT add WHY/PRIORITY/DEVELOP
    unless the user already supplied that detail — capture is meant to be
    frictionless.
 
