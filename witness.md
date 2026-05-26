@@ -2058,3 +2058,189 @@ TYPE:         Council Note — for Artificer (the instrument-output-style call)
 CONSEQUENCE:  unresolved
 STATUS:       Open
 ```
+
+```
+ID:           SOUL-074
+WHEN:         2026-05-26 / REF-02 M9 close-out + /soul-handoff
+WHERE:        .soul/handoff.md write step, immediately after the M9 merge to
+              local main.
+WHAT:         The handoff cursor's absolute numeric claim ("16 commits ahead
+              of origin/main") went stale within minutes: the Body pushed
+              between the autonomous run's report and the explicit /soul-handoff
+              invocation, dropping the actual count to 0. The cursor as written
+              was a Coherent Falsehood (F028) — anchored in the prior turn's
+              git output but invalidated by subsequent state change. Caught
+              only because /soul-handoff's flush-volatile-to-durable step
+              re-ran `git rev-list --count origin/main..main`.
+TYPE:         Council Note — for Artificer (handoff-write discipline) and
+              Archivist (the durable record vs volatile state seam).
+              Speaks to F028 (Coherent Falsehood / anchor validity) — the
+              specific failure mode is "anchor that WAS valid at write time
+              but the underlying state moves between write and read."
+              Counter-discipline: at handoff-write time, RE-VERIFY any
+              absolute-count claim against current state, not against
+              prior-turn output. Better: prefer state-shape claims
+              ("M9 merged: yes/no") over count claims ("N commits ahead")
+              when the underlying mutable state can change between sessions.
+CONSEQUENCE:  Handoff fixed inline; this entry captures the lesson. Worth
+              watching if it recurs — at N=2, graduate to a finding on
+              "absolute-count claims as a Coherent-Falsehood failure mode in
+              handoff cursors."
+STATUS:       Open (lesson captured; no instrument change yet — wait for
+              second instance before adding a guard).
+```
+
+```
+ID:           SOUL-075
+WHEN:         2026-05-26 / first clean Mind-vs-seed A/B (post-F036 closure)
+WHERE:        /tmp/soul-experiment/ — Q1 + sentinel evidence files
+              (q1-mind-off-v2.txt, q1-mind-on-v2.txt, sentinel2-mind-on.txt,
+              sentinel2-mind-off.txt). This entry. No doctrine edits.
+WHAT:         Ran the I026-residual / I005-precursor A/B named in SOUL-072:
+              Mind-on vs Mind-off on Q1 ("ship new slash-command — copy or
+              symlink?"), where Rule 9 + F029 live ONLY in mind.md (verified
+              by grep of seed + the-soul.md — neither mentions symlinks).
+              FIRST topology used @-imports from /tmp/.../CLAUDE.md to
+              absolute paths in the Soul-System repo. Sentinel v1 caught a
+              Coherent Falsehood: Mind-on arm CLAIMED "yes, mind.md in context"
+              and quoted a FABRICATED "Rule 9" (about distillation cadence,
+              not symlinks). F028 anchor-validity discipline triggered; switched
+              topology to inlined content via --append-system-prompt-file.
+              Sentinel v2: Mind-off correctly says "not in context"; Mind-on
+              quotes the real Rule 9 VERBATIM. Topology verified-clean.
+              Q1 v2 results: BOTH ARMS chose symlink. Mind-OFF reasoned from
+              first-principles drift logic AND named the Windows/zip-export
+              tradeoff AND proposed a sync-script fallback (~80 words);
+              Mind-ON cited Rule 9 + F029 by name and stopped (~40 words).
+TYPE:         Emissary (the experiment itself, against reality); Skeptic
+              (sentinel design — challenged the experiment's own evidence
+              before interpreting); Guardian (F028 anchor-validity applied
+              to the test's measurement validity — third instance after
+              SOUL-070 and SOUL-072); Artificer (inline-content topology
+              via --append-system-prompt-file); Architect (chose question,
+              scoped to verified Mind-only doctrine).
+CONSEQUENCE:  (1) Directional convergence on Q1 — Mind did NOT change the
+              answer, only the JUSTIFICATION (citation vs first-principles).
+              Reconfirms Tier 3a's "sharpens citation, doesn't change
+              direction" verdict under a VERIFIED-LOADED Mind (Tier 3a's
+              verdict was suspect under F036; now stands on cleaner
+              evidence). I026's claim holds for this question class.
+              (2) REASONING-COMPRESSION OBSERVATION (n=1, speculative): the
+              Mind-ON arm cited the rule and stopped; the Mind-OFF arm
+              reasoned through drift logic AND named the Windows/zip-export
+              tradeoff AND proposed a sync-script fallback. If real with
+              replication, this is a NEW failure mode candidate: doctrine
+              present can short-circuit derivation. Needs N>1.
+              (3) METHODOLOGICAL FINDING CANDIDATE (for /soul-finding
+              graduation): cross-project @-imports from /tmp/.../CLAUDE.md
+              to absolute paths in another repo silently fail under
+              `claude -p` auto-discovery — the agent reads the @-line as
+              raw text but the content never loads (confirmed by sentinel
+              v1's fabricated quote). --append-system-prompt-file works.
+              SOUL-meta — affects any experiment harness (I011) that varies
+              CLAUDE.md content per arm via @-imports. NOT yet verified in
+              interactive sessions; residual.
+              (4) F028 IN ACTION — THIRD INSTANCE: anchor-validity caught
+              a Coherent Falsehood at the EXPERIMENT level before the result
+              became precedent. Mind-on's first "yes + fabricated quote"
+              would have produced a wrong-direction interpretation ("Mind
+              loaded but didn't fire — F012 family") had the sentinel not
+              run. F028 is now load-bearing for the experiment harness
+              itself, not just product claims.
+              (5) Q1 WAS TOO EASY for the design goal. Copy-vs-symlink for
+              evolving artifacts is a generic question seed-alone reasoners
+              answer correctly (drift is well-known in Claude's training).
+              To isolate Mind-DIRECTIONAL value, future Qs need pure
+              mind.md-only territory: contrast cases (F031-vs-F030;
+              F028-vs-F015), Rule 7's scaffolder-not-inbox, I024's
+              anti-inflation friction. Residual.
+              (6) TOKEN ECONOMICS (I005) signal: Mind-OFF ~80 words with
+              tradeoff scaffolding; Mind-ON ~40 words with citation only.
+              Mind-on is cheaper per response IF the answer is equivalent —
+              but if (2) is real, the saved tokens cost reasoning quality.
+              Tradeoff visible; not yet measured.
+              (7) I027 single-writer evidence — FOURTH instance: parallel
+              session wrote SOUL-074 (REF-02 M9 close-out + handoff
+              Coherent Falsehood) between this session's plan and write.
+              Caught by F028 re-verify before append. Re-read-verify
+              protocol held; assigned SOUL-075.
+STATUS:       Open — initial A/B clean; many residuals (replication for
+              compression hypothesis; harder Qs for direction-isolation;
+              interactive-session test for @-import failure; /soul-finding
+              candidacy for the methodology gap).
+```
+
+```
+ID:           SOUL-076
+WHEN:         2026-05-26 / Q2 — first verified Mind-directional reproduction test
+WHERE:        /tmp/soul-experiment/q2-mind-on.txt, q2-mind-off.txt, q2.txt.
+              Ground truth: amendments/accepted/SOUL-A009-handoff-correctness-
+              scope.md. Verified topology: --append-system-prompt-file (SOUL-075).
+              This entry.
+WHAT:         Q2 = "subagent FANOUT handoff packet: hermetic (option a) or
+              non-hermetic (option b)?" — fresh-framed to avoid leaking A008/
+              A009 by ID or by the "self-contained for correctness" phrasing.
+              Seed has zero handoff-topology doctrine (verified by grep);
+              mind.md carries the A008↔A009 contrast case (line 125-128).
+              Ground truth per A009: (b) NON-HERMETIC — "self-contained for
+              correctness; not hermetic; worker may read surrounding repo
+              for consistency cues." Result: Mind-ON chose (b), used the
+              exact mind.md phrase "restart correctness," cited "A008→A009
+              refinement" by ID, named "self-contained ≠ shielded," and
+              referenced the FANOUT dogfood — exact reproduction of project
+              record. Mind-OFF chose (a) HERMETIC — wrong direction, but
+              with a coherent and defensible argument (fanout amplifies
+              variance; hermetic forces dispatcher to name task dependencies;
+              hermetic gives legible failures). Word counts: Mind-OFF ~115,
+              Mind-ON ~115 — converged this time (compression hypothesis
+              from SOUL-075 §2 falsified at N=2).
+TYPE:         Emissary (the experiment against reality, specifically against
+              the project's own recorded decision); Archaeologist (recovered
+              A009's exact wording as ground truth); Skeptic (Q2 phrasing
+              audit — removed every leakable token from mind.md's contrast
+              case); Architect (three-way scoring: direction + reasoning
+              shape + tokens).
+CONSEQUENCE:  (1) REPRODUCTION-FIDELITY CLAIM DISCHARGED — first verified-
+              clean directional result. Spec line 52-53 ("Reproduction is
+              the success measure. The Mind is *for* enabling agents to
+              produce coherent next-work reading it alone (+ seed)") now has
+              an empirical positive sample. Mind-on reached the project's
+              actual decision; Mind-off didn't.
+              (2) COHERENT FALSEHOOD FAILURE MODE OBSERVED IN THE WILD —
+              Mind-off's wrong answer was internally consistent and
+              plausibly reasoned (variance, legibility). The project's
+              record (FANOUT-007) contradicts it on EMPIRICAL grounds
+              (workers harmlessly read siblings). This is the exact failure
+              mode the Mind is designed to prevent: a fresh agent
+              re-derives a sensible-sounding answer the project has
+              already learned past. F015 anchor-existence + F028 anchor-
+              validity + the Mind = the three layers of defense.
+              (3) COMPRESSION HYPOTHESIS FROM SOUL-075 §2 FALSIFIED AT N=2.
+              Q1 had Mind-ON ~40 / Mind-OFF ~80 (compressed); Q2 had both
+              ~115 (equal). Single-data-point noise, not a real pattern.
+              No follow-up needed.
+              (4) NET CLAIM STATE: (axis 1) reproduction fidelity ✓
+              discharged on Q2; (axis 2) efficiency at unchanged direction
+              ✓ discharged on Q1 (~50% cheaper, spec predicted ~41%);
+              (axis 3) drift resistance untested — needs cross-session
+              method, not A/B (residual).
+              (5) METHODOLOGY GAP READY FOR GRADUATION: cross-project
+              @-import failure under `claude -p` (SOUL-075 §3) has now
+              been confirmed by two arcs (Q1 v1 detection; Q2 used
+              --append-system-prompt-file from the start without retest).
+              Ready for /soul-finding — Body decision.
+              (6) The Mind's claim across N=2 distinct doctrinal questions
+              (one with seed-purchase, one without) now has the predicted
+              shape: seed-purchase question → Mind = citation cache
+              (Q1); no-seed-purchase question → Mind = directional
+              correction (Q2). The three-axis model from the spec
+              survives contact with evidence.
+              (7) Sample size still small: N=1 question per axis. Robust
+              measurement would replicate Q2 across other mind-only
+              contrast cases (F031-vs-F030; F028-vs-F015 — both flagged
+              for future runs). But the directional discrimination on Q2
+              was unambiguous; no urgent need for replication.
+STATUS:       Resolved (Q2 result clean; reproduction-fidelity claim has
+              its first verified-clean positive sample; method substrate
+              proven; @-import bug ready for graduation).
+```
