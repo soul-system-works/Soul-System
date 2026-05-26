@@ -1919,3 +1919,63 @@ STATUS:       Resolved (Tier 3a complete; F036 documents the architectural gap;
               re-test settled the methodology; honest verdict on Mind value
               recorded; Tier 3b next)
 ```
+
+```
+ID:           SOUL-071
+WHEN:         2026-05-26 / Tier 3b: Mind deployed on REF-05 (second project,
+              FROZEN — unfrozen for one addition to preserve learned doctrine)
+WHERE:        Soul-System repo: docs/experiments/2026-05-26-mind-REF-05-candidate.md
+              (Tier-1-style hand-craft, 209 lines). REF-05 repo (cross-repo
+              deployment, NOT committed by me): /home/fig/REF-05/mind.md
+              (deployed, 176 lines) + CLAUDE.md updated to add `@mind.md` after the
+              existing seed import. REF-05 commit deferred to the Body —
+              cross-repo boundary respected.
+WHAT:         Tier 3b deployment validation of the Mind pattern on a different domain
+              (Modelica/Dymola simulation vs Soul-meta). Read REF-05's full
+              record (CONTEXT.md, CLOSEOUT.md, docs/FINDINGS.md, ideas.md), distilled
+              into 10 rules + 5 tensions + 5 invariants + 5 contrast cases + 5 residuals
+              specific to that project's earned domain experience. Hand-crafted Mind
+              saved as the Tier-3b experimental artifact in soul-system; pruned-for-
+              deployment version (inspection/self-test/next-move sections removed)
+              written to REF-05's project root.
+              Three load-bearing things in the deployed Mind:
+              (1) Rules 1-10 are PROJECT-PARADIGM (Modelica/Dymola/IF97) — would NOT
+                  pass the Soul-meta upstream boundary. Correctly project-scoped.
+              (2) Contrast case 5 **explicitly records the F033 boundary slip**: "F033
+                  (reverted upstream) vs MO-F1/F4 (stayed at home) ... if you removed
+                  the project's domain entirely, would the lesson still be a Soul
+                  System lesson? — for acausal conservation, NO. Stays at home." This
+                  IS the F036/boundary-fix discipline encoded into the project's own
+                  Mind. A Body curating a future upstream candidate against this Mind
+                  would see the contrast case + apply the test — positive evidence
+                  the Mind pattern delivers value on the boundary-discipline case.
+              (3) Last-distilled footer notes the FROZEN-project context: Mind preserves
+                  learned doctrine in compressed form for a frozen artifact; the Mind
+                  is the "static-and-good" outcome the Soul System's own §The Mind
+                  doctrine names ("a project that stabilizes its rules and stops
+                  needing redistills has won; its Mind goes static-and-good").
+TYPE:         Distiller (the new Magistrates role — first cross-project exercise of
+              the role since adoption), Emissary (Tier 3b: take the Mind concept out
+              to a different domain and see if it holds), Steward (kept it under 200
+              lines despite richer source material than the Soul-System Mind),
+              Archivist (the Tier-1-style candidate artifact lives in our docs/
+              experiments/ as the experiment record).
+CONSEQUENCE:  Tier 3 (the deployment-validation residual named in spec §Tier 3) is now
+              SUBSTANTIALLY DISCHARGED:
+              - Tier 3a: partial pass on Soul System dogfood (Mind sharpens citation,
+                doesn't change direction vs seed alone; lens-layer architecture
+                validated for parent session; F036 documented for the subagent gap).
+              - Tier 3b: SUCCEEDED on REF-05 — the pattern works in a
+                different domain, the four-bucket schema populated naturally, the
+                F033-class boundary slip is now encoded into the project's own Mind
+                as the disambiguating contrast case.
+              SOUL-I026 can transition Built (MVP) → Built (validated for parent
+              session; F036 residual on the subagent gap; Tier 3 substantially
+              discharged across two domains). Awaiting Body to commit in REF-08-
+              modelica + commit this witness + ideas update in soul-system.
+              NOT COMMITTED yet on either side.
+STATUS:       Resolved (Tier 3b artifact written + deployed cross-repo; F033
+              retroactive-test passes; Mind pattern validated on a second domain;
+              two pending commits: this entry + ideas update + experimental artifact
+              in soul-system, AND mind.md + CLAUDE.md in REF-05 by Body)
+```

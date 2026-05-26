@@ -600,25 +600,35 @@ IDEA:      The Mind — a project-scoped memory layer that continuously compress
            artifacts and decisions accumulate. Its product is a SHRINKING
            document — getting more precise and more generative over time, not
            longer.
-STATUS:    Built (MVP) [2026-05-26, via SOUL-068 → 0.5.0]. The Mind is now a third
-           always-on layer between the seed and the records: project-scoped
-           mind.md distilled by /soul-distill (on-demand, draft-for-curation).
+STATUS:    Built — Tier 3 substantially discharged [2026-05-26, via SOUL-068
+           (MVP shipped → 0.5.0) + SOUL-070 (Tier 3a) + SOUL-071 (Tier 3b)].
+           Mind = third always-on layer between seed and records: project-scoped
+           mind.md, distilled by /soul-distill (on-demand, draft-for-curation).
            Doctrine updated: philosophy/the-soul.md gained §The Distiller +
-           §The Mind. All six original open questions resolved: (1) WHERE =
-           project root, single mind.md; (2) WHEN = on-demand MVP (auto-fire
-           deferred); (3) SHRINKAGE invariant = 4 mechanical checks (≤200-line
-           budget, anchor requirement, generator test, default-deny growth); (4)
-           failure-mode guards = 6 named (drift, force-fit, renamed-seed,
-           renamed-CLAUDE.md, doctrine-obligation collapse, stale) + retirement
-           protocol; (5) seed-tension = yes always-on at the project layer,
-           ~200-line budget honoring SOUL-033; (6) reproduction-test = partial
-           — Tier 2 (held-out A/B on /soul-witness?) showed Mind reproduces
-           doctrinal reasoning faithfully + ~41% cheaper, NOT obligation-
-           specific reasoning (lens-layer architecture is the answer). Tier 3
-           deployment validation (the 2-3 question A/B on the deployed Mind +
-           dogfood on a second project — REF-03 candidate) is the open residual.
-           Spec: docs/specs/2026-05-26-the-mind-design.md. Plan:
-           docs/plans/2026-05-26-the-mind-implementation.md.
+           §The Mind. All six original open questions resolved.
+           TIER 3 RESULTS:
+           - Tier 3a (Soul-System dogfood A/B): partial pass. Mind sharpens
+             citation (rules cited by number) but on chosen questions did NOT
+             change direction vs seed alone — seed is doctrinally rich enough
+             for those questions. Token economy ~47% cheaper aggregate.
+             SOUL-F036 surfaced: @mind.md does NOT reach subagents under current
+             Claude Code harness behavior — the lens-layer's "always-on for
+             everything" claim only holds for parent session. 4 candidate fix
+             paths named in F036; needs evidence to choose.
+           - Tier 3b (REF-05 deployment): SUCCEEDED. Mind pattern
+             works in a different domain (Modelica/Dymola simulation vs Soul-
+             meta). 176-line deployed mind.md carries 10 rules + 5 tensions +
+             5 invariants + 5 contrast cases + 5 residuals — all project-
+             paradigm (correctly NOT Soul-meta upstream candidates).
+             Contrast case 5 explicitly encodes the F033 boundary slip + the
+             diagnostic test — positive evidence the Mind pattern delivers
+             value on the boundary-discipline case that fix sharpened.
+           OPEN RESIDUALS (named, not resolved): F036 (subagent gap) +
+           reproduction-fidelity sampling automation (still manual) +
+           cross-project synthesis (deferred per spec) + the four DEFER items
+           still deferred. Spec: docs/specs/2026-05-26-the-mind-design.md.
+           Plan: docs/plans/2026-05-26-the-mind-implementation.md. Tier 3b
+           artifact: docs/experiments/2026-05-26-mind-REF-05-candidate.md.
 WHY:       Differentiates from existing layers by output shape, not just topic.
            Witness records what happened; Archivist organizes what exists;
            Council synthesizes what patterns mean; The Mind distills WHY the
