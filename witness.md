@@ -1724,3 +1724,80 @@ STATUS:       Resolved (three deliverables shipped; symlinks live + verified via
               the system-reminder skill-list refresh showing soul-finding +
               soul-help; SYSTEM-VERSION → 0.4.6)
 ```
+
+```
+ID:           SOUL-068
+WHEN:         2026-05-26 / The Mind MVP shipped (SOUL-I026 graduated → 0.5.0)
+WHERE:        commands/soul-distill.md (NEW); mind.md at repo root (NEW); CLAUDE.md
+              + operations/CLAUDE.md + commands/soul-init.md (Mind import + pointer);
+              philosophy/the-soul.md (§The Distiller + §The Mind + Distiller↔Archivist
+              pair + Starting-a-Session pointer); SYSTEM-VERSION.md → 0.5.0;
+              docs/specs/2026-05-26-the-mind-design.md;
+              docs/plans/2026-05-26-the-mind-implementation.md;
+              docs/experiments/2026-05-26-mind-tier1-candidate.md;
+              ideas.md (SOUL-I026 → Built; SOUL-I028 captured for deferred figure).
+WHAT:         Closing entry for the Mind MVP arc — the longest single-session build of
+              this session-block (~9 commits). The full chain:
+              (1) BRAINSTORM (skill: /brainstorming). Body's framing — Kolmogorov /
+              MDL applied to project state: "the best representation is not a
+              description but the shortest set of rules that would reproduce it."
+              (2) NECESSITY TEST FIRST (Body instinct, F014 expansion-gate fire on
+              the Mind concept itself — the gate working). Tier 1 (hand-craft) → Tier
+              2 (subagent A/B) → Tier 3 (build).
+              (3) TIER 1: hand-crafted candidate Mind from Soul's own record, 218
+              lines, four buckets + named residual + bias-warning honesty.
+              (4) TIER 2: held-out A/B on "should /soul-witness be built?" with the
+              I011 substrate (two parallel subagents). Arm A (full record): 42K
+              tokens, conditional YES (scaffolder). Arm B (Mind-only): 25K tokens
+              (~41% cheaper), conditional NO (case unearned). DISAGREEMENT on
+              direction was the most informative datum — Arm A pulled obligation-
+              specific facts (SOUL-A001 lifecycle, SOUL-I014 upstream route) absent
+              from the Mind; Arm B leaned on doctrinal rules + tensions. Verdict:
+              Mind is a LENS layer, not a replacement; doctrine-vs-obligation is the
+              load-bearing boundary.
+              (5) SPEC: 8 sections, Body-approved one by one, written to
+              docs/specs/2026-05-26-the-mind-design.md (311 lines).
+              (6) PLAN: writing-plans skill adapted for non-code (markdown/symlink/
+              wc/grep verifications), 8 tasks, ~6 commits, docs/plans/.
+              (7) BUILD: /soul-distill spec (162 lines, mirrors /soul-skill) +
+              symlink + pruned mind.md (169 lines) + Emissary test of /soul-distill
+              against draft (4 shrinkage checks + 6 guards + 3 diagnostic Qs all
+              clean) + seed/soul-init wiring + philosophy update + version bump.
+              (8) DOCTRINE UPDATE: philosophy/the-soul.md gained §The Distiller
+              (Magistrates), §The Mind (after §Amendment Process — the system-level
+              analog framing), Distiller↔Archivist opposing pair, Mind pointer in
+              §Starting a New Session.
+TYPE:         Architect (lens-layer design from Tier 2 evidence), Artificer (the
+              command + deployed artifact + all six MVP wiring touches), Emissary
+              (Tier 1 + Tier 2 + Task-4 self-test — three rounds of taking the
+              instrument out to reality), Skeptic (bias warning kept visible through
+              Tier 1; "two arms disagreed" reported honestly, not spun), Steward
+              (necessity test first; explicit retire conditions in the command),
+              Revelator (the project-level-analog-of-amendment-process reframe was a
+              "what was always true but unseen" moment), Guardian (caught the
+              parallel-session ID collision; F028-discipline check on the SOUL-033
+              seed-line citation).
+CONSEQUENCE:  Three-layer doctrine now (seed → Mind → records); the Soul System is
+              its own first dogfood. F014 expansion gap got NEW field evidence: the
+              Body's "is The Mind even necessary?" check fired DURING the brainstorm
+              and shaped the design — expansion-without-Body still untouched as the
+              open question, but the human-driven activation is now demonstrably
+              effective and worth capturing. CONCURRENCY-GAP LIVE EVIDENCE: during
+              this build a parallel session committed fafb416 (findings F032-F035
+              from REF-05) — exactly the SOUL-I027 single-writer
+              assumption breaking in practice. No collision on IDs this time
+              (different artifact spaces), but the witness ID race could have
+              happened — the I027 protocol baked into /soul-finding + /soul-idea
+              would have caught it, and /soul-witness (still deferred) would
+              eventually need the same. DEFERRED for follow-up: Tier 3 deployment
+              validation (the 2-3-question A/B on the deployed Mind, then dogfood
+              on REF-03); SOUL-I028 (doctrine-stack figure); auto-fire hooks;
+              /soul-mind viewer; cross-project synthesis; reproduction-fidelity
+              automation; plugin packaging. SOUL-I026 transitions Raw → Built (MVP)
+              with all six original open questions resolved (where, when, shrinkage
+              invariant, failure guards, seed-tension, reproduction-test — last
+              answered partially by Tier 2). NOT COMMITTED YET (this entry + ideas
+              updates come in the closing commit).
+STATUS:       Resolved (MVP shipped; deployment-validation residual named in spec
+              §Tier 3; SYSTEM-VERSION → 0.5.0; doctrine updated)
+```

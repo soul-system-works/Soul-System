@@ -600,7 +600,25 @@ IDEA:      The Mind — a project-scoped memory layer that continuously compress
            artifacts and decisions accumulate. Its product is a SHRINKING
            document — getting more precise and more generative over time, not
            longer.
-STATUS:    Raw
+STATUS:    Built (MVP) [2026-05-26, via SOUL-068 → 0.5.0]. The Mind is now a third
+           always-on layer between the seed and the records: project-scoped
+           mind.md distilled by /soul-distill (on-demand, draft-for-curation).
+           Doctrine updated: philosophy/the-soul.md gained §The Distiller +
+           §The Mind. All six original open questions resolved: (1) WHERE =
+           project root, single mind.md; (2) WHEN = on-demand MVP (auto-fire
+           deferred); (3) SHRINKAGE invariant = 4 mechanical checks (≤200-line
+           budget, anchor requirement, generator test, default-deny growth); (4)
+           failure-mode guards = 6 named (drift, force-fit, renamed-seed,
+           renamed-CLAUDE.md, doctrine-obligation collapse, stale) + retirement
+           protocol; (5) seed-tension = yes always-on at the project layer,
+           ~200-line budget honoring SOUL-033; (6) reproduction-test = partial
+           — Tier 2 (held-out A/B on /soul-witness?) showed Mind reproduces
+           doctrinal reasoning faithfully + ~41% cheaper, NOT obligation-
+           specific reasoning (lens-layer architecture is the answer). Tier 3
+           deployment validation (the 2-3 question A/B on the deployed Mind +
+           dogfood on a second project — REF-03 candidate) is the open residual.
+           Spec: docs/specs/2026-05-26-the-mind-design.md. Plan:
+           docs/plans/2026-05-26-the-mind-implementation.md.
 WHY:       Differentiates from existing layers by output shape, not just topic.
            Witness records what happened; Archivist organizes what exists;
            Council synthesizes what patterns mean; The Mind distills WHY the
@@ -681,4 +699,28 @@ NOTES:     Solution shape candidates: (1) UUID-style or timestamp-based IDs
            standard — events.jsonl is already JSONL-append-friendly, less
            collision-prone), [[SOUL-I025]] (GUI access layer would need a
            consistent record state too).
+```
+
+```
+ID:        SOUL-I028
+WHEN:      2026-05-26
+IDEA:      A doctrine-stack figure (seed → Mind → records) — a small SVG
+           showing the three-layer always-on/on-demand hierarchy that the Mind
+           MVP introduced. Complements architecture.svg (which stays system-
+           level: Universe/Body/Soul/Witness/Council/Judge/Hands). Surfaced and
+           deferred during the Mind MVP build (witness SOUL-068).
+STATUS:    Raw
+WHY:       The Mind MVP added a third always-on layer between the seed and the
+           records (per docs/specs/2026-05-26-the-mind-design.md §Architecture).
+           The spec contains an ASCII diagram of this stack; a proper SVG would
+           make the three-layer pattern legible at a glance. Body's call during
+           the MVP brainstorm: defer the SVG to keep MVP scope tight (Rule #2
+           default simplicity). The doctrine update in philosophy/the-soul.md
+           (commit 4153843) carries the new layer in prose only.
+NOTES:     Two figures, two levels: architecture.svg = system roles; the new
+           figure = layered always-on/on-demand stack. Could also tie into
+           [[SOUL-I025]] (GUI access layer) — both are presentation-layer
+           additions that ride on top of the standards. Defer until the first
+           non-Soul-System project has a Mind too (proves the three-layer
+           pattern is generic, not Soul-internal).
 ```
