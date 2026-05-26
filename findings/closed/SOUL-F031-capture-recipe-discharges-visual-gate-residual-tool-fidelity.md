@@ -62,8 +62,10 @@ RELATED:         [[SOUL-F030]] (visual gate deferred without capture recipe — 
                  progress-report turns that were not completion claims), [[SOUL-F015]]
                  (Coherent-Falsehood vocabulary — caught + corrected here), [[SOUL-F007]]
                  (Universe / global invariant — shared-file changes re-validated).
-STATUS:          Open — operational. Promote F030's capture recipe to default; split
-                 completion check #4 into design-capture vs target-tool-render. Second
-                 reference project harvested into the system (after the blog); both are
-                 greenwoodms06's, now spanning a static site and a Modelica/Dymola codebase.
+STATUS:          Closed [2026-05-26, via SOUL-066]. Operational fix landed together with
+                 SOUL-F030: hook check #4 + soul-verify.md check #4 now embed the recipe
+                 (rasterize via project's own lib + Read it; or screenshot via run/verify)
+                 AND the split (design-capture headless vs target-tool render — residual
+                 named, not folded into "not eyeballed"). Closes the negative/positive pair
+                 from greenwoodms06's blog + REF-01 reference projects.
 ```

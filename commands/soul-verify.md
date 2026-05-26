@@ -37,9 +37,18 @@ For the work just completed, answer each:
    (what already exists in the field, the standard others use, the real user's
    need, a larger frame), or did it treat the local task as the whole Universe?
 
-4. **Visual / non-automatable Witness (SOUL-A007).** Is there a visual or other
-   non-test-checkable artifact? If so, was it CAPTURED and INSPECTED (screenshot,
-   render, image diff) — not deferred to "the human will look"?
+4. **Visual / non-automatable Witness (SOUL-A007, SOUL-F030/F031).** Is there a visual
+   or other non-test-checkable artifact? If so, was it CAPTURED and INSPECTED — not
+   deferred to "the human will look"? **Default recipe (F030/F031):** rasterize via the
+   project's own image lib (e.g. `sharp` for SVG, `matplotlib` for polygon coords) and
+   Read the resulting PNG back; or screenshot the page via the project's run/verify
+   skill. A prose "GAP → not eyeballed" on a visual change is **NON-PASS**, not a clean
+   line — it is an admission the obligation was skipped. **Split the check** when the
+   capture is approximate: (a) DESIGN captured + inspected (headless-dischargeable via
+   the recipe — catches geometry/encoding defects, e.g. self-intersecting polygons) vs
+   (b) TARGET-TOOL render confirmed (the artifact paints right in its actual renderer;
+   may legitimately require the Body or the tool itself). Name the residual rather than
+   folding it into "not eyeballed."
 
 5. **Honest markers (SOUL-F016).** Is unfinished business flagged with a marker
    (`TODO`/`FIXME`/`DEBT`/`HACK`) where it lives, and standing limitations noted
