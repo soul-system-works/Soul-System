@@ -2331,3 +2331,112 @@ STATUS:      Resolved — F038 scope fully bounded (Probe 2 returned 3/3
               validated by tripwire firing correctly; doctrine fix
               ready for amendment.
 ```
+
+```
+ID:           SOUL-078
+WHEN:         2026-05-26 (end of REF-02-OS M10 Task 0)
+WHERE:        REF-02-OS dogfood session; Body in-session comment after a
+              long Task 0 completion report.
+WHAT:         AI defaults to wall-of-text response shape — conclusion and
+              next-step buried inside multi-paragraph summaries or absent
+              entirely. Body has observed the pattern repeatedly across
+              sessions ("i've seen this multiple times"). Body's
+              prescription: lead with the conclusion and the next step;
+              keep the rest tight; let /soul-explain handle expansion on
+              demand. The same response shape is what /soul-tasks and
+              /soul-verify both end with — a compact lead and a single
+              line — which means the pattern is doctrine-shaped already;
+              it just isn't transferring to free-form completion reports.
+TYPE:        Body-AI interface / communication discipline
+CONSEQUENCE: (1) Body has to re-read or re-ask to extract the actionable
+              point — wastes attention, weakens the proactive-next-step
+              discipline SOUL-I010 / /soul-tasks was built to support.
+              (2) Long completion reports also push prior context out of
+              the Body's working memory faster, making mid-session
+              corrections more expensive.
+              (3) Saved as a feedback memory in the project session so
+              the rule survives the session boundary even before any
+              doctrine amendment lands.
+              (4) Candidate doctrine extension: a "lead-with-conclusion"
+              norm for ALL non-trivial AI responses, mirroring the
+              compact-line convention already used by /soul-verify and
+              /soul-tasks. Either a Mind rule or a hook-level enforcement
+              (instrument layer). Not graduated to a finding yet — N>1
+              evidence exists but no Council convening has scoped the
+              fix.
+STATUS:      Open — feedback recorded as a durable memory in the
+              REF-02-OS session (cross-session safety net); upstream
+              graduation to a finding deferred until the Body convenes
+              the cluster (this is one of several "AI response-shape"
+              observations — pair with /soul-explain's design intent).
+```
+
+```
+ID:           SOUL-079
+WHEN:         2026-05-26 / Cluster 1 design beat closeout — verify gate
+              caught a doctrine-level Coherent Falsehood
+WHERE:        4 files affected — Cartographer cluster-pass message (this
+              session's conversation, not editable); /soul-council spec
+              line 15; /soul-ask-body spec (no instance — passed clean);
+              /soul-roles spec (no instance); SOUL-A012 amendment lines
+              8 and 87. 3 file edits applied to correct.
+WHAT:         I propagated a false magnitude claim — "SOUL-F014 has
+              accumulated 6+ months of evidence" — through the
+              Cartographer cluster pass, then into /soul-council spec
+              and SOUL-A012 amendment, repeating the same false anchor
+              across 3 written artifacts plus one in-session statement.
+              The truth: F014 was filed 2026-05-20; today is 2026-05-26.
+              SIX DAYS, not six months. The evidence DENSITY is real
+              (multiple re-confirmations across Tier 3a Mind dogfood
+              SOUL-070, REF-03 SOUL-065, Q1/Q2 Mind A/B SOUL-075/076);
+              the AGE is not. I conflated density with age and asserted
+              a magnitude I never anchored.
+              The pre-completion verify gate (the Stop hook running the
+              F012 + F028 checklist) caught it on the 4th amendment-
+              writing turn — I read F014's DATE field while writing the
+              amendment, but did not cross-check against today's date
+              until the verify gate forced me to.
+TYPE:        Guardian (F028 anchor-validity discipline applied at the
+              gate — this is the discipline catching itself in action,
+              fifth instance in this session's arc); Skeptic (the
+              missing question: "what's the actual time delta?"); also
+              an I027 single-writer instance — SOUL-078 was written by
+              a parallel session between my plan-to-write-078 and the
+              re-read-verify step that caught it (FIFTH I027 instance
+              of this arc, after SOUL-064 / SOUL-072 / SOUL-075 / SOUL-077).
+CONSEQUENCE: (1) FRESH F028 INSTANCE AT THE DOCTRINE LEVEL. F038 has
+              been about confabulation under -p; SOUL-077 closed
+              that scope. This entry shows the SAME failure mode
+              manifesting at the DOCTRINE level — wearing the F014 ID
+              as camouflage. F028's "an anchor citation is not itself
+              evidence the cited content is real" (SOUL-077 §6)
+              generalizes: an anchor citation is not evidence the
+              MAGNITUDE asserted about the cited content is real either.
+              (2) F028 NOW HAS A THIRD AXIS OF JUSTIFICATION. Was:
+              anchor-existence (F015) + anchor-validity (F028 original)
+              + experiment-loading (SOUL-077). NOW ADD: magnitude-claims
+              about cited records (date/age/count) need re-anchoring,
+              not propagation from a confabulated source.
+              (3) THE VERIFY GATE DID ITS JOB. SOUL-F012 hook fired,
+              the F028 checklist surfaced the gap on routine self-
+              audit. Pattern is reproducible: the gate firing on every
+              Stop catches what the AI's in-session drafting misses.
+              Without the gate, this would have shipped — 4 artifacts
+              carrying a false magnitude that would have looked
+              authoritative on later re-read.
+              (4) FIVE I027 INSTANCES this arc. The single-writer
+              re-read-verify protocol held in all five (the existing
+              entry was always detected before clobber). The protocol
+              is robust at this concurrency level; a sixth instance
+              might earn revisiting (e.g., advisory file-lock or git-
+              based arbitration, both deferred per I027 spec).
+              (5) DOCTRINE LESSON FOR THIS PROJECT: when asserting
+              magnitude about evidence (age, count, density), name
+              the date or count and the source separately, do not
+              fuse them into a single uninspected claim. The original
+              draft of A012 should have said "filed 2026-05-20; N
+              re-confirmations across SOUL-NNN, SOUL-MMM" — never
+              "6+ months." Format: anchor each magnitude.
+STATUS:      Resolved — 3 files edited; doctrine-level F028 instance
+              added to the running tally; verify-gate value re-affirmed.
+```
