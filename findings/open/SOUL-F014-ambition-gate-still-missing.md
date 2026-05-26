@@ -50,7 +50,33 @@ FIELD EVIDENCE:  2026-05-22 (REF-04 SOUL-F-f, via SOUL-056). A POSITIVE datum:
                  ceremony (the A003/F014 hope). It confirms the PAYOFF, not the
                  ACTIVATION — firing was still Body/practice-driven, so the open question
                  (can expansion fire WITHOUT the Body) is untouched.
-STATUS:          Open — /soul-expand built (Body-invoked partial fix). Stays open
-                 on the genuinely-hard question: can expansion be activated without
-                 the Body? (Unlike F012, there is no obvious instrument.)
+
+                 2026-05-26 (REF-03 reference project, via SOUL-065 — harvested from
+                 [[SOUL-064]]). A NEGATIVE datum, primary-verified in REF-03 ADR-0010
+                 (lines 295–310). Sharpens WHEN the gap fires: not just at framing —
+                 at RECOMMENDATION TIME, on a SHARED ASSET, in a MULTI-MODAL setting.
+                 The agent, fixing a skylight residual leaking BaseColor into thermal ε,
+                 first recommended making `M_ThermalLandscape` Unlit. Locally correct
+                 for the thermal pass; locally optimal under "fix this leak." But the
+                 same material is also reached by the co-registered RGB sensor and the
+                 editor view — Unlit would flatten the terrain there. The agent self-
+                 named it in the ADR retrospectively as "a Universe-Collapse miss that
+                 ignored the RGB modality; corrected by the Body." Pattern: the agent's
+                 Universe contracted to the immediate fix surface; the wider Universe
+                 (other consumers of the touched asset) went unconsulted; a human held
+                 it. Notable: doctrine and naming were PRESENT (REF-03 @imports the seed,
+                 Universe Collapse is in the failure-mode list), and the agent could even
+                 NAME the failure after the fact — but no gate forced the outward-reach
+                 check BEFORE issuing the recommendation. This widens the open question:
+                 expansion-without-Body must cover not just framing-time ("did we ask
+                 what this could be?") but also recommendation-time / shared-surface
+                 moments ("who else does this touch?"). A plausible instrument shape: an
+                 expansion check positioned at fix-proposal time on any shared/multi-
+                 consumer surface — but the detection ("is this surface shared?") is
+                 itself non-trivial, which is the same activation problem one layer in.
+STATUS:          Open — /soul-expand built (Body-invoked partial fix). Stays open on
+                 the genuinely-hard question: can expansion be activated without the
+                 Body? (Unlike F012, there is no obvious instrument.) REF-03 2026-05-26
+                 widens scope: an instrument would need to fire not just at framing but
+                 at recommendation-time on shared surfaces.
 ```

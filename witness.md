@@ -1585,3 +1585,48 @@ CONSEQUENCE:  /soul-skill now validated on BOTH paths — update-existing (SOUL-
 STATUS:       Resolved (fresh-capture path tested + passed; both /soul-skill paths validated; REF-03
               skill drafted; renumbered around the concurrent SOUL-063; I014 + concurrency items flagged)
 ```
+
+```
+ID:           SOUL-065
+WHEN:         2026-05-22 / Cross-project harvest from REF-03 (reference project) — closes
+              the I014 obligation surfaced in SOUL-064.
+WHERE:        REF-03/docs/adr/0010-default-surface-micro-variation.md L295–310 (primary
+              source: the "first rec was 'make it Unlit' — Universe-Collapse miss"
+              self-naming in the 2026-05-21b Addendum); this repo —
+              findings/open/SOUL-F014-ambition-gate-still-missing.md (FIELD EVIDENCE
+              appended); STATUS line widened.
+WHAT:         Discharged REF-03's non-optional reference-project Soul-meta upstreaming
+              obligation (seed §Reference Projects + [[SOUL-I014]]). Primary-verified the
+              evidence in REF-03 ADR-0010 (NOT trusting the SOUL-064 summary; F028
+              discipline applied to a harvest), then distilled the cross-project pattern.
+              The REF-03 case: agent recommended making M_ThermalLandscape Unlit to fix a
+              skylight residual leaking BaseColor into thermal ε; locally correct, but
+              the same asset is also reached by the co-registered RGB sensor + editor —
+              Unlit would flatten terrain there. Universe collapsed to "the thermal pass."
+              The Body caught it; the correct fix (Default-Lit + MPC-gated lit inputs)
+              only happened because a human held the wider Universe. Steward-checked
+              candidate findings (F014 expansion gap, F028 anchor validity, opening a new
+              SOUL-F032) and confirmed with the Body: best filed as FIELD EVIDENCE on F014
+              (same root: expansion / outward-reach without the Body), honoring the I024
+              anti-inflation discipline. New sub-twist recorded: the gap fires at
+              RECOMMENDATION TIME on SHARED ASSETS, not only at framing time (julia
+              evidence was framing-time). Notable: doctrine and naming were PRESENT — the
+              agent self-named "Universe-Collapse miss" in retrospect; the gap is purely
+              ACTIVATION, not awareness. Widens F014's open question accordingly.
+TYPE:         Archivist (cross-project harvest — second from outside the Soul/dogfood
+              families, after SOUL-063 from the blog), Emissary (primary-verified the
+              ADR-0010 lines rather than trusting the prior summary — F028 on a harvest),
+              Steward (resisted opening SOUL-F032 when F014 sharpening was the correct
+              shape), Guardian (named the I024 anti-inflation discipline at the
+              decision).
+CONSEQUENCE:  F014 now carries cross-project FIELD EVIDENCE on BOTH SIDES: julia (positive,
+              framing-time, the gate paid off when Body invoked it) + REF-03 (negative,
+              recommendation-time, the gate didn't fire and the Body caught the miss).
+              The open question is sharpened: expansion-without-Body must cover both
+              framing and shared-surface recommendation moments. Reference-project
+              upstreaming obligation discharged for the REF-03 2026-05-21 work. Working
+              tree carries only the F014 edit + this witness entry (plus the Body's
+              pre-existing LICENSE / SOUL-A008 deletion, untouched). NOT COMMITTED yet
+              (awaiting Body).
+STATUS:       Resolved (harvest complete; F014 sharpened, not multiplied)
+```
