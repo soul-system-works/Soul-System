@@ -575,3 +575,48 @@ NOTES:     Reinforces a design constraint for [[SOUL-I017]]/soul-skill: keep the
            continuity. Could be a dogfood side project (its own repo, @import the seed).
            Related: [[SOUL-F018]] (event standard), REF-09, [[SOUL-I003]].
 ```
+
+```
+ID:        SOUL-I026
+WHEN:      2026-05-26
+IDEA:      The Mind — a project-scoped memory layer that continuously compresses
+           what the project is doing into the shortest description that could
+           REPRODUCE it. Not a summary; not a log. A generative grammar: the
+           rules, tensions, invariants, and contrast cases that explain why the
+           project looks the way it does. Starts empty. Updates continuously as
+           artifacts and decisions accumulate. Its product is a SHRINKING
+           document — getting more precise and more generative over time, not
+           longer.
+STATUS:    Raw
+WHY:       Differentiates from existing layers by output shape, not just topic.
+           Witness records what happened; Archivist organizes what exists;
+           Council synthesizes what patterns mean; The Mind distills WHY the
+           project is the way it is — compact enough to orient all future work
+           from scratch. Drift defense: long sessions accumulate declarative
+           noise (facts, summaries, paraphrase-degradation); rules reproduce the
+           project more reliably than descriptions of it. The Mind gives the
+           system something stable under transformation.
+NOTES:     New role proposed: the DISTILLER. Sole obligation — compress the
+           accumulating record toward its generative grammar. Not synthesize
+           (that's the Council). Not judge (that's the Judge). Compress. Output
+           should ALWAYS be getting shorter and more powerful, not longer and
+           more detailed. Open questions to resolve before building: (1) WHERE
+           does The Mind live — a single mind.md at project root? per-domain?
+           (2) WHEN does the Distiller fire — on demand, on session end, on a
+           record-size threshold? (3) what's the SHRINKAGE invariant — how is
+           "shorter and more generative" checked against drifting into
+           lossy-summary? (4) failure mode: a Mind that DOESN'T shrink is just
+           another summary file (Premature Sophistication risk — Steward
+           guard). (5) tension with the seed (~155 lines, deliberately always-
+           on): is The Mind the per-project analog of the seed (always-on,
+           load-bearing), and if so does it inherit the same never-always-on
+           constraint at scale (SOUL-033)? (6) reproduction test: can two
+           independent agents READING the Mind produce coherent next-work? — the
+           Soul's "two parties same meaning" criterion applied at the
+           project-state layer. Related: [[SOUL-033]] (description budget, why
+           the-soul.md isn't always-on), [[SOUL-I011]] (token economics
+           experiment — The Mind is a candidate intervention), [[SOUL-I025]]
+           (GUI access layer would naturally surface The Mind),
+           [[SOUL-F014]] (expansion gate — a Distiller could give it a stable
+           reference frame to expand FROM).
+```
