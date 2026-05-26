@@ -1801,3 +1801,56 @@ CONSEQUENCE:  Three-layer doctrine now (seed → Mind → records); the Soul Sys
 STATUS:       Resolved (MVP shipped; deployment-validation residual named in spec
               §Tier 3; SYSTEM-VERSION → 0.5.0; doctrine updated)
 ```
+
+```
+ID:           SOUL-069
+WHEN:         2026-05-26 / Soul-meta vs project-paradigm boundary tightened (caught
+              + fixed via Body inspection of fafb416's upstreamed batch)
+WHERE:        findings/open/SOUL-F033-*.md (REMOVED via git rm — content preserved
+              at /home/fig/REF-05/docs/FINDINGS.md MO-F1/MO-F4);
+              operations/CLAUDE.md §Reference Projects (boundary definition added);
+              commands/soul-finding.md step 1 (boundary check added).
+WHAT:         Body inspection of the recent reference-project harvest (fafb416,
+              F032–F035 from REF-05) surfaced a clean boundary violation
+              in F033. The other three (F032 dogfood-ceremony, F034 exclusion-naming,
+              F035 third-trap skill heuristic) are appropriately Soul-meta — they
+              propose refinements to Soul System ceremony, the Accountant role, and
+              the /soul-skill instrument respectively. F033 was different: its
+              content was a Modelica-paradigm justification for the netflow→Modelica
+              pivot ("prefer connect()-emitted conservation over hand-rolled
+              residuals"), with explicit proposals to install Modelica recommendations
+              into philosophy/the-soul.md's "Multiverse Warning" example and the Soul
+              External-Skills table. The form was Soul-shaped (FINDING ID, anchor
+              citations, doctrine placement targets); the content was project-paradigm.
+
+              Fix shipped: (1) git rm of F033 from soul-system — source content stays
+              safe at REF-05/docs/FINDINGS.md (MO-F1, MO-F4 carry the
+              acausal-connect material); git history retains fafb416 as audit trail.
+              (2) Seed §Reference Projects gained an explicit definition: "Soul-meta
+              findings are about how the Soul System itself behaves — gates,
+              instruments, roles, ceremony, doctrine. Project-paradigm findings stay
+              at home." Includes the diagnostic test: *if you removed the project's
+              domain entirely, would the lesson still be a Soul System lesson?*
+              (3) /soul-finding step 1 gained the same boundary check at instrument
+              level, fired specifically when the finding is being upstreamed from a
+              reference project (the I014 obligation moment).
+TYPE:         Steward (the boundary call — F033 doesn't earn its upstream slot),
+              Guardian (the form-vs-content distinction: the form alone passed; the
+              content needed the closer look — surfaced explicitly in the seed edit),
+              Body (caught it — the activation that didn't auto-fire is the Steward;
+              this is another F014-family datum where the doctrine was present
+              ["Soul-meta observations"] but the gate position let it through).
+CONSEQUENCE:  One inappropriate upstream reverted, two surfaces tightened (doctrine
+              + instrument). The form-vs-content distinction is now named explicitly
+              in both places — future harvests have the diagnostic test built in, and
+              /soul-finding nudges the boundary check at the moment of upstreaming.
+              The next reference-project harvest will be the Emissary test for whether
+              this fix activates without Body invocation (F014 family — we have
+              another data point for "doctrine present, gate must fire at the failure
+              moment, not where it's named"). The upstreaming pattern is otherwise
+              healthy — F028, F030, F031, F032, F034, F035 are all appropriately
+              Soul-meta; the F033 slip was the first observed violation, not the rule.
+              NOT COMMITTED yet (this entry comes with the commit).
+STATUS:       Resolved (F033 reverted; seed + /soul-finding tightened; precedent
+              recorded for future harvests)
+```

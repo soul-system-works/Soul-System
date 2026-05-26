@@ -138,6 +138,16 @@ sent home. So a reference project owes, **non-optionally**:
   "optional." The handoff cursor names any not-yet-upstreamed items so they survive the
   session boundary.
 
+**What "Soul-meta" means (the upstream boundary).** Soul-meta findings are about how the
+**Soul System itself behaves** — its gates, instruments (commands, hooks), Council roles,
+ceremony patterns, and doctrine. Project-paradigm findings — *which library, which physics
+model, which architectural pattern works in this domain* — stay at home in the project's
+own record. The line is **content, not form**: a Soul-shaped finding (FINDING ID, anchor
+citations, "promote to philosophy/the-soul.md" placement target) can still carry
+project-paradigm content. A useful test before upstreaming: *if you removed the project's
+domain entirely, would the lesson still be a Soul System lesson?* If no, it stays home.
+The Steward catches this; instruments can prompt for it (see `/soul-finding`).
+
 This does not apply to the Soul System repo itself (it is the upstream).
 
 ---
