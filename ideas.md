@@ -724,3 +724,87 @@ NOTES:     Two figures, two levels: architecture.svg = system roles; the new
            non-Soul-System project has a Mind too (proves the three-layer
            pattern is generic, not Soul-internal).
 ```
+
+```
+ID:        SOUL-I029
+WHEN:      2026-05-26
+IDEA:      A /soul-witness slash command — append an observation to witness.md
+           with near-zero ceremony. "I am observing some XYZ behavior I dislike"
+           → witness entry. The cheap-capture twin of /soul-idea but pointed at
+           the BACKWARD record (what happened) rather than the FORWARD inbox
+           (what might).
+STATUS:    Raw
+WHY:       Witness entries today are written by hand (every SOUL-NNN this session
+           was a `cat >> witness.md << EOF` heredoc). The friction discourages
+           in-the-moment capture, exactly the moments most worth catching —
+           the Body noticing a behavior they dislike, a gate misfiring, a tell
+           that something is off. The capture-when-it-matters cost should be
+           lowest, not highest (the I004 cheap-capture lesson applied to the
+           backward record). Already named as deferred in I024 NOTES ("the
+           true cheap-capture twin of /soul-idea may be /soul-witness") and
+           in I027 STATUS ("when /soul-witness eventually ships, it must adopt
+           the [re-read-verify] protocol").
+NOTES:     Open shape questions: (1) FRICTIONLESS like /soul-idea, or
+           SCAFFOLDED like /soul-finding? Witness entries are richer than
+           ideas (ID/WHEN/WHERE/WHAT/TYPE/CONSEQUENCE/STATUS) but the Body's
+           framing — "I am observing XYZ" — suggests frictionless capture with
+           the agent filling out the structured fields from the observation
+           text. Hybrid: frictionless input, scaffolded output. (2) Must adopt
+           the [[SOUL-I027]] re-read-verify-before-write protocol from day one
+           (witness.md is the highest-collision record). (3) TYPE field should
+           be left blank or auto-suggested from the observation text — the
+           agent classifies but the Body confirms. (4) Tension with
+           [[SOUL-F009]] (artifact-discipline-erodes-at-scale) — frictionless
+           witness risks inflation, but the F009 concern is more about
+           findings/amendments than witness; the witness log is supposed to
+           be high-volume, and the witness→finding graduation already carries
+           the anti-inflation friction. Related: [[SOUL-I024]] (named the
+           deferral), [[SOUL-I027]] (protocol), [[SOUL-I004]] (cheap capture
+           under context pressure), [[SOUL-F009]] (the inflation guard
+           consideration), paired in capture with [[SOUL-I030]] (/soul-council
+           — Body raised them together).
+```
+
+```
+ID:        SOUL-I030
+WHEN:      2026-05-26
+IDEA:      A /soul-council slash command — force a Council convening on
+           demand. The Body invokes when they want the system to deliberate,
+           investigate, weigh a decision across roles, rather than the
+           default lighter-weight reasoning. "Convene the council on X."
+STATUS:    Raw
+WHY:       Today the Council fires implicitly — roles are invoked silently
+           ("Skeptic check", "Steward retire-check") without a formal
+           convening. For routine work that is fine (the per-decision role-
+           naming overhead would be theatre). But there are MOMENTS — a hard
+           decision, a contested design, a suspected coherent-falsehood, a
+           question the Body wants stress-tested — where the Body wants to
+           SUMMON the full chamber. There is no explicit instrument for that
+           today. The closest existing pattern is /soul-expand (pre-framing
+           expansion gate) but that is specifically for ambition/scope, not
+           general deliberation. The Council exists as doctrine but is
+           Body-invoked-implicitly; this would make it Body-invoked-
+           explicitly when warranted.
+NOTES:     Open shape questions: (1) WHICH roles convene by default — all
+           Magistrates + Tribunes + Censors (the full chamber)? Or a
+           configurable subset? The Body's "deliberate, investigate"
+           framing suggests Magistrates (synthesis) + Tribunes
+           (Skeptic/Accountant/Advocate stress-test) + Guardian (watch the
+           process). Hands are deliberately excluded — Council is
+           deliberative, not productive. (2) STRUCTURE: each role
+           contributes one short statement, the Body synthesizes; or the
+           agent walks the chamber sequentially and produces a synthesis;
+           or both options selectable. (3) OUTPUT: a witness entry
+           (typically), maybe a finding if the convening produces one
+           (using /soul-finding), maybe nothing if the Council says "no
+           change needed." (4) DURATION: bounded — the council convening
+           is expensive in tokens; capping at ~6-10 roles keeps it tight.
+           Sibling of /soul-expand (forced expansion-role asking, F014
+           family). Distinct from /soul-verify (completion gate). Related:
+           [[SOUL-I029]] (its paired capture-side twin — Body raised them
+           together), [[SOUL-F014]] (the implicit-vs-explicit role
+           activation problem this addresses for the deliberative case),
+           [[SOUL-F012]] (the same family — doctrine present, gate must
+           fire), philosophy/the-soul.md §The Council's Process (this
+           would be its explicit invocation handle).
+```
