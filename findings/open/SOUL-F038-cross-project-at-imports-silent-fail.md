@@ -1,58 +1,116 @@
 ```
 FINDING ID:      SOUL-F038
 DATE:            2026-05-26
-WITNESS IDS:     SOUL-075 (caught en route during Q1 v1 sentinel verification —
-                 Mind-on arm CLAIMED mind.md was in context and quoted a
-                 FABRICATED "Rule 9" about distillation cadence when the real
-                 Rule 9 is about symlinks); SOUL-076 (Q2 ran with the
-                 --append-system-prompt-file workaround from the start, anchoring
-                 the fix by absence-of-recurrence).
-WHAT:            `@-imports` of absolute paths from a CLAUDE.md OUTSIDE a project
-                 (e.g. `/tmp/soul-experiment/mind-on/CLAUDE.md` containing
-                 `@/mnt/d/Projects/Soul-System/mind.md`) silently fail to resolve
-                 under `claude -p` auto-discovery. The agent reads the @-line as
-                 RAW TEXT — recognising "mind.md is referenced" — but the imported
-                 file's CONTENT never loads into context. The agent then
-                 confabulates plausible-sounding content when asked to quote from
-                 the "loaded" file (Q1 v1: fabricated a "Rule 9" about
-                 distillation cadence — coherent, Soul-shaped, false). The fix is
-                 `--append-system-prompt-file <path>` which delivers raw file
-                 content into the system prompt reliably (verified by Q1 v2 and
-                 Q2 sentinels). This is SOUL-meta: any experiment harness
-                 (SOUL-I011) that wants to vary CLAUDE.md content per arm via
-                 @-imports across repo boundaries will silently produce
-                 Mind-off-vs-Mind-off runs and call them Mind-on-vs-Mind-off.
-                 What SHOULD be: either cross-project @-imports resolve (so the
-                 obvious harness design works) or the failure surfaces an error
-                 (so it can't masquerade as success). What IS: silent failure
-                 plus model confabulation — the worst combination.
-WHY NOT YET AMENDMENT:  Scope unbounded. We've verified the failure under exactly
-                 ONE topology: `claude -p` with auto-discovered CLAUDE.md from a
-                 `/tmp/...` cwd, importing files inside a different project root.
-                 Unknown: (a) interactive `claude` sessions — do they resolve the
-                 same imports? (b) `claude -p` with the imports staying INSIDE
-                 the project root — does relative-path import work where absolute
-                 doesn't? (c) what about `--add-dir` on the import target's
-                 project — does that change resolution? (d) does subagent
-                 inheritance behave the same way as parent-snapshot loading? An
-                 amendment would either tighten doctrine ("never rely on
-                 cross-project @-imports for measurement; always inline via
-                 `--append-system-prompt-file`") or change the harness design
-                 (SOUL-I011 spec). Either move wants the scope known first. 1–2
-                 more targeted probes would close it.
-FILED BY:        Skeptic (designed the sentinel that exposed the silent failure);
-                 Guardian (F028 anchor-validity discipline applied to the
-                 experiment's own evidence — third instance in two arcs);
-                 Emissary (the run-against-reality that surfaced the gap);
+WITNESS IDS:     SOUL-075 (initial detection — Q1 v1 sentinel caught a
+                 fabricated "Rule 9" about distillation cadence when the real
+                 Rule 9 is about symlinks); SOUL-076 (--append-system-prompt-
+                 file workaround confirmed by Q2's absence-of-recurrence);
+                 SOUL-077 (scope-probe results — N=7 replication established
+                 INTERMITTENT failure rate ~43% under the failure topology,
+                 not deterministic; plus probes 1/3/4 bounding which
+                 topologies are affected).
+WHAT:            `@-imports` of absolute paths from a CLAUDE.md OUTSIDE a
+                 project (e.g. `/tmp/soul-experiment/mind-on/CLAUDE.md`
+                 containing `@/mnt/d/Projects/Soul-System/mind.md`)
+                 INTERMITTENTLY fail to resolve under `claude -p` auto-
+                 discovery — measured ~43% failure rate (3 confabulations
+                 in 7 runs) under the failure topology
+                 (cwd in `/tmp/...` + cross-project absolute @-import +
+                 `--add-dir` on target + `-p`). When the import does NOT
+                 resolve, the agent reads the @-line as raw text
+                 (recognises "mind.md is referenced") but the file's CONTENT
+                 doesn't load — and the agent then CONFABULATES plausible-
+                 sounding Soul-shaped content. The three observed
+                 confabulations were each DIFFERENT plausible rules
+                 ("Distillation cadence is Body-judged"; "Pre-completion
+                 verification is a gate" — cited F012 + /soul-verify by name;
+                 "Reuse before invention"), demonstrating that the failure
+                 cannot be detected by content-shape pattern matching —
+                 confabulations look like real rules. The 4/7 correct runs
+                 quoted Rule 9 VERBATIM, indicating the import DID load in
+                 those runs. The fix `--append-system-prompt-file <path>`
+                 delivers raw file content into the system prompt
+                 deterministically (verified by Q1 v2 + Q2 sentinels and
+                 all subsequent uses — no recurrence observed).
+
+                 The worst combination is confirmed: intermittent failure +
+                 confabulation that passes casual review. More alarming than
+                 deterministic failure, not less, because a successful run
+                 under this topology cannot be assumed reliable from a
+                 single sample.
+
+                 This is SOUL-meta: any experiment harness (SOUL-I011) that
+                 wants to vary CLAUDE.md content per arm via @-imports
+                 across repo boundaries will produce mostly-clean runs with
+                 occasional silently-fake-Mind arms — INDISTINGUISHABLE from
+                 success without a sentinel test on every arm.
+
+                 What SHOULD be: either cross-project @-imports resolve
+                 deterministically, or failure surfaces an error. What IS:
+                 stochastic resolution + confabulation when resolution fails.
+
+SCOPE BOUNDED:   Probe results (SOUL-077, 2026-05-26):
+                 - Probe 1 (in-project relative @-imports under `-p`): N=1,
+                   SUCCESS. Not exhaustively replicated; may also be
+                   intermittent but the canonical case.
+                 - Probe 2 (cross-project @-imports under INTERACTIVE
+                   `claude`, no -p): N=3, SUCCESS (Body-run 2026-05-26).
+                   No confabulation observed. Bounds F038 as `-p`-specific
+                   at the small N=3 level.
+                 - Probe 3 (cross-project + `--add-dir` + `-p`): N=7 with
+                   Q1 v1 + replays. 4/7 correct, 3/7 confabulation. This is
+                   the failure-topology evidence. Point estimate ~43%
+                   confabulation; binomial 95% CI wide (~10-80% at N=7).
+                 - Probe 4 (subagent inheritance from post-05eabc1 session):
+                   N=1, SUCCESS. Confirms F036 closure independently.
+
+WHY NOT YET AMENDMENT:  Scope now bounded across all 4 probes. The
+                 DOCTRINAL FIX is clear, actionable, and narrowed to `-p`:
+                 "under `claude -p`, never rely on cross-project @-imports
+                 for measurement; always inline via
+                 `--append-system-prompt-file`, and always sentinel-test
+                 import loading before trusting an experiment arm.
+                 Interactive `claude` sessions appear reliable at small N
+                 (Probe 2: 3/3); the failure is `-p`-specific so far."
+
+                 Ready for amendment review. Two amendment shapes for
+                 Body to choose between: (a) operations-level rule in a
+                 measurement-method or experiment-harness doc, lightest
+                 footprint; (b) a finding-derived line in the Mind /
+                 the seed about CLAUDE.md import topology under -p,
+                 heavier footprint but loads always-on.
+
+                 The METHODOLOGICAL fix (F028 anchor-validity applied to
+                 the loading itself, not just the user-facing claim) is
+                 already standing practice from this arc — every
+                 `--append-system-prompt-file` run has been sentinel-tested.
+
+                 Residual: N=7 magnitude is point-estimate-only (binomial
+                 95% CI ~10-80%); direction (intermittent, not zero) is
+                 clear, rate is not. Future runs of the failure topology
+                 would tighten the estimate.
+
+FILED BY:        Skeptic (designed the sentinel that exposed the silent
+                 failure); Guardian (F028 anchor-validity discipline
+                 applied to the experiment's own evidence — third
+                 instance in two arcs); Emissary (the run-against-reality
+                 that surfaced the gap, then N=7 replication);
                  Artificer (`--append-system-prompt-file` workaround).
-RELATED:         [[SOUL-I011]] (experiment harness — this finding directly shapes
-                 its substrate); [[SOUL-F028]] (anchor-validity — the discipline
-                 that caught the confabulation); [[SOUL-F036]] (closed: Mind-
-                 doesn't-reach-subagents — same failure family of "CLAUDE.md
-                 imports don't always propagate the way doctrine assumes"; F036
-                 was about subagent snapshot timing, F038 is about cross-project
-                 cwd-anchored resolution); [[SOUL-I005]] (token economics — the
-                 broader claim this experiment serves); [[SOUL-075]], [[SOUL-076]]
-                 (witness anchors).
-STATUS:          Open
+                 Cartographer (cluster pass surfacing the bounded scope;
+                 prompted the replication that distinguished hypothesis A
+                 from B).
+RELATED:         [[SOUL-I011]] (experiment harness — this finding directly
+                 shapes its substrate); [[SOUL-F028]] (anchor-validity —
+                 the discipline that caught the confabulation, AND now has
+                 quantitative justification: 43% failure rate makes
+                 sentinel-testing non-optional for any @-import-based
+                 harness); [[SOUL-F036]] (closed: Mind-doesn't-reach-
+                 subagents — same failure family of "CLAUDE.md imports
+                 don't always propagate the way doctrine assumes"; F036
+                 was about subagent snapshot timing, F038 is about
+                 cross-project cwd-anchored resolution under -p);
+                 [[SOUL-I005]] (token economics — the broader claim this
+                 experiment serves); [[SOUL-075]], [[SOUL-076]],
+                 [[SOUL-077]] (witness anchors).
+STATUS:          Open — scope fully bounded; ready for amendment review.
 ```
