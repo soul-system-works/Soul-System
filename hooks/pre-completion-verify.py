@@ -256,7 +256,7 @@ def _checklist() -> str:
         "2. Absolute claims have a VALID external anchor — trusted why / wrong if?\n"
         "   (anchor that merely EXISTS but is flawed = Coherent Falsehood — F028)\n"
         "3. Outward reach done (field/standard/user)? (else Universe Collapse)\n"
-        "4. Visual artifact captured & inspected, not deferred?\n"
+        "4. Visual artifact captured & inspected — RASTERIZE via the project's own lib + Read it (or screenshot via run/verify); 'not eyeballed' is NON-PASS. Split: (a) design-capture (headless) vs (b) target-tool render (may need Body) — name the residual (SOUL-F030/F031).\n"
         "5. Unfinished business marked (TODO/FIXME/DEBT/HACK)?\n"
         "REPLY (Body-facing): lead with the ask / next step; place the gate LAST as ONE "
         "compact line — `— Verify: clean (<anchor>)` or `— Verify: GAP → <specific>`. "

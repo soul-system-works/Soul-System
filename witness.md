@@ -1630,3 +1630,48 @@ CONSEQUENCE:  F014 now carries cross-project FIELD EVIDENCE on BOTH SIDES: julia
               (awaiting Body).
 STATUS:       Resolved (harvest complete; F014 sharpened, not multiplied)
 ```
+
+```
+ID:           SOUL-066
+WHEN:         2026-05-26 / F030 + F031 graduated — operational refinement, not new doctrine.
+WHERE:        hooks/pre-completion-verify.py (`_checklist()` check #4); commands/soul-verify.md
+              (check #4); findings/closed/SOUL-F030*.md + SOUL-F031*.md (moved from open with
+              closure stamps); SYSTEM-VERSION.md → 0.4.5.
+WHAT:         Closed the F030 (negative — blog) / F031 (positive — REF-01) pair as a
+              single operational fix. Hook check #4 and soul-verify.md check #4 now embed
+              three things: (1) the DEFAULT CAPTURE RECIPE — rasterize via the project's
+              own image lib (sharp for SVG, matplotlib for polygon coords) and Read the PNG
+              back, OR screenshot the page via the project's run/verify skill — so "inspect"
+              has a one-step instantiation independent of the Body's eye; (2) the NON-PASS
+              RULE — a prose "GAP → not eyeballed" on a visual change is an admission the
+              obligation was skipped, not a clean line; (3) the SPLIT (per F031's residual)
+              — (a) DESIGN-CAPTURE (headless-dischargeable via the recipe; catches the
+              geometry/encoding defect class — F031 actually caught a self-intersecting
+              turbine polygon this way) vs (b) TARGET-TOOL render confirm (may legitimately
+              require Body/tool); the residual is now NAMED, not folded into "not eyeballed."
+              Hook line: one extra clause (terse-by-design honored, SOUL-I008). Soul-verify
+              line: fuller prose with example libraries. INDEXING SLIP NOTED: both findings
+              referenced "check #4 in completion-gate.md," but that file's #4 is Advocate /
+              Skeptic (load-bearing claim), not visual; the visual check lives only in the
+              hook + soul-verify.md, which is where the fix went. completion-gate.md left
+              untouched (its scope is outward-reach, not visual — separate concern).
+TYPE:         Artificer (the gate-line edits), Steward (chose operational refinement over a
+              new amendment — A007 already mandates capture+inspect, this is activation +
+              technique), Archivist (closed both findings together; moved to findings/closed/),
+              Guardian (caught + recorded the F030/F031 indexing slip rather than silently
+              fixing).
+CONSEQUENCE:  Two open findings → closed. Hook now nudges agents toward an actionable recipe
+              instead of leaving "inspect" as posture. Reference-project upstreaming pattern
+              continues to deliver: F030 + F031 came home from greenwoodms06's blog +
+              REF-01 (a static site + a Modelica/Dymola codebase — two very different
+              visual modalities, both pointing at the same activation gap). Open visual-gate
+              question DOES survive: the recipe is now NAMED in the hook line, but whether
+              an agent actually *reaches for it* on a fresh visual task is still untested
+              — the F012 family of "doctrine names, gate doesn't fire" pattern (also F014,
+              F028 earlier) persists. Activation evidence will accumulate in future visual
+              sessions; if the new recipe-pointer doesn't itself activate, that becomes a
+              new Finding in the F012 family ("named recipe, still not reached for"). NOT
+              COMMITTED yet (awaiting Body).
+STATUS:       Resolved (F030 + F031 closed; hook + soul-verify.md carry the recipe + split +
+              non-pass rule; SYSTEM-VERSION → 0.4.5)
+```

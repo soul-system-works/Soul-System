@@ -33,7 +33,10 @@ RELATED:         [[SOUL-F008]] (the category — visual / non-automatable Witnes
                  [[SOUL-A007]] (the capture+inspect amendment this fails to activate),
                  [[SOUL-F012]] (amendments-need-activation — the hook that fired here),
                  [[SOUL-F009]] (artifact discipline erodes at scale — same drift family).
-STATUS:          Open — operational. Pair gate check #4 with a default capture recipe;
-                 treat "not eyeballed" on a visual change as non-pass. First reference-project
-                 harvest into the system from outside the Soul/dogfood families.
+STATUS:          Closed [2026-05-26, via SOUL-066]. Operational fix landed: hook check #4
+                 + soul-verify.md check #4 now pair with the default capture recipe and
+                 mark "not eyeballed" as NON-PASS; F031's split (design-capture vs target-
+                 tool render) folded in. Indexing slip noted in witness: F030 referenced
+                 "check #4 in completion-gate.md," but that file's #4 is Advocate/Skeptic
+                 — the visual check lives in the hook + soul-verify.md, where the fix went.
 ```
