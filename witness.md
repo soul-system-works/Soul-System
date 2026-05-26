@@ -1854,3 +1854,68 @@ CONSEQUENCE:  One inappropriate upstream reverted, two surfaces tightened (doctr
 STATUS:       Resolved (F033 reverted; seed + /soul-finding tightened; precedent
               recorded for future harvests)
 ```
+
+```
+ID:           SOUL-070
+WHEN:         2026-05-26 / Tier 3a A/B + diagnostic + re-test (SOUL-I026 deployment
+              validation, Soul System dogfood)
+WHERE:        findings/open/SOUL-F036-mind-doesnt-reach-subagents.md (NEW); this
+              entry (witness); no commits to mind.md / commands/soul-distill.md /
+              spec — the Mind MVP architecture stands; the gap is at the harness
+              boundary, not in the Mind itself.
+WHAT:         Tier 3a deployment validation of the Mind MVP against the Soul System
+              repo's own deployed mind.md. Three held-out questions (one
+              obligation-shaped, one doctrine, one mixed). Six parallel subagents.
+              ROUND 1: arms-disagreed-on-Q3 (Arm A built /soul-witness from
+              situational data; Arm B built nothing specific). Arm B Q1 honestly
+              deferred ("I cannot describe A001 from permitted sources alone").
+              Token economy ~47% cheaper aggregate for Arm B. Arm B SELF-REPORTED
+              on Q1: "the seed I was given does not contain a `@mind.md` import
+              directive — only `@operations/CLAUDE.md`. So mind.md may not actually
+              be loaded." The Body pushed back on accepting partial validation
+              (correct Skeptic move: F028 + A010 cut against trusting an anchor
+              whose validity is the question). DIAGNOSTIC: one subagent instructed
+              to introspect only, no tools — confirmed cleanly: Project CLAUDE.md
+              perceived as one line `@operations/CLAUDE.md`, seed inlined,
+              **mind.md NOT in context**. File on disk verified independently:
+              CLAUDE.md has BOTH lines (commit 05eabc1) — so the harness
+              snapshots/truncates. SOUL-F036 opened to record. RE-TEST: Q2 + Q3
+              re-run with mind.md content EXPLICITLY pasted into the subagent
+              prompt. Result: same directional answers as without-Mind, but
+              REASONING now cites specific Mind rules by number (Rule 3, Rule 4,
+              Rule 5) rather than reaching generically. Token cost unchanged.
+TYPE:         Emissary (the experiment against reality), Skeptic (Body's pushback
+              + ANT diagnostic before accepting), Guardian (F028-discipline applied
+              to a TEST result, not just a product claim), Architect (the
+              implications for the lens-layer design's "always-on at project
+              layer" claim).
+CONSEQUENCE:  Three things shipped from this arc:
+              (1) SOUL-F036 — the Mind doesn't reach subagents under current
+                  Claude Code harness behavior. Architectural gap with 4 candidate
+                  fix paths (manual injection, move @mind.md inside seed,
+                  wait for harness, accept gap honestly).
+              (2) Mind value-add HONESTLY NAMED: the Mind sharpens citation
+                  (explicit rule numbers) but on the chosen questions did not
+                  change directional outcomes vs seed alone. The seed is
+                  doctrinally rich enough for the questions tested. A cleaner
+                  Mind-vs-seed test needs questions whose doctrine lives ONLY in
+                  the Mind (e.g., F029 symlinking, I024 anti-inflation logic
+                  specifically). Noted as Tier-3-residual.
+              (3) Arm A vs Arm B' divergence on Q3 is INSTRUCTIVE not a failure:
+                  Arm A drew on situational data (recent ideas + witness) to
+                  answer "what's most-asked-for in the backlog"; Arm B' drew on
+                  principle (generation-couples-retirement) to answer "what
+                  completes the Mind's own missing pair." Both are coherent;
+                  they answer DIFFERENT framings of "highest-leverage."
+              Acceptance criteria from spec §Reproduction-acceptance, scored
+              honestly: doctrinal coherence ✓ (with caveat that the seed alone
+              also satisfies it); anchored honesty ✓✓ (strong — even without
+              mind.md, Arm B knew to say "consult the record"); token economy ✓
+              (~47% aggregate); stability N/A first deployment. PARTIAL pass —
+              the Mind's value is real but smaller-than-spec'd, AND the
+              architectural gap (F036) limits even that to the parent session.
+              NOT COMMITTED yet (F036 + this entry come together).
+STATUS:       Resolved (Tier 3a complete; F036 documents the architectural gap;
+              re-test settled the methodology; honest verdict on Mind value
+              recorded; Tier 3b next)
+```
