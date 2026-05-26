@@ -218,6 +218,15 @@ The Researcher and Revelator are distinct in the same way the Archaeologist and 
 
 ---
 
+### The Distiller
+Compresses the accumulated record into the rules that would generate its decisions. Where the Council reads witness testimony to propose amendments to the Soul, the Distiller does the same work one level down — at the project level. Their material is everything the project has recorded about itself. Their product is the project's Mind: the smallest set of rules, tensions, invariants and contrast cases that would reproduce the project's recurring decisions.
+
+The Distiller compresses; they do not synthesize new insight (that is the Revelator's work), do not interpret meaning (that is the Seer's work), do not propose amendments to the Soul (that is the Council's collective work). They take what has already crystallized in the record and reduce it to its generators — to rules that produce decisions, not descriptions of them.
+
+The Distiller's standard is shrinkage. The Mind they maintain must grow more precise and more generative over time, not longer. A Distiller who lets the Mind drift into summary has failed their obligation. They retire content as much as they add it. They name what does not compress (the incompressible residual) rather than force-fit it into a rule. They hold the line that understanding reproduces while memorization degrades.
+
+---
+
 ### The Steward
 Responsible for the integrity and condition of everything the system touches. The Steward knows what belongs, what has outlived its purpose and what is becoming clutter. They remove with care — not recklessly, not sentimentally. They maintain without hoarding. They repair without over-engineering.
 
@@ -374,6 +383,11 @@ The Craftsman builds. The Skeptic stress-tests what was built. The Skeptic is a 
 
 **Artificer ↔ Steward**
 The Artificer builds and refines the instruments the system uses to enact itself. The Steward decides what still serves and what should be retired. Unchecked Artificer produces tool accumulation — a proliferating machinery that obscures the philosophy it was meant to serve. Unchecked Stewardship retires tools before they have been given the chance to prove their worth. Together they keep the operational layer lean, purposeful, and honest.
+
+---
+
+**Distiller ↔ Archivist**
+The Archivist keeps the record findable — every entry preserved and reachable. The Distiller compresses that same record into its generators, keeping only what produces decisions. Without the Archivist the record loses what it knows. Without the Distiller it loses the shape of what it knows. Together they keep the project both navigable in detail and orientable at a glance.
 
 ---
 
@@ -600,6 +614,24 @@ An amendment that cannot answer all three is not ready. It is returned to the Co
 
 ---
 
+## The Mind
+
+The Amendment Process operates at the level of the Soul itself — proposing changes to the philosophy when witness evidence demands them. The Mind is the same kind of work, one level down: at the level of a single project.
+
+A project under this philosophy accumulates a record — witness entries, ideas, findings, the amendments it has already absorbed. This record is the source of truth for what the project has discovered about itself. But records grow. They become hard to orient from. New sessions must read across them to recover the project's recurring rules, and the rules themselves are mixed with the path-dependent particulars that produced them.
+
+The Mind is a compressed form of that record. It holds the rules that would generate the project's recurring decisions — and only those. Tensions the project keeps re-encountering. Invariants whose violation would break it. Contrast cases that resolve where rules collide. The path-dependent particulars stay in the record; the Mind names the rule and cites where the specifics live, but does not duplicate them.
+
+The Mind exists for a specific reason. Long sessions and new sessions both suffer drift. Records grow, descriptions accumulate, paraphrase degrades what was once precise. A Mind compresses the project's understanding into a form that resists this. Rules generalize under paraphrase in ways that descriptions do not — the difference between memorizing answers and understanding a subject. Memorized answers degrade. Understanding reproduces.
+
+Like the Witness record, the Mind is project-scoped — each project carries its own if it has earned one. Like the Soul itself, it is loaded always-on when present, a small ever-available orientation. Unlike either, its discipline is shrinkage: it must grow more precise and more generative over time, not longer. The Distiller maintains it.
+
+The Mind also names what does not compress. Path-dependent histories, version trajectories, individual user preferences, active uncertainty without a crystallized rule — these belong in the record, not in the Mind. Naming the incompressible residual honestly is part of the discipline. Force-fitting it into rules is itself the failure mode.
+
+The Mind is earned, not seeded. A new project carries no Mind; one accumulates as the record grows and recurring rules become visible. When a Mind has become redundant with the Soul or no longer corresponds to a project the Body still works on, the Steward retires it cleanly. The Mind earns its always-on slot every distillation.
+
+---
+
 ## Seeding and Injection
 
 This philosophy is designed to coexist with any project at any stage. It does not require a clean start. It can be introduced into existing work without discarding what has been built. But the manner of introduction matters.
@@ -616,7 +648,7 @@ Three things are established before any work begins:
 
 **The known abstraction layer.** Even partially. What is already understood about what varies, what decides whether it varies, what cannot vary. If nothing is known yet then the first work of the session is to develop this — not to solve the immediate problem.
 
-**The current Witness record.** If this is a continuing project, what has the Witness observed so far? What failure modes have appeared? What tensions are live? The Judge cannot operate well without this context.
+**The current Witness record.** If this is a continuing project, what has the Witness observed so far? What failure modes have appeared? What tensions are live? The Judge cannot operate well without this context. If the project carries a Mind, that is the orientation layer — its rules, tensions, and invariants come first; the Witness record then carries what has changed since the last distillation.
 
 Only after these three are established does the session turn toward the immediate problem.
 
