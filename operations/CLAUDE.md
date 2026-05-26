@@ -216,6 +216,18 @@ The footer records where the practice came from, when it was adopted, and its cu
 
 ---
 
+## The Mind (optional project layer)
+
+A project may carry a `mind.md` at its root — a compressed rule-set distilled
+from its own accumulated record (witness, findings, ideas, amendments). When
+present, import it after this seed (`@mind.md` in the project's `CLAUDE.md`) so
+its rules become part of the always-on context. Maintained by the Distiller
+(`/soul-distill`). The Mind holds **doctrine** (rules across contexts); specific
+**obligations** stay in the records. See
+`docs/specs/2026-05-26-the-mind-design.md` for the architecture.
+
+---
+
 ## On This Document
 
 This document is a seed, not the full philosophy.

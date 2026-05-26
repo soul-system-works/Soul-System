@@ -23,6 +23,7 @@ If that path is wrong for the machine you are running on, edit this file and cha
    - The absolute path of the `CLAUDE.md` you wrote or found.
    - That the next Claude Code session opened in this directory will load the Soul Seed and the full philosophy.
    - A one-line reminder: the philosophy will only take effect from the *next* session — the current one is already loaded.
+   - **Mention the optional Mind layer**: once the project has accumulated enough record-evidence to warrant compression, run `/soul-distill` to create a project-scoped `mind.md` at the project root, then add a second import line `@mind.md` after the seed import to load it always-on. Skip on day-1 — the Mind is earned, not seeded.
 
 ## What not to do
 
