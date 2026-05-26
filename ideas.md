@@ -620,3 +620,39 @@ NOTES:     New role proposed: the DISTILLER. Sole obligation — compress the
            [[SOUL-F014]] (expansion gate — a Distiller could give it a stable
            reference frame to expand FROM).
 ```
+
+```
+ID:        SOUL-I027
+WHEN:      2026-05-26
+IDEA:      The durable records (witness.md, ideas.md, findings/) assume a SINGLE
+           writer. Concurrent Soul sessions in the same project collide: ID
+           assignment races, uncommitted writes stack on each other, and one
+           session can silently clobber another's witness entry on save. Need a
+           concurrency model — at minimum a collision DETECTOR, ideally a
+           protocol that lets parallel agents share the record safely.
+STATUS:    Raw
+WHY:       Surfaced live in SOUL-064: a parallel session claimed SOUL-063 +
+           SOUL-F030 mid-work, uncommitted on top of my committed dcdacf2 —
+           caught by the Guardian noticing the ID mismatch, NOT by tooling.
+           The records are CRDTs in spirit (append-only witness; new files for
+           findings/ideas) but the ID-assignment step (read-tail-take-next) is
+           the race. Risk grows with: (a) more parallel agents per project (the
+           background/Agent-tool pattern this session itself uses); (b)
+           longer-lived sessions sharing a project; (c) any harness feature that
+           spawns subagents that write Soul records.
+NOTES:     Solution shape candidates: (1) UUID-style or timestamp-based IDs
+           (cheap, kills the race, breaks the human-friendly SOUL-NNN reading
+           order — trade-off); (2) git-as-arbiter — record writes go through a
+           commit-then-rebase loop, where ID collisions surface as conflicts
+           (heavier, but matches how findings/closed/ already moves); (3)
+           sentinel-file lock per project (.soul/lock) — simple, but a crashed
+           session leaves it stuck; (4) detect-only: pre-write hook that reads
+           the live file, takes the max ID, and refuses to write if the ID it
+           computed is already taken — fail loud, no lock, no UUID change.
+           Probably (4) is the right first move: cheap, preserves human-friendly
+           IDs, fails loud rather than silently. Related: [[SOUL-F029]] (also a
+           durable-records / propagation question), [[SOUL-F018]] (event
+           standard — events.jsonl is already JSONL-append-friendly, less
+           collision-prone), [[SOUL-I025]] (GUI access layer would need a
+           consistent record state too).
+```
