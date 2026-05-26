@@ -26,6 +26,15 @@ It does NOT graduate witness entries on its own. The Body decides; this scaffold
    said "make this a finding," stop and ask. A finding without explicit
    graduation is the inflation failure mode this command exists to prevent.
 
+   **If this finding is being written from a reference project for upstreaming to
+   the Soul System repo (the I014 obligation), also run the Soul-meta boundary
+   check:** *if you removed this project's domain entirely, would the lesson still
+   be a Soul System lesson?* If no, the finding belongs in the project's own
+   record, not upstream. Project-paradigm content (which library, which physics
+   model, which pattern fits this domain) stays at home; Soul-meta content (gates,
+   instruments, roles, ceremony, doctrine) goes upstream. The seed §Reference
+   Projects carries the rule; this step is its instrument-level enforcement.
+
 2. **Gather the inputs** (Body-supplied or asked, one at a time only if missing):
    - **WHAT** — the pattern / observation / gap, in 2–6 sentences. State what is
      and what should be.
