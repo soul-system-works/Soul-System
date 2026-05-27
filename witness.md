@@ -2971,3 +2971,94 @@ STATUS:      Resolved — Body decision recorded in
               reshape) authorized as separate beat — output-only;
               retire-now decisions await per-item Body sign-off.
 ```
+
+```
+ID:           SOUL-088
+WHEN:         2026-05-27 / Structural audit beat executed — SOUL-087
+              Thread 2 (reshape) discharged
+WHERE:        docs/audits/2026-05-27-soul-console-v1-structure.md
+              (431 lines, anchored via `wc -l` per F039 at write-time);
+              first instance of the docs/audits/ record-kind (new fourth
+              design-doc shape alongside specs/plans/experiments).
+WHAT:         Architect-led per-boundary structural audit across three
+              live seams (directory layout / record-type taxonomy /
+              doctrine-layer boundaries) per the criterion locked at
+              SOUL-087 §Body decision. Output-only beat — no deletions
+              or moves; retire-now decisions documented with explicit
+              per-item Body-sign-off requirement.
+              Reconnaissance surfaced significant unmapped top-level
+              territory the SOUL-087 chamber inventory missed: AGENTS.md,
+              GOVERNANCE.md, README.md, SYSTEM-VERSION.md, CONTRIBUTING.md,
+              architecture.svg, install.sh, plus four directories (logs/,
+              references/, registry/, skills/). The previously-cited "10
+              operations + 2 philosophy + 16 commands" inventory was
+              partial. Pre-audit reconnaissance corrected the gap before
+              writing decisions.
+TYPE:         Council Note — Architect (led; per-boundary structural
+              decisions); Steward (second voice; retire-watch flags);
+              Cartographer (full top-level map produced — covers what
+              SOUL-087 chamber missed); Archaeologist (the-commons
+              KEEP-from-SOUL-087 cited as anti-speedrun precedent);
+              Skeptic (multiple DEFER-WITH-CRITERIA where uniqueness
+              not yet verified — admits "I don't know" rather than
+              speedrun decisions). Hands NOT in audit (the Architect
+              produces but is not OF the Council; Architect's role here
+              is the "produces under the Body, answerable to the Council
+              but not OF it" disposition per seed §The Council).
+CONSEQUENCE: (1) **Three live structural seams each RESOLVED or
+              DEFERRED-WITH-CRITERIA per the SOUL-087 criterion lock.**
+              v1-stable structure criterion met at the seam level. Per-
+              item action items remain (retire-now decisions await Body
+              sign-off; defer-with-criteria items await named conditions).
+              (2) **One concrete RETIRE-NOW recommendation: logs/.**
+              Empty directory; CONTRIBUTING.md taxonomy row mis-points
+              here (findings actually live in findings/). Low-risk
+              deletion; awaits Body sign-off.
+              (3) **Three operations/ retire-watch candidates flagged
+              DEFER-WITH-CRITERIA**, not RETIRE-NOW: autonomous-session-
+              template.md (269 lines, likely orphaned but investigate
+              first), completion-gate.md (130, possible /soul-verify+hook
+              supersession), reference-repository.md (173, possible
+              references/INDEX.md consolidation). Each needs uniqueness
+              investigation before deletion. council-synthesis.md (350)
+              ruled KEEP after examination — GOVERNANCE.md references
+              it for amendment process.
+              (4) **registry/ flagged for BACKFILL, not retirement.** Real
+              channel that's never been honored — multiple dogfood
+              projects (REF-09, REF-04, REF-03,
+              REF-01, blog, REF-02) should have entries. Schedule
+              1-session backfill beat.
+              (5) **skills/ DEFERRED-WITH-CRITERIA.** Empty; ambiguous
+              between "stale aspiration" and "awaiting first upstream
+              contribution." 6-month trigger for either keep+document
+              or retire.
+              (6) **Two content-drifts flagged (not structural):** README
+              "twelve voices" (should be 13); CONTRIBUTING taxonomy
+              mis-points (logs/skills/registry rows). Updates scoped to
+              separate beats.
+              (7) **Two amendment candidates surfaced:** A014 — operations
+              sub-class footer field (DOCTRINE / FORMAT-SPEC / PROCEDURE);
+              A015 — audits-as-record-kind recognition in seed/mind.
+              Both low-controversy; batchable.
+              (8) **Always-on token budget measured:** ~5800 tokens
+              combined (seed ~3000 + Mind ~2400 + skill descriptions
+              ~400). Within budget but trending up. Soft cap proposed
+              at 8000.
+              (9) **/soul-status re-evaluation (SOUL-087 Thread 3)
+              provisional decision: keep /soul-tasks, /soul-roles,
+              /soul-explain separate.** Audit confirms each carries
+              a distinct contract; structural case for aggregation is
+              weak. Body confirms at follow-up.
+              (10) **NEW record-kind landed.** docs/audits/ established
+              as fourth design-doc shape (alongside specs/plans/
+              experiments). This audit is its inaugural instance.
+              (11) **F039 discipline applied.** `wc -l` anchored 431
+              at write-time. Fifth same-drafter instance; still no
+              different-drafter instance.
+STATUS:      Resolved — audit landed; SOUL-087 Thread 2 (reshape)
+              discharged. Per-item Body sign-off pending for: (a)
+              logs/ retire-now, (b) operations triple DEFER
+              investigation→action, (c) registry/ backfill scheduling,
+              (d) skills/ defer-criteria documentation. Two amendment
+              candidates (A014, A015) batchable when Body ready.
+```
