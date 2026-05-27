@@ -159,9 +159,12 @@ After build:
 - **Tier 3b — cross-project.** Run on a reference project (REF-05 is the
   freshest). Does the role profile differ meaningfully? Same instrument, different
   project, different role economics — that's the empirical test the F014 question wants.
-- **Tier 3c — does it earn its place?** Track invocation count over first month. If
-  Body uses `/soul-roles` <2× per month, it's ceremony; consider retirement or scope
-  reduction.
+- **Tier 3c — does it earn its place?** Event-anchored on project-internal clock:
+  track invocation count over first ~50 witness entries since adoption (SOUL-084
+  per witness; threshold fires around SOUL-134 at the measured 2026-05-26 rhythm).
+  If Body uses `/soul-roles` <2× across that window, it's ceremony; consider
+  retirement or scope reduction. (Recalibrated from "first month" per SOUL-I038
+  two-clock model; project-internal cadence is event-anchored, not calendar.)
 
 ## Build dependencies
 

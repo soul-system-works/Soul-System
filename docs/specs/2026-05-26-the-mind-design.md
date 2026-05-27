@@ -204,7 +204,7 @@ a quality signal over time, not a per-distill gate.
 | Renamed seed (Tier 1 fail) | Per-distill check: "what's in `mind.md` that's NOT in `operations/CLAUDE.md`?" Trivial answer → Mind redundant → **Steward retires** |
 | Renamed CLAUDE.md (Steward concern) | Boundary rule: CLAUDE.md is *authored* (what the project is, how agents work). Mind is *distilled* (rules the project discovered about itself from accumulated record). Distinct sources |
 | Doctrine-obligation collapse (Tier 2 evidence) | Distiller asks per-entry: "rule (across contexts) or obligation (specific commitment, specific time)?" Only rules go in Mind |
-| Stale Mind, project moved on | Steward retire protocol: if not distilled in ~3 months, OR if deployment sessions consistently produce wrong direction Mind-only, retire (`soul-status: deprecated` in header) |
+| Stale Mind, project moved on | Steward retire protocol: event-anchored on project-internal clock — if material activity has accumulated without redistill (significant new witness entries, finding closures, doctrine amendments), OR if deployment sessions consistently produce wrong direction Mind-only, retire (`soul-status: deprecated` in header). Recalibrated from "~3 months" per SOUL-I038 two-clock model. |
 
 **Retirement is a real outcome, not failure.** A project that stabilizes its
 rules and stops needing redistills has won; its Mind goes static-and-good. A
