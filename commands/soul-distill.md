@@ -78,10 +78,13 @@ is deliberately deferred until the manual cadence proves insufficient.
    - **Doctrine–obligation collapse.** Per candidate entry, ask "rule (across
      contexts) or obligation (specific commitment at a specific time)?" Only
      rules go in Mind. Obligations stay in amendments/findings/witness.
-   - **Stale.** If the previous `mind.md`'s `Last distilled` stamp is >3 months
-     old AND the project has had material activity since, the refresh is
-     overdue but legitimate — proceed. If the project has been quiet, surface
-     the Steward question: is the Mind still load-bearing or should it retire?
+   - **Stale.** Project-internal clock — staleness is event-anchored, not
+     calendar-anchored. If material activity has accumulated since the `Last
+     distilled` stamp (dozens of new witness entries, multiple finding closures,
+     accepted amendments, doctrine edits), the refresh is overdue but legitimate
+     — proceed. If the project has been quiet by event-count regardless of
+     calendar time, surface the Steward question: is the Mind still load-bearing
+     or should it retire?
 
 6. **Run the three diagnostic self-test questions** on the draft:
 
@@ -123,9 +126,12 @@ is deliberately deferred until the manual cadence proves insufficient.
 ## Retirement (Steward / never-always-on)
 
 - The Mind carries `Last distilled` so decay is visible.
-- Review on the same cadence as skills — **every 3–6 months, and after material
-  project change**: still load-bearing? still distinct from the seed + CLAUDE.md?
-  reproduction-coherent on recent decisions?
+- Review on **project-internal cadence** — whenever material activity has
+  accumulated (significant new witness entries, finding closures, doctrine
+  amendments). Event-anchored, not calendar-anchored: still load-bearing?
+  still distinct from the seed + CLAUDE.md? reproduction-coherent on recent
+  decisions? (Skills review on a different — Anthropic-driven — clock; the
+  two cadences are decoupled.)
 - A project that stabilizes its rules and stops needing redistills has *won*;
   its Mind goes static-and-good. A project where the Mind keeps drifting toward
   obligation-collapse retires the Mind cleanly (delete `mind.md`; remove
