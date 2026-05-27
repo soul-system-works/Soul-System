@@ -1,9 +1,13 @@
 # /soul-ask-body — Design Spec
 
 **Date:** 2026-05-26
-**Status:** Draft — Cluster 1 design beat, third sibling (after /soul-council and
-/soul-roles). Body picked shape **(β) + (γ)** after clarification: Body-invoked check
-**plus** doctrine line. Spec content is draft pending Body review.
+**Status:** Built — 2026-05-26. (β) shipped at `commands/soul-ask-body.md` (188 lines,
+anchored via `wc -l`); symlinked at `~/.claude/commands/soul-ask-body.md`. (γ) was
+already shipped in SOUL-A012 §Body-Input Obligation (seed) — no edit needed here per
+spec's by-reference inheritance. Cluster 1 instrument suite now COMPLETE
+(/soul-council + /soul-roles + /soul-ask-body all built). F037 partially discharged
+(the instrument candidate it named now exists); F037 stays open pending Tier 3a
+simulation + a third real-world instance for amendment graduation.
 **Topic:** A Body-invoked pre-delegation check that surfaces pending Body-only inputs,
 paired with a doctrine line requiring AI to name those dependencies before pushing past
 them.
@@ -232,8 +236,10 @@ After build:
 ---
 
 **Designed:** 2026-05-26 (Cluster 1 design beat, third sibling).
-**Adopted:** pending Body review.
-**Built:** TBD.
+**Adopted:** 2026-05-26 (Body review clean; built directly after /soul-roles in the
+same session).
+**Built:** 2026-05-26 (`commands/soul-ask-body.md`, 188 lines; SOUL-086 witness
+pointer). (γ) already in seed via SOUL-A012; no further doctrine work needed.
 
 **Source:** Designed alongside /soul-council and /soul-roles in the Cluster 1 design
 beat. Shape (β)+(γ) chosen by Body after clarification (Shape (α) AI-invoked rejected
