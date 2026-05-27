@@ -2849,3 +2849,125 @@ STATUS:      Resolved — /soul-ask-body built and live; Cluster 1 instrument
               partially discharged; remains open per criteria. F039
               discipline applied at write-time.
 ```
+
+```
+ID:           SOUL-087
+WHEN:         2026-05-27 / /soul-council convening on Soul-Console v1
+              stabilization — second non-routine Body-invoked convening
+              (first was SOUL-085 on F014 confirmation)
+WHERE:        councils/SOUL-087-stable-v1-and-consolidation.md (177 lines,
+              anchored via `wc -l` per F039 at write-time); witness pointer
+              here. Third use of the pointer+detail D4 shape after SOUL-080
+              and SOUL-085.
+WHAT:         Body opened next session with a stabilization framing rather
+              than picking from the cursor's 9-thread menu, naming five
+              concerns: (1) major structural issues for "v1 stable", (2)
+              per-role/per-instrument dogfood-study metric-driven the way
+              the Mind was distilled, (3) guidance/skills/hooks coverage,
+              (4) /soul-status proposal to consolidate /soul-tasks etc.,
+              (5) BMAD-style meta-layer composability. The central tension
+              Body named: growth without retirement (~6 weeks of additions,
+              zero formal retirements outside finding-closure).
+              Chamber walked 10 roles (Magistrates: Archaeologist, Steward,
+              Prophet, Emissary, Revelator; Tribunes: Skeptic, Accountant,
+              Advocate; Censors: Guardian, Cartographer). Excluded Seer
+              (would be self-defense — its work appears in the-commons.md,
+              not TYPE attributions, complicating SOUL-085's Seer-0
+              retirement-watch flag), Archivist (fires high, not in
+              question), Researcher (Emissary carries the reality-test
+              thread; full Researcher pass is one of the synthesis threads).
+TYPE:         Council Note — Steward (named five concrete operations-file
+              retire-watch candidates: autonomous-session-template,
+              completion-gate, reference-repository as primary;
+              council-synthesis and event-standard ruled KEEP after
+              examination); Revelator (REFRAMED the topic — Body asked
+              about /soul-status but the structural gap is a retirement
+              instrument symmetric to generation; Mind rule 4 is a rule
+              not yet a practice for commands/operations); Prophet (named
+              three trajectories — continue / build-status / audit-first;
+              leans audit-first per Body's named failure mode);
+              Archaeologist (surface inventory: 16 commands 1571 lines,
+              10 operations 1819 lines, 86 witness, 38 findings, 13
+              amendments, hooks/ active with events.jsonl firing);
+              Emissary (Cluster 1 dosage near-zero — /soul-roles ran
+              ONCE, /soul-council ONCE, /soul-ask-body NEVER; BMAD claim
+              in seed §External Skills and Tools UNTESTED — Coherent
+              Falsehood risk if treated as confirmed); Skeptic (named
+              the load-bearing Body-Input dependency — "stable v1" is
+              undefined, four criterion candidates surfaced); Advocate
+              (Body's surface-fatigue is real; don't dismiss any thread);
+              Guardian (Counterweight Rule fired structurally;
+              new-instrument bias flagged — adding to fix
+              instrument-bloat is the named failure mode); Cartographer
+              (UNMAPPED: stable-v1 criterion, retirement instrument
+              shape, cross-framework dogfood, event-type coverage).
+CONSEQUENCE: (1) **Six-thread synthesis** lands. Thread 1 (Body names
+              stable-v1 criterion) is load-bearing for threads 2–3.
+              Thread 2 (audit pass across 16+10+2+13 surface items —
+              one-line earning-its-place check, retire-watch flags, NO
+              mass deletion) is cheap-first move. Thread 3
+              (/soul-status re-evaluated against trimmed surface) is
+              contingent on Thread 2 evidence. Thread 4 (retirement
+              instrument idea — captured as SOUL-I034 if Body accepts).
+              Thread 5 (BMAD Researcher beat — ~1 session read + finding
+              on composition fit; not full dogfood; captured as
+              SOUL-I035 if Body accepts). Thread 6 (one-line "claim;
+              not yet tested" qualifier on seed §External Skills and
+              Tools — cheap intellectual-honesty fix).
+              (2) **Revelator's reframe is the convening's central
+              move.** The Body asked about /soul-status (an
+              observability aggregator); chamber surfaced that the
+              structural gap is a retirement instrument symmetric to
+              the generation instruments. /soul-status may be the
+              wrong shape. Mind rule 4 ("generation couples with
+              retirement") is operationalized for skills + findings;
+              NOT for commands, operations files, or amendments. The
+              instruments themselves are second-class on the dimension
+              their own doctrine names.
+              (3) **Cluster 1 dosage data point added.** Empirical
+              measurement of how many times each Cluster 1 instrument
+              has fired: /soul-roles ONCE, /soul-council ONCE (now
+              TWICE counting this), /soul-ask-body NEVER. SOUL-150
+              re-measurement (from SOUL-085 deferred) becomes more
+              important — there is now a wider observability question
+              than just role-firing.
+              (4) **Six concrete retire-watch candidates surfaced** as
+              the chamber's data-pull. Five operations files
+              (autonomous-session-template 269, council-synthesis 350
+              [ruled KEEP — different layer], completion-gate 130,
+              event-standard 202 [ruled KEEP — events.jsonl active],
+              reference-repository 173). Plus general retirement
+              symmetry across commands and amendments. Thread 2 is
+              where this gets evaluated.
+              (5) **A012 fired explicitly.** Counterweight Rule
+              (expansion voices vs contraction default of "push and
+              move on") + Body-Input Obligation (Skeptic's criterion
+              gap surfaced as Body-only knowledge). Both rules naming
+              the moment without ceremony.
+              (6) **F039 discipline applied.** `wc -l` anchored 177
+              before this pointer write. Fourth same-drafter instance.
+              Cluster of three this prior session, one this session;
+              still same-drafter only.
+              (7) **/soul-council Tier 3 advances toward 3c.** Second
+              non-routine convening with reproducible pattern (walk +
+              tensions + synthesis + pointer+detail). N=2 toward
+              month-of-use earn-its-place check.
+STATUS:      Resolved — Body decision recorded in
+              councils/SOUL-087-stable-v1-and-consolidation.md §Body
+              decision. Pre-decision grill ran (Body reframed criterion
+              candidates as structure/standardization/usability/usefulness;
+              picked STRUCTURE as the gate; declined to single-out one of
+              three live sub-seams — chamber locked all three as
+              entangled gate). Thread 2 reshaped Steward→Architect (per-
+              boundary, not per-item). Thread 4 captured as SOUL-I034
+              (retirement instrument symmetric to generation). Thread 5
+              captured as SOUL-I035 (BMAD Researcher beat). Thread 6
+              deferred to post-audit. The-commons.md verified KEEP
+              (Body-proposed retire on "never used" grounds; verification
+              showed Entry 001 sources mind rule 11 + seed §On This
+              Document, Entry 002 shaped CLAUDE.md @-import design;
+              slow-growth by design — Archaeologist's "carry history"
+              applied to Body's own premise). Structural audit (Thread 2
+              reshape) authorized as separate beat — output-only;
+              retire-now decisions await per-item Body sign-off.
+```
