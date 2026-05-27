@@ -1220,6 +1220,31 @@ IDEA:      Audit doctrine surfaces for month-scale time references that don't
            event count. This is a Mind-rule-shaped question if it ripens
            (candidate rule: "Project-internal cadence is event-anchored, not
            calendar-anchored").
-STATUS:    Raw — captured at SOUL-103 distill closeout; Body raised the
-           pattern observation explicitly. Five doctrine instances anchored.
+STATUS:    Graduated 2026-05-27 — Body picked the **two-clock model** (d).
+           Audit at execution time surfaced 2 additional sites beyond the
+           original 5, for 7 total. Classification + edits:
+
+           **Project-internal clock → event-anchored** (3 sites):
+           - commands/soul-distill.md:81 — Mind staleness now event-anchored
+             (dozens of new witness entries, finding closures, amendments)
+           - commands/soul-distill.md:126 — Distill review now event-anchored,
+             decoupled from skill-review cadence (different clocks now)
+           - commands/soul-roles.md:176 — Tier 3 earn-its-place threshold now
+             "first ~50 witness entries since adoption" (fires around SOUL-134
+             from SOUL-084 adoption anchor)
+
+           **External world clock → keep calendar, sharpen** (4 sites):
+           - commands/soul-skill.md:90 — Anthropic model-release cadence
+             stays months; framing made explicit ("external cadence")
+           - commands/soul-skill.md:117 — same source footer; left as quote
+             of Anthropic best practices
+           - skills/README.md:22 — calendar trigger 2026-11-27 retained;
+             "six months" framing dropped, "external clock — not project's
+             internal rhythm" named
+           - skills/README.md:25 — same site, justification reworded
+
+           Mind-rule candidate ("Project-internal cadence is event-anchored,
+           not calendar-anchored") NOT promoted to mind.md — the two-clock
+           model is more nuanced than the candidate rule. Holds in residual
+           per Mind discipline (zero-residual is suspicious).
 ```

@@ -19,11 +19,13 @@ The audit set two trigger conditions on this directory:
 - **Un-defer trigger** — first upstream skill contribution arrives:
   un-defer, document the precedent, update CONTRIBUTING.md if its row
   needs sharpening.
-- **Retire trigger** — six months with no contribution (calendar from
-  the audit, **2026-11-27**): RETIRE-NOW. Delete `skills/` and remove
-  the row from CONTRIBUTING.md. Empty contribution-channel scaffolding
-  past six months is aspiration without evidence — Mind rule 4
-  (generation couples with retirement) applies.
+- **Retire trigger** — calendar-anchored to the audit moment, fires at
+  **2026-11-27** if no upstream contribution has arrived: RETIRE-NOW.
+  Delete `skills/` and remove the row from CONTRIBUTING.md. Empty
+  contribution-channel scaffolding past that date is aspiration without
+  evidence — Mind rule 4 (generation couples with retirement) applies.
+  Calendar here measures absence-of-external-signal (an external clock —
+  not the project's internal rhythm).
 
 ## What an upstream skill looks like
 

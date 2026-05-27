@@ -173,5 +173,7 @@ section did this analysis manually across one project; this command
 automates that empirical method. **Adopted:** 2026-05-26. **Status:**
 active — MVP. Tier 3 validation: (a) reproduce F014's manual finding on
 this repo, (b) cross-project test on a reference project, (c) does it
-earn its place — invocation count over first month <2× ⇒ ceremony, retire
-or reduce scope.
+earn its place — event-anchored on project-internal clock: invocation
+count over first ~50 witness entries since adoption <2× ⇒ ceremony,
+retire or reduce scope. (Adopted at SOUL-084 per witness; threshold
+fires around SOUL-134.)

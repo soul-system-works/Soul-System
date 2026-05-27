@@ -87,9 +87,12 @@ Manual-fire only. Auto-distillation from transcripts is deliberately deferred.
 ## Retirement (Steward / never-always-on)
 
 - Every skill carries `soul-status` + `soul-last-verified` so decay is visible.
-- Review on Anthropic's cadence — **every 3–6 months, and after a major model
-  release**: still used? still correct? superseded by native model capability?
-  Move `active → under-review → deprecated`, and remove what is dead.
+- Review on **Anthropic's external cadence** — at each major Claude model
+  release (historically ~every 3–6 months; defer to actual release rather than
+  a fixed period): still used? still correct? superseded by native model
+  capability? Move `active → under-review → deprecated`, and remove what is
+  dead. This site uses calendar time because the external trigger is itself
+  calendar-bound; the project-internal clock (e.g. soul-distill) is decoupled.
 - The reason matters: a tool that gains AI integration makes its skill redundant;
   a tool that never will (e.g. Dymola) keeps its skill load-bearing.
 
