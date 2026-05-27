@@ -2770,3 +2770,82 @@ STATUS:      Synthesis lands; Body decision pending. Update §Body
               in place. Threads (a)/(c) require nothing this session;
               thread (b) is a capturable idea; thread (d) is record-only.
 ```
+
+```
+ID:           SOUL-086
+WHEN:         2026-05-26 / /soul-ask-body command built — Cluster 1 third
+              and final instrument; suite now COMPLETE
+WHERE:        commands/soul-ask-body.md (new — 188 lines, anchored via
+              `wc -l` per F039 discipline at write-time); spec STATUS
+              updated at docs/specs/2026-05-26-soul-ask-body-design.md
+              (Draft → Built); symlink at ~/.claude/commands/soul-ask-body.md
+              (skill discovery confirmed LIVE — `soul-ask-body` line appeared
+              in available-skills system reminder mid-session with the full
+              frontmatter description; third consecutive command-discovery
+              confirmation this session after /soul-council and /soul-roles).
+WHAT:         /soul-ask-body shipped from its design spec. Body's
+              post-SOUL-085 menu landed on (b) build /soul-ask-body. The
+              knowledge-axis sibling of /soul-council (invocation) and
+              /soul-roles (observability). The (β) half = the command file;
+              the (γ) half (doctrine) was already shipped in SOUL-A012
+              §Body-Input Obligation earlier this session, so no further
+              seed edit was needed per spec's by-reference inheritance.
+              SOUL-F037 partially discharged (the instrument candidate it
+              named now exists); F037 stays open pending Tier 3a simulation
+              and a third real-world instance for amendment graduation.
+TYPE:         Council Note — Artificer (command file build, symlink, third
+              consecutive live-discovery confirmation); Architect (matched
+              the spec's contract; preserved one-question-per-kind cap,
+              concrete-decisions-only rule, mandatory "may have missed X"
+              caveat, witness-write step 6 as anti-pollution guard);
+              Steward (spec STATUS updated; no orphans; F037 partial
+              discharge noted without false-closing); Cartographer
+              (Cluster 1 instrument map now COMPLETE — all three siblings
+              built and live).
+CONSEQUENCE: (1) **CLUSTER 1 COMPLETE.** Doctrine (SOUL-A012 §Activation
+              Disciplines) + three instruments (/soul-council invocation,
+              /soul-roles observability, /soul-ask-body knowledge-axis)
+              all in the seed/commands and live. The F014 expansion-gap
+              response is structurally complete on both axes (scope:
+              Counterweight Rule + /soul-council + /soul-roles;
+              knowledge: Body-Input Obligation + /soul-ask-body). The
+              remaining open question is dosage / forward-prompt — captured
+              as SOUL-I033 at SOUL-085 synthesis.
+              (2) **F037 partial discharge.** The instrument candidate F037
+              named is now built. F037 stays open: (a) Tier 3a simulation
+              against the REF-02 M8/M9 scenarios pending; (b) third
+              real-world instance still required for amendment graduation
+              per F035 heuristic (3 instances ⇒ amendment-ready). F037's
+              STATUS could carry the "instrument shipped" note — Steward
+              flag for a small finding-update beat.
+              (3) **Three-for-three live-discovery this session.** Same
+              pattern reproduced for /soul-council (SOUL-083), /soul-roles
+              (SOUL-084), and /soul-ask-body (this entry): write command +
+              symlink + frontmatter description → skill auto-discovery →
+              system-reminder confirmation mid-session. Mind rule 9
+              (live-reference distribution) is structurally robust at the
+              command layer; the pattern is repeatable enough to be the
+              default recipe for any future /soul-* command.
+              (4) **F039 discipline applied pre-commit.** `wc -l` anchored
+              the 188-line count BEFORE writing this witness pointer.
+              Second instance this session of pre-write anchoring (the
+              /soul-roles SOUL-084 build was the first). The discipline is
+              becoming routine within the drafter — the harder graduation
+              criterion (different-drafter instance) remains unmet.
+              (5) **No idea graduation for this build.** Unlike /soul-council
+              (graduated SOUL-I030) and /soul-roles (graduated SOUL-I031),
+              this command was specced directly from F037 — no idea
+              precursor existed. The shape ran from finding → spec → build
+              without an idea-tier intermediary, demonstrating the path is
+              viable when the finding is already concrete enough.
+              (6) **All three commands in commands/ now total six /soul-*
+              built this session-arc.** SOUL-076 /soul-witness, SOUL-079
+              /soul-skill (prior session), now /soul-council, /soul-roles,
+              /soul-ask-body (this arc). The command directory has grown
+              substantially; /soul-help should be checked to confirm it
+              still surfaces them cleanly.
+STATUS:      Resolved — /soul-ask-body built and live; Cluster 1 instrument
+              suite COMPLETE (3 instruments + doctrine all shipped). F037
+              partially discharged; remains open per criteria. F039
+              discipline applied at write-time.
+```
