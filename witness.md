@@ -3680,3 +3680,103 @@ STATUS:      Resolved — refresh landed; Mind.md committed by Body
               authorization ("accept"). Next: (f) registry backfill
               per the Body's "l and f" sequence.
 ```
+
+```
+ID:           SOUL-096
+WHEN:         2026-05-27 / Registry backfill beat (Body's (f) per the
+              "l and f" sequence). Inaugural population of the
+              registry/ directory — empty since project genesis
+              despite multiple dogfood projects producing Soul-meta
+              evidence. Audit §1.10 flagged the gap; this beat closes
+              it.
+WHERE:        registry/README.md (new, ~55 lines — FORMAT-SPEC for
+              the directory per A014); registry/<project>.md × 7
+              (REF-09, REF-04, REF-05,
+              REF-03, REF-01, blog, REF-02). registry/ count:
+              0 → 7 entries + 1 README.
+WHAT:         Populated the registry with one entry per dogfood
+              project named in the audit, PLUS one project the audit
+              missed. Each entry carries Status / Path / Adoption /
+              Import mode / Description + Soul-meta evidence (findings
+              / witness IDs / ideas / amendments cited with anchors)
+              + Notes. README sets the format precedent (project-name
+              filename, scannable shape, anchor every claim).
+              **F040 discipline dogfooded on the audit itself.**
+              The audit §1.10's list was 6 projects. Per-item grep
+              for project names in witness/findings/ surfaced
+              REF-05 as a 7th (filed F032, F035, F036;
+              hosted Tier 3b Mind deployment per SOUL-070/071; has
+              its own CLAUDE.md at /home/fig/REF-05). The
+              audit's surface enumeration missed it; per-item
+              investigation found it. Adding it as registry/REF-08-
+              modelica.md was the right call.
+TYPE:         Council Note — Cartographer (this is the Cartographer's
+              instrument; the registry IS the "map where the system
+              has been used"); Archivist (the README format spec is
+              the indexing surface; project-name filenames keep
+              entries findable); Archaeologist (per-item grep of
+              witness/findings to extract anchored facts for each
+              entry — what is this for, who refers to it, what
+              evidence trace does it leave); Skeptic (refused to
+              fabricate dates / paths where unanchored; "TBD"
+              honestly named for the unknowns); Emissary (the
+              filesystem check that confirmed paths exist for 5/7;
+              REF-09 path may be ephemeral, recorded
+              honestly).
+CONSEQUENCE: (1) **Inaugural population: 7 entries.** Six from the
+              audit list + REF-05 from the F040-style
+              investigation. The directory that has been
+              "DEFER-WITH-CRITERIA — backfill candidate" since the
+              audit (5 days ago in calendar time, but this same
+              session in arc time) is now load-bearing.
+              (2) **F040 instance #5 within the broader arc.** The
+              registry backfill discovered REF-05 via
+              per-item grep that the audit's surface-list missed —
+              same shape as F040's three-zoom-level recursion. The
+              discipline is operational without F040 being closed
+              yet; the recipe (per-item grep → content analysis →
+              correct the surface list) fired without a doctrinal
+              prompt.
+              (3) **Mind residual line is now slightly stale.**
+              mind.md's "specific dogfood histories" residual lists
+              six projects (matching the audit's list). The registry
+              has seven. NOT updating mind.md this commit — the
+              Distiller just ran (SOUL-095); re-firing would re-open
+              the curation cycle. Flag for next /soul-distill
+              instead. The registry is the canonical record; the
+              Mind residual gestures, doesn't enumerate.
+              (4) **A014 dogfooded in the registry README.** The
+              new README's footer carries `Sub-class: FORMAT-SPEC`
+              per A014 — second dogfood instance after problem-slot-
+              template.md (PROCEDURE). One file per sub-class now
+              landed (FORMAT-SPEC, PROCEDURE; DOCTRINE-ABOVE-
+              INSTRUMENT examples exist in the older operations/
+              files but pre-date A014's footer landing).
+              (5) **Soul-meta evidence productivity, ranked.** The
+              registry entries make the Cartographer's view
+              quantitative: which projects produced the most
+              Soul-meta evidence? REF-04 + REF-02/
+              REF-02 (multiple findings + ideas + amendment
+              evidence each) lead. REF-01, blog, and REF-03
+              contribute important specific findings (F031, F030,
+              F028/F014 share). REF-05 contributed Mind
+              deployment + F032/F035/F036. REF-09 is the
+              foundational early-evidence set. Each is path-
+              dependent, none redundant.
+              (6) **CONTRIBUTING.md "Registry Entries" row is now
+              honest.** It said "Record of a project that used the
+              system" but registry/ was empty. The row is no longer
+              aspirational. First-contribution onboarding ("submit a
+              registry entry") now has working precedents to point
+              at.
+              (7) **F039 discipline: anchored 7 entries + 1 README,
+              line counts per file checked at write-time, every
+              cited witness/finding ID verified against the actual
+              records before write.** Eleventh same-drafter
+              instance overall this session; still no different-
+              drafter.
+STATUS:      Resolved — registry/ populated. Body's "l and f"
+              sequence complete. Next: a /soul-handoff to set the
+              cursor for tomorrow, or pivot to another thread per
+              Body's call.
+```
