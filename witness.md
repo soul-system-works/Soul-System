@@ -3062,3 +3062,71 @@ STATUS:      Resolved — audit landed; SOUL-087 Thread 2 (reshape)
               (d) skills/ defer-criteria documentation. Two amendment
               candidates (A014, A015) batchable when Body ready.
 ```
+
+```
+ID:           SOUL-089
+WHEN:         2026-05-27 / Alpha beat — first RETIRE-NOW action executed
+              under the SOUL-087/SOUL-088 audit contract. First formal
+              retirement in the project since the SOUL-033 always-on
+              @import drop (~6 weeks ago).
+WHERE:        logs/ directory (deleted via `git rm -r`; sole content was
+              .gitkeep — verified empty before deletion); CONTRIBUTING.md
+              "What Counts" table (row 16 split into Witness/Findings
+              rows; Skills row refined to clarify upstream vs project-
+              local); README.md "Structure" block (logs/ row removed,
+              skills/ row description tightened).
+WHAT:         Executed audit Decision #1 with explicit Body authorization
+              ("commit then continue" + "lets tackle alpha now").
+              Minimum-coupling scope: retire the empty directory + fix
+              the two known references (CONTRIBUTING.md + README.md). The
+              broader README content-drift ("twelve voices" + missing
+              councils/+mind.md+commands count) deliberately left for a
+              separate beat per audit-time content-vs-structural
+              separation. Pre-deletion sweep: `grep -rn "logs/"` across
+              .md found CONTRIBUTING.md row 16 + README.md row 84 only;
+              audit document and SOUL-088 witness pointer also mention
+              logs/ but those are descriptive historical records (correct
+              as-is post-deletion).
+TYPE:         Council Note — Steward (executed the retirement; named the
+              precedent — first formal retirement since SOUL-033);
+              Archaeologist (verified-empty discipline + reference sweep
+              before deletion, applied to logs/ the same care the-commons
+              received at SOUL-087); Architect (CONTRIBUTING.md row-split
+              into witness/findings preserves the ratchet's distinction
+              that the original conflating row obscured); Cartographer
+              (post-action map: 4 empty/aspirational top-level dirs now
+              3 — logs/ removed, skills/+registry/+amendments/proposed/+
+              amendments/returned/ remain as documented-purpose channels).
+CONSEQUENCE: (1) **First RETIRE-NOW under the audit contract executed
+              cleanly.** Empty-directory deletion + two prescriptive-
+              doc reference fixes; descriptive records (audit + SOUL-088)
+              untouched. The pattern (verify-empty → sweep-references →
+              update-prescriptive-docs → delete → witness-pointer) is
+              available for the operations DEFER triple (beta beat).
+              (2) **CONTRIBUTING.md taxonomy now matches reality.** Row
+              split distinguishes Witness entries (raw, in witness.md)
+              from Findings (graduated, in findings/open/) — what the
+              old conflating row obscured. Skills row clarifies upstream
+              channel vs project-local /soul-skill path.
+              (3) **The "growth-only, no consolidation" failure mode the
+              Body named at SOUL-087 is now structurally falsified.**
+              Concrete retirement executed; visible in the diff. First
+              instance of the audit→sign-off→action loop.
+              (4) **F039 discipline: no wc -l anchoring needed.** This
+              beat is action-on-existing-files + small-diff edits + one
+              witness pointer — no large new artifact to anchor.
+              (5) **/soul-council Tier 3c progress:** the SOUL-087
+              chamber walk's Thread 2 → audit → action loop closed its
+              first lap in <24 hours, meeting the chamber's "actionable
+              synthesis" success criterion at the per-thread level.
+              (6) **Audit doc + SOUL-088 references to logs/ remain
+              intentionally.** Records of past assessment; rewriting
+              them would erase the audit's own findings. Mind rule 11
+              (two parties reading same record arrive at same meaning)
+              applies: a future reader sees logs/ named in SOUL-088,
+              checks the path, finds it gone, traces back to SOUL-089 —
+              the chain is the meaning.
+STATUS:      Resolved — alpha beat complete. Next: beta (operations
+              DEFER triple investigation per task #7) per Body's
+              "investigate beta" authorization.
+```

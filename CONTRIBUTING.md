@@ -13,9 +13,10 @@ from real use — not through good intentions, clever reasoning, or enthusiasm.
 
 | Type | Folder | Shape |
 |---|---|---|
-| Findings | `logs/` | Observations from a real run that matter but do not yet warrant changing the Soul. The raw material the Council works from. |
+| Witness entries | `witness.md` | Observations from a real run — the raw material the Council works from. Append-only, sequential IDs (`SOUL-###`). Use `/soul-witness` to capture; see `operations/witness-log-format.md`. |
+| Findings | `findings/open/` | Earned graduations from witness — patterns worth naming. Standard format (`SOUL-F###`). |
 | Proposed Amendments | `amendments/proposed/` | A change to a canonical document, supported by Witness log evidence. |
-| Skills | `skills/` | Compressed activation of a Council role, tested in a real run. |
+| Upstream skills | `skills/` | Skills first proven in a project (via `/soul-skill` writing local `SKILL.md`), then submitted upstream for cross-project reuse. |
 | Hooks | `hooks/` | Automatic trigger definitions, tested in a real run. |
 | Commons Entries | `philosophy/the-commons.md` | Outside wisdom that illuminates something the Soul reaches for. |
 | Registry Entries | `registry/` | Record of a project that used the system. |

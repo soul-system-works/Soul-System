@@ -79,9 +79,8 @@ findings/       Council Findings, open/ and closed/
 witness.md      The repo's own Witness log (what happened, backward)
 ideas.md        The idea inbox (what might, forward) — graduates into findings/
 docs/           Design specs and proposals
-skills/         Role activations — built through use
+skills/         Upstream skills — project-proven, submitted for cross-project reuse
 registry/       Where the system has been used
-logs/           Contributed Witness logs
 AGENTS.md       Cross-vendor entry point for any agent tool
 install.sh      Snapshot installer (alternative path)
 ```
