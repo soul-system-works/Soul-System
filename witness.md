@@ -3320,3 +3320,109 @@ STATUS:      Resolved — retire-and-preserve action executed cleanly.
               graduate F040 candidate (audit-process lesson —
               retire-intuitions need uniqueness-investigation).
 ```
+
+```
+ID:           SOUL-092
+WHEN:         2026-05-27 / Completion-gate caught Coherent Falsehood
+              from SOUL-090 grep — anchor was flawed (.md-only scope).
+              install.sh row 37 referenced the just-retired
+              autonomous-session-template.md. Third instance of F040
+              pattern; gate forced disclosure + fix.
+WHERE:        install.sh rows 36-38 (next-steps echo); the broken
+              reference was discovered when the pre-completion hook
+              (hooks/pre-completion-verify.py) fired at the end of
+              the SOUL-091 commit beat and forced check #2 (valid
+              external anchor). Honest review of SOUL-090's anchor
+              ("zero live references via grep") revealed the grep
+              had used `--include="*.md"` only — non-markdown file
+              types unchecked. Re-grep with broader pattern surfaced
+              install.sh:37 as a live reference.
+WHAT:         (a) Disclosed the anchor-validity gap in completion-gate
+              response per A010 §Anchor Obligation. (b) Fixed
+              install.sh next-steps echo: row 37 now points to
+              operations/problem-slot-template.md (which `cp -r
+              operations/.` at row 25 actually copies post-retire);
+              row 38 simplified. install.sh's broader staleness
+              (SYSTEM_VERSION="0.3.0", copy-based install model
+              superseded by @-import) remains as the audit's
+              original DEFER-WITH-CRITERIA flag — minimum-coupling
+              scope held for this beat. (c) Re-grep across all
+              file types confirmed install.sh was the only
+              non-markdown reference; post-fix grep is clean
+              (only descriptive records remain).
+TYPE:         Council Note — Skeptic (forced the anchor re-check at
+              completion gate; the Skeptic-discipline is what the
+              gate operationalizes); Emissary (the re-grep IS the
+              field-test of the original anchor; the actual file-
+              system was the Universe-consult the original grep
+              skipped); Archaeologist (install.sh's contextual
+              meaning — "Next steps for the human" — preserved by
+              pointing at the correct surviving file rather than
+              just deleting the line); Steward (refused scope
+              expansion to install.sh's broader retirement
+              question — minimum-coupling held; the original
+              audit DEFER stays open).
+CONSEQUENCE: (1) **F040 pattern reaches N=3.** Original SOUL-088
+              audit flagged 3 retire candidates with surface-level
+              Steward intuition; SOUL-090 reversed 2/3 to KEEP via
+              grep+content investigation (instance #1, #2 of the
+              pattern). This entry IS instance #3: SOUL-090's own
+              grep was insufficient on the third dimension (file-
+              type scope). The audit-process lesson now has THREE
+              data points; per F035 heuristic (3 instances ⇒
+              amendment-ready), F040 candidate has earned
+              graduation. Body decision: graduate now or maintain
+              flag? (Tier 3a discharge would be the gate-fired
+              catch this entry just recorded.)
+              (2) **A010 §Anchor Obligation discharged this
+              session.** The chain: SOUL-090 named anchor (grep);
+              completion-gate forced re-check; anchor revealed
+              flawed; fix executed; disclosure made. This is
+              exactly the doctrine's intended flow — coherent
+              falsehood caught at the gate, not by a human
+              reviewer days later. The completion gate
+              (operations/completion-gate.md + /soul-verify +
+              hooks/pre-completion-verify.py three-layer stack)
+              earned its keep at this gate-fire — same stack
+              SOUL-090 confirmed KEEP-IN-PLACE earlier this
+              session. Dogfood-of-dogfood.
+              (3) **Audit Section 4.1's "zero live references"
+              statement is now stale.** install.sh DID have a
+              reference (since-fixed). The audit document remains
+              correct AS-WRITTEN (it described the .md grep
+              result) but the broader claim of orphanage was
+              looser than the anchor supported. No edit to the
+              audit document — historical record stays; this
+              witness pointer corrects the underlying belief.
+              Mind rule 11 applies: future reader sees SOUL-090
+              "zero live references" → SOUL-092 "actually one
+              non-markdown reference, fixed at install.sh:37"
+              → traces both → understands the gap discipline.
+              (4) **install.sh broader retirement question
+              advances.** With the broken reference fixed,
+              install.sh is no longer ACTIVELY broken — but the
+              copy-based install model is still doctrinally
+              superseded (modern projects @-import via stable
+              path per CLAUDE.md guidance). The audit's
+              DEFER-WITH-CRITERIA for install.sh stays open;
+              criteria unchanged.
+              (5) **The Skeptic-at-completion-gate pattern
+              earned its keep.** Without the gate firing, this
+              gap would have shipped as an unspoken Coherent
+              Falsehood — a green-looking arc with a real broken
+              reference. The five-check gate caught it via
+              check #2 (anchor validity). This vindicates F012's
+              residual (gate without-the-hook-firing is posture;
+              the hook IS the activation) and the SOUL-090
+              keep-in-place of the three-layer completion stack.
+              (6) **F039 discipline: no wc -l anchor needed**
+              for the small install.sh edit (3-line diff) +
+              this witness pointer. Eighth same-drafter
+              instance overall this session.
+STATUS:      Resolved — gap disclosed, fix landed, F040 pattern
+              graduation-ready. Audit document NOT amended
+              (historical record); this witness entry carries
+              the correction. Body may graduate F040 via
+              /soul-finding when ready; doctrine could land it
+              as an amendment alongside the A014/A015 batch.
+```
