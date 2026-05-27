@@ -3780,3 +3780,66 @@ STATUS:      Resolved — registry/ populated. Body's "l and f"
               cursor for tomorrow, or pivot to another thread per
               Body's call.
 ```
+
+```
+ID:           SOUL-097
+WHEN:         2026-05-27 / Body picked (h) skills/ README from the
+              remaining audit-DEFER threads. Smallest unfinished
+              audit-DEFER, closed in one tight beat. Third audit-
+              DEFER discharge of this session-day after SOUL-089
+              (logs/ retired) and SOUL-091 (autonomous-session-
+              template retired-and-preserved).
+WHERE:        skills/README.md (new, 38 lines, PROCEDURE sub-class
+              per A014). skills/ directory contents: .gitkeep + this
+              README. No skills committed yet — the README explicitly
+              names empty-by-design.
+WHAT:         Wrote a README documenting the skills/ directory as the
+              upstream-skill contribution channel, AND encoding both
+              of the audit §1.10 DEFER-WITH-CRITERIA triggers:
+              (i) un-defer on first upstream contribution; (ii)
+              retire on six months with no contribution (calendar
+              trigger date: 2026-11-27). Names empty-as-honest-state
+              rather than empty-as-ambiguous. Cross-references
+              CONTRIBUTING.md (the contribution flow) and Mind rule
+              4 (generation couples with retirement) so the retire
+              trigger is doctrine-anchored, not floating.
+TYPE:         Council Note — Archivist (the README makes the empty
+              directory legible; ambiguity → named state); Steward
+              (the retire trigger is the Steward's instrument made
+              explicit; six-month silence = aspiration-without-
+              evidence verdict); Architect (the upstream-vs-project-
+              local boundary at /soul-skill's output is named at
+              the directory README rather than left to inference);
+              Cartographer (the contribution channel's intent and
+              lifecycle are now mapped, not just gestured at).
+CONSEQUENCE: (1) **Third audit-DEFER discharge today.** The audit's
+              DEFER-WITH-CRITERIA bucket had 5-6 entries; three are
+              now formally closed (logs/, autonomous-session-template,
+              skills/ documented). Two remain DEFER: install.sh
+              (no trigger hit), and skills/ itself now has triggers
+              that fire on calendar OR contribution. The DEFER
+              bucket is no longer hand-wavy — every entry has either
+              been actioned or carries a concrete trigger.
+              (2) **A014 dogfooded for the third time this session.**
+              First instance: problem-slot-template.md (PROCEDURE)
+              at SOUL-091. Second: registry/README.md (FORMAT-SPEC)
+              at SOUL-096. Third: skills/README.md (PROCEDURE) here.
+              Three Sub-class footer instances within 12 hours of
+              A014 landing — convention is now in use, not
+              aspirational.
+              (3) **Retirement-trigger encoded with date, not "soon."**
+              The README names 2026-11-27 as the concrete calendar
+              date. This is per F040 §anchor obligation applied to
+              future Steward decisions — "six months" without an
+              anchor would have rotted into ambiguity within
+              weeks; the date prevents that. Future Steward firing
+              has a deterministic input.
+              (4) **F039 discipline: anchored 38 (README), 0
+              (committed skills — explicitly named).** Twelfth
+              same-drafter instance overall this session; still no
+              different-drafter.
+STATUS:      Resolved — skills/ documented; both DEFER triggers
+              encoded with concrete dates. Audit DEFER bucket is
+              materially smaller. Body's "tackle the next task"
+              ask discharged.
+```
