@@ -1,8 +1,10 @@
 # /soul-roles — Design Spec
 
 **Date:** 2026-05-26
-**Status:** Draft — Cluster 1 design beat, sibling of /soul-council; spec content is
-draft pending Body review.
+**Status:** Built — 2026-05-26. Shipped at `commands/soul-roles.md` (177 lines,
+anchored via `wc -l`); symlinked at `~/.claude/commands/soul-roles.md`; SOUL-I031
+graduated Raw → Graduated. Tier 3 validation pending (first non-trivial Body-invoked
+use; see §Tier 3 below).
 **Topic:** A read-only observability instrument that surfaces which Council roles have
 actually fired in the project vs sat idle.
 
@@ -189,8 +191,8 @@ After build:
 ---
 
 **Designed:** 2026-05-26 (Cluster 1 design beat).
-**Adopted:** pending Body review.
-**Built:** TBD.
+**Adopted:** 2026-05-26 (Body review pass clean, post-/soul-council ship).
+**Built:** 2026-05-26 (`commands/soul-roles.md`, 177 lines; SOUL-084 witness pointer).
 
 **Source:** Designed alongside /soul-council in the Cluster 1 design beat (Cartographer
 cluster pass surfaced the family; Body authorized the suite, /soul-council first, then

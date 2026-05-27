@@ -2632,3 +2632,68 @@ CONSEQUENCE: (1) Cluster 1 is now half-built. /soul-council shipped; the
 STATUS:      Resolved — /soul-council built and live; SOUL-I030 graduated;
               spec STATUS reflects Built.
 ```
+
+```
+ID:           SOUL-084
+WHEN:         2026-05-26 / /soul-roles command built (Cluster 1 second
+              instrument, observability sibling of /soul-council)
+WHERE:        commands/soul-roles.md (new — 177 lines, anchored via `wc -l`
+              at write-time per F039 discipline); spec STATUS updated at
+              docs/specs/2026-05-26-soul-roles-design.md (Draft → Built);
+              SOUL-I031 graduated (Raw → Graduated) in ideas.md; symlink
+              at ~/.claude/commands/soul-roles.md (skill discovery confirmed
+              LIVE — `soul-roles` line appeared in available-skills system
+              reminder mid-session with the full frontmatter description).
+WHAT:         /soul-roles shipped from its design spec. Body picked (d → a → c)
+              sequence post-resume: SOUL-083 added to F039 WITNESS IDS (small
+              evidence update), then build /soul-roles, then dogfood both
+              /soul-council and /soul-roles together. The observability half
+              of the SOUL-F014 expansion-gap response now has an executable
+              contract; pairs with /soul-council (invocation half, shipped
+              SOUL-083) and SOUL-A012 §Activation Disciplines (the doctrine
+              line). The MVP renders a Council table + a separate Hands table
+              + mandatory data-quality line; logs queries to
+              .soul/role-queries.jsonl, NOT witness.md. Spec D4 logging-split
+              and F028 self-report-anchor-validity guards landed in the
+              command's failure-mode table.
+TYPE:        Council Note — Artificer (command file build, symlink); Architect
+              (matched the spec's contract; preserved D4 logging split and
+              the Council/Hands separation; added the self-report anchor
+              guard as the 8th failure-mode row); Steward (idea graduated,
+              spec STATUS updated, no orphans); Cartographer (Cluster 1 now
+              two-thirds built — /soul-council + /soul-roles shipped,
+              /soul-ask-body remains specced-not-built).
+CONSEQUENCE: (1) Cluster 1 is now TWO-THIRDS built. /soul-council (invocation)
+              + /soul-roles (observability) both shipped; /soul-ask-body
+              (knowledge-axis) remains specced-not-built. The activation
+              doctrine (SOUL-A012) is in the seed; two of three instruments
+              now have lead references.
+              (2) Skill discovery verified LIVE for the second consecutive
+              command this session — same pattern as SOUL-083. Symlink →
+              claude auto-discovery → live skill registration. Mind rule 9
+              (live-reference distribution) holds at command layer for both
+              builds this session.
+              (3) F039 discipline applied at write-time: `wc -l` anchored
+              the 177-line count BEFORE the witness pointer was drafted.
+              First instance this session of the discipline firing
+              pre-commit rather than post-commit (the SOUL-083 instance
+              caught it post-commit via 9ca4f55). Same-drafter, different
+              moment — the verify-gate landing earlier in the workflow.
+              Adds an emerging-instrument data point: the recipe might be
+              "anchor magnitudes at the moment of write, not at the moment
+              of commit message draft."
+              (4) Tier 3 validation pending — first non-trivial Body-invoked
+              `/soul-roles <window>` is the dogfood. Body's next thread (c)
+              dogfoods /soul-council + /soul-roles together; /soul-roles
+              can surface its own role-firing during that convening as a
+              first empirical test.
+              (5) The Hands/Council separation in the output is a small
+              design beat earned at build-time: spec said "tag separately"
+              but didn't specify the output shape; built version uses two
+              tables, not one with a tag column. Default-simplicity (Mind
+              rule 2) — two tables read cleaner than a hybrid; the cost
+              (one extra header) is small.
+STATUS:      Resolved — /soul-roles built and live; SOUL-I031 graduated;
+              spec STATUS reflects Built; F039 discipline applied at
+              write-time.
+```
