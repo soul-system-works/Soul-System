@@ -4752,3 +4752,189 @@ STATUS:      Resolved — markers placed at both SOUL-099 false-
               stays Body's. No push without Body's explicit
               ask.
 ```
+
+```
+ID:           SOUL-104
+WHEN:         2026-05-27 / Body-instructed beat: "tackle i032 and
+              i038" after /soul-tasks surfaced them as the ripest
+              "Next" threads. Same session-day as SOUL-098→103
+              doctrine-correction arc + /soul-distill refresh.
+              Densest graduation day in project record so far:
+              four graduations (F041 closed via A016 acceptance at
+              SOUL-101; mind.md refresh at 4a19d14; SOUL-I032
+              graduated at b1dee5b; SOUL-I038 graduated at f6ddc22)
+              plus the SOUL-103 correction beat and SOUL-I037
+              capture (capture, not graduation).
+WHERE:        commands/soul-explain.md (depth/style flags added);
+              commands/soul-distill.md + commands/soul-roles.md
+              (project-internal sites recalibrated to event-
+              anchored); commands/soul-skill.md (external-cadence
+              framing sharpened); skills/README.md (calendar
+              trigger preserved, framing sharpened); ideas.md
+              (SOUL-I032 + SOUL-I038 STATUS bumped to Graduated;
+              SOUL-I037 captured); docs/specs/2026-05-26-soul-
+              roles-design.md + docs/specs/2026-05-26-the-mind-
+              design.md (gate-completion follow-up: spec/command
+              drift caught by completion gate, aligned to current
+              command-file text).
+WHAT:         Two graduations from the /soul-tasks "Next" tier
+              shipped end-to-end this beat:
+
+              **(A) SOUL-I032 — /soul-explain depth/style flags.**
+              Body's capability question ("IS that a capability
+              of skills") answered yes: slash commands accept
+              args the agent parses at invocation (already
+              demonstrated by /soul-roles' <window>/--role/
+              --silent-threshold/--full and /soul-idea's
+              freetext positional). Minimal coherent flag set
+              added: <target> positional, --depth=low|medium|
+              high (verbosity axis), --no-jargon (drop or
+              define every domain term), --eli5 (preset
+              shortcut: --depth=low + --no-jargon + analogies).
+              Skipped --audience and --scope per default-
+              simplicity (Mind rule 2); add later if use
+              signal pulls. Read-only contract preserved —
+              flags govern HOW to describe, not WHAT.
+
+              **(B) SOUL-I038 — two-clock model recalibration.**
+              Body picked option (d) two-clock from the four
+              candidates surfaced at I038 capture (event-
+              anchored / days-with-rhythm / two-clock / case-
+              by-case). Project-internal cadence → event-
+              anchored; external world cadence → keep calendar
+              with sharpened framing. Audit at execution time
+              surfaced 2 sites beyond the original 5 — total
+              7 sites edited across commands/skills/. Then
+              completion gate caught a third class of drift:
+              the SPECS at docs/specs/ retained the old
+              month-scale phrasing while the commands had
+              been recalibrated. Spec/command drift fixed in
+              this beat — 2 specs aligned to current commands.
+
+              Sites by clock-classification (final, post-gate):
+              - **Project-internal → event-anchored** (5):
+                commands/soul-distill.md:81 (Mind staleness)
+                commands/soul-distill.md:126 (distill review)
+                commands/soul-roles.md:176 (Tier 3c earn-its-
+                  place — first ~50 witness entries since
+                  SOUL-084 adoption; fires around SOUL-134)
+                docs/specs/2026-05-26-soul-roles-design.md:162
+                  (spec aligned to command)
+                docs/specs/2026-05-26-the-mind-design.md:207
+                  (Steward retire protocol aligned)
+              - **External world → keep calendar, sharpen** (4):
+                commands/soul-skill.md:90 (Anthropic release
+                  cadence)
+                commands/soul-skill.md:117 (Source footer
+                  quoting Anthropic best practices)
+                skills/README.md:22 (calendar trigger
+                  2026-11-27 retained; "external clock — not
+                  project's internal rhythm" named)
+                skills/README.md:25 (same site justification)
+              - **Audit references LEFT** (4 sites in
+                docs/audits/2026-05-27-soul-console-v1-
+                structure.md:65,165,385,386): historical
+                record. Audits are point-in-time captures;
+                the 6-month durations were aligned with the
+                external clock the two-clock model preserves,
+                so the audit text remains internally consistent.
+                Future readers compare audit recommendation
+                (6 months) to README implementation (calendar
+                date 2026-11-27) and see compatible framings,
+                not contradiction.
+TYPE:         Hand (Artificer — command-file flag spec; Architect
+              — two-clock model is a structural decision about
+              how doctrine references time); Steward (the
+              recalibration retires miscalibrated framing
+              across 9 doctrine sites without breaking external-
+              clock load-bearing references); Cartographer
+              (mapped the two clocks against actual doctrine
+              surfaces; identified which sites belong on which
+              clock; named the audit-as-historical decision);
+              Advocate (Body's "many many times months" reading
+              was the load-bearing signal — the recalibration
+              serves the Body's lived experience of the project's
+              cadence); Skeptic (challenged spec-vs-command
+              authority at gate time; aligned specs to commands);
+              Guardian (completion gate caught the spec/command
+              drift that the initial audit missed — second-order
+              honesty catch, fifth instance of the pattern in
+              this session).
+CONSEQUENCE: (1) **/soul-explain is now tone-controllable.**
+              Three flags + one preset cover the explanation
+              shape axes the Body listed. The read-only
+              contract is preserved — flags answer HOW, not
+              WHAT. Test fires organically: next /soul-explain
+              invocation with a flag is the dogfood.
+
+              (2) **Two doctrinal clocks are now NAMED across
+              9 sites.** Project-internal clock (event-
+              anchored, witness-count-driven) and external
+              world clock (calendar, externally-driven). The
+              decoupling is explicit in the soul-distill and
+              soul-skill texts: distill is on project-internal;
+              skill review is on Anthropic-external. Future
+              readers won't conflate them.
+
+              (3) **The completion gate caught spec/command
+              drift the I038 audit missed.** Audit checked
+              commands/operations/skills; missed docs/specs/
+              even though specs are doctrine surfaces too.
+              Gate spec point 1 ("global invariant, not just
+              local tests") fired and surfaced the GAP; Body
+              authorized the follow-up; alignment landed.
+              FIFTH count/historical-fact-or-scope slip-and-
+              catch instance this session (SOUL-100 anchor 2;
+              SOUL-101 record-of-counts; cursor "both records"
+              over-attribution; my own "councils/README"
+              invalid-anchor in SOUL-103 marker; this audit
+              scope miss). Pattern is mature enough that the
+              candidate Mind rule from SOUL-103 ("anchor
+              count claims at writing time") may need
+              extension to "anchor SCOPE claims at writing
+              time" too — audit scope is itself a count-like
+              claim ("the 5 sites that matter").
+
+              (4) **Audits as historical records reaffirmed.**
+              The audit-marker decision treated docs/audits/
+              like council files — historical, not retro-
+              edited. Aligns with the SOUL-103 in-place-
+              marker convention (for FACTUAL errors) vs this
+              case (TIMED RECOMMENDATIONS the project then
+              evolved past). Different shapes; both honest
+              about the historical record.
+
+              (5) **Mind-rule candidate ("project-internal
+              cadence is event-anchored") explicitly NOT
+              promoted to mind.md** at this beat. The
+              two-clock model is more nuanced than the
+              candidate rule; the candidate alone would
+              over-constrain. Held in ideas.md SOUL-I038
+              graduated STATUS for future Distiller
+              consideration. If future audits keep
+              surfacing the same project-internal-clock
+              pattern, the Distiller decides at next
+              refresh.
+
+              (6) **Densest graduation day in project record.**
+              Four graduations in one calendar day: F041
+              closed (via A016 acceptance, SOUL-101), mind.md
+              refresh (4a19d14), SOUL-I032 graduated (b1dee5b),
+              SOUL-I038 graduated (f6ddc22). Plus SOUL-103
+              correction beat and SOUL-I037 capture (not a
+              graduation). At measured rhythm (~13 entries/day
+              per soul-roles spec), this density (~7 commits
+              and 4 graduations in one day) is unusually high
+              — a doctrine-correction-and-graduation arc
+              concentrated around the SOUL-098→104 thread.
+              Worth noting for the rhythm-calibration
+              question: even at AI-rapid-iteration cadence,
+              "four graduations in one day" is high-density
+              and won't recur as a routine pattern.
+STATUS:      Resolved — both I032 and I038 graduated;
+              gate-caught spec/command drift fixed; SOUL-104
+              witness anchored. Five-graduation session-day
+              closed cleanly. No /soul-handoff yet; if Body
+              wants the SOUL-I033 path-3b experiment to fire,
+              now or next session would be the moment.
+```
