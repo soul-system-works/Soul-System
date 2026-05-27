@@ -4484,3 +4484,88 @@ STATUS:      Resolved — A016 accepted, seed edited, F041
               per SOUL-099 §Cartographer's adjacent
               territory).
 ```
+
+```
+ID:           SOUL-102
+WHEN:         2026-05-27 / Body-chosen NEXT-STEP thread (b) from the
+              SOUL-101 handoff cursor — SOUL-I033 path-3b experiment-
+              prep beat. /soul-resume → AskUserQuestion → (b).
+WHERE:        .soul/role-queries.jsonl (one appended JSONL record);
+              this witness entry (the candidate glance line preserved
+              durably for the next /soul-handoff to pick up). No
+              instrument change; no doctrine edit.
+WHAT:         Ran /soul-roles all at default --silent-threshold 70
+              over witness.md (101 entries, 0 missing TYPE), findings/
+              FILED BY, and .soul/events.jsonl. Result: **no Council
+              or Hands role is silent past threshold 70 over 101
+              entries.** Hot trio: Archivist (60), Emissary (49),
+              Steward (39). Lowest-count roles (not silent by spec,
+              but informational): Seer (1, longest gap 93), Craftsman
+              (3, longest gap 63), Prophet (4, longest gap 60),
+              Revelator (5, longest gap 31), Advocate (5, longest
+              gap 75). Logged the query per /soul-roles spec point 7
+              to .soul/role-queries.jsonl; the bare query is not
+              record-worthy, but the EXPERIMENTAL beat is — hence
+              this witness entry.
+
+              Candidate glance line for the next /soul-handoff cursor
+              (verbatim, ready to paste):
+
+                  `Silent roles past --silent-threshold 70: none
+                  (over 101 entries; Hot: Archivist, Emissary,
+                  Steward).`
+
+              SOUL-I033's path-3b is the CHEAP EXPERIMENT — manually
+              include the glance line in one /soul-handoff session
+              and assess perceived value before any instrument build.
+              This beat is PREP: the experimental measurement is
+              ready; the act-of-inclusion fires when /soul-handoff
+              next runs. Preserving the line here so it survives the
+              session boundary regardless of which session runs the
+              handoff.
+TYPE:         Witness (the record act itself); Cartographer (the
+              role-firing map IS the Cartographer's instrument —
+              naming covered/silent territory across the canonical
+              13+3); Archivist (preserving the candidate line as a
+              durable record so /soul-handoff doesn't re-derive it);
+              Artificer (path-3b is a pre-build experimental probe
+              the Artificer uses BEFORE shape-locking).
+CONSEQUENCE: (1) **Datum: no chronic role silence under default
+              threshold across 101 entries.** This is informative
+              on its own — the chamber has been busy on the
+              contraction-default axis (Archivist, Emissary,
+              Steward hot) AND on parts of the expansion axis too
+              (Researcher 8, Revelator 5, Prophet 4, Cartographer
+              21). The F014 expansion-gap is NOT manifesting as
+              "expansion roles never fire" — they fire, just rarely.
+              (2) **Lowest-count roles are the watch list, not the
+              alarm list.** Seer 1 / Craftsman 3 / Prophet 4 —
+              honest read is "rare-fire," not "broken." Whether
+              that rarity is appropriate or symptomatic is the
+              Body's read, not the instrument's.
+              (3) **The experiment is positioned for assessment at
+              the next /soul-handoff.** When the next handoff fires,
+              the line lands in the cursor; the Body reads the
+              cursor and notices (or not) whether the glance
+              changed perceived value. If yes → ripens toward
+              path-(a) PROPER (extend commands/soul-handoff.md
+              to auto-compute). If no → SOUL-I033 may be marked
+              redundant given /soul-roles already exists.
+              (4) **Data-quality is unusually clean.** 0/101
+              entries missing TYPE — perfect coverage. The TYPE
+              discipline established mid-project has held; the
+              role-firing map is anchored to real data, not
+              prose self-report (F028 anchor validity satisfied).
+STATUS:      Pending — experiment-prep complete; experiment proper
+              concludes when the line is included in the next
+              /soul-handoff cursor and the Body reads it. The
+              SOUL-I033 ripening question ("does the glance help
+              perceived value?") is N=1 after that single trial;
+              path-(a) build does NOT trigger on a single positive
+              read — needs ≥2-3 sessions to clear the noise floor.
+
+              Next: commit alongside the trailing SOUL-I036 mechanical
+              (ideas.md, deployment-strategy deferral appended post-
+              dae2934) and the .soul/role-queries.jsonl append. Single
+              commit; clean working tree before any further work.
+```
