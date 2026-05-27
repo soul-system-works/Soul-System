@@ -69,9 +69,16 @@ Steps the agent runs:
    name "the chamber cannot resolve this; Body decides Y."
 6. **Body decision** — accept synthesis, reject, redirect, or refine.
 7. **Land output** (mandatory):
-   - **Witness entry** — always. Records the convening (topic, roles named, synthesis,
-     Body decision). Uses `/soul-witness` scaffold if the action shape fits, otherwise
-     appended directly. ID via I027 re-read-verify protocol.
+   - **Witness entry** — always. Records the convening at the SUMMARY level: topic,
+     roles named, synthesis one-liner, Body decision, pointer to the detail file
+     (`councils/SOUL-CCC-<topic>.md`). ID via I027 re-read-verify protocol. Rationale:
+     witness average is ~31 lines/entry (measured 2026-05-26: 79 entries / 2442 lines);
+     a 7–10 role convening is materially larger (3–5x) and would pollute witness
+     scannability if inlined.
+   - **Convening detail file** — `councils/SOUL-CCC-<topic>.md`. Full role
+     statements, tensions, synthesis, Body decision recorded with no compression.
+     CCC is the witness ID (one-to-one mapping). Witness pointer keeps the durable
+     record scannable; detail file keeps the convening reproducible.
    - **Finding** — IF the convening surfaced a graduation-worthy gap, Body invokes
      `/soul-finding` (separate command, separate Body decision per I024 anti-inflation).
      The convening does NOT auto-graduate.
@@ -107,7 +114,7 @@ the full 13. The `--full` flag adds the unselected Magistrates.
 | Failure | Guard |
 |---|---|
 | **Ceremony** — invoked for trivial work | Per seed §Naming Roles in the Moment: most role work is silent. /soul-council is for moments visibility changes what happens. If invoked for routine work, Steward flags it in the witness entry. |
-| **Rubber-stamping** — invoked AFTER Body decided | Witness entry must record the Body's pre-existing position; if synthesis just confirms it without surfacing tension or alternatives, Skeptic flags "rubber-stamp" in output. |
+| **Rubber-stamping** — invoked AFTER Body decided | Witness entry must record the Body's pre-existing position; if synthesis just confirms it without surfacing tension or alternatives, Guardian flags "rubber-stamp" in output. (Guardian, not Skeptic — Guardian watches the chamber's integrity per seed; a Tribune flagging its own convening as ceremony is a self-reference loop.) |
 | **Role-set theatre** — full chamber every time | Default is 7–10 roles, not 13. Invoking `--full` requires a topic warranting it; otherwise default-simplicity holds. |
 | **Output collapse** — convening with no actionable output | Witness entry must end with either a synthesis OR "chamber unable to resolve; Body decides." Silent dissolution is not allowed. |
 | **Personification drift** — roles become chatbot personas | Roles are PERSPECTIVES (per seed). Each role's statement must argue from its characteristic concern, not its "personality." Skeptic argues skepticism, not "Skeptic the character says..." |
@@ -138,10 +145,13 @@ shape. This spec encodes that shape.
 
 - **Q1. `--full` flag — needed at MVP?** Probably not. Default 7–10 is rich enough for
   most convenings. Add `--full` only after evidence of a topic the default missed.
-- **Q2. Convening output — separate `councils/` directory or just `witness.md`?** Default
-  to witness.md (one record, append-only, already governed). A separate directory adds
-  ceremony without earning its keep. Revisit if witness becomes dense with convening
-  entries.
+- **Q2. Convening output — RESOLVED at design time (2026-05-26 review pass).** Two
+  artifacts per convening: a short witness pointer (topic + synthesis 1-liner + Body
+  decision + path) AND a detail file at `councils/SOUL-CCC-<topic>.md`. Driven by
+  measurement: average witness entry 31 lines; a 7–10 role convening with tensions
+  and synthesis would balloon a single witness entry to ~3–5x that, polluting
+  scannability of the durable record. The pointer/detail split keeps witness lean
+  and convenings reproducible.
 - **Q3. Auto-detection of "this is a /soul-council moment"?** No — F014's structural
   insight applies here too. Body invokes. (Future: maybe a hook surfaces "this looks like
   council territory" without invoking — observability without auto-fire. Defer.)
@@ -183,7 +193,7 @@ Failure-mode guards above are the immediate checks; Tier 3 is the empirical foll
 
 - `/soul-roles` spec — separate, follows this one.
 - `/soul-ask-body` spec — separate (F037).
-- Counterweight discipline doctrine line — small edit to operations/CLAUDE.md, separate.
+- Counterweight discipline doctrine line — owned by [[SOUL-A012]] §Activation Disciplines.
 - The auto-fire question for expansion — explicitly deferred per F014.
 
 ---
