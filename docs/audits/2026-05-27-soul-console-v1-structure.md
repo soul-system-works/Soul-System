@@ -429,3 +429,111 @@ Beats 2–5 are independent; can be sequenced however Body prefers. **Total esti
 ---
 
 **Source:** SOUL-087 `/soul-council` Thread 2 reshape. First instance of the `docs/audits/` record-kind. **Authored:** 2026-05-27. **Status:** Output-only; per-item Body sign-off required for retire-now / move actions.
+
+---
+
+## Section 4 — Beta phase: operations DEFER triple investigation
+
+**Added:** 2026-05-27, same-day. **Witness anchor:** SOUL-090. **Driver:** Body authorization "investigate beta" after alpha (`logs/` retire) landed at SOUL-089. **Scope:** investigate uniqueness for the three DEFER-WITH-CRITERIA items in Section 1.5 — recommend KEEP / RETIRE-NOW / CONSOLIDATE per file.
+
+### 4.1 `operations/autonomous-session-template.md` (269 lines)
+
+**Method:** `grep -rn autonomous-session-template --include="*.md" .` across project.
+
+**Result:** Zero live references. The only matches are:
+- `witness.md` SOUL-087 + SOUL-088 (the audit's own retire-watch flag — descriptive).
+- `docs/audits/2026-05-27-...` (this document — descriptive).
+- `councils/SOUL-087-...` (the convening that flagged it — descriptive).
+
+No operations file cites it. No command sources from it. No amendment names it. No finding references it. No spec uses it. The file IS what `grep -r "autonomous-session-template"` returned with the descriptive records filtered.
+
+**Content analysis:** The file describes a 7-step Operating Sequence (Orient → Align → Plan → Execute → Convene → Stop → Output Package) for autonomous AI runs. Each step has a modern instrument that has subsumed it:
+
+| Template step | Modern equivalent |
+|---|---|
+| Step 1 Orient — "Read CLAUDE.md in full" | Seed @-import on session start (automatic) |
+| Step 2 Align — restate, AL gate, Cartographer, Accountant, Skeptic | Seed §Mandatory Gates + `/soul-expand` |
+| Step 3 Plan — Prophet, Researcher | `writing-plans` skill (seed §External Skills) + `/soul-tasks` |
+| Step 4 Execute — iterations, watch failure modes | The work itself; failure-mode list in seed |
+| Step 5 Convene Council | `/soul-council` (instrument shipped 2026-05-26) |
+| Step 6 Stop Conditions | `/soul-verify` + Body interrupts + `events.jsonl` |
+| Step 7 Output Package | `/soul-handoff` (the cursor IS the output package) |
+
+The template predates ALL of these instruments. Its content has been fully decomposed into the seed + commands/.
+
+**Verdict: RETIRE-NOW (awaits Body sign-off).** Risk: low. Doctrinal content lives elsewhere (none orphaned); the procedure shape is now in instruments. Status footer says only "Adopted: 2026-05-20" with no Status field — never landed as "active."
+
+**One residual concern (flagged for Body):** the Problem Slot template (lines 50–67) — `PROBLEM:`, `DOMAIN:`, `EPISTEMIC TYPE:`, `KNOWN CONSTRAINTS:`, `KNOWN ABSTRACTIONS:`, `SUCCESS LOOKS LIKE:` — is a useful framing prompt that has no modern equivalent. If Body wants to preserve it, can be lifted into a new lightweight `operations/problem-slot-template.md` (~20 lines) before retirement. Otherwise it's lost.
+
+### 4.2 `operations/completion-gate.md` (130 lines)
+
+**Method:** same grep.
+
+**Result:** Heavily cited. Live references:
+- `amendments/accepted/SOUL-A003-universe-collapse.md` (×2): completion gate as the "work's completion gate."
+- `amendments/accepted/SOUL-A005-gate-refinements.md`: "completion gate was just modified by A003."
+- `amendments/accepted/SOUL-A010-coherent-falsehood-anchor-obligation.md` (×4): **A010 explicitly states "Folded into completion-gate.md + the hook + soul-verify.md"** — names completion-gate.md as "the mechanism."
+- `SYSTEM-VERSION.md` (×2): changelog entries 0.4.0 and 0.4.2 specifically cite completion-gate.md as the integration point for A010 and F028.
+- `commands/soul-expand.md` row 12: "Unlike the completion gate (`/soul-verify`)..." — names the relationship.
+- `commands/soul-tasks.md` (×2): "forward twin of the completion gate."
+- `commands/soul-verify.md` description: "The pre-completion gate."
+- `ideas.md` (×7): multiple captured ideas treat the completion gate as known doctrine; one (SOUL-055 graduation) named it as the integration target.
+- `operations/reference-repository.md` row 20 + 147: "what the [[completion-gate]] checks against" + "the ground the [[completion-gate]] stands on."
+
+**Comparison with `/soul-verify` + hook:**
+
+| Layer | Artifact | Lines | Role |
+|---|---|---|---|
+| Doctrine | `operations/completion-gate.md` | 130 | The reasoning — why the gate exists, the four role-checks, the Gate↔Theatre tension, the A010 anchoring rule, the F022 tripwire. |
+| Instrument | `commands/soul-verify.md` | 67 | The Body-invokable form — five numbered checks with concrete instructions. |
+| Automation | `hooks/pre-completion-verify.py` | (Python) | The auto-firing form — emits `soul.gate.completion.flagged` events to `.soul/events.jsonl` (confirmed firing today). |
+
+Three artifacts at three activation tiers, not three copies of the same content. A010 explicitly preserves this stack.
+
+**Verdict: KEEP-IN-PLACE.** The audit's original suspicion (possible supersession) was wrong upon investigation. The doctrine layer is load-bearing — amendments cite it, the changelog cites it, two commands cross-reference it. Retiring it would orphan A010's "mechanism" reference and break the doctrine-layer rule (Section 3.2 Blur 3 also resolves: the triple-layering is intentional, not redundancy).
+
+**Status-footer note:** "Status: proposed (pending Soul-System repo review)" is stale — A010's acceptance effectively reviewed it. **Minor follow-up:** update status to "active" in a future doctrine-text-cleanup beat. Not blocking.
+
+### 4.3 `operations/reference-repository.md` (173 lines)
+
+**Method:** same grep.
+
+**Result:** Live references:
+- `references/INDEX.md` row 5: **"See `operations/reference-repository.md` for the format."** — direct citation as the format spec.
+- `operations/completion-gate.md` row 64: "Sources that come back land in the [[reference-repository]]."
+- `operations/completion-gate.md` row 111: "It is fed by the [[reference-repository]] (where retrieved sources are grounded)."
+
+**Comparison with `references/INDEX.md`:**
+
+| File | Lines | Purpose |
+|---|---|---|
+| `operations/reference-repository.md` | 173 | FORMAT SPEC — CSL-JSON bibliographic core, provenance sidecar fields, workflow, knowledge graph edges, stewardship rules. |
+| `references/INDEX.md` | 14 | MANIFEST — one line per held reference, pointing back to the spec for format detail. |
+
+Not duplicates. INDEX is the catalog; reference-repository.md is the catalog's schema. Removing the spec orphans the catalog. The audit's original suspicion ("possible consolidation to references/INDEX.md") was wrong — INDEX explicitly delegates format documentation back to the spec.
+
+**Verdict: KEEP-IN-PLACE.** The file is the FORMAT SPEC for the `references/` directory (per Section 1.5 sub-classification: FORMAT-SPEC class, like `witness-log-format.md` and `event-standard.md`).
+
+**Status-footer note:** Same stale "proposed (pending Soul-System repo review)" status. Same minor follow-up.
+
+### Section 4 summary
+
+Investigation reverses the audit's original DEFER-WITH-CRITERIA tally on this triple:
+
+| File | Original audit suspicion | Beta-phase verdict |
+|---|---|---|
+| `autonomous-session-template.md` | DEFER → likely retire | **RETIRE-NOW (Body sign-off)** |
+| `completion-gate.md` | DEFER → possibly superseded | **KEEP-IN-PLACE** (heavily cited; A010-named) |
+| `reference-repository.md` | DEFER → possibly consolidate | **KEEP-IN-PLACE** (format spec; INDEX-cited) |
+
+**One retire-now candidate (autonomous-session-template.md); two preservation calls (completion-gate.md, reference-repository.md).** The audit's per-boundary reshape is vindicated: per-item grep + content analysis caught the doctrinal load-bearing of two files the chamber's intuition flagged as potential retire candidates.
+
+**Decision needed from Body:**
+1. RETIRE-NOW `operations/autonomous-session-template.md`? Preserve Problem Slot template separately or let it go?
+2. Update status footers on completion-gate.md + reference-repository.md from "proposed (pending Soul-System repo review)" → "active"? (Non-blocking; bundle with another doctrine-text beat.)
+
+### Audit-process lesson
+
+**Two of three DEFER candidates were KEEPS upon investigation.** The chamber's surface-level Steward intuition ("looks like a retire candidate") was wrong twice and right once. **Per-boundary + per-item-grep is the discipline that catches the difference; per-item intuition alone would have produced two false retirements.** Validates the SOUL-087 reshape from Steward per-item → Architect per-boundary (with Steward second-voice).
+
+Worth flagging as a candidate finding: SOUL-F040 candidate — *"surface-level retire intuitions need a uniqueness-investigation step before action; intuition alone produces ~67% false-retire rate (small N)."* Captured here; can graduate via `/soul-finding` when Body decides.

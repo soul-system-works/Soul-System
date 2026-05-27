@@ -3130,3 +3130,111 @@ STATUS:      Resolved — alpha beat complete. Next: beta (operations
               DEFER triple investigation per task #7) per Body's
               "investigate beta" authorization.
 ```
+
+```
+ID:           SOUL-090
+WHEN:         2026-05-27 / Beta beat — operations DEFER triple
+              investigation (SOUL-088 audit Section 1.5 follow-up).
+              Same-day continuation of audit→action loop.
+WHERE:        docs/audits/2026-05-27-soul-console-v1-structure.md
+              §Section 4 (539 lines total post-append, anchored via
+              `wc -l` per F039); appends investigation findings for
+              `operations/autonomous-session-template.md`,
+              `operations/completion-gate.md`, and
+              `operations/reference-repository.md`.
+WHAT:         Per-item uniqueness investigation: `grep -rn` across .md
+              files for each candidate + content comparison with
+              suspected successors. Methodology was identical for each
+              file (sweep references + read content + compare with
+              modern equivalents), enabling clean comparison. Verdict
+              reversal on 2/3 of the audit's surface-level Steward
+              intuitions:
+              - autonomous-session-template.md (269): RETIRE-NOW
+                candidate. Zero live references. 7-step Operating
+                Sequence fully decomposed into seed @-imports +
+                modern commands (/soul-handoff, /soul-council,
+                /soul-verify, /soul-tasks, writing-plans skill).
+                Pre-dates ALL these instruments. Residual:
+                Problem Slot template (~17 lines) has no modern
+                equivalent — Body decides preserve or let go.
+              - completion-gate.md (130): KEEP-IN-PLACE. Heavy
+                citation load. A010 explicitly names it "the
+                mechanism" ("Folded into completion-gate.md + the
+                hook + soul-verify.md"). Three-layer stack
+                (doctrine / instrument / hook) confirmed
+                intentional per A010, not redundancy.
+              - reference-repository.md (173): KEEP-IN-PLACE.
+                Format spec for `references/` directory.
+                references/INDEX.md explicitly delegates format
+                documentation back to it ("See operations/
+                reference-repository.md for the format."). NOT a
+                duplicate of INDEX (INDEX is the manifest; this
+                is the schema).
+TYPE:         Council Note — Architect (per-item method discipline:
+              same grep + read + compare for each, enabling
+              comparison); Steward (executed the audit's
+              "investigation before action" rule, including admitting
+              when surface intuition was wrong); Skeptic (the
+              completion-gate suspicion was actually a Skeptic-style
+              "what looks like redundancy might not be" reversal —
+              audit-time suspicion was the surface intuition; beta-
+              time grep + A010 citation was the anchor that overrode
+              it — F015/F028 anchor-discipline applied in retirement-
+              context); Emissary (live citation counts ARE reality
+              against the audit's intuition). Hands: Architect leads
+              produce-not-deliberate.
+CONSEQUENCE: (1) **Verdict reversal on 2 of 3 audit DEFER candidates.**
+              Surface-level Steward intuition was wrong twice, right
+              once. The chamber's "looks like retire candidate"
+              instinct produced a ~67% false-retire rate (N=3, small).
+              **Per-boundary + per-item-grep is the discipline that
+              catches this; per-item intuition alone produces false
+              retirements.** Validates SOUL-087 audit reshape
+              (Steward per-item → Architect per-boundary with Steward
+              second-voice).
+              (2) **Candidate finding flagged:** SOUL-F040 candidate
+              — *retire-intuitions need uniqueness-investigation
+              step before action.* Captured in audit §Section 4
+              summary; awaits Body decision to graduate via
+              /soul-finding. The chamber's "earned graduation"
+              discipline applies: this is interesting but N=3 is
+              small; second instance would earn graduation.
+              (3) **One retire-now decision queued for Body
+              sign-off:** autonomous-session-template.md (269
+              lines). Risk: low. No live references; doctrinal
+              content lives in modern instruments. Residual
+              Problem Slot template (~17 lines) — Body decides
+              preserve-elsewhere vs let-go.
+              (4) **Two status-footer updates flagged as low-priority
+              follow-up:** completion-gate.md and reference-
+              repository.md both carry "proposed (pending Soul-
+              System repo review)" status. Both have effectively
+              been reviewed (A010 acceptance for completion-gate;
+              INDEX cross-citation for reference-repository).
+              Should be "active." Bundle into a doctrine-text
+              cleanup beat — non-blocking.
+              (5) **A010's role as load-bearing surfaced clearly.**
+              A010 ("Coherent Falsehood + Anchor Obligation") is
+              the single most-citing amendment for completion-gate
+              (4 references). The amendment doctrine explicitly
+              preserves the doctrine→instrument→hook stack. This
+              is a healthy doctrinal anchor pattern — amendments
+              naming the artifacts they shape preserves
+              traceability against future retire-intuitions.
+              (6) **F039 discipline: wc -l anchored 539 at write-
+              time** before this witness pointer. Sixth same-
+              drafter instance; still no different-drafter.
+              (7) **Audit doc growth: 431→539 lines (+108 lines
+              for Section 4).** Per-instance growth predictable
+              when audit beats produce follow-up sections in
+              the same document. If repeated, may motivate
+              separate-file-per-beat shape; one instance is too
+              little evidence.
+STATUS:      Resolved — beta investigation complete. Next Body-
+              decision points: (1) authorize autonomous-session-
+              template.md RETIRE-NOW (with optional Problem Slot
+              preservation); (2) bundle the two status-footer
+              updates into a doctrine-text cleanup beat when
+              convenient; (3) graduate F040 candidate (small N
+              concern — see (2) above).
+```
