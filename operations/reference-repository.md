@@ -157,7 +157,7 @@ optionally a line in `CLAUDE.md` under Seeding.
 after a project grounded a validation claim in an unsourced remembered number.
 **Shapes:** entire file
 **Adopted:** 2026-05-20
-**Status:** proposed (pending Soul-System repo review)
+**Status:** active (per SOUL-090 audit — format spec for `references/`; `references/INDEX.md` delegates back to this file; KEEP-IN-PLACE confirmed 2026-05-27)
 
 **Source:** Citation Style Language — CSL-JSON item schema,
 https://citeproc-js.readthedocs.io/en/latest/csl-json/markup.html (and
@@ -168,6 +168,6 @@ W3C PROV-O — the provenance/graph layer maps onto these concepts; full RO-Crat
 JSON-LD emission deferred until a consumer requires it.
 **Shapes:** Two layers section
 **Adopted:** 2026-05-20
-**Status:** proposed (pending Soul-System repo review)
+**Status:** active (per SOUL-090 audit — format spec for `references/`; `references/INDEX.md` delegates back to this file; KEEP-IN-PLACE confirmed 2026-05-27)
 
 *Refines as evidence accumulates.*

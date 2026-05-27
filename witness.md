@@ -3496,3 +3496,98 @@ STATUS:      Filed — open in findings/open/. Body's b→c→a beat
               continues into (c) amendment batch + (d/e)
               cleanups bundled.
 ```
+
+```
+ID:           SOUL-094
+WHEN:         2026-05-27 / Body-authorized b→c→a closeout beat
+              step (c) + bundled (d) + (e) — three doctrine-text
+              moves landed as one beat: A014 amendment (operations
+              sub-class footer), A015 amendment (audits as fourth
+              design-doc record-kind), README content drift
+              (twelve→thirteen voices, councils/+mind.md rows,
+              16-command count), status footers (completion-gate.md
+              + reference-repository.md "proposed → active" per
+              SOUL-090 KEEP-IN-PLACE).
+WHERE:        amendments/accepted/SOUL-A014-operations-sub-class-
+              footer.md (new); amendments/accepted/SOUL-A015-
+              audits-as-design-doc-record-kind.md (new);
+              operations/CLAUDE.md (§Source Footers extended);
+              README.md (architecture alt text + Structure block);
+              operations/completion-gate.md (status footer);
+              operations/reference-repository.md (status footer,
+              both Source blocks).
+WHAT:         A014 codifies the operations sub-class convention
+              (DOCTRINE-ABOVE-INSTRUMENT / FORMAT-SPEC / PROCEDURE)
+              as an optional footer field — dogfooded at SOUL-091
+              before the amendment formalized it; rule does the
+              work a directory tree would have without churn.
+              A015 formally recognizes docs/audits/ as the fourth
+              design-doc record-kind parallel to specs/plans/
+              experiments; no seed/mind edit (taxonomy lives in
+              the amendment + the audit document — back-anchored).
+              README cleanups bring the public face current with
+              the chamber count (8+3+2=13), the directory shape
+              (councils/ + mind.md rows), and the command
+              inventory (16). Status footer cleanups discharge
+              the SOUL-090 audit's non-blocking follow-up:
+              completion-gate.md and reference-repository.md were
+              KEEP-IN-PLACE per audit §4.2 and §4.3; status moves
+              from "proposed (pending Soul-System repo review)"
+              to "active" with the SOUL-090 audit cited as the
+              effective review.
+TYPE:         Council Note — Architect (A014's boundary rule;
+              A015's design-doc kind boundary; both structural
+              naming moves); Archivist (record-kind recognition
+              is the Archivist's instrument; the Sub-class footer
+              field is the indexing surface); Cartographer (the
+              SOUL-087 per-boundary reshape extends naturally
+              into both amendments); Steward (status footer
+              cleanups close the SOUL-090 non-blocking follow-up
+              without reopening the KEEP decision); Seer (A015's
+              kind was implicit in SOUL-088's own production;
+              this beat reads what the record already meant).
+CONSEQUENCE: (1) **Amendment count: 13 → 15.** Two amendments
+              landed in one beat. amendments/accepted/ now holds
+              A001–A015 (no gaps). amendments/proposed/ stays
+              empty — Body's b→c authorization stood in as the
+              acceptance gesture, matching A013's precedent
+              (drafted and accepted within one closeout arc).
+              (2) **Seed grew by 3 lines net** (one optional
+              footer field + one short rule paragraph). Mind
+              rule 5 (never always-on past the description
+              budget) honored — substantive sub-class taxonomy
+              stays in the audit; only the writer-time naming
+              rule lives in the always-on seed.
+              (3) **Audit's three closing follow-ups discharged
+              in one beat.** Audit §Closing flagged A014 + A015
+              + status-footer cleanups + content-drift fixes;
+              all four landed together. The audit's "single
+              amendment beat" framing held.
+              (4) **A014 dogfood retroactively conforms.**
+              operations/problem-slot-template.md was authored
+              at SOUL-091 with the candidate Sub-class field;
+              with A014 now landed, the file's footer is
+              retroactively-rule-conformant — the dogfood led
+              the rule by 0 commits in calendar time but the
+              field's prior existence is now legitimized.
+              (5) **F040 instance #4 averted by discipline.**
+              For both completion-gate.md and reference-
+              repository.md the "active" status is anchored to
+              the SOUL-090 audit specifically — not to "we
+              decided" or "looks right." F040's recipe is being
+              followed before it has even closed.
+              (6) **README councils/ + mind.md rows close a
+              long-standing drift.** Public-facing structure
+              block has been out of sync with the actual
+              directory tree since councils/ was introduced
+              (SOUL-080 = first councils/ entry); the row now
+              names what newcomers will actually see when they
+              browse the repo.
+              (7) **F039 discipline: anchored 8 (this beat),
+              195 (F040), and per-file line counts checked at
+              write-time.** Three more same-drafter instances
+              this beat; still no different-drafter instance.
+STATUS:      Resolved — three doctrine-text moves landed as
+              one coherent beat. Body's b→c→a authorization
+              advances to (a) push when ready.
+```
