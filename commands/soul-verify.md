@@ -1,5 +1,5 @@
 ---
-description: Pre-completion verification gate. Run before calling any non-trivial work complete. Forces the Universe-consultation checks the doctrine describes but does not reliably auto-fire (Soul Finding SOUL-F012).
+description: Force Universe-consultation checks before calling non-trivial work complete. The pre-completion gate that addresses SOUL-F012's auto-fire limit — global invariant, valid external anchor, outward reach, visual inspection, unfinished business. Run before claiming completion. Doctrine's checks made explicit because they do not reliably auto-fire.
 ---
 
 # /soul-verify — the pre-completion gate, made to fire

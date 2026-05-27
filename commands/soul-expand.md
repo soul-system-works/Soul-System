@@ -1,5 +1,5 @@
 ---
-description: Pre-framing expansion gate. Run when framing a new non-trivial problem, before locking scope. Forces the expansion-role questions the doctrine describes but does not fire on its own (Soul Finding SOUL-F014).
+description: Force expansion-role questions before locking scope on a new problem. The pre-framing gate that addresses SOUL-F014's auto-detection limit — what does this miss? what could it become? what already exists? Run when framing a new non-trivial problem, before scope is locked. Forces the doctrine's expansion questions explicitly because the AI cannot reliably auto-fire them.
 ---
 
 # /soul-expand — the expansion gate, made to ask
