@@ -980,3 +980,101 @@ NOTES:     Two paths if built:
            next steps + /soul-tasks — the forward-momentum lineage I033
            extends sideways onto role-firing).
 ```
+
+```
+ID:        SOUL-I034
+WHEN:      2026-05-27
+IDEA:      Retirement instrument symmetric to the generation instruments
+           — a /soul-audit or /soul-distill --surface that runs the
+           retirement pass across commands/operations/amendments the way
+           /soul-distill currently runs it for the Mind alone.
+STATUS:    Raw — captured from SOUL-087 council convening Thread 4
+           (Revelator's reframe). Body accepted capture; explicitly declined
+           premature instantiation per "wait for second/third-instance
+           need before specifying."
+WHY:       Mind rule 4 ("generation couples with retirement") is doctrine
+           but only PRACTICE for skills (/soul-skill's soul-status field)
+           and findings (closure lifecycle). The instruments themselves
+           are second-class on the dimension their own doctrine names.
+           SOUL-087 chamber's Revelator: the structural gap is retirement
+           symmetry, not aggregation; /soul-status (Body's original ask)
+           may be the wrong shape for the right felt-need.
+PRIORITY:  medium-low — depends on whether the SOUL-087 structural audit
+           (Thread 2 reshape) reveals (a) one-shot is enough or (b) the
+           pattern is recurring and warrants instrument. Earned-instrument
+           discipline applies: don't build until third-instance need.
+DEVELOP:   Architect (recipe — where retirement review lives;
+           per-boundary or per-item shape); Steward (the role this
+           instruments); Revelator (the reframe that surfaced it);
+           Artificer (when ripe — the build).
+NOTES:     Possible shapes if eventually built:
+           (a) /soul-audit — Architect-led per-boundary; produces audit
+               report; retire decisions per item with Body sign-off.
+           (b) /soul-distill --surface — extends existing distillation
+               command with a "surface" mode that runs across commands
+               and operations the way default mode runs over the record.
+               Reuses Distiller role + tooling; thinner build.
+           (c) Doctrine-only — no command; just a periodic obligation
+               in the seed (every N entries, run an audit pass).
+               Cheapest; relies on doctrine activation (F012 family
+               risk — doctrine without instrument is posture).
+           SOUL-087 audit IS the first instance; if it's also the only
+           one needed, this idea drops. If a second audit is needed
+           within 3 months, ripens. Third audit ⇒ build.
+           Related: [[SOUL-F014]] (the expansion-gap that revealed the
+           contraction-side asymmetry by inverse), [[SOUL-033]] (the
+           original retirement event — /soul-the-soul.md @-import dropped),
+           [[mind-rule-4]] (generation couples with retirement),
+           [[SOUL-087]] (the convening), [[SOUL-068]] (/soul-distill
+           Emissary test — precedent for distillation-as-retirement).
+```
+
+```
+ID:        SOUL-I035
+WHEN:      2026-05-27
+IDEA:      BMAD Researcher beat — ~1-session pass reading BMAD method's
+           actual agent definitions (Analyst, Architect, PM, Dev, QA, etc.)
+           and writing a finding on structural composition fit with seed
+           §External Skills and Tools. NOT a full BMAD dogfood; just the
+           read + structural-fit finding.
+STATUS:    Raw — captured from SOUL-087 council convening Thread 5
+           (Emissary's reality-test concern). Body accepted capture as
+           forward-thread; explicitly declined immediate build.
+WHY:       Seed §External Skills and Tools makes the composability claim
+           ("a BMAD Analyst agent can embody the Witness role, a BMAD
+           Architect can embody the Soul's Architect") as if confirmed.
+           Emissary at SOUL-087: claim is UNTESTED — zero instances of
+           Soul composing on an existing agent framework (all dogfood
+           projects were greenfield). Coherent Falsehood risk if treated
+           as confirmed. The Researcher beat is the cheapest move that
+           produces evidence WITHOUT requiring a target BMAD project to
+           compose on.
+PRIORITY:  medium — forward-looking; addresses a known Coherent Falsehood
+           risk in always-on doctrine. Cheaper than a full BMAD dogfood
+           (weeks → 1 session). Output is a single finding either
+           confirming the structural claim or naming the gap.
+DEVELOP:   Researcher (the field acquisition — read BMAD's actual docs
+           + agent definitions); Emissary (the reality-test framing);
+           Cartographer (map BMAD's role topology against the Soul's
+           Council); Skeptic (does the mapping the seed proposes
+           actually hold structurally, or is it surface-pattern matching?).
+NOTES:     Scope guard — this is a STRUCTURAL FIT read, not a composition
+           experiment. Output is at most:
+           (a) "yes, mappings in seed hold; refine the table"
+           (b) "no, BMAD's structure doesn't map cleanly; revise seed
+               §External Skills and Tools with honest qualifier"
+           (c) "partial; some mappings hold, others don't — finding
+               itemizes which and why"
+           Adjacent: similar Researcher passes could later cover CrewAI,
+           AutoGen, Cursor rules, Continue.dev — but BMAD is the framework
+           Body specifically named at SOUL-087.
+           Trigger: a clean session-arc closeout where the project has
+           absorbed SOUL-087's audit outcomes. Premature to start before
+           the audit lands.
+           Related: [[SOUL-087]] (the convening — Thread 5),
+           [[seed-external-skills-and-tools]] (the claim being tested),
+           [[SOUL-F037]] (Body-Input Obligation — Researcher gathers what
+           the Body doesn't have private knowledge of), [[SOUL-I014]]
+           (reference-project upstream-obligation — same theme: doctrine
+           that's not yet a practice).
+```
