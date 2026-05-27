@@ -3426,3 +3426,73 @@ STATUS:      Resolved — gap disclosed, fix landed, F040 pattern
               /soul-finding when ready; doctrine could land it
               as an amendment alongside the A014/A015 batch.
 ```
+
+```
+ID:           SOUL-093
+WHEN:         2026-05-27 / Body-authorized b→c→a closeout beat
+              following the Soul-Console v1 audit arc — first
+              step (b): F040 graduation. The audit-process lesson
+              flagged at SOUL-088's §Audit-process lesson and
+              confirmed by SOUL-090 (reversed 2/3 surface
+              intuitions) and SOUL-092 (reversed SOUL-090's own
+              grep scope) reached N=3 within the arc per F035
+              heuristic; Body chose to graduate now rather than
+              wait.
+WHERE:        findings/open/SOUL-F040-retire-intuitions-need-
+              uniqueness-investigation.md (new, scaffolded per
+              the SOUL-F035 format precedent).
+WHAT:         Filed F040 as a formal Finding. The discipline:
+              surface retire-intuitions need (1) per-item grep
+              across the project, (2) grep-scope check (A010
+              §Anchor Obligation + F028 §anchor-validity apply),
+              (3) content analysis on each match — descriptive
+              vs. load-bearing citation, (4) for doctrinal files,
+              check amendments/ + seed pointer + SYSTEM-VERSION.md.
+              Empirical rate from the arc: 2/3 false-retire on
+              intuition alone; 0/3 actual false retirements after
+              the discipline. The finding lives at three zoom-
+              levels of the same surface — chamber intuition
+              (SOUL-087/088) → grep+content (SOUL-090) →
+              completion-gate re-check (SOUL-092).
+TYPE:         Council Note — Steward (audit-process lesson is
+              most directly the Steward's; intuition was wrong
+              on 2/3 surface calls); Archaeologist (per-item
+              grep + content analysis IS the Archaeologist's
+              job); Skeptic (forced the SOUL-092 anchor re-check
+              at the completion gate); Emissary (the re-grep
+              across file types was the field test of SOUL-090's
+              anchor); Cartographer (per-boundary reshape from
+              SOUL-087 Thread 2 applied throughout); Guardian
+              (completion-gate stack caught zoom-2's residual at
+              zoom-3 — F012-family operational health).
+CONSEQUENCE: (1) **First Finding filed in this audit arc.**
+              Open findings: 14 → 15. SOUL-088's audit-process
+              residual now has a formal record-shape; future
+              retire-beats can cite F040 as the discipline.
+              (2) **F035 heuristic dogfooded recursively.** F035
+              named the three-instances-from-same-surface trap-
+              capture heuristic; F040's earning matches the same
+              pattern at one zoom-level finer (three instances
+              within one audit, at successively finer zoom-
+              levels). The heuristic catches its own kind.
+              (3) **F040 stays open per its own WHY-NOT-YET-
+              AMENDMENT.** Single audit context (N=3 from one
+              surface). Wait for a second retirement-context
+              instance — different project, or different cleanup
+              kind in this project — before promoting to a Soul
+              amendment. Discipline is operational TODAY for any
+              retire-decision in this repo.
+              (4) **A010 specialized.** F040 is a domain-
+              specialization of A010 §Anchor Obligation for the
+              retirement-claim class: "this file is not
+              referenced" is an absolute claim about reality
+              that needs a valid external anchor; grep with too-
+              narrow scope is an INVALID anchor. A010 names the
+              obligation; F040 names the specific recipe.
+              (5) **F039 discipline: anchored 195 at write-time**
+              for the new file. Ninth same-drafter instance
+              overall this session; still no different-drafter.
+STATUS:      Filed — open in findings/open/. Body's b→c→a beat
+              continues into (c) amendment batch + (d/e)
+              cleanups bundled.
+```
