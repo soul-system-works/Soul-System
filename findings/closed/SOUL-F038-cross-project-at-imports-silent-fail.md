@@ -112,5 +112,10 @@ RELATED:         [[SOUL-I011]] (experiment harness — this finding directly
                  [[SOUL-I005]] (token economics — the broader claim this
                  experiment serves); [[SOUL-075]], [[SOUL-076]],
                  [[SOUL-077]] (witness anchors).
-STATUS:          Open — scope fully bounded; ready for amendment review.
+STATUS:          Closed — codified as SOUL-A013 (2026-05-26). Discipline lives
+                 in operations/experiment-harness.md (rule + sentinel recipe +
+                 worked example); seed pointer added at §The Mandatory Gates
+                 "Before calling anything complete." N=7 magnitude residual
+                 (binomial 95% CI wide) remains for future tightening; does
+                 not affect the discipline itself.
 ```
