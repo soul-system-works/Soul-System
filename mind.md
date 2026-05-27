@@ -1,17 +1,12 @@
 # The Mind — Soul System
 
-This is the project-specific compressed-rules artifact for the Soul System repo
-(per the lens-layer architecture in `docs/specs/2026-05-26-the-mind-design.md`).
-Always-on (loaded after the seed via `@mind.md` in `CLAUDE.md`). Maintained by
-the Distiller (`/soul-distill`). Holds **doctrine** — rules that apply across
-contexts; specific obligations stay in the records. When you need an obligation-
-specific fact (a lifecycle, an upstream route, a particular witness), consult the
-cited record. The Mind names the rule; the record carries the specifics.
+Project-scoped compressed-rules artifact (lens-layer; spec at
+`docs/specs/2026-05-26-the-mind-design.md`). Always-on via `@mind.md`;
+maintained by `/soul-distill`. Doctrine here; obligations in the records.
 
 ## Rules (generators)
 
-A rule produces decisions, not a description of one. If removing it would change
-what the project does next, it belongs here. Source citations are anchors.
+Rules produce decisions; source citations are anchors.
 
 1. **Understand the abstraction before touching the instantiation.** Name what
    varies, what decides variation, what cannot vary — BEFORE building. *Source:*
@@ -22,8 +17,10 @@ what the project does next, it belongs here. Source citations are anchors.
    *Source:* `feedback_default_simplicity`. *Triggers:* every design fork.
 
 3. **Anchor every absolute claim with a valid external reference.** Name the
-   anchor, name *why* it's trusted, and *how* it could be wrong. Internal
-   coherence is not truth (Coherent Falsehood). *Source:* A010, F015, F028, F040.
+   anchor, why it's trusted, how it could be wrong. Internal coherence is not
+   truth. **Count/historical claims: anchor at WRITING time, not just review** —
+   they slip past prose coherence and survive into corrections. *Source:* A010,
+   F015, F028, F040, SOUL-103.
 
 4. **Generation couples with retirement.** Every instrument that creates
    artifacts (skills, findings, ideas, amendments) ships with a retire handle.
@@ -49,27 +46,28 @@ what the project does next, it belongs here. Source citations are anchors.
 9. **Symlinks beat copies for evolving instruments.** Live-reference distribution;
    command drift is structurally impossible. *Source:* F029.
 
-10. **Docs live near the code.** Structural markers, docstrings, names over
-    operations files. Operations files must earn their keep. *Source:*
-    `feedback_docs_live_near_code`; A014 (sub-class footer).
+10. **Docs live near the code.** Markers, docstrings, names over operations
+    files. *Source:* `feedback_docs_live_near_code`; A014.
 
 11. **Two parties reading the same record must arrive at the same meaning.**
     Coherence under independent reading is the durability test for any artifact.
     *Source:* `operations/CLAUDE.md` opening.
 
+12. **Public-facing artifacts are canonical when they disagree with the seed.**
+    The seed implements public artifacts (README, AGENTS.md); when divergence
+    is found, the public artifact wins. *Source:* A016, SOUL-099.
+
 ## Tensions (rules that pull against each other)
 
-Knowing the *tension* is more useful than picking a side; the tension names a
-recurring decision the project has to make case-by-case.
+The tension names the recurring case-by-case decision; do not pick a side.
 
 - **Default-simplicity ↔ outward-reach.** Contract by default vs expand actively.
-  F014 lives here: contraction roles auto-fire (Accountant, Skeptic, Steward),
-  expansion roles need Body invocation. The project keeps re-discovering this.
+  F014: contraction roles auto-fire (Accountant, Skeptic, Steward), expansion
+  roles need Body invocation. The project keeps re-discovering this.
 
-- **Earned-graduation ↔ upstream-obligation.** Findings must be earned
-  (anti-inflation, I024) AND reference projects owe Soul-meta findings upstream
-  (I014). Resolution shape: lower friction on the duty (a scaffolder), preserve
-  the earning (Body still decides the graduation).
+- **Earned-graduation ↔ upstream-obligation.** Findings must be earned (I024)
+  AND reference projects owe Soul-meta findings upstream (I014). Resolution:
+  lower friction on the duty, preserve the earning (Body still decides).
 
 - **Self-contained handoff ↔ context isolation.** A handoff is self-contained for
   restart correctness, NOT for hermetic context. Resolution: A009 refined A008.
@@ -107,20 +105,19 @@ recurring decision the project has to make case-by-case.
 
 ## Contrast cases (disambiguating examples)
 
-A small set of examples whose handling shows the boundary between rules. These
-are the seed examples for the project's own continued judgment.
+Examples whose handling shows the boundary between rules.
 
 - **F031 vs F030 — the visual gate.** F030: gate fired ~3× and deferred each
   time (no recipe → "GAP → not eyeballed" became the default). F031: gate
   DISCHARGED — agent rasterized polygons BEFORE writing Modelica, caught a
   self-intersecting turbine polygon. **Disambiguating rule:** the recipe IS the
-  activation mechanism. Without a one-step capture method, visual obligation
-  reverts to deferral. Doctrine without instrument is posture.
+  activation mechanism. Doctrine without instrument is posture.
 
-- **F015 → F028 → F040 — three layers of anchor discipline.** F015 secured
-  EXISTENCE (must name one); F028 secured VALIDITY (the anchor itself can be
-  wrong); F040 specializes both for RETIRE claims (grep with wrong scope is
-  an INVALID anchor). Each layer catches the prior's residual.
+- **F015 → F028 → F040 → SOUL-103 — four layers of anchor discipline.**
+  EXISTENCE (must name one); VALIDITY (the anchor itself can be wrong);
+  RETIRE-claim scope (wrong-scope grep is INVALID); TIMING (count/historical
+  claims slip past prose coherence — anchor at WRITING time). Each layer
+  catches the prior's residual.
 
 - **A008 vs A009 — handoff topology.** A008 prescribed hermetic context for
   subagents (FANOUT). A009 refined: self-contained for *restart* correctness,
@@ -132,33 +129,34 @@ are the seed examples for the project's own continued judgment.
   Body's explicit graduation. The friction differential preserves what each
   artifact *means*.
 
-- **Seed (~260 lines, always-on) vs `philosophy/the-soul.md` (~710 lines,
+- **Seed (~263 lines, always-on) vs `philosophy/the-soul.md` (~710 lines,
   on-demand).** Same doctrine; different position in the description budget.
   SOUL-033 evidence: gates survive context reduction; expansion/breadth doesn't.
-  So gates always-on, depth on-demand.
+
+- **SOUL-099 SECOND→FOURTH — count-claim slip.** Original entry claimed
+  "SECOND /soul-council convening"; anchor check showed FOURTH
+  (SOUL-080+085+087+099). Slip survived into the correction itself (cursor
+  over-attribution; in-marker `councils/README` cite — no such file).
+  **Demonstrates Rule 3's timing dimension.**
 
 ## Incompressible residual (named, not forced)
 
-Some accumulated knowledge doesn't reduce to rules — try to compress it and you
-lose load-bearing information. Honesty about the residual is part of the Mind's
-discipline; force-fitting everything into rules is itself the failure mode.
+Knowledge that doesn't reduce to rules; force-fit is the failure mode.
 
-- **The specific dogfood histories.** REF-09, REF-04, REF-03,
-  REF-01, blog, REF-02. Each is a path-dependent evidence set. The Mind
-  can encode their *lessons* (rules above) but not their *particulars*. For
-  particulars, the witness log and findings remain the source of truth.
+- **The specific dogfood histories.** Each registered project (see `registry/`)
+  is a path-dependent evidence set; the Mind encodes their *lessons* (rules
+  above), not their *particulars*. Sources of truth: `registry/`, `witness.md`,
+  `findings/`.
 
-- **The version trajectory.** 0.1.0 → 0.5.0 is a history, not a rule-set. The
-  *why* of each version is encoded above; the order and timing aren't.
+- **The version trajectory.** History, not rules. The *why* is in the rules
+  above; the order and timing aren't.
 
-- **The Body's specific user-memory.** Drift-correction notes, individual
-  preferences — live in `/home/fig/.claude/.../memory/` and are valuable but
-  not Soul-internal rules.
+- **The Body's specific user-memory.** Drift-correction notes; lives in
+  `~/.claude/.../memory/`; not Soul-internal.
 
-- **Active uncertainty.** F014 activation, I011 token economics — open
-  questions where no rule has crystallized. Listing them as rules would be
-  false certainty. They live in `findings/open/` and `ideas.md` where their
-  open-ness is honest.
+- **Active uncertainty.** F014 activation, I011 token economics. No rule has
+  crystallized; listing them as rules would be false certainty. `findings/open/`
+  + `ideas.md` carry the open-ness.
 
 - **The Council role descriptions.** The roles ARE the rules' executors but
   their full character (Archaeologist vs Steward tension; Skeptic vs Craftsman)
@@ -166,4 +164,6 @@ discipline; force-fitting everything into rules is itself the failure mode.
   invocable. They stay in the seed and `the-soul.md`.
 
 ---
-**Last distilled:** 2026-05-27 (refresh after the Soul-Console v1 audit arc; A014/A015/F040 absorbed; three-layer anchor pattern named; I026 residual pruned post-Mind-ship; witness SOUL-095).
+**Last distilled:** 2026-05-27 (refresh after SOUL-098→103 doctrine-correction
+arc — A016 absorbed; Rule 3 extended with timing dimension; Rule 12 added;
+SOUL-099 count-slip case added; dogfood residual compressed; witness SOUL-103).
