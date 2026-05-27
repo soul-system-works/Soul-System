@@ -62,4 +62,15 @@ STATUS:          Open — two-instance pattern. Promote to amendment after a thi
                  instance, ideally one outside REF-02 (cross-project generality).
                  Watch especially for an instance of kind 4 (private knowledge), which
                  is the most consequential and least directly observable case.
+                 **2026-05-26 partial discharge:** the instrument candidate this
+                 finding named is now built — `/soul-ask-body` shipped at
+                 `commands/soul-ask-body.md` (β half, the pre-delegation check) and
+                 SOUL-A012 §Body-Input Obligation (γ half, the recommendation-time
+                 doctrine) already in seed. Spec at
+                 `docs/specs/2026-05-26-soul-ask-body-design.md` (Built). Graduation
+                 criterion (b) — concrete instrument — satisfied; criterion (a) —
+                 third real-world instance, ideally non-REF-02 — still required.
+                 Witness pointer SOUL-086. Tier 3a simulation (REF-02 M8/M9
+                 replay) still pending and could itself surface refinement-worthy
+                 gaps in the four-kind taxonomy.
 ```
