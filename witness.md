@@ -3238,3 +3238,85 @@ STATUS:      Resolved — beta investigation complete. Next Body-
               convenient; (3) graduate F040 candidate (small N
               concern — see (2) above).
 ```
+
+```
+ID:           SOUL-091
+WHEN:         2026-05-27 / Second RETIRE-NOW action of the
+              audit-execution arc — operations/autonomous-session-
+              template.md retired with Problem Slot template
+              preservation per Body's "Retire + preserve Problem
+              Slot" decision (recommended option, accepted).
+WHERE:        operations/autonomous-session-template.md (deleted, 269
+              lines, via `git rm`); operations/problem-slot-template.md
+              (new, 38 lines, lifted from lines 50-67 of the retired
+              file + a brief framing header + Source footer naming
+              the lift provenance).
+WHAT:         Executed audit Section 4.1's RETIRE-NOW recommendation
+              with Body's authorized variant (preserve Problem Slot).
+              The 7-step Operating Sequence (Orient → Align → Plan →
+              Execute → Convene → Stop → Output Package) was
+              decomposed into modern instruments; only the Problem
+              Slot framing prompt had no equivalent and was lifted
+              into the new standalone file. Body's pre-decision read
+              of the audit's residual concern was the input that
+              shaped this preservation — A012 §Body-Input Obligation
+              applied (the residual was named explicitly; Body chose
+              between the named alternatives rather than the AI
+              guessing).
+TYPE:         Council Note — Steward (executed the second RETIRE-NOW
+              of the arc; verified-empty-of-references discipline
+              applied via the SOUL-090 grep findings); Archaeologist
+              (lifted the load-bearing fragment into preservation
+              before deletion — the carry-history discipline applied
+              at file-internal granularity rather than just at
+              file-level); Architect (new file structured small —
+              header + the template + Source footer, no machinery;
+              proposed A014 sub-class footer used proactively as
+              dogfood of the candidate amendment); Cartographer
+              (operations/ count: 10 → 10 — net zero; one file
+              retired, one created, same directory shape).
+CONSEQUENCE: (1) **Second formal retirement in 6 weeks** (after
+              SOUL-089's logs/ retirement). The "growth-only" failure
+              mode now has TWO falsifying instances visible in git
+              log. Pattern emerging: audit → Body-sign-off → action,
+              with Body input at the per-item decision point per
+              audit contract.
+              (2) **Preservation discipline dogfooded.** Lifting
+              Problem Slot before deleting parent file is the first
+              concrete instance of "carry history at file-internal
+              granularity" — Archaeologist's care applied below
+              file-level. Useful precedent if future retire-now
+              decisions surface similar partial-load-bearing patterns.
+              (3) **A014 candidate dogfooded.** The new file's Source
+              footer carries a `Sub-class: PROCEDURE` field per the
+              proposed A014 amendment from SOUL-088 audit Closing.
+              First instance of the proposed convention in the wild —
+              provides one data point for the amendment's eventual
+              write-up.
+              (4) **operations/ count unchanged at 10.** One file out,
+              one file in. The retirement was real (269-line file
+              gone) but the surface count masks it. Mind rule 4
+              (generation couples with retirement) fired both
+              directions simultaneously — candidate observation:
+              retirement-and-replacement shouldn't be conflated with
+              growth.
+              (5) **No edit to the audit document needed.** The audit
+              at docs/audits/2026-05-27-... already recorded Section
+              4.1's RETIRE-NOW recommendation with the Problem Slot
+              residual; this beat executed the recommendation. The
+              witness pointer (this entry) records the action; the
+              audit remains a correct historical description.
+              (6) **F039 discipline: anchored 38 at write-time** for
+              the new file. Seventh same-drafter instance; still no
+              different-drafter.
+STATUS:      Resolved — retire-and-preserve action executed cleanly.
+              Audit's Section 4 recommendations now have one full
+              discharge (4.1) and two preservation confirmations
+              (4.2 completion-gate KEEP, 4.3 reference-repository
+              KEEP). Two remaining non-blocking follow-ups: (a)
+              bundle status-footer updates ("proposed → active" on
+              completion-gate and reference-repository) into a future
+              doctrine-text cleanup; (b) Body decides whether to
+              graduate F040 candidate (audit-process lesson —
+              retire-intuitions need uniqueness-investigation).
+```
