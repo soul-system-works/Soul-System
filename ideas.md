@@ -1084,3 +1084,70 @@ NOTES:     Scope guard — this is a STRUCTURAL FIT read, not a composition
            (reference-project upstream-obligation — same theme: doctrine
            that's not yet a practice).
 ```
+
+```
+ID:        SOUL-I036
+WHEN:      2026-05-27
+IDEA:      Deployment strategy convergence — decide the "right" way for
+           outside users to get and use the Soul System (per-user global
+           install? symlink farm? snapshot vendoring? package manager?
+           keep current single-install-per-machine + @-import?). Today's
+           model is single-install + @-import + hardcoded absolute paths;
+           the install.sh legacy snapshot model is stale at v0.3.0.
+STATUS:    Deferred-by-design — Body explicitly named this as "the final
+           step before public release so people can properly get and use
+           the system." NOT a current beat. The deferral is intentional;
+           premature convergence would lock in choices before the system
+           is ready to be deployed at scale.
+WHY:       Today the model works for the Body's own dogfooding (single
+           computer, hardcoded paths in each project's CLAUDE.md, F029
+           symlinks). Outside users hit brittleness immediately: moving
+           Soul-System on disk breaks dogfood projects; sharing a project
+           with a collaborator who doesn't have Soul-System at the same
+           absolute path fails; switching computers requires reinstall +
+           per-project path updates. None of these are problems TODAY
+           because there is one user (the Body) on one computer.
+PRIORITY:  defer-until-pre-release — explicit Body deferral. Re-surface
+           when the "public release" trigger fires (a Body-named moment;
+           not a calendar date).
+DEVELOP:   Architect (the structural design — per-user global vs symlink
+           farm vs vendored vs hybrid); Emissary (cross-machine testing
+           against the actual deployment story); Steward (retire stale
+           install.sh; what survives the deployment-strategy choice?);
+           Skeptic (what assumptions about user setup are we making?);
+           Advocate (the outside-user perspective is the load-bearing
+           one — what do THEY need to install, configure, update?).
+NOTES:     Today's evidence + tradeoffs surfaced in the SOUL-101 closing
+           conversation (Body's clarifying question on single-install
+           vs per-project vs both). Honest caveat captured: the @-import
+           single-install model hardcodes absolute paths into every
+           dogfood project, which is brittle to disk-move / computer-
+           switch / collaborator-share. The seed acknowledges this with
+           "clone to a stable path on your machine, once" — known
+           tradeoff, not hidden.
+
+           Candidate deployment models (NOT yet decided):
+           (a) **Per-user global install** (~/.claude/soul-system/) —
+               standardize paths across machines; closest analog to how
+               other skill ecosystems (Cursor rules, Continue.dev) do it.
+           (b) **Vendoring / snapshot install** (legacy install.sh,
+               currently stale at v0.3.0) — per-project copy; frozen
+               version; updates require re-install. Keep available for
+               reproducibility / archival / team-share edge cases.
+           (c) **Symlink farm** (project-local symlinks pointing at a
+               global install) — partial hybrid; clean import paths
+               without per-project copy. F029-compatible.
+           (d) **Package manager** (pip/npm/cargo equivalent) — full
+               external-distribution model; biggest change.
+           (e) **Keep single-install + @-import** with documentation
+               about the path-hardcoding tradeoff. Cheapest option;
+               does not solve cross-machine brittleness but names it.
+
+           Trigger to ripen: Body names a "public release" beat OR
+           someone outside the Body adopts the Soul-System and hits
+           the path-brittleness problem (first cross-machine evidence).
+           Related: install.sh staleness (handoff cursor's prior
+           item (g) — same root); F029 (symlinks-beat-copies, which
+           constrains (b)); seed §"clone to a stable path" (the
+           current acknowledged-tradeoff doctrine).
+```
