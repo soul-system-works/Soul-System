@@ -17,8 +17,14 @@ here on next invocation; removing one makes it disappear.
 
 2. **List every `soul-*.md`** in alphabetical order. For each:
    - Command name: filename without `.md`, prefixed with `/`.
-   - One-line summary: the `description:` from frontmatter, **first sentence only**
-     (truncate at the first `. ` to keep one line per row).
+   - One-line summary: the `description:` from frontmatter, **first sentence only,
+     capped at ~100 characters**. Truncate at whichever comes first: the first `. `
+     (sentence end) OR the last natural break (em-dash ` — `, semicolon, comma)
+     before the 100-char mark. If no natural break exists within ~100 chars, hard-
+     truncate with `…`. The cap keeps the roster scannable; the natural-break
+     preference keeps the summary informative. Author frontmatters with this in
+     mind — a too-thin opening clause (e.g. "Pre-X gate.") produces an
+     uninformative row.
 
 3. **Present as a compact table:**
 
