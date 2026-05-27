@@ -2697,3 +2697,76 @@ STATUS:      Resolved — /soul-roles built and live; SOUL-I031 graduated;
               spec STATUS reflects Built; F039 discipline applied at
               write-time.
 ```
+
+```
+ID:           SOUL-085
+WHEN:         2026-05-26 / Tier 3 dogfood — /soul-council + /soul-roles
+              paired convening (first non-routine Body-invoked /soul-council
+              in the project)
+WHERE:        councils/SOUL-085-f014-confirmed-what-now.md (105 lines,
+              anchored via `wc -l` per F039 discipline). Topic surfaced
+              from /soul-roles all output (84 witness entries, 38 findings,
+              0 missing TYPE). Body picked "F014 confirmed — what now?"
+              from the four /soul-roles-surfaced candidates.
+WHAT:         Pointer entry for the first non-routine /soul-council
+              convening. Chamber walked 9 roles (Magistrates: Archaeologist,
+              Prophet, Steward, Emissary; Tribunes: Skeptic, Accountant,
+              Advocate; Censors: Guardian, Cartographer). Topic: now that
+              /soul-roles empirically confirmed F014's expansion-gap
+              (Researcher 6, Prophet 3, Revelator 4, Seer 0 vs Skeptic 23,
+              Archivist 56, Emissary 45, Steward 24) AND A012 doctrine +
+              both Cluster 1 instruments exist, what should the project DO
+              with the confirmation?
+TYPE:         Council Note — /soul-council convening, 9 roles walked. Body
+              (topic-pick); Archaeologist (architecture-complete frame);
+              Prophet (two-paths trajectory); Steward (Seer-0
+              retirement-watch flag); Emissary (anchor discharge for F015
+              on F014's claim); Skeptic (NAMED vs ACTUAL firing caveat);
+              Accountant (cheap-default + on-demand cost shape); Advocate
+              (forward-prompt gap); Guardian (no rubber-stamp;
+              dogfood-discharges-Tier-3); Cartographer (Cluster 1 map +
+              "prompt territory" still unmapped). Tribune + Censor
+              attendance complete per spec contract.
+CONSEQUENCE: (1) **Tier 3a discharged for both Cluster 1 instruments.**
+              /soul-council ran end-to-end (chamber walk → tensions →
+              synthesis → pointer+detail shape). /soul-roles reproduced
+              F014's manual finding with measured numbers (.soul/role-
+              queries.jsonl logged the query). Both specs' Tier 3a tests
+              were exercised in a single convening — pairing was the
+              right structural choice (Body's pick from 4 dogfood-shape
+              options post-/soul-roles ship).
+              (2) **F014 confirmed for the NAMED layer; Skeptic caveat
+              persists.** /soul-roles anchors TYPE-attribution firings,
+              which is a strict subset of actual role-firing. F014's
+              empirical claim now has an external anchor (discharges
+              F015 for this claim); F028 axis (anchor validity) is
+              honored by the caveat — the anchor does not measure
+              unnamed firing.
+              (3) **Four actionable threads from synthesis.** (a)
+              Re-measure at +50-100 entries (SOUL-150ish) to test whether
+              instruments shifted the counts. (b) Surface expansion-
+              silence at session start — possible /soul-handoff extension;
+              captured as candidate SOUL-I033 if Body accepts. (c) Seer-0
+              retirement-watch at next /soul-distill or SOUL-200. (d)
+              Skeptic's NAMED-vs-ACTUAL caveat lives in the record as
+              instrument-limit, not bug.
+              (4) **Pointer+detail shape (D4) used as designed.** This
+              pointer is short (~50 lines); the detail file carries the
+              full chamber walk (105 lines). The witness stays scannable;
+              the detail is durable and reproducible. Second use of the
+              shape after SOUL-080's inaugural.
+              (5) **Counterweight Rule fired structurally.** The
+              convening itself was a Counterweight against the
+              "doctrine confirmed → move on" contraction default — the
+              chamber instead surfaced "what now?" as the live question.
+              A012 §Activation Disciplines applied without ceremony.
+              (6) **Body-Input Obligation honored.** Topic-pick asked of
+              Body (4 options surfaced); dogfood-shape asked of Body
+              (4 options surfaced); Body decision on synthesis pending.
+              Three Body-input moments in this dogfood — high but
+              appropriate (this IS the test).
+STATUS:      Synthesis lands; Body decision pending. Update §Body
+              decision in councils/SOUL-085-f014-confirmed-what-now.md
+              in place. Threads (a)/(c) require nothing this session;
+              thread (b) is a capturable idea; thread (d) is record-only.
+```
