@@ -58,6 +58,7 @@ Consult the Universe. Verify. Test. Check assumptions against reality.
 Internal coherence is not enough.
 Local tests passing is not global correctness — verify the invariant the whole must satisfy (verification vs validation).
 The Universe is not the task — for non-trivial work, reach outward too: what already exists in the field, what standard others use, what the real user needs, what larger frame the work might serve.
+For measurement experiments under `claude -p` specifically, see `operations/experiment-harness.md` — cross-project @-imports silently fail and confabulate at ~43% (SOUL-F038); inline content and sentinel-test loading is non-optional.
 
 **Continuously:**
 When something feels wrong before it can be articulated — record it. That is the Witness.

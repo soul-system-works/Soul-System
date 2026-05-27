@@ -2519,3 +2519,65 @@ STATUS:      Resolved — Cluster 1 design beat closes; A012 ratified;
               witness pointer + detail file written; A008
               housekeeping done. Remaining session task: push.
 ```
+
+```
+ID:           SOUL-081
+WHEN:         2026-05-26 / F038 amendment shape framing (post-A012 ratification, mid-Cluster-1 closeout)
+WHERE:        This session's conversation context — F038 landing-shape exchange during /soul-explain invocation.
+WHAT:         Detailed descriptions in this session (F038 amendment shape framing) carried heavy project lingo — "claude -p", "@-imports", "always-on token budget", "seed vs operations layer". Body observed: users often need a simpler first-pass explanation, with /soul-explain available to pull more depth on demand. Pattern: lead with plain-language description; let the user invoke the read-only lens for the technical layer if wanted. Pairs with SOUL-078 (wall-of-text default → lead with conclusion) — both are response-shape disciplines the AI defaults wrong on.
+TYPE:         Failure Mode — lingo-default in detailed explanations (?)
+CONSEQUENCE:  Body re-asked for plain version of F038 framing after first /soul-explain output; simpler version landed cleanly. Re-explanation cost: one turn.
+STATUS:       Open
+```
+
+```
+ID:           SOUL-082
+WHEN:         2026-05-26 / F038 amendment landing — Cluster 1 closeout
+              continuation
+WHERE:        Soul System repo. operations/experiment-harness.md (new
+              file), operations/CLAUDE.md §The Mandatory Gates (one-line
+              pointer added), amendments/accepted/SOUL-A013-experiment-
+              harness-discipline.md (new), findings/open → closed/
+              for SOUL-F038.
+WHAT:         Pointer entry for the A013 amendment landing. F038
+              graduated from finding to amendment via the (a) operations-
+              level rule shape (Body picked over (b) seed/Mind line).
+              Body chose to also add the one-line discoverability
+              pointer in the seed ("with the pointer as well if that
+              is important"). Plain-language explanation pattern
+              (SOUL-081) was used to surface the choice — first
+              detailed exchange got "i don't follow what claude -p is";
+              Body explicitly named the lingo gap mid-decision,
+              which is what enabled the shape choice to land cleanly
+              on the second pass.
+TYPE:        Council Note — Architect (amendment placement +
+              operations-vs-seed layering); Artificer (file creation,
+              sentinel recipe write-up); Steward (closed F038, updated
+              STATUS with N=7 residual carried forward); Skeptic
+              (sentinel pattern); Body (shape choice authority).
+CONSEQUENCE: (1) F038 closes — second open finding closed in this
+              session (after F036 prior arc). Open findings count
+              steady at 14 (F039 added earlier, F038 closed now).
+              (2) A013 is the second amendment landed in this session
+              (after A012), both at operations level — pattern: the
+              project is shipping doctrine at the on-demand layer with
+              minimal seed-load increase. Measured seed growth this
+              session: 245 → 258 lines = +13 lines (~5.3%); A012
+              §Activation Disciplines +12 lines, A013 1-line pointer.
+              (3) Plain-language framing (SOUL-081 lesson) directly
+              enabled the shape choice — without it, Body said "i
+              don't follow." Response-shape discipline is load-
+              bearing for collaboration, not cosmetic.
+              (4) 9th consecutive I027 single-writer clean instance
+              (prior arc: 5 — SOUL-064, 072, 075, 077, 079; this
+              session: SOUL-080, F039, SOUL-081, SOUL-082). Six was
+              the revisit-trigger threshold; we're past it; advisory
+              file-lock or git-arbitration revisit is still Body's
+              call (no new evidence to revisit yet).
+              (5) operations/ grew from 8 to 9 files. The experiment-
+              harness file is the first measurement-discipline home;
+              future measurement rules (sentinel-testing protocols,
+              harness-construction norms) land here, not scattered.
+STATUS:      Resolved — A013 in accepted/; F038 in closed/; seed +
+              operations both updated.
+```

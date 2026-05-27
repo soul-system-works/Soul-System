@@ -870,3 +870,23 @@ NOTES:     Open shape questions:
            visibility pattern this complements). Body's framing: "idk" —
            flagged not-yet-shaped, captured to thaw later.
 ```
+
+```
+ID:        SOUL-I032
+WHEN:      2026-05-26
+IDEA:      /soul-explain could accept depth/style flags (e.g. --plain, --eli5,
+           --depth=low/med/high, --no-jargon) so the Body can specify the kind
+           of explanation wanted, instead of getting the default which often
+           defaults to lingo-heavy.
+STATUS:    Raw
+WHY:       Pairs with SOUL-081 — lingo-default failure mode in detailed
+           explanations. A flag-based interface lets the Body pull a specific
+           shape of explanation on demand, rather than the Body re-asking for
+           a simpler version after the first pass. Could also enable other
+           axes: --audience=newcomer, --scope=minimal, etc.
+PRIORITY:  low
+DEVELOP:   Artificer (flag design) / Advocate (which axes serve the user)
+NOTES:     Captured during F038 amendment shape exchange. /soul-explain's
+           current contract is "describe, don't decide" — flags would extend
+           that contract with HOW to describe, not WHAT.
+```
