@@ -52,7 +52,9 @@ Steps the agent runs:
      `since YYYY-MM-DD`, or `last <N>`.
    - `--role <name>` — focus on one role.
    - `--silent-threshold <N>` — count "silent" if no invocation in N entries
-     (default 10).
+     (default **70**, ≈ 1 week at the measured 2026-05-26 rhythm of ~10
+     entries/day; tune from dogfood). Lower defaults (10, 20) flag normal
+     between-session silence as silence — too coarse for this rhythm.
 2. **Read data sources** (in order):
    - `witness.md` TYPE fields, parsed per entry. Per-witness role-list.
    - `findings/open/*.md` and `findings/closed/*.md` FILED BY fields.
@@ -75,9 +77,13 @@ Steps the agent runs:
      results inferred from N - M."
    - Neutral language. "Silent" is observational, not pejorative. A silent role
      may be correctly silent for this project.
-6. **Witness entry** — append a short SOUL-XXX entry naming what was queried and the
-   headline result. The act of asking is itself worth recording (cheap; aids longitudinal
-   tracking of when the Body checked role-firing).
+6. **Logging — split by purpose** (resolved 2026-05-26 review pass).
+   - **Queries log to `.soul/role-queries.jsonl`** — one JSONL line per invocation
+     (timestamp, scope, headline result). Cheap, append-only, doesn't pollute
+     witness.md scannability at the ~10 entries/day project rhythm.
+   - **Witness entry ONLY for acted-upon insights** — e.g., "Body ran /soul-roles,
+     observed Researcher zero-fire across 30 entries, decided to invoke /soul-council
+     on outward reach." The DECISION is record-worthy; the bare query is not.
 
 ### Output example (sketch — final format settled at build)
 
@@ -128,8 +134,11 @@ Data quality: 4 of 30 entries missing TYPE field; results from N=26.
   are deliberate role attributions; richer signal per entry. Add at MVP.
 - **Q2. Honor `.soul/events.jsonl` per SOUL-F018?** Yes if present. If absent (most
   projects today), fall back to witness/findings only. No build dependency.
-- **Q3. Silent-threshold default — 10? 15? 20?** Start at 10 (covers the last
-  approximately week of activity in a busy project); tune from dogfood data.
+- **Q3. Silent-threshold default — RESOLVED 2026-05-26.** Default 70 (~1 week at
+  measured rhythm 79 entries / 8 days ≈ 10/day). Earlier draft said 10, but at the
+  current rhythm 10 entries ≈ 1 day, which flags routine between-session silence.
+  Alternative: session-marker-based ("silent since last `/soul-handoff`") — cleaner
+  structurally but requires session-boundary parsing; defer to Tier 3.
 - **Q4. Hands roles included?** Architect, Craftsman, Artificer are in the seed but
   are NOT Council. Include in tally (they're the build side), but tag separately:
   "Hands (build): Architect 14, Artificer 4, Craftsman 0." Body sees the full role-firing
@@ -171,7 +180,7 @@ After build:
 ## Open residuals (named, not promised)
 
 - `/soul-ask-body` spec — separate (F037).
-- Counterweight discipline doctrine line — small edit to operations/CLAUDE.md, separate.
+- Counterweight discipline doctrine line — owned by [[SOUL-A012]] §Activation Disciplines.
 - F018 event-standard adoption per project — not blocking; this instrument works on
   witness alone.
 - Whether the F014 expansion-role-economics finding STILL holds today, after recent

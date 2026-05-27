@@ -2440,3 +2440,82 @@ CONSEQUENCE: (1) FRESH F028 INSTANCE AT THE DOCTRINE LEVEL. F038 has
 STATUS:      Resolved — 3 files edited; doctrine-level F028 instance
               added to the running tally; verify-gate value re-affirmed.
 ```
+
+```
+ID:           SOUL-080
+WHEN:         2026-05-26 / Cluster 1 review arc — Body resumed, asked
+              Council recommendation, third informal /soul-council
+              dogfood, full review-and-ratify arc executed
+WHERE:        This session post-/soul-resume; 4 artifacts in
+              amendments/proposed/ + docs/specs/ reviewed; A012
+              ratified; operations/CLAUDE.md edited; councils/
+              directory created (inaugural file).
+WHAT:         Pointer entry — full detail at
+              councils/SOUL-080-cluster-1-review-arc.md.
+              Summary: 8-role informal convening picked thread (a)
+              review the 4 Cluster 1 drafts; Body accepted, said
+              "proceed"; review surfaced 1 must-fix defect (A012
+              line 113 — the SAME F028-axis-3 failure mode SOUL-079
+              named, surviving in the amendment that ratifies the
+              discipline against it) + 8 decisions D1-D8; pre-
+              completion verify gate fired mid-arc, caught 2
+              unanchored magnitudes in the AI's own review,
+              re-anchored via measurement (79 entries / 8 days /
+              2442 lines → ~31 lines/entry, ~10/day; D6 threshold
+              revised 20 → 70); full sweep executed (D1, D3-D8
+              patches + A012 ratification + seed edit + A008
+              duplicate deletion).
+TYPE:        Council convening (8 roles — Archaeologist, Prophet,
+              Cartographer, Steward, Skeptic, Accountant, Advocate,
+              Guardian); Architect (review lead + seed edit);
+              Skeptic (defect catch); Guardian (verify gate + A008
+              housekeeping); Steward (cross-spec coordination);
+              Artificer (sweep execution); Body (decision
+              authority).
+CONSEQUENCE: (1) THIRD /soul-council DOGFOOD. Pattern held across
+              two new aspects: (a) re-anchoring magnitudes when the
+              verify gate fired mid-convening — the doctrine the
+              convening was discussing caught the convening's own
+              claims, recursive validation; (b) inaugural use of
+              the pointer+detail shape (this entry + the councils/
+              file together) — the very D4 decision the convening
+              ratified.
+              (2) A012 RATIFIED. §Activation Disciplines now
+              always-on doctrine. Counterweight (scope axis) +
+              Body-Input Obligation (knowledge axis) cover F014's
+              activation problem on both axes.
+              (3) CLUSTER 1 DESIGN BEAT CLOSES. All four artifacts
+              clean: A012 in seed; 3 specs draft-ready for build
+              sessions. Next consequential ship: /soul-council.
+              (4) VERIFY GATE FIRED AGAIN MID-SESSION. SOUL-079's
+              F028-axis-3 discipline (magnitude claims need
+              re-anchoring) confirmed across two consecutive
+              sessions. The gate is doing real work; pattern is
+              now self-reinforcing.
+              (5) SIXTH I027 SINGLE-WRITER INSTANCE. Six clean
+              consecutive instances (SOUL-064, 072, 075, 077, 079,
+              080). I027's "sixth instance may earn revisiting
+              deferred options" trigger now reached — open Body
+              decision on advisory file-lock or git-arbitration.
+              (6) NEW GENERALIZABLE LESSON (candidate finding).
+              SOUL-079's original cleanup missed A012 line 113 —
+              caught 3 instances + 1 in-session statement, but
+              missed a secondary mention in the amendment being
+              drafted. Generalizable: verify gates catch headline-
+              level magnitude failures; secondary-mention
+              propagation needs independent re-read pass at a
+              different moment. Possible new F028 axis or just
+              F028 confirmed as needing gate-PLUS-re-read for
+              full coverage. Body decision pending.
+              (7) A008 DUPLICATE RESOLVED. Guardian-flagged
+              housekeeping item (open across two prior cursors)
+              closed: confirmed merge residue (older pre-acceptance
+              draft); deleted via git rm. amendments/proposed/
+              now empty.
+              (8) FIRST FILE IN councils/. Directory created as
+              inaugural use of the pointer+detail shape codified
+              this convening.
+STATUS:      Resolved — Cluster 1 design beat closes; A012 ratified;
+              witness pointer + detail file written; A008
+              housekeeping done. Remaining session task: push.
+```

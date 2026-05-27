@@ -60,6 +60,8 @@ WHAT CHANGES:    Add a new section §Activation Disciplines to operations/CLAUDE
                  inputs are needed (same structural insight as F014); the
                  discipline fires at recommendation-time when the dependency
                  is recognised, not as an attempt at automatic detection.
+                 (The `/soul-ask-body` instrument is specced separately and
+                 not yet built; until then, inline questions are the channel.)
 
                  Both rules are read in pair with §Naming Roles in the Moment:
                  *visibility, not ceremony.* Counterweight is named when it
@@ -109,12 +111,14 @@ QUESTION ONE — EVIDENCE:
 QUESTION TWO — NECESSITY:
                  - **Counterweight.** Without it, contraction wins by
                    role-invocation economics; the project stays "correct but
-                   small" (F014's anchor verdict). F014 has been open for 6+
-                   months precisely because the discipline did not get
-                   doctrinal status; the instrument (/soul-expand) is
-                   Body-invoked by necessity, and the per-decision counterweight
-                   rule is the doctrine line that lets the discipline fire even
-                   without invoking the full /soul-expand gate.
+                   small" (F014's anchor verdict). F014 (filed 2026-05-20)
+                   stayed open through six days of dense re-confirmation
+                   without doctrinal escalation precisely because the
+                   discipline had no per-decision activation rule; the
+                   instrument (/soul-expand) is Body-invoked by necessity,
+                   and the per-decision counterweight rule is the doctrine
+                   line that lets the discipline fire even without invoking
+                   the full /soul-expand gate.
                  - **Body-Input Obligation.** Without it, AI ships
                    confidently-wrong work that depends on inputs the Body alone
                    can supply (F037's M8 example: shipped "infeasible" verdict;
@@ -150,11 +154,12 @@ QUESTION THREE — COHERENCE:
                    §Naming Roles in the Moment) — same protection as the
                    existing role-naming doctrine.
 
-ACCEPTED BY:     Proposed — pending Body review and ratification. Cluster 1
-                 design beat 2026-05-26 produced this synthesis; the Body
-                 picked shape (β)+(γ) for /soul-ask-body explicitly, and the
-                 counterweight rule is F014's own recommendation. Ratification
-                 is the Body's call at the next convening or at edit time.
+ACCEPTED BY:     Body, 2026-05-26 (post-review session, after the third
+                 informal /soul-council convening and review pass that
+                 patched the line-113 F028-axis-3 residual). Seed edit
+                 applied to operations/CLAUDE.md §Activation Disciplines
+                 (between §Naming Roles in the Moment and §Capturing Ideas);
+                 file moved amendments/proposed/ → amendments/accepted/.
 FILED BY:        Architect (Cluster 1 design beat synthesis; structural
                  placement); Artificer (the bundled §Activation Disciplines
                  shape that pairs with the three sibling instruments); Skeptic

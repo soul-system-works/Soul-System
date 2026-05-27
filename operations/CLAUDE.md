@@ -113,6 +113,18 @@ Otherwise leave the roles silent. Selective visibility, not ceremony.
 
 ---
 
+## Activation Disciplines
+
+Two paired rules for the activation problem named in SOUL-F014: contraction roles (Accountant, Skeptic, Steward) and pushing on available evidence are cheap and feel responsible; expansion roles (Prophet, Researcher, Revelator) and asking the Body cost more and risk being wrong, so they under-fire. Auto-detection is intrinsically hard for both (F014's PRE-MORTEM: no regex for "did you think big enough?"). The discipline fires at the decision moment, named explicitly.
+
+**Counterweight Rule** *(scope axis — SOUL-F014).* At any non-trivial scope decision, name the expansion-role counter-voice with equal weight to the contraction-role voice: *what does this miss?* (Revelator) *what could it become?* (Prophet) *what already exists?* (Researcher / Archaeologist). If the answer is "nothing material" — say so, and proceed. The default is contraction; the counterweight is what prevents staying "correct but small."
+
+**Body-Input Obligation** *(knowledge axis — SOUL-F037).* Before issuing a recommendation that depends on Body-only input — heuristic hints, strategic intent, preference between technically-valid paths, or private knowledge — name the dependency explicitly. Default to asking (inline question, or `/soul-ask-body` once shipped); do not push harder on available evidence as a substitute. The AI cannot reliably auto-detect when these inputs are needed (same structural insight as F014); the discipline fires at recommendation-time when the dependency is recognised, not as an attempt at automatic detection.
+
+Both rules read in pair with §Naming Roles in the Moment: *visibility, not ceremony.* Counterweight is named when it changes the decision; the Body-Input dependency is named when the recommendation actually depends on it. Naming for the sake of naming is theatre.
+
+---
+
 ## Capturing Ideas
 
 Forward possibilities — things that *might* be worth doing — go in `ideas.md` at the project root (the forward twin of the Witness log). Jot with `/soul-idea`, enrich later, graduate to a Finding when earned.

@@ -64,6 +64,16 @@ The two halves cover different moments:
   four-kind taxonomy is the framing; honest about uncertainty (the agent may not
   know what it doesn't know — own that explicitly).
 
+## Note on the detection limit (added 2026-05-26 review pass)
+
+(β) does NOT solve the detection problem (α) was rejected for. It provides a
+**Body-triggered moment** when the agent attempts the survey under explicit instruction
+— qualitatively different from autopilot, but bounded by the same auto-detection limit
+F014 names. The "may have missed X" caveat (Step 5) is not optional politeness; it is
+the honest acknowledgement that survey-completeness cannot be proven by the surveyor.
+(γ) at recommendation-time is the second fire of the same discipline, catching what
+(β) missed.
+
 ## (β) The command: `/soul-ask-body [scope]`
 
 Steps the agent runs:
@@ -131,30 +141,17 @@ Surveying current state...
 Body answers each? Or skip?
 ```
 
-## (γ) The doctrine line — added to `operations/CLAUDE.md`
+## (γ) The doctrine line — owned by [[SOUL-A012]]
 
-Proposed location: under §The Mandatory Gates, as a new gate (or under
-§Capturing Ideas if more natural — Body decides).
+The (γ) doctrine line lives in **[[SOUL-A012]] §Activation Disciplines · Body-Input
+Obligation** (operations/CLAUDE.md after ratification). A012 is the canonical wording
+— this spec does NOT propose alternative text to prevent four-way drift across the
+spec set. A012 also bundles (γ) with the counterweight rule for F014's scope axis;
+the two share the same structural shape (named-at-decision-moment, no auto-fire) and
+read more clearly as a pair.
 
-Proposed wording (terse, in the seed's voice):
-
-> **Before issuing a recommendation that depends on Body-only input:**
-> Name the dependency explicitly. Body-only inputs are heuristic hints, strategic
-> intent, preference between technically-valid paths, or private knowledge — see
-> SOUL-F037. Default to *asking* (via `/soul-ask-body` or inline question); do not
-> push harder on available evidence as a substitute for asking. The AI cannot
-> reliably auto-detect when a Body-only input is needed (same structural problem as
-> SOUL-F014 expansion); the discipline is to surface the dependency at
-> recommendation-time when it is recognised, not to pretend the detection is
-> automatic.
-
-Alternative shorter version (if Body prefers):
-
-> **Body-Input Obligation:** When a recommendation depends on Body-only input
-> (heuristic / intent / preference / private — see SOUL-F037), name the dependency
-> and ask, do not push harder on available evidence as a substitute.
-
-Decision on wording: Body's call at the doctrine edit step.
+If A012 wording is revised, this spec inherits the revision by reference — no edit
+needed here.
 
 ## Failure-mode guards
 
@@ -178,13 +175,10 @@ Decision on wording: Body's call at the doctrine edit step.
 
 ## Open questions
 
-- **Q1. Where does (γ) doctrine line land?** §The Mandatory Gates (gate-level rigor)
-  or §Capturing Ideas adjacent (lighter framing) or a new §Body-Input Obligation?
-  Body picks at the edit step.
-- **Q2. Bundle (γ) with the counterweight discipline line?** Both are activation-axis
-  doctrines from this beat. Could be one §Activation Disciplines section in the seed
-  or two separate lines. Default-simplicity says: try as two terse lines first; bundle
-  if they read more clearly together.
+- **Q1. Where does (γ) doctrine line land? — RESOLVED.** [[SOUL-A012]] §Activation
+  Disciplines, placed between §Naming Roles in the Moment and §Capturing Ideas.
+- **Q2. Bundle (γ) with counterweight? — RESOLVED.** A012 bundles them (shared
+  named-at-decision shape; reading in pair makes F014's PRE-MORTEM insight legible).
 - **Q3. AskUserQuestion tool dependency?** (β) uses `AskUserQuestion` for structured
   prompting when interactive. Acceptable dependency; fallback for non-interactive
   modes is plain prose questions in output.
