@@ -8,7 +8,7 @@ forged from real failure patterns, designed to make AI-assisted work more
 principled and self-correcting.
 
 <p align="center">
-  <img src="architecture.svg" alt="Soul System architecture: the Universe wraps the Body, which wraps the Soul, Witness, Council, and Judge. The Council is a chamber of twelve symbolic voices in tiers. The Hands sit beneath the Judge; the Panel of Experts sits parallel to the Witness, summoned when needed." width="100%">
+  <img src="architecture.svg" alt="Soul System architecture: the Universe wraps the Body, which wraps the Soul, Witness, Council, and Judge. The Council is a chamber of thirteen symbolic voices in tiers (eight Magistrates, three Tribunes, two Censors). The Hands sit beneath the Judge; the Panel of Experts sits parallel to the Witness, summoned when needed." width="100%">
 </p>
 
 *The Soul governs. The Witness and the Panel inform; the Council synthesises; the Judge decides; the Hands produce.*
@@ -72,13 +72,15 @@ If you found something worth sharing, see `CONTRIBUTING.md`.
 ```
 philosophy/     The Soul, the Commons (outside wisdom that earned its place)
 operations/     The operational seed — imported by @ or copied by install.sh
-commands/       Slash commands (/soul-init, /soul-verify, /soul-expand, /soul-idea)
+commands/       Slash commands — sixteen /soul-* instruments (see commands/)
 hooks/          Activation instruments (e.g. the pre-completion Stop hook)
 amendments/     Council Amendments to the Soul, by lifecycle state (accepted/proposed/returned)
 findings/       Council Findings, open/ and closed/
+councils/       Council convening detail files — one per convening (witness pointer + detail D4 shape)
 witness.md      The repo's own Witness log (what happened, backward)
 ideas.md        The idea inbox (what might, forward) — graduates into findings/
-docs/           Design specs and proposals
+mind.md         Optional project layer — compressed rule-set distilled from the record
+docs/           Design specs, plans, experiments, audits
 skills/         Upstream skills — project-proven, submitted for cross-project reuse
 registry/       Where the system has been used
 AGENTS.md       Cross-vendor entry point for any agent tool

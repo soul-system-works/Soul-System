@@ -228,6 +228,7 @@ Operations files that adopt an external practice, standard, or convention carry 
 **Source:** [citation or link]
 **Reinforced by:** [optional secondary sources]
 **Shapes:** [optional: section or sub-area shaped by this source — used when the file has multiple sources]
+**Sub-class:** [optional, for operations/ files only: DOCTRINE-ABOVE-INSTRUMENT | FORMAT-SPEC | PROCEDURE]
 **Adopted:** [YYYY-MM-DD]
 **Status:** active | under review | deprecated
 **Open question:** [optional unresolved concern about this adoption]
@@ -236,6 +237,8 @@ Operations files that adopt an external practice, standard, or convention carry 
 When a file is shaped by multiple sources, repeat the Source block for each.
 
 The footer records where the practice came from, when it was adopted, and its current status. Source notes live with the practice they shaped — `grep -rB1 "^\*\*Source:" operations/ philosophy/` returns the full index on demand. Future tooling may aggregate these footers the same way it would TODO markers.
+
+**Sub-class** *(operations/ only, per A014).* `operations/` holds three sub-classes flat: **DOCTRINE-ABOVE-INSTRUMENT** (text the seed cites — `council-synthesis.md`, `completion-gate.md`, `experiment-harness.md`), **FORMAT-SPEC** (record-shape definitions — `witness-log-format.md`, `adr-format.md`, `code-markers.md`, `event-standard.md`), and **PROCEDURE** (situational how-to — `problem-slot-template.md`, `reference-repository.md`). The rule does the work a directory tree would have. The field is optional but recommended for new operations/ files; existing files back-fill on touch.
 
 ---
 

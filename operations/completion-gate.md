@@ -125,6 +125,6 @@ recurring in a project where every correction came from the Body or an external
 reviewer.
 **Shapes:** entire file
 **Adopted:** 2026-05-20
-**Status:** proposed (pending Soul-System repo review)
+**Status:** active (per SOUL-090 audit — A010 explicitly names this file as "the mechanism"; KEEP-IN-PLACE confirmed 2026-05-27)
 
 *Refines as evidence accumulates.*
