@@ -13,15 +13,30 @@ this one only illuminates.
 
 ## What to do
 
-1. **Identify the target.** What is to be explained — the last thing shared, the
-   current state of the work, or a named item (a finding, a file, a decision)? If
-   genuinely ambiguous, ask which; otherwise take the obvious referent.
-2. **Explain it plainly.** What it is, why it is the way it is, what it means.
-   Draw on the durable records (witness, `ideas.md`, `findings/`) and the code
-   when relevant. **Seer / Revelator:** say what the record actually means, free
-   of present bias — surface what is there, not what you would do about it.
-3. **Match depth to the ask;** default concise. Name the abstraction (what varies,
-   what is load-bearing) only when it aids understanding.
+1. **Parse arguments** (all optional):
+   - `<target>` — what to explain. If absent, take the obvious referent (the
+     last thing shared, the current state of the work). If genuinely ambiguous,
+     ask.
+   - `--depth=low|medium|high` — verbosity axis. Default: `medium`. `low` =
+     two or three sentences naming the substance; `medium` = a paragraph or
+     short list, abstraction named only when it aids understanding; `high` =
+     full context, anchors, related records, what varies / what is load-bearing.
+   - `--no-jargon` — every domain-specific term is either replaced with a plain
+     equivalent or defined inline on first use. No bare acronyms; no Soul-System
+     vocabulary (Witness/Council/Mind/Finding/etc) without a one-clause gloss.
+   - `--eli5` — preset shortcut: equivalent to `--depth=low --no-jargon` AND
+     prefer concrete analogies over abstract framings. For when the Body wants
+     the cleanest possible read.
+
+2. **Identify the target** per the parsed `<target>` (or the obvious referent).
+3. **Explain it plainly** under the parsed depth/jargon constraints. What it is,
+   why it is the way it is, what it means. Draw on the durable records (witness,
+   `ideas.md`, `findings/`) and the code when relevant. **Seer / Revelator:** say
+   what the record actually means, free of present bias — surface what is there,
+   not what you would do about it.
+4. **Match output to the flags.** If `--depth=high`, name the abstraction (what
+   varies, what is load-bearing) explicitly. If `--depth=low` or `--eli5`, omit
+   the abstraction layer entirely unless it IS the explanation.
 
 ## What not to do (the read-only contract)
 
