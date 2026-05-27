@@ -1037,9 +1037,15 @@ IDEA:      BMAD Researcher beat — ~1-session pass reading BMAD method's
            and writing a finding on structural composition fit with seed
            §External Skills and Tools. NOT a full BMAD dogfood; just the
            read + structural-fit finding.
-STATUS:    Raw — captured from SOUL-087 council convening Thread 5
-           (Emissary's reality-test concern). Body accepted capture as
-           forward-thread; explicitly declined immediate build.
+STATUS:    Discharged-pending-amendment (2026-05-27, SOUL-098) —
+           the Researcher beat ran; output is [[SOUL-F041]] (open,
+           verdict (c) PARTIAL). What remains is the seed-edit
+           amendment, contingent on a future Researcher beat
+           covering CrewAI or AutoGen (F041's promotion trigger).
+           This idea is NOT closed — it ripens into a follow-up
+           "second-framework Researcher beat" once the Body
+           authorizes the next test (CrewAI's supervisor model
+           OR AutoGen's GroupChat model).
 WHY:       Seed §External Skills and Tools makes the composability claim
            ("a BMAD Analyst agent can embody the Witness role, a BMAD
            Architect can embody the Soul's Architect") as if confirmed.

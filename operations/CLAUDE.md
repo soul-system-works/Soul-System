@@ -205,7 +205,9 @@ The **Surface when…** column is the trigger that makes a row fire instead of s
 
 **Consult on relevance, never always-on:** piling candidates into context degrades the selection it is meant to help past ~10 always-present entries (RAG-MCP; Anthropic Tool Search) — the same reason `the-soul.md` stays out of every session (SOUL-033).
 
-**Roles in the Soul System are perspectives, not distinct agents.** A project using a multi-agent framework (BMAD, CrewAI, AutoGen) can adopt the Soul System without restructuring its agents: a BMAD Analyst agent can embody the Witness role, a BMAD Architect agent can embody the Soul's Architect, and so on. The Soul layers above how you already work.
+**Soul composes; it does not replace.** Soul is the project's **lifetime layer** — doctrine that loads into every session (the seed + `mind.md`) and record that accumulates across them (`witness.md`, `findings/`, `amendments/`). Multi-agent frameworks, IDE rules, test-driven workflows, and your own conventions are narrow workflow capacity used *within* that layer.
+
+**Soul wraps; it does not peer-map.** A tool's named agents (e.g. an "Analyst" or "Architect" persona) are the tool's phase-tools; Soul's continuous-posture roles (Witness, Tribunes, Censors) operate at a different layer and are not equivalents. Across the project's lifetime, only the Soul layer persists — tool sessions come and go, their outputs feed Soul's record. Inside any single session, Soul's gates (Counterweight, Anchor Obligation, the completion gate) fire alongside whatever tool work is happening; both layers operate, neither replaces the other. The Surface-when… table above maps tool capacity to Soul roles by **shape match at the right moment**, not by embodiment.
 
 Skills referenced here are common in the Claude Code ecosystem (https://docs.claude.com/en/docs/claude-code/skills). Equivalents exist in Cursor (rules), Aider (conventions), Continue.dev, and others. The `AGENTS.md` standard at the repo root makes Soul-following projects legible to all of them.
 

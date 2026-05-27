@@ -3843,3 +3843,644 @@ STATUS:      Resolved — skills/ documented; both DEFER triggers
               materially smaller. Body's "tackle the next task"
               ask discharged.
 ```
+
+```
+ID:           SOUL-098
+WHEN:         2026-05-27 / new session after audit-arc closeout day;
+              Body resumed via /soul-handoff, asked for a
+              recommendation, accepted (b) — the BMAD Researcher
+              beat — once it was framed as "stabilize v1 by testing
+              a Coherent-Falsehood risk in always-on doctrine."
+              First Researcher-led beat of the project's life
+              (SOUL-060 was an Archaeologist deep dive; this is the
+              first time the Researcher acquired previously
+              unrecorded field knowledge to discharge a specific
+              seed-claim test).
+WHERE:        references/bmad-method-v6-2026.md (new sidecar);
+              references/references.json (CSL-JSON entry +1);
+              references/INDEX.md (one-line entry +1);
+              findings/open/SOUL-F041-bmad-structural-fit-partial.md
+              (new finding); ideas.md (I035 → discharged-pending-
+              amendment, not closed); witness here.
+
+              Note also: the handoff cursor mis-labeled the BMAD
+              beat as "SOUL-I034" when it is in fact SOUL-I035 —
+              cursor-accuracy issue surfaced and announced at
+              session start before any work; no harm done because
+              the verbal description was unambiguous. Worth noting
+              for next /soul-handoff drafting hygiene.
+WHAT:         Ran the BMAD Researcher beat per SOUL-I035.
+              Acquisition pipeline: one WebSearch + three WebFetch
+              calls against docs.bmad-method.org (V6 docs +
+              llms-full.txt), github.com/bmad-code-org/BMAD-METHOD
+              (README), and bennycheung.github.io (third-party
+              explainer). Verdict: **(c) PARTIAL** per I035's three
+              options — some seed mappings hold; others are
+              structurally wrong; the seed needs honest qualifier.
+
+              The decisive empirical finds:
+              (1) BMAD agents are **process-shaped, not perspective-
+                  shaped** — each is a skill invoked in a fresh chat
+                  with serial handoff, the opposite of Soul's
+                  "perspectives, not distinct agents" framing.
+              (2) Analyst↔Witness mapping is **structurally wrong**
+                  — Analyst is a discrete generative phase; Witness
+                  is a continuous observational posture. Different
+                  shapes, different cadences, different artifacts.
+              (3) Architect↔Architect mapping holds at content level
+                  but is structurally hollow (fresh-chat skill vs.
+                  in-session perspective).
+              (4) Soul's **continuous-posture roles have NO BMAD
+                  counterpart** — Witness, Tribunes, Censors, several
+                  Magistrates. To run Soul under BMAD, the user must
+                  add discipline BMAD doesn't supply — contradicting
+                  the seed's "without restructuring" framing.
+              (5) Dev↔Craftsman and PM↔(Body framing) map reasonably.
+
+              Output: SOUL-F041 (open, with two amendment-shape
+              options contingent on a future second-framework test
+              of CrewAI OR AutoGen).
+TYPE:         Council Note —
+              Researcher (the field acquisition itself — first
+                proper Researcher firing in the project, addresses
+                F014's expansion-role under-firing directly via
+                Body invocation);
+              Emissary (the reality-test framing — the SEED CLAIM
+                was the assumption on trial; the Universe
+                contradicted the assumed Analyst↔Witness mapping;
+                this is the "evidence overturns belief" naming-the-
+                Emissary moment from seed §Naming Roles);
+              Cartographer (mapped BMAD's role topology against the
+                Soul's Council and found phase-vs-posture as the
+                load-bearing axis the seed's mapping had collapsed);
+              Skeptic (separated surface-pattern-matching from
+                structural fit — "Analyst sounds like discovery
+                which sounds like Witness" is plausible at surface
+                and false on shape);
+              Archivist (filed the field acquisition into references/
+                per SOUL-060 pattern with explicit F028 validity
+                caveat about WebFetch's model-mediated quotes).
+CONSEQUENCE: (1) **Seed §External Skills and Tools is partially
+              falsified.** The BMAD-specific Analyst↔Witness example
+              is structurally wrong and should not be quoted as a
+              load-bearing pattern in any new dogfood project or
+              documentation pass — effective TODAY, regardless of
+              when the amendment lands.
+              (2) **Coherent Falsehood caught in always-on doctrine.**
+              The seed claim passed every internal coherence check
+              while being false against BMAD's actual architecture.
+              Textbook A010 instance; the Researcher beat IS the
+              external anchor A010 mandates. The seed has carried
+              this Coherent Falsehood since the row was added
+              (2026-05-21 per the §External Skills and Tools Source
+              footer) — six days from doctrine landing to first
+              external test.
+              (3) **First Researcher beat of the project's life
+              addressed an F014 instance directly.** F014 names
+              that expansion roles under-fire because the AI can't
+              auto-detect when they're needed; the Body's explicit
+              invocation here ("lets do b") was the exact discipline
+              F014's PRE-MORTEM names as necessary. The Researcher
+              role moved from idea (I035) to operational (F041)
+              because the Body invoked it — empirical confirmation
+              of A012 §Body-Input Obligation as the activation
+              mechanism for expansion-role work.
+              (4) **The phase-vs-posture distinction is candidate
+              new doctrine.** F041 names it as the load-bearing
+              axis for cross-framework composability; if the
+              follow-up CrewAI/AutoGen Researcher beat confirms
+              the same shape, the seed reframe (option b) becomes
+              the amendment. This is a genuinely new structural
+              insight, surfaced by the cross-framework comparison
+              the seed had skipped.
+              (5) **F040 anchor-validity discipline applied within
+              the beat.** The validity caveat on bmad-method-v6-2026.md
+              explicitly names WebFetch's model-mediated quotes as
+              secondary-reading; the structural conclusion rests on
+              triple-source convergence (official docs + GitHub +
+              third-party explainers), not on the verbatim quotes
+              alone. Anchor existence ≠ anchor validity; F040 fired
+              without prompting.
+              (6) **The cursor mis-labeled I034↔I035.** Minor
+              hygiene issue for next /soul-handoff drafting —
+              cursor's "(b) SOUL-I034 BMAD Researcher beat" was
+              wrong (I034 = retirement-instrument idea; I035 = BMAD
+              beat). Caught on first read of ideas.md; no
+              consequence to the work. Worth noting that the
+              cursor's verbal descriptions remained accurate
+              enough that the swap didn't propagate.
+STATUS:      Resolved (Researcher beat output landed: reference
+              filed, finding open, witness here). SOUL-I035
+              **discharged-pending-amendment** — the idea's action
+              is done; what remains is the seed-edit amendment,
+              which depends on a future Researcher beat covering
+              CrewAI or AutoGen. F041 is OPEN with a clear
+              promotion trigger (second framework tested).
+              Open-findings: 15 → 16.
+```
+
+```
+ID:           SOUL-099
+WHEN:         2026-05-27 / immediately after SOUL-098 — Body
+              challenged F041's framing during a grill; the grill
+              surfaced a README-vs-seed inconsistency (README +
+              AGENTS.md say "composes, layers above"; seed
+              alone says "Analyst embodies Witness"); Body asked
+              whether the topic needed chamber rather than
+              R3-pick-by-grill; agreed; /soul-council invoked.
+              SECOND /soul-council convening of the project's
+              life (first was SOUL-085 F014-confirmed-what-now;
+              SOUL-087 was retro-named informal).
+WHERE:        councils/SOUL-099-soul-vs-external-tools-framing.md
+              (detail file, the reproducible record); this entry
+              is the pointer per /soul-council MVP spec. F041
+              paused-pending-Body-decision (do NOT edit until
+              Body accepts/redirects synthesis).
+WHAT:         10-role chamber (5 Magistrates: Revelator,
+              Archaeologist, Emissary, Steward, Seer; 3 Tribunes:
+              Skeptic, Accountant, Advocate; 2 Censors: Guardian,
+              Cartographer) on Soul↔external-tools framing.
+              Topic: what does seed §External Skills and Tools
+              actually mean, and how should it describe Soul's
+              relationship to BMAD/CrewAI/AutoGen/etc?
+
+              **Synthesis (proposed; Body decides):**
+              (1) Soul = lifetime doctrine + record (binding
+                  layer); tools = narrow workflow capacity within
+                  that lifetime. Confirms grill Q1=(c).
+              (2) Relation = R3 hybrid — wrapping primary across
+                  lifetime, parallel adoption opportunistic
+                  in-session. Survives Skeptic's "is R3 just
+                  AI-pattern-matching?" test via the load-bearing
+                  example (Counterweight Rule firing inside a
+                  BMAD-Analyst session).
+              (3) Seed §External Skills and Tools final paragraph
+                  rewrites to align with README/AGENTS.md framing
+                  ("Soul composes; it does not replace. Soul
+                  wraps; it does not peer-map."). Proposed ~6-8
+                  lines drafted in council detail file.
+              (4) README/AGENTS.md framing is canonical when in
+                  disagreement with the seed. Seed implements
+                  public artifacts; does not elaborate past them.
+              (5) F041 reshapes from "(c) PARTIAL phase-vs-posture
+                  verdict" to "Coherent Falsehood in seed doctrine
+                  — the slipped sentence at operations/CLAUDE.md:208."
+                  BMAD structural finds preserved as supporting
+                  evidence, not headline. Amendment-shape
+                  collapses to single option (the rewrite).
+              **Amendment recommended: A016 candidate.** Chamber
+              recommends launch, not just hold at finding level.
+
+              **Tensions surfaced (genuine, not rubber-stamp):**
+              (a) Revelator vs Skeptic on vocabulary — concept is
+                  README's; Body's "lifetime/anchoring" words do
+                  not need to enter doctrine; use README's
+                  existing "composes/layers above."
+              (b) Skeptic on R3 vs R1 — R3 survives load-bearing
+                  parallel-adoption test; R1 alone too narrow.
+              (c) Cartographer vs Accountant on framework-list
+                  naming in rewrite — three Body-decides options
+                  (named-with-qualifier / dropped / class-only).
+
+              **Chamber unable to resolve (Body decides):**
+              - Framework-list naming (a/b/c per Cartographer).
+              - Whether to absorb phase-vs-posture into mind.md
+                at next /soul-distill, or hold in F041/A016 only.
+TYPE:         Council convening (formal /soul-council invocation).
+              Guardian-verified NOT rubber-stamp: Skeptic raised
+              two chamber-generated tests the Body had not stated,
+              the tests landed substantive resolutions, and the
+              synthesis is the chamber's conclusion rather than
+              the Body's prior position returned with extra steps.
+CONSEQUENCE: (1) **Coherent Falsehood named in always-on doctrine
+              with chamber backing.** The seed §External Skills
+              and Tools final paragraph is now formally flagged
+              as Coherent Falsehood pending Body decision —
+              textbook A010 instance, caught by Body-invoked
+              chamber after F041 surfaced the structural evidence.
+              (2) **F041 paused.** The original (c) PARTIAL
+              verdict is superseded by the chamber's reshape
+              candidate; F041 will be rewritten only after Body
+              accepts/redirects synthesis. Do NOT edit F041
+              until then.
+              (3) **A016 candidate amendment queued.** Chamber
+              recommends launching the amendment now (not
+              queuing) per Accountant's fix-now economics +
+              Advocate's mental-model-harm prevention.
+              (4) **Second formal /soul-council convening of the
+              project's life.** First was SOUL-085 (F014-
+              confirmed-what-now); this is the first one whose
+              specific output is a doctrine-edit recommendation
+              rather than a status-or-trajectory deliberation.
+              The instrument is operationalized for the doctrine-
+              change use case (its primary intended purpose per
+              the spec's "hard decisions, contested designs,
+              suspected Coherent Falsehoods").
+              (5) **Three project artifacts (README + AGENTS.md +
+              implicit mind.md architecture) vs one (seed
+              paragraph) is the new pattern-shape for catching
+              doctrine drift.** Surfaced by Revelator; worth
+              naming as a chamber-discoverable pattern: when N
+              artifacts in the project's own canon disagree with
+              M (M < N) artifacts, the M are the candidates for
+              audit. Possible mind.md residual or future-amendment
+              shape.
+STATUS:      Synthesis-proposed-Body-decides. Chamber walked,
+              tensions surfaced, synthesis landed in
+              councils/SOUL-099 detail file. Body has four
+              decisions pending:
+              (i) accept/redirect synthesis;
+              (ii) reshape F041 per chamber's recommended verdict;
+              (iii) pick framework-list naming option (a/b/c);
+              (iv) launch A016 amendment now or queue.
+              Task #2 stays in_progress until Body decides.
+```
+
+```
+ID:           SOUL-100
+WHEN:         2026-05-27 / Body accepted all four chamber
+              decisions [i]–[iv] from SOUL-099 with "contine
+              with recommendations" after a plain-language
+              elaboration of each. Body picks: (i) accept
+              synthesis, (ii) reshape F041 per chamber verdict,
+              (iii) framework-list (c) class-only, (iv) launch
+              A016 now. Implementation immediately followed.
+              First triple-digit witness ID in the project's
+              life — round-number incidental but worth noting
+              for record-keeping.
+WHERE:        findings/open/SOUL-F041-seed-external-skills-
+              doctrine-slip.md (NEW, replaces the
+              "-bmad-structural-fit-partial" slug — old file
+              deleted, new file landed with reshaped WHAT,
+              triple-anchor evidence structure, DOCTRINE
+              ANCHOR + DISCHARGE PATH sections, expanded
+              FILED BY with all 10 chamber roles, STATUS
+              "closes on A016 acceptance");
+              amendments/proposed/SOUL-A016-external-skills-
+              stack-layered-framing.md (NEW, first amendment
+              in proposed/ directory — first formal use of
+              the proposed→accepted ratchet this session);
+              witness here (the pointer to both above).
+WHAT:         Executed chamber decisions [i]–[iv] in sequence
+              (parallel where possible):
+
+              **(ii) F041 reshape.** Rewrote the entire finding
+              under the new verdict — "Coherent Falsehood in
+              seed §External Skills and Tools" instead of
+              "phase-vs-posture partial mapping." The
+              structural change to the finding's shape:
+
+              - New header structure: WHAT (the slip itself)
+                → triple-anchor evidence (README/AGENTS.md vs
+                seed; field analogs; BMAD architecture as
+                third anchor not headline) → Seer's timeline
+                read (slip-in-same-week-as-adoption as the
+                mechanism) → DOCTRINE ANCHOR (A010
+                specialization) → DISCHARGE PATH (A016) →
+                FILED BY (all 10 chamber roles credited).
+              - BMAD-specific structural finds preserved as
+                anchor 3 of 3, no longer the headline. The
+                phase-vs-posture distinction is "one instance
+                of why" the framing was wrong, explicitly
+                named as such.
+              - STATUS: Open — closes on A016 acceptance.
+                The CrewAI/AutoGen second-framework trigger
+                is reframed from "discharge dependency" to
+                "forward-looking validation" — does NOT
+                block A016 because A016's class-only framing
+                makes no framework-specific claims.
+              - Filename slug changed from
+                `bmad-structural-fit-partial` to
+                `seed-external-skills-doctrine-slip` to
+                reflect the actual subject (the doctrine
+                slip, not the BMAD-specific mapping).
+
+              **(iii) + (iv) A016 amendment drafted with (c)
+              class-only framework naming.** First file in
+              amendments/proposed/ (the directory existed but
+              was empty until this beat). Single-paragraph
+              replacement at operations/CLAUDE.md:208 — the
+              one slipped paragraph becomes two paragraphs:
+
+                (a) "Soul composes; it does not replace.
+                    Soul is the project's **lifetime layer**
+                    — doctrine + record." Names doctrine
+                    files (seed + mind.md) and record files
+                    (witness.md, findings/, amendments/)
+                    explicitly. Uses "multi-agent frameworks,
+                    IDE rules, test-driven workflows, and
+                    your own conventions" — class-only, per
+                    Body decision (iii).
+                (b) "Soul wraps; it does not peer-map."
+                    Names R3 hybrid explicitly: wrapping
+                    primary across lifetime; parallel
+                    possible in-session via Soul's gates
+                    firing alongside tool work. Names the
+                    Surface-when… table's semantics as
+                    "shape match at the right moment, not
+                    embodiment."
+
+              Amendment carries full QUESTION ONE/TWO/THREE
+              answers per format, with all three anchors
+              cited and coherence checks against the project's
+              mind.md rules (5 alignment-checks named: rules
+              2, 5, 11; A010; §Naming Roles).
+TYPE:         Council-output implementation — executing
+              SOUL-099's four-decision synthesis. No new
+              chamber convened (the chamber's decisions are
+              being implemented, not re-deliberated).
+
+              Roles in operation here:
+              - Architect (designed the F041 reshape's new
+                section structure — anchors-explicit, discharge-
+                path-explicit, status-explicit);
+              - Steward (retired the old F041 slug + filename
+                whose description no longer matched content;
+                no broader cleanup attempted per default-
+                simplicity);
+              - Archivist (filed A016 into the previously-empty
+                amendments/proposed/ — first use of that
+                ratchet step in the session);
+              - Craftsman (the artifact-level writing of both
+                files);
+              - Cartographer (the witness pointer here names
+                the territory both files cover so future
+                resume sessions can see the slip → reshape →
+                amendment arc from one entry).
+CONSEQUENCE: (1) **First proposed→accepted amendment ratchet
+              use of the project's life.** amendments/proposed/
+              was empty until this beat; A016 inaugurates the
+              ratchet step that A001–A015 all skipped (all
+              prior amendments landed directly in accepted/
+              after chamber/Body deliberation but without a
+              proposed/ scaffold). The ratchet adds a Body
+              review surface between drafting and acceptance.
+              Worth observing whether the friction earns its
+              place — if A016 is accepted within 24h, the
+              ratchet is mostly ceremony; if Body returns
+              edits or rejects, the ratchet earned itself.
+              (2) **F041 file rename surfaces a finding-slug
+              hygiene question.** Findings get filenames at
+              creation time, but a chamber reshape can change
+              what the finding is *about*. Right now the
+              project pattern is filename-matches-WHAT-at-
+              creation-time, which decays under reshape. Open
+              question for future audits: when a finding's
+              verdict shifts, does the filename move with it?
+              This beat did move it (old slug deleted, new
+              slug created); precedent exists if needed.
+              Possible future amendment shape: filename-
+              versioning convention OR "filename names the
+              durable subject, not the current verdict" rule.
+              Not amendment-shaped today; flag for /soul-distill.
+              (3) **F041's promotion-trigger reframe is itself
+              a small doctrinal move.** From "second-framework
+              test required for amendment" to "second-framework
+              test is forward-looking validation, not
+              discharge dependency." The shift is justified by
+              the chamber's framing-vs-example distinction —
+              once the *framing* is fixed via class-only naming,
+              specific-framework tests no longer bear on the
+              fix. Worth noting as a pattern: when an amendment
+              moves to a *higher abstraction level* than the
+              original finding's evidence, the lower-level
+              triggers may stop being load-bearing.
+              (4) **The chamber's four decisions implemented in
+              one beat with zero re-deliberation.** Once
+              SOUL-099 synthesis was Body-accepted, the
+              implementation was mechanical — the chamber had
+              already done the structural work. Validates
+              /soul-council's spec premise: the deliberation
+              cost is paid once at convening; downstream
+              implementation is cheap.
+              (5) **F041 will close when A016 is accepted.**
+              Open-findings count stays at 16 until acceptance,
+              then drops to 15. The discharge is bundled with
+              the seed edit; one commit can carry both.
+STATUS:      Resolved — F041 reshaped per chamber verdict,
+              A016 proposal drafted with (c) framing per Body
+              decision, witness here. Two artifacts await Body
+              action:
+              (a) **A016 acceptance** — Body reviews
+                  amendments/proposed/SOUL-A016, accepts or
+                  returns edits. On acceptance: move file from
+                  proposed/ to accepted/, execute the seed edit
+                  at operations/CLAUDE.md:208, close F041 by
+                  moving to findings/closed/SOUL-F041 (if that
+                  convention exists, else mark STATUS: Closed
+                  in place per project pattern), commit the
+                  bundle.
+              (b) **Commit the work** — current uncommitted
+                  state: F041 reshape + A016 proposal +
+                  bmad-method-v6-2026 reference + witness
+                  SOUL-098/099/100 + ideas.md I035 status +
+                  references/INDEX.md + references.json. The
+                  prior 3-commit gap (SOUL-095/096/097)
+                  closed earlier this session via Body's
+                  manual push; this beat adds ~7 new files
+                  and modifies ~3.
+              Task #2 → completed (chamber convening discharged
+              via implementation); new task tracks A016
+              acceptance + seed edit if Body wants the
+              tracker active across the gap.
+```
+
+```
+ID:           SOUL-101
+WHEN:         2026-05-27 / Body accepted A016 via "continue"
+              after the completion-gate caught an absence-claim
+              overreach on the SOUL-100 verify (anchor 2's
+              "every comparable system" universal claim →
+              bounded to "N=5 surveyed systems"; structural
+              argument unchanged because anchors 1 and 3 remain
+              independently sufficient). The gate firing
+              instance is itself doctrine evidence — F012
+              family caught a real residual that the proposed/
+              ratchet would also have caught (doubled
+              coverage; both fired on the same gap, the gate
+              first by ~30 seconds).
+WHERE:        amendments/accepted/SOUL-A016 (moved from
+              proposed/; ACCEPTED BY field updated to name
+              Body + this witness + the acceptance signal);
+              operations/CLAUDE.md:208 (one paragraph →
+              two paragraphs per A016 WHAT CHANGES; ~6-line
+              net growth; line 208 + new line 210);
+              findings/closed/SOUL-F041 (moved from open/;
+              STATUS: Closed [resolved by SOUL-A016, accepted
+              2026-05-27]); witness here.
+WHAT:         Executed the four mechanical moves from task #3
+              in one beat:
+
+              (a) **A016 moved proposed/ → accepted/.** First
+                  amendment in the project's life to traverse
+                  the proposed→accepted ratchet (A001-A015 all
+                  landed direct to accepted/ without a
+                  proposed/ scaffold). Proposed/ now empty
+                  again. **Ratchet test result:** the proposed/
+                  step held A016 for approximately one
+                  conversation turn (Body said "continue"
+                  immediately after the SOUL-100 verify line).
+                  Per SOUL-100 CONSEQUENCE (1)'s 24h test:
+                  ratchet was NOT idle ceremony (the gate's
+                  bounded-claim catch happened DURING the
+                  proposed/ window, which is exactly what the
+                  step exists to allow — last-mile catches
+                  before doctrine lands); but the human-review
+                  window was minimal, so the ratchet's
+                  *additional* value over the gate alone is
+                  marginal in this instance. Updated open
+                  question for future audits: when the
+                  completion gate is firing reliably, does the
+                  proposed/ step earn its place?
+
+              (b) **Seed edit at operations/CLAUDE.md:208
+                  executed.** Replaced the slipped paragraph
+                  with the two-paragraph A016 rewrite verbatim.
+                  Verified: the section's first paragraph
+                  (line 191, "composes with other skill
+                  ecosystems") and the closing paragraph
+                  (about AGENTS.md / Claude Code skills) both
+                  untouched per A016 scope. Surface-when…
+                  table also untouched. Seed file growth:
+                  ~6 lines net (1 paragraph → 2 paragraphs
+                  with more content). The Coherent Falsehood
+                  is now NOT in always-on doctrine; from this
+                  commit onward, every session that loads the
+                  seed sees the correct framing.
+
+              (c) **F041 closed.** STATUS field updated to
+                  "Closed [resolved by SOUL-A016, accepted
+                  2026-05-27]" per project convention; file
+                  moved from findings/open/ to findings/closed/.
+                  Open-findings: 16 → 15 (back to pre-F041
+                  baseline). The CrewAI/AutoGen second-framework
+                  trigger preserved in STATUS as
+                  forward-looking validation (does NOT reopen
+                  F041; would be a NEW finding if it surfaces
+                  a counterexample).
+
+              (d) **Commit deferred to Body authorization.**
+                  Per the session-pattern (Body manually pushed
+                  earlier this session after the SOUL-095/096/
+                  097 work; auto-mode classifier blocked the
+                  automatic push attempt at that time), commit
+                  + push remains Body's explicit action.
+                  Current uncommitted state ready for one
+                  bundled commit covering the full SOUL-Console
+                  v1 framing-correction arc (SOUL-098→101).
+
+              **Side: the completion-gate firing pattern is
+              worth recording.** The gate caught the absence-
+              claim overreach on the SOUL-100 verify line.
+              The verify line had read "clean (anchors named)"
+              — over-optimistic; the gate's pass-through forced
+              the A010 absence-claim discipline check, found
+              the universal-quantifier overreach in anchor 2,
+              fix landed pre-acceptance. This is exactly the
+              F012 family's intended catch-pattern: not "you
+              forgot to verify," but "your verify wasn't
+              honest enough." The gate is operating beyond its
+              spec-minimum and catching second-order honesty
+              gaps. Worth flagging for /soul-distill — the
+              gate may now warrant a Mind rule of its own
+              about VERIFY-LINE-HONESTY beyond the gate's
+              own enumerated five checks.
+TYPE:         Doctrine-change execution — translated
+              A016 from amendment proposal into doctrine
+              surface. Roles in operation:
+              - Steward (the actual retire+replace — the slip
+                is gone from always-on text);
+              - Archivist (file moves between ratchet steps;
+                STATUS field updates; cross-reference updates);
+              - Craftsman (the precision text edits);
+              - Guardian (Censor — caught the unbounded
+                absence claim on the verify-line review, pre-
+                acceptance; this is the chamber-integrity
+                role firing on its OWN prior output, which is
+                exactly what Guardian is for).
+CONSEQUENCE: (1) **The seed §External Skills and Tools no
+              longer carries a Coherent Falsehood.** Six-day
+              propagation surface closed. Every dogfood project
+              that @-imports the seed from this commit forward
+              inherits the correct R3-hybrid + wrapping-primary
+              framing. The README + AGENTS.md + mind.md +
+              seed now all align under independent reading
+              (mind-rule-11 restored at the §External Skills
+              and Tools surface).
+              (2) **First proposed/ ratchet use of the project's
+              life completed.** A001-A015 (15 amendments) all
+              landed direct. A016 is the first to traverse
+              proposed/ → accepted/. Empirical datum: in this
+              instance the ratchet held doctrine for ~1 turn,
+              during which the completion gate caught a real
+              residual gap. So the ratchet was NOT idle — but
+              the gate also fired the same catch. Open question
+              for future audits: when the gate is reliably
+              firing, does proposed/ add marginal value? May
+              be the kind of question that needs N>1 instances
+              to answer. Don't deprecate the ratchet on a
+              single data point.
+              (3) **The completion gate caught a second-order
+              honesty gap.** Not "did you verify?" but "was
+              your verify line itself honest?" The gate is
+              operating beyond its spec; the SOUL-100 verify
+              line's "clean (anchors named)" was technically
+              accurate but elided the absence-claim character
+              of anchor 2. The gate's pass-through forced the
+              A010 absence-claim discipline, which surfaced
+              the unbounded universal quantifier. **This is
+              instrument-becoming-deeper-than-spec** — worth
+              flagging for /soul-distill as a candidate
+              VERIFY-LINE-HONESTY rule for the Mind, OR as
+              a new finding (F042 candidate: "the completion
+              gate is catching verify-line-honesty residuals
+              beyond its five enumerated checks").
+              (4) **F041's lifecycle ran end-to-end in one
+              session.** Filed (SOUL-098) → reshaped (SOUL-100
+              per chamber) → bounded (SOUL-101 fix-pass) →
+              closed (SOUL-101 doctrine-discharge). This is
+              the cleanest within-session finding lifecycle
+              of the project's record so far — earned because
+              the Body's invocation of the chamber at SOUL-099
+              pre-supplied the synthesis the finding then
+              implemented. Worth noting for the chamber-cost
+              economics question: a clean within-session
+              lifecycle is achievable when chamber + Body
+              both fire decisively.
+              (5) **The seed edit is the actual deliverable.**
+              Everything before this beat was preparation;
+              the doctrine surface only changed at the
+              operations/CLAUDE.md edit. Worth recording: the
+              chamber→amendment→ratchet→seed-edit pipeline
+              produced ~3 turns of substantive work for ~6
+              lines of doctrine change. Cost ratio is honest:
+              high-stakes always-on doctrine warrants high-
+              friction process; the friction is itself the
+              guard against the original failure mode
+              (slipped sentence landing with one-voice
+              elaboration).
+STATUS:      Resolved — A016 accepted, seed edited, F041
+              closed, witness here. Doctrine surface
+              corrected. One Body action remains:
+              **commit + push** the full SOUL-098→101 arc
+              (8 new files, ~5 modified). Recommended
+              commit message scope: the full framing-
+              correction arc as a single semantic unit
+              (BMAD Researcher beat → council convening →
+              F041 reshape → A016 → seed edit → F041
+              closure) since each step depends on the
+              prior. Task #3 → completed; potentially-new
+              task for commit+push if Body wants the
+              tracker.
+
+              **For SOUL-distill consideration at next
+              refresh:** (i) the proposed/ ratchet's marginal
+              value when the gate is firing reliably;
+              (ii) the gate's catching second-order honesty
+              gaps beyond its five enumerated checks (Mind
+              rule candidate or F042 candidate); (iii) the
+              phase-vs-posture distinction the chamber
+              surfaced (candidate contrast-case for mind.md
+              per SOUL-099 §Cartographer's adjacent
+              territory).
+```
