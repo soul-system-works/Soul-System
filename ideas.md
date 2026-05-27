@@ -1151,3 +1151,71 @@ NOTES:     Today's evidence + tradeoffs surfaced in the SOUL-101 closing
            constrains (b)); seed §"clone to a stable path" (the
            current acknowledged-tradeoff doctrine).
 ```
+
+```
+ID:        SOUL-I037
+WHEN:      2026-05-27
+IDEA:      The /soul-distill ↔ mind interaction is too abstract for the Body
+           to drive unaided — the soul-system itself should manage the refresh
+           cadence (or at least remind the Body when distill is owed) AND
+           offer a less-abstract review surface. Today's distill: agent drove
+           the survey, drafted, ran four shrinkage checks + six failure-mode
+           guards + three diagnostic self-tests, presented for accept. That's
+           a lot of scaffolding the Body had to read and weigh. The four-
+           buckets abstraction (rules / tensions / invariants / contrast /
+           residual) is also high — the Body cannot easily look at the draft
+           and judge whether Rule 12 IS load-bearing without re-deriving the
+           Distiller's argument. Needs (a) a Body-visible signal for when
+           distill is owed (entries since last distill? new findings since?
+           witness drift indicator?), AND (b) a review surface that surfaces
+           the LOAD-BEARING question per candidate rule rather than burying
+           it in self-test prose.
+STATUS:    Raw — captured at SOUL-103 distill closeout; Body observed the
+           abstraction cost during today's beat.
+```
+
+```
+ID:        SOUL-I038
+WHEN:      2026-05-27
+IDEA:      Audit doctrine surfaces for month-scale time references that don't
+           fit the AI-rapid-iteration cadence this project actually runs at.
+           Body observation: "many many times" agent/docs reference MONTHS of
+           elapsed time or "in X months do Y" — but the project is 8 days old
+           (SOUL-001 = 2026-05-19; SOUL-103 = 2026-05-27) with 103 witness
+           entries, multiple within-day doctrine-correction arcs, and full
+           finding lifecycles (F041) compressing into single sessions. Month-
+           scale assumptions are miscalibrated to the actual cadence.
+
+           Concrete instances (grep evidence, not speculative):
+           - commands/soul-distill.md:81 — "Last distilled stamp is >3 months"
+           - commands/soul-distill.md:126 — "every 3–6 months, and after
+             material project change"
+           - commands/soul-skill.md:90 — "every 3–6 months, and after a major
+             model" (this one borrows the Anthropic model cadence, which IS
+             month-scale — different beast, may not need recalibration)
+           - skills/README.md:22 — "six months with no contribution" retire
+             trigger (calendar trigger date: 2026-11-27)
+           - skills/README.md:25 — "six months is aspiration without evidence"
+
+           Possible recalibrations to consider (NOT decided):
+           (a) Event-anchored thresholds — e.g., "if no entries since last
+               distill" or "after N witness entries since last refresh"
+               instead of "3 months." Cadence-aware by construction.
+           (b) Days-since with calibration to the actual rhythm (this project
+               averages ~13 entries/day measured 2026-05-26 in soul-roles
+               spec; multi-week dormancy is months-of-equivalent activity).
+           (c) Keep months where the timeframe IS load-bearing to an external
+               cadence (Anthropic model releases) but drop it where the
+               project's own rhythm is the relevant clock.
+           (d) Two-clock model: external clock (real days, for things like
+               retirement calendars) vs project clock (witness-entry count,
+               for things like distill cadence).
+
+           Time as a unit is "sort of arbitrary" per the Body — i.e., the
+           project's relevant clock may not be the calendar at all but the
+           event count. This is a Mind-rule-shaped question if it ripens
+           (candidate rule: "Project-internal cadence is event-anchored, not
+           calendar-anchored").
+STATUS:    Raw — captured at SOUL-103 distill closeout; Body raised the
+           pattern observation explicitly. Five doctrine instances anchored.
+```
