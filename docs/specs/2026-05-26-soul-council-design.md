@@ -1,7 +1,7 @@
 # /soul-council — Design Spec
 
 **Date:** 2026-05-26
-**Status:** Draft — Body authorized the Cluster 1 design beat in this session, immediately after SOUL-077; spec content is draft pending Body review.
+**Status:** Built — adopted 2026-05-26 (this session); command at `commands/soul-council.md`; symlinked to `~/.claude/commands/soul-council.md`. Spec is the architecture record; the command file is the executable contract.
 **Topic:** A Body-invoked instrument to explicitly summon the Council chamber on a named topic.
 
 ## Problem (two levels)

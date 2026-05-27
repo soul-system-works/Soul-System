@@ -2581,3 +2581,51 @@ CONSEQUENCE: (1) F038 closes — second open finding closed in this
 STATUS:      Resolved — A013 in accepted/; F038 in closed/; seed +
               operations both updated.
 ```
+
+```
+ID:           SOUL-083
+WHEN:         2026-05-26 / /soul-council command built
+WHERE:        commands/soul-council.md (new — 156 lines); spec STATUS updated
+              at docs/specs/2026-05-26-soul-council-design.md (Draft → Built);
+              SOUL-I030 graduated (Raw → Graduated); symlink at
+              ~/.claude/commands/soul-council.md (skill discovery confirmed live).
+WHAT:         /soul-council command shipped from its design spec. Body picked
+              (c) from the post-handoff menu after F038/A013 closeout and
+              I027 revisit. The lead instrument of the Cluster 1 design beat
+              now has an executable contract. Three informal convenings in
+              the same session that designed this spec (SOUL-077, the
+              Cartographer cluster pass, SOUL-080) are the empirical pattern
+              the command formalises. Frontmatter description added so skill
+              discovery surfaces the full contract, not just the H1.
+TYPE:        Council Note — Artificer (command file build); Architect (matched
+              the spec's contract; preserved the pointer+detail output shape
+              and the failure-mode guards from the review-pass cleanup);
+              Steward (idea → graduated; spec → built; no orphans).
+CONSEQUENCE: (1) Cluster 1 is now half-built. /soul-council shipped; the
+              observability sibling /soul-roles and the knowledge-axis
+              sibling /soul-ask-body remain specced-not-built. The
+              activation doctrine (SOUL-A012) is already in the seed; the
+              instruments now have a lead reference.
+              (2) Skill discovery verified LIVE via system reminder (the
+              new soul-council line appeared in the available-skills list
+              with the frontmatter description). Symlink → claude
+              auto-discovery → live skill registration; the live-reference
+              distribution pattern (Mind rule 9) is working at the command
+              layer end-to-end.
+              (3) Tier 3 validation pending. The command's first non-trivial
+              Body-invoked use is its dogfood test. The three prior informal
+              convenings from this session are the precedent, not the test —
+              Tier 3 needs an explicit Body-invoked `/soul-council <topic>`.
+              (4) SOUL-I030's "open shape questions" all resolved in the
+              spec/build: (1) which roles → default 7-10 (2-5 Magistrates +
+              3 Tribunes + 2 Censors), full chamber via --full; (2)
+              structure → sequential walk + synthesis; (3) output →
+              witness pointer + councils/ detail (mandatory both, per the
+              D4 decision from SOUL-080's review pass); (4) duration →
+              bounded by default chamber size.
+              (5) Open residual: the /soul-help command (referenced in the
+              skill list) should auto-pick up /soul-council when invoked
+              — verifiable by Body running /soul-help.
+STATUS:      Resolved — /soul-council built and live; SOUL-I030 graduated;
+              spec STATUS reflects Built.
+```
