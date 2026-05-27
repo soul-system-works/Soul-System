@@ -2585,7 +2585,10 @@ STATUS:      Resolved — A013 in accepted/; F038 in closed/; seed +
 ```
 ID:           SOUL-083
 WHEN:         2026-05-26 / /soul-council command built
-WHERE:        commands/soul-council.md (new — 156 lines); spec STATUS updated
+WHERE:        commands/soul-council.md (new — 165 lines, anchored via `wc -l`
+              post-verify-gate; earlier draft of this entry said 156, commit
+              message 88fe020 says 157 — both unanchored magnitudes caught
+              at the verify gate, F039 instance); spec STATUS updated
               at docs/specs/2026-05-26-soul-council-design.md (Draft → Built);
               SOUL-I030 graduated (Raw → Graduated); symlink at
               ~/.claude/commands/soul-council.md (skill discovery confirmed live).
