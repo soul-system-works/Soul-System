@@ -925,3 +925,58 @@ NOTES:     Captured during F038 amendment shape exchange. /soul-explain's
            current contract is "describe, don't decide" — flags would extend
            that contract with HOW to describe, not WHAT.
 ```
+
+```
+ID:        SOUL-I033
+WHEN:      2026-05-26
+IDEA:      Session-start expansion-silence glance — possible /soul-handoff
+           extension. Surface "Silent roles past --silent-threshold: X, Y, Z"
+           as a one-line addition to the handoff cursor (or as a /soul-resume
+           opening observation). Gives the Body the /soul-roles picture
+           WITHOUT explicit invocation — addresses the "forward prompt" gap
+           Cartographer named at SOUL-085 council convening (the unmapped
+           territory between contraction-default and explicit /soul-council
+           invocation).
+STATUS:    Raw — captured from SOUL-085 synthesis thread (b); Body accepted
+           capture, declined immediate build (premature instantiation
+           concern). Awaiting ripening.
+WHY:       SOUL-F014's PRE-MORTEM established auto-detection of
+           expansion-need is intrinsically impossible. A012's Counterweight
+           Rule + Body-Input Obligation are doctrinal; /soul-council and
+           /soul-roles are instrumental — both rely on Body-INVOCATION at
+           a recognized decision moment. The gap: how does the Body
+           *notice* the moment in the first place? A session-start glance
+           naming silent expansion roles is the cheapest forward-prompt
+           candidate — reads existing data (.soul/role-queries.jsonl or
+           witness TYPE), surfaces the picture, lets the Body decide
+           whether the silence is fine or worth /soul-council on.
+PRIORITY:  medium — depends on whether the (a)/(c) re-measurements at
+           ~SOUL-150 and ~SOUL-200 show the F014 pattern persisting
+           despite instrument availability. If yes: forward-prompt is
+           the gap; build something like I033. If no: the instruments
+           alone were enough; I033 is redundant.
+DEVELOP:   Artificer (cursor extension shape — modify /soul-handoff or
+           /soul-resume command file); Advocate (Body felt-sense for
+           "is this glance useful or noise?"); Steward (retire if not
+           used after 2 sessions).
+NOTES:     Two paths if built:
+           (a) PROPER — extend commands/soul-handoff.md to compute the
+               glance during cursor write. Pure data-read; no I/O beyond
+               existing files. Auto-fires only when /soul-handoff fires
+               (still Body-invoked at the cursor level).
+           (b) CHEAP EXPERIMENT — manually include the glance line in
+               one /soul-handoff session, see if it helps. No instrument
+               change. Tests the IDEA before the BUILD. The Body
+               considered this at SOUL-085 (Option 3b) and chose capture-
+               and-ripen over experimental-build to avoid premature
+               instantiation. Path (b) is the next-step if Body wants
+               to test.
+           Adjacent: /soul-resume could also carry the glance (mirrors
+           /soul-handoff). Either side of the session boundary serves.
+           Related: [[SOUL-F014]] (the gap this addresses), [[SOUL-A012]]
+           (the doctrinal answer — Counterweight + Body-Input), [[SOUL-I031]]
+           (/soul-roles, the data source), [[SOUL-085]] (the convening that
+           surfaced this thread), [[SOUL-I010]] / [[SOUL-I013]] (proactive
+           next steps + /soul-tasks — the forward-momentum lineage I033
+           extends sideways onto role-firing).
+```
