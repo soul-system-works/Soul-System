@@ -23,7 +23,7 @@ what the project does next, it belongs here. Source citations are anchors.
 
 3. **Anchor every absolute claim with a valid external reference.** Name the
    anchor, name *why* it's trusted, and *how* it could be wrong. Internal
-   coherence is not truth (Coherent Falsehood). *Source:* A010, F015, F028.
+   coherence is not truth (Coherent Falsehood). *Source:* A010, F015, F028, F040.
 
 4. **Generation couples with retirement.** Every instrument that creates
    artifacts (skills, findings, ideas, amendments) ships with a retire handle.
@@ -51,7 +51,7 @@ what the project does next, it belongs here. Source citations are anchors.
 
 10. **Docs live near the code.** Structural markers, docstrings, names over
     operations files. Operations files must earn their keep. *Source:*
-    `feedback_docs_live_near_code`.
+    `feedback_docs_live_near_code`; A014 (sub-class footer).
 
 11. **Two parties reading the same record must arrive at the same meaning.**
     Coherence under independent reading is the durability test for any artifact.
@@ -117,10 +117,10 @@ are the seed examples for the project's own continued judgment.
   activation mechanism. Without a one-step capture method, visual obligation
   reverts to deferral. Doctrine without instrument is posture.
 
-- **F028 vs F015 — anchor existence vs validity.** F015 secured anchor
-  EXISTENCE (must name one). F028 secured anchor VALIDITY (the anchor itself
-  can be wrong). Two layers; both needed. Naming a mis-measured anchor is
-  Coherent Falsehood wearing the anchor's uniform.
+- **F015 → F028 → F040 — three layers of anchor discipline.** F015 secured
+  EXISTENCE (must name one); F028 secured VALIDITY (the anchor itself can be
+  wrong); F040 specializes both for RETIRE claims (grep with wrong scope is
+  an INVALID anchor). Each layer catches the prior's residual.
 
 - **A008 vs A009 — handoff topology.** A008 prescribed hermetic context for
   subagents (FANOUT). A009 refined: self-contained for *restart* correctness,
@@ -132,7 +132,7 @@ are the seed examples for the project's own continued judgment.
   Body's explicit graduation. The friction differential preserves what each
   artifact *means*.
 
-- **Seed (~220 lines, always-on) vs `philosophy/the-soul.md` (~675 lines,
+- **Seed (~260 lines, always-on) vs `philosophy/the-soul.md` (~710 lines,
   on-demand).** Same doctrine; different position in the description budget.
   SOUL-033 evidence: gates survive context reduction; expansion/breadth doesn't.
   So gates always-on, depth on-demand.
@@ -144,8 +144,8 @@ lose load-bearing information. Honesty about the residual is part of the Mind's
 discipline; force-fitting everything into rules is itself the failure mode.
 
 - **The specific dogfood histories.** REF-09, REF-04, REF-03,
-  REF-01, the blog. Each is a path-dependent evidence set. The Mind can
-  encode their *lessons* (rules above) but not their *particulars*. For
+  REF-01, blog, REF-02. Each is a path-dependent evidence set. The Mind
+  can encode their *lessons* (rules above) but not their *particulars*. For
   particulars, the witness log and findings remain the source of truth.
 
 - **The version trajectory.** 0.1.0 → 0.5.0 is a history, not a rule-set. The
@@ -155,10 +155,10 @@ discipline; force-fitting everything into rules is itself the failure mode.
   preferences — live in `/home/fig/.claude/.../memory/` and are valuable but
   not Soul-internal rules.
 
-- **Active uncertainty.** F014 activation, I011 token economics, the Mind's
-  own deployment-validation residual (I026 Tier 3) — open questions where no
-  rule has crystallized. Listing them as rules would be false certainty. They
-  live in `findings/open/` and `ideas.md` where their open-ness is honest.
+- **Active uncertainty.** F014 activation, I011 token economics — open
+  questions where no rule has crystallized. Listing them as rules would be
+  false certainty. They live in `findings/open/` and `ideas.md` where their
+  open-ness is honest.
 
 - **The Council role descriptions.** The roles ARE the rules' executors but
   their full character (Archaeologist vs Steward tension; Skeptic vs Craftsman)
@@ -166,4 +166,4 @@ discipline; force-fitting everything into rules is itself the failure mode.
   invocable. They stay in the seed and `the-soul.md`.
 
 ---
-**Last distilled:** 2026-05-26 (hand-pruned from `docs/experiments/2026-05-26-mind-tier1-candidate.md`; first `/soul-distill` Emissary test passed against this draft — all 4 shrinkage checks + 6 failure-mode guards + 3 diagnostic questions clean; witness SOUL-068).
+**Last distilled:** 2026-05-27 (refresh after the Soul-Console v1 audit arc; A014/A015/F040 absorbed; three-layer anchor pattern named; I026 residual pruned post-Mind-ship; witness SOUL-095).

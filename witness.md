@@ -3591,3 +3591,92 @@ STATUS:      Resolved — three doctrine-text moves landed as
               one coherent beat. Body's b→c→a authorization
               advances to (a) push when ready.
 ```
+
+```
+ID:           SOUL-095
+WHEN:         2026-05-27 / Body-invoked /soul-distill following the
+              audit-arc closeout (b→c→a complete; Body said "lets do
+              l and f" — this is (l)). Second formal Distiller firing
+              after SOUL-068 (the Emissary test that landed the Mind
+              MVP). First refresh against material new doctrine.
+WHERE:        mind.md (169 → 169 lines; six surgical edits, net zero
+              growth). No new sections; no new rules. All changes
+              absorb A014/A015/F040 into existing structure or prune
+              obsolete residual.
+WHAT:         /soul-distill draft presented to Body with full shrinkage
+              checks (4/4 pass), failure-mode guards (6/6 pass), and
+              diagnostic self-test (3/3 clean). Body accepted as-is.
+              Edits applied:
+              (1) Rule 3 citation extended to include F040 (anchor
+                  obligation now anchored at A010 + F015 + F028 + F040).
+              (2) Rule 10 citation extended to include A014 (sub-class
+                  footer IS docs-near-the-code at footer granularity).
+              (3) Contrast case reshaped from F028-vs-F015 (two-layer)
+                  to F015→F028→F040 (three-layer anchor discipline).
+              (4) Seed/philosophy line counts updated (220→260; 675→
+                  710) to current reality.
+              (5) Residual "Active uncertainty" pruned to drop
+                  I026 reference (Mind shipped at SOUL-068).
+              (6) Residual "dogfood histories" added REF-02 per
+                  audit §1.10 inventory.
+              Explicit non-changes for the Distiller's record:
+              A014 NOT promoted to standalone rule (lives in seed;
+              cited in rule 10); A015 NOT in Mind (taxonomy-shaped,
+              not generator-shaped; per doctrine-obligation boundary).
+              F040 folded into existing contrast case rather than
+              new rule (specialization of A010, not new doctrine).
+TYPE:         Council Note — Distiller (the role this command
+              instruments; compress accumulating record toward its
+              generative grammar); Architect (the doctrine-vs-
+              obligation boundary applied per candidate entry);
+              Steward (the I026 prune — Mind shipped, the residual
+              was load-bearing only while shipping was the open
+              question); Skeptic (the explicit non-changes list —
+              what didn't earn its way in is as important as what
+              did); Cartographer (the three-layer-anchor pattern
+              names a structural fact: each layer catches the prior's
+              residual, which is the audit-process pattern in
+              miniature).
+CONSEQUENCE: (1) **Second Distiller firing of the project's life.**
+              First was SOUL-068 (initial Mind deployment). This is
+              the first true REFRESH — distill against material new
+              doctrine (A014/A015/F040) rather than initial extraction
+              from an empty Mind. Pattern: refresh cadence anchored
+              to "material doctrine landed," not calendar time. One
+              day since last distill is fine because the doctrine
+              earned the cycle, not the clock.
+              (2) **Net-zero growth held under real refresh.** The
+              shrinkage-invariant discipline (Mind must shrink or
+              stay same) held with no force-fitting — the prune of
+              I026 paid for the F040 contrast-case reshape one-for-
+              one. Default-deny growth proved enforceable in practice,
+              not just doctrine.
+              (3) **Three-layer anchor pattern is the arc's
+              compression gift to the Mind.** F015→F028→F040 names
+              what each anchor finding actually accomplished (one
+              dimension each). The seed has the abstract obligation;
+              the Mind now has the three-layer instance pattern.
+              Future anchor-related findings can extend the chain
+              if they earn it; the structure is legible.
+              (4) **A014 and A015's Mind-treatment is itself
+              evidence for the Distiller's discipline.** Each
+              amendment was evaluated against the doctrine-vs-
+              obligation boundary and the rule-generator test.
+              A014 became a citation extension (the rule already
+              lives in seed); A015 stayed out entirely (taxonomy,
+              not generator). Refusing to promote everything is
+              what makes the Mind not-a-seed-rename.
+              (5) **F036 still open (subagent gap).** The Mind's
+              "always-on for everything" claim still holds only for
+              parent sessions; subagents don't inherit @mind.md.
+              Not addressed by this refresh; still in residual via
+              the F036 reference in active findings/open/. Reminds
+              that some residual is structural, not just temporal.
+              (6) **F039 discipline: anchored 169 (line count
+              verification post-hoc), 6 (edit count), 4/4 + 6/6 +
+              3/3 (check results).** Tenth same-drafter instance
+              overall this session; still no different-drafter.
+STATUS:      Resolved — refresh landed; Mind.md committed by Body
+              authorization ("accept"). Next: (f) registry backfill
+              per the Body's "l and f" sequence.
+```
