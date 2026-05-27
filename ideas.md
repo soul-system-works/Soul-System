@@ -678,13 +678,33 @@ STATUS:    Partially delivered [2026-05-26, via SOUL-067 → 0.4.6]. Option (4) 
            write, re-scan the directory/file, confirm the assigned ID is still
            free, increment + retry if collided, stop and tell the Body if three
            re-scans keep colliding. Single-filesystem only. /soul-skill needed no
-           change (skill names are user-chosen, not auto-numbered). Witness.md
-           still writes without a command — when /soul-witness eventually ships
-           (deferred from SOUL-I024), it must adopt the same protocol. STILL OPEN:
+           change (skill names are user-chosen, not auto-numbered). /soul-witness
+           shipped (I029 graduated, commit 0755047) and adopted the same
+           re-read-verify protocol from day one. STILL OPEN:
            (a) cross-machine concurrency — needs option (2), git-as-arbiter —
-           deferred; (b) Body-driven witness writes are still unprotected; (c) no
-           backstop if the Body or a subagent edits a record file directly
-           bypassing the commands.
+           deferred; (b) Body-driven witness writes (manual file edits, not via
+           /soul-witness) are still unprotected; (c) no backstop if the Body or
+           a subagent edits a record file directly bypassing the commands.
+
+           REVISIT [2026-05-26, after 9 consecutive clean instances]: the
+           "sixth-instance" trigger from the prior handoff cursor was met and
+           the revisit was performed. Evidence: 9 clean writes — SOUL-064, 072,
+           075, 077, 079 (prior arc) + SOUL-080, F039, 081, 082 (this session) —
+           across two sessions with parallel-write events; no collisions
+           detected. DECISION: do NOT upgrade to option (2) git-arbiter or
+           option (3) advisory file-lock. Reasons: (1) no observed collision
+           evidence justifies the complexity (default-simplicity / Mind rule
+           2); (2) neither deferred option addresses the real residual (Body
+           manual edits bypass any protocol — structural gap, not solvable by
+           the listed options); (3) options 2 and 3 solve cross-machine and
+           same-filesystem concurrency respectively, but the project's current
+           concurrency level is mostly single-session with occasional subagent
+           parallelism the detect-only protocol handles cleanly. NEW TRIGGER:
+           revisit again IF (a) a real collision is observed, OR (b)
+           cross-machine concurrency need emerges (e.g., two-laptop dev
+           pattern), OR (c) a subagent pattern produces frequent write-races
+           at a rate the detect-and-retry loop cannot absorb. Cheap protocol
+           stays the default until evidence changes.
 WHY:       Surfaced live in SOUL-064: a parallel session claimed SOUL-063 +
            SOUL-F030 mid-work, uncommitted on top of my committed dcdacf2 —
            caught by the Guardian noticing the ID mismatch, NOT by tooling.
