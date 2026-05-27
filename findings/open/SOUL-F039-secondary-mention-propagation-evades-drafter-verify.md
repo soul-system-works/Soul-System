@@ -1,7 +1,7 @@
 ```
 FINDING ID:      SOUL-F039
 DATE:            2026-05-26
-WITNESS IDS:     SOUL-079, SOUL-080
+WITNESS IDS:     SOUL-079, SOUL-080, SOUL-083
 WHAT:            Verify gates fire at completion-time on the drafter's own
                  work, catching headline-level magnitude claims (F028
                  axis-3) but missing secondary mentions in justification
@@ -15,7 +15,13 @@ WHAT:            Verify gates fire at completion-time on the drafter's own
                  the drafter's. Pattern: drafter's verify-gate is necessary
                  but not sufficient for full F028-axis-3 coverage;
                  independent pre-ratification re-read is the second leg of
-                 the discipline.
+                 the discipline. Same-drafter recurrence at SOUL-083: an
+                 unanchored line-count (156, then 157 in commit 88fe020) for
+                 commands/soul-council.md was corrected to 165 via `wc -l`
+                 only after the commit — caught by the post-commit verify
+                 gate fire, not the pre-commit one. Confirms the pattern
+                 within the same drafter; the (b) graduation criterion
+                 (different-drafter instance) remains unmet.
 WHY NOT YET AMENDMENT:  Single project, one confirmed instance. The F035
                  heuristic ("3 instances ⇒ amendment-ready") is not met.
                  The instrument-level question is also unresolved: where
