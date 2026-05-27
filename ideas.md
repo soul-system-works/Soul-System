@@ -913,7 +913,11 @@ IDEA:      /soul-explain could accept depth/style flags (e.g. --plain, --eli5,
            --depth=low/med/high, --no-jargon) so the Body can specify the kind
            of explanation wanted, instead of getting the default which often
            defaults to lingo-heavy.
-STATUS:    Raw
+STATUS:    Graduated 2026-05-27 — flags added to commands/soul-explain.md.
+           Minimal coherent set shipped: --depth=low|medium|high, --no-jargon,
+           --eli5 (preset: --depth=low + --no-jargon + analogies). Skipped
+           --audience and --scope per default-simplicity; add later if pulled
+           by use.
 WHY:       Pairs with SOUL-081 — lingo-default failure mode in detailed
            explanations. A flag-based interface lets the Body pull a specific
            shape of explanation on demand, rather than the Body re-asking for
