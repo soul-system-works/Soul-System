@@ -3991,6 +3991,16 @@ WHEN:         2026-05-27 / immediately after SOUL-098 — Body
               SECOND /soul-council convening of the project's
               life (first was SOUL-085 F014-confirmed-what-now;
               SOUL-087 was retro-named informal).
+              [CORRECTED → SOUL-103: actually FOURTH overall
+              (SOUL-080, SOUL-085, SOUL-087, SOUL-099) and
+              THIRD post-/soul-council-spec-adoption (the spec
+              was adopted 2026-05-26 per docs/specs/2026-05-26-
+              soul-council-design.md + commands/soul-council.md;
+              SOUL-080 predates it). The "SOUL-087 was retro-
+              named informal" characterization was the load-
+              bearing slip — SOUL-087 carries a /soul-council
+              invocation marker just like SOUL-085 and SOUL-099
+              do.]
 WHERE:        councils/SOUL-099-soul-vs-external-tools-framing.md
               (detail file, the reproducible record); this entry
               is the pointer per /soul-council MVP spec. F041
@@ -4072,6 +4082,11 @@ CONSEQUENCE: (1) **Coherent Falsehood named in always-on doctrine
               confirmed-what-now); this is the first one whose
               specific output is a doctrine-edit recommendation
               rather than a status-or-trajectory deliberation.
+              [CORRECTED → SOUL-103: actually THIRD post-spec-
+              adoption (SOUL-085, SOUL-087, SOUL-099) / fourth
+              overall counting pre-spec SOUL-080. The "first
+              one whose output is a doctrine-edit recommendation"
+              sub-claim stands — that ordinal is correct.]
               The instrument is operationalized for the doctrine-
               change use case (its primary intended purpose per
               the spec's "hard decisions, contested designs,
@@ -4568,4 +4583,172 @@ STATUS:      Pending — experiment-prep complete; experiment proper
               (ideas.md, deployment-strategy deferral appended post-
               dae2934) and the .soul/role-queries.jsonl append. Single
               commit; clean working tree before any further work.
+```
+
+```
+ID:           SOUL-103
+WHEN:         2026-05-27 / Body-instructed record-correction beat
+              after /soul-resume surfaced the cursor's flagged
+              count/historical-fact slip in SOUL-099. "Do the
+              record correction." Same-day session continuation;
+              second beat after SOUL-102 (path-3b prep).
+WHERE:        witness.md SOUL-099 entry — two in-place `[CORRECTED
+              → SOUL-103: …]` markers added, one at the WHEN block
+              and one at CONSEQUENCE (4). Original text preserved
+              VERBATIM at both sites; the markers ANNOUNCE the
+              correction rather than overwriting it. No edit to
+              councils/SOUL-099-soul-vs-external-tools-framing.md
+              (see CONSEQUENCE (2) below).
+WHAT:         The original SOUL-099 entry (committed at dae2934)
+              made two related claims that anchor-checking
+              falsifies:
+
+              **Claim A** (WHEN block): "SECOND /soul-council
+              convening of the project's life (first was SOUL-085
+              F014-confirmed-what-now; SOUL-087 was retro-named
+              informal)."
+
+              **Claim B** (CONSEQUENCE (4)): "Second formal
+              /soul-council convening of the project's life.
+              First was SOUL-085."
+
+              **What is actually true (file-anchored):**
+              `councils/` carries **four files** all bearing
+              `/soul-council` invocation markers — SOUL-080,
+              SOUL-085, SOUL-087, SOUL-099. The /soul-council
+              spec was adopted 2026-05-26 per
+              `docs/specs/2026-05-26-soul-council-design.md` and
+              `commands/soul-council.md:162`. SOUL-080's own
+              header reads `**Type:** Informal /soul-council
+              dogfood (third in the project, per /soul-council
+              spec §Dogfood)`. SOUL-085's reads "**Invocation:**
+              /soul-council" + "first non-routine Body-invoked".
+              SOUL-087's reads "**Invocation:** /soul-council
+              (Body-invoked, post-Cluster-1 closure)." SOUL-099's
+              reads "**Invocation:** /soul-council (Body-invoked,
+              mid-session...)."
+
+              So SOUL-099 is the **fourth /soul-council convening
+              by council-file count** (SOUL-080 + SOUL-085 +
+              SOUL-087 + SOUL-099) and the **third post-spec-
+              adoption convening** (SOUL-085 + SOUL-087 + SOUL-
+              099; SOUL-080 was an informal pre-spec dogfood).
+              Neither "SECOND" nor "second formal" holds.
+
+              **The load-bearing slip inside Claim A** was
+              "SOUL-087 was retro-named informal" — SOUL-087's
+              file shows a formal /soul-council invocation marker
+              and is structurally indistinguishable from SOUL-085
+              and SOUL-099. The mis-classification erased SOUL-087
+              from the post-spec count, dropping it from three
+              to two.
+
+              **Nuance worth naming, not over-counting on:**
+              SOUL-080's own self-description ("third in the
+              project, per /soul-council spec §Dogfood") implies
+              at least TWO prior informal /soul-council dogfoods
+              that did NOT produce council files. The all-time
+              convening count is therefore ≥6, but the file-
+              anchored count is 4. This correction commits to
+              the file-anchored count as the durable record —
+              what isn't in `councils/` isn't anchored.
+TYPE:         Witness (the record act); Steward (record-keeping
+              integrity — the historiographical accuracy of the
+              record IS what the Steward protects across time);
+              Guardian (Council integrity — the count of
+              /soul-council convenings is metadata about the
+              Council's own activity, and the Guardian watches
+              for skipped obligations like "did you anchor this
+              count?"); Cartographer (the map of /soul-council
+              convenings IS the Cartographer's territory);
+              Skeptic (challenged the cursor's "both records"
+              attribution before propagating it — confirmed only
+              the witness entry carried the false claim, council
+              file did not).
+CONSEQUENCE: (1) **The historiographical record at SOUL-099 is
+              now correct** under independent reading. A future
+              reader at witness.md will see both the original
+              "SECOND" claim AND the inline `[CORRECTED → SOUL-
+              103]` marker; following the pointer to this entry
+              gives the full anchored count. Mind rule 11
+              (independent-reading coherence) is satisfied
+              because both old and corrected text are visible
+              at every site — no silent rewrite.
+
+              (2) **The cursor's "both records" attribution was
+              itself slightly over-extended.** The handoff
+              cursor wrote "the SOUL-099 detail file
+              (councils/SOUL-099-…) + witness SOUL-099 entry
+              both claimed 'SECOND /soul-council convening…'"
+              Verified just now via `grep -i "second\|SECOND\|
+              first formal\|fourth" councils/SOUL-099-*.md`:
+              only the witness entry carries the count claim;
+              the council file's tone is content-focused (what
+              the chamber decided), not historiographical. So
+              only the witness entry needed in-place markers.
+              This is a tiny meta-slip — the gate's post-handoff
+              verify caught the count error correctly but
+              slightly over-attributed where it landed. **Third
+              count/historical-fact catch THIS session:**
+              SOUL-100 anchor 2 (unbounded universal quantifier),
+              SOUL-101 record-of-counts gate-catch, and this
+              cursor over-attribution. The pattern is now
+              durable: count/historical claims keep slipping
+              even inside correction work — they need anchor
+              checks at the point of writing, not just at
+              completion review.
+
+              (3) **A convention is established for record-
+              correction beats: in-place `[CORRECTED → SOUL-N]`
+              marker + new entry, no silent rewrite.** This is
+              the first instance of the pattern in the project's
+              life. The marker preserves the original claim
+              verbatim AND surfaces the correction at the
+              reading site; the new entry carries the narrative
+              of why, how, and what's actually true. Second
+              instance is required before generalizing — do
+              NOT promote this to doctrine on N=1.
+
+              (4) **The completion gate's second-order honesty
+              behavior is now reinforced as a recurring catch,
+              not a one-off.** Three catches this session
+              (SOUL-100 anchor 2, SOUL-101 historiography,
+              SOUL-103 cursor over-attribution) all surfaced
+              count/historical-fact slips that the gate's five
+              enumerated checks don't explicitly name. **Fourth
+              datum, same beat:** the first draft of this entry's
+              own in-place marker at SOUL-099 cited "per councils/
+              README" as anchor for the 2026-05-26 spec date —
+              `ls councils/README` failed, no such file. Self-
+              caught at diff review and re-anchored to docs/
+              specs/2026-05-26-soul-council-design.md +
+              commands/soul-council.md before commit. The slip-
+              pattern survives even INTO the correction work.
+              The SOUL-101 cursor flagged this for /soul-distill
+              consideration; SOUL-103 adds a third data point.
+              Candidate Mind rule wording (NOT proposed yet,
+              just flagged): *"Count and historical-fact
+              claims need anchor checks at writing time, not
+              just at completion review — they slip past
+              prose-level coherence, and the slip-pattern
+              survives even into correction beats."* The
+              Distiller decides at next /soul-distill.
+
+              (5) **The "informal dogfood vs formal convening"
+              distinction from /soul-council's own spec is
+              load-bearing context.** SOUL-099's original claim
+              erased SOUL-087's formal status; future histories
+              of /soul-council adoption could be misled by the
+              uncorrected entry. The in-place marker preserves
+              the slip AND the correction, so the historical
+              read remains honest.
+STATUS:      Resolved — markers placed at both SOUL-099 false-
+              claim sites, anchors named (council files +
+              spec adoption date), nuance acknowledged (file-
+              anchored count ≠ all-time convening count due
+              to pre-spec informal dogfoods without files).
+              Next: commit witness.md (SOUL-099 marker
+              additions + SOUL-103); single commit; LICENSE
+              stays Body's. No push without Body's explicit
+              ask.
 ```
