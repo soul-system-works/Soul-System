@@ -805,7 +805,13 @@ IDEA:      A /soul-council slash command — force a Council convening on
            demand. The Body invokes when they want the system to deliberate,
            investigate, weigh a decision across roles, rather than the
            default lighter-weight reasoning. "Convene the council on X."
-STATUS:    Raw
+STATUS:    Graduated [2026-05-26 — specced at docs/specs/2026-05-26-soul-council-design.md;
+           built at commands/soul-council.md (symlinked to ~/.claude/commands/soul-council.md);
+           dogfooded three times informally in the same session before formal
+           build (SOUL-077 semi-autonomous question convening, Cartographer
+           cluster pass, SOUL-080 Cluster 1 review-arc convening — last one
+           was the inaugural use of the pointer+detail shape this command codifies).
+           Tier 3 validation runs from first non-trivial Body-invoked use.]
 WHY:       Today the Council fires implicitly — roles are invoked silently
            ("Skeptic check", "Steward retire-check") without a formal
            convening. For routine work that is fine (the per-decision role-
