@@ -857,7 +857,16 @@ IDEA:      Council role observability — over the course of a project the Body
            we go, or silent for weeks?). Possibly tied to an opt-in metric
            system that tracks role invocations and pairs with the visual /
            GUI direction.
-STATUS:    Raw
+STATUS:    Graduated 2026-05-26 — shipped as /soul-roles
+           (commands/soul-roles.md, 177 lines; symlinked at
+           ~/.claude/commands/soul-roles.md). Spec at
+           docs/specs/2026-05-26-soul-roles-design.md (Built). Witness
+           pointer SOUL-084. The opt-in metric thread resolved as
+           .soul/role-queries.jsonl (cheap, append-only, queries-only;
+           witness reserved for acted-upon insights per spec D4).
+           Self-report inflation guard added per F028 anchor-validity —
+           TYPE / FILED BY / events are the anchors; prose role-naming
+           does not count.
 WHY:       The Council exists as doctrine but its activation is implicit and
            invisible. The Body cannot tell whether a role is doing its job or
            has gone silent. The Soul System's own answer to "is the doctrine
