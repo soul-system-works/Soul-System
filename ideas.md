@@ -1323,12 +1323,19 @@ STATUS:    In progress — TWO probes done (2026-05-28). (1) Weaker-model arm
            REPLICATES — whole 3/3 vs filler 0/3; C1 filler stays 0/3 on BOTH anchor
            tasks but 2/3 on trajectory → content-dependent vs disposition-elicitable
            confirmed. (G3 medical first attempt C2-rejected: safety-salience reflex.)
-           A017 anchoring claim now firm at n=2. REMAINING (more weight, not
-           direction): higher n (orderings noisy at 3) + a 2nd MODEL (Sonnet 4.6
-           gradient — does the effect shrink as the baseline strengthens toward
-           Opus's 3/3 ceiling?) + optionally a 3rd content-dependent discipline
-           (Steward-retire? a genuine evidence/verification trap). Method rule
-           banked: run C1 on EVERY apparent win; C2-validate domain salience.
+           A017 anchoring claim now firm at n=2. (4) CAPABILITY GRADIENT
+           ([[SOUL-113]], Sonnet 4.6 n=5): substance is task-structure-dependent —
+           HR2 (judgment task) self-caught by Sonnet bare (ceiling, gap gone); G3b
+           (compliance/"just-draft-it" task) STILL shows whole 3/5 vs filler 0/5.
+           ⇒ doctrine substance is concentrated where the baseline won't self-catch
+           = weak baselines AND compliance-inviting tasks even at higher capability;
+           durable edge = resisting the compliance pull on flawed premises. A017
+           gradient section landed. REMAINING (firm the curve, not direction): a
+           3rd capability point + MORE COMPLIANCE-tasks (the load-bearing G3b gap
+           is n=5/one model) + optionally publication (the regime×task-structure
+           map under equal-compute is the novel, defensible contribution — parking
+           lot in the (b) spec). Method rules banked: run C1 on EVERY apparent win;
+           C2-validate domain salience; test BOTH judgment & compliance task shapes.
 WHY:       (b)/Run 2 (HR1–HR3) found the hard regime ALSO form-not-substance,
            BUT could not MANUFACTURE a baseline-breaking regime for Opus 4.8 —
            the baseline barely cracked, so the reliability axis was never truly
