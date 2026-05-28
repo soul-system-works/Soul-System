@@ -4938,3 +4938,45 @@ STATUS:      Resolved — both I032 and I038 graduated;
               wants the SOUL-I033 path-3b experiment to fire,
               now or next session would be the moment.
 ```
+
+```
+ID:           SOUL-105
+WHEN:         2026-05-28 / /soul-resume — path-3b verdict + parser reconciliation
+WHERE:        Conversation — resume from the 2026-05-27 handoff cursor
+WHAT:         Three cursor threads (c/e/f) discharged. (c) SOUL-I033 path-(b)
+              cheap experiment: the "silent roles" glance line planted in the
+              cursor was surfaced at /soul-resume; Body verdict — it did NOT
+              change perceived value of the cursor. (f) Parser-discrepancy
+              investigation: the official /soul-roles parse (commands/
+              soul-roles.md steps 2+4) counts per-entry TYPE-field roles PLUS
+              findings FILED BY. Re-computed Archivist = 32 witness-TYPE + 31
+              findings = 63. The cursor's OWN diagnosis was the slip: it
+              declared "SOUL-102's 60 was wrong" by comparing a witness-only
+              grep (43) against a number (60) that ≈ the FULL parse (63 at
+              104 entries; ~60 at 101). SOUL-102's 60 was essentially RIGHT;
+              the cursor's 32 was the partial (witness-only, dropped findings).
+              (e) Stale-STATUS: I033 → the verdict above; I035 →
+              "Discharged-pending-amendment" corrected to Discharged (its
+              pending seed-edit landed as A016, accepted SOUL-101, which
+              closed F041).
+TYPE:         Witness (the record act); Emissary (path-3b tested against Body
+              reality); Skeptic (caught the cursor's scope-slip inside its own
+              slip-diagnosis); Archivist (stale-STATUS reconciliation);
+              Steward (I033 trends retire-ward).
+CONSEQUENCE:  (1) SOUL-I033 trends redundant — a forward-prompt glance did not
+              beat on-demand /soul-roles for this Body. Not dropped (N=1).
+              (2) Another scope-slip in the SOUL-103/104 family — and the
+              sharpest: the slip occurred INSIDE a beat diagnosing a slip.
+              Deliberately NOT assigned an ordinal here (cross-session count
+              claims are themselves the slip — see SOUL-099 contrast case).
+              Strengthens the SOUL-104 candidate to extend Rule 3 from "count/
+              historical" to "SCOPE" claims (which parse? which sites?). Flag
+              for next /soul-distill. (3) /soul-roles parse re-confirmed
+              correct as written — no command change. F014 substance holds
+              under the honest parse: expansion roles (Seer 3, Prophet 5,
+              Revelator 6, Researcher 8) sit at the bottom; none silent past
+              threshold 70.
+STATUS:       Resolved — push confirmed (origin/main = a2c10ed); c/e/f
+              discharged; SOUL-105 anchored. The count method (not the
+              ephemeral /tmp script) is the durable output, recorded above.
+```
