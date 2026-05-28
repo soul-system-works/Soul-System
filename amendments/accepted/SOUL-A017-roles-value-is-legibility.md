@@ -118,11 +118,33 @@ vs the (b) Opus baseline), same tasks HR1–HR3, C1 compute-controlled. Detail:
   26 KB filler left HR2 at 0/3 (= bare). The whole-layer gain is attributable to
   the Soul's anchoring discipline, not to added tokens/thinking.
 
-**Net effect on A017:** the core (single roles/gates = form, not behaviour-lifting)
-is *reinforced* and now extends into the broken-baseline regime. The bound is
-*kept and sharpened*: substance is real but **discipline-matched + integration-
-dependent + partial**, surfacing only when a weak baseline needs the very
-discipline the integrated layer carries. NOT a general "roles add substance when
-the baseline breaks." Generalisation still owed (n=3/arm, one weak model, one
-anchor-axis task): a 2nd anchor task + a 2nd discipline (e.g. a Prophet-trajectory
-trap) + other models — carried in SOUL-I041. No further doctrine change until then.
+### Generalisation attempt (G2, Prophet/trajectory) — FAILS the compute control
+
+The "discipline-matched substance" reading above was tested on a SECOND
+discipline: a Prophet/trajectory trap (a SaaS cost-cut whose buried second-order
+harm is severing the conversion funnel — the arm must *read the trajectory*). On
+the weak baseline: bare 1/3 caught → whole-layer 3/3. That looks like clean
+generalisation — **until C1.** A length-matched NEUTRAL filler (26 KB of
+warehouse-logistics nonsense) lifted the same baseline to **2/3** (catches
+verified genuine). So most of the trajectory "gain" is a **generic long-context /
+be-more-thorough effect, not the doctrine** — the doctrine's margin over filler
+(2/3 → 3/3) is within n=3 noise. This is the OPPOSITE of HR2 (anchoring), where
+filler stayed at 0/3 and the gain was doctrine-attributable.
+
+**Why the two axes differ (the sharpened insight):** challenging a false premise
+(anchoring) is **content-dependent** — it needs the specific "internal coherence
+is not truth / do not assert the unverifiable" content; generic thoroughness can't
+fake it. Flagging downstream consequences (trajectory) is **disposition-
+elicitable** — any serious, long system prompt nudges the model into it. C1
+separates the two.
+
+**Net effect on A017 (tightened):** the core (single roles/gates = form, not
+behaviour-lifting) is *reinforced* — now across two disciplines and into the
+broken-baseline regime. The integrated layer's C1-SURVIVING substance is, so far,
+**robust only for ANCHORING** — plausibly the single most-repeated discipline in
+the seed+Mind, and content-dependent rather than disposition-elicitable. The
+broader "discipline-matched substance" hope did NOT generalise to Prophet once
+compute was controlled. Method rule this establishes: **run C1 on EVERY apparent
+win** — the trajectory result was a false positive without it. Still owed for any
+firmer claim (n=3/arm, one weak model): a 2nd ANCHOR task + higher n + other
+models — carried in SOUL-I041. No further doctrine change until then.
