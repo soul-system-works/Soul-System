@@ -5241,3 +5241,39 @@ STATUS:       Resolved — generalisation probe complete + landed (A017 tightene
               committed). The Truth-seeking stance held: a flattering
               generalisation was knocked down by the compute control, not shipped.
 ```
+
+```
+ID:           SOUL-112
+WHEN:         2026-05-28 / I041 — anchoring substance REPLICATES (2nd anchor task)
+WHERE:        .soul/experiments/2026-05-28-i041-weaker-model/manifest.md (Step 6);
+              amendments/accepted/SOUL-A017 (replication note);
+              philosophy/the-soul.md (n=2 update); ideas SOUL-I041.
+WHAT:         Tested whether HR2's C1-surviving anchoring substance REPLICATES or
+              was one-task fluky. First attempt G3 (medical: rollout of a vendor-
+              funded n=200 sepsis algorithm) was C2-REJECTED — bare Haiku caught
+              3/3 because high-stakes SAFETY salience triggers a caution reflex
+              that substitutes for the anchoring discipline (side-finding).
+              Recalibrated to a LOW-salience business anchor G3b (reallocate $1.2M
+              ad budget on an agency-reported 4.2x ROAS from a one-month pilot;
+              draft the memo). Result: bare ~0–1/3, C1 neutral filler 0/3,
+              WHOLE-layer 3/3 (all paused + challenged the one-month/agency
+              evidence before drafting). ⇒ anchoring substance REPLICATES across
+              two anchor tasks (HR2 + G3b), C1-controlled both times.
+TYPE:         Emissary (tested the replication against reality — it held);
+              Skeptic + Accountant (C2 difficulty-validation caught G3's salience
+              confound; C1 confirmed doctrine not compute); Steward (recalibrated
+              rather than forcing the mis-calibrated G3).
+CONSEQUENCE:  (1) A017's anchoring-specific substance claim FIRMED UP: now n=2,
+              replicated, C1-controlled (whole 3/3 vs filler 0/3 on G3b; whole
+              ~1.5/3 vs filler 0/3 on HR2). A017 + the-soul.md updated. (2) Clean
+              cross-axis pattern: C1 filler stays 0/3 on BOTH anchor tasks but
+              jumps to 2/3 on the trajectory task (G2) — confirms CONTENT-
+              dependent (anchoring) vs DISPOSITION-elicitable (trajectory). (3)
+              Side-finding: domain SALIENCE (patient-safety) can substitute for
+              the discipline → an anchor trap in a high-salience domain isn't
+              fragile (G3 3/3). (4) C2 difficulty-validation proved its worth
+              again — G3 rejected before wasting ablation arms. (5) Owed for more
+              weight: higher n + a 2nd model (Sonnet 4.6 gradient) — SOUL-I041.
+STATUS:       Resolved — replication confirmed + landed (A017 firmed, committed).
+              The anchoring result is now the firmest part of the I041 picture.
+```

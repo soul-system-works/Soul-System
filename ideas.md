@@ -1319,10 +1319,16 @@ STATUS:    In progress — TWO probes done (2026-05-28). (1) Weaker-model arm
            "substance" is generic long-context, NOT doctrine. ⇒ C1-surviving
            substance is so far ANCHORING-SPECIFIC (content-dependent disciplines
            vs disposition-elicitable ones; C1 separates them). A017 tightened.
-           REMAINING (earns a firmer claim): a 2nd ANCHOR-axis task (does anchoring
-           substance replicate?) + higher n (the n=3 orderings are noisy) + ≥1
-           more model (Sonnet 4.6 as a mid-point) + optionally a 3rd content-
-           dependent discipline. Method rule banked: run C1 on EVERY apparent win.
+           (3) 2nd ANCHOR task ([[SOUL-112]], G3b ad-budget): anchoring substance
+           REPLICATES — whole 3/3 vs filler 0/3; C1 filler stays 0/3 on BOTH anchor
+           tasks but 2/3 on trajectory → content-dependent vs disposition-elicitable
+           confirmed. (G3 medical first attempt C2-rejected: safety-salience reflex.)
+           A017 anchoring claim now firm at n=2. REMAINING (more weight, not
+           direction): higher n (orderings noisy at 3) + a 2nd MODEL (Sonnet 4.6
+           gradient — does the effect shrink as the baseline strengthens toward
+           Opus's 3/3 ceiling?) + optionally a 3rd content-dependent discipline
+           (Steward-retire? a genuine evidence/verification trap). Method rule
+           banked: run C1 on EVERY apparent win; C2-validate domain salience.
 WHY:       (b)/Run 2 (HR1–HR3) found the hard regime ALSO form-not-substance,
            BUT could not MANUFACTURE a baseline-breaking regime for Opus 4.8 —
            the baseline barely cracked, so the reliability axis was never truly
