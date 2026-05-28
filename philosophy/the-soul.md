@@ -168,6 +168,14 @@ The Council has four tiers. Each tier has a different relationship to the work.
 
 **The Hands** act under the authority of the Body, answerable to the Council but not of it. They produce. Everything else thinks, observes, or decides.
 
+### What the Roles Are For
+
+A natural assumption is that each role earns its place by *changing the answer* — that naming the Skeptic catches a flaw the work would otherwise ship, that the Accountant rescues an infeasible plan. Self-ablation evidence does not support that assumption for a capable base model. Across moderate tasks (the I040 first arc) and three engineered *hard*-regime axes — a buried logic trap, a false premise under authority pressure, and a ten-constraint long-horizon task (SOUL-F042 → SOUL-A017) — a careful frontier baseline already reasoned the way the roles prescribe, already caught the planted traps, and was already consistent. The roles changed the **form** of the work — explicit, named, legible, auditable framing — far more than its **substance** or its **reliability**.
+
+So the roles are justified primarily by **legibility, auditability, and communicability**, not by behavior-lifting. Naming the Skeptic does not (usually) make a capable model more skeptical; it makes the skepticism *visible, locatable, and inspectable* — by the Body, by a later session, by a second party reading the record. That is a real value, not a deflation: a chamber of named perspectives is how the work stays legible to two parties who must arrive at the same meaning. It is also why the roles stay lensed and on-demand rather than each firing heavy machinery (SOUL-033/034).
+
+**The bound (do not over-read this).** The evidence is against a *capable frontier baseline* on *moderate-to-tracer-hard* tasks, where carefulness rarely broke. The one regime that could overturn it — genuinely baseline-breaking work (expert-domain depth, far-longer horizon, or a weaker model), where the base reasoning *fails* and a role might supply substance or reliability it otherwise lacks — **remains untested**. Where the baseline breaks, the value-locus may shift back toward substance. The legibility framing is the measured default, not a universal law.
+
 ---
 
 ## Magistrates
