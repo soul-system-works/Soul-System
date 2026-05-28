@@ -18,9 +18,10 @@ Rules produce decisions; source citations are anchors.
 
 3. **Anchor every absolute claim with a valid external reference.** Name the
    anchor, why it's trusted, how it could be wrong. Internal coherence is not
-   truth. **Count/historical claims: anchor at WRITING time, not just review** —
-   they slip past prose coherence and survive into corrections. *Source:* A010,
-   F015, F028, F040, SOUL-103.
+   truth. **Count / historical / scope claims: anchor at WRITING time, not just
+   review** — a scope claim ("which files, which parse, the N sites that matter")
+   is a count-like claim that slips past prose coherence and survives into
+   corrections. *Source:* A010, F015, F028, F040, SOUL-103, SOUL-104, SOUL-105.
 
 4. **Generation couples with retirement.** Every instrument that creates
    artifacts (skills, findings, ideas, amendments) ships with a retire handle.
@@ -113,11 +114,13 @@ Examples whose handling shows the boundary between rules.
   self-intersecting turbine polygon. **Disambiguating rule:** the recipe IS the
   activation mechanism. Doctrine without instrument is posture.
 
-- **F015 → F028 → F040 → SOUL-103 — four layers of anchor discipline.**
-  EXISTENCE (must name one); VALIDITY (the anchor itself can be wrong);
-  RETIRE-claim scope (wrong-scope grep is INVALID); TIMING (count/historical
-  claims slip past prose coherence — anchor at WRITING time). Each layer
-  catches the prior's residual.
+- **Anchor discipline, four faces (F015 → F028 → F040 → SOUL-103/104/105).**
+  EXISTENCE (must name one — F015); VALIDITY (the anchor itself can be wrong —
+  F028); SCOPE (the claim's reach can be under-examined — F040 wrong-scope grep;
+  SOUL-104 audit missed docs/specs/; SOUL-105 a scope-slip INSIDE a slip-
+  diagnosis); TIMING (count / historical / scope claims slip past prose coherence
+  and survive INTO the correction — anchor at WRITING time; SOUL-099 "SECOND"→
+  FOURTH /soul-council count, SOUL-103). Each face catches the prior's residual.
 
 - **A008 vs A009 — handoff topology.** A008 prescribed hermetic context for
   subagents (FANOUT). A009 refined: self-contained for *restart* correctness,
@@ -132,12 +135,6 @@ Examples whose handling shows the boundary between rules.
 - **Seed (~263 lines, always-on) vs `philosophy/the-soul.md` (~710 lines,
   on-demand).** Same doctrine; different position in the description budget.
   SOUL-033 evidence: gates survive context reduction; expansion/breadth doesn't.
-
-- **SOUL-099 SECOND→FOURTH — count-claim slip.** Original entry claimed
-  "SECOND /soul-council convening"; anchor check showed FOURTH
-  (SOUL-080+085+087+099). Slip survived into the correction itself (cursor
-  over-attribution; in-marker `councils/README` cite — no such file).
-  **Demonstrates Rule 3's timing dimension.**
 
 ## Incompressible residual (named, not forced)
 
@@ -164,6 +161,7 @@ Knowledge that doesn't reduce to rules; force-fit is the failure mode.
   invocable. They stay in the seed and `the-soul.md`.
 
 ---
-**Last distilled:** 2026-05-27 (refresh after SOUL-098→103 doctrine-correction
-arc — A016 absorbed; Rule 3 extended with timing dimension; Rule 12 added;
-SOUL-099 count-slip case added; dogfood residual compressed; witness SOUL-103).
+**Last distilled:** 2026-05-28 (light refresh, SOUL-104→106 — Rule 3 timing
+clause extended to SCOPE claims; anchor-discipline + SOUL-099 count-slip cases
+merged into one four-face case (shrinks); gap-only review rule deferred at
+N=2. Prior: 2026-05-27, SOUL-098→103).
