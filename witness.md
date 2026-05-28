@@ -5025,3 +5025,47 @@ STATUS:       Resolved — I037(b) shipped to commands/soul-distill.md;
               SOUL-I037 STATUS → Graduated [partial]. Not yet committed;
               presented for Body curation.
 ```
+
+```
+ID:           SOUL-107
+WHEN:         2026-05-28 / first self-ablation harness run (I040 tracer slice)
+WHERE:        docs/experiments/2026-05-28-self-ablation-slice-1.md (+ raw arms
+              in gitignored .soul/experiments/2026-05-28-slice-1/)
+WHAT:         First execution of the I040 self-ablation harness — vertical
+              tracer slice, 6 arms via isolated `claude -p
+              --append-system-prompt-file`. A0 vehicle PASS (deterministic
+              load; without-arm declined, no F038 confabulation). A1
+              completion-gate / A2 Prophet / A3 Skeptic (positive control) /
+              A5 whole-system = SIGNAL; A4 Arch↔Steward cluster CONFOUNDED
+              (empty-dir task-design flaw — both arms correctly declined to
+              decide about a non-existent module). HEADLINE: single-role
+              marginal value over a careful Claude baseline is MODEST and
+              UNIFORM — even the positive control (Skeptic) — because the base
+              model already embodies the disciplines; value concentrates in
+              the WHOLE LAYER (A5, where named gates incl. the Body-Input
+              Obligation fired together) + naming/legibility/consistency.
+TYPE:         Emissary (tested doctrine beliefs against reality via live
+              ablation arms — the system measuring itself); Artificer (built +
+              ran the thin harness by hand); Skeptic (positive control +
+              named the confounds); Steward (the prune question — answered
+              "not yet"); Accountant (n=1 + confound caveats bounding the
+              claim).
+CONSEQUENCE:  (1) The self-ablation METHOD is proven viable end-to-end (load +
+              measure). (2) Major PRELIMINARY finding challenges "each role
+              does heavy lifting" — leverage is the NAMED/INTEGRATED layer,
+              not single-role behavior-unlocking. Body reframe + accepted:
+              naming/labeling IS the value (a good finding, not deflating).
+              Candidate finding PENDING follow-up evidence; NOT graduated
+              (n=1, single-lens, careful-baseline confound, A4 botched). (3)
+              Method findings for the wide run: bare-carefulness confound
+              (read value as structure-added); separate-step verbatim
+              sentinel; self-contained tasks (A4's flaw). (4) No orchestrator
+              automation built — 6 arms ran via a hand-maintained manifest
+              (default-simplicity); automation deferred until the wide run
+              earns it. (5) No pruning — live system untouched; arms ran in an
+              isolated /tmp dir.
+STATUS:       Resolved — tracer slice complete; findings doc committed; Body
+              accepted preliminary + reframe; follow-up backlog recorded. Next
+              candidate: consistency-across-runs (tests the naming-is-the-value
+              hypothesis directly).
+```

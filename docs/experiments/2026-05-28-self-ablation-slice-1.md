@@ -1,6 +1,7 @@
 # Self-Ablation Harness — Run 1 (vertical tracer slice)
 
-**Status:** in progress — A0+A1 done (proof-of-concept complete); A2–A5 pending.
+**Status:** COMPLETE (n=1 per aspect) — A0–A5 run; A4 confounded (see below).
+Verdicts are DRAFT, pending Body adjudication (per spec D1/D4).
 **Spec:** `docs/specs/2026-05-28-soul-self-ablation-harness-design.md` ([[SOUL-I040]]).
 **Mechanism:** isolated `claude -p --append-system-prompt-file` from a clean working
 dir; each arm sentinel-gated. Raw arm outputs live in the **gitignored**
@@ -55,9 +56,111 @@ careful (it caveated the soft limit).
 
 ---
 
-## Pending
+## A2 — Prophet (fuzzy single, n=1): **SIGNAL (moderate)**
 
-- **A2 — Prophet** (fuzzy single; trajectory task).
-- **A3 — Skeptic** (fuzzy single; *positive control* — hidden bad assumption).
-- **A4 — Archaeologist↔Steward** (cluster; does the pair add the dual-pull?).
-- **A5 — whole-system-lite** (seed+`mind.md` vs bare; mini-[[SOUL-I005]]).
+Task: design-review a Redis cache in front of a user-profile service. Sentinel: PASS
+(quoted Prophet role verbatim).
+
+- **WITH-arm:** framed the entire review as *trajectory* — "where does this carry you over
+  18 months," named second-order destinations (cache → consistency contract → tier-0
+  dependency → thundering-herd outage; pattern propagates org-wide), "the fork in the road."
+- **WITHOUT-arm:** also excellent and thorough — surfaced nearly all the same concrete risks
+  (invalidation, staleness, Redis-down, PII, stampede), but as a *static design checklist*,
+  not a trajectory.
+
+**Verdict:** Prophet adds the *temporal/propagation framing*; the bare arm independently
+caught the same risks. Value = structure-added, not catch-vs-miss.
+
+## A3 — Skeptic (fuzzy single, n=1, **positive control**): **SIGNAL (modest)**
+
+Task: confirm shipping A/B variant B (12% signup lift, 2-week test). Sentinel: PASS.
+
+- **WITH-arm:** sharp assumption-hunting — significance/CI, peeking, SRM, novelty effect,
+  Goodhart (signups is a proxy), segment heterogeneity; verdict "do not confirm yet."
+- **WITHOUT-arm:** **nearly identical** — significance, sample size, SRM, novelty,
+  guardrail metrics, staged rollout. Bare Claude was already highly skeptical.
+
+**Verdict (KEY CALIBRATION):** even the positive control shows only a *framing/sharpness*
+delta over baseline. The baseline already embodies much of the Skeptic's discipline. This
+recalibrates the whole experiment: single-lens ablations read roles as *modest over a
+careful baseline*, not as unlocking absent behavior.
+
+## A4 — Archaeologist↔Steward (cluster, n=1): **CONFOUNDED — inconclusive**
+
+Task referenced "our codebase / LegacyAuth module" but the arm ran in an empty `/tmp` dir.
+Both arms correctly **declined to decide about a module that didn't exist** (the bare arm
+even withheld `STATUS: COMPLETE`). The cluster *decision* was never exercised — this
+re-confirmed "no confabulation about absent context" instead. **Task-design flaw:** tasks
+referencing project artifacts must ship the artifact in the arm's working dir or be fully
+self-contained. Re-run required.
+
+## A5 — whole-system-lite (seed+`mind.md` vs bare, n=1): **SIGNAL (strongest)**
+
+Task: handle two service config files that silently drifted out of sync. Sentinel: PASS
+(quoted Mind Rule 1 verbatim).
+
+- **WITH-arm (full Soul layer):** visibly applied *multiple named gates together* —
+  two-level frame (symptom vs disease), Chesterton's Fence ("why are there two files? don't
+  remove a fence I don't understand"), what-varies/decides/cannot-vary, and explicitly the
+  **Body-Input Obligation** (foregrounded the Body-only questions, refused to barrel past).
+- **WITHOUT-arm:** strong and well-structured (resolve-now + prevent-recurrence, three
+  options + tradeoff, one sharpening question) — but generic, not gate-shaped.
+
+**Verdict:** the *integrated layer* shows the clearest signal — whole > sum of single lenses.
+
+---
+
+## Synthesis (the headline finding)
+
+Single-lens ablation against a careful Claude baseline shows **modest marginal signal**: the
+baseline already embodies much of each role's discipline, so a single role mostly adds
+*explicit framing / named structure / sharpness*, not behavior the model wouldn't otherwise
+produce. The **whole layer (A5)** shows the clearest value — named gates working together,
+the Body-Input Obligation firing. **Implication:** the Soul System's value likely concentrates
+in (a) the integrated layer and (b) **legibility / invocability / consistency** (you can
+*name and summon* a lens, and it fires *reliably*) — more than in any single role
+individually unlocking absent behavior. This challenges "each role is doing heavy lifting"
+and is exactly the kind of result the I040 program exists to surface.
+
+**Strong caveats (why this is a signal, not a verdict):** n=1 per aspect; single-lens design
+(not full-seed-minus-role); careful-baseline confound; A4 confounded; tasks were moderate
+difficulty. None of this licenses pruning anything yet.
+
+**Body adjudication (2026-05-28):** accepted the preliminary headline. Reframe (Body): this
+is a *good* finding, not a deflating one — the base model already performing these disciplines
+means the Soul System's leverage is **naming/labeling** them (legibility + reliable, summonable
+application), which is itself powerful and useful. No pruning. The next experiments target
+**consistency** (does naming *guarantee* the behavior the baseline does only sometimes?) and
+the **whole-layer**, NOT exhaustive single-role coverage (see sequencing note below).
+
+**Sequencing (Body Q):** the tracer already tested the whole-layer (A5) *alongside* the single
+roles — a vertical slice hits every level at once, so there is no "finish all units, then
+integrate" dependency. Because single-lens signal proved modest *and uniform* (even the
+positive control), exhaustively ablating the other ~14 roles one-by-one would mostly reproduce
+that result at high cost. So: do NOT gate on all-roles-first. Optionally cheap-scan the
+remaining roles *in parallel* to catch any outlier the baseline genuinely doesn't cover, but
+prioritize consistency-across-runs (which directly tests the naming-is-the-value hypothesis)
+and whole-layer depth.
+
+## Diagnosis (per spec D5) + follow-up experiment backlog
+
+Single roles land in **"overlapping with baseline carefulness / value-is-legibility"** — NOT
+"dead weight." The confound-aware follow-ups, ranked:
+
+1. **Consistency-across-runs** (highest value) — run a task N× bare vs with-role. Does the
+   role *guarantee* behavior the baseline produces only *sometimes*? Tests the
+   legibility/consistency hypothesis directly.
+2. **Harder / longer-horizon tasks** where baseline carefulness breaks down — does a role's
+   marginal value grow when the model is *not* careful by default?
+3. **Full-seed-minus-role** (true integration ablation) vs this single-lens design — does a
+   role matter *within* the whole layer even if modest alone?
+4. **Re-run A4** with a self-contained decision task (no external-artifact reference).
+5. **Target each role's unique blind-spot** — design tasks where the role's specific
+   contribution is something the baseline demonstrably misses.
+
+## Method findings (for the wide run / orchestrator)
+
+1. **Bare-model carefulness confound** — read value as structure-added, not catch-vs-miss.
+2. **Verbatim sentinel as a separate first step** — worked cleanly in A2/A3/A5 (all quoted
+   verbatim); fold into the orchestrator.
+3. **Self-contained tasks** — A4's flaw: never reference project artifacts the arm can't see.
