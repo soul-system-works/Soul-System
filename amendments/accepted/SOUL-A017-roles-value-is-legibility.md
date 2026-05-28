@@ -162,3 +162,29 @@ confirming content-dependent vs disposition-elicitable. **A017's anchoring-speci
 substance claim is now firm (n=2, replicated, C1-controlled).** Still owed for more
 weight: higher n + a 2nd model (Sonnet 4.6 gradient) — carried in SOUL-I041. No
 further doctrine change until then.
+
+### Capability gradient (SOUL-I041 Step 7; witness SOUL-113) — the substance is also task-structure-dependent
+
+A Sonnet-4.6 mid-capability probe (HR2 + G3b, n=5, bare/whole/filler) asked
+whether the anchoring substance shrinks as the baseline strengthens. It does — but
+not uniformly. The gate is **whether the baseline self-catches**, set by capability
+AND task structure:
+
+- **HR2 (a go/no-go JUDGMENT task):** Sonnet's bare baseline already recommends
+  NO-GO 5/5 (like Opus 3/3, unlike Haiku 0/3). Ceiling reached → whole-layer gap
+  gone. The analytical catch self-corrects by mid-capability.
+- **G3b (a comply-and-DRAFT task):** the *flag* is cheap at Sonnet (all arms raise
+  the 4.2x concern), but the *action* separates them — whole-layer **withholds /
+  resists** (3/5) while bare flags-then-drafts (4/5 drafted) and the equal-length
+  filler drafts 5/5 ("ready to send"). The doctrine's edge here is **resisting the
+  compliance pull on a flawed premise** — and it survives to higher capability than
+  the analytical catch does.
+
+**Sharpening of "only when the baseline needs it":** the baseline needs the
+doctrine when it won't self-catch — and analysis-inviting tasks get self-caught at
+lower capability than compliance-inviting ones. So the integrated layer's durable
+substance (the part that persists toward the frontier) is concentrated in
+**resisting compliance with flawed premises on "just-do-it" tasks**; the
+analytical catch is a weak-baseline-only rescue. BOUNDS: n=5, one mid model, two
+tasks; the G3b whole>filler gap (3/5 vs 0/5) is the load-bearing claim. A 3rd
+capability point + more compliance-tasks would firm the curve (SOUL-I041).
