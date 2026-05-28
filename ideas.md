@@ -1271,3 +1271,32 @@ IDEA:      Ship reusable utilities as a companion repo — take the learnings
            repeatedly looks for) and turn them into reusable tools/utilities.
 STATUS:    Raw
 ```
+
+```
+ID:        SOUL-I040
+WHEN:      2026-05-28
+IDEA:      Systematic empirical refinement pass — stress-test the system by
+           spinning up dogfood projects and/or subagents to exercise member
+           roles, skills, and hooks, validating that EACH aspect of the Soul
+           System is actually useful and needed (vs dead weight).
+STATUS:    Raw
+WHY:       Recent phase has been BUILD (commands, the Mind, hooks). The Body
+           points at the complementary phase: VALIDATE / PRUNE — the Steward's
+           "what still serves?" applied systematically and backed by EVIDENCE
+           rather than intuition.
+DEVELOP:   Steward (what still serves) / Emissary (test beliefs against
+           reality) / Cartographer (map which aspects fire vs idle) /
+           Artificer (the harness + any skills/hooks) / Accountant (the
+           token/effort cost of each aspect).
+NOTES:     Umbrella over existing threads, NOT a duplicate: [[SOUL-I011]] is
+           the MECHANISM (sandboxed subagent/worktree experiment harness) —
+           and I011's own note says "don't build the generic harness before a
+           SECOND concrete use earns it; best first client = token economics."
+           This direction supplies that second concrete client (role/skill/hook
+           usefulness), maturing I011. [[SOUL-I020]] is one target (role-set
+           size — do the 8 Magistrates actually fire?); [[SOUL-I005]] is the
+           value/token question; [[SOUL-F014]] is the activation evidence; the
+           gap-only review rule deferred at N=2 could earn its 3rd instance
+           here. Default-simplicity at execution: start with ONE bounded tracer
+           experiment (e.g., role-firing on a fresh dogfood project), NOT the
+           generic harness first. Related: [[SOUL-I001]], [[SOUL-I034]].
