@@ -1310,7 +1310,15 @@ IDEA:      The baseline-BREAKING regime test — the one experiment that could
            ablate roles/gates with/without. If a role supplies substance or
            reliability the broken baseline lacks → A017's value-locus is regime-
            specific and shifts back toward substance where the baseline breaks.
-STATUS:    Raw
+STATUS:    In progress — FIRST PROBE DONE (weaker-model arm, Haiku 4.5,
+           2026-05-28; [[SOUL-110]] + A017 Follow-up section). Result: NEITHER
+           pure un-bound NOR pure null — substance returns NARROWLY (discipline-
+           matched + integration-dependent + partial; single lenses still
+           form-only; C1 compute-controlled). A017 refined accordingly. REMAINING
+           (earns a firmer claim): a 2nd anchor-axis task + a 2nd discipline (e.g.
+           a Prophet-trajectory or Steward-retire trap) + ≥1 more model, to test
+           whether "discipline-matched substance" generalises beyond one false-
+           premise task on one weak model.
 WHY:       (b)/Run 2 (HR1–HR3) found the hard regime ALSO form-not-substance,
            BUT could not MANUFACTURE a baseline-breaking regime for Opus 4.8 —
            the baseline barely cracked, so the reliability axis was never truly
