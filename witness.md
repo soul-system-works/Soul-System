@@ -5204,3 +5204,40 @@ STATUS:       Resolved — I041 first probe complete + landed (A017 refined,
               committed). Generalisation (2nd anchor task, 2nd discipline, more
               models) handed to next session via SOUL-I041.
 ```
+
+```
+ID:           SOUL-111
+WHEN:         2026-05-28 / I041 generalisation probe (Prophet) — C1 knocks it down
+WHERE:        .soul/experiments/2026-05-28-i041-weaker-model/manifest.md (Step 5);
+              amendments/accepted/SOUL-A017 (follow-up tightened);
+              philosophy/the-soul.md (bound sentence tightened); ideas SOUL-I041.
+WHAT:         Tested whether I041's "discipline-matched substance" (HR2 anchoring)
+              generalises to a SECOND discipline. Built a Prophet/trajectory trap
+              (G2: a SaaS cost-cut whose buried second-order harm — severing the
+              conversion funnel — is unstated; arm must READ the trajectory).
+              Weak baseline (Haiku) on G2: bare 1/3 caught → BREAKS (C2 ok).
+              Whole-layer 3/3 — looked like clean generalisation. THEN C1: a
+              length-matched NEUTRAL filler (26KB warehouse-logistics nonsense)
+              lifted the baseline to 2/3 (catches verified genuine). ⇒ most of the
+              trajectory "gain" is a generic long-context / be-more-thorough
+              effect, NOT doctrine (doctrine margin 2/3→3/3 = n=3 noise). OPPOSITE
+              of HR2, where filler stayed 0/3.
+TYPE:         Emissary (tested the generalisation against reality — and it
+              failed); Skeptic + Accountant (the C1 compute confound — decisive
+              here); Steward (tightened the claim rather than letting it inflate).
+CONSEQUENCE:  (1) The "discipline-matched substance" hope did NOT generalise to
+              Prophet once compute-controlled. A017's C1-SURVIVING substance is so
+              far ANCHORING-SPECIFIC — tightened in A017 follow-up + the-soul.md.
+              (2) Sharpened insight: CONTENT-DEPENDENT disciplines (anchoring —
+              needs the specific "coherence isn't truth" content) vs DISPOSITION-
+              ELICITABLE ones (trajectory — any long prompt elicits "think
+              ahead"); C1 separates them. (3) Method rule established: run C1 on
+              EVERY apparent win — G2 was a false positive without it. (4) Core
+              form-not-substance REINFORCED across a 2nd discipline. (5) Owed for
+              a firmer claim: a 2nd ANCHOR task + higher n + more models (SOUL-I041).
+              Truth-seeking stance worked — went to extend a flattering claim, the
+              control walked it back.
+STATUS:       Resolved — generalisation probe complete + landed (A017 tightened,
+              committed). The Truth-seeking stance held: a flattering
+              generalisation was knocked down by the compute control, not shipped.
+```

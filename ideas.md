@@ -1310,15 +1310,19 @@ IDEA:      The baseline-BREAKING regime test — the one experiment that could
            ablate roles/gates with/without. If a role supplies substance or
            reliability the broken baseline lacks → A017's value-locus is regime-
            specific and shifts back toward substance where the baseline breaks.
-STATUS:    In progress — FIRST PROBE DONE (weaker-model arm, Haiku 4.5,
-           2026-05-28; [[SOUL-110]] + A017 Follow-up section). Result: NEITHER
-           pure un-bound NOR pure null — substance returns NARROWLY (discipline-
-           matched + integration-dependent + partial; single lenses still
-           form-only; C1 compute-controlled). A017 refined accordingly. REMAINING
-           (earns a firmer claim): a 2nd anchor-axis task + a 2nd discipline (e.g.
-           a Prophet-trajectory or Steward-retire trap) + ≥1 more model, to test
-           whether "discipline-matched substance" generalises beyond one false-
-           premise task on one weak model.
+STATUS:    In progress — TWO probes done (2026-05-28). (1) Weaker-model arm
+           ([[SOUL-110]]): substance returns NARROWLY on a broken baseline
+           (integration-dependent, partial; single lenses form-only; HR2 anchoring
+           C1-survived). (2) Generalisation to a 2nd discipline ([[SOUL-111]],
+           Prophet/trajectory G2): FAILED the compute control — neutral filler
+           reproduced most of the lift (1/3→2/3 vs whole 3/3), so the trajectory
+           "substance" is generic long-context, NOT doctrine. ⇒ C1-surviving
+           substance is so far ANCHORING-SPECIFIC (content-dependent disciplines
+           vs disposition-elicitable ones; C1 separates them). A017 tightened.
+           REMAINING (earns a firmer claim): a 2nd ANCHOR-axis task (does anchoring
+           substance replicate?) + higher n (the n=3 orderings are noisy) + ≥1
+           more model (Sonnet 4.6 as a mid-point) + optionally a 3rd content-
+           dependent discipline. Method rule banked: run C1 on EVERY apparent win.
 WHY:       (b)/Run 2 (HR1–HR3) found the hard regime ALSO form-not-substance,
            BUT could not MANUFACTURE a baseline-breaking regime for Opus 4.8 —
            the baseline barely cracked, so the reliability axis was never truly
