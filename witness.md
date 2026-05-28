@@ -5108,3 +5108,54 @@ STATUS:       Resolved — arc converged, F042 graduated; the (b) hard-regime
               test is handed off to the next session. 8 commits unpushed
               (Body's manual push).
 ```
+
+```
+ID:           SOUL-109
+WHEN:         2026-05-28 / I040 self-ablation Run 2 — the hard-regime test (b)
+WHERE:        docs/experiments/2026-05-28-self-ablation-hard-regime.md;
+              docs/specs/2026-05-28-soul-self-ablation-hard-regime-design.md;
+              raw arms in .soul/experiments/2026-05-28-hard-regime/;
+              amendment amendments/accepted/SOUL-A017; finding moved to
+              findings/closed/SOUL-F042.
+WHAT:         Ran the hard-regime test that SOUL-F042's WHY-NOT-YET-AMENDMENT
+              named as its graduation gate. Designed (with Body) 3 hand-built
+              hard tasks across distinct fragility axes and ablated against a
+              frontier baseline (Opus 4.8): HR1 buried logic trap (scheduling
+              infeasibility, capacity red herring) — bare 3/3 CAUGHT; HR2
+              false-premise under deference/authority pressure ($480k contract on
+              an unverified "40% latency = 40% cost" claim) — bare 3/3 CAUGHT; HR3
+              ten-constraint IFEval-style long-horizon task, completion-gate
+              ablated with/without (n=3 each) — NULL (gate ≈ bare). New controls
+              added per spec: C1 equal-compute, C2 difficulty-validation (bare
+              must plausibly fail before a task counts as hard), C3 trap taxonomy.
+              Field research (anchored: arXiv 2311.10054, 2604.02460, 2505.18286,
+              2605.27621, 2506.04133) corroborated the direction and set the
+              novelty boundary (regime-transition + self-ablation method, NOT
+              "roles don't add accuracy").
+TYPE:         Emissary (the system tested its own beliefs against reality, end-
+              to-end); Researcher (went out for the field map / publication
+              landscape before claiming it); Skeptic + Accountant (named the
+              confounds and the surviving bound — fragility could not be
+              manufactured for Opus 4.8, so the reliability axis was never truly
+              stressed); Architect (the (b) design doc); Judge (Body-decided
+              graduation).
+CONSEQUENCE:  (1) The hard regime ALSO shows form-not-substance ⇒ SOUL-F042
+              graduated (Body call) to [[SOUL-A017]], a SCOPED amendment adding
+              `### What the Roles Are For` to philosophy/the-soul.md: roles/gates
+              justified by legibility/auditability, NOT behaviour-lifting, with an
+              explicit bound. (2) The surviving open edge: a genuinely baseline-
+              breaking regime (expert-domain, far-longer horizon, or weaker model)
+              remains UNTESTED — carried in A017's text and the next idea. (3)
+              Body sequencing recorded: internal hand-built tasks first, public-
+              benchmark replication (MuSiQue/FRAMES/SWE-bench/GAIA under equal
+              compute) deferred to a later phase; publication decision deferred
+              ("run (b) first"). (4) Truth-seeking stance held — a null was sought
+              honestly and reported as a first-class result, not forced positive.
+              (5) Method reinforced: self-contained tasks (no empty-dir confound
+              this run); C2 difficulty-validation is essential (a "hard" task the
+              baseline aces 3/3 cannot measure role substance — ceiling effect).
+              No live system mutated beyond the one accepted amendment.
+STATUS:       Resolved — (b) complete, F042 graduated to A017. Next idea: the
+              baseline-breaking regime test (expert-domain / very-long-horizon /
+              weaker-model) + the deferred public-benchmark replication.
+```

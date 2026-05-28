@@ -37,6 +37,14 @@ FILED BY:        Emissary (the harness tested the system's own beliefs against
                  reality); Skeptic (named the confounds + the mid-run
                  self-falsification); Accountant (n / confound bounds).
 RELATED:         [[SOUL-I040]], [[SOUL-I011]], [[SOUL-I005]], [[SOUL-F014]],
-                 [[SOUL-107]]
-STATUS:          Open
+                 [[SOUL-107]], [[SOUL-108]], [[SOUL-109]], [[SOUL-A017]]
+STATUS:          Graduated → [[SOUL-A017]] (2026-05-28). The hard-regime test
+                 named in WHY-NOT-YET-AMENDMENT ran (Run 2: HR1 logic 3/3 caught,
+                 HR2 false-premise/deference 3/3 caught, HR3 multi-constraint
+                 ablation NULL — docs/experiments/2026-05-28-self-ablation-hard-
+                 regime.md) and returned form-not-substance in the hard regime
+                 too. Body graduated to a SCOPED amendment: roles/gates justified
+                 by legibility/auditability, bounded to a careful frontier
+                 baseline; a genuinely baseline-breaking regime remains untested
+                 (the surviving open edge, carried in A017's text).
 ```

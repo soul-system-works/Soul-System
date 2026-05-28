@@ -1300,3 +1300,34 @@ NOTES:     Umbrella over existing threads, NOT a duplicate: [[SOUL-I011]] is
            here. Default-simplicity at execution: start with ONE bounded tracer
            experiment (e.g., role-firing on a fresh dogfood project), NOT the
            generic harness first. Related: [[SOUL-I001]], [[SOUL-I034]].
+
+```
+ID:        SOUL-I041
+IDEA:      The baseline-BREAKING regime test — the one experiment that could
+           overturn [[SOUL-A017]]. Construct tasks where a frontier baseline
+           genuinely FAILS (not just "hard": expert-domain depth, far-longer
+           horizon than a tracer, or deliberately a weaker/smaller model), then
+           ablate roles/gates with/without. If a role supplies substance or
+           reliability the broken baseline lacks → A017's value-locus is regime-
+           specific and shifts back toward substance where the baseline breaks.
+STATUS:    Raw
+WHY:       (b)/Run 2 (HR1–HR3) found the hard regime ALSO form-not-substance,
+           BUT could not MANUFACTURE a baseline-breaking regime for Opus 4.8 —
+           the baseline barely cracked, so the reliability axis was never truly
+           stressed. A017 is explicitly bounded on this; this idea is the test
+           of that bound (A017's surviving open edge made into a probe).
+DEVELOP:   Emissary (test the belief against a harder reality) / Skeptic +
+           Accountant (the difficulty band + confounds) / Researcher (where do
+           frontier baselines actually break — pick the domain from evidence).
+NOTES:     Two concrete handles. (1) WEAKER MODEL arm — re-run HR1–HR3 (or new
+           tasks) on a smaller model where carefulness plausibly breaks; cheap,
+           directly tests whether the null is model-capability-bound. (2) PUBLIC-
+           BENCHMARK replication (Body-deferred from (b), "internal first, external
+           later"): MuSiQue / FRAMES / SWE-bench-style / GAIA under EQUAL-COMPUTE
+           (C1) — the field's #1 ablation confound (arXiv 2604.02460). Reuse the
+           proven harness + the C1/C2/C3 controls from
+           docs/specs/2026-05-28-soul-self-ablation-hard-regime-design.md. Matures
+           [[SOUL-I040]] / [[SOUL-I011]]; gates any un-bounding of [[SOUL-A017]];
+           publication decision still deferred (run it first). Default-simplicity:
+           the weaker-model arm is the cheapest first probe.
+```
