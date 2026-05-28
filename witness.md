@@ -5069,3 +5069,42 @@ STATUS:       Resolved — tracer slice complete; findings doc committed; Body
               candidate: consistency-across-runs (tests the naming-is-the-value
               hypothesis directly).
 ```
+
+```
+ID:           SOUL-108
+WHEN:         2026-05-28 / I040 self-ablation arc converged + F042 graduated
+WHERE:        docs/experiments/2026-05-28-self-ablation-slice-1.md;
+              findings/open/SOUL-F042
+WHAT:         Continued and closed the SOUL-107 run. Role scan A6–A10
+              (Researcher / Archaeologist / Accountant / Steward / Emissary) +
+              a consistency run (N=5×2). A "posture vs action role-type"
+              refinement was raised AND falsified in the same session — Emissary
+              came back modest (the bare baseline also benchmarks; the Researcher
+              outlier was task-dependent, not a role-type law). Consistency: NO
+              gap (baseline 5/5 reliable; naming changed FORM, not RATE).
+              CONVERGED: on moderate tasks vs a careful Claude baseline, the
+              roles/gates change the FORM of work (legibility/auditability), not
+              the SUBSTANCE or the RELIABILITY. SOUL-107's "candidate finding
+              pending" is now RESOLVED → graduated to [[SOUL-F042]] (Body-decided).
+TYPE:         Emissary (the system tested its own beliefs against reality,
+              end-to-end); Skeptic (raised AND falsified the posture/action
+              split — the harness catching its own over-generalization);
+              Steward (no pruning — roles carry legibility value); Accountant
+              (the moderate-task bound on the claim).
+CONSEQUENCE:  (1) [[SOUL-F042]] open — the converged finding; its
+              WHY-NOT-YET-AMENDMENT names the HARD-REGIME test as the
+              graduation gate. (2) The hard / adversarial / long-horizon regime
+              is UNTESTED — the one experiment that could overturn the
+              moderate-task conclusion; handed off for a future session (b). (3)
+              Method finding reinforced THREE times: ablation tasks must be
+              self-contained (the empty-dir confound recurred at A4, the partial
+              A5, and the first consistency attempt). (4) The I040 harness works
+              — it produced a real finding AND falsified its own over-reach
+              mid-run. No orchestrator automation built (6+ arms ran via a
+              hand-maintained manifest; default-simplicity). (5) No doctrine
+              amended; live system untouched — every arm ran in an isolated
+              /tmp dir.
+STATUS:       Resolved — arc converged, F042 graduated; the (b) hard-regime
+              test is handed off to the next session. 8 commits unpushed
+              (Body's manual push).
+```
