@@ -1,7 +1,8 @@
 # Self-Ablation Harness — Run 1 (vertical tracer slice)
 
-**Status:** COMPLETE (n=1 per aspect) — A0–A5 run; A4 confounded (see below).
-Verdicts are DRAFT, pending Body adjudication (per spec D1/D4).
+**Status:** COMPLETE — A0–A5 tracer slice + A6–A9 role scan (n=6 clean single-role tests
++ 1 outlier). A4 confounded (re-tested cleanly as A9). Verdicts DRAFT, Body-adjudicated.
+Refined headline: single-role value splits by role TYPE (posture=modest, action=distinctive).
 **Spec:** `docs/specs/2026-05-28-soul-self-ablation-harness-design.md` ([[SOUL-I040]]).
 **Mechanism:** isolated `claude -p --append-system-prompt-file` from a clean working
 dir; each arm sentinel-gated. Raw arm outputs live in the **gitignored**
@@ -142,12 +143,49 @@ remaining roles *in parallel* to catch any outlier the baseline genuinely doesn'
 prioritize consistency-across-runs (which directly tests the naming-is-the-value hypothesis)
 and whole-layer depth.
 
+## Scan (A6–A9, 2026-05-28) — expand to more roles + a REFINED headline
+
+Cheap parallel single-lens scan of 4 more roles (self-contained tasks; sentinels passed):
+
+- **A7 Archaeologist** (feature-flag build): **MODEST** — both arms led with buy-vs-build /
+  named OpenFeature, Unleash, etc. / "don't reinvent." Lens sharpened, didn't unlock.
+- **A8 Accountant** (microservices "this quarter"): **MODEST** — both arms challenged the
+  deadline, recommended strangler-fig/incremental; the bare arm was if anything more thorough.
+- **A9 Steward** (3 analytics SDKs; clean re-test after A4's confound): **MODEST** — both arms
+  gave the same retire-with-verification method (inventory consumers, consolidate, parallel-run,
+  privacy/DPA cleanup). Steward added "what still serves / without attachment" framing only.
+- **A6 Researcher** (pick a PDF library): **OUTLIER.** The with-arm *attempted WebSearch*
+  (outward acquisition), flagged its knowledge-currency limit, and offered to verify against
+  live sources. The bare arm answered confidently from memory — no acquisition attempt, no
+  currency caveat. A **distinctive behavior the baseline does NOT default to.**
+
+**Refined headline (now n=6 clean single-role tests + 1 outlier).** Single-role value splits
+by role **type**:
+- **Posture / reasoning roles** (Skeptic, Prophet, Accountant, Steward, Archaeologist) →
+  **modest.** A careful model already reasons this way; the role adds named framing/consistency,
+  not unlocked behavior.
+- **Action / outward roles** (Researcher → *go acquire knowledge*; predicted: **Emissary** →
+  *test against reality*) → **distinctive.** They trigger an outward ACTION the baseline skips
+  (it answers from memory by default).
+
+This **refines, does not overturn** the original headline: "modest" is the norm *for posture
+roles*; the exception is *action* roles, and it is **predictable from what the role prescribes.**
+Implication: the system's per-role leverage is (a) action-roles doing things the model won't
+spontaneously do, and (b) posture-roles providing legible, consistent, summonable framing —
+which is the Body's "naming is the value" point, now split into two mechanisms.
+
 ## Diagnosis (per spec D5) + follow-up experiment backlog
 
-Single roles land in **"overlapping with baseline carefulness / value-is-legibility"** — NOT
-"dead weight." The confound-aware follow-ups, ranked:
+Posture-roles land in **"overlapping with baseline carefulness / value-is-legibility"**;
+action-roles (Researcher) show distinctive single-lens signal. Neither is "dead weight." The
+confound-aware follow-ups, ranked:
 
-1. **Consistency-across-runs** (highest value) — run a task N× bare vs with-role. Does the
+0. **Confirm the posture/action prediction** (cheap, decisive) — test **Emissary** ("test
+   against reality") as a predicted *action* outlier, and one more posture-role under
+   consistency. If Emissary is an outlier and posture-roles aren't, the split is real and
+   becomes the lens for the whole wide run.
+1. **Consistency-across-runs** (highest value for posture-roles) — run a task N× bare vs
+   with-role. Does the
    role *guarantee* behavior the baseline produces only *sometimes*? Tests the
    legibility/consistency hypothesis directly.
 2. **Harder / longer-horizon tasks** where baseline carefulness breaks down — does a role's
