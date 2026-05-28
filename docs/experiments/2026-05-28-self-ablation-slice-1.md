@@ -1,10 +1,12 @@
 # Self-Ablation Harness — Run 1 (vertical tracer slice)
 
-**Status:** COMPLETE — A0–A5 tracer slice + A6–A10 role scan (n=7 clean single-role tests).
-A4 confounded (re-tested cleanly as A9). Verdicts DRAFT, Body-adjudicated. **Headline:**
-single-role value is modest over a careful baseline; apparent outliers are *task-dependent*
-(the posture/action role-type split was tested via Emissary A10 and **falsified** — see
-correction). The Body's "naming/legibility/consistency is the value" framing stands.
+**Status:** COMPLETE — A0–A5 tracer slice + A6–A10 role scan (n=7) + #1 consistency (N=5×2).
+**Converged conclusion:** on *moderate tasks* against a careful Claude baseline, the roles/gates
+change the **FORM** (explicit, named, legible framing) far more than the **SUBSTANCE** (baseline
+already reasons this way) or the **RELIABILITY** (baseline already 5/5 consistent). Value =
+**legibility / auditability**, the Body's "naming is the value" point. **Bounded caveat:** all
+tasks moderate; the *hard/adversarial* regime (where baseline carefulness may break) is untested
+— the one open question that could change the verdict. Verdicts DRAFT, Body-adjudicated.
 **Spec:** `docs/specs/2026-05-28-soul-self-ablation-harness-design.md` ([[SOUL-I040]]).
 **Mechanism:** isolated `claude -p --append-system-prompt-file` from a clean working
 dir; each arm sentinel-gated. Raw arm outputs live in the **gitignored**
@@ -195,6 +197,40 @@ which is the Body's "naming is the value" point, now split into two mechanisms.
 > (This is the harness catching its own Coherent-Falsehood-in-the-making — the point of the
 > Anchor Obligation applied to our *own* generalizations.)
 
+## #1 — Consistency-across-runs (2026-05-28): does naming make a discipline *reliable*?
+
+Hypothesis: naming a role/gate converts a discipline the baseline applies *intermittently*
+into a *reliable* one. Test: one "propose a fix" task, scored binary (diagnose-root-cause /
+frame-first vs jump-to-patch), N=5 bare vs N=5 with the abstraction-first gate.
+
+- **First attempt: CONFOUNDED** — the A4 empty-dir flaw recurred (task referenced "our deploy
+  script" with no script present → all 10 arms uniformly refused-to-fabricate + diagnosed).
+  Re-ran self-contained (code pasted in-prompt; tempting quick-patch = bump retries / add
+  backoff). *Method finding #3 bit a third time — self-contained tasks are non-negotiable.*
+- **Clean run:** **Bare 5/5** diagnosed the root cause first (all five caught the real bug —
+  the loop retries only `result.ok==False`, but a timeout *raises*, so the retries never fire;
+  "add backoff" treated as secondary). **With-gate 5/5** — same substance, wrapped in *explicit*
+  "two levels / what varies / what can't vary" framing.
+
+**Result: NO consistency gap.** The baseline was *already reliable* (5/5); there was no
+intermittency for naming to fix. The gate changed the **FORM** (explicit, named framing), not
+the **RATE** of the underlying reasoning.
+
+## Converged conclusion (A1–A10 + consistency)
+
+On **moderate tasks against a careful Claude baseline**, the Soul roles/gates change the
+**FORM** of the work — explicit, named, legible, auditable framing — far more than the
+**SUBSTANCE** (the baseline already reasons this way) or the **RELIABILITY** (the baseline is
+already consistent). This is exactly the Body's **"naming/labeling is the value"** point, now
+well-supported and sharpened: the leverage is **legibility / auditability / communicability**,
+not behavior-change or behavior-stabilization.
+
+**Bounded caveat (the key remaining open question).** Every tested task was *moderate*, and the
+baseline was uniformly careful AND consistent. The **untested regime** is *harder / adversarial
+/ long-horizon* tasks where baseline carefulness may break down — there the roles might add
+substance or reliability. The converged conclusion holds for moderate tasks; it does **not**
+generalize to the hard regime without testing.
+
 ## Diagnosis (per spec D5) + follow-up experiment backlog
 
 Roles land in **"overlapping with baseline carefulness / value-is-legibility"** — single-lens
@@ -204,8 +240,8 @@ confound-aware follow-ups, ranked:
 
 0. ~~Confirm the posture/action prediction~~ **DONE (A10) — falsified.** Emissary modest; the
    split was a task×role artifact, not a role-type law. Lesson folded into the headline.
-1. **Consistency-across-runs** (now the clear top priority) — run a task N× bare vs
-   with-role. Does the
+1. ~~Consistency-across-runs~~ **DONE — no gap** (baseline 5/5 reliable; naming changed form,
+   not rate). The original wording is kept below for the record. Does the
    role *guarantee* behavior the baseline produces only *sometimes*? Tests the
    legibility/consistency hypothesis directly.
 2. **Harder / longer-horizon tasks** where baseline carefulness breaks down — does a role's
