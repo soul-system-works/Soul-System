@@ -145,6 +145,20 @@ broken-baseline regime. The integrated layer's C1-SURVIVING substance is, so far
 the seed+Mind, and content-dependent rather than disposition-elicitable. The
 broader "discipline-matched substance" hope did NOT generalise to Prophet once
 compute was controlled. Method rule this establishes: **run C1 on EVERY apparent
-win** — the trajectory result was a false positive without it. Still owed for any
-firmer claim (n=3/arm, one weak model): a 2nd ANCHOR task + higher n + other
-models — carried in SOUL-I041. No further doctrine change until then.
+win** — the trajectory result was a false positive without it.
+
+### Replication (G3b, 2nd anchor task) — the anchoring substance REPLICATES
+
+The owed 2nd-anchor-task test ran (SOUL-I041 Step 6; witness SOUL-112). A first
+attempt (G3, a medical vendor-study rollout) was C2-rejected — bare caught it 3/3,
+because high-stakes-SAFETY salience triggers a caution reflex that substitutes for
+the anchoring discipline (a useful side-finding). Recalibrated to a low-salience
+business anchor (G3b: a $1.2M ad-budget reallocation on an agency-reported 4.2x
+ROAS from a one-month pilot): bare ~0–1/3, **whole-layer 3/3, C1 filler 0/3.** So
+the C1-surviving, doctrine-attributable anchoring substance now **replicates across
+two anchor tasks** (HR2 + G3b), different domains. The cross-axis pattern is clean:
+filler stays 0/3 on BOTH anchor tasks but jumps to 2/3 on the trajectory task —
+confirming content-dependent vs disposition-elicitable. **A017's anchoring-specific
+substance claim is now firm (n=2, replicated, C1-controlled).** Still owed for more
+weight: higher n + a 2nd model (Sonnet 4.6 gradient) — carried in SOUL-I041. No
+further doctrine change until then.
