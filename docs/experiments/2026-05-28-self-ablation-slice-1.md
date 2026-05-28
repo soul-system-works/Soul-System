@@ -1,8 +1,10 @@
 # Self-Ablation Harness — Run 1 (vertical tracer slice)
 
-**Status:** COMPLETE — A0–A5 tracer slice + A6–A9 role scan (n=6 clean single-role tests
-+ 1 outlier). A4 confounded (re-tested cleanly as A9). Verdicts DRAFT, Body-adjudicated.
-Refined headline: single-role value splits by role TYPE (posture=modest, action=distinctive).
+**Status:** COMPLETE — A0–A5 tracer slice + A6–A10 role scan (n=7 clean single-role tests).
+A4 confounded (re-tested cleanly as A9). Verdicts DRAFT, Body-adjudicated. **Headline:**
+single-role value is modest over a careful baseline; apparent outliers are *task-dependent*
+(the posture/action role-type split was tested via Emissary A10 and **falsified** — see
+correction). The Body's "naming/legibility/consistency is the value" framing stands.
 **Spec:** `docs/specs/2026-05-28-soul-self-ablation-harness-design.md` ([[SOUL-I040]]).
 **Mechanism:** isolated `claude -p --append-system-prompt-file` from a clean working
 dir; each arm sentinel-gated. Raw arm outputs live in the **gitignored**
@@ -154,10 +156,13 @@ Cheap parallel single-lens scan of 4 more roles (self-contained tasks; sentinels
 - **A9 Steward** (3 analytics SDKs; clean re-test after A4's confound): **MODEST** — both arms
   gave the same retire-with-verification method (inventory consumers, consolidate, parallel-run,
   privacy/DPA cleanup). Steward added "what still serves / without attachment" framing only.
-- **A6 Researcher** (pick a PDF library): **OUTLIER.** The with-arm *attempted WebSearch*
-  (outward acquisition), flagged its knowledge-currency limit, and offered to verify against
-  live sources. The bare arm answered confidently from memory — no acquisition attempt, no
-  currency caveat. A **distinctive behavior the baseline does NOT default to.**
+- **A6 Researcher** (pick a PDF library): **OUTLIER (but see correction).** The with-arm
+  *attempted WebSearch* (outward acquisition) + currency caveat; the bare arm answered
+  confidently from memory, no acquisition attempt.
+- **A10 Emissary** (commit to orjson on a perf belief): **MODEST.** Predicted to be an action
+  outlier — wasn't. Both arms *tried to run a benchmark* (tool-denied), both centered "measure
+  on your real payloads first," both caught the str/bytes confound. The bare baseline already
+  defaults to "benchmark before adding a perf dependency."
 
 **Refined headline (now n=6 clean single-role tests + 1 outlier).** Single-role value splits
 by role **type**:
@@ -174,17 +179,32 @@ Implication: the system's per-role leverage is (a) action-roles doing things the
 spontaneously do, and (b) posture-roles providing legible, consistent, summonable framing —
 which is the Body's "naming is the value" point, now split into two mechanisms.
 
+> **CORRECTION (A10, same session) — the posture/action ROLE-TYPE split is NOT supported.**
+> Emissary, an action/outward role, came back **MODEST**: the bare arm *also* attempted the
+> benchmark (it defaults to "measure before adding a perf dependency" for this task). So the
+> Researcher outlier was a **task×role interaction, not a role-type law** — a role adds
+> distinctive single-lens signal only when the baseline doesn't already default to that
+> behavior *for the given task*. For "recommend a library" the baseline answers from memory
+> (Researcher's "go acquire" stood out); for "add a perf dependency" the baseline already
+> benchmarks (Emissary added nothing). **The posture/action paragraph above is superseded.**
+> What survives, sharpened: single-role value is modest over a careful baseline, and apparent
+> outliers are *task-dependent*. The Body's naming/legibility/**consistency** framing is
+> unaffected and in fact *strengthened* — the baseline does the behavior *sometimes*
+> (task-dependent), so naming may convert it to *reliable*, which is exactly what #1 tests.
+> **Lesson:** the split was over-fit to n=1; testing the prediction immediately falsified it.
+> (This is the harness catching its own Coherent-Falsehood-in-the-making — the point of the
+> Anchor Obligation applied to our *own* generalizations.)
+
 ## Diagnosis (per spec D5) + follow-up experiment backlog
 
-Posture-roles land in **"overlapping with baseline carefulness / value-is-legibility"**;
-action-roles (Researcher) show distinctive single-lens signal. Neither is "dead weight." The
+Roles land in **"overlapping with baseline carefulness / value-is-legibility"** — single-lens
+signal is modest, and apparent outliers are **task-dependent** (depend on whether the baseline
+already defaults to the role's behavior for that task). Neither dead weight. The
 confound-aware follow-ups, ranked:
 
-0. **Confirm the posture/action prediction** (cheap, decisive) — test **Emissary** ("test
-   against reality") as a predicted *action* outlier, and one more posture-role under
-   consistency. If Emissary is an outlier and posture-roles aren't, the split is real and
-   becomes the lens for the whole wide run.
-1. **Consistency-across-runs** (highest value for posture-roles) — run a task N× bare vs
+0. ~~Confirm the posture/action prediction~~ **DONE (A10) — falsified.** Emissary modest; the
+   split was a task×role artifact, not a role-type law. Lesson folded into the headline.
+1. **Consistency-across-runs** (now the clear top priority) — run a task N× bare vs
    with-role. Does the
    role *guarantee* behavior the baseline produces only *sometimes*? Tests the
    legibility/consistency hypothesis directly.
