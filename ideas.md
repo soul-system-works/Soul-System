@@ -941,9 +941,14 @@ IDEA:      Session-start expansion-silence glance — possible /soul-handoff
            Cartographer named at SOUL-085 council convening (the unmapped
            territory between contraction-default and explicit /soul-council
            invocation).
-STATUS:    Raw — captured from SOUL-085 synthesis thread (b); Body accepted
-           capture, declined immediate build (premature instantiation
-           concern). Awaiting ripening.
+STATUS:    Trending-redundant (2026-05-28, SOUL-105) — the path-(b) CHEAP
+           EXPERIMENT fired: the "silent roles" glance line ran in the
+           2026-05-27 handoff cursor and was surfaced at /soul-resume. Body
+           verdict: it did NOT change perceived value of the cursor. N=1 →
+           not enough to drop, but trends redundant given /soul-roles
+           already supplies the picture on demand. Path-(a) PROPER build NOT
+           warranted on this evidence. Re-test only if a later session finds
+           the glance useful where /soul-roles was not invoked.
 WHY:       SOUL-F014's PRE-MORTEM established auto-detection of
            expansion-need is intrinsically impossible. A012's Counterweight
            Rule + Body-Input Obligation are doctrinal; /soul-council and
@@ -1041,15 +1046,16 @@ IDEA:      BMAD Researcher beat — ~1-session pass reading BMAD method's
            and writing a finding on structural composition fit with seed
            §External Skills and Tools. NOT a full BMAD dogfood; just the
            read + structural-fit finding.
-STATUS:    Discharged-pending-amendment (2026-05-27, SOUL-098) —
-           the Researcher beat ran; output is [[SOUL-F041]] (open,
-           verdict (c) PARTIAL). What remains is the seed-edit
-           amendment, contingent on a future Researcher beat
-           covering CrewAI or AutoGen (F041's promotion trigger).
-           This idea is NOT closed — it ripens into a follow-up
-           "second-framework Researcher beat" once the Body
-           authorizes the next test (CrewAI's supervisor model
-           OR AutoGen's GroupChat model).
+STATUS:    Discharged (2026-05-27, SOUL-098→101; status corrected
+           2026-05-28, SOUL-105) — the Researcher beat ran; output
+           [[SOUL-F041]] is now CLOSED via [[SOUL-A016]] (accepted at
+           SOUL-101), which rewrote seed §External Skills "Soul wraps;
+           does not peer-map". The seed-edit amendment this idea was
+           pending HAS landed — the "pending-amendment" qualifier is
+           resolved. The follow-up "second-framework Researcher beat"
+           (CrewAI's supervisor model OR AutoGen's GroupChat model)
+           remains a future ripening thread, but I035's original
+           discharge is complete.
 WHY:       Seed §External Skills and Tools makes the composability claim
            ("a BMAD Analyst agent can embody the Witness role, a BMAD
            Architect can embody the Soul's Architect") as if confirmed.
