@@ -118,10 +118,32 @@ is deliberately deferred until the manual cadence proves insufficient.
    **Last distilled:** YYYY-MM-DD against <witness tail / commit SHA>
    ```
 
-8. **Present the draft for curation — do NOT commit.** Show the Body the draft,
-   the four shrinkage checks' results, the six failure-mode guards' results,
-   and the three diagnostic answers. The Body curates and commits. Mirrors
-   `/soul-skill`'s draft-for-curation discipline.
+8. **Present the draft for curation — delta-first, gap-only, never commit.**
+   The Body curates and commits; do not auto-commit (mirrors `/soul-skill`).
+   The review surface must make the *load-bearing question per entry* cheap to
+   judge — the Body cannot weigh a draft buried in passing-check prose (the
+   I037 pain). Apply the compact, gap-only discipline the completion gate
+   already adopted (SOUL-055: "expand to the failing check only on a real gap;
+   do not recite passing checks"):
+
+   - **Show the delta, not the whole Mind.** Diff the draft against the prior
+     `mind.md`. Present only **new (+)** and **changed (~)** entries across the
+     five buckets; collapse unchanged ones to a count (`N unchanged rules —
+     expand on request`). First distill (no prior Mind) = everything is new;
+     present in full.
+   - **One load-bearing verdict per delta entry.** For each new/changed Rule,
+     Tension, Invariant, or Contrast case:
+     `what it generates · anchor · LOAD-BEARING? Y/N — would removing it change
+     a decision, and which one?` A "No" is a prune candidate — surface it for
+     the Body to cut, do not hide it. Residual deltas use a different test:
+     `does it genuinely resist compression, or is it force-fittable into a rule?`
+   - **Checks: run all, recite none.** Steps 4–6 (4 shrinkage checks, 6 guards,
+     3 diagnostics) still run in full — that honesty is non-negotiable. But
+     present them as **one status line each, expanded only on a flag**, e.g.
+     `Shrinkage: clean (169→169) · Guards: clean · Diagnostics: 1 flag →
+     <flagged question + honest answer>`. A passing check is not recited.
+   - This governs the *review* only; the deployed `mind.md` format (step 7) is
+     unchanged.
 
 ## Retirement (Steward / never-always-on)
 
@@ -150,6 +172,10 @@ is deliberately deferred until the manual cadence proves insufficient.
   load-bearing boundary (Tier 2 evidence).
 - **Do not silently exceed the line budget.** ≤200 target, ≤300 cap; if you
   cannot fit, prune harder before deploying.
+- **Do not recite passing checks or re-show unchanged entries.** Present the
+  delta + a load-bearing verdict per changed entry; surface only flagged
+  checks — the SOUL-055 gap-only discipline applied to the Mind's review
+  (step 8). Reciting clean checks is the I037 ceremony cost.
 
 ---
 

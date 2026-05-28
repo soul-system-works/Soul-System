@@ -4980,3 +4980,48 @@ STATUS:       Resolved — push confirmed (origin/main = a2c10ed); c/e/f
               discharged; SOUL-105 anchored. The count method (not the
               ephemeral /tmp script) is the durable output, recorded above.
 ```
+
+```
+ID:           SOUL-106
+WHEN:         2026-05-28 / I037(b) build — distill review surface
+WHERE:        commands/soul-distill.md (step 8 + What-not-to-do guard)
+WHAT:         SOUL-I037 split into (a) cadence signal + (b) review surface;
+              Body chose (b), deferred (a). Built (b): /soul-distill step 8
+              rewritten from "show the Body the full draft + 4 shrinkage
+              checks + 6 guards + 3 diagnostics" to delta-first + gap-only —
+              present only new(+)/changed(~) entries vs the prior mind.md
+              (unchanged collapsed to a count), one LOAD-BEARING verdict per
+              delta entry (generates · anchor · would-removal-change-a-
+              decision), and the checks run-in-full but recited gap-only.
+              Locked as a What-not-to-do guard. Deployed mind.md format
+              (step 7) and the draft-for-curation contract untouched.
+TYPE:         Architect (the review-surface shape); Artificer (the instrument
+              edit); Revelator (saw (b) is the same shape as the SOUL-055
+              completion gate — one pattern, two instruments); Skeptic (cut
+              (a): structurally = the just-failed I033 glance, and premature
+              by Rule 2); Steward (deferred (a) rather than build
+              speculatively); Cartographer (scope-swept the doctrine map for
+              review-surface drift — came back clean).
+CONSEQUENCE:  (1) The distill review surface now applies the SOUL-055 gap-only
+              discipline the completion gate already validated. Addresses the
+              I037 "couldn't judge whether Rule 12 is load-bearing" pain
+              directly — the load-bearing verdict is per-entry and mandatory,
+              not buried in self-test prose. UNTESTED until the next real
+              /soul-distill renders the new surface (instruction-text, not
+              executable — validates organically on next fire, like I032's
+              flags). (2) (a) cadence signal DEFERRED, not built — Rule 2 (one
+              distill so far, 2026-05-27; no missed-distill evidence) + the
+              SOUL-105 I033 verdict (ambient forward-glances don't earn their
+              place for this Body). Re-open (a) only if a distill is actually
+              missed, and then on-demand (a /soul-tasks line / --check flag),
+              never ambient. (3) Clean scope-sweep — the SOUL-105 scope-lesson
+              applied forward: checked the spec (2026-05-26-the-mind-design.md
+              says the Distiller RUNS the checks, never RECITES them),
+              philosophy/the-soul.md §Distiller/§Mind (philosophy, not
+              presentation), mind.md. None describe the review surface, so no
+              drift to align. The inverse of the SOUL-104 audit-scope miss —
+              a DISCHARGED scope-check, not a caught one.
+STATUS:       Resolved — I037(b) shipped to commands/soul-distill.md;
+              SOUL-I037 STATUS → Graduated [partial]. Not yet committed;
+              presented for Body curation.
+```
