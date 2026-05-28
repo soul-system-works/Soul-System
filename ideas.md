@@ -1180,8 +1180,16 @@ IDEA:      The /soul-distill ↔ mind interaction is too abstract for the Body
            witness drift indicator?), AND (b) a review surface that surfaces
            the LOAD-BEARING question per candidate rule rather than burying
            it in self-test prose.
-STATUS:    Raw — captured at SOUL-103 distill closeout; Body observed the
-           abstraction cost during today's beat.
+STATUS:    Graduated [partial — 2026-05-28, SOUL-106]. Sub-problem (b)
+           review surface SHIPPED: /soul-distill step 8 now presents
+           delta-only (new/changed entries vs the prior mind.md, unchanged
+           collapsed) + a load-bearing verdict per entry + gap-only checks —
+           the SOUL-055 completion-gate discipline applied to the Mind's
+           review. Sub-problem (a) cadence signal DEFERRED — Rule 2 (one
+           distill so far; no missed-distill evidence) + the SOUL-105 I033
+           verdict (ambient forward-glances don't earn their place for this
+           Body). Re-open (a) only if a distill is actually missed, and then
+           on-demand (/soul-tasks line / --check flag), never ambient.
 ```
 
 ```
@@ -1253,4 +1261,13 @@ STATUS:    Graduated 2026-05-27 — Body picked the **two-clock model** (d).
            not calendar-anchored") NOT promoted to mind.md — the two-clock
            model is more nuanced than the candidate rule. Holds in residual
            per Mind discipline (zero-residual is suspicious).
+```
+
+```
+ID:        SOUL-I039
+WHEN:      2026-05-28
+IDEA:      Ship reusable utilities as a companion repo — take the learnings
+           from REF-09 (or other high-value things the community
+           repeatedly looks for) and turn them into reusable tools/utilities.
+STATUS:    Raw
 ```
