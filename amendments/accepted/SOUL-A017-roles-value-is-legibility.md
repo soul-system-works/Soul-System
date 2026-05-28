@@ -75,7 +75,10 @@ amendment text itself*, not dropped.
 - It does **not** claim roles are valueless — legibility/auditability is a real,
   named value (the Body's "naming is the value" point, now well-supported).
 - It does **not** claim the result holds where the baseline *breaks* — that
-  regime is untested and explicitly fenced as the place substance could return.
+  regime was untested at acceptance and explicitly fenced as the place substance
+  could return. See **Follow-up evidence (SOUL-I041)** below — it has since been
+  probed once, and the bound is sharpened (substance returns, but narrowly), not
+  removed.
 - It does **not** restructure the Council, retire any role, or touch the always-on
   seed. One depth-layer subsection; the gates and roles are unchanged in operation.
 
@@ -87,3 +90,39 @@ subsection stating: the roles are justified primarily by legibility, auditabilit
 and communicability rather than behaviour-lifting; with the explicit bound that
 the evidence is against a capable frontier baseline on moderate-to-tracer-hard
 tasks and a genuinely baseline-breaking regime remains untested.
+
+---
+
+## Follow-up evidence (SOUL-I041, 2026-05-28) — the bound, sharpened not removed
+
+A017's bound named a *baseline-breaking* regime as the place substance could
+return. SOUL-I041 ran the first probe of it — a **weaker-model arm** (Haiku 4.5
+vs the (b) Opus baseline), same tasks HR1–HR3, C1 compute-controlled. Detail:
+.soul/experiments/2026-05-28-i041-weaker-model/manifest.md; witness SOUL-110.
+
+- **The fragile regime exists.** The weaker baseline broke where Opus was robust:
+  HR1 logic 2/3 (vs 3/3), HR2 false-premise 0/3 caught (vs 3/3 NO-GO), HR3
+  constraints broken (vs ~3/3).
+- **A single role/gate still adds only FORM, even when the baseline breaks.**
+  Accountant lens on HR1: 2/3 → 2/3. Completion-gate on HR2: 0/3 → 0/3 flipped
+  (added verification *language*, not a flipped decision). A017's core holds, now
+  robust into the broken regime.
+- **The INTEGRATED layer (seed + Mind) DOES add substance — narrowly.** On HR2
+  (the anchoring axis) it lifted the weak baseline 0/3 → ~1.5/3 (one clean NO-GO
+  that named non-linear cost scaling; one run that surfaced the unverified premise
+  explicitly). It did NOT help HR1 (1/3, *worse* — big context distracted) or HR3
+  (worse). The lift is **discipline-matched** (the anchoring/skepticism the Soul
+  most encodes), **integration-dependent** (single lenses did not transmit it),
+  and **partial**.
+- **C1 control — the gain is doctrine, not compute.** A length-matched neutral
+  26 KB filler left HR2 at 0/3 (= bare). The whole-layer gain is attributable to
+  the Soul's anchoring discipline, not to added tokens/thinking.
+
+**Net effect on A017:** the core (single roles/gates = form, not behaviour-lifting)
+is *reinforced* and now extends into the broken-baseline regime. The bound is
+*kept and sharpened*: substance is real but **discipline-matched + integration-
+dependent + partial**, surfacing only when a weak baseline needs the very
+discipline the integrated layer carries. NOT a general "roles add substance when
+the baseline breaks." Generalisation still owed (n=3/arm, one weak model, one
+anchor-axis task): a 2nd anchor task + a 2nd discipline (e.g. a Prophet-trajectory
+trap) + other models — carried in SOUL-I041. No further doctrine change until then.

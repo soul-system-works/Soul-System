@@ -5159,3 +5159,48 @@ STATUS:       Resolved — (b) complete, F042 graduated to A017. Next idea: the
               baseline-breaking regime test (expert-domain / very-long-horizon /
               weaker-model) + the deferred public-benchmark replication.
 ```
+
+```
+ID:           SOUL-110
+WHEN:         2026-05-28 / I040 self-ablation — SOUL-I041 weaker-baseline probe
+WHERE:        .soul/experiments/2026-05-28-i041-weaker-model/ (raw arms +
+              manifest, gitignored); amendments/accepted/SOUL-A017 (follow-up
+              section added); philosophy/the-soul.md (bound sentence sharpened);
+              ideas SOUL-I041.
+WHAT:         Ran the first probe of A017's named bound (the baseline-BREAKING
+              regime): a weaker-model arm — Haiku 4.5 vs the (b) Opus baseline,
+              same tasks HR1–HR3, four steps. (1) Weaker baseline BREAKS where
+              Opus was robust: HR1 2/3, HR2 0/3 caught, HR3 broken. (2) A single
+              role/gate does NOT rescue it (HR1 Accountant 2/3→2/3; HR2 gate
+              0/3→0/3 flipped — added verification LANGUAGE not a flipped
+              decision). (3) The WHOLE integrated layer (seed+mind) DOES add
+              substance — but narrowly: HR2 anchoring axis 0/3→~1.5/3 (a NO-GO
+              naming non-linear scaling + a run surfacing the unverified premise);
+              NO help on HR1 (1/3, worse — big context distracts) or HR3 (worse).
+              (4) C1 control: a length-matched neutral 26KB filler left HR2 at
+              0/3 = bare ⇒ the gain is DOCTRINE CONTENT, not tokens.
+TYPE:         Emissary (tested A017's belief against a harder reality — a weaker
+              baseline); Skeptic + Accountant (the single-lens-vs-whole-layer
+              confound; the C1 compute confound, controlled); Artificer (ran the
+              4-step ablation by hand); Steward (no pruning — the result REFINES,
+              does not retire).
+CONSEQUENCE:  (1) A017 REFINED, not un-bounded: core (single roles = form) holds
+              and now extends into the broken-baseline regime; the bound is
+              sharpened — substance is DISCIPLINE-MATCHED (the anchoring/
+              skepticism the Soul most encodes) + INTEGRATION-DEPENDENT (single
+              lenses don't transmit it) + PARTIAL, surfacing only when a weak
+              baseline needs the very discipline the layer carries. Follow-up
+              section added to A017; the-soul.md bound sentence rewritten. (2)
+              New datum: the large layer can DISTRACT on orthogonal capability
+              tasks (HR1/HR3 worse) — a cost, not just neutral form. (3) C1
+              confound ruled out for the one win (HR2). (4) Generalisation owed
+              (n=3/arm, one weak model, ONE anchor-axis task): a 2nd anchor task
+              + a 2nd discipline (e.g. Prophet-trajectory trap) + other models —
+              carried in SOUL-I041; no further doctrine change until then. (5)
+              Method: the single-lens-vs-whole-layer split MATTERS — single-lens
+              ablation under-reads the layer's substance (slice-1 A5 echo, now
+              with a weak baseline + C1 control).
+STATUS:       Resolved — I041 first probe complete + landed (A017 refined,
+              committed). Generalisation (2nd anchor task, 2nd discipline, more
+              models) handed to next session via SOUL-I041.
+```
