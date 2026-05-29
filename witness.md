@@ -5634,3 +5634,48 @@ STATUS:       Resolved (this probe). BOUNDS: oracle=value ceiling → open Q is 
               when untested. Feeds I043/I044 + the lean-down (catalog = KEEP candidate)
               + I042 axis. Corpus docs/study/05 + README updated.
 ```
+
+```
+ID:           SOUL-121
+WHEN:         2026-05-29 / depth-bottleneck probe — CEILING (C2 fails); the depth niche, if real, is GENERIC map-reduce not Soul. Bounds ledger (06) written.
+WHERE:        docs/study/06-bounds-and-open-questions.md (new ledger), README index;
+              .soul/experiments/2026-05-29-depth-bottleneck/ (manifest+arms). Closes
+              SOUL-119's named DEPTH bound + the Body's "close the loose ends" scope.
+WHAT:         SOUL-119 found multi-agent topology = form on a BREADTH task; the named
+              bound was DEPTH (one agent's context/attention the bottleneck, lost-in-
+              the-middle, where dedicated sub-agents could recover misses). Probe: a
+              36-item config-audit packet, 6 planted issues scattered late-weighted;
+              arms single / careful (one agent, section methodically) / mapreduce (3
+              separate-context chunks + synthesis). Decisive: mapreduce vs careful.
+              Sonnet+Haiku n=5. Also: wrote the Bounds & Open Questions ledger (06)
+              closing the UNMEASURABLE ends by NAMING (the Cartographer's closure).
+TYPE:         Emissary (tested Path B's last steelman); Skeptic (read-confirmed the
+              6/6 was real, not keyword — single-haiku flags all 6 by reason + an
+              unplanted one); Accountant (declined the large-input redesign — it would
+              re-derive a known GENERIC result at high cost); Cartographer (the ledger).
+CONSEQUENCE:  (1) CEILING: single=careful=mapreduce=6.00/6 at BOTH models. The probe
+              could NOT create a bottleneck — issues are recognizable red flags (not a
+              recognition limit) and 36 short items fit single-pass attention (no
+              lost-in-middle). So nothing for map-reduce to recover. C2 difficulty
+              FAILS (same class as the verify-probe too-easy task / medical-salience
+              throwout) — reported as an honest null, not mined for fake signal. (2)
+              Does NOT show map-reduce can't help on depth; shows the bottleneck isn't
+              creatable at TRACTABLE single-shot scale. The genuine large-context
+              regime is where chunked map-reduce is an ESTABLISHED GENERIC technique —
+              not a Soul/role/doctrine effect. (3) FORK now airtight on the testable
+              side: even agentic's best-case niche (large-context depth) is generic
+              map-reduce, NOT the Soul role-engine → don't build an elaborate Soul
+              agentic engine; use generic multi-agent tooling if large-context tasks
+              arise. Consistent with the whole study. (4) The UNMEASURABLE ends
+              (longitudinal, multi-task what/when, tool-skills, built-router,
+              legibility-over-time) are closed by NAMING in ledger 06 — faking single-
+              shot proxies for them would be the Coherent Falsehood the study exists to
+              catch. The heaviest open ends all share a structure: value that COMPOUNDS
+              across sessions/tasks — exactly where the surviving substance should pay
+              off and exactly what a single-shot harness can't reach.
+STATUS:       Resolved (this probe, by ceiling). Study's testable single-shot surface
+              is now closed; the honest open ground (longitudinal) is named, not
+              claimed. Corpus docs/study/ = README + 00–06 complete. Lean-down (03)
+              decision input complete. Remaining = Body calls: execute the cut /
+              build a real router / render publication / build a longitudinal harness.
+```
