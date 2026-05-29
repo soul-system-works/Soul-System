@@ -1327,15 +1327,41 @@ STATUS:    In progress — TWO probes done (2026-05-28). (1) Weaker-model arm
            ([[SOUL-113]], Sonnet 4.6 n=5): substance is task-structure-dependent —
            HR2 (judgment task) self-caught by Sonnet bare (ceiling, gap gone); G3b
            (compliance/"just-draft-it" task) STILL shows whole 3/5 vs filler 0/5.
-           ⇒ doctrine substance is concentrated where the baseline won't self-catch
-           = weak baselines AND compliance-inviting tasks even at higher capability;
-           durable edge = resisting the compliance pull on flawed premises. A017
-           gradient section landed. REMAINING (firm the curve, not direction): a
-           3rd capability point + MORE COMPLIANCE-tasks (the load-bearing G3b gap
-           is n=5/one model) + optionally publication (the regime×task-structure
-           map under equal-compute is the novel, defensible contribution — parking
-           lot in the (b) spec). Method rules banked: run C1 on EVERY apparent win;
-           C2-validate domain salience; test BOTH judgment & compliance task shapes.
+           ⇒ doctrine substance is concentrated where the baseline won't self-catch.
+           A017 gradient section landed. (5) CURVE-FIRMING ([[SOUL-114]], Step 8):
+           the load-bearing compliance gradient did NOT generalise. THREE new
+           compliance tasks (G4 vendor-benchmark / G5 9-day-A/B / G6 18%-MoM-forecast)
+           × full curve (Haiku/Sonnet/Opus) × bare/whole/filler, n=5, C1-controlled =
+           135 arms. The G3b 3/5 withhold gap appeared NOWHERE (genuine doctrine-
+           withholds 2/45 whole arms; bare/filler 0). Flag-the-flaw was DISPOSITION-
+           ELICITABLE (filler ≈ whole everywhere; bare flags at ceiling at Opus) —
+           does NOT survive C1, the G2-trajectory pattern. Only FORM/legibility was
+           doctrine-attributable (whole-only Soul vocabulary + verification attempts).
+           ⇒ A017 core REINFORCED (3 more tasks × 3 capabilities); A017 gradient claim
+           SOFTENED. (6) STAKES-GATING ([[SOUL-115]], Step 9): the candidate rescue
+           was TESTED + REFUTED. Twin tasks (G7 public-guidance-raise / G8 $4M
+           non-cancellable contract) flipping only stakes/reversibility, Sonnet n=5:
+           higher stakes DID raise withholding (G8 bare 2/5 vs reversible 0/5) but the
+           neutral filler reproduced it at SONNET (G8 filler 5/5 = whole, identical).
+           ⇒ stakes-withhold is DISPOSITION-ELICITABLE at mid-capability — the THIRD
+           C1-caught false positive (trajectory → compliance-flag → stakes-withhold).
+           WEAK-BASELINE cell (G8-Haiku, run after the completion gate flagged G3b's
+           gap was at Haiku not Sonnet — Sonnet-only refutation overclaimed): bare 1/5,
+           filler 3/5, whole 5/5 — stakes lift filler (disposition) AND whole adds a
+           modest +2 margin = the SAME weak-baseline anchoring substance A017 retains.
+           So: compliance-resist FRONTIER edge WITHDRAWN (not "outright"); weak-baseline
+           anchoring margin persists. the-soul.md folded.
+           CENTRAL QUESTION NOW CLOSED: the only C1-surviving doctrine-attributable
+           substance is ANCHORING at WEAK baselines on content-dependent anchor tasks
+           (HR2 + G3b-Haiku, n=2); everything frontier-ward is form (legibility) or
+           compute. A017 CORE corroborated across 5 tasks × 3 capability points.
+           REMAINING = PUBLICATION only (the equal-compute self-ablation METHOD + the
+           now-clean regime map — the 3 C1-caught false positives are themselves the
+           headline result; parking lot in the (b) spec; verify arXiv cites first).
+           Method rules banked: run C1 on EVERY apparent win (3 false positives caught);
+           C2-validate domain salience; test judgment AND compliance task shapes; twin
+           tasks to isolate one variable; watch wrong-reason refusal confounds
+           (placeholders, disaster-salience).
 WHY:       (b)/Run 2 (HR1–HR3) found the hard regime ALSO form-not-substance,
            BUT could not MANUFACTURE a baseline-breaking regime for Opus 4.8 —
            the baseline barely cracked, so the reliability axis was never truly
@@ -1355,4 +1381,49 @@ NOTES:     Two concrete handles. (1) WEAKER MODEL arm — re-run HR1–HR3 (or n
            [[SOUL-I040]] / [[SOUL-I011]]; gates any un-bounding of [[SOUL-A017]];
            publication decision still deferred (run it first). Default-simplicity:
            the weaker-model arm is the cheapest first probe.
+```
+
+```
+ID:        SOUL-I042
+WHEN:      2026-05-28
+IDEA:      Instrument-value axis — are the /soul-* commands & the record system
+           valuable / better than alternatives? The cross-session counterpart to
+           I040/I041 (which tested single-shot doctrine). A017 found roles = legibility,
+           NOT behaviour-lifting; legibility's payoff is cross-session (for the next
+           session / second reader), so THIS is where it should cash out. Opened by
+           the Body after the I041 capstone.
+STATUS:    In progress — FIRST probe done ([[SOUL-116]], /soul-handoff + /soul-resume,
+           40 arms Sonnet+Haiku). Result: a rich written handoff BEATS cold
+           re-derivation (constraints ~4.7 vs 2.7; 0 vs 1 scope errors) — but the
+           SOUL FORMAT is form (cursor ≈ length-matched generic summary at both
+           capabilities); richness matters, structure doesn't (terse compact barely
+           beats cold). Cold already gets WHERE/NEXT right ⇒ the RECORD system
+           (witness/findings) is most of the resume value, vindicated more than the
+           cursor. Same lesson as I040/I041, now cross-session.
+           TWO NAMED NEXT PROBES (where the COMMAND, not a generic summary, could
+           still earn its keep — both were held constant in probe 1):
+           (a) RETRIEVAL — give arms the WHOLE repo (not a curated slice); does the
+           cursor's "here are the 5 records that matter out of thousands" beat making
+           the model find them? Plausibly the cursor's real value.
+           (b) SCAFFOLDING-COMPLETENESS — does running /soul-handoff make you WRITE a
+           more complete summary (right fields, cautions not dropped) than ad-hoc
+           capture would? Probe 1's C1 was given equal content by construction, so
+           this is untested. Test: ad-hoc-summary vs command-scaffolded-summary on
+           completeness, then resume from each.
+           OTHER instruments worth testing later: /soul-verify catches planted defects
+           vs generic "check your work"; /soul-distill (Mind) vs raw-records dump;
+           record-recall / traceability (plant a task a past finding bears on,
+           with-record vs without — does it prevent repeating a known mistake?).
+WHY:       The Body's question: "is there a way to test if these skills are valuable/
+           better than alternatives, and does the documentation help over time
+           (traceability)?" Probe 1 answered the handoff slice; the rest is open.
+DEVELOP:   Emissary (test instrument value against reality) / Skeptic + Accountant
+           (the "vs generic alternative" control is non-negotiable — 4 false positives
+           caught across the project when it was applied) / Advocate (cross-session
+           value is for the inheriting session).
+NOTES:     Carry the I041 method: every "the instrument helps" claim needs a
+           length-matched / generic-alternative control (C1), or it reads as a win
+           when it's just "having any artifact / more text." Material reusable in
+           /tmp/resume-test/. Relates to [[SOUL-I005]] (value) / [[SOUL-I011]] (token
+           economics) / [[SOUL-A017]] (legibility-is-the-value).
 ```

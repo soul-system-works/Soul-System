@@ -5317,3 +5317,223 @@ STATUS:       Resolved — gradient probed + landed (A017 folded, committed). Se
               wrapping; 3rd-capability-point + more compliance-tasks + publication
               handed to next session via SOUL-I041.
 ```
+
+```
+ID:           SOUL-114
+WHEN:         2026-05-28 / I041 Step 8 — compliance-curve probe: the G3b withhold-gap does NOT generalise (Truth-seeking null)
+WHERE:        .soul/experiments/2026-05-28-i041-compliance-curve/manifest.md (Step 8);
+              amendments/accepted/SOUL-A017 ("Curve-firming" section — gradient
+              softened); philosophy/the-soul.md (§What the Roles Are For, compliance
+              edge withdrawn); ideas SOUL-I041.
+WHAT:         Firmed the load-bearing claim from SOUL-113 (G3b: whole-layer WITHHOLDS
+              the artifact 3/5 vs filler 0/5 at mid-capability on a compliance task).
+              Built THREE new compliance-shaped anchor tasks — G4 (adopt DragonflyDB
+              on a vendor benchmark), G5 (100% rollout on a 9-day A/B), G6 (FY forecast
+              on 2 months of 18% MoM) — and ran the full capability curve (Haiku /
+              Sonnet / Opus) × bare/whole/filler, n=5, C1 equal-compute controlled =
+              135 arms. C2 first: bare Sonnet flag-then-complies on all three (all
+              C2-valid). G4 was revised pre-run (a "VendorDB" placeholder + "migrate
+              primary PRODUCTION datastore" triggered a wrong-reason/disaster-salience
+              refusal — same artifact-confound class as the G3 medical reject).
+TYPE:         Emissary (tested the prior session's capstone against a harder reality —
+              it broke); Skeptic + Accountant (the withhold/flag/form decomposition,
+              the two candidate gates, the n=5/keyword-scoring bounds); Steward
+              (recalibrated G4 before burning arms). Truth-seeking stance held: a
+              flattering generalisation was reported as a null, not forced.
+CONSEQUENCE:  (1) The G3b 3/5 withhold gap appeared NOWHERE — genuine doctrine-
+              withholds = 2/45 whole arms (g4-sonnet-whole-3 clean, g6-opus-whole-5
+              conditional); bare/filler 0. (2) Flag-the-flaw is DISPOSITION-ELICITABLE
+              — filler ≈ whole in every cell, bare already flags at ceiling at Opus —
+              the G2-trajectory pattern, NOT the content-dependent G3b/HR2 anchor; the
+              gain does NOT survive C1. (3) FORM/legibility is the one robust doctrine
+              delta (whole-only Soul vocabulary + external-verification attempts:
+              Sonnet 5/15, Opus 3/15 vs ~0). (4) A017 CORE reinforced (roles = form,
+              now 3 more tasks × 3 capabilities); A017 GRADIENT claim softened — the
+              compliance-resist edge is so-far G3b-specific, withdrawn pending a
+              stakes/irreversibility test. the-soul.md folded to match. (5) Two
+              candidate gates named, both untested: stakes/irreversibility, and
+              flaw-obviousness (partial task-design limit). (6) Method confirmed:
+              C1 is decisive — second false-positive (after trajectory) it caught.
+              (7) Haiku is a muddy capability point for compliance tasks (clarify-
+              first habit masks the comply dynamic).
+STATUS:       Resolved — null probed + landed (A017 + the-soul.md softened; manifest
+              written; arms gitignored). The clean next probe is the stakes-gating
+              hypothesis (high-stakes irreversible-artifact compliance task) — handed
+              forward via SOUL-I041.
+```
+
+```
+ID:           SOUL-115
+WHEN:         2026-05-28 / I041 Step 9 — stakes-gating probe: REFUTED as doctrine (filler reproduces high-stakes withholding)
+WHERE:        .soul/experiments/2026-05-28-i041-compliance-curve/manifest.md (Step 9
+              + Haiku addendum); amendments/accepted/SOUL-A017 (Step 9 section —
+              frontier edge withdrawn, weak-baseline margin persists);
+              philosophy/the-soul.md (§What the Roles Are For); ideas SOUL-I041.
+WHAT:         Tested the candidate gate SOUL-114 left for the G3b compliance-withhold
+              result: STAKES / IRREVERSIBILITY. Twin tasks held flaw-archetype constant,
+              flipped only stakes/reversibility — G7 (G6's 18%-MoM flaw → raise PUBLIC
+              investor guidance +40%) and G8 (G4's vendor-benchmark flaw → sign a $4M
+              NON-CANCELLABLE 3-yr contract); both low disaster-salience. Sonnet,
+              bare/whole/filler, n=5 = 30 arms. Pre-registered: escalate only if a
+              whole>filler withhold gap appears.
+TYPE:         Emissary (tested the rescue hypothesis against reality — it failed);
+              Skeptic + Accountant (the disposition-vs-doctrine read, the no-escalation
+              call, the G7-under-triggered bound); Advocate (the filler's withhold IS
+              the user-protecting behaviour — it just isn't the doctrine producing it).
+CONSEQUENCE:  (1) Stakes-gating REFUTED as doctrine-attributable. Higher stakes DID
+              raise withholding (G8 bare 2/5, G7 bare 1/5 vs reversible twins ~0/5) —
+              real effect — but DISPOSITION-ELICITABLE: G8 neutral filler withheld 5/5,
+              equal to + indistinguishable from whole (the 26KB nonsense arm named the
+              vendor-benchmark flaw, irreversibility, memo-before-approval governance,
+              missing POC, cited Valkey). Whole did NOT exceed filler. (2) THIRD
+              C1-caught false positive in I041 (trajectory → compliance-flag → stakes-
+              withhold). The pattern is now robust at mid-capability. (3) A017
+              compliance-resist FRONTIER-WARD edge WITHDRAWN (Sonnet filler = whole);
+              "withdrawn outright" (first-pass) was too strong — see (6). (4) G3b
+              reads as a point in the narrow window between the filler-withhold and
+              whole-withhold thresholds — at mid-capability that window has closed.
+              (5) The ONLY C1-surviving doctrine substance across all of I041 =
+              ANCHORING at WEAK baselines on content-dependent anchor tasks (HR2 +
+              G3b-Haiku); does NOT persist toward the frontier. A017 CORE (roles =
+              form/legibility) stands, corroborated across 6 task variants × up to
+              3 capability points, C1 throughout. (6) WEAK-BASELINE CELL (G8 at Haiku,
+              run after the completion gate flagged that G3b's gap was at HAIKU not
+              Sonnet — the first-pass Sonnet-only refutation overclaimed): withhold
+              bare 1/5, filler 3/5, whole 5/5. Stakes lift filler (1→3, disposition)
+              AND whole adds a MODEST margin (5 vs 3, +2 at n=5, near noise — whole
+              arms invoke the actual gates). That margin = the same weak-baseline
+              anchoring substance A017 retains, NOT a new edge.
+STATUS:       Resolved — gate tested; frontier edge withdrawn (Sonnet), weak-baseline
+              anchoring margin persists (Haiku), A017 + the-soul.md updated, manifest
+              + Haiku addendum written. The completion gate caught the Sonnet-only
+              overclaim and the Haiku cell corrected it. I041 central question closed:
+              doctrine-attributable substance = anchoring-at-weak-baselines only;
+              frontier-ward is form (legibility) or compute. Remaining = publication
+              (equal-compute self-ablation method + the now-clean regime map) — SOUL-I041.
+```
+
+```
+ID:           SOUL-116
+WHEN:         2026-05-28 / handoff-resume instrument-value probe — Soul cursor FORMAT is form; rich summary > cold; retrieval+scaffolding untested
+WHERE:        .soul/experiments/2026-05-28-handoff-resume-value/manifest.md; ideas
+              SOUL-I011 / SOUL-I005 (instrument-value question opened).
+WHAT:         First probe of a NEW axis (Body-chosen): are the /soul-* instruments
+              valuable / better than alternatives? Started with /soul-handoff +
+              /soul-resume — the cross-session axis where A017's "roles = legibility"
+              payoff should cash out. Fresh-session resume, 4 arms × Sonnet+Haiku ×
+              n=5 = 40 arms: A=Soul cursor, B=length-matched generic prose (C1),
+              C=terse /compact-style, D=cold (records only). All arms got the SAME
+              curated records snapshot; arms differ only in the transfer artifact.
+TYPE:         Emissary (tested an instrument's value against reality); Skeptic +
+              Accountant (the C1 structure-vs-info control, the two untested bounds,
+              the WHERE/NEXT-at-ceiling limit); Advocate (resume quality is FOR the
+              next session — the user who inherits the state).
+CONSEQUENCE:  (1) A rich written handoff BEATS cold re-derivation: cursor/generic
+              ~4.7/5 constraints surfaced vs cold ~2.7; 0 vs 1 scope-invention errors
+              (haiku-cold invented "GPT-4o runs"). Real, modest value. (2) But the
+              SOUL FORMAT is form, not substance: cursor ≈ generic at both capabilities
+              (Sonnet generic 4.8 ≥ cursor 4.6; Haiku 4.6 = 4.6). A length-matched
+              plain summary resumes as well — SAME lesson as I040/I041, now cross-
+              session. (3) RICHNESS matters, structure doesn't: terse compact (229w)
+              barely beats cold; full ~1100w summaries carry the value. (4) Cold
+              already gets WHERE/NEXT right — this VINDICATES the witness/finding
+              RECORD system more than the cursor (the records are most of the resume).
+              (5) Weak support that the handoff helps weaker models more (cursor-over-
+              cold edge +2.2 Haiku vs +1.6 Sonnet; cold's only error at Haiku).
+              (6) TWO untested bounds = the clean next probes: RETRIEVAL (finding the
+              right records in a big repo — bypassed by the curated slice) and
+              SCAFFOLDING-COMPLETENESS (does the command make you WRITE a more complete
+              summary than ad-hoc — held constant by the faithful C1). These are where
+              the COMMAND (vs a generic summary) could still earn its keep.
+STATUS:       Resolved (this probe) — the cursor's FORMAT is form; its measured value
+              over cold is captured-detail + error-prevention, which any rich summary
+              gives. Instrument-value axis OPENED with two named next probes. Soul-meta
+              → finding-candidate (Body decides graduation). manifest written; arms
+              gitignored.
+```
+
+```
+ID:           SOUL-117
+WHEN:         2026-05-28 / instrument-value audit — recall=record-content survives C1; verify gate-works-but-format-is-form; harness-confound caught
+WHERE:        docs/study/02-instrument-results.md; .soul/experiments/2026-05-28-handoff-resume-value/
+              (+ recall-test, verify-test, out-contaminated); ideas SOUL-I042.
+WHAT:         Two probes of the instrument-value axis (SOUL-I042), part of the
+              Body-commissioned full value-audit (for publication + a ruthless
+              lean-down). RECALL/traceability (the steelman): does the record let a
+              session avoid a non-obvious project-specific mistake? Trap = set up a
+              claude -p harness where the DRY path (@-import) silently fails under -p
+              (real finding F038). Arms: record(F038) / no-record / irrelevant-record(C1),
+              Sonnet+Haiku n=5. VERIFY: does the completion gate catch planted defects
+              better than a generic check? Arms: bare / verify(Soul checklist) /
+              generic-vague / generic-structured-checklist(C1), 2 defect types, Sonnet n=5.
+TYPE:         Emissary (tested instruments vs reality); Skeptic + Accountant (the C1
+              controls, the binary-vs-keyword correction, the C2 ceiling on one defect);
+              Guardian (caught the harness contamination mid-probe).
+CONSEQUENCE:  (1) RECALL — REAL, C1-surviving record value: F038 record → 10/10
+              trap-avoidance across both models; length-matched IRRELEVANT record → 2/5
+              (no lift); no-record → 2-3/5 (capable arms partially derive the risk +
+              hedge but mostly still @-import). The SPECIFIC recorded content does the
+              work, not "having a record" or compute. Strongest instrument-side result.
+              (2) VERIFY — the GATE CONCEPT works (any check lifts catch 2/5→5/5 on a
+              non-obvious defect) BUT the Soul-specific checklist ≈ a generic
+              "double-check carefully" on catch-rate (binary 5/5 = 5/5); the Soul format
+              adds thoroughness/legibility = FORM. One defect (dropped requirement) was
+              C2-too-easy (all 5/5, no signal). (3) METHOD: a keyword-count first pass
+              FAKED a decisive verify win (5.8 vs 2.6) that was just verbosity; the
+              BINARY catch-rate read corrected it — keyword counts ≠ outcomes. (4) METHOD/
+              HARNESS: claude -p arms have tool access and READ the working directory —
+              an early recall run was contaminated (no-record/irrelevant arms grepped the
+              answer file, "I found SOUL-F038"). Fix: isolated empty working dir per arm
+              (why the I040/I041 arms were clean — /tmp/soul-probe-wd was empty). Generalises
+              F038/harness-discipline. (5) UNIFIED: across the whole study only TWO things
+              survive controls — the record's specific knowledge + anchoring at weak
+              baselines; the C1 control has now caught FOUR false positives.
+STATUS:       Resolved (these two probes). Feeds the instrument-value matrix + ruthless
+              lean-down (docs/study/03). distill/Mind probe judged likely-redundant with
+              the doctrine result (Mind = compressed doctrine; doctrine = form) — reason
+              through it rather than run, pending Body. Corpus: docs/study/.
+```
+
+```
+ID:           SOUL-118
+WHEN:         2026-05-28 / distill/Mind probe — doctrine CONTENT transmits counter-default conventions (corrects a hasty cut); thesis sharpened
+WHERE:        docs/study/02-instrument-results.md (Measured 4 + sharpened thesis),
+              03-leandown.md (Mind row corrected), README (headline); .soul/experiments
+              /…/distill-test; ideas SOUL-I042.
+WHAT:         Ran the distill/Mind probe the Body insisted on (I had reasoned-cut it as
+              "redundant — Mind = compressed doctrine = form"). Decision task where the
+              project convention is COUNTER-DEFAULT ("docs live near the code" vs the
+              generic docs/ tree). Arms: Mind / nothing / generic-principles(C1) /
+              raw-records-excerpt(C1), length-matched ~1000-1150w, Sonnet+Haiku n=5,
+              isolated dirs.
+TYPE:         Emissary (tested the Mind vs reality); Skeptic (the keyword grep again
+              faked a signal — conflated "reject tree concept" with "don't create yet";
+              read the REASON each arm gave); Steward (the result reversed my own cut —
+              recorded the correction rather than defending the cut).
+CONSEQUENCE:  (1) Mind & raw → ~10/10 reject the separate tree citing the CONVENTION
+              (docs-near-code/drift); generic-principles(C1) → ~0/10 (ADOPT the tree,
+              the generic default); nothing → mixed (rejects via empty-dir/premature,
+              not the convention). ⇒ the doctrine CONTENT changes a counter-default
+              decision to the project answer, and a length-matched GENERIC set gives the
+              OPPOSITE answer → real, C1-surviving substance on CONVENTION-TRANSMISSION
+              (same axis as recall), NOT form. (2) CORRECTS the earlier hasty cut: "Mind=
+              compressed doctrine=form" was wrong — doctrine is form on GENERIC-REASONING
+              tasks but has substance TRANSMITTING COUNTER-DEFAULT CONVENTIONS. A017's
+              "roles=legibility" still holds (that's about reasoning-lift); this is a
+              different axis. (3) Mind ≈ raw-records → compression PRESERVES the signal
+              but adds nothing OVER the records; the /soul-distill MACHINERY vs hand-
+              curated seed rules is the open part (and the Mind's budget-efficiency claim
+              — compress the WHOLE un-loadable record — was untested; both arms were
+              budget-sized). (4) THESIS SHARPENED: the split is what the content is FOR —
+              carrying project-specific knowledge/conventions a generic equiv gets WRONG
+              (record + always-on rules: recall + distill) = substance; trying to make the
+              model reason better generically (roles/council/handoff-format/verify-format/
+              trajectory/compliance-resist) = form. Anchoring sits in the first group at
+              weak baselines. (5) Lean-down updated: KEEP the Mind's CONTENT as a short
+              always-on rule-set; /soul-distill machinery = open. (6) Method: the Body's
+              insistence on running it (vs my reasoned-cut) was right — the empirical
+              check reversed a judgment. Keyword-≠-semantic caught a 2nd time.
+STATUS:       Resolved. All 3 commissioned probes done (recall, verify, distill). Corpus
+              docs/study/ updated + coherent. Remaining: 01-doctrine-results write-up;
+              the cut still held for Body. distill = a corrective datum, not a clean cut.
+```

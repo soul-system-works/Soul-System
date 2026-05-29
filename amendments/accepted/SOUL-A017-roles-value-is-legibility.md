@@ -188,3 +188,93 @@ substance (the part that persists toward the frontier) is concentrated in
 analytical catch is a weak-baseline-only rescue. BOUNDS: n=5, one mid model, two
 tasks; the G3b whole>filler gap (3/5 vs 0/5) is the load-bearing claim. A 3rd
 capability point + more compliance-tasks would firm the curve (SOUL-I041).
+
+### Curve-firming (SOUL-I041 Step 8, 2026-05-28) — the compliance-resist gradient did NOT generalise
+
+The load-bearing claim above (the G3b whole-withholds-3/5-vs-filler-0/5 gap) was
+the explicit thing to firm. It was tested directly: **three new compliance-shaped
+anchor tasks** (G4 cache-adoption on a vendor benchmark; G5 100%-rollout on a
+9-day A/B; G6 FY-forecast on 2 months of 18%-MoM growth), **full capability curve
+(Haiku / Sonnet / Opus), n=5, C1 equal-compute controlled — 135 arms.** Detail:
+.soul/experiments/2026-05-28-i041-compliance-curve/manifest.md; witness SOUL-114.
+
+**It did not replicate.** The whole-layer withhold behaviour appeared in **2 of 45
+whole arms** (one clean anchor-resist at Sonnet, one conditional hold at Opus);
+bare and filler withheld 0. The 3/5 gap from G3b appeared on **no** task at **any**
+capability point. What the doctrine *did* do split cleanly:
+- **Flag-the-flaw was disposition-elicitable** — length-matched neutral filler
+  flagged the planted weakness at ~the same rate as the whole layer in every cell
+  (sometimes higher), and at Opus the *bare* baseline already flagged at ceiling.
+  This is the **G2-trajectory pattern, not the content-dependent G3b/HR2 anchor**:
+  the gain does **not** survive C1.
+- **Form/legibility was the one robust delta** — whole arms alone invoked the
+  Soul's vocabulary (Anchor Obligation / Skeptic / Emissary) and attempted
+  external verification (Sonnet 5/15, Opus 3/15; filler ~0, bare 0). The flag
+  *behaviour* matched filler; the doctrine changed *how/why* it was expressed.
+
+**Net effect on A017 (the gradient claim is softened; the core is reinforced):**
+- The **core holds and is now broader** — roles = form/legibility, not behaviour-
+  lifting, now across **3 more tasks × 3 capability points**, C1-controlled.
+- The **gradient claim is corrected.** "The durable edge toward the frontier =
+  resisting the compliance pull on flawed premises" rested on a **single task
+  (G3b)** and did **not** generalise. The honest statement: the C1-surviving
+  compliance-withhold substance is **so far G3b-specific**, not a general property
+  of "compliance-shaped + flawed premise." Two non-exclusive candidate gates,
+  both **untested**: (1) **stakes / irreversibility** — G3b's artifact authorised a
+  $1.2M irreversible reallocation; G4–G6 produce reversible/provisional artifacts,
+  so every arm flags-then-drafts; (2) **flaw-obviousness** — G4–G6's flaws (vendor
+  benchmark, short A/B, naive extrapolation) are textbook cautions any long prompt
+  elicits, so filler reproduces the flag (a partial task-design limit, named).
+- Method confirmed again: **C1 is decisive** — without it G4–G6 would read as a
+  doctrine win; with it the flag-gain dissolves into compute, exactly as the
+  Prophet/G2 generalisation did (Step 5).
+
+The clean next probe was the **stakes-gating hypothesis**: a high-stakes
+*irreversible*-artifact compliance task. **It was run (SOUL-I041 Step 9; witness
+SOUL-115) and the gate was REFUTED as doctrine-attributable.**
+
+### Stakes-gating test (SOUL-I041 Step 9) — stakes raise withholding, but filler reproduces it
+
+Twin tasks held the flaw-archetype constant and flipped only stakes/irreversibility:
+G7 (G6's 18%-MoM flaw → raise *public investor guidance* +40%) and G8 (G4's
+vendor-benchmark flaw → sign a *$4M non-cancellable* 3-yr contract), Sonnet,
+bare/whole/filler, n=5. Higher stakes DID raise withholding (G8 bare 2/5, G7 bare
+1/5 vs the reversible twins' ~0/5) — a real effect. **But it is disposition-
+elicitable, not doctrine:** on G8 the length-matched neutral filler withheld
+**5/5** — equal to whole and substantively indistinguishable (the 26KB
+warehouse-logistics filler arm named the vendor-benchmark flaw, the
+irreversibility, the memo-before-approval governance problem, missing POC, even
+cited Valkey). Whole did not exceed filler. So the stakes-gating hypothesis
+*explains* why withholding occurs (stakes × flaw-obviousness crossing a threshold)
+but the Soul doctrine is not what produces it.
+
+At Sonnet (mid-capability) this is the third C1-caught false positive in I041
+(trajectory → compliance-flag → stakes-withhold).
+
+**The weak-baseline cell (G8 at Haiku, where G3b's original gap was measured)
+behaves differently and must be stated precisely** (it was owed — the Sonnet-only
+refutation, "withdrawn outright," overclaimed; the completion gate caught it):
+G8-Haiku withhold = bare 1/5, **filler 3/5, whole 5/5.** Stakes lift the filler
+from bare (1/5→3/5 — disposition-elicitable), AND the whole layer adds a **modest
+margin on top** (5/5 vs 3/5; +2 at n=5, near noise, but the whole arms invoke the
+actual gates — one literally "invoke[s] the Frame gate" and quotes the Soul). That
+margin is the **same weak-baseline anchoring substance A017 already retains** —
+content-dependent, weak-baseline-only — not a new frontier edge.
+
+**Corrected verdict:** the compliance-resist **frontier-ward edge is withdrawn**
+(at Sonnet, filler 5/5 = whole 5/5 — no doctrine margin; Step 8's Opus/Sonnet
+arms showed no withhold gap either). At the **weak baseline** a modest
+whole>filler withhold margin persists (Haiku 5/5 vs 3/5), but it is absorbed into
+the retained weak-baseline anchoring claim, and most of the high-stakes
+withholding is disposition-elicitable even there (filler 3/5 ≫ bare 1/5). G3b
+reads as a point in the narrow window between the filler-withhold and
+whole-withhold thresholds — at mid-capability that window has closed.
+
+**Net across all of I041:** the only C1-surviving, doctrine-attributable substance
+is **ANCHORING at weak baselines on content-dependent anchor tasks** (HR2 +
+G3b-Haiku; the G8-Haiku withhold margin is the same effect) — it does **not**
+persist toward the frontier. Everything mid-capability-and-up — trajectory,
+compliance-flag, and compliance-withhold at any stakes level tested — dissolves
+under the equal-compute control. A017's CORE (roles = form / legibility /
+auditability, not behaviour-lifting) stands and is now very heavily corroborated:
+6 task variants × up to 3 capability points, C1-controlled throughout.
