@@ -50,6 +50,19 @@ generic equivalent matched it. **The control caught four false positives**
 Largest un-measured value: **longitudinal** accumulation across many sessions; the
 recall probe is the first single-shot reach at it.
 
+**Skill-routing — the one reasoning-adjacent exception (added 2026-05-29).** One
+capability that tries to improve the *work* (not just carry knowledge) survived the
+control: **knowing *which* skill to deploy when**, under a selection budget. Given a
+catalog with a tempting-but-wrong trap and a non-obvious-correct skill, a weak model
+forced to pick ≤2 reliably grabbed the trap and missed the right skill (1/5);
+handed the right skill, it solved 5/5 (oracle vs budgeted self-pick = 5/5 vs 1/5 at
+Haiku). It dissolves at the frontier (the strong model knows the answer) and without
+a budget (free selection over-selects and catches the skill anyway) — so it lives in
+the same cell as anchoring: **weak baseline × counter-default knowledge**, now plus
+*tight budget*. This is the first win on the what/when-*deployment* face (recall already showed *having* the right knowledge wins) and it supports a
+**tested, selective skills catalog** as a lean-Soul keeper. See
+[`05-skill-routing.md`](05-skill-routing.md).
+
 **Roles-as-agents (added 2026-05-29).** A follow-up probe tested the obvious
 objection to "roles = form": maybe roles only look like form because they were
 measured as *prose*, never as *dedicated subagents*. Built as agents (one subagent
@@ -72,6 +85,7 @@ from prose to agents.** Bounds: one breadth-coverage task; depth-bottleneck task
 | [`02-instrument-results.md`](02-instrument-results.md) | The `/soul-*` instruments: handoff, recall/traceability, verify, distill |
 | [`03-leandown.md`](03-leandown.md) | The ruthless keep/cut decision → a lean Soul-System |
 | [`04-agentic-roles.md`](04-agentic-roles.md) | Roles-as-*agents* vs roles-as-prose — the maturity confound; "form" extends to agents |
+| [`05-skill-routing.md`](05-skill-routing.md) | Does knowing *which* skill to deploy beat the model picking? — the what/when-deployment win, bounded to weak×budget×counter-default |
 | [`data/`](data/) | Consolidated result tables |
 
 ## Reproducibility note
@@ -81,8 +95,11 @@ and local). The distilled designs, scores, and verdicts are lifted into this tra
 corpus and into the durable record (`witness.md`, `amendments/`, `ideas.md`). Each
 probe section cites its raw-arm directory.
 
-**Status:** corpus complete (`README` + `00`–`03` written). Doctrine arc (I040/I041)
-closed; all four instrument probes measured (handoff, recall, verify, distill); the
-lean-down recommendation is drafted ([`03-leandown.md`](03-leandown.md)). The cut
-itself awaits Body approval (held). Optional polish remaining: a consolidated
-`data/` table set, and rendering into a chosen publication format (blog / preprint).
+**Status:** corpus complete (`README` + `00`–`05`). Doctrine arc (I040/I041) closed;
+instrument probes measured (handoff, recall, verify, distill); the maturity-confound
+follow-ups added 2026-05-29 — agentic-roles (`04`, null) and skill-routing (`05`, a
+bounded win). The lean-down recommendation ([`03-leandown.md`](03-leandown.md)) is
+drafted; `05` adds a **tested-catalog = keep** candidate not yet folded into `03`.
+The cut itself awaits Body approval (held). Optional polish remaining: a consolidated
+`data/` table set, fold `04`/`05` into `03`, and rendering into a chosen publication
+format (blog / preprint).
