@@ -28,12 +28,13 @@ Verdict basis in brackets.
 | `soul-handoff` / `soul-resume` | M | format is form; a rich generic summary ties it; records carry most of resume. Retrieval value untested. | **MERGE to convention** — keep the *habit* of a rich handoff note; drop the Soul-specific cursor ceremony. Revisit only if a retrieval test shows the command beats a plain summary. |
 | `mind.md` (the Mind's *content*) | M | **CORRECTED by the distill probe** (the earlier "compresses form → cut" was too hasty): the rules transmit counter-default project *conventions* — Mind/raw both flip a decision to the project answer (docs-near-code) where generic principles give the wrong default. Real, C1-surviving substance (convention-transmission, same axis as recall). | **KEEP the content** as a small always-on rule-set in the lean seed. |
 | `soul-distill` machinery (auto-maintenance of the Mind) | M/R | Mind ≈ raw-records on transmission — compression preserves the signal but adds nothing *over the records*. Whether the rules need *auto-distillation* vs hand-curation is **not settled** by the probe; the Mind's budget-efficiency claim (compress the whole un-loadable record) was untested. | **OPEN / lean** — fold the load-bearing rules into the seed by hand; the `/soul-distill` auto-maintenance is the debatable part, not the rules. |
-| `soul-council` | M | forcing multi-perspective = form (I040/I041 roles). | **CUT as doctrine** — it is generic "consider angles"; keep nothing Soul-specific. (Body may still invoke generic brainstorming.) |
+| `soul-council` | M | forcing multi-perspective = form (I040/I041 roles); **corroborated by the agentic-roles probe (SOUL-119)** — even as dedicated subagents, roles ≈ generic decomposition, and the multi-agent synthesis can *lose* findings. The substance is decomposition itself (cheap, generic), not the council. | **CUT as doctrine** — it is generic "consider angles"; keep nothing Soul-specific. (Body may still invoke generic brainstorming.) |
 | `soul-expand` | R | expansion-nudge (F014). Like verify: the nudge may help, the Soul framing is form. | **MERGE** into a one-line "what am I missing / what could this become?" prompt in the lean seed. |
 | `soul-ask-body` | R | Body-Input discipline (F037); a nudge to ask vs barrel. | **MERGE** into a one-line seed reminder; no command. |
 | `soul-roles` / `soul-tasks` / `soul-help` / `soul-explain` | R/I | read-only convenience / observability; no substance or activation claim. | **CUT from the core** (optional QoL; not part of a lean system). |
-| `soul-skill` | R | governance wrapper over the skill engine. | **CUT** — the skill engine stands alone; the wrapper is meta-overhead. |
-| **Council role chamber** (the-soul.md prose) | M | legibility, not behaviour-lifting (A017, heavily corroborated). | **CUT to a one-liner** — name that perspectives exist; drop the 700-line chamber from always-on (it already isn't auto-loaded). |
+| `soul-skill` | R | governance wrapper over the skill engine (verify/attribute/retire). | **CUT the wrapper, KEEP its output** — the skill engine stands alone; but the *tested* know-how it captures feeds the catalog below. |
+| **tested skills catalog + what/when routing** (NEW) | M | the skill-routing probe (SOUL-120): given a budget, curated *which-to-deploy* knowledge beats the model's own pick — oracle 5/5 vs budgeted self-pick 1/5 at the weak baseline. Bounded to {weak model × tight budget × counter-default skill}; an *upper bound* (oracle = perfect routing). | **KEEP — a lean, selective, tested catalog** (the deployment-face of the record; same family as recall/distill). Value where weaker models meet budget pressure. A *built* router is the open next step, not yet justified to build. |
+| **Council role chamber** (the-soul.md prose) | M | legibility, not behaviour-lifting (A017, heavily corroborated — and extended from prose to *agents* by SOUL-119). | **CUT to a one-liner** — name that perspectives exist; drop the 700-line chamber from always-on (it already isn't auto-loaded). |
 | **the First Principle / AL gate** | I (+ supported) | "understand the abstraction before the instantiation" — the framing discipline; cheap, orienting. | **KEEP** (one line). |
 
 ## The lean Soul-System (proposed)
@@ -52,25 +53,37 @@ From ~16 commands + 3 doctrine layers down to a small core:
 3. **A completion gate** — a short pre-ship check; its load-bearing item is the
    anchor check. Fires as a hook (activation > prose).
 4. **One capture command** (+ the earned-finding gate) and **init**.
+5. **A tested, selective skills catalog** (+ budget-aware routing) — the curated
+   *which-skill-when* index, each entry earned via a verified success (the surviving
+   half of `soul-skill`). Measured value (SOUL-120) where weaker models work under a
+   selection budget; the deployment-face of the record. A *built* router is a later
+   step, not yet justified.
 
 Everything else — the `/soul-distill` *machinery* (the rules it produces are kept by
-hand; the auto-maintenance is open), council, the handoff cursor format, the
-read-only utilities, ask-body/expand/skill as commands, the role-chamber doctrine —
-is **cut or folded to a one-line convention.**
+hand; the auto-maintenance is open), council, the role-as-subagent engine (SOUL-119),
+the handoff cursor format, the read-only utilities, ask-body/expand/skill-*wrapper* as
+commands, the role-chamber doctrine — is **cut or folded to a one-line convention.**
 
 ## What this lean system explicitly bets, and the risk it carries
 
-- **Bet:** the value is *project-specific knowledge & conventions* (carried by the
-  record and by a short always-on rule-set — recall + distill both measured) + *the
-  anchor discipline* + *activation* (gate fires, capture is frictionless). Measured.
+- **Bet:** the value is *counter-default project/domain knowledge* in three measured
+  faces — **having** it (recall, the record), **compressing** it (distill, the seed
+  rule-set), and **deploying the right piece when** it's not obvious (routing, the
+  tested catalog — SOUL-120) — plus *the anchor discipline* + *activation* (gate
+  fires, capture is frictionless). All concentrated at weak baselines / where the
+  generic default is wrong; the frontier dissolves each because it already knows.
 - **Risk / untested:** (a) **longitudinal accumulation** beyond single-shot recall —
   whether the record across *many* sessions prevents drift — is largely unmeasured;
   the recall win is one probe. (b) **retrieval** — whether a handoff/index command
   beats a plain summary in a *large* repo — untested. (c) **legibility's downstream
-  payoff** for a human reader over time is asserted, not measured. The lean system
-  keeps the records (so (a)/(c) remain possible) but cuts the scaffolds that only
-  *formatted* them. If a later retrieval or longitudinal probe shows value, the
-  handoff/Mind decisions are the ones to revisit first.
+  payoff** for a human reader over time is asserted, not measured. (d) **a *built*
+  router** — the catalog win is an *oracle* (perfect-routing) upper bound; whether a
+  real router approaches it better than the model's own pick is unmeasured, as are
+  **tool-skills** (vs procedure-knowledge) and the multi-task what/when. The lean
+  system keeps the records (so (a)/(c) remain possible) and a *thin* catalog (so (d)
+  stays cheap); it cuts the scaffolds that only *formatted* the record. If a later
+  retrieval / longitudinal / router probe shows value, the handoff/Mind/router
+  decisions are the ones to revisit first.
 
 ## Status
 
