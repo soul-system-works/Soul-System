@@ -5586,3 +5586,51 @@ STATUS:       Resolved (this probe). BOUNDS (named, real): one BREADTH-coverage 
               lean-down (03 — roles row corroborated: cut to one-liner). Corpus docs/study/
               04 + README updated.
 ```
+
+```
+ID:           SOUL-120
+WHEN:         2026-05-29 / skill-routing probe — curated WHAT/WHEN routing HAS substance (first win on the what/when-DEPLOYMENT face; recall=having already won), bounded to weak-baseline × budget × counter-default
+WHERE:        docs/study/05-skill-routing.md (new), README headline+index;
+              .soul/experiments/2026-05-29-skill-routing/ (manifest+arms); ideas
+              SOUL-I043 (tested catalog) + SOUL-I044 (this probe). Body-clarified
+              after SOUL-119: a role's power = its curated skill/hook bundle + Soul
+              knowing which to deploy when (the variable SOUL-119 held at zero).
+WHAT:         Tested Claim B (routing/expertise) vs the realistic default (model
+              self-selects skills from a catalog). Counter-default task (RSS climbs
+              for days → allocator FRAGMENTATION, not a leak; profiler finds nothing).
+              24-skill catalog: non-obvious-correct (allocator-tuning-guide) + anti-
+              relevance trap (memory-leak-hunt) + near-misses + distractors. Arms:
+              floor / all-on / catalog-pick / pick2 (budget≤2) / soul-oracle (correct
+              bundle injected = perfect routing). Sonnet+Haiku n=5, isolated dir.
+TYPE:         Emissary (tested the routing claim); Skeptic (apparent WIN → C1 + read-
+              confirm hard, 4 prior false positives); Revelator (the budget redesign
+              — free selection over-selects, so the budget IS the routing problem);
+              Cartographer (named oracle=upper-bound + untested axes).
+CONSEQUENCE:  (1) DECISIVE: oracle vs pick2 at Haiku = 5/5 vs 1/5 outcome. Under a
+              real selection budget the weak model spends its 2 picks on the OBVIOUS
+              trap (memory-leak-hunt 5/5) + a distractor, MISSING the non-obvious-
+              correct allocator skill (4/5 miss); given it directly, solves 5/5.
+              Curated what/when routing BEATS model self-selection — first win on the
+              what/when-DEPLOYMENT face (recall=HAVING already won, SOUL-117; same
+              counter-default-knowledge family). (2) MECHANISM (read-confirmed): the
+              wrong pick STEERS the diagnosis wrong — haiku-4 saw the RSS-vs-heap clue
+              but blamed the FD-LEAK skill it loaded; haiku-5 blamed GC (its pick).
+              Selection is the bottleneck, not usage (oracle 5/5, all-on 5/5). (3) The
+              BOUNDS are the finding — same shape as anchoring/recall/distill:
+              dissolves at FRONTIER (Sonnet floor 5/5, knows the answer → routing
+              form), dissolves with NO BUDGET (free-pick over-selects, catches the
+              skill 4/5 by wide net), needs NON-OBVIOUS-correct + tempting-trap. Lives
+              in: weak model × tight budget × counter-default skill. (4) FORK (with
+              SOUL-119): elaborate agentic NOT supported, but the routing/CURATION
+              layer over a catalog HAS measured substance (as an UPPER bound — oracle
+              = perfect routing) → supports a TESTED catalog (I043) as a lean-Soul
+              KEEP; the "Soul as the what/when-to-deploy layer" the Body described is
+              real in that cell. METHOD: grep only to LOCATE, then read-confirm; C1 =
+              pick2 (budgeted self-select); free-select retained as no-budget control.
+STATUS:       Resolved (this probe). BOUNDS: oracle=value ceiling → open Q is whether
+              a BUILT router approaches it better than model self-pick (now worth
+              asking); procedure-knowledge text proxy (not real tool-skills); 1 task,
+              n=5, 1 budget point, Haiku-only outcome; multi-task/longitudinal what+
+              when untested. Feeds I043/I044 + the lean-down (catalog = KEEP candidate)
+              + I042 axis. Corpus docs/study/05 + README updated.
+```

@@ -1439,3 +1439,75 @@ NOTES:     Carry the I041 method: every "the instrument helps" claim needs a
            /tmp/resume-test/. Relates to [[SOUL-I005]] (value) / [[SOUL-I011]] (token
            economics) / [[SOUL-A017]] (legibility-is-the-value).
 ```
+
+```
+ID:        SOUL-I043
+WHEN:      2026-05-29
+IDEA:      A SELECTIVE, TESTED skills/tools catalog as a lean Soul-System artifact —
+           the curated index of the "best" skill/hook for a given task/role. Distinct
+           from the many generic "awesome-X" lists: ours is curated AND verified
+           (each entry earned via a tested success, same bar as /soul-skill). Could
+           be a simple awesome-skills page. Reframes the Soul System per the Body:
+           not (only) doctrine that improves reasoning, but the LAYER THAT HOLDS THE
+           EXPERTISE ON WHAT + WHEN TO DEPLOY skills — a meta-layer OVER ecosystems
+           like BMAD, not a replacement. Each Council role = a purpose backed by a
+           curated capability bundle; the catalog is the addressing scheme.
+WHY:       Body, refining the agentic-roles result ([[SOUL-119]]): SOUL-119 showed
+           role-as-bare-subagent ≈ generic decomposition (tools held at zero). The
+           Body's real claim is that a role's POWER is its curated skill/hook bundle
+           + Soul knowing which to deploy when — the variable SOUL-119 controlled
+           away. The catalog is where that what/when expertise would live, and is a
+           candidate KEEP item for the lean-down (docs/study/03).
+DEVELOP:   First test = the skill-routing probe [[SOUL-I044]]. RESULT ([[SOUL-120]]):
+           QUALIFIED YES — oracle-routing beat budgeted self-pick 5/5 vs 1/5 at the
+           weak baseline; a TESTED catalog earns its place, but only in the cell
+           {weak model × tight budget × counter-default skill} (dissolves at frontier,
+           with no budget, or where the right skill is obvious). ⇒ catalog = lean-Soul
+           KEEP candidate; value concentrated where weak models meet budget pressure.
+           Connects to the
+           seed's "External Skills and Tools / Surface when…" table, [[SOUL-I011]]
+           (token economics / RAG-MCP always-on degradation past ~10), and the
+           "never always-on" budget rule (Mind rule 5).
+```
+
+```
+ID:        SOUL-I044
+WHEN:      2026-05-29
+IDEA:      SKILL-ROUTING probe — tests Claim B of the Body's maturity hypothesis: the
+           Soul layer's knowledge of WHICH skill-bundle to deploy WHEN beats the
+           realistic non-Soul default (model self-selects from a catalog). Claim A
+           (equipping a role with tools helps at all) is trivially true = floor.
+           DESIGN (grilled 2026-05-29, pre-registered): 4 arms — Floor (task alone) /
+           All-on (all ~24 bundle contents injected = RAG-MCP degradation regime) /
+           Catalog-pick=C1 (given the index, agent names picks → inject those → solve)
+           / Soul-oracle (correct bundle injected directly; oracle-routing = test the
+           VALUE of the what/when knowledge before building a router MECHANISM).
+           DECISIVE CONTRAST: oracle vs catalog-pick (same ecosystem available; differ
+           only on whether Soul-curation beats model self-selection). SIGNAL must be
+           ENGINEERED via selection-difficulty: a large/noisy catalog with a NON-
+           OBVIOUS-correct skill (right content, unassuming name) + an ANTI-RELEVANCE
+           TRAP (great-sounding name, content misleads). Easy/obvious selection →
+           catalog-pick ties oracle = a real NULL (routing form), not a failed test.
+           Metrics: selection accuracy (picked right? dodged trap?) + downstream
+           outcome quality. Sonnet+Haiku n=5; C2-validate first (does catalog-pick
+           even struggle?). WALL/BOUND (Body fork): operationalizes skills as
+           PROCEDURE-KNOWLEDGE injected as text — faithful for procedure-skills (tdd,
+           systematic-debugging, karpathy, anchoring), NOT for tool-skills (can't
+           grant differential real tools headlessly) nor the longitudinal/multi-task
+           what+when (closer to a product spike). Single-shot kernel only.
+WHY:       Distinguishes the Soul-specific routing claim from SOUL-119's null (which
+           held tools at zero). The novel variable vs the recall probe ([[SOUL-117]],
+           which oracle-injected the right record): the SELECTION step. Feeds
+           [[SOUL-I043]] (tested catalog) + the lean-down + [[SOUL-I042]] axis.
+DEVELOP:   Carry every method lesson: C1 non-negotiable, score by-reason+read-confirm
+           (not keyword), isolated empty dir, C2-validate before the full matrix.
+RESULT:    DONE 2026-05-29 ([[SOUL-120]]). oracle vs budgeted-pick2 at Haiku = 5/5 vs
+           1/5 (outcome); selection accuracy under budget≤2: Sonnet 5/5, Haiku 1/5.
+           The C2 validation forced a key redesign: FREE selection over-selects (loads
+           ~8 incl. the correct skill) so the budget IS the routing problem → added
+           pick2 (≤2). The study's FIRST clean instrument WIN — curated what/when
+           routing beats model self-selection, bounded to weak×budget×counter-default.
+           NEXT (open): does a BUILT router approach the oracle ceiling better than the
+           model's own pick? (oracle = perfect-routing upper bound.) Tool-skills +
+           multi-task/longitudinal what+when still untested.
+```
