@@ -50,6 +50,19 @@ generic equivalent matched it. **The control caught four false positives**
 Largest un-measured value: **longitudinal** accumulation across many sessions; the
 recall probe is the first single-shot reach at it.
 
+**Roles-as-agents (added 2026-05-29).** A follow-up probe tested the obvious
+objection to "roles = form": maybe roles only look like form because they were
+measured as *prose*, never as *dedicated subagents*. Built as agents (one subagent
+per Council role + synthesis), Soul roles still matched a generic decomposition
+(A2 ≈ C1, equal compute) — and the multi-agent topology did **not** beat one agent
+told to work through the same perspectives in a single context (it tied at best and
+lost where the synthesis step pruned valid findings). The substance is
+*decomposition into explicit perspectives* — cheap, generic, single-context — not
+the Soul framing and not the agentic orchestration. The "form" verdict **extends
+from prose to agents.** Bounds: one breadth-coverage task; depth-bottleneck tasks
+(where one agent's context is the limit) remain untested. See
+[`04-agentic-roles.md`](04-agentic-roles.md).
+
 ## Index
 
 | File | Contents |
@@ -58,6 +71,7 @@ recall probe is the first single-shot reach at it.
 | [`01-doctrine-results.md`](01-doctrine-results.md) | I040/I041 — the regime × task-structure map for the always-on doctrine |
 | [`02-instrument-results.md`](02-instrument-results.md) | The `/soul-*` instruments: handoff, recall/traceability, verify, distill |
 | [`03-leandown.md`](03-leandown.md) | The ruthless keep/cut decision → a lean Soul-System |
+| [`04-agentic-roles.md`](04-agentic-roles.md) | Roles-as-*agents* vs roles-as-prose — the maturity confound; "form" extends to agents |
 | [`data/`](data/) | Consolidated result tables |
 
 ## Reproducibility note

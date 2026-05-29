@@ -1392,7 +1392,19 @@ IDEA:      Instrument-value axis — are the /soul-* commands & the record syste
            NOT behaviour-lifting; legibility's payoff is cross-session (for the next
            session / second reader), so THIS is where it should cash out. Opened by
            the Body after the I041 capstone.
-STATUS:    In progress — FIRST probe done ([[SOUL-116]], /soul-handoff + /soul-resume,
+STATUS:    In progress — FOUR probes done: handoff/resume ([[SOUL-116]]), recall +
+           verify ([[SOUL-117]]), distill/Mind ([[SOUL-118]]), and agentic-roles
+           ([[SOUL-119]], 2026-05-29). The agentic-roles probe answered the Body's
+           MATURITY confound: built as dedicated subagents (not prose), Soul roles
+           STILL match a generic decomposition (A2≈C1, equal compute) and the
+           multi-agent topology does not beat a single-context decomposition — so
+           "roles=form" extends from prose to agents; substance = decomposition
+           itself (cheap, generic). REMAINING NAMED PROBES: longitudinal (drift
+           across many sessions), retrieval (handoff/index vs plain summary in a big
+           repo), and now DEPTH-bottleneck agentic (one hard sub-problem where a
+           single agent's context is the limit — the bound SOUL-119 left untested).
+           ── original probe-1 detail below ──
+           FIRST probe done ([[SOUL-116]], /soul-handoff + /soul-resume,
            40 arms Sonnet+Haiku). Result: a rich written handoff BEATS cold
            re-derivation (constraints ~4.7 vs 2.7; 0 vs 1 scope errors) — but the
            SOUL FORMAT is form (cursor ≈ length-matched generic summary at both

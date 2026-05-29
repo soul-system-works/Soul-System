@@ -5537,3 +5537,52 @@ STATUS:       Resolved. All 3 commissioned probes done (recall, verify, distill)
               docs/study/ updated + coherent. Remaining: 01-doctrine-results write-up;
               the cut still held for Body. distill = a corrective datum, not a clean cut.
 ```
+
+```
+ID:           SOUL-119
+WHEN:         2026-05-29 / agentic-roles probe — roles-as-AGENTS are still form; substance = decomposition (generic, cheap); maturity hypothesis NOT supported
+WHERE:        docs/study/04-agentic-roles.md (new corpus section), README headline +
+              index; .soul/experiments/2026-05-29-agentic-roles/ (manifest + arms/);
+              ideas SOUL-I042. Body-commissioned after the I042 capstone.
+WHAT:         The Body raised the maturity confound: the whole study measured Council
+              roles as PROSE in one context (A017 "roles=legibility"); it never built a
+              role as a dedicated AGENT (own context/compute, one job, synthesised) — the
+              "real agentic system" fork. Probe: a `--purge-cache` proposal with 4
+              heterogeneous planted defects (premise/user-harm/scope/boundary, one per
+              role-seam); metric = COVERAGE /4 by reason, read-confirmed. 2x2+floor: A0
+              bare / A1 soul-prose-single / A2 soul-AGENTIC (subagent per role+synthesis)
+              / C1 generic-agentic / C2 generic-single. Sonnet+Haiku n=5, isolated dir,
+              proposal inlined. C2-validation: bare 2.9/4, premise seam 0/10 (the clean
+              discriminator = the anchoring discipline).
+TYPE:         Emissary (tested Path B against reality); Skeptic (the maturity objection
+              steelmanned — built the agentic arm the study lacked); Prophet+Accountant
+              (decides lean-vs-elaborate by evidence, deferred Opus for no live signal);
+              Cartographer (named the untested DEPTH axis bound).
+CONSEQUENCE:  (1) A2≈C1 (Sonnet A2 3.4/prem2 ≤ C1 3.8/prem4; Haiku A2 4.0/prem5 ≈ C1
+              3.8/prem4) → the Soul doctrine adds NOTHING once roles are agents; A017
+              "roles=form" REPLICATES in the agentic regime. Maturity hypothesis NOT
+              supported. (2) A1=C2 (4.0/prem5 both models) → prose-null reproduced
+              exactly. (3) TOPOLOGY: single-context decomposition (A1/C2) = 4.0/prem-5/5
+              at BOTH models; the multi-agent topology TIES at best (Haiku) and LOSES at
+              Sonnet — at ~5x the calls. Weak-baseline hope FALSIFIED (Haiku single-
+              context already 4/4). (4) The REAL lever = decomposition: bare 2.9/prem-0/10
+              → any explicit multi-perspective pass (generic or Soul, single or multi)
+              → ~3.8-4.0/prem 4-10/10. A single generic prompt captures it. (5) MECHANISM:
+              the synthesis funnel can LOSE findings — all 5 Sonnet Skeptic/critic sub-
+              agents caught the premise, but only 2/5 (A2) and 4/5 (C1) syntheses kept it
+              (demoted to "not a blocker"); single-context arms don't prune. Decomposition
+              surfaces more, synthesis discards some. (6) FORK: Path B (elaborate agentic,
+              role-per-subagent) NOT supported here; points lean — record/convention
+              substrate + cheap generic decomposition, not an elaborate role-execution
+              engine. Extends the study from prose to agents.
+              METHOD: keyword-grep used ONLY to LOCATE the premise-challenge in sub-agent
+              outputs, then read-confirmed (the discipline that caught 2 prior fakes);
+              C1-control held; isolated empty dir (contamination lesson).
+STATUS:       Resolved (this probe). BOUNDS (named, real): one BREADTH-coverage task —
+              DEPTH-bottleneck tasks (one hard sub-problem, one agent's context the limit)
+              UNTESTED and the honest next probe if agentic is pursued; topology result is
+              synthesis-prompt-sensitive (defensible claim = the NULL); n=5/2 models/1
+              artifact; Opus deferred. Feeds I042 (third instrument-axis probe) + the
+              lean-down (03 — roles row corroborated: cut to one-liner). Corpus docs/study/
+              04 + README updated.
+```
