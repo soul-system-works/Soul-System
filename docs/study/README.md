@@ -99,7 +99,6 @@ probe section cites its raw-arm directory.
 instrument probes measured (handoff, recall, verify, distill); the maturity-confound
 follow-ups added 2026-05-29 — agentic-roles (`04`, null) and skill-routing (`05`, a
 bounded win). The lean-down recommendation ([`03-leandown.md`](03-leandown.md)) is
-drafted; `05` adds a **tested-catalog = keep** candidate not yet folded into `03`.
+updated to fold in `04`/`05` (roles-row corroborated; **tested-catalog = keep** added).
 The cut itself awaits Body approval (held). Optional polish remaining: a consolidated
-`data/` table set, fold `04`/`05` into `03`, and rendering into a chosen publication
-format (blog / preprint).
+`data/` table set, and rendering into a chosen publication format (blog / preprint).
