@@ -5679,3 +5679,126 @@ STATUS:       Resolved (this probe, by ceiling). Study's testable single-shot su
               decision input complete. Remaining = Body calls: execute the cut /
               build a real router / render publication / build a longitudinal harness.
 ```
+
+```
+ID:           SOUL-122
+WHEN:         2026-05-29 / longitudinal-drift PILOT — the harness MECHANISM works (record carries across a self-generated session chain, survives dilution, and FIRES); the chosen decision D was NOT counter-default → decision-test null by C2, caught by the floor check.
+WHERE:        docs/specs/2026-05-29-longitudinal-harness-design.md (new design);
+              .soul/experiments/2026-05-29-longitudinal-drift/ (manifest + run.sh +
+              s1/s2/s3 fragments + arms). Body-framed continuation of [[SOUL-I042]],
+              closing the heaviest open end in docs/study/06 (longitudinal row).
+              Body chose: synthetic sequential chain · pilot-first · decision-reversal
+              drift type · D = hand-parser over regex/lib.
+WHAT:         First longitudinal (multi-session, self-accumulated record) probe in the
+              study — every prior probe was single-shot. Chain: S1 establishes a
+              counter-default decision D (untrusted input + ReDoS → hand-written parser,
+              NO regex/lib) and records it as an ADR; S2 (fed record_1) adds an
+              unrelated /healthz ADR → buries D; S3 faces a NEW parsing task
+              (client_id, quoted/escaped) with the ReDoS context ABSENT. Arms forked
+              ONLY at S3: withrecord (carries record_2) vs control (length-matched
+              filler ADRs, char-exact 1703c, NO D) vs floor (no log). Haiku, n=5.
+              Records inlined directly into the -p prompt (NOT @-import) → F038 N/A;
+              sentinel = the saved exact prompt, read-confirmed (avoids priming the
+              drift test). Floor check ran first per design.
+TYPE:         Architect+Artificer (the chain harness — a PIPELINE, not the ancestor's
+              fan-out); Emissary (tested the record's strongest claim); Skeptic
+              (read-confirmed all 15 outputs — the "regex" grep-hits were all
+              mentions-to-REJECT, not usage); Accountant (floor-check-first gated the
+              spend); Cartographer (named the C2 miss honestly, did not mine it).
+CONSEQUENCE:  (1) MECHANISM VALIDATED (the pilot's actual goal): S1 produced D → S2
+              read record_1 and appended coherently → S3-withrecord demonstrably READ
+              the BURIED D and FIRED — 4/4 parser-producing runs hand-wrote AND
+              explicitly cited the ADR ("Looking at the project ADRs, the pattern is
+              clear: avoid regex"). The record loaded, survived dilution, changed the
+              stated reasoning. Control did NOT confabulate a no-regex ADR from filler
+              (cited generic "regex fragility" instead) — confabulation check passes.
+              The self-generated multi-session chain + dilution + inspect-sentinel +
+              length-matched control all work. (2) DECISION-TEST NULL by C2: D was NOT
+              counter-default. EVERY parser-producing run in ALL THREE arms (floor 2/5,
+              withrecord 4/4, control 2/5) chose hand-written char-by-char; ZERO used
+              regex or a parsing library — including the no-record floor. Parsing
+              escaped-quote strings is a case Haiku hand-iterates BY DEFAULT (regex-
+              with-escapes is famously awkward), so there was no drift to prevent. The
+              record changed the JUSTIFICATION (cite-ADR vs cite-generic), not the
+              DECISION. Same C2-difficulty class as skill-routing floor-ceiling
+              (SOUL-120) / depth-bottleneck ceiling (SOUL-121) / verify too-easy task.
+              The FLOOR CHECK caught it exactly as designed. (3) METHOD LESSON: pick D
+              by FLOOR-CHECKING counter-default-ness FIRST (does fresh-model drift?),
+              THEN build the chain — counter-default-ness is the crux, and it must be
+              validated before spend, not assumed. The hand-parser/regex framing was a
+              poor D pick (I expected regex-default; escaped-quote parsing defeats it).
+              (4) HARNESS ARTIFACT: empty /tmp WD inflated "no-answer" runs (3/5 floor,
+              3/5 control, 1/5 withrecord asked for the codebase instead of answering)
+              — frame S3 as a self-contained function next time. Weak/unreliable
+              secondary: withrecord answered 4/5 vs control 2/5 (relevant record may
+              reduce clarification-stalling) — n too small, confounded, NOT a finding.
+STATUS:       Resolved (pilot, mechanism-validation goal MET; decision-headline null by
+              C2). The longitudinal HARNESS now exists and is proven to carry a self-
+              generated record across sessions and fire a buried decision — a real
+              advance on docs/study/06 row 1 (longitudinal was wholly unmeasured). A
+              decision-MOVING result needs a genuinely counter-default D (floor-checked
+              first) and a self-contained S3. Body call: re-run with a sharper D / scale
+              to multi-item·multi-session / accept mechanism-validated and stop. Corpus
+              06 to be updated with the pilot. Raw arms gitignored.
+```
+
+```
+ID:           SOUL-123
+WHEN:         2026-05-29 / longitudinal-drift v2 — the DECISION-MOVING result: a self-accumulated record prevents drift 5/5 vs 5/5, AT BOTH capabilities. First win in the study that does NOT dissolve at the frontier (it carries a FACT, not a reasoning skill).
+WHERE:        .soul/experiments/2026-05-29-longitudinal-drift-v2/ (manifest verdict +
+              run.sh + floorcheck/ + s1/s2/s3 + filler + arms). docs/study/07-longitudinal.md
+              (new) + README headline + 06 row 1. Re-run of [[SOUL-122]] with the v1
+              method lesson applied (floor-check counter-default-ness FIRST).
+WHAT:         D (floor-checked) = client code MUST NOT auto-retry the payment provider's
+              NON-idempotent money-moving endpoints; fail fast / verify before retry.
+              Established S1 by a postmortem (no idempotency-key support; a retry loop
+              double-refunded 1,180 customers). S2 buried it under a /metrics ADR. S3 =
+              a NEW task (SendPayout "robust against transient network failures" — the
+              phrase that pulls the default to retries), context C ABSENT. Arms withrecord
+              / control (length-matched filler, NO D) / floor. Haiku+Sonnet, n=5. Floor-
+              check first picked retry over cache/delete: cache self-mitigates staleness,
+              delete already hard-deletes by default; retry is the cleanest counter-
+              default (fresh model retries AND wrongly assumes idempotency).
+TYPE:         Emissary (tested the record's strongest claim and it HELD); Skeptic (read-
+              confirmed all 30 outputs — retry-loop present/absent in actual code, not
+              keywords; verified equal-compute control + causal attribution); Revelator
+              (the frontier-persistence: the smart model fails MORE sophisticatedly —
+              invents an idempotency key — because the gap is a FACT it can't derive);
+              Accountant (floor-check-first avoided another C2 miss before the 30-call spend).
+CONSEQUENCE:  (1) HEADLINE: withrecord flips drift→hold 5/5 at BOTH Haiku and Sonnet,
+              citing ADR-001 and reproducing its reasoning. floor 5/5 DRIFT and control
+              5/5 DRIFT at both. The length-matched filler (same framing, same volume, no
+              retry policy) drifts identically to the bare floor → it is the record's
+              CONTENT, not context volume, that prevents drift (equal-compute control
+              passes; no confabulation of a no-retry ADR from filler). (2) DOES NOT
+              DISSOLVE AT THE FRONTIER — the key differentiator from every prior win.
+              Anchoring (F-series) and skill-routing (SOUL-120) dissolved at Sonnet
+              because Sonnet could REASON to the answer. Here Sonnet floor drifts 5/5 and
+              MORE dangerously — polished retry + an `Idempotency-Key` it INVENTS,
+              reasoning "the provider deduplicates"; but C says it has none, so the smart
+              default is the unsafe one. The substance is a FACT the model can't derive →
+              frontier needs the record as much as the weak model. withrecord-sonnet-3
+              EXPLICITLY rejects the idempotency path ("no idempotency key support, so no
+              safe retry-with-same-key path"). (3) PLACEMENT: first DECISION-moving
+              longitudinal result + first win whose frontier-persistence the study DIRECTLY
+              MEASURES (both capabilities) — persists, unlike the frontier-tested reasoning-
+              lift wins (anchoring/routing) which dissolved. Belongs to the study's
+              clearest-win family — carrying counter-default knowledge the model can't
+              derive (recall SOUL-117 / distill) — now shown LONGITUDINALLY: a decision
+              made earlier, triggering context gone, buried, still governs a NEW task in a
+              later session at both capabilities. The reasoning-lift wins dissolve at the
+              frontier; the FACT-carrying record does not. This MOVES the thesis (06 row 1)
+              rather than re-confirming it. (4) BOUNDS (honest): it is a FACT-carrying
+              record — a pure reasoning-preference record would likely dissolve at frontier
+              like the rest of the study (NOT claimed); N=3 is the first rung (many
+              sessions / many facts / record-decay over a long record unmeasured); S1 was
+              establishment-assisted (honest — the test is survival+firing, not invention);
+              one decision, one drift type, n=5, two models.
+STATUS:       Resolved (decisive). docs/study/06 row 1 substantially closed on the testable
+              surface; the longitudinal harness has now PRODUCED a frontier-persistent
+              decision-moving result, not just a mechanism. Candidate finding (Body-earned,
+              not auto-graduated per Mind rule 7): "a self-accumulated record carries a
+              counter-default FACT across sessions + a task boundary and prevents drift at
+              both capabilities — the fact-carrying longitudinal win does not dissolve at
+              the frontier." Corpus 07 + README updated. Raw arms gitignored.
+```
