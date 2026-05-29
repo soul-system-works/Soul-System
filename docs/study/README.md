@@ -86,6 +86,7 @@ from prose to agents.** Bounds: one breadth-coverage task; depth-bottleneck task
 | [`03-leandown.md`](03-leandown.md) | The ruthless keep/cut decision → a lean Soul-System |
 | [`04-agentic-roles.md`](04-agentic-roles.md) | Roles-as-*agents* vs roles-as-prose — the maturity confound; "form" extends to agents |
 | [`05-skill-routing.md`](05-skill-routing.md) | Does knowing *which* skill to deploy beat the model picking? — the what/when-deployment win, bounded to weak×budget×counter-default |
+| [`06-bounds-and-open-questions.md`](06-bounds-and-open-questions.md) | The honest ledger — what's unmeasurable single-shot (longitudinal, multi-task, tool-skills, built-router) vs deferred; closure as a map |
 | [`data/`](data/) | Consolidated result tables |
 
 ## Reproducibility note
@@ -95,10 +96,14 @@ and local). The distilled designs, scores, and verdicts are lifted into this tra
 corpus and into the durable record (`witness.md`, `amendments/`, `ideas.md`). Each
 probe section cites its raw-arm directory.
 
-**Status:** corpus complete (`README` + `00`–`05`). Doctrine arc (I040/I041) closed;
+**Status:** corpus complete (`README` + `00`–`06`). Doctrine arc (I040/I041) closed;
 instrument probes measured (handoff, recall, verify, distill); the maturity-confound
-follow-ups added 2026-05-29 — agentic-roles (`04`, null) and skill-routing (`05`, a
-bounded win). The lean-down recommendation ([`03-leandown.md`](03-leandown.md)) is
-updated to fold in `04`/`05` (roles-row corroborated; **tested-catalog = keep** added).
-The cut itself awaits Body approval (held). Optional polish remaining: a consolidated
-`data/` table set, and rendering into a chosen publication format (blog / preprint).
+follow-ups added 2026-05-29 — agentic-roles (`04`, null), skill-routing (`05`, a
+bounded win), depth-bottleneck (`06` ledger; ceilinged — Path B's last niche is
+generic map-reduce, not Soul). The lean-down ([`03-leandown.md`](03-leandown.md))
+folds in `04`/`05` (roles-row corroborated; **tested-catalog = keep** added); `06` is
+the honest ledger of what stays unmeasurable single-shot (longitudinal foremost). The
+testable single-shot surface is now closed. The cut itself awaits Body approval (held).
+Optional polish remaining: a consolidated `data/` table set; rendering into a chosen
+publication format (blog / preprint); a longitudinal harness (the one thing that would
+move the thesis rather than re-confirm it).
