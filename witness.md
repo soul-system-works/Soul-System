@@ -5802,3 +5802,199 @@ STATUS:       Resolved (decisive). docs/study/06 row 1 substantially closed on t
               both capabilities — the fact-carrying longitudinal win does not dissolve at
               the frontier." Corpus 07 + README updated. Raw arms gitignored.
 ```
+
+```
+ID:           SOUL-124
+WHEN:         2026-06-04 / longitudinal-PREFERENCE probe — the sibling of [[SOUL-123]]:
+              a self-accumulated record carries a counter-default reasoning-PREFERENCE
+              (not a fact) across a session + task boundary and prevents drift 5/5 vs
+              5/5 AT BOTH capabilities. The frontier model DEFERS to the recorded
+              convention — does NOT override. CONTRADICTS the SOUL-123/F044 conjecture
+              that a preference would dissolve at the frontier.
+WHERE:        .soul/experiments/2026-06-04-longitudinal-preference/ (run.sh + floorcheck/
+              + s1/s2/s3 + filler + arms + manifest). docs/study/08-longitudinal-
+              preference.md (new) + 07 conjecture line updated + 06 row 1 + study README.
+              Same harness as [[SOUL-123]], new D.
+WHAT:         D (floor-checked 6/6 counter-default at BOTH models) = expected business
+              failures are signalled by RETURNING a Result type (Ok/Err), NOT by raising
+              exceptions (exceptions reserved for programmer errors). A reasoning-
+              PREFERENCE: both paths valid, the model CAN reason to either; the record
+              carries the team's unguessable CHOICE. Floor-check first eliminated P2-
+              validation (already validates at construction = not counter-default) and
+              P3-repository (YAGNI-override risk muddies it); picked P1-errstyle (cleanest
+              counter-default + pure style axis, and counter to Python's exception idiom
+              so deference is NON-free). S1 establishes ADR-001 (Result types; rationale:
+              uncaught exceptions leaked as HTTP 500s); S2 buries it under a /metrics ADR;
+              S3 = NEW task `transfer_funds` with two expected-failure cases (pulls toward
+              raise), context C ABSENT. Arms withrecord / control (length-matched filler,
+              NO error-style ADR) / floor. Added gate vs v2: C2.5 install-check (does the
+              preference install at the weak model? Haiku withrecord 5/5 HOLD — yes)
+              BEFORE the full matrix.
+TYPE:         Emissary (tested the SOUL-123/F044 preference BOUND — and broke the prior
+              conjecture); Skeptic (read-confirmed all 30 outputs in actual code — raise
+              vs Result; caught 4 Haiku floor/control runs that tried to WRITE a file
+              under `-p` and output prose-only, scored by described approach, NO verdict
+              affected; confirmed control cites only the filler's own logging ADR — no
+              confabulation); Revelator (the reframe: the frontier line is derivable-vs-
+              UNGUESSABLE, not fact-vs-preference — an arbitrary convention is unguessable
+              so it persists, exactly like a fact); Accountant (floor-check + install-
+              check gated the 30-call spend).
+CONSEQUENCE:  (1) HEADLINE: withrecord 5/5 HOLD at BOTH Haiku and Sonnet — cite ADR-001,
+              reproduce its reasoning AND its BOUNDARY (sonnet-4 keeps `amount > 0` as an
+              `assert` because "a programmer mistake, not a business condition — per
+              ADR-001"). floor 5/5 DRIFT and control 5/5 DRIFT at both. Equal-compute
+              control passes (filler drifts like floor; cites only its OWN logging ADR;
+              never confabulates a Result convention). (2) PERSISTS AT THE FRONTIER —
+              DOES NOT DISSOLVE. The frontier model DEFERS to the recorded convention
+              even though its own floor default is 5/5 the opposite (raise) and Result is
+              counter-Pythonic-idiom; 0/5 expressed override-reluctance. (3) THE REFRAME
+              (moves the study's central line): the fact/preference split is NOT the
+              frontier line. The line is DERIVABLE (model can re-reason it — anchoring,
+              skill-routing → DISSOLVES) vs UNGUESSABLE (model cannot regenerate it — an
+              external FACT [[SOUL-123]] OR an arbitrary CONVENTION [here] → PERSISTS).
+              The accumulating record governs even arbitrary team conventions at the
+              frontier. CONTRADICTS the SOUL-123/F044 conjecture ("a preference would
+              likely dissolve") — now tested and FALSE. (4) BOUNDS (honest): one
+              preference, one drift type, n=5, two models, single dilution step; the
+              convention was clearly-stated + defensible (a terse or absurd convention
+              might not install / might get overridden — untested); "evidence now points
+              to" derivable-vs-unguessable — an inductive reframe over ~4 points (F044
+              fact-persists, this preference-persists, anchoring + routing derivable-
+              dissolve), not proven.
+STATUS:       Resolved (decisive within scope). Propagated: witness (here) + [[SOUL-F044]]
+              revised (fact→unguessable; the preference bound now TESTED, not conjectural;
+              +SOUL-124 anchor) + corpus 08 (new) + 07 conjecture-line updated + 06 row 1
+              open-question closed + study README headline. Raw arms gitignored. Feeds the
+              F044→amendment path (the frontier line is now better-formed; record-DECAY and
+              many-sessions remain the open rungs).
+```
+
+```
+ID:           SOUL-125
+WHEN:         2026-06-04 / longitudinal DECAY probe — does the carry survive a LONG record?
+              Varied record DEPTH N (intervening ADRs between D and the task). NO CLIFF
+              through N=20 at BOTH capabilities — the carry is depth-robust. Climbs the
+              sharpest rung [[SOUL-F044]] named open. Idea [[SOUL-I045]].
+WHERE:        .soul/experiments/2026-06-04-longitudinal-decay/ (run-decay.sh + pool-raw.txt
+              + arms + manifest verdict). Reuses the [[SOUL-123]] FACT chain (D = ADR-001
+              no-retry, verbatim). docs/study + 06 + README + F044 to be updated.
+WHAT:         KNOB = depth N (# intervening ADRs); "many sessions" ≡ deeper burial. with-
+              record at N = [ADR-001 D] + [N burial ADRs]; control = [length-matched filler-
+              anchor] + [N burial ADRs] (NO D, same length — isolates POSITION/volume decay
+              from generic long-context degradation); floor = no record. Burial pool = 21
+              steady-state infra ADRs, STRICT-scanned free of any retry/backoff/idempotency/
+              failure-policy content (first gen had a background-job backoff ADR + a "fail
+              fast" timeout ADR → regenerated with explicit bans). S3 = SendPayout, context
+              C absent. Read-confirmed: retry loop present (DRIFT) / absent + fail-fast
+              (HOLD) in actual Go code. Economized per the I045 plan: Haiku-first n=3 locate
+              ladder (N=5,10,20), then n=5 confirm at N=20 on BOTH models.
+TYPE:         Emissary (tested the carry against a long record); Skeptic (read-confirmed all
+              outputs in code; CAUGHT + regenerated a contaminated burial pool — a backoff/
+              retry ADR would have muddied attribution; re-ran 4 blocked-write stubs);
+              Accountant (Haiku-first cliff-search before any Sonnet spend; declined to push
+              N=40-80 — that morphs into a context-CAPACITY probe, a different question);
+              Revelator (frontier replication: Sonnet control at depth 20 INVENTS an
+              Idempotency-Key to justify retries — the exact dangerous SOUL-123 drift, now
+              under 20 ADRs of burial).
+CONSEQUENCE:  (1) HEADLINE: NO DECAY CLIFF through N=20 (~20 sessions, ~14k-char log) at
+              BOTH Haiku and Sonnet. with-record HOLDs — N=5 3/3, N=10 3/3, N=20 5/5 (both
+              models); control (same length, no D) DRIFTs at every depth — N=20 5/5 both.
+              The fact D, buried under 20 intervening ADRs with context C gone, still cites
+              ADR-001 and fails-fast 5/5. The HOLD is D-being-findable, not context volume
+              (equal-length control drifts). (2) FRONTIER REPLICATION AT DEPTH: Sonnet
+              control (no D) 5/5 builds a retry loop AND invents an `Idempotency-Key`
+              ("provider deduplicates, so retries are safe") — the precise dangerous drift
+              SOUL-123 found at the floor, now at burial depth 20; the provider has no such
+              support (fact lives in D, absent). with-record Sonnet often EXPLICITLY rejects
+              this path. (3) PLACEMENT: climbs the rung F044 named sharpest (decay over a
+              long record). The accumulating record is depth-robust — the carry does not
+              degrade with burial through 20 sessions. (4) BOUNDS (honest): D at PRIMACY
+              position (oldest/first — privileged; D-in-the-MIDDLE untested); single linear
+              log, short uniform ADRs; N=20 deliberately not pushed deeper (N=40-80 = a
+              context-CAPACITY test, different question). STILL OPEN before amendment:
+              EROSION decay (D compressed by a later consolidation — directly tests /soul-
+              distill), MANY INTERACTING decisions (a later entry reinforces/CONTRADICTS D).
+STATUS:       Resolved (decisive within scope). Depth-burial rung CLIMBED through N=20 both
+              capabilities. F044's decay bound narrows: depth addressed; erosion + interaction
+              + middle-position remain. Propagation (corpus/06/README/F044/I045-RESULT) +
+              the amendment-readiness call pending Body. Raw arms gitignored.
+```
+
+```
+ID:           SOUL-126
+WHEN:         2026-06-04 / longitudinal EROSION probe — does D survive COMPRESSION (the
+              /soul-distill operation)? THE RULE survives compression at both capabilities;
+              the unguessable FACT does NOT — and only the FRONTIER model fills the gap,
+              with a confident FABRICATION (a Coherent Falsehood). Directly indicts naive
+              distillation. Sibling of [[SOUL-125]]; idea [[SOUL-I045]].
+WHERE:        .soul/experiments/2026-06-04-longitudinal-erosion/ (run-erosion.sh + e0/edir/
+              edist variants + arms + manifest). Reuses [[SOUL-123]] FACT D. Bears on
+              /soul-distill + mind.md ("rules as generators"); F044 + corpus to update.
+WHAT:         Eroded D in 3 controlled levels at fixed depth N=1: e0=full D (decision +
+              rationale + 1,180 incident + the FACT the endpoint has NO idempotency-key
+              support); edir=directive only ("must NOT auto-retry; fail fast", rationale →
+              generic "standardised", the FACT stripped); edist=D as ONE line in a 6-rule
+              distilled set (realistic mind.md-style output). Same SendPayout task, context
+              C absent. Read-confirmed two measures: (a) auto-retry LOOP, (b) sets a false
+              `Idempotency-Key` header advertising provider-dedup the full fact precludes.
+              n=5 × 2 models × 3 levels = 30.
+TYPE:         Emissary (tested whether the carry survives the system's OWN compression);
+              Skeptic (read-confirmed all 30 in code — caught the keyword scorer over-
+              flagging caller-retry PROSE as drift; the true measure is the retry LOOP +
+              the idem-key HEADER, not the word "retry"); Revelator (the inversion: the
+              FRONTIER model's confident generation is what makes fact-erosion dangerous —
+              it fabricates the missing fact; the weak model cannot, so it stays silent);
+              Guardian (the finding bears on a CORE instrument — /soul-distill could ship a
+              Coherent Falsehood by compressing away an anchoring fact).
+CONSEQUENCE:  (1) HEADLINE: the DIRECTIVE is compression-robust — 30/30 hold the no-auto-
+              retry rule, even at a single distilled line, both capabilities. But the
+              unguessable FACT is NOT: strip it (edir/edist) and Sonnet fabricates a
+              replacement 8/10 (4/5 edir, 4/5 edist) — sets `Idempotency-Key: payoutID` and
+              reasons "provider deduplicates, so manual retry is safe." It does not; the
+              full D says no idempotency support. A latent double-payment falsehood, the
+              original danger one level removed (caller-driven retry). (2) THE FULL FACT
+              PREVENTS IT (e0 Sonnet 0/5; some explicitly reject the idem path, as SOUL-123).
+              HAIKU NEVER FABRICATES (0/15 all levels) — the weak model lacks the confident
+              generation, so it defers retry to the caller WITHOUT claiming false safety.
+              (3) THE FINDING (Soul-meta, distill-relevant): compressing a rule while
+              dropping its unguessable rationale preserves the RULE but lets the FRONTIER
+              model regenerate the missing reason as a Coherent Falsehood (A010). The smart
+              model's strength is exactly what makes fact-erosion dangerous — the SOUL-123
+              inversion. → /soul-distill + mind.md MUST preserve the unguessable FACT, not
+              just the directive — especially facts that PRECLUDE a plausible-but-wrong
+              approach. Validates mind.md Rule 3 (anchor every claim) + the split "doctrine
+              here; obligations/facts in the records." (4) SHARPENS derivable-vs-unguessable
+              once more: the RULE is carryable-compressed; the unguessable FACT behind it is
+              NOT safely compressible — drop it and the frontier model backfills a wrong
+              anchor. (5) BOUNDS: one D, one fabrication type (idempotency), n=5, two models,
+              hand-authored erosion levels. NOT yet tested: a genuine MODEL-distilled
+              compression (does the distiller ITSELF drop the fact?) — the end-to-end
+              instrument test, the natural follow-on.
+STATUS:       Resolved (decisive within scope). Erosion rung CLIMBED — with a TWIST: the rule
+              survives but the fact does not, and the frontier fabricates. Likely a NEW
+              finding (compression-introduces-frontier-fabrication; distill-design relevant)
+              rather than only an F044 bound-update — Body routing call pending. Propagation
+              + the model-distilled follow-on pending. Raw arms gitignored.
+
+              FOLLOW-ON (same day, Emissary — REFINES the headline, prevents an overclaim):
+              ran a REAL Sonnet distiller (n=5) on the full 21-ADR log to see what /soul-
+              distill ACTUALLY produces. It PRESERVES the anchor 5/5 — every distilled rule-
+              set keeps "non-idempotent" (4/5) AND "verify status before any manual retry"
+              (5/5). So "naive distill ships a Coherent Falsehood" was itself heading toward
+              a Coherent Falsehood — the instrument is more careful than the hand-authored
+              edir/edist. BUT running the REAL distilled record back through S3 (Sonnet n=5):
+              STILL 2/5 fabricate the idempotency-dedup (set Idempotency-Key + claim provider
+              dedup) — even though the record SAYS non-idempotent AND keeps the verify guard
+              (which survives in both fabrication cases). So the true finding is a GRADIENT of
+              anchoring FORCE, not a binary of content: full D+incident → 0/5; faithful terse
+              distillation → 2/5; aggressive erosion (no fact, no verify) → 4/5; Haiku → 0/15
+              at every level. Compression preserves rules AND safeguards but STRIPS the
+              stopping-force of a fact that contradicts the frontier model's strong prior
+              (payment APIs have idempotency keys). The weak model never fabricates (no prior
+              to assert) — frontier-specific, the SOUL-123 inversion again. IMPLICATION
+              (refined, for /soul-distill + mind.md): facts that CONTRADICT a strong model
+              prior are partly INCOMPRESSIBLE — their force, not just their proposition, must
+              survive (keep the incident, the explicit "NO support"), else the frontier model
+              re-asserts the prior. Refines mind.md's "incompressible residual" + Rule 3.
+              Routing: NEW finding F045 with THIS gradient framing (not the overclaim).
+```

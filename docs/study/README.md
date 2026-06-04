@@ -48,19 +48,27 @@ handoff *format*, the verify *checklist format* — **dissolved under the contro
 generic equivalent matched it. **The control caught four false positives**
 (trajectory, compliance-flag, compliance-withhold, a keyword-illusion verify "win").
 
-**Longitudinal accumulation — measured, and it moved the thesis (added 2026-05-29).**
-The largest un-measured value used to be whether a record *accumulating across sessions*
-prevents drift. A synthetic session-chain harness now answers it: a counter-default
-decision recorded in an early session, buried under later entries, with its triggering
-context gone, **flipped a dangerous default 5/5 → 0/5 drift in a later session on a new
-task** — and a length-matched filler record drifted exactly like having no record at all
-(equal-compute control passes). Crucially this is the **first win whose
-frontier-persistence the study directly measures** (at both capabilities) — and it
-persists: the strong model drifts too (more confidently — it invents an idempotency key
-that doesn't exist), because the substance is a **fact it cannot derive**, not a reasoning
-skill it can. The reasoning-lift wins that *were* frontier-tested (anchoring, routing)
-dissolved; this fact-carrying one does not. This is the clearest-win category (carrying counter-default
-knowledge) shown *longitudinally*, at both capabilities. See [`07-longitudinal.md`](07-longitudinal.md).
+**Longitudinal accumulation — measured twice, and it moved the thesis (added 2026-05-29,
+extended 2026-06-04).** The largest un-measured value used to be whether a record
+*accumulating across sessions* prevents drift. A synthetic session-chain harness now
+answers it: a counter-default decision recorded in an early session, buried under later
+entries, with its triggering context gone, **flipped a dangerous default 5/5 → 0/5 drift
+in a later session on a new task** — and a length-matched filler record drifted exactly
+like having no record at all (equal-compute control passes). Crucially this is the **first
+win whose frontier-persistence the study directly measures** (at both capabilities) — and
+it persists: the strong model drifts too (more confidently — it invents an idempotency key
+that doesn't exist), because the substance is knowledge **it cannot derive**, not a
+reasoning skill it can. A second probe then carried an arbitrary *convention* (return a
+Result type, never raise) the same way — and it **persisted at the frontier too**, the
+strong model deferring to the recorded convention rather than overriding it with its own
+idiom. So the frontier line is **derivable vs. unguessable**, not fact vs. preference: what
+the model can re-reason dissolves (anchoring, routing); what it cannot regenerate — a fact
+*or* a convention — persists. This is the clearest-win category shown *longitudinally*, at
+both capabilities. And a depth probe (SOUL-125) found **no decay cliff through N=20 burial**
+at either capability — the carry does not erode as the record accumulates (the frontier
+control still invents an idempotency key to drift even buried under 20 ADRs). See
+[`07-longitudinal.md`](07-longitudinal.md) (fact + §depth-decay) and
+[`08-longitudinal-preference.md`](08-longitudinal-preference.md) (preference + the reframe).
 
 **Skill-routing — the one reasoning-adjacent exception (added 2026-05-29).** One
 capability that tries to improve the *work* (not just carry knowledge) survived the
@@ -100,6 +108,7 @@ from prose to agents.** Bounds: one breadth-coverage task; depth-bottleneck task
 | [`05-skill-routing.md`](05-skill-routing.md) | Does knowing *which* skill to deploy beat the model picking? — the what/when-deployment win, bounded to weak×budget×counter-default |
 | [`06-bounds-and-open-questions.md`](06-bounds-and-open-questions.md) | The honest ledger — what's unmeasurable single-shot (longitudinal, multi-task, tool-skills, built-router) vs deferred; closure as a map |
 | [`07-longitudinal.md`](07-longitudinal.md) | Does a self-accumulated record prevent drift across sessions? — the decision-moving result; a fact-carrying win that does **not** dissolve at the frontier (measured at both capabilities) |
+| [`08-longitudinal-preference.md`](08-longitudinal-preference.md) | The sibling probe: does the carry hold for an arbitrary *convention*, not just a fact? — yes, it persists at the frontier too; the reframe from *fact-vs-preference* to **derivable-vs-unguessable** |
 | [`data/`](data/) | Consolidated result tables |
 
 ## Reproducibility note
@@ -109,18 +118,19 @@ and local). The distilled designs, scores, and verdicts are lifted into this tra
 corpus and into the durable record (`witness.md`, `amendments/`, `ideas.md`). Each
 probe section cites its raw-arm directory.
 
-**Status:** corpus complete (`README` + `00`–`07`). Doctrine arc (I040/I041) closed;
+**Status:** corpus complete (`README` + `00`–`08`). Doctrine arc (I040/I041) closed;
 instrument probes measured (handoff, recall, verify, distill); the maturity-confound
 follow-ups added 2026-05-29 — agentic-roles (`04`, null), skill-routing (`05`, a
 bounded win), depth-bottleneck (`06` ledger; ceilinged — Path B's last niche is
 generic map-reduce, not Soul). The lean-down ([`03-leandown.md`](03-leandown.md))
 folds in `04`/`05` (roles-row corroborated; **tested-catalog = keep** added). `06` is
-the honest ledger of what stays unmeasurable single-shot — and `07` (added 2026-05-29)
-**closes its heaviest row**: a longitudinal session-chain harness measured drift across
-sessions and produced the **first decision-moving, frontier-persistent win** (the record
-carries a fact the model can't derive; reasoning-lift dissolves at the frontier,
-fact-carrying does not). The single-shot surface is closed and the first longitudinal
-rung is climbed. The cut itself awaits Body approval (held). Remaining: a consolidated
+the honest ledger of what stays unmeasurable single-shot — and `07`/`08` (added
+2026-05-29 / 2026-06-04) **close its heaviest row**: a longitudinal session-chain harness
+measured drift across sessions and produced the **first decision-moving, frontier-persistent
+win** (`07`, a fact the model can't derive), then showed the same carry holds for an
+arbitrary *convention* (`08`) — reframing the frontier line to **derivable dissolves,
+unguessable persists**. The single-shot surface is closed and two longitudinal
+rungs are climbed. The cut itself awaits Body approval (held). Remaining: a consolidated
 `data/` table set; rendering into a chosen publication format (blog / preprint); and
 *scaling* the longitudinal harness (many sessions, many facts, record-decay) — now a
 matter of widening a built instrument, not building one.

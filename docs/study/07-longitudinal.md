@@ -103,21 +103,97 @@ self-accumulated record, a dilution step, and a task boundary. The contrast that
 measured is the sharp one — the reasoning-lift wins that were frontier-tested (anchoring,
 skill-routing) **dissolved** at Sonnet; this fact-carrying one does not.
 
-The split the study has drawn all along holds and sharpens: **reasoning-lift dissolves at
-the frontier; fact-carrying does not.** The accumulating record's value is real precisely
-where it carries something the model cannot regenerate on its own — and that value does not
-evaporate as the model gets smarter. If anything the frontier model fails *more
-confidently* without it.
+The split the study has drawn all along holds and sharpens. The accumulating record's value
+is real precisely where it carries something the model cannot regenerate on its own — and
+that value does not evaporate as the model gets smarter. If anything the frontier model
+fails *more confidently* without it. (The follow-on preference probe,
+[`08`](08-longitudinal-preference.md), sharpens the line further: the frontier divide is not
+*fact vs. preference* but **derivable vs. unguessable** — an arbitrary convention persists
+just as a fact does, because it too is unguessable. What dissolves is the derivable.)
+
+## Does it survive a *long* record? (depth-decay)
+
+The result above buries D under a single later entry. A real project record grows for
+years — so the sharpest follow-on (SOUL-125) varies the **depth** N: the number of
+intervening ADRs between D (the no-retry fact, reused verbatim) and the new task. "Many
+sessions" is just deeper burial. At each depth, with-record (D + N infra ADRs) is compared
+to a **length-matched control** (a filler-anchor ADR + the same N infra ADRs, no D) — so a
+drop in HOLD at large N would mean D became *unfindable*, not that long context degrades
+everything.
+
+It doesn't drop. Read-confirmed in code:
+
+| Depth | with-record | control (same length, no D) |
+|---|---|---|
+| N=1 | 5/5 HOLD | — |
+| N=5 (Haiku) | 3/3 HOLD | 3/3 DRIFT |
+| N=10 (Haiku) | 3/3 HOLD | 3/3 DRIFT |
+| N=20 (Haiku) | 5/5 HOLD | 5/5 DRIFT |
+| N=20 (Sonnet) | 5/5 HOLD | 5/5 DRIFT |
+
+**No decay cliff through N=20 (~20 sessions, a ~14k-char log) at either capability.** The
+fact, buried under twenty unrelated decisions with its context gone, still cites ADR-001
+and fails-fast 5/5. And the frontier replication holds *at depth*: Sonnet's control (no D)
+**invents an `Idempotency-Key` to justify a retry loop** 5/5 — the same dangerous drift as
+the bare floor — under twenty ADRs of burial. The carry is depth-robust; the record's value
+does not erode with accumulation, at least through this range. (Bounds: D sits at the
+*oldest* position — a privileged one; D-in-the-middle, an *eroding*/compressed record, and
+*contradicting* later entries are the remaining decay rungs. Pushing N past ~20 stops
+testing longitudinal burial and starts testing context *capacity* — a different question.
+Raw arms: `.soul/experiments/2026-06-04-longitudinal-decay/`.)
+
+## Does the rule survive the system's *own* compression? (erosion)
+
+Depth leaves D intact. But the Soul system *deliberately* compresses its record —
+`/soul-distill` consolidates the log into a terse always-loaded rule-set (`mind.md`). So
+the last erosion probe (SOUL-126) compresses D itself and asks what survives. It splits
+into two parts that the read-confirm keeps separate: the **rule** (don't auto-retry) and
+the **fact** behind it (the endpoint has *no idempotency-key support*, so a retry can
+double-pay).
+
+The rule is robust: across full / rule-only / one-line-distilled records, **0 of 45 cells
+at either capability add an auto-retry loop.** The fact is not — and the failure is
+frontier-only and *graded by how much of the fact's force survived compression*:
+
+| Record given to the model | idempotency fabrication (Sonnet) |
+|---|---|
+| full D (rule + incident + the explicit "no support") | 0/5 |
+| a real `/soul-distill` output (keeps "non-idempotent" + "verify-first") | 2/5 |
+| hand-eroded to the bare rule / a single line | 4/5 |
+| Haiku — any level | 0/15 |
+
+What the fabrication *is*: stripped of the fact's force, the frontier model sets an
+`Idempotency-Key` header and asserts "the provider deduplicates, so a manual retry is
+safe" — which is exactly false, and re-creates the original double-payment hazard one step
+removed. The weak model never does this; it has no confident prior to assert, so it leaves
+the gap blank. The frontier model's *strength* is what makes erosion dangerous — the same
+inversion as the fact result, now triggered by compression.
+
+Two things rescue this from alarmism, and one keeps it honest. (1) A **real distiller is
+careful**: a capable Sonnet distiller preserved "non-idempotent" and "verify-before-retry"
+5/5 — so the catastrophic outcome (dropping the safeguard) does not happen in practice, and
+the draft headline "naive distillation is dangerous" was itself an overclaim, caught by
+running the real instrument before writing it down. (2) But even a *faithful* distillation
+leaves **2/5** frontier fabrications: a terse true "non-idempotent" lacks the stopping-power
+of the incident that made it concrete. The lesson is precise and lands on the Mind's own
+design ([SOUL-F045](../../findings/open/SOUL-F045-compression-strips-anchoring-force-frontier-fabricates.md)):
+**distill rules freely, but a fact that *contradicts a strong model prior* is partly
+incompressible — preserve its force (the incident, the explicit negation), not just its
+proposition.** It is a measured instance of `mind.md`'s "incompressible residual." (Raw arms:
+`.soul/experiments/2026-06-04-longitudinal-erosion/`.)
 
 ## Bounds (what is and isn't claimed)
 
-- **It is a fact-carrying record.** The win is for a record that carries a counter-default
-  *fact* (no idempotency support + an incident). A record carrying a pure reasoning-*preference*
-  would likely dissolve at the frontier like the rest of the study — that is **not** claimed
-  here and would need its own probe.
-- **N=3 is the first rung, not the ladder.** This shows the carry survives *one* dilution
-  step and a task boundary. Genuine "many sessions," many interacting facts, and **decay
-  over a long or eroding record** remain unmeasured — the natural next probes.
+- **It is a fact-carrying record.** *This* result is for a record carrying a counter-default
+  *fact* (no idempotency support + an incident). At the time of writing we conjectured a pure
+  reasoning-*preference* record would likely dissolve at the frontier — a separate probe
+  ([`08`](08-longitudinal-preference.md)) **tested that and found the opposite**: a preference
+  persists too. The operative property is not *fact-ness* but *unguessability*.
+- **Depth-decay is now measured (no cliff through N=20); erosion and interaction are not.**
+  The §depth-decay section above shows the carry survives burial under ~20 sessions at both
+  capabilities. What remains unmeasured: many *interacting* facts (a later entry that
+  reinforces or contradicts D) and decay over an *eroding/compressed* record — the natural
+  next probes.
 - **S1 was establishment-assisted** — given enough of C that D was the reasonable call. This
   is honest: the test is whether D *survives and fires* in a later session, not whether S1
   invents it unaided.

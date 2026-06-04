@@ -1511,3 +1511,91 @@ RESULT:    DONE 2026-05-29 ([[SOUL-120]]). oracle vs budgeted-pick2 at Haiku = 5
            model's own pick? (oracle = perfect-routing upper bound.) Tool-skills +
            multi-task/longitudinal what+when still untested.
 ```
+
+```
+ID:        SOUL-I045
+WHEN:      2026-06-04
+IDEA:      RECORD-DECAY probe — the sharpest open rung on the longitudinal axis
+           ([[SOUL-123]] fact + [[SOUL-124]] preference both used a SINGLE dilution
+           step). Does the carry survive a LONG / ERODING record? Where is the cliff?
+STATUS:    Raw
+WHY:       [[SOUL-F044]]'s one remaining bound before amendment: both probes show the
+           carry survives ONE burial step + a task boundary. The literal Soul claim is
+           "across MANY sessions" and "a record accumulating over a project's life."
+           Untested. The cliff (if any) is directly actionable: it tells you how large
+           a record can grow before the carry fails — i.e. whether the Soul record NEEDS
+           distillation/pruning to keep firing. That makes it the empirical backing (or
+           refutation) for the Mind / /soul-distill existing at all.
+DEVELOP:   Architect (widen the built harness — mechanical from here) + Accountant
+           (the spend is large; see options) + /soul-expand if scope reopens.
+NOTES:     DESIGN (pre-registration draft — forks flagged for the Body):
+
+           KNOB: record DEPTH N = number of intervening ADRs between D (ADR-001) and the
+           S3 fork task. In this harness "many sessions" ≡ "deeper burial" (each session
+           appends an ADR) — same knob. N=1 is ALREADY MEASURED (SOUL-123 = 5/5 HOLD both
+           models); the ladder extends it: N ∈ {5, 10, 20, ...} until HOLD degrades.
+
+           D: REUSE the FACT D (no-retry non-idempotent endpoints, SOUL-123) — sharpest
+           counter-default + unambiguous read-confirm (retry loop present/absent) + lets
+           the ladder anchor directly to the existing N=1=5/5 point. (Could also run the
+           preference D as a second curve — does an unguessable CONVENTION decay at the
+           same depth as an unguessable FACT? A genuinely interesting secondary contrast,
+           but doubles the spend — Body fork.)
+
+           ARMS at each N: with-record (D buried under N real ADRs) / control (N filler
+           ADRs, NO D, length-matched) / floor (no record, N-independent — measure once).
+           THE CONTROL'S JOB HERE: isolate POSITION decay from generic long-context
+           degradation. If with-record HOLD falls to meet control DRIFT at large N, the
+           cliff is D-becoming-unfindable, NOT "long context degrades everything" — because
+           the control is equally long and equally context-pressured. This is the load-
+           bearing comparison; without it a cliff is uninterpretable.
+
+           BURIAL GENERATION: batch-generate a POOL of ~20 plausible unrelated Ledger ADRs
+           ONCE (logging, config, metrics, rate-limiting, caching policy, etc.), then stack
+           the first N for each rung. Cheap and reused across rungs.
+
+           PREDICTION (pre-registered, both branches decisive): either (i) HOLD stays high
+           to large N → the carry is depth-robust, the record can grow without pruning (the
+           Mind/distill is convenience, not necessity); or (ii) HOLD degrades past some N* →
+           there IS a cliff, the record needs distillation to keep firing (empirical backing
+           for /soul-distill). N* may differ by model (Sonnet's longer effective context →
+           deeper cliff) — itself a finding.
+
+           SPEND (Accountant — Body picks): full grid N∈{5,10,20} × {with-record,control} ×
+           2 models × n=5 + floor(2×5) = 70 calls (N=1 reused). ECONOMIES: (a) find the
+           cliff cheaply at n=3 on ONE model first, then confirm n=5 at the cliff + one model;
+           (b) Haiku first (shorter effective context → cliff appears sooner → cheaper to
+           locate); (c) depth-only for v1, defer the preference-curve + erosion to siblings.
+
+           GATES (carry every method lesson): counter-default already established (reuse
+           SOUL-123's D + floor-check); equal-length control non-negotiable; read-confirm in
+           actual code (retry loop), not keywords; records inlined into -p (never @-import,
+           F038); save each arm's exact prompt.
+
+           BOUNDS / SIBLINGS (named, not in-scope): this isolates POSITION/volume of a
+           SINGLE buried D — it does NOT test MANY INTERACTING decisions (a later entry that
+           reinforces or CONTRADICTS D — the other open rung). And EROSION decay (D's ADR
+           gets SUMMARIZED/compressed by a later consolidation, or its rationale dropped) is
+           a distinct, arguably MORE Soul-relevant sibling because /soul-distill DELIBERATELY
+           compresses the record — "does D survive distillation?" directly validates the
+           distill instrument. Recommend depth-decay as v1; erosion + interaction as named
+           follow-ons.
+RESULT:    DEPTH-DECAY DONE 2026-06-04 ([[SOUL-125]]). NO CLIFF through N=20 at BOTH
+           capabilities — with-record HOLDs (N=5/10 3/3, N=20 5/5 both models), equal-
+           length control DRIFTs at every depth. The carry is depth-robust; a counter-
+           default fact buried under 20 ADRs still fires. Sonnet control replicates the
+           SOUL-123 dangerous drift (invents an Idempotency-Key) at depth 20. Economized
+           Haiku-first per plan. The SIBLINGS remain the live follow-ons: EROSION decay
+           (tests /soul-distill) + MANY-INTERACTING decisions + D-in-the-middle position.
+           Status → Maturing (depth rung climbed; siblings open).
+EROSION:   DONE 2026-06-04 ([[SOUL-126]] → graduated [[SOUL-F045]]). The RULE survives
+           compression (0/45 auto-retry loops, both caps, down to a one-line distilled
+           rule); the unguessable FACT loses its stopping-FORCE — frontier fabricates a
+           gradient: full D 0/5 → faithful real-distillation 2/5 → aggressive erosion 4/5;
+           Haiku 0/15. A REAL Sonnet distiller PRESERVES the anchor 5/5 (so "naive distill
+           dangerous" was an overclaim, caught by the Emissary follow-on) but force still
+           degrades 2/5. Finding F045: facts that CONTRADICT a strong model prior are partly
+           incompressible — preserve force, not just proposition (bears on /soul-distill +
+           mind.md "incompressible residual"). STILL OPEN: weak DISTILLER (does Haiku-distill
+           drop the anchor?), a 2nd anti-prior fact, MANY-INTERACTING decisions, D-in-middle.
+```
