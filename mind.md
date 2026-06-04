@@ -19,9 +19,9 @@ Rules produce decisions; source citations are anchors.
 3. **Anchor every absolute claim with a valid external reference.** Name the
    anchor, why it's trusted, how it could be wrong. Internal coherence is not
    truth. **Count / historical / scope claims: anchor at WRITING time, not just
-   review** — a scope claim ("which files, which parse, the N sites that matter")
-   is a count-like claim that slips past prose coherence and survives into
-   corrections. *Source:* A010, F015, F028, F040, SOUL-103, SOUL-104, SOUL-105.
+   review** — they slip past prose coherence and survive into corrections. The
+   anchor's FORCE, not just its existence, is partly incompressible (Rule 13).
+   *Source:* A010, F015, F028, F040, F045/A018, SOUL-103→105.
 
 4. **Generation couples with retirement.** Every instrument that creates
    artifacts (skills, findings, ideas, amendments) ships with a retire handle.
@@ -57,6 +57,13 @@ Rules produce decisions; source citations are anchors.
 12. **Public-facing artifacts are canonical when they disagree with the seed.**
     The seed implements public artifacts (README, AGENTS.md); when divergence
     is found, the public artifact wins. *Source:* A016, SOUL-099.
+
+13. **Record the unguessable; the derivable regenerates.** Carry what a later
+    session can't re-derive — an unguessable FACT or arbitrary CONVENTION;
+    re-reasonable knowledge dissolves (property: unguessability, not fact-ness).
+    When compressing, preserve the unguessable's FORCE (incident, explicit
+    negation), not just its proposition — else the frontier refabricates it as a
+    Coherent Falsehood. *Source:* F044, F045/A018, SOUL-123→129.
 
 ## Tensions (rules that pull against each other)
 
@@ -117,10 +124,10 @@ Examples whose handling shows the boundary between rules.
 - **Anchor discipline, four faces (F015 → F028 → F040 → SOUL-103/104/105).**
   EXISTENCE (must name one — F015); VALIDITY (the anchor itself can be wrong —
   F028); SCOPE (the claim's reach can be under-examined — F040 wrong-scope grep;
-  SOUL-104 audit missed docs/specs/; SOUL-105 a scope-slip INSIDE a slip-
-  diagnosis); TIMING (count / historical / scope claims slip past prose coherence
-  and survive INTO the correction — anchor at WRITING time; SOUL-099 "SECOND"→
-  FOURTH /soul-council count, SOUL-103). Each face catches the prior's residual.
+  SOUL-104/105); TIMING (count/historical/scope claims slip past prose coherence
+  INTO the correction — anchor at WRITING time; SOUL-099/103). Each face catches
+  the prior's residual. (FORCE — survival under compression — is Rule 13's, not
+  the original claim's.)
 
 - **A008 vs A009 — handoff topology.** A008 prescribed hermetic context for
   subagents (FANOUT). A009 refined: self-contained for *restart* correctness,
@@ -161,7 +168,7 @@ Knowledge that doesn't reduce to rules; force-fit is the failure mode.
   invocable. They stay in the seed and `the-soul.md`.
 
 ---
-**Last distilled:** 2026-05-28 (light refresh, SOUL-104→106 — Rule 3 timing
-clause extended to SCOPE claims; anchor-discipline + SOUL-099 count-slip cases
-merged into one four-face case (shrinks); gap-only review rule deferred at
-N=2. Prior: 2026-05-27, SOUL-098→103).
+**Last distilled:** 2026-06-04 (folded F044 + F045/A018 — new Rule 13
+record-the-unguessable + force; two-lever residual; Rule 3 force clause; net-flat.
+DEFERRED to next refresh: A017, F042, F043, SOUL-107→122. Prior: 2026-05-28,
+SOUL-104→106).

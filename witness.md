@@ -6200,3 +6200,36 @@ STATUS:       Resolved (decisive within scope). The confound F045 was held open 
               mechanism (Body routing call pending). Propagation (F045 + I045 + corpus 07 +
               manifest) pending. Raw arms gitignored.
 ```
+
+```
+ID:           SOUL-130
+WHEN:         2026-06-04 / /soul-distill — folded [[SOUL-F044]] + [[SOUL-F045]]/[[SOUL-A018]]
+              into mind.md (the longitudinal axis the Distiller was owed). Body-invoked after
+              the F045 graduation, per A018's deferral of the Mind fold-in to the Distiller.
+WHERE:        mind.md (Rules + Incompressible-residual + Last-distilled footer). Targeted
+              distill (F044/F045 only); A017/F042/F043/SOUL-107→122 deferred to next refresh.
+WHAT:         NEW Rule 13 ("Record the unguessable; the derivable regenerates" — carry what a
+              later session can't re-derive; when compressing, preserve the unguessable's FORCE
+              not just its proposition). Rule 3 gained a force-incompressibility pointer +
+              F045/A018 source (scope parenthetical compressed to offset). Anchor-four-faces
+              case got a one-line FORCE note (SOUL-104/105/099 detail trimmed to offset). The
+              two-lever MECHANISM was deliberately kept ON-DEMAND (F045/A018 + corpus 07), NOT
+              folded into the always-on Mind — Rule 5, same logic as the Council-role
+              descriptions (generator in the Mind; mechanism is reference-depth).
+TYPE:         Distiller (compressed the record's new rule-evidence into the lens layer);
+              Steward (dropped the mechanism to on-demand rather than bloat the always-on
+              budget); Accountant (the growth-budget call — surfaced the +7 honestly).
+CONSEQUENCE:  (1) Growth check FLAGGED honestly: 167 → 174 (+7), failing strict shrink-or-flat
+              but passing the ≤200 target (26 lines headroom). The +7 is the irreducible cost
+              of one new two-finding rule after all safe trims; exact-flat would require
+              retiring an established entry. Body ACCEPTED 174 (chose accept over deeper-prune).
+              (2) The fold itself honors A018's new guard — Rule 13 keeps the incident/explicit-
+              negation language, does not reduce the anti-prior fact to a bare directive (the
+              Distiller eating its own dogfood on the very rule it just landed). (3) Doctrine/
+              obligation split preserved: A018 (the obligation) stays in amendments/; the
+              generative "record the unguessable / preserve force" goes in the Mind. (4) BOUNDS:
+              targeted distill — A017 (roles=legibility), F042, F043, SOUL-107→122 remain
+              unfolded (flagged in the Last-distilled footer for the next refresh).
+STATUS:       Resolved. mind.md refreshed + committed (accept-174). Deferred material named for
+              the next /soul-distill. The longitudinal axis is now in the always-on lens.
+```
