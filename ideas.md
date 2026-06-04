@@ -1598,4 +1598,38 @@ EROSION:   DONE 2026-06-04 ([[SOUL-126]] → graduated [[SOUL-F045]]). The RULE 
            incompressible — preserve force, not just proposition (bears on /soul-distill +
            mind.md "incompressible residual"). STILL OPEN: weak DISTILLER (does Haiku-distill
            drop the anchor?), a 2nd anti-prior fact, MANY-INTERACTING decisions, D-in-middle.
+WEAK-DIST: DONE 2026-06-04 ([[SOUL-127]]). Re-ran the SAME neutral distill prompt at Haiku
+           (n=5), then fed haiku-1 → S3 Sonnet (n=5). ANSWER: the weak distiller keeps the
+           anchor PROPOSITION (no-auto-retry 5/5, verify-before-retry 5/5; "non-idempotent"
+           3/5 vs Sonnet 4/5) but NOT the force — its output is terser (drops the endpoint
+           list) and the frontier reader fabricates 5/5 ≥ Sonnet-distill 2/5. So the frontier
+           fabricates regardless of distiller: force, not proposition, fails to carry.
+           Confirms F045 on the distiller axis (NO new failure mode); 5/5-vs-2/5 left
+           suggestive-not-established (confounded + noisy at n=5). F045's weak-distiller gate
+           CLIMBED; the one remaining pre-amendment gate = a 2nd anti-prior fact. STILL OPEN:
+           2nd anti-prior fact, MANY-INTERACTING decisions, D-in-middle.
+ANTIPRIOR2: DONE 2026-06-04 ([[SOUL-128]]). New prior (always-cache auth tokens) + new fact
+           (settlement gateway tokens are SINGLE-USE; fetch fresh, never cache). The force-
+           gradient REPLICATES (floor 10/10 cache → e0 full-fact 0/10 → distilled drift
+           returns) but the capability-direction INVERTS: the WEAK model collapses to caching
+           at the one-line rule (Haiku edist 5/5, reinterprets "before every call" as "across
+           batches"), the FRONTIER holds 0/5 at every level. Opposite of F045's idempotency
+           case. Mechanism: sophisticated-prior + loophole-directive → frontier fabricates;
+           universal-prior + imperative-directive → weak drifts. F045 REFRAMED (Body call):
+           core force-gradient GENERALIZES across 2 priors; "frontier-only" dropped; kept
+           OPEN for ONE rung — the isolating probe that separates prior-sophistication from
+           directive-form (the two co-vary across the 2 facts). Dir: .soul/experiments/
+           2026-06-04-longitudinal-antiprior2/. STILL OPEN: isolating probe (form vs prior),
+           MANY-INTERACTING decisions, D-in-middle.
+ISOLATE:   DONE 2026-06-04 ([[SOUL-129]]). Held the token-caching prior CONSTANT, varied only
+           the directive FORM: imperative (edir/edist) vs loophole (eloop, "reuse only if you
+           confirm validity"). The FRONTIER flips 0/5 (imperative) → 5/5 (loophole), inventing
+           a TTL/expires_in each time — a Coherent Falsehood (D2 = single-use, no TTL). VERDICT:
+           the SOUL-128 inversion DECOMPOSES into two independent levers — directive-FORM gates
+           the FRONTIER (loophole→fabricate, imperative→obey), prior-STRENGTH+terseness gates
+           the WEAK model (drifts on any terse/loose rule for a prior it holds). F045's last
+           rung CLOSED → amendment-ready: preserve the fact's force; when compressing, make the
+           residual directive IMPERATIVE + no loophole + terse-misread-proof. STILL OPEN (non-
+           blocking): symmetric cell (imperative over idempotency). I045 axis essentially
+           complete; MANY-INTERACTING + D-in-middle remain as F044-side rungs.
 ```

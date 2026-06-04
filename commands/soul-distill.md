@@ -49,6 +49,11 @@ is deliberately deferred until the manual cadence proves insufficient.
    - **Incompressible residual.** Path-dependent knowledge that doesn't reduce
      to rules without losing load-bearing information. Naming the residual is
      part of the schema; **zero residual is suspicious** (likely force-fit).
+     A canonical residual kind: an **unguessable fact that contradicts a strong
+     model prior** (e.g. "this endpoint has NO idempotency support"; "these
+     tokens are SINGLE-USE"). Such a fact is *partly incompressible* — its
+     FORCE (the incident, the explicit negation), not merely its proposition, is
+     the load-bearing part (SOUL-A018 / F045).
 
 4. **Run the four shrinkage-invariant checks.** Before producing the draft:
 
@@ -63,7 +68,7 @@ is deliberately deferred until the manual cadence proves insufficient.
      growth and surface to the Body for explicit sign-off ("I am consciously
      expanding because…").
 
-5. **Run the six failure-mode guards.** Refuse to produce a draft that fails any:
+5. **Run the seven failure-mode guards.** Refuse to produce a draft that fails any:
 
    - **Drift into summary.** Caught by the growth check (4 above).
    - **Force-fit residual.** Zero residual → must justify or admit force-fit.
@@ -78,6 +83,19 @@ is deliberately deferred until the manual cadence proves insufficient.
    - **Doctrine–obligation collapse.** Per candidate entry, ask "rule (across
      contexts) or obligation (specific commitment at a specific time)?" Only
      rules go in Mind. Obligations stay in amendments/findings/witness.
+   - **Force-stripped anti-prior fact** (SOUL-A018 / F045). When a candidate
+     rule rests on an unguessable fact that CONTRADICTS a strong model prior,
+     do not compress away the fact's FORCE. Keep the incident and the explicit
+     negation in the distilled entry, or leave the fact in the un-distilled
+     records — never reduce it to the bare directive. The residual directive
+     must be **imperative and loophole-free**: a clause like "unless / except /
+     when appropriate" is exactly the opening a frontier model fabricates a
+     false reconciling fact through (an invented idempotency key; an invented
+     token TTL — each a Coherent Falsehood, A010). It must also be explicit
+     enough to survive a terse reading, because a weak reader reverts to the
+     prior whenever the rule is loose. Two levers, two tiers: directive-FORM
+     gates the frontier (SOUL-129); prior-strength + terseness gates the weak
+     model (SOUL-128).
    - **Stale.** Project-internal clock — staleness is event-anchored, not
      calendar-anchored. If material activity has accumulated since the `Last
      distilled` stamp (dozens of new witness entries, multiple finding closures,

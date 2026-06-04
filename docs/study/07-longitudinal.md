@@ -158,7 +158,8 @@ frontier-only and *graded by how much of the fact's force survived compression*:
 | Record given to the model | idempotency fabrication (Sonnet) |
 |---|---|
 | full D (rule + incident + the explicit "no support") | 0/5 |
-| a real `/soul-distill` output (keeps "non-idempotent" + "verify-first") | 2/5 |
+| a real **Sonnet** `/soul-distill` output (keeps "non-idempotent" + "verify-first") | 2/5 |
+| a real **Haiku** `/soul-distill` output (weak distiller — keeps rule + verify, terser) | 5/5 |
 | hand-eroded to the bare rule / a single line | 4/5 |
 | Haiku — any level | 0/15 |
 
@@ -182,6 +183,72 @@ incompressible — preserve its force (the incident, the explicit negation), not
 proposition.** It is a measured instance of `mind.md`'s "incompressible residual." (Raw arms:
 `.soul/experiments/2026-06-04-longitudinal-erosion/`.)
 
+A natural worry follows: what if `/soul-distill` itself runs on a *weak* model — does it drop
+the anchor the capable one kept? We tested it (SOUL-127): a Haiku distiller keeps the
+**proposition** — the no-auto-retry rule (5/5) and the verify-before-retry guard (5/5) — so it
+does *not* drop the anchor in content. But its output is terser still (it compresses away the
+endpoint list), and fed to a frontier reader that output fabricates **5/5** — at least as
+often as the Sonnet-distilled rule-set's 2/5. The frontier reader fabricates *regardless of
+which model did the distilling*: force, not proposition, is what fails to carry. (We do not
+claim the Haiku distiller is *strictly* worse — 5/5 vs 2/5 at n=5 is confounded by phrasing
+and noisy — only that a weaker distiller buys no safety, and the fix is unchanged.)
+
+### Does it generalize beyond idempotency? A second prior — and a surprise
+
+The idempotency result rests on one prior. So we ran a second, independent one (SOUL-128): the
+settlement gateway issues **single-use** auth tokens (fetch a fresh one before every call,
+never cache — reuse is rejected and locks the account), against the near-universal reflex to
+*cache and reuse* auth tokens for efficiency. The downstream task (`SettleBatch`, "efficient
+under high throughput") pressures the model toward caching; we eroded the fact across the same
+levels and read-confirmed whether the code caches the token.
+
+Two things came back. First, **the force-gradient replicates**: the full fact suppresses the
+prior completely (0/10 cache), and as it is compressed away the drift returns — exactly the
+idempotency shape. So "compression strips an unguessable counter-prior fact's stopping-force"
+holds across two independent priors, not one. Second, **the capability-direction inverts**:
+
+| record given to the model | Haiku caches | Sonnet caches |
+|---|---|---|
+| full fact (rule + incident + "single-use") | 0/5 | 0/5 |
+| directive only (fact stripped) | 1/5 | 0/5 |
+| one-line distilled rule | **5/5** | **0/5** |
+
+Here it is the *weak* model that collapses — at the distilled one-liner Haiku reinterprets
+"fetch fresh before every call" as "don't cache *across batches*" and caches within the batch
+(5/5), while Sonnet holds at every level and even rebuts the misreading ("Fresh token per item,
+not per batch. The standing rule is explicit"). That is the **opposite** of idempotency, where
+the frontier fabricated and the weak model stayed safe. The likely mechanism: idempotency's "no
+auto-retry" left a *loophole* (retry is safe *if* idempotent) that a *sophisticated* prior the
+weak model lacked could exploit; "must not cache" is *imperative* over a *universal* prior, so
+the frontier obeys precisely and the weak model — holding the prior and reading the terse rule
+loosely — drifts. So **which tier drifts when the force is gone is fact-dependent**, not
+universally the frontier.
+
+But "fact-dependent" is not the end of it. We isolated the two co-varying causes (SOUL-129) by
+holding the token-caching prior constant and changing *only* the directive form: from the
+imperative "must not cache" to a **loophole** — "do not reuse a token *unless you have
+positively confirmed it is still valid*; when in doubt, fetch fresh." That one change flips the
+frontier completely:
+
+| directive form (token-caching prior, fact stripped) | Haiku caches | Sonnet caches |
+|---|---|---|
+| imperative ("must not cache", full) | 1/5 | 0/5 |
+| imperative, distilled to one line | 5/5 | 0/5 |
+| **loophole** ("reuse only if validity confirmed") | 5/5 | **5/5** |
+
+Under the loophole, all five Sonnet runs build a token cache and **invent a validity field** —
+`validUntil`, `expires_in`, an expiry margin — to satisfy "confirm validity" and reuse the
+token. But the token is single-use with no TTL, so the invented expiry is a fabrication: the
+same move as the idempotency key under "verify first." So the capability-direction decomposes
+into **two independent levers on different tiers**: **directive *form* gates the frontier** (a
+loophole is an invitation to fabricate the reconciling fact; an imperative with no loophole is
+obeyed, even at one line), and **prior strength gates the weak model** (it reverts to a prior it
+holds whenever the rule is terse or loose; it stayed safe on idempotency only because it lacked
+that prior). The design consequence is sharp: when you must compress an anti-prior fact's rule,
+make the residual **imperative, loophole-free, and explicit enough to survive a terse reading** —
+a clause like "unless / except / when appropriate" is precisely the gap the frontier walks
+through. (Raw arms: `.soul/experiments/2026-06-04-longitudinal-antiprior2/`.)
+
 ## Bounds (what is and isn't claimed)
 
 - **It is a fact-carrying record.** *This* result is for a record carrying a counter-default
@@ -189,11 +256,12 @@ proposition.** It is a measured instance of `mind.md`'s "incompressible residual
   reasoning-*preference* record would likely dissolve at the frontier — a separate probe
   ([`08`](08-longitudinal-preference.md)) **tested that and found the opposite**: a preference
   persists too. The operative property is not *fact-ness* but *unguessability*.
-- **Depth-decay is now measured (no cliff through N=20); erosion and interaction are not.**
-  The §depth-decay section above shows the carry survives burial under ~20 sessions at both
-  capabilities. What remains unmeasured: many *interacting* facts (a later entry that
-  reinforces or contradicts D) and decay over an *eroding/compressed* record — the natural
-  next probes.
+- **Depth-decay and erosion are now measured; interaction is not.**
+  The §depth-decay section shows the carry survives burial under ~20 sessions at both
+  capabilities; the §erosion sections show the force-gradient under compression across two
+  independent priors (with the fact-dependent capability-direction). What remains unmeasured:
+  many *interacting* facts (a later entry that reinforces or contradicts D), and the isolating
+  probe that separates prior-sophistication from directive-form — the natural next probes.
 - **S1 was establishment-assisted** — given enough of C that D was the reasonable call. This
   is honest: the test is whether D *survives and fires* in a later session, not whether S1
   invents it unaided.
