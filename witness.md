@@ -5998,3 +5998,205 @@ STATUS:       Resolved (decisive within scope). Erosion rung CLIMBED — with a 
               re-asserts the prior. Refines mind.md's "incompressible residual" + Rule 3.
               Routing: NEW finding F045 with THIS gradient framing (not the overclaim).
 ```
+
+```
+ID:           SOUL-127
+WHEN:         2026-06-04 / longitudinal WEAK-DISTILLER probe — does /soul-distill run on a
+              WEAK model (Haiku) drop the anchor the capable (Sonnet) distiller kept? The
+              risk surface [[SOUL-F045]] explicitly named as untested. Reuses the SOUL-126
+              erosion harness end-to-end. Sibling of [[SOUL-125]]/[[SOUL-126]]; idea
+              [[SOUL-I045]].
+WHERE:        .soul/experiments/2026-06-04-longitudinal-erosion/ — distill/distilled-haiku-
+              {1..5}.txt (Haiku distillations of the full 21-ADR log, neutral prompt) +
+              arms/edistilled-haiku-sonnet-{1..5}.txt (Haiku rule-set fed → S3 Sonnet) +
+              arms/edistilled-haiku-PROMPT.txt. Bears on /soul-distill + mind.md
+              ("incompressible residual"); F045 to update.
+WHAT:         Two stages, both read-confirmed in the actual output (not keywords).
+              STAGE 1 — run the SAME neutral distill prompt (compress the 21-ADR log to a
+              one-line-per-rule set; no hint idempotency matters) at claude-haiku-4-5, n=5.
+              Read each output for the D-anchor. STAGE 2 — feed one full-anchor Haiku
+              distillation (haiku-1) → S3 SendPayout at claude-sonnet-4-6, n=5; read-confirm
+              the idempotency fabrication (sets `Idempotency-Key: payoutID` + claims provider
+              dedup → overrides the no-auto-retry rule). Compared to the SOUL-126 gradient
+              (full D 0/5 · Sonnet-distill 2/5 · hand-erosion 4/5 · Haiku reader 0/15).
+TYPE:         Emissary (tested the carry against the system's OWN instrument run on a weak
+              model — the end-to-end /soul-distill risk surface); Skeptic (read all 10 cells
+              in code/prose; substantiated the terseness confound by diffing haiku-1 vs
+              sonnet-1 rule 1 — Haiku DROPS the endpoint list + "explicitly"; refused the
+              "Haiku strictly worse" overclaim at n=5); Guardian (the finding guards
+              /soul-distill — the probe asked whether the instrument is safe on a weak model).
+CONSEQUENCE:  (1) STAGE 1 — the weak distiller does NOT drop the anchor PROPOSITION the
+              capable one kept: no-auto-retry directive 5/5, verify-before-retry guard 5/5,
+              explicit "non-idempotent" 3/5 (Sonnet kept it 4/5). Like EVERY distillation,
+              neither keeps the unguessable FACT ("no idempotency-key support") or the 1,180
+              incident — F045's established point. (2) STAGE 2 — feeding the Haiku rule-set
+              to a Sonnet reader → 5/5 fabricate the idempotency-dedup, ≥ the Sonnet-distill
+              2/5. Updated gradient (Sonnet reader): full D 0/5 → Sonnet-distill 2/5 → Haiku-
+              distill 5/5 → hand-erosion 4/5; Haiku reader 0/15. (3) HONEST BOUND (Anchor
+              discipline on our OWN finding — the F045 Emissary lesson): haiku-1's rule 1 is
+              terser — drops the endpoint list (POST /charges,/refunds,/payouts) and
+              "explicitly" that sonnet-1 kept. So 5/5-vs-2/5 is DIRECTIONALLY consistent with
+              "harder compression → less stopping-force," but is CONFOUNDED (phrasing + the
+              full 20-rule context differ) and noisy at n=5. NOT claimed: "Haiku distiller
+              strictly worse." (4) THE FINDING (Soul-meta, distill-relevant): a weak distiller
+              keeps the anchor PROPOSITION but its output carries no more stopping-FORCE — if
+              anything less. The frontier reader fabricates regardless of which model
+              distilled. This CONFIRMS F045's force-not-proposition thesis on the distiller
+              axis; it opens NO new failure mode, and the fix is the one F045 already
+              prescribes (preserve the FACT + incident, not just the rule). (5) F045 graduation
+              ledger: the weak-distiller rung — one of its two named pre-amendment gates — is
+              now CLIMBED. Remaining before amendment: a SECOND anti-prior fact showing the
+              same force-gradient. (6) BOUNDS: one D, one prior (idempotency), one Haiku
+              distillation fed downstream (haiku-1, the full-anchor representative — terser
+              haiku-2/3 not fed), n=5, two models, primacy position.
+STATUS:       Resolved (decisive within scope). Weak-distiller rung CLIMBED — answer:
+              proposition preserved, force not. F045 bounds narrow (weak-distiller gate
+              discharged; second-anti-prior-fact gate remains). Propagation (F045 + I045-
+              RESULT + manifest + corpus 07 §erosion) pending. Raw arms gitignored.
+```
+
+```
+ID:           SOUL-128
+WHEN:         2026-06-04 / longitudinal 2nd-ANTI-PRIOR-FACT probe — the gate [[SOUL-F045]]
+              named before amendment. A NEW prior (always-cache/reuse auth tokens) + NEW
+              fact (the settlement gateway issues SINGLE-USE tokens; reuse is rejected +
+              locks the account). Does F045's force-gradient replicate for a second,
+              independent prior? It REPLICATES — but the capability-direction INVERTS.
+              Sibling of [[SOUL-123]]/[[SOUL-126]]/[[SOUL-127]]; idea [[SOUL-I045]].
+WHERE:        .soul/experiments/2026-06-04-longitudinal-antiprior2/ (run.sh + adr-D2-
+              {full,directive,distilled}.md + s3-{pre,post,floor}.md + arms/ + manifest).
+              Same erosion structure as SOUL-126 (e0/edir/edist + floor), new fact D2, new
+              task (SettleBatch, "efficient under high throughput" = the prior-pressure).
+              Read-confirmed in Go code: token fetched INSIDE the per-item path (HOLD) vs
+              ONCE before the loop and reused (DRIFT). F038: record inlined, never @-import.
+WHAT:         D2 = "fetch a fresh bearer token before EVERY settlement call; never cache/
+              reuse — the gateway's tokens are SINGLE-USE, reuse is rejected 401 and locks
+              the service account (incident LEDGER-2231, 4h outage)." Eroded across the same
+              levels at fixed depth, n=5 × 2 models. Measure: does the implementation cache/
+              reuse the token (violating the rule) as the unguessable fact is compressed away?
+              Stubs (Haiku write-blocked under -p) scored by described approach; one pure
+              stub re-run. 60 cells total.
+TYPE:         Emissary (closed F045's named gate against a real second prior); Skeptic
+              (read every cell's token-fetch placement in code, not keywords; the keyword
+              pass mis-scored code-heavy cells — only locating the fetchToken call site gave
+              the verdict; refused to call the 5/5-vs-2/5 cross-fact comparison more than it
+              is); Revelator (the INVERSION: F045's "frontier fabricates, weak model safe"
+              is FACT-SPECIFIC, not general — here the WEAK model drifts and the frontier is
+              robust); Guardian (the result reshapes a finding's core thesis before it
+              graduates — flagged for Body routing, not folded silently).
+CONSEQUENCE:  (1) VALIDATION: floor (no record) = 10/10 CACHE both models — the token-caching
+              prior is even stronger than idempotency (every model reflexively "fetch once,
+              reuse for all"). e0 (full fact) = 10/10 HOLD both models — the full fact stops
+              it cold. The structure reproduces SOUL-123 for a new prior. (2) THE GRADIENT
+              (code-drift = caches token):
+                | level                 | Haiku | Sonnet |
+                | floor (no rule)       | 5/5   | 5/5    |
+                | e0 (full fact)        | 0/5   | 0/5    |
+                | edir (directive only) | 1/5   | 0/5    |
+                | edist (one-line)      | 5/5   | 0/5    |
+              The force-gradient REPLICATES — strip the unguessable fact and drift returns.
+              (3) THE INVERSION (the real finding): the capability-DIRECTION flips. The WEAK
+              model collapses to caching at the distilled rule (Haiku edist 5/5 — it
+              reinterprets "fetch fresh before every call" as "don't cache ACROSS BATCHES"
+              and caches within-batch, sometimes inventing a "minutes-long TTL"); the FRONTIER
+              holds 0/5 at EVERY erosion level (edist-sonnet-5 explicitly: "Fresh token per
+              item, not per batch. The standing rule is explicit"). This is the OPPOSITE of
+              F045's idempotency case (Sonnet fabricated 2-4/5, Haiku 0/15). (4) THE MECHANISM
+              (why the inversion): F045's "no auto-retry" had a LOOPHOLE (retry IS safe IF
+              idempotent) the frontier exploited by fabricating an idempotency key — a
+              SOPHISTICATED prior the weak model lacked. D2's "MUST NOT cache; fetch fresh
+              before every call" is IMPERATIVE with no loophole, over a UNIVERSAL prior (every
+              model caches tokens). So the frontier follows the explicit rule PRECISELY even
+              compressed to one line; the weak model, holding the universal prior AND reading
+              the terse rule imprecisely, drifts. Capability-direction of erosion-drift is
+              FACT-DEPENDENT: sophisticated-prior + loophole-directive → frontier fabricates;
+              universal-prior + imperative-directive → weak model drifts. (5) FOR F045: the
+              gate is CLIMBED and the core thesis SHARPENS — "compression strips the
+              unguessable fact's stopping-FORCE" GENERALIZES across two independent priors;
+              but "the FRONTIER fabricates" was an over-generalization from one prior. The
+              honest amendment-ready claim drops the frontier-specificity and keeps the
+              force-gradient + a fact-dependent capability-direction. ROUTING (Body call):
+              this RESHAPES F045's headline, so it is a reframe-then-graduate, not a silent
+              gate-tick. (6) BOUNDS: two priors now (idempotency, token-caching); two
+              directive-forms (loophole vs imperative) — these co-vary with the prior, so
+              "form vs prior" is not yet separated (a loophole-directive over token-caching,
+              or an imperative over idempotency, would isolate it). n=5, primacy position,
+              Haiku stubs scored-by-approach. The edist one-liner phrasing could bias Haiku's
+              "across batches" misreading — a re-phrase untested.
+STATUS:       Resolved (decisive within scope). F045's 2nd-anti-prior-fact gate CLIMBED with
+              a TWIST: force-gradient replicates, capability-direction inverts. F045 is now
+              amendment-eligible PENDING a Body reframe (drop frontier-specificity; keep the
+              generalized force-gradient + fact-dependent direction). Propagation (F045 reframe
+              + I045-RESULT + corpus 07 + manifest) pending Body routing. Raw arms gitignored.
+```
+
+```
+ID:           SOUL-129
+WHEN:         2026-06-04 / longitudinal ISOLATING probe — separates the [[SOUL-128]] confound
+              (prior-sophistication vs directive-FORM co-varied across the two facts). Holds
+              the token-caching prior CONSTANT and varies ONLY the directive form: imperative
+              ("MUST NOT cache; fetch fresh before every call" — edir/edist, already run) vs
+              LOOPHOLE ("MUST NOT reuse UNLESS you positively confirm validity; when in doubt
+              fetch fresh" — eloop, new). Closes the rung F045 was held open for. Sibling of
+              [[SOUL-126]]/[[SOUL-127]]/[[SOUL-128]]; idea [[SOUL-I045]].
+WHERE:        .soul/experiments/2026-06-04-longitudinal-antiprior2/ (adr-D2-loophole.md +
+              run.sh eloop level + arms/eloop-* + manifest). Same fact stripped (no single-use,
+              no incident), same SettleBatch task; ONLY the directive form differs. F038:
+              record inlined. Read-confirmed in Go: caches/reuses the token (DRIFT) + invents
+              a TTL/expires_in/validity field to license the reuse (the FABRICATION).
+WHAT:         n=5 × 2 models, one new level (eloop). Compared against the existing edir
+              (imperative, full) and edist (imperative, one-line) at the same fact-stripped
+              depth. Measure: does the implementation cache the token, and does it invent a
+              formal validity/TTL mechanism (false — D2 establishes single-use, no TTL)?
+              Haiku stubs scored by described approach (both eloop-haiku stubs carried a
+              scoreable approach; no pure stubs).
+TYPE:         Emissary (the decisive isolating test against the system's own erosion harness);
+              Skeptic (read every cell's token handling in code; checked the loophole wasn't
+              merely "telling it to cache" — it permits reuse ONLY on confirmed validity, and
+              the frontier FABRICATES the validity the real fact precludes, which is the
+              finding, not an artifact); Revelator (the two-lever decomposition — FORM gates
+              the frontier, PRIOR+terseness gates the weak model — they act on different
+              tiers); Guardian (resolves a finding's open mechanism before amendment, cleanly).
+CONSEQUENCE:  (1) THE FLIP: holding the token-caching prior constant and only swapping the
+              directive form, the FRONTIER goes from 0/5 cache (edir/edist imperative) to 5/5
+              cache (eloop loophole) — and all 5 eloop-Sonnet cells INVENT a formal validity
+              mechanism (validUntil/expires_in, tokenExpiryBuffer, tokenExpirySkew,
+              tokenExpiryMargin, "refresh when validity cannot be positively confirmed") to
+              walk through the loophole. The token is single-use with no TTL (D2), so the
+              invented expiry is a Coherent Falsehood (A010) — the SAME move as the idempotency
+              key under "verify status first." (2) THE GRID (code-drift, token-caching prior,
+              fact stripped):
+                | directive form        | Haiku | Sonnet |
+                | edir  (imperative full)  | 1/5 | 0/5 |
+                | edist (imperative 1-line)| 5/5 | 0/5 |
+                | eloop (loophole)         | 5/5 | 5/5 |
+              (3) THE RESOLUTION — the SOUL-128 inversion DECOMPOSES into two INDEPENDENT
+              levers acting on DIFFERENT tiers:
+                • DIRECTIVE-FORM gates the FRONTIER. Loophole → the frontier fabricates the
+                  reconciling fact its prior wants (idempotency key; token TTL). Imperative,
+                  no loophole → the frontier obeys precisely even at one distilled line. This
+                  is why idempotency (a loophole rule, "no auto-retry... verify first") showed
+                  frontier-fabrication and the token-IMPERATIVE rule did not — it was the FORM,
+                  not the prior's sophistication.
+                • PRIOR-STRENGTH + rule-TERSENESS gates the WEAK model. With a universal prior
+                  (token caching) it drifts whenever the rule is terse (edist 5/5) or loose
+                  (eloop 5/5); only the longer full imperative held it (edir 1/5). It held on
+                  idempotency (0/15) because it LACKED that prior, not because it follows rules
+                  better. (4) THE FINDING (Soul-meta, distill-design): F045's capability-
+                  direction is NOT an irreducible "fact-dependent" black box — it is these two
+                  levers. For /soul-distill + mind.md: preserving an anti-prior fact's force is
+                  necessary; and when compression is unavoidable, the residual directive should
+                  be IMPERATIVE with NO loophole (holds the frontier) AND explicit enough that a
+                  terse reading can't misinterpret it (holds the weak model). A loophole clause
+                  ("unless/except/when appropriate") is precisely the opening the frontier
+                  fabricates through. (5) BOUNDS: still one prior per lever-test (token-caching
+                  for form; idempotency vs token for the cross-prior); the imperative-over-
+                  idempotency symmetric cell untested (would further confirm form-gates-frontier
+                  is prior-independent). n=5, primacy, Haiku stubs scored-by-approach. The
+                  loophole wording is one phrasing.
+STATUS:       Resolved (decisive within scope). The confound F045 was held open for is BROKEN:
+              directive-FORM gates frontier fabrication; prior-strength+terseness gates weak-
+              model drift. F045's last rung CLOSED — now amendment-ready with a two-lever
+              mechanism (Body routing call pending). Propagation (F045 + I045 + corpus 07 +
+              manifest) pending. Raw arms gitignored.
+```
