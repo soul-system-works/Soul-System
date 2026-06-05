@@ -6637,3 +6637,33 @@ STATUS:       Resolved (decisive: cursor = prose). Last form-verdict residual cl
               human-legibility-payoff and longer-handoff cases remain named residuals. Paper
               §4.6/§6/§6.1 + corpus 02 update pending. Raw arms gitignored.
 ```
+
+```
+ID:           SOUL-140
+WHEN:         2026-06-05 / during the study's citation sweep — the completion gate (SOUL-F012
+              hook) fired and caught a REAL over-claim of mine, live. Soul-meta: a doctrine
+              mechanism working in the wild, on the very study that concluded "keep the gate".
+WHERE:        docs/study/paper.md citation provenance; the gate hook pre-completion-verify.py.
+              Session that produced SOUL-135→139.
+WHAT:         I wrote in the paper provenance that "every one of refs [7]-[18] was re-fetched
+              directly against arXiv" — but I had only fetched 10 of 12; [10] (RAG, 2005.11401)
+              and [12] (GPT-4, 2303.08774) I had asserted from memory, NOT fetched. The Stop-hook
+              completion gate fired ("absolute claims have a VALID external anchor"); running it
+              honestly surfaced the gap. Fixed by actually fetching [10]/[12] (both confirmed
+              correct), making the claim true rather than softening it.
+TYPE:         Emissary (the gate took my claim to reality and it failed); Judge-served-by-Soul
+              (the gate fired where the failure happened — a count/completion claim — exactly per
+              Mind Rule 3's WRITING-time anchor timing); Witness (recording the mechanism working).
+CONSEQUENCE:  Live, in-the-wild instance of the completion gate earning its keep — and notably it
+              fired on a COUNT claim ("all 12") inside a CITATION AUDIT, the recursion the study
+              names (F028/SOUL-105: checking your own correction). Direct corroboration of the
+              study's KEEP-the-gate verdict (corpus 02 Measured 3; keep/cut matrix) with a real
+              event, not a probe. Also a third reflexive instance of the anchor-validity
+              discipline this session (with the TRiSM downgrade + the two softened venues).
+              BANKABLE for the longitudinal self-mining track (#6, SOUL-I046 neighbour): this is
+              exactly a "the record/gate prevented a falsehood" instance the self-mining will hunt
+              for — already logged.
+STATUS:       Resolved (gap caught + fixed in-session). Evidence for keep-the-gate; a seed datum
+              for the self-mining track. No artifact change beyond the provenance fix (committed
+              in fef5380's neighbourhood / the citation edits).
+```
