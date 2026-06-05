@@ -380,7 +380,7 @@ imperative and loophole-free.
 Motivated by the literature in Section 2, we ran the three-arm extension of C1 — adding
 **empty padding** (length-matched lorem = pure compute) and **coherent-but-irrelevant**
 prose (length-matched off-topic operations text = distraction) alongside bare and the
-substance arm. We ran it on four vehicles in all; the first two were chosen to differ on
+substance arm. We ran it on five vehicles in all; the first two were chosen to differ on
 one axis — whether the project's answer is *derivable* — and that pair is the clearest
 single illustration of the study's organizing thesis.
 
@@ -441,8 +441,19 @@ now, verify post-deploy"; cf. [15]) and the verify doctrine *resisted* the erosi
 so the gate acts as a weak *stabiliser* against distraction, not as a teacher of caution the
 model lacks. (This is the opposite polarity to the convention probe, where the coherent
 distractor *primed* a derivable answer rather than eroding vigilance — coherent-irrelevant
-filler is not neutral, and its sign depends on the task.) The handoff verdict still rests on
-the original two-arm control.
+filler is not neutral, and its sign depends on the task.)
+
+The last "form" verdict, **handoff**, closes the same way and completes the picture. Testing
+the actual handoff claim — does a structured resume *cursor* beat an equal-length *prose*
+summary carrying the same state? — the two tied exactly (10/10 = 10/10): both produced a
+flawless resumption (correct next action, every live constraint restated), while no-state
+arms scored 0/30. The cursor's structure is legibility; the state *content*, which prose
+carries equally, is the substance. A side-result sharpens the fabrication thesis: the
+no-state arms did not *invent* a resumption — all 30 recognised the empty context and asked
+for the state. Confident fabrication (Section 4.5) fires when the model has a plausible prior
+to confabulate from, not when the gap is salient; a visibly empty context makes the absence
+obvious, so the model abstains. With both form verdicts now resolved as legibility, **no
+"form" verdict survives the control as behavioural substance.**
 
 ---
 
@@ -504,8 +515,10 @@ would be the exact self-consistent falsehood the study exists to catch.
   the study toward *under*-stating doctrine, which makes the surviving wins (recall, distill,
   longitudinal) robust but leaves some "form" verdicts with a residual ambiguity. The
   three-arm control (Section 6.1) was run to address this; it confirmed the recall KEEP,
-  moderated the convention KEEP, and resolved the verify verdict as derivable. The handoff
-  verdict still rests on the two-arm control — the one remaining residual on this axis.
+  moderated the convention KEEP, and resolved both "form" verdicts — verify (derivable) and
+  handoff (a structured cursor ties equal-length prose) — as legibility, not behaviour. No
+  residual remains on this axis except the human-legibility-over-time payoff, which is
+  longitudinal and unmeasured (below).
 - **"Stronger ⇒ more confident fabrication" is not claimed as a scale law.** The anchored
   result [12,13] is that capability does not *eliminate* confident fabrication and that
   RLHF degrades calibration — a training-incentive effect, not a monotonic function of
@@ -540,7 +553,7 @@ The literature review surfaced four measurements that would each sharpen a resul
 All four were subsequently run (each pre-registered with a locked prediction before any
 output was read); the residuals are now bounds, not blanks.
 
-1. **Three-arm filler control** — *done, four probes* (Section 4.6). Re-running with
+1. **Three-arm filler control** — *done, five vehicles* (Section 4.6). Re-running with
    {empty-padding, coherent-irrelevant, substance} confirmed the recall (record) KEEP
    cleanly (10/10 vs 0), moderated the convention KEEP (derivable + disposition-primable),
    and — extended to the **verify** "form" verdict on two vehicles — found it the *most*
@@ -549,8 +562,11 @@ output was read); the residuals are now bounds, not blanks.
    ceiling was domain-saturation, still showed bare withholding 10/10 — caution is derived
    even off-saturation, so "legibility, not behaviour" holds — with one residue: a
    coherent-irrelevant distractor *eroded* frontier caution (Sonnet 3/5) and the doctrine
-   *resisted* the erosion (5/5), a thin "stabiliser" effect, not a teacher. The handoff
-   verdict remains on the two-arm control.
+   *resisted* the erosion (5/5), a thin "stabiliser" effect, not a teacher. The remaining
+   "form" verdict, **handoff**, was then closed the same way: a structured resume cursor
+   *tied* an equal-length prose summary carrying the same state (10/10 = 10/10), no-state
+   arms 0/30 — the structure is legibility, the state content (which prose carries equally)
+   is the substance. No "form" verdict survives the control as behavioural substance.
 2. **Direct empty-filler check on the study's own models** — *done*: empty padding ≈ bare on
    all probes (pure length did not move these decisions), so the inflation direction did not
    fire here. The conservative-control caveat (§3.2) therefore biases toward *under*-stating
