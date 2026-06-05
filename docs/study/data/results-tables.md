@@ -108,7 +108,7 @@ study exists to catch. (Source: `06`.)
 
 ---
 
-## Table 6 — Three-arm filler control (SOUL-133 / SOUL-134 / SOUL-135 / SOUL-136)
+## Table 6 — Three-arm filler control (SOUL-133 → 136 / 139)
 
 Separating *compute* (empty lorem padding) from *distraction* (coherent-irrelevant
 warehouse prose) from *substance*, all length-matched (~200w), n=5 × Haiku+Sonnet.
@@ -124,6 +124,8 @@ Outcome rates below are the **project-aligned / substance-correct** answer.
 | verify gate, high-stakes, Sonnet | **5/5** | **5/5** | **5/5** | **5/5** |
 | **verify gate, LOW-stakes** (off-saturation), Haiku | **5/5** | **5/5** | **5/5** | **5/5** |
 | verify gate, low-stakes, Sonnet | **5/5** | 4/5 | **3/5** | **5/5** |
+| **handoff** (form: cursor vs prose), Haiku | 0/5 | 0/5 | 0/5 | cursor **5/5** = prose **5/5** |
+| handoff, Sonnet | 0/5 | 0/5 | 0/5 | cursor **5/5** = prose **5/5** |
 
 - **Empty padding ≈ bare** on all probes — pure length did not move these decisions.
 - **Coherent-irrelevant filler is not neutral, and its SIGN depends on the task**: on the
@@ -135,7 +137,13 @@ Outcome rates below are the **project-aligned / substance-correct** answer.
 - **Verify is the most derivable verdict (SOUL-135/136)**: high-stakes 40/40 avoid-trap,
   *bare included*; low-stakes bare still 10/10 → "legibility, not behavior" holds even
   off-saturation. The only behavioral residue is a thin frontier **stabilizer** (resisting
-  distraction-induced erosion), not added caution. The handoff verdict is still two-arm.
+  distraction-induced erosion), not added caution.
+- **Handoff is form too (SOUL-139)**: the structured resume cursor **ties** equal-length
+  prose carrying the same state (cursor 10/10 = prose 10/10; no-state arms 0/30). Structure
+  is legibility; the state content (which prose carries equally) is the substance. BOTH form
+  verdicts (verify, handoff) now resolved as legibility — none survive as behavior. Bonus: the
+  no-state arms ABSTAINED (asked for state), they did not fabricate — confident fabrication
+  needs a plausible prior, not a salient gap (contrast recall/calibration).
 - The probes form the thesis spectrum: **unguessable fact** (isolates) → **derivable
   convention** (moderated, primable) → **already-held disposition** (ceiling; only legible,
   + a thin stabilizer role off-saturation).
@@ -174,5 +182,5 @@ F038 needle buried at three depths in a ~6.6k-token record (200 diverse findings
 - Bounds the depth claim to the tested scale + a distinctive needle; arbitrary scale and a
   *camouflaged* needle (needle-similar distractors) remain the standing residual.
 
-*Last consolidated: 2026-06-05, against witness tail SOUL-138 / `02`+`03`+`06`+`07`+`08` +
+*Last consolidated: 2026-06-05, against witness tail SOUL-139 / `02`+`03`+`06`+`07`+`08` + the five-vehicle filler control + calibration + depth-position + handoff experiments.*
 the four-probe filler control + calibration + depth-position experiments.*

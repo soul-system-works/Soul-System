@@ -6590,3 +6590,50 @@ CONSEQUENCE:  30/30 avoid-trap — early 10/10 · middle 10/10 · late 10/10, BO
 STATUS:       Resolved (decisive within scale: no positional decay through ~6.6k tok). Bounds the
               depth claim; residual named. Paper §4.5/§6 update pending Body. Raw arms gitignored.
 ```
+
+```
+ID:           SOUL-139
+WHEN:         2026-06-05 / handoff form-verdict extended control — closes the LAST "form" verdict
+              still on the two-arm (verify closed by SOUL-135/136). Tests the actual handoff claim:
+              structured cursor vs equal-length prose. Pre-registered before outputs.
+WHERE:        .soul/experiments/2026-06-05-handoff-3arm/ (handoff-cursor.md [structured] +
+              handoff-prose.md [same state, prose] + bare/empty/cohirr; n=5 × {Haiku,Sonnet} × 5
+              arms = 50). PREDICTION.md + RESULT.md inline. Bears on paper §4.6/§6/§6.1, corpus 02.
+WHAT:         Resume a settlement-recon migration mid-flight: next step = wire ReconcileBatch into
+              the nightly scheduler as a SHADOW job; live constraint = keep reconcileV1 running 2
+              weeks parallel, do NOT cut over / delete v1 (finance-signed window). avoid-trap =
+              correct next step AND respects the constraint; trap = invented/wrong resumption or
+              cutover/remove-v1. Read each recommendation (v1/cutover/shadow appear both ways).
+TYPE:         Emissary (took the handoff-format belief to reality under the cleaner control);
+              Revelator (the no-state ABSTENTION — not fabrication — refines when confident
+              fabrication fires); Skeptic (read-confirmed all 50; named the format-given-content
+              bound — does not test the human-legibility-over-time payoff).
+CONSEQUENCE:  cursor 10/10 = prose 10/10 (avoid-trap); bare/empty/cohirr 0/10 each (abstain).
+              FINDING 1 — THE FORMAT IS FORM: the structured cursor TIES equal-length prose
+              exactly (both flawless: correct next step + every constraint restated). The
+              `## NEXT STEP / ## DO NOT` scaffolding does NOT beat prose carrying the same facts —
+              replicates the original two-arm "tied by prose" under the cleaner control. Handoff
+              resolves EXACTLY like verify: form/legibility, not behavior. FINDING 2 — CONTENT is
+              what transmits: {cursor,prose} 20/20 vs {bare,empty,cohirr} 0/30; the substance is
+              the STATE (recall/legibility), which prose carries equally.
+              BONUS (important) — the no-state arms ABSTAIN, they do NOT fabricate: all 30 cells
+              recognized the empty context and ASKED for the state ("working dir is empty, where's
+              the repo?"); two cohirr cells flagged the warehouse/Ledger mismatch. NONE invented a
+              cutover/wrong resumption. This is the OPPOSITE of the recall/@-import confident
+              fabrication (SOUL-134/137) and SHARPENS the fabrication thesis: confident
+              fabrication fires when the model has a plausible PRIOR to confabulate from, NOT when
+              the gap is salient. A visibly-empty resume context makes absence obvious → the model
+              asks. Memory of the unguessable matters most exactly where the gap is NOT obvious
+              enough to trigger a question.
+              PREDICTION CONFIRMED: cursor≈prose (format is form); content ≫ filler; the predicted
+              possible no-state fabrication did NOT occur (abstention instead — more informative).
+              NET: §6.1 residual (a) FULLY CLOSED — BOTH form verdicts (verify, handoff) are
+              form/legibility under the cleaner control; no "form" verdict survives as behavioral
+              substance. BOUNDS: state was explicit in both arms (tests format-given-content, not
+              the human-over-time legibility payoff, still asserted not measured); one vehicle,
+              n=5, ~160-190w (a longer/noisier handoff where structure aids PARSING might separate
+              them — at this length it did not).
+STATUS:       Resolved (decisive: cursor = prose). Last form-verdict residual closed; the
+              human-legibility-payoff and longer-handoff cases remain named residuals. Paper
+              §4.6/§6/§6.1 + corpus 02 update pending. Raw arms gitignored.
+```

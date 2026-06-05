@@ -38,6 +38,16 @@ records in a big repo) and scaffolding-completeness (does the command make you
 *write* a more complete note) were held constant by design — untested, and the two
 places the *command* (vs a plain summary) could still earn its keep.
 
+**Three-arm confirmation (added 2026-06-05, SOUL-139).** Re-run under the cleaner control
+(bare / empty / cohirr / prose / cursor) on a resumption vehicle with a buried live
+constraint: the structured cursor **tied equal-length prose exactly** (cursor 10/10 = prose
+10/10; no-state arms 0/30). Confirms "the Soul format is form" at the stricter bar — the
+state *content* transmits (and prose carries it equally); the cursor structure is legibility.
+Side-result: the no-state arms **abstained** (asked for the missing state), they did not
+*fabricate* a resumption — confident fabrication needs a plausible prior to draw from, not a
+salient gap (the opposite of the recall/@-import case). With verify (SOUL-135/136) this closes
+both "form" verdicts as legibility, not behavior.
+
 ---
 
 ## Measured 2 — record-recall / traceability (the steelman)
@@ -199,8 +209,9 @@ isolation), verify records an *already-held disposition* (legibility only). The
 domain-saturation bound was then tested (SOUL-136) with a low-stakes vehicle: bare still
 withheld 10/10, so "legibility, not behavior" holds off-saturation — the only behavioral
 residue is a thin frontier *stabilizer* effect (a coherent distractor eroded Sonnet's
-caution 3/5; the doctrine resisted it 5/5). The **handoff** form-verdict remains on the
-two-arm control — the one residual on this axis.
+caution 3/5; the doctrine resisted it 5/5). The **handoff** form-verdict was then closed
+the same way (SOUL-139, Measured 1 above): the structured cursor ties equal-length prose
+(10/10 = 10/10). Both form verdicts now resolve as legibility, not behavior.
 
 ### The unified thesis, sharpened by this probe
 
