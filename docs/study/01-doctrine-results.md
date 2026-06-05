@@ -21,9 +21,17 @@ was *also* form-not-substance** → F042 graduated to amendment **SOUL-A017** ("
 roles are justified by legibility, not behaviour-lifting"), explicitly bounded: a
 *baseline-breaking* regime was untested and named as where substance could return.
 
-Field corroboration A017 cites: personas don't reliably help accuracy (arXiv
-2311.10054); single ≈ multi-agent under equal compute (2604.02460, 2505.18286);
-orchestration aids interpretability not raw accuracy (2506.04133).
+Field corroboration (verified against arXiv, 2026-06-04): personas don't reliably
+help accuracy (arXiv 2311.10054, Zheng et al. — strong, direct); single-agent ≥
+multi-agent at equal thinking-token budget (2604.02460, Tran & Kiela — strong, direct);
+the multi-agent advantage shrinks as base models improve (2505.18286, Gao et al.). The
+interpretability-not-accuracy framing was attributed to 2506.04133 (*TRiSM*, a
+multi-agent trust/risk/security **review**); on verification that ID is real and
+correctly named, but it is a topical *review*, not a clean empirical result — so the
+**load-bearing** anchors for the roles=form finding are 2604.02460 and 2311.10054, and
+TRiSM is downgraded to background. (Method note: an initial pass over-corrected this to
+"fabricated/unrelated" before the ID was re-checked and found to resolve to TRiSM — the
+anchor-validity discipline, F028/SOUL-105, applied to this study's own citations.)
 
 ## Arc I041 — the baseline-breaking regime (nine probes)
 

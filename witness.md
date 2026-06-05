@@ -6233,3 +6233,191 @@ CONSEQUENCE:  (1) Growth check FLAGGED honestly: 167 → 174 (+7), failing stric
 STATUS:       Resolved. mind.md refreshed + committed (accept-174). Deferred material named for
               the next /soul-distill. The longitudinal axis is now in the always-on lens.
 ```
+
+```
+ID:           SOUL-131
+WHEN:         2026-06-04 / rendered the study corpus into two artifacts (blog + paper) +
+              consolidated data/, and ran a citation-verification pass that became a live,
+              recursive instance of the study's OWN thesis (anchor-validity, F028/SOUL-105).
+WHERE:        docs/study/blog.md (candid first-person), docs/study/paper.md (formal preprint,
+              6 verified refs), docs/study/data/results-tables.md (consolidated maps),
+              docs/study/01-doctrine-results.md (citation line corrected).
+WHAT:         Body asked to consolidate + render the corpus (00-08) into a short blog that
+              points to an in-depth paper; the cut stays a separate discuss-and-verify step
+              (held OUT of scope). Verified all paper citations against arxiv.org via WebFetch:
+              2311.10054 (Zheng personas), 2604.02460 (Tran & Kiela equal-budget single>multi),
+              2505.18286 (Gao gap-shrinks), 2505.03275 (RAG-MCP), 2307.03172 (lost-in-the-
+              middle), 2212.08073 (Constitutional AI) — all real, correctly attributed.
+TYPE:         Emissary (took the corpus's citations out to arXiv and checked them); Skeptic
+              (caught my OWN over-correction before it shipped — see CONSEQUENCE); Craftsman
+              (the two artifacts); Archivist (data/ consolidation).
+CONSEQUENCE:  (1) THE RENDER: blog (~1900w, journey+verdict) + paper (abstract→method→results
+              →lean-down→threats→discussion, 6 verified refs) + data/ tables. Faithful to the
+              corpus; the cut held out of scope per Body. (2) THE RECURSIVE CATCH (the real
+              finding): the corpus (01) cited 2506.04133 for "orchestration aids interpretability
+              not accuracy" without naming it. I first "corrected" this to "resolves to an
+              UNRELATED security review, fabricated, REMOVE" — and wrote that into the corpus.
+              Then re-checked: 2506.04133 IS real (TRiSM, a multi-agent trust/risk/security
+              REVIEW that DOES cover interpretability), and A017 already names it correctly. So
+              my "fabricated/unrelated" correction was itself an over-claim — the anchor-validity
+              failure (F028) committed INSIDE a citation-validity audit, the exact SOUL-105
+              shape (a scope-slip inside a slip-diagnosis) recursed once more. The honest verdict:
+              TRiSM is real + correctly named in A017; it is a topical REVIEW, a WEAK anchor for
+              the interpretability framing, so the load-bearing anchors are 2604.02460 + 2311.10054
+              and TRiSM is downgraded to background — NOT removed-as-fabricated. Fixed in 01 +
+              paper §6 (both now carry the honest two-step: weak-anchor + the over-correction).
+              (3) A017 needed NO change (it already named TRiSM); correction scope was just the
+              corpus framing. (4) UNVERIFIED (historical specs, out of scope): 2605.27621,
+              2604.05485 ("Auditable Agents") in docs/specs/ — not in the paper; flagged, not
+              chased. (5) The episode STRENGTHENS the paper: §6 now shows the anchor discipline
+              applied reflexively (a weak anchor + an over-correction, both caught) — the study
+              eating its own dogfood in the most on-brand way possible.
+STATUS:       Resolved. Three artifacts drafted + citation pass done + corpus citation corrected
+              (honestly, after self-correction). NOT committed — public-facing drafts await Body
+              review. The cut remains the separate, still-pending discuss-and-verify step.
+```
+
+```
+ID:           SOUL-132
+WHEN:         2026-06-04 / deep-research Emissary sweep (111 agents, ~3.2M tokens, 28 sources,
+              25 claims adversarially verified 22✓/3✗) over the study's 9 claim areas — to find
+              confirming/refuting/complicating literature beyond our arXiv-only cites + new tests.
+WHERE:        deep-research workflow w5znwoxi3; full report in the task output. Bears on
+              docs/study/paper.md (Related Work + Threats), blog.md, and the study's framing.
+WHAT:         Took the study's headline claims OUT to the field (the Anchor Obligation's outward
+              reach, at scale). Returned a verified, cited map: most of the spine CONFIRMED,
+              two framings AT RISK, four concrete new experiments.
+TYPE:         Emissary (the system's beliefs tested against the external field); Skeptic (the
+              report's own adversarial verify killed 3 over-claims — incl. the canonical
+              multi-agent-debate paper's gains, refuted for lacking a compute control); Prophet
+              (the new-experiment list — where the work should go next).
+CONSEQUENCE:  CONFIRMED (strengthen our findings): personas-don't-help (Zheng EMNLP'24 + Kim
+              "Double-edged Sword" EMNLP'24); single≥multi-agent at equal compute (Tran&Kiela;
+              Smit "If MAD is the Answer" 2502.08788; Du et al. debate-gains REFUTED for no
+              compute control); knowledge-must-be-supplied / RAG>parametric (Lewis RAG NeurIPS'20;
+              Ovadia "FT or Retrieval?" EMNLP'24; KBM) → directly backs derivable-vs-unguessable;
+              confident fabrication + RLHF-degraded calibration (GPT-4 report Fig 8). TWO AT-RISK
+              FRAMINGS (the real value of the sweep): (1) we frame empty filler as an INFLATION
+              confound, but the field's dominant direction is irrelevant tokens DEGRADE (Shi
+              ICML'23 distractibility; GSM-Symbolic; "Context Length Alone Hurts" 2510.05381,
+              ~24% drop on whitespace) — so our control may UNDER-state doctrine's gain, not
+              over-state it; a vanishing gain is ambiguous between "was compute" and "filler hurt
+              the control." Cleanest fix = a THREE-arm control (doctrine / empty filler /
+              coherent-irrelevant filler). (2) "STRONGER models fabricate MORE confidently" is
+              NOT anchored as a scale law — the lit supports "capability doesn't ELIMINATE
+              confident fabrication" + "RLHF degrades calibration," framed as a training-incentive
+              artifact, not monotonic-in-scale. Our own two-lever result (SOUL-129) already says
+              the direction is FORM-gated, not scale-gated — so soften the blog/paper phrasing.
+              Also: lost-in-the-middle is a large-TOKEN regime; our N=20 is filler-UNITS — don't
+              claim it generalizes vs the positional lit without matching token scale + testing
+              needle POSITION (= our own open D-in-middle rung). FOUR NEW EXPERIMENTS: three-arm
+              filler control; does OUR model exploit empty filler (Redwood'25 ~6pp emergent);
+              cross-scale calibration for the fabrication claim; token-scale + position depth test.
+              NO PAPERS NEEDED FROM BODY — all sources public (arXiv/ACL/blogs). Source-quality
+              flags: Redwood filler result is blog-grade (not peer-reviewed); re-confirm venue for
+              any 26xx-numbered IDs at publication.
+STATUS:       Resolved. The sweep did what an Emissary should — confirmed the spine and found two
+              framings the study should hedge BEFORE publishing. Paper update pending (refs +
+              honest caveats + future-work); the four experiments are a Body call (run-first vs
+              note-as-future-work). Report retained in the workflow task output.
+```
+
+```
+ID:           SOUL-133
+WHEN:         2026-06-04 / three-arm filler control (study experiment #1, from the SOUL-132
+              deep-research caveat) — separate COMPUTE (empty padding) from DISTRACTION
+              (coherent-irrelevant) from SUBSTANCE (the convention). Vehicle: the docs-near-
+              code decision probe. Result: the control worked and CAUGHT a derivability +
+              disposition contamination in our own distill KEEP.
+WHERE:        .soul/experiments/2026-06-04-three-arm-filler/ (run.sh + bare/empty/cohirr/
+              substance arms, length-matched ~200w injected, n=5 × Haiku+Sonnet = 40).
+              Bears on docs/study/02 (distill KEEP), 03 (lean-down), paper.md §4.2/§6.
+WHAT:         Pre-registered rubric+prediction BEFORE outputs (binary: reject the docs/
+              architecture/ tree = project-aligned vs adopt = trained default; for substance,
+              note if it cites the convention). Read-confirmed each cell's recommendation +
+              REASONING, not keywords (the verdict-line grep mis-scored — caught "drift"/
+              "co-located" in both directions).
+TYPE:         Emissary (ran the at-risk framing against measurement); Skeptic (read-confirmed
+              all cells; caught that the binary OUTCOME hides the real split — substance cites
+              the unguessable incident, cohirr re-derives generically; refused the keyword
+              read); Revelator (the contamination: the docs-near-code "win" is partly DERIVABLE
+              + dispositionally primable, not pure unguessable-content transmission).
+CONSEQUENCE:  Haiku (the discriminating model — Sonnet's BARE already rejects, so the convention
+              is DERIVABLE at the frontier = C2 ceiling), reject-the-tree rate:
+                bare 2/5 · empty(lorem) 2/5 · cohirr(warehouse) 5/5 · substance 5/5.
+              THREE findings, each read-confirmed:
+              (1) EMPTY PADDING ≈ BARE (2/5). Pure compute/length did NOT move this decision on
+                  our models — the inflation confound the equal-compute control guards against
+                  did not even fire for empty padding here (neither helps nor hurts the outcome).
+              (2) COHERENT-IRRELEVANT FILLER IS NOT NEUTRAL. Warehouse-ops prose pushed Haiku
+                  5/5 to reject (vs bare/empty 2/5) — its disciplined "drift/variance/quarantine"
+                  register primed a CAUTIOUS disposition that re-derived "co-locate docs." This
+                  EMPIRICALLY CONFIRMS the SOUL-132 lit warning (irrelevant tokens aren't neutral)
+                  ON OUR OWN MODEL, and is exactly why a coherent-irrelevant filler (which the
+                  ORIGINAL two-arm probes used) needs this third arm.
+              (3) THE OUTCOME IS DERIVABLE → the docs probe is a WEAK substance vehicle. Both
+                  Sonnet (ceiling) and disposition-primed Haiku reach "reject" WITHOUT the
+                  convention; the convention's UNIQUE contribution shows only in the REASONING
+                  (substance cites the specific incident/rule; cohirr cites nothing). So the
+                  binary does not isolate substance here.
+              IMPLICATION (honest, moderates a KEEP): the distill/docs-near-code "Mind 10/10 vs
+              generic 0/10" (corpus 02) OVERSTATED the substance — the original generic-principles
+              arm was a LOADED counter-distractor (pro-central-docs) that PULLED to the default;
+              a NEUTRAL/cautious distractor reaches the project answer generically. The docs-near-
+              code convention's answer is *generically defensible*, hence derivable + primable. The
+              RECALL KEEP (F038 — a fact where generic reasoning is confidently WRONG) is UNTOUCHED
+              and remains the clean substance demonstration. The right 3-arm vehicle is a counter-
+              default FACT (generic-wrong), not a defensible CONVENTION (generic-also-OK). Recommend
+              re-running the 3-arm on recall to show the clean separation (substance ≫ both fillers
+              ≈ bare). BOUNDS: one task, n=5, two models, one coherent-irrelevant register (the
+              warehouse "disciplined" tone may be a stronger caution-primer than a neutral one).
+STATUS:       Resolved (decisive within scope). The control worked: empty≈bare, cohirr primes
+              disposition, the docs outcome is derivable. Moderates the distill KEEP; recall
+              stands. Paper/corpus update + a recall re-run pending Body. Raw arms gitignored.
+```
+
+```
+ID:           SOUL-134
+WHEN:         2026-06-04 / three-arm filler control on the RECALL probe (F038) — the CLEAN
+              substance vehicle (generic reasoning gets the trap CONFIDENTLY WRONG, so
+              disposition can't rescue it). The demonstration the docs probe (SOUL-133) couldn't
+              give. Pairs with SOUL-133; both from the SOUL-132 deep-research caveat.
+WHERE:        .soul/experiments/2026-06-04-three-arm-filler/ (recall-run.sh + recall-post +
+              recall-substance(F038 record) + reused empty/cohirr arms, n=5 × Haiku+Sonnet = 40).
+              Bears on docs/study/02 (recall KEEP), paper.md §4.2/§6.
+WHAT:         Trap: endorse `@shared/...` import to load shared doctrine under `claude -p` (DRY,
+              generically-plausible). Avoid-trap = inline / --append-system-prompt-file / reject
+              @-import under -p (the F038 finding). Pre-registered rubric+prediction before
+              outputs. Read-confirmed each cell's recommendation, not keywords (the no-signal
+              control cells were confirmed to ENDORSE @-import; the 3 "inline/won't-resolve"
+              grep hits were path-relativity/fallback, NOT F038-knowledge).
+TYPE:         Emissary (the clean substance-isolation test); Skeptic (read-confirmed the control
+              cells endorse the trap; distinguished path-relativity concern from the F038
+              silent-fail knowledge); Revelator (the contrast with SOUL-133 IS the derivable-vs-
+              unguessable thesis, demonstrated in one paired experiment).
+CONSEQUENCE:  avoid-trap rate (reject @-import under -p):
+                rsub(F038) 10/10 (5/5 both models) · bare 0/10 · empty 0/10 · cohirr 0/9(+1 stub).
+              CLEAN substance isolation: the F038 record beats ALL THREE controls (compute,
+              distraction, bare) decisively at BOTH capabilities. Three read-confirmed findings:
+              (1) rsub ≫ {bare ≈ empty ≈ cohirr ≈ 0} — the unguessable fact is isolated; the
+              outcome is NOT derivable and NOT disposition-rescuable, so coherent-irrelevant
+              filler is HARMLESS here (≈ bare), the EXACT OPPOSITE of the docs probe where it
+              primed the answer 5/5. The two probes together ARE the derivable-vs-unguessable
+              thesis: coherent filler reaches a DERIVABLE answer (docs) but not an UNGUESSABLE
+              one (recall). (2) THE FRONTIER FABRICATES THE WRONG FACT, confidently and
+              unprompted: Sonnet bare/cohirr assert "@-imports process in -p mode the same as
+              interactive" (FALSE per F038) — the study's confident-fabrication claim, live, and
+              now from a SECOND domain (not just the idempotency case). (3) The empty (lorem) arm
+              ≈ bare here too — pure compute padding doesn't supply or rescue the fact.
+              NET FOR THE STUDY (the paired result): the RECALL KEEP SURVIVES the clean 3-arm
+              control intact (10/10 vs 0) — it is the rock-solid substance demonstration. The
+              DISTILL/docs KEEP is MODERATED (SOUL-133: derivable + primable). So the KEEP is
+              specifically for UNGUESSABLE content, sharpened: a counter-default FACT (generic-
+              wrong) isolates cleanly; a defensible CONVENTION (generic-also-OK) does not. The
+              3-arm method is validated (it discriminates the two cases). BOUNDS: one fact, n=5,
+              two models, one coherent-irrelevant register; cohirr-haiku-3 was a blocked-write
+              stub (excluded; does not affect 0/X).
+STATUS:       Resolved (decisive). Recall KEEP confirmed under the cleaner control; paired with
+              SOUL-133 it cleanly demonstrates derivable-vs-unguessable AND a 2nd-domain confident-
+              fabrication. Paper/corpus update pending (both 3-arm results). Raw arms gitignored.
+```

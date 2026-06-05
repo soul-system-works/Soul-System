@@ -171,6 +171,22 @@ budget (SOUL-033) — was not tested; both arms here were already budget-sized. 
 probe tested transmission *quality* (compression preserves signal), not the
 budget-efficiency that motivates the Mind.
 
+**Moderation (added 2026-06-04, SOUL-133/134 — a three-arm filler control).** Re-run
+with a cleaner control — bare / empty-padding (compute) / coherent-irrelevant (distraction)
+/ substance — this *docs-near-code* probe proved a **weak** substance vehicle: the
+"reject the tree" outcome is partly *derivable* (the frontier model gives it at baseline;
+a coherent-irrelevant distractor primed the weak model to re-derive it 5/5), so the binary
+does not isolate substance — only the *reasoning* does (the substance arm cites the
+specific incident). The original `generic-principles → 0/10` was a **loaded** counter-
+distractor (it argued *for* the default), which inflated the gap. The convention KEEP is
+real but narrower than 10/10-vs-0/10 implied. Crucially, the **recall** probe above —
+an unguessable *fact* a generic equivalent gets *confidently wrong* — was re-run under the
+same three-arm control and isolated **cleanly** (record 10/10 vs bare ≈ empty ≈ coherent-
+irrelevant 0/10; the coherent filler is harmless because no disposition re-derives a fact
+the model lacks, and the frontier *confidently asserts the false negation*). So the KEEP
+holds, sharpened: it is for **unguessable** content (a counter-default fact), and the
+docs-convention instance was simply too *derivable* to be a clean demonstration.
+
 ### The unified thesis, sharpened by this probe
 
 The split is not "doctrine vs no doctrine." It is **what the content is *for*:**
