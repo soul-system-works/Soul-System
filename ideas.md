@@ -1633,3 +1633,21 @@ ISOLATE:   DONE 2026-06-04 ([[SOUL-129]]). Held the token-caching prior CONSTANT
            blocking): symmetric cell (imperative over idempotency). I045 axis essentially
            complete; MANY-INTERACTING + D-in-middle remain as F044-side rungs.
 ```
+
+```
+ID:        SOUL-I046
+WHEN:      2026-06-05
+IDEA:      Turn the study's experiment suite into a reusable public BENCHMARK — a
+           "meta-doctrine ablation suite" others can throw their AI systems at. Generalizable
+           method: equal-compute filler control (C1) + the probe taxonomy (unguessable-fact /
+           derivable-convention / already-held-disposition / form-verdict). Requires: promote
+           experiments out of gitignored .soul/ → tracked dir; normalize the 5 older
+           experiments (longitudinal ×4 + three-arm-filler; writeups in witness SOUL-123→134 +
+           corpus) to the PREDICTION+RESULT shape; parameterize the harness for others'
+           systems+models; write a scoring spec + rubric. CRITICAL (Body): verify
+           reproducibility — rerun must not shift results significantly (ceiling cells 10/10,
+           0/10, 30/30 robust; FRAGILE = low-stakes-verify cohirr 3/5 + calibration Grade B
+           approximate — focus scrutiny there). Pairs with per-experiment white-papers (#3).
+           Post-1.0 public track; arguably what makes the study matter outside this repo.
+STATUS:    Raw
+```
