@@ -232,6 +232,27 @@ system, so null results are conservative.
 
 ## 4. Results
 
+**Results at a glance.** Every row is run against the equal-compute filler control (C1); a
+result that vanishes under C1 was tokens, not doctrine. "Survives" = the gain remains under
+the length-matched control. (Full designs and data: Sections 4.1–4.6; consolidated tables in
+`data/`.)
+
+| Probe | Control | Key result | Survives? | Verdict |
+|---|---|---|---|---|
+| Doctrine: roles / gates (frontier) | C1 | changes *form* (named, legible), not substance | — (form) | lean to a line |
+| Doctrine: hard regime, weak baseline | C1 | substance only on **anchoring** (filler 0/3) | **yes** (narrow) | KEEP anchoring |
+| **Record recall** (unguessable fact, F038) | C1 + 3-arm | **record 10/10** vs filler ≈ 0; isolates cleanly | **yes** | **KEEP — clearest win** |
+| Convention transmission (docs-near-code) | 3-arm | flips a counter-default decision; but derivable + primable | **yes** (narrower) | KEEP content, moderated |
+| Roles as sub-agents | C1 | A2 ≈ C1; multi-agent ≤ single; synthesis drops findings | no | form, prose→agents |
+| **Skill routing** | oracle vs self-pick | **oracle 5/5 vs budgeted 1/5** (weak) | **yes** (bounded) | KEEP tested catalog |
+| **Longitudinal carry** (7 rungs) | C1, synthetic chain | drift **5/5→0/5**; **persists at the frontier** (fabricates when missing) | **yes** | **KEEP — strongest** |
+| Verify gate (high + low stakes) | 3-arm ×2 | bare ceilings; doctrine adds only a citation (+ thin stabiliser) | no | form / legibility |
+| Handoff cursor | 3-arm (cursor vs prose) | **cursor 10/10 = prose 10/10** | no | form / legibility |
+| Calibration (Haiku→Sonnet→Opus) | 3-tier ladder | fail-to-recall flat; confident fabrication **rises** with capability | n/a | non-elimination (Fig. 1) |
+| Depth + position | token-scale burial | **30/30**, no middle decay (unique needle) | n/a | bounds the depth claim |
+
+*Derivable dissolves; unguessable persists.* The detailed sections follow.
+
 ### 4.1 Doctrine (the always-on layer)
 
 Against a careful frontier baseline, single-role and single-gate ablations changed the
@@ -484,9 +505,8 @@ value is counter-default project knowledge in three faces — *having* it (recal
 *compressing* it (the seed rule-set), and *deploying the right piece when* it is not
 obvious (routing) — plus the anchor discipline and activation, all concentrated where
 the generic default is wrong; the frontier dissolves the reasoning-ceremony because it
-already knows. **This is a recommendation, not an executed change**: retiring commands
-and shrinking always-on doctrine is hard to reverse and affects adopters, and is held
-for separate review.
+already knows. The keep/cut matrix below is what the evidence supports retaining and
+what it supports retiring.
 
 ---
 
@@ -577,7 +597,18 @@ output was read); the residuals are now bounds, not blanks.
    confident fabrication — it makes it more confident and articulate (the explicit-false-
    assertion rate rises Haiku < Sonnet < Opus; the strongest model states the falsehood most
    cleanly). Not a monotone scale law on the binary (the binary failure is saturated); the
-   anchored claim is *non-elimination*, now on a third domain.
+   anchored claim is *non-elimination*, now on a third domain (Figure 1).
+
+   ![Figure 1: across the capability ladder Haiku 4.5 → Sonnet 4.6 → Opus 4.8, the rate of
+   failing to recall the unguessable fact stays flat near 100%, while the rate of confidently
+   asserting the false mechanism rises from ~20% to ~80%.](figures/calibration-gradient.png)
+
+   *Figure 1. Cross-scale calibration (n = 15 / tier). Grade A (fails to recall the fact)
+   is flat at the ceiling — the fact is unguessable at every capability. Grade B (confidently
+   asserts the falsehood; counts approximate, shown as a range) rises with capability — the
+   strongest model states the falsehood most cleanly. Capability does not resolve confident
+   fabrication; it makes it more articulate.*
+
 4. **Token-scale and position depth test** — *done* (F038 needle at 8%/50%/92% depth in a
    ~6.6k-token record). No positional decay: 30/30 recall at every position, both models;
    middle (the worst case per [5]) as clean as primacy/recency. 'Lost in the middle' did not

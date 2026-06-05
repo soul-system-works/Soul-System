@@ -67,7 +67,7 @@ the model cannot regenerate. Closed → amendment SOUL-A018.
 
 Bucket: **M** measured · **R** reasoned · **I** inspected. Decision rule: default-CUT;
 keep only measured value or a clearly-argued unique value a generic equivalent lacks.
-(Source: `03-leandown.md`. The cut is a recommendation — not executed; Body-approval pending.)
+(Source: `03-leandown.md` — what the evidence supports keeping vs retiring.)
 
 | Component | Bucket | Decision |
 |---|---|---|

@@ -165,9 +165,8 @@ produced this very study). Cut the rest to a one-line reminder: the role chamber
 forced perspectives, the elaborate formats. Not because ceremony is worthless, but
 because a generic equivalent does the same job for free.
 
-I haven't pulled the trigger on that cut yet — it's hard to reverse and other people
-have adopted pieces of this — so for now it's a recommendation with the evidence
-attached, not a fait accompli.
+That's the version the evidence points to: keep the memory, keep the activation, cut the
+ceremony to a line.
 
 ## What I can't claim
 
