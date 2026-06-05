@@ -207,9 +207,12 @@ doctrine codes; 0/10 elsewhere); it does not change the decision. So verify sits
 opposite pole from recall on the same axis: recall carries an *unguessable fact* (clean
 isolation), verify records an *already-held disposition* (legibility only). The
 domain-saturation bound was then tested (SOUL-136) with a low-stakes vehicle: bare still
-withheld 10/10, so "legibility, not behavior" holds off-saturation — the only behavioral
-residue is a thin frontier *stabilizer* effect (a coherent distractor eroded Sonnet's
-caution 3/5; the doctrine resisted it 5/5). The **handoff** form-verdict was then closed
+withheld 10/10, so "legibility, not behavior" holds off-saturation. (An *apparent*
+behavioral residue — a coherent distractor lowering Sonnet's caution to 3/5 — did **not**
+survive replication: a reproducibility rerun at n=10 returned **10/10** avoid-trap and Haiku
+reran **5/5** (SOUL-141), so the 3/5 was n=5 noise, not an effect. Off-saturation the
+low-stakes verify is therefore *purely* legibility — no behavioral residue survives.) The
+**handoff** form-verdict was then closed
 the same way (SOUL-139, Measured 1 above): the structured cursor ties equal-length prose
 (10/10 = 10/10). Both form verdicts now resolve as legibility, not behavior.
 

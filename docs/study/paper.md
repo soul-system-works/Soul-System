@@ -219,6 +219,11 @@ working directory, so arms launched from a directory containing the answer file 
 *grepped it* even in the no-record condition; every arm is therefore run from an
 **isolated empty directory**, and the contaminated run is retained as evidence.
 
+The harness, the per-experiment pre-registrations and results, and the scoring spec are
+packaged as a reusable benchmark — the *meta-doctrine ablation suite* — at
+[`benchmark/`](../../benchmark/), so the experiments in Sections 4 and 6.1 can be re-run
+and others can plug in their own doctrine and models.
+
 ### 3.6 Known bounds of the method
 
 The harness is single-shot / single-resume; the system's strongest claim is
@@ -246,9 +251,9 @@ the length-matched control. (Full designs and data: Sections 4.1–4.6; consolid
 | Roles as sub-agents | C1 | A2 ≈ C1; multi-agent ≤ single; synthesis drops findings | no | form, prose→agents |
 | **Skill routing** | oracle vs self-pick | **oracle 5/5 vs budgeted 1/5** (weak) | **yes** (bounded) | KEEP tested catalog |
 | **Longitudinal carry** (7 rungs) | C1, synthetic chain | drift **5/5→0/5**; **persists at the frontier** (fabricates when missing) | **yes** | **KEEP — strongest** |
-| Verify gate (high + low stakes) | 3-arm ×2 | bare ceilings; doctrine adds only a citation (+ thin stabiliser) | no | form / legibility |
+| Verify gate (high + low stakes) | 3-arm ×2 | bare ceilings; doctrine adds only a citation (apparent stabiliser did not replicate — n=10 rerun) | no | form / legibility |
 | Handoff cursor | 3-arm (cursor vs prose) | **cursor 10/10 = prose 10/10** | no | form / legibility |
-| Calibration (Haiku→Sonnet→Opus) | 3-tier ladder | fail-to-recall flat; confident fabrication **rises** with capability | n/a | non-elimination (Fig. 1) |
+| Calibration (Haiku→Sonnet→Opus) | 3-tier ladder | fail-to-recall flat (robust); confident-fabrication *gradient* did **not** reproduce (scoring-fragile) | n/a | non-elimination only (Fig. 1) |
 | Depth + position | token-scale burial | **30/30**, no middle decay (unique needle) | n/a | bounds the depth claim |
 
 *Derivable dissolves; unguessable persists.* The detailed sections follow.
@@ -456,13 +461,15 @@ ceiling). One bound on the verify probe — that its high-stakes vehicle is doma
 (financial-correctness maximally primes caution) — was then tested with a low-stakes vehicle
 (an internal analytics dashboard, where shipping on green tests is defensible). Bare still
 withheld 10/10: caution is re-derived even off-saturation, so "legibility, not behaviour"
-survives the stricter test. The one behavioural residue is thin and frontier-only — a
-coherent-irrelevant distractor *eroded* Sonnet's caution (3/5, two cells flipping to "ship
-now, verify post-deploy"; cf. [15]) and the verify doctrine *resisted* the erosion (5/5),
-so the gate acts as a weak *stabiliser* against distraction, not as a teacher of caution the
-model lacks. (This is the opposite polarity to the convention probe, where the coherent
-distractor *primed* a derivable answer rather than eroding vigilance — coherent-irrelevant
-filler is not neutral, and its sign depends on the task.)
+survives the stricter test. An *apparent* behavioural residue — a coherent-irrelevant
+distractor lowering Sonnet's caution to 3/5 at n=5 (two cells flipping to "ship now, verify
+post-deploy") — did **not** survive replication: a reproducibility rerun at n=10 returned
+10/10 (no erosion), with Haiku unchanged at 5/5, so the 3/5 was small-sample noise rather
+than a real effect. Off-saturation, then, the low-stakes verify is *purely* legibility — no
+behavioural residue survives the control. (Coherent-irrelevant filler is still not neutral:
+on the *derivable* convention probe it *primed* the answer 5/5 and on the *unguessable* fact
+it was harmless — its sign depends on the task — but it did not erode vigilance here once
+re-run; cf. [15].)
 
 The last "form" verdict, **handoff**, closes the same way and completes the picture. Testing
 the actual handoff claim — does a structured resume *cursor* beat an equal-length *prose*
@@ -539,14 +546,19 @@ would be the exact self-consistent falsehood the study exists to catch.
   handoff (a structured cursor ties equal-length prose) — as legibility, not behaviour. No
   residual remains on this axis except the human-legibility-over-time payoff, which is
   longitudinal and unmeasured (below).
-- **"Stronger ⇒ more confident fabrication" is not claimed as a scale law.** The anchored
-  result [12,13] is that capability does not *eliminate* confident fabrication and that
-  RLHF degrades calibration — a training-incentive effect, not a monotonic function of
-  scale. The cross-scale calibration probe (Section 6.1) settled this directly on a 3-tier
-  ladder: recall of the unguessable fact does not improve with capability (44/45 fail
-  across tiers), and the *confident-false-assertion* rate rises with capability (Haiku <
-  Sonnet < Opus) — capability makes the fabrication more articulate, not rarer. This is a
-  non-elimination result, **not** a monotone scale law on the binary (which is saturated).
+- **"Stronger ⇒ more confident fabrication" is not claimed as a scale law — and the apparent
+  gradient did not reproduce.** The anchored result [12,13] is that capability does not
+  *eliminate* confident fabrication and that RLHF degrades calibration — a training-incentive
+  effect, not a monotonic function of scale. The cross-scale calibration probe (Section 6.1)
+  tested this on a 3-tier ladder. *What survives a rerun:* recall of the unguessable fact does
+  not improve with capability (no tier spontaneously recalls it, flat across tiers), and
+  capability does not *eliminate* the confident false assertion (the top tier still states it
+  in a real fraction of cells). *What does not survive:* the **gradient** (Haiku < Sonnet <
+  Opus, strongest-states-it-most) — a reproducibility rerun under stricter scoring moved the
+  top tier from ~80% to ~0% (the count is scoring-fragile: the strongest model tends to assert
+  the falsehood *then* recommend verifying it, and rejected the shortcut outright 9/15;
+  SOUL-142). The honest claim is *non-elimination only* — not a scale law on either the binary
+  (saturated) or the confidence rate (unstable).
 - **The depth result, now with needle position varied at token scale.** "Lost in the
   middle" [5] is a large-*token* phenomenon; our original no-decay result was at N = 20
   record *units* at primacy position. The token-scale probe (Section 6.1) re-ran it at
@@ -580,9 +592,10 @@ output was read); the residuals are now bounds, not blanks.
    derivable verdict. A high-stakes completion-gate vehicle ceilinged at 40/40 avoid-trap
    across all four arms (bare included); a *low-stakes* vehicle, run to test whether that
    ceiling was domain-saturation, still showed bare withholding 10/10 — caution is derived
-   even off-saturation, so "legibility, not behaviour" holds — with one residue: a
-   coherent-irrelevant distractor *eroded* frontier caution (Sonnet 3/5) and the doctrine
-   *resisted* the erosion (5/5), a thin "stabiliser" effect, not a teacher. The remaining
+   even off-saturation, so "legibility, not behaviour" holds. (An apparent residue — a
+   distractor lowering Sonnet caution to 3/5 — did *not* replicate: a reproducibility rerun
+   at n=10 returned 10/10, Haiku 5/5, so it was n=5 noise; off-saturation the result is
+   purely legibility.) The remaining
    "form" verdict, **handoff**, was then closed the same way: a structured resume cursor
    *tied* an equal-length prose summary carrying the same state (10/10 = 10/10), no-state
    arms 0/30 — the structure is legibility, the state content (which prose carries equally)
@@ -592,22 +605,29 @@ output was read); the residuals are now bounds, not blanks.
    fire here. The conservative-control caveat (§3.2) therefore biases toward *under*-stating
    doctrine, as expected.
 3. **Cross-scale calibration** — *done* (3-tier ladder, Haiku→Sonnet→Opus, 45 no-fact
-   cells). Settled two-part: recall of the unguessable fact does *not* improve with
-   capability (44/45 fail to recall it, flat across tiers), and capability does not *resolve*
-   confident fabrication — it makes it more confident and articulate (the explicit-false-
-   assertion rate rises Haiku < Sonnet < Opus; the strongest model states the falsehood most
-   cleanly). Not a monotone scale law on the binary (the binary failure is saturated); the
-   anchored claim is *non-elimination*, now on a third domain (Figure 1).
+   cells), **with a reproducibility caveat**. Two parts. *Robust:* recall of the unguessable
+   fact does *not* improve with capability — no tier spontaneously recalls the hidden
+   mechanism (flat across tiers, both runs), and capability does not *eliminate* the
+   confident false assertion (even the top tier states it in a real fraction of cells).
+   *Not reproducible:* the apparent **gradient** — "confident fabrication rises Haiku <
+   Sonnet < Opus, strongest states it most" — did **not** survive a re-run. The Grade-B
+   count is scoring-fragile: an independent rerun under stricter scoring moved the top tier
+   (Opus) from ~80% to ~0%, because Opus tends to assert the falsehood *and then* recommend
+   verifying it loaded, and rejected the shortcut outright 9/15. So the anchored claim is
+   *non-elimination only* — not a capability gradient (Figure 1; SOUL-141/142).
 
-   ![Figure 1: across the capability ladder Haiku 4.5 → Sonnet 4.6 → Opus 4.8, the rate of
-   failing to recall the unguessable fact stays flat near 100%, while the rate of confidently
-   asserting the false mechanism rises from ~20% to ~80%.](figures/calibration-gradient.png)
+   ![Figure 1: across Haiku 4.5 → Sonnet 4.6 → Opus 4.8, the rate of failing to recall the
+   unguessable fact stays flat near 100%; the rate of confidently asserting the false
+   mechanism rises in run 1 but collapses at the top tier in a strict rerun — no stable
+   gradient.](figures/calibration-gradient.png)
 
-   *Figure 1. Cross-scale calibration (n = 15 / tier). Grade A (fails to recall the fact)
-   is flat at the ceiling — the fact is unguessable at every capability. Grade B (confidently
-   asserts the falsehood; counts approximate, shown as a range) rises with capability — the
-   strongest model states the falsehood most cleanly. Capability does not resolve confident
-   fabrication; it makes it more articulate.*
+   *Figure 1. Cross-scale calibration (n = 15 / tier), two independent runs. Failing to
+   recall the hidden fact is flat at the ceiling — the fact is unguessable at every
+   capability (robust). The "confidently asserts the falsehood" rate is **scoring-fragile**:
+   run 1 (lenient) rises with capability, but run 2 (strict rerun) collapses at the top tier
+   (12/15 → 0/15), because the strongest model pairs the false assertion with a "verify it
+   loaded" step and often rejects the shortcut. There is no reliable capability gradient; the
+   surviving claim is non-elimination, not "stronger ⇒ more confident" (SOUL-142).*
 
 4. **Token-scale and position depth test** — *done* (F038 needle at 8%/50%/92% depth in a
    ~6.6k-token record). No positional decay: 30/30 recall at every position, both models;
