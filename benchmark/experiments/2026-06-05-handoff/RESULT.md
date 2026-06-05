@@ -1,5 +1,7 @@
 # Result — handoff form-verdict, extended control (§6.1 residual a, 2026-06-05)
 
+> **Reproduced 2026-06-05** (full rerun, n=5, read-scored): the headline result held. Full cross-experiment report: [`../../REPRODUCIBILITY.md`](../../REPRODUCIBILITY.md) (witness SOUL-143).
+
 Closes the LAST "form" verdict still on the original two-arm (verify closed by SOUL-135/136).
 Tests the actual handoff claim: does a STRUCTURED resume cursor beat an equal-length PROSE
 summary carrying the SAME state? Vehicle = resume a settlement-recon migration mid-flight

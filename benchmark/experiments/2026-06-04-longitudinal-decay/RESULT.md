@@ -1,5 +1,7 @@
 # Result — longitudinal-decay depth-burial probe (2026-06-04)
 
+> **Reproduced 2026-06-05** (full rerun, n=5, read-scored): the headline result held. Full cross-experiment report: [`../../REPRODUCIBILITY.md`](../../REPRODUCIBILITY.md) (witness SOUL-143).
+
 **Source of record:** witness `SOUL-125`. Pre-registration in `PREDICTION.md`. Depth-burial
 variant of the carry probe; reuses the SOUL-123 FACT chain (D = ADR-001, no-auto-retry of
 non-idempotent payment endpoints).

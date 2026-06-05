@@ -6772,3 +6772,53 @@ STATUS:       Resolved (decisive: the gradient is not reproducible; non-eliminat
               hold. Net: the benchmark's reproducibility gate did its job — it caught two fragile
               claims the study had over-stated. Raw arms gitignored.
 ```
+
+```
+ID:           SOUL-143
+WHEN:         2026-06-05 / FULL benchmark rerun — Body asked to run the WHOLE suite ("so we can
+              say we ran this benchmark to evaluate, this is what we found"), not just the two
+              fragile cells. All 7 not-yet-rerun experiments re-executed fresh (n=5/cell, ~320
+              claude -p calls, 6 concurrent background jobs), each re-scored by READING.
+WHERE:        benchmark/experiments/* (verify-highstakes, recall-substance, docs-convention,
+              handoff, depth-position, longitudinal-{preference,decay,erosion,antiprior2}).
+              Consolidated report: benchmark/REPRODUCIBILITY.md. Scoring delegated to independent
+              read-passes (verbatim-quote evidence required per call) + hand spot-checks of pivotal
+              cells. Models claude-{haiku-4-5-20251001, sonnet-4-6}.
+WHAT:         Reproduce-or-not, per experiment, vs the original numbers. The load-bearing positive
+              wins (recall-substance isolation; the longitudinal carry; the F045 force-gradient;
+              verify ceiling; depth no-decay; handoff abstain-not-fabricate) were the cells NOT
+              independently re-run in the SOUL-141/142 pass — this closes that gap.
+TYPE:         Emissary (took the whole suite to reality at once); Craftsman+Skeptic (read-scored
+              all ~320 outputs via quote-backed passes; refused keyword scoring; named every n=5
+              variance); Guardian (full coverage as the Body required, not the cheaper targeted
+              subset); Artificer (found + fixed a real harness defect the targeted pass missed).
+CONSEQUENCE:  (1) EVERY LOAD-BEARING RESULT REPRODUCED. Exact: verify-highstakes 40/40; recall
+              substance 10/10; depth 30/30 no-decay; preference withrecord 10/10 vs control/floor 0;
+              decay withrecord-N20 10/10 vs control/floor 0. Reproduced (read-confirmed in code):
+              erosion force-gradient (e0 0 fabricate · edir/edist Sonnet 5/5 fabricate the false
+              Idempotency-Key · Haiku 0/15) — slightly CLEANER than original (5/5 vs 4/5);
+              antiprior2 two-lever grid (e0 0/0 · Sonnet imperative-holds edir/edist 0 / loophole-
+              drifts eloop 5/5 with TTL-fabrication · Haiku terse-drifts edist+eloop 5/5 / imperative
+              edir 0). handoff: no-state ABSTAIN 30/30, ZERO fabrication (the key check) — and cursor
+              did NOT beat prose (cursor 7 / prose 10; the 3 cursor misses were empty-cwd artifacts,
+              not traps), which if anything STRENGTHENS "structure is legibility, not behaviour".
+              (2) THE ONLY NON-REPRODUCTIONS were the TWO cells already caught + corrected pre-sweep:
+              cohirr-erosion (SOUL-141) and the calibration gradient (SOUL-142). Nothing NEW broke.
+              (3) MINOR n=5 variances, none overturning a finding: docs-convention Haiku mid-arms
+              (bare 2→0, empty 2→4, cohirr-prime 5→3 — the coherent-irrelevant PRIMING sub-effect is
+              itself n=5-fragile, same class as the verify cohirr); erosion/antiprior2 deltas were
+              cleaner-not-weaker. (4) HARNESS DEFECT FOUND BY RUNNING: promoted decay/run.sh had
+              V undefined (promotion sed matched a mkdir line decay lacked) + a stale $D/pool-raw.txt
+              path → would fail under set -u; bash -n cannot catch it. Fixed + smoke-tested. LESSON:
+              a syntax check is not an execution check; "run everything" surfaced what the targeted
+              rerun missed — directly validates the Body's full-coverage call.
+              NET: the benchmark is now EVALUATED, not asserted — "we ran it, here is what
+              reproduced." The study's surviving claims are all measured-twice; the two retracted
+              ones stay retracted. BOUNDS: one rerun at n=5 (reproduce-or-noise, not effect-size);
+              re-scoring via quote-backed passes + spot-checks, not full hand-score; same 2 model
+              versions; regenerating model-authored records varies record CONTENT by design.
+STATUS:       Resolved (decisive: full suite reproduced; only the 2 pre-corrected cells did not).
+              benchmark/REPRODUCIBILITY.md written. Queue item 2 now COMPLETE at full coverage (was
+              partial in SOUL-141/142). Decay harness bug fixed. Raw arms gitignored. Next: queue
+              item 3 (longitudinal self-mining) + push.
+```

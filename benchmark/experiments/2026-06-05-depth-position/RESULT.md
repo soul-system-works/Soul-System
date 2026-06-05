@@ -1,5 +1,7 @@
 # Result — token-scale + position depth test (§6.1 #4, 2026-06-05)
 
+> **Reproduced 2026-06-05** (full rerun, n=5, read-scored): the headline result held. Full cross-experiment report: [`../../REPRODUCIBILITY.md`](../../REPRODUCIBILITY.md) (witness SOUL-143).
+
 Closes the depth rung the paper brackets: the original depth result (fact fires buried
 under ~20 record UNITS, **primacy only**) vs 'lost in the middle' [5] (a large-TOKEN
 phenomenon where MIDDLE position degrades most). Vehicle = the F038 recall trap; the needle
