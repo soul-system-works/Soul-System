@@ -123,21 +123,26 @@ Outcome rates below are the **project-aligned / substance-correct** answer.
 | **verify gate, HIGH-stakes** (already-held disposition), Haiku | **5/5** | **5/5** | **5/5** | **5/5** |
 | verify gate, high-stakes, Sonnet | **5/5** | **5/5** | **5/5** | **5/5** |
 | **verify gate, LOW-stakes** (off-saturation), Haiku | **5/5** | **5/5** | **5/5** | **5/5** |
-| verify gate, low-stakes, Sonnet | **5/5** | 4/5 | **3/5** | **5/5** |
+| verify gate, low-stakes, Sonnet | **5/5** | 4/5 | 3/5 → **10/10**\* | **5/5** |
 | **handoff** (form: cursor vs prose), Haiku | 0/5 | 0/5 | 0/5 | cursor **5/5** = prose **5/5** |
 | handoff, Sonnet | 0/5 | 0/5 | 0/5 | cursor **5/5** = prose **5/5** |
 
 - **Empty padding ≈ bare** on all probes — pure length did not move these decisions.
 - **Coherent-irrelevant filler is not neutral, and its SIGN depends on the task**: on the
   *derivable* convention it **primed** the answer 5/5; on the *unguessable* fact it was
-  harmless (≈ bare); on the *low-stakes verify* it **eroded** frontier caution (Sonnet 3/5,
-  distraction per [15]) while the doctrine resisted it (5/5).
+  harmless (≈ bare). (It *appeared* to **erode** low-stakes verify caution (Sonnet 3/5) but
+  this did **not** replicate — see \* below — so the two surviving signs are prime + harmless.)
+
+\* **Reproducibility (SOUL-141):** the low-stakes Sonnet `cohirr` 3/5 did **not** replicate.
+  A rerun returned **10/10** avoid-trap at n=10, with Haiku unchanged at **5/5** — the 3/5
+  was small-sample (n=5) noise, not erosion. Off-saturation, the low-stakes verify is purely
+  legibility; no behavioural residue survives. The robust cells (ceilings) reran unchanged.
 - **Clean isolation only for the unguessable fact**: recall substance 10/10 vs all controls
   0/10. The convention KEEP is real but **derivable + primable** (moderation, `02`/`03`).
 - **Verify is the most derivable verdict (SOUL-135/136)**: high-stakes 40/40 avoid-trap,
   *bare included*; low-stakes bare still 10/10 → "legibility, not behavior" holds even
-  off-saturation. The only behavioral residue is a thin frontier **stabilizer** (resisting
-  distraction-induced erosion), not added caution.
+  off-saturation. No behavioral residue survives: the apparent thin "stabilizer" effect
+  (Sonnet cohirr 3/5) did **not** replicate (rerun 10/10; SOUL-141, \* above) — purely legible.
 - **Handoff is form too (SOUL-139)**: the structured resume cursor **ties** equal-length
   prose carrying the same state (cursor 10/10 = prose 10/10; no-state arms 0/30). Structure
   is legibility; the state content (which prose carries equally) is the substance. BOTH form
@@ -146,7 +151,7 @@ Outcome rates below are the **project-aligned / substance-correct** answer.
   needs a plausible prior, not a salient gap (contrast recall/calibration).
 - The probes form the thesis spectrum: **unguessable fact** (isolates) → **derivable
   convention** (moderated, primable) → **already-held disposition** (ceiling; only legible,
-  + a thin stabilizer role off-saturation).
+  with no behavioral residue once the n=5 "stabilizer" effect failed to replicate — SOUL-141).
 
 ## Table 7 — Cross-scale calibration of confident fabrication (SOUL-137)
 
@@ -154,17 +159,22 @@ The recall/F038 **no-fact** arms (model lacks the silent-fail fact) across a 3-t
 n=5 × 3 arms × 3 tiers = 45 cells. Grade A = endorses `@`-import under `-p` (fails to recall
 the fact); Grade B = explicitly + confidently asserts the false "`-p` = interactive" mechanism.
 
-| tier | Grade A (fail-to-recall) | Grade B (confident false assertion, approx) |
-|---|---|---|
-| Haiku-4.5  | 14/15 | ~2–4/15 (mostly path advice, implicit) |
-| Sonnet-4.6 | 15/15 | ~6/15 (explicit "`-p` same as interactive") |
-| Opus-4.8   | 15/15 | ~11–13/15 (most confident; some inject *while* asserting the falsehood) |
+| tier | Grade A fail-to-recall (run1 / run2) | Grade B run1 (lenient) | Grade B run2 (strict rerun) |
+|---|---|---|---|
+| Haiku-4.5  | 14/15 / 15/15 | ~2–4/15 | 1/15 |
+| Sonnet-4.6 | 15/15 / 15/15 | ~6/15 | 9/15 |
+| Opus-4.8   | 15/15 / **6/15** | ~11–13/15 | **0/15** |
 
-- **The unguessable fact is never re-derived (44/45)** — flat across capability. The lone
-  exception reached safety for a *path* reason, not the F038 mechanism.
-- **Capability does not resolve confident fabrication — it makes it more articulate**
-  (Grade B rises Haiku<Sonnet<Opus). Not a monotone scale law on the binary (saturated);
-  the anchored claim is *non-elimination*, on a third domain. Calibration-degradation [13].
+- **The unguessable fact is never spontaneously recalled** — no tier states the F038
+  mechanism in either run; the safe cells reach safety by generic caution + a verify step,
+  not by recall (flat). (Recall ≠ avoided-the-trap: Opus rejected the `@`-import 9/15 on
+  rerun without stating the mechanism — a real behavioural shift, not recall.)
+- **The confident-fabrication GRADIENT did NOT reproduce (SOUL-142).** Grade B is
+  scoring-fragile: counting "asserts the falsehood THEN says verify it loaded" as fabrication
+  (run 1, lenient) gives a rising gradient; the strict reading (run 2) collapses Opus to
+  **0/15** and the gradient inverts. **Surviving claim: non-elimination only** — even the top
+  tier asserts the falsehood in a real fraction; NOT a capability gradient. Calibration-
+  degradation [13] holds only as non-elimination. (Scoring rule now pinned: `benchmark/SCORING.md`.)
 
 ## Table 8 — Token-scale + position depth (SOUL-138)
 

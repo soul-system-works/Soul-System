@@ -1,0 +1,5 @@
+## ADR-001: No Automatic Retries for Non-Idempotent Payment Endpoints
+
+**Decision:** Client code MUST NOT implement automatic retries for transient failures (timeouts, connection resets, 5xx errors) when calling the external payment provider's money-moving endpoints (POST /v1/charges, POST /v1/refunds, POST /v1/payouts). Transient failures must fail fast and surface immediately to the caller. Any retry attempt MUST be preceded by explicit status verification via the provider's API to confirm whether the transaction was processed.
+
+**Rationale:** These endpoints are non-idempotent with no idempotency key support; every accepted request moves real money. Automatic retries create an unrecoverable race condition where a timeout or connection error may mask a successful payment, and retrying duplicates it. The recent incident (1,180 customer overpayments from an automatic retry loop) demonstrated that automatic retries are worse than transaction loss—they cause undetectable financial errors. Fail-fast surfaces the problem to operators, enabling reconciliation and explicit verification before retry.
