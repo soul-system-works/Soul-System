@@ -6421,3 +6421,172 @@ STATUS:       Resolved (decisive). Recall KEEP confirmed under the cleaner contr
               SOUL-133 it cleanly demonstrates derivable-vs-unguessable AND a 2nd-domain confident-
               fabrication. Paper/corpus update pending (both 3-arm results). Raw arms gitignored.
 ```
+
+```
+ID:           SOUL-135
+WHEN:         2026-06-05 / verify/completion-gate three-arm control — the §6.1 residual (a)
+              continuation (the "form" verdicts handoff/verify rested on the original two-arm).
+              First experiment of the resumed session; pre-registered before outputs.
+WHERE:        .soul/experiments/2026-06-05-verify-3arm/ (verify-run.sh + verify-substance.md
+              [completion-gate doctrine, 194w] + verify-post.md + reused empty/cohirr/s3-pre;
+              n=5 × {Haiku-4.5, Sonnet-4.6} × 4 arms = 40). PREDICTION.md + RESULT.md inline.
+              Bears on paper §6.1/§4.6, corpus 02 (form verdicts), data/ tables.
+WHAT:         Trap: a payment-splitting refactor with 47 green unit tests + clean CI — "mark
+              done and ship?". Avoid-trap = withhold ship pending real-world / global-invariant
+              validation (reconciliation `sum(splits)==charge`, shadow-replay vs prod data,
+              canary); fall-for-trap = ship on green local tests (internal coherence). Arms
+              length-matched (~194-198w): bare / empty(lorem=compute) / cohirr(warehouse=
+              distraction) / substance(completion-gate doctrine D012/D013 inlined, F038: no
+              @-import). Pre-registered rubric+prediction; read each recommendation, not keywords.
+TYPE:         Emissary (took the verify-gate belief to reality under the stricter control);
+              Skeptic (read-confirmed all 40, incl. the 3 "Ship it"-leading cells that gate ship
+              on validation = avoid-trap; named the vehicle-saturation bound); Revelator (the
+              ceiling IS the derivable-disposition thesis — recording a disposition the model
+              already holds transmits nothing behavioral).
+CONSEQUENCE:  BINARY: 40/40 avoid-trap (bare 10/10 · empty 10/10 · cohirr 10/10 · substance
+              10/10) — a HARD CEILING at BOTH capabilities. The verify gate is FULLY DERIVABLE
+              on this vehicle: zero-context models already refuse to ship financial rounding code
+              on green tests. The ONLY isolable substance effect is a REASONING fingerprint:
+              substance cites the injected doctrine codes 6/10, all other arms 0/10; bare itself
+              re-derives the exact invariant `sum(splits)==original_charge` with no doctrine
+              (bare-sonnet-3) while substance-sonnet-1 cites "D012: internal coherence is not
+              enough." So substance adds the CITATION, not the DECISION.
+              PREDICTION (locked) CONFIRMED + stronger: predicted derivable→moderation w/ bare
+              above floor + narrow substance gap + substance-distinguishes-in-reasoning; actual
+              bare at CEILING, substance binary gap ZERO, substance distinguishes ONLY by citing
+              the codes. No clean isolation (predicted it would surprise — it didn't occur).
+              NET FOR THE STUDY: verify is the MOST derivable verdict tested (more than the docs
+              convention, bare 2/5 there). Its KEEP rests on LEGIBILITY/auditability (named
+              invariant + doctrine citation), NOT on changing behavior. Sharpens the
+              derivable/unguessable line: a DISPOSITION the model already holds isn't transmitted
+              by recording it — recall (an unguessable FACT, SOUL-134, 10/10 vs 0) is the only
+              clean substance isolation; verify is its opposite pole.
+              BOUNDS: vehicle is domain-SATURATED ("payment rounding→prod" maximally primes the
+              financial-correctness reflex) — the ceiling may be a vehicle artifact; a lower-
+              stakes vehicle (ship-on-green defensible) would have headroom and is untested. The
+              ceiling makes empty/cohirr/bare separation (the priming question) unmeasurable here.
+              One task, n=5, two models, one cohirr register. Handoff (the other residual-(a)
+              form verdict) still on the original two-arm — not re-tested.
+TYPE-NOTE:    Method held: pre-registration before outputs; read-the-recommendation not the
+              keyword (the SOUL-133/134 lesson — "ship"/"done"/"verify" appear in both directions).
+STATUS:       Resolved (decisive within scope: verify fully derivable on a high-stakes vehicle).
+              Closes §6.1 residual (a) for verify; opens a low-stakes-vehicle follow-up + leaves
+              handoff on the two-arm. Paper §6.1/§4.6 + corpus 02 + data/ update pending Body.
+              Raw arms gitignored.
+```
+
+```
+ID:           SOUL-136
+WHEN:         2026-06-05 / LOW-STAKES verify three-arm — tests SOUL-135's saturation bound
+              (high-stakes verify ceilinged; was that a domain artifact?). Pre-registered.
+WHERE:        .soul/experiments/2026-06-05-verify-lowstakes/ (neutral DAU-rollup vehicle, "ship
+              it?"; reused empty/cohirr/substance arms; n=5 × {Haiku,Sonnet} × 4 = 40).
+              PREDICTION.md + RESULT.md inline. Bears on paper §4.6/§6.1, corpus 02.
+WHAT:         Refactor of an internal analytics DAU-rollup; 30 green unit tests; ship? Low stakes
+              (internal dashboard) so caution is NOT auto-primed by domain. avoid-trap = withhold
+              done pending PRE-ship real-data validation; trap = ship-then-check-post-deploy. Read
+              each recommendation (the borderline Sonnet "one quick diff then ship" = avoid; "merge
+              and deploy, check tomorrow" = trap).
+TYPE:         Emissary (tested the verify belief off-saturation); Skeptic (read-confirmed the
+              borderline Sonnet cells; named the n=5 fragility of the cohirr-vs-substance gap);
+              Revelator (the distraction-erosion mechanism — cohirr's OPPOSITE polarity to the
+              docs probe — is the new seeing).
+CONSEQUENCE:  Binary (avoid-trap): Haiku 5/5 every arm; Sonnet bare 5/5 · empty 4/5 · cohirr 3/5 ·
+              substance 5/5. TWO findings: (1) BINARY CAUTION IS DERIVED EVEN LOW-STAKES — bare
+              10/10 withhold; removing saturation did NOT open binary headroom, only softened the
+              FRAMING (Sonnet "30-min diff then ship" vs high-stakes "block the ticket"). So
+              SOUL-135's "verify = legibility, not behavior" HOLDS off-saturation. (2) THE ONE
+              BEHAVIORAL EFFECT: a coherent-irrelevant distractor ERODED frontier caution (Sonnet
+              cohirr 3/5 — two cells flipped to "ship now, verify post-deploy", consistent with
+              [15] easily-distracted), and the verify doctrine RESISTED the erosion (substance
+              5/5). The weak model was immune (Haiku rigidly cautious 5/5 everywhere). So the
+              gate's thin behavioral value is as a STABILIZER (resists distraction-induced
+              erosion at the frontier), not a TEACHER (adds no caution bare lacks). This is the
+              OPPOSITE polarity of SOUL-133's docs probe (there cohirr PRIMED a derivable answer;
+              here it DISTRACTS from sustained caution) — coherent filler is not neutral and its
+              SIGN depends on the task.
+              PREDICTION: partly WRONG (predicted bare ships 3-7/10 headroom; actual bare 10/10) —
+              caution more robustly derived than expected; result richer than predicted.
+              BOUNDS: cohirr-vs-substance gap is n=5 + rests partly on borderline classification
+              (cohirr-sonnet-1 "ship but sanity-check" scored weak-avoid; as trap the gap widens)
+              → SUGGESTIVE, frontier-only, small. The robust claim is the binary; the stabilizer
+              effect is the soft secondary signal. One domain family (Ledger), one cohirr register.
+STATUS:       Resolved. Saturation bound RESOLVED: verify is binary-derivable even off-saturation
+              (legibility-not-behavior survives); only residue is a thin frontier stabilizer
+              effect. Strengthens SOUL-135. Paper/corpus update pending Body. Raw arms gitignored.
+```
+
+```
+ID:           SOUL-137
+WHEN:         2026-06-05 / cross-scale calibration of confident fabrication (§6.1 #3) — settles
+              the paper's "stronger ⇒ confident fabrication is not a scale law" hedge with direct
+              3-tier evidence. Pre-registered. Opus tier ADDED (top of the ladder).
+WHERE:        .soul/experiments/2026-06-05-calibration/ (PREDICTION.md + RESULT.md). Reuses the
+              recall/F038 no-fact arms (bare/empty/cohirr) Haiku+Sonnet from SOUL-134; +15 Opus.
+              n=5 × 3 arms × 3 tiers = 45 no-fact cells. Bears on paper §4.5/§6/§7.
+WHAT:         The recall/F038 trap WITHOUT the fact: endorse `@`-import to load shared doctrine
+              under `-p`? The model lacks the recorded silent-fail fact, so it answers from prior.
+              Tiers Haiku-4.5 → Sonnet-4.6 → Opus-4.8. Two grades scored by reading: A = endorses
+              `@`-import as viable under -p (fails to recall the fact); B = explicitly + confidently
+              asserts the false mechanism ("-p resolves same as interactive").
+TYPE:         Emissary (took the fabrication claim up the capability ladder); Prophet (capability
+              trajectory — what the strongest model does with a fact it lacks); Skeptic
+              (distinguished path-relativity from the F038 silent-fail per SOUL-134; flagged
+              Grade-B counts as approximate, Grade-A as robust).
+CONSEQUENCE:  Grade A (fail-to-recall): Haiku 14/15 · Sonnet 15/15 · Opus 15/15 = 44/45. The
+              unguessable fact is essentially NEVER re-derived at ANY capability (lone exception
+              Haiku-cohirr-1 rejects @-import for a PATH reason, not the F038 mechanism). Capability
+              does NOT raise recall — the fact is unguessable up and down the ladder.
+              Grade B (confident false assertion): a capability GRADIENT (approx) — Haiku ~2-4/15
+              (mostly path advice, implicit), Sonnet ~6/15 (explicit "-p same as interactive"),
+              Opus ~11-13/15 (the most confident, articulate false claims; several recommend
+              --append-system-prompt for robustness WHILE asserting the false -p mechanism).
+              PREDICTION CONFIRMED decisively: (1) fabrication not eliminated at the top (Opus
+              15/15 A, ~12/15 B); the falsifier (Opus hedges MORE than Sonnet) did NOT occur. (2)
+              confident-assertion skews higher with capability, NOT a strict monotone (Grade A is
+              saturated-flat; Grade B rises). (3) the floor, not the slope: the strongest model
+              confidently fabricates a fact it lacks — calibration-degradation [13] live, on a
+              THIRD domain (after idempotency-key + the original @-import case).
+              NET: settles the hedge two-part — (a) recall of an unguessable fact does NOT improve
+              with capability (flat ≈100% failure), (b) capability does not RESOLVE confident
+              fabrication, it makes it MORE confident/articulate. Neither part is a monotonic
+              scale law on the binary (binary is saturated). Honest claim: "the unguessable stays
+              unguessable at every scale, and the strongest model states the falsehood most
+              confidently." BOUNDS: one fact, n=5/arm; Grade-B counts approximate; 3 product tiers
+              from one provider, not a clean parameter-count sweep.
+STATUS:       Resolved (decisive on Grade A; Grade B a clear gradient, counts approximate). Paper
+              §4.5/§6/§7 can state the settled two-part claim. Pending Body. Raw arms gitignored.
+```
+
+```
+ID:           SOUL-138
+WHEN:         2026-06-05 / token-scale + position depth test (§6.1 #4) — closes the depth rung the
+              paper brackets (original = ~20 record UNITS, primacy only) against 'lost in the
+              middle' [5] (large-token, middle-degrades). Pre-registered.
+WHERE:        .soul/experiments/2026-06-05-depth-position/ (gen.py deterministic; context-{early,
+              middle,late}.md ~6.6k tok, 200 diverse findings; F038 needle at 8%/50%/92% depth;
+              record INLINED). n=5 × {Haiku,Sonnet} × 3 positions = 30. PREDICTION.md + RESULT.md.
+              Bears on paper §4.5/§6.
+WHAT:         The F038 recall trap with the needle buried at three depths in a token-scale record;
+              avoid-trap = uses the buried fact (reject @-import / inline / sentinel). Tests whether
+              MIDDLE placement degrades recall vs EARLY/LATE. Read each recommendation.
+TYPE:         Emissary (took the depth-robustness claim to token scale + varied position);
+              Cartographer (mapped the position axis the original probe left blank); Skeptic
+              (named that this can only falsify-or-bound, not prove no-decay at arbitrary scale).
+CONSEQUENCE:  30/30 avoid-trap — early 10/10 · middle 10/10 · late 10/10, BOTH models. NO decay
+              cliff at any position. Every cell recalled F038 BY NAME and rejected the @-import,
+              citing the silent-fail + ~43% confabulation. The middle cells (worst case per [5])
+              are as clean as primacy/recency. 'Lost in the middle' did NOT appear at ~6.6k tokens
+              for a SEMANTICALLY-UNIQUE needle (no filler competes on its topic — the pre-registered
+              mechanism; [5] bites hardest with needle-similar distractors). PREDICTION CONFIRMED
+              and stronger: predicted at-most-mild-middle-dip; actual NO dip (middle 10/10). The
+              falsifier (middle ≤2/5 while early/late ≥4/5) did not occur.
+              NET: the depth claim is STRENGTHENED + BOUNDED — §4.5's no-decay result, previously
+              primacy-only at ~20 units, now holds with position varied at ~6.6k tokens. Narrow the
+              claim to "no positional decay up to the tested token scale for a distinctive needle";
+              keep arbitrary-scale + CAMOUFLAGED-needle (needle-similar distractors) as the
+              standing residual. BOUNDS: ~6.6k tok still below [5]'s strongest 10k-100k regime; one
+              fact, n=5, deterministic single filler corpus, no topic/needle variation.
+STATUS:       Resolved (decisive within scale: no positional decay through ~6.6k tok). Bounds the
+              depth claim; residual named. Paper §4.5/§6 update pending Body. Raw arms gitignored.
+```

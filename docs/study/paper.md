@@ -377,12 +377,12 @@ imperative and loophole-free.
 
 ### 4.6 The three-arm control (separating compute, distraction, substance)
 
-Motivated by the literature in Section 2, we ran the three-arm extension of C1 on two
-probes: bare, **empty padding** (length-matched lorem = pure compute), **coherent-but-
-irrelevant** prose (length-matched off-topic operations text = distraction), and the
-substance arm. The two probes were chosen to differ on one axis — whether the project's
-answer is *derivable* — and the result is the clearest single illustration of the
-study's organizing thesis.
+Motivated by the literature in Section 2, we ran the three-arm extension of C1 — adding
+**empty padding** (length-matched lorem = pure compute) and **coherent-but-irrelevant**
+prose (length-matched off-topic operations text = distraction) alongside bare and the
+substance arm. We ran it on four vehicles in all; the first two were chosen to differ on
+one axis — whether the project's answer is *derivable* — and that pair is the clearest
+single illustration of the study's organizing thesis.
 
 On a **derivable convention** (the project keeps documentation adjacent to code, vs. the
 common default of a separate `docs/` tree), the binary outcome did *not* isolate
@@ -414,6 +414,35 @@ The pair is the thesis in miniature: a coherent-irrelevant filler reproduces a
 *derivable* answer and is powerless against an *unguessable* one. The recall (record)
 KEEP survives the stricter control; the convention KEEP is real but narrower than its
 two-arm number suggested.
+
+A third probe extends the control to a **"form" verdict** — the completion/verify gate
+("local tests passing is not global correctness; validate the invariant the whole must
+satisfy before declaring done"). On a high-stakes vehicle (a payment-splitting refactor
+with green unit tests, asked "ship it?"), the three-arm control did not merely moderate
+the gate — it found it *fully derivable*: **all four arms avoided the trap 40/40**, bare
+included. With zero injected context both models already withhold the ship and demand
+real-world validation (a reconciliation invariant, shadow-replay against production data,
+a canary); the substance arm's only isolable contribution is a *citation* — it names the
+specific doctrine (6/10 cells) where no other arm does, and lifts the explicit "invariant"
+framing from re-derived (bare 7/10) to universal — while leaving the decision unchanged.
+The verify gate is thus the *most* derivable verdict measured, more so than the convention
+(whose bare baseline at least sat at 2/5): its value is **legibility** (a named invariant,
+an auditable citation), not behaviour change, because the disposition it records is one the
+model already holds. The probes form a three-position spectrum of the organizing thesis —
+*unguessable fact* (recall, clean isolation 10/10 vs 0) → *derivable convention* (docs,
+moderated, disposition-primable) → *already-held disposition* (verify, fully derivable,
+ceiling). One bound on the verify probe — that its high-stakes vehicle is domain-saturated
+(financial-correctness maximally primes caution) — was then tested with a low-stakes vehicle
+(an internal analytics dashboard, where shipping on green tests is defensible). Bare still
+withheld 10/10: caution is re-derived even off-saturation, so "legibility, not behaviour"
+survives the stricter test. The one behavioural residue is thin and frontier-only — a
+coherent-irrelevant distractor *eroded* Sonnet's caution (3/5, two cells flipping to "ship
+now, verify post-deploy"; cf. [15]) and the verify doctrine *resisted* the erosion (5/5),
+so the gate acts as a weak *stabiliser* against distraction, not as a teacher of caution the
+model lacks. (This is the opposite polarity to the convention probe, where the coherent
+distractor *primed* a derivable answer rather than eroding vigilance — coherent-irrelevant
+filler is not neutral, and its sign depends on the task.) The handoff verdict still rests on
+the original two-arm control.
 
 ---
 
@@ -474,18 +503,24 @@ would be the exact self-consistent falsehood the study exists to catch.
   vanished gain conflates "was compute" with "filler hurt the control." This biases
   the study toward *under*-stating doctrine, which makes the surviving wins (recall, distill,
   longitudinal) robust but leaves some "form" verdicts with a residual ambiguity. The
-  fix is a three-arm control (Section 6.1).
+  three-arm control (Section 6.1) was run to address this; it confirmed the recall KEEP,
+  moderated the convention KEEP, and resolved the verify verdict as derivable. The handoff
+  verdict still rests on the two-arm control — the one remaining residual on this axis.
 - **"Stronger ⇒ more confident fabrication" is not claimed as a scale law.** The anchored
   result [12,13] is that capability does not *eliminate* confident fabrication and that
   RLHF degrades calibration — a training-incentive effect, not a monotonic function of
-  scale. Our own erosion data show the failure direction is gated by the rule's *form*,
-  not capability (Section 4.5); the surprising "frontier invents what the weak model
-  leaves blank" is one fact-and-prior pairing, not a general ordering.
-- **The depth result is in a different regime than the positional-degradation literature.**
-  "Lost in the middle" [5] is a large-*token* phenomenon; our no-decay-cliff result is at
-  N = 20 record *units* at primacy position. We do not claim it generalizes against [5]
-  without matching token scale and varying needle *position* — the variable that
-  literature shows matters most, and an open rung in our own harness.
+  scale. The cross-scale calibration probe (Section 6.1) settled this directly on a 3-tier
+  ladder: recall of the unguessable fact does not improve with capability (44/45 fail
+  across tiers), and the *confident-false-assertion* rate rises with capability (Haiku <
+  Sonnet < Opus) — capability makes the fabrication more articulate, not rarer. This is a
+  non-elimination result, **not** a monotone scale law on the binary (which is saturated).
+- **The depth result, now with needle position varied at token scale.** "Lost in the
+  middle" [5] is a large-*token* phenomenon; our original no-decay result was at N = 20
+  record *units* at primacy position. The token-scale probe (Section 6.1) re-ran it at
+  ~6.6k tokens with the needle at 8% / 50% / 92% depth: no positional decay (30/30, both
+  models; middle as clean as the ends). We bound this to the tested scale and a
+  *semantically-unique* needle; arbitrary token scale and a *camouflaged* needle (the regime
+  where [5] bites hardest) remain the standing residual.
 - n is small; the scorer is the experimenter (bias runs toward the system, so nulls are
   conservative). Citation hygiene was itself a live test of the study's own thesis: a
   verification pass over the project record found one anchor (a review paper) cited for a
@@ -499,23 +534,40 @@ For the measurable rows, closure is a probe; for the unmeasurable rows, closure 
 ledger — naming each precisely, with why it resists single-shot measurement. The study
 marks the open ground rather than claiming it.
 
-### 6.1 Experiments — one done, three open
+### 6.1 Experiments — all four run
 
-The literature review surfaced four measurements that would each sharpen a result above:
+The literature review surfaced four measurements that would each sharpen a result above.
+All four were subsequently run (each pre-registered with a locked prediction before any
+output was read); the residuals are now bounds, not blanks.
 
-1. **Three-arm filler control** — *done* (Section 4.6). Re-running two probes with
+1. **Three-arm filler control** — *done, four probes* (Section 4.6). Re-running with
    {empty-padding, coherent-irrelevant, substance} confirmed the recall (record) KEEP
-   cleanly (10/10 vs 0) and moderated the convention KEEP (derivable + disposition-
-   primable). Extending it to the remaining "form" verdicts (handoff, verify) is the
-   natural continuation.
-2. **Direct empty-filler check on the study's own models** — *partly answered*: empty
-   padding ≈ bare on both Section 4.6 probes (pure length did not move these decisions),
-   so the inflation direction did not fire here. A dedicated capability/length sweep [14]
-   would generalize it.
-3. **Cross-scale calibration** — test confident-fabrication rate against capability
-   directly, to settle (rather than hedge) the scale question.
-4. **Token-scale and position depth test** — re-run the burial probe at token scale and
-   across early/middle/late placement of the load-bearing fact, against [5].
+   cleanly (10/10 vs 0), moderated the convention KEEP (derivable + disposition-primable),
+   and — extended to the **verify** "form" verdict on two vehicles — found it the *most*
+   derivable verdict. A high-stakes completion-gate vehicle ceilinged at 40/40 avoid-trap
+   across all four arms (bare included); a *low-stakes* vehicle, run to test whether that
+   ceiling was domain-saturation, still showed bare withholding 10/10 — caution is derived
+   even off-saturation, so "legibility, not behaviour" holds — with one residue: a
+   coherent-irrelevant distractor *eroded* frontier caution (Sonnet 3/5) and the doctrine
+   *resisted* the erosion (5/5), a thin "stabiliser" effect, not a teacher. The handoff
+   verdict remains on the two-arm control.
+2. **Direct empty-filler check on the study's own models** — *done*: empty padding ≈ bare on
+   all probes (pure length did not move these decisions), so the inflation direction did not
+   fire here. The conservative-control caveat (§3.2) therefore biases toward *under*-stating
+   doctrine, as expected.
+3. **Cross-scale calibration** — *done* (3-tier ladder, Haiku→Sonnet→Opus, 45 no-fact
+   cells). Settled two-part: recall of the unguessable fact does *not* improve with
+   capability (44/45 fail to recall it, flat across tiers), and capability does not *resolve*
+   confident fabrication — it makes it more confident and articulate (the explicit-false-
+   assertion rate rises Haiku < Sonnet < Opus; the strongest model states the falsehood most
+   cleanly). Not a monotone scale law on the binary (the binary failure is saturated); the
+   anchored claim is *non-elimination*, now on a third domain.
+4. **Token-scale and position depth test** — *done* (F038 needle at 8%/50%/92% depth in a
+   ~6.6k-token record). No positional decay: 30/30 recall at every position, both models;
+   middle (the worst case per [5]) as clean as primacy/recency. 'Lost in the middle' did not
+   appear at this scale for a *semantically-unique* needle. This bounds the depth claim to
+   the tested scale and a distinctive needle; arbitrary scale and a *camouflaged* needle
+   (needle-similar distractors, where [5] bites hardest) remain the standing residual.
 
 ---
 
@@ -585,8 +637,8 @@ Retrieval-Augmented Generation.* arXiv:2505.03275, 2025.
 [6] Y. Bai, S. Kadavath, S. Kundu, et al. *Constitutional AI: Harmlessness from AI
 Feedback.* arXiv:2212.08073, 2022.
 
-[7] J. Kim, et al. *Persona is a Double-edged Sword: Mitigating the Negative Impact of
-Role-playing Prompts.* EMNLP 2024 Findings, arXiv:2408.08631, 2024.
+[7] J. Kim, N. Yang, K. Jung. *Persona is a Double-edged Sword: Mitigating the Negative
+Impact of Role-playing Prompts in Zero-shot Reasoning Tasks.* arXiv:2408.08631, 2024.
 
 [8] A. Kong, et al. *Better Zero-Shot Reasoning with Role-Play Prompting.* NAACL 2024,
 arXiv:2308.07702, 2024.
@@ -606,7 +658,7 @@ Knowledge Injection in LLMs.* EMNLP 2024, arXiv:2312.05934, 2023.
 Know.* arXiv:2207.05221, 2022.
 
 [14] J. Pfau, W. Merrill, S. R. Bowman. *Let's Think Dot by Dot: Hidden Computation in
-Transformer Language Models.* COLM 2024, arXiv:2404.15758, 2024.
+Transformer Language Models.* arXiv:2404.15758, 2024.
 
 [15] F. Shi, X. Chen, K. Misra, et al. *Large Language Models Can Be Easily Distracted by
 Irrelevant Context.* ICML 2023, arXiv:2302.00093, 2023.
@@ -622,9 +674,17 @@ Simulacra of Human Behavior.* UIST 2023, arXiv:2304.03442, 2023.
 
 *Citation provenance: [1]–[6] were resolved directly against arXiv during drafting;
 [7]–[18] were fetched and adversarially cross-checked by a multi-agent literature sweep
-(22 of 25 sampled claims confirmed, 3 refuted). A final identifier/venue sweep is
-recommended before formal submission; the "interpretability" framing previously cited to
-a review paper (TRiSM, 2506.04133) has been downgraded to background — see §6.*
+(22 of 25 sampled claims confirmed, 3 refuted), then — in a final per-identifier sweep
+(2026-06-05) — every one of [7]–[18] was re-fetched directly against arXiv and confirmed
+correct on identifier, title, and authors (zero bad identifiers). That sweep did surface
+two **venue** annotations that neither the arXiv page nor a targeted search could anchor —
+"[7] EMNLP 2024 Findings" and "[14] COLM 2024" — which have been softened to arXiv-only
+rather than asserted; venues that were confirmed are retained ([8] NAACL 2024 main, [11]
+EMNLP 2024 main, [16] ICLR 2024, [18] UIST '23). This is a third reflexive instance of the study's own
+anchor-validity discipline (cf. the TRiSM downgrade and the over-correction in §6): an
+unanchored attribution corrected at writing time rather than carried. The "interpretability"
+framing previously cited to a review paper (TRiSM, 2506.04133) remains downgraded to
+background — see §6.*
 
 ---
 

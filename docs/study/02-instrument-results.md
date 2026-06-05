@@ -187,6 +187,21 @@ the model lacks, and the frontier *confidently asserts the false negation*). So 
 holds, sharpened: it is for **unguessable** content (a counter-default fact), and the
 docs-convention instance was simply too *derivable* to be a clean demonstration.
 
+**Verify form-verdict, three-arm (added 2026-06-05, SOUL-135).** Extending the control to
+*Measured 3* (the completion gate above) confirms that section's "gate concept works, Soul
+format is form" verdict at the stricter bar: a high-stakes vehicle (ship a payment-rounding
+refactor on green unit tests?) ceilinged at **40/40 avoid-trap across all four arms, bare
+included** — the gate is *fully derivable*, more so than the docs convention (whose bare sat
+at 2/5). The substance arm's only isolable mark is a **citation** (6/10 cells name the
+doctrine codes; 0/10 elsewhere); it does not change the decision. So verify sits at the
+opposite pole from recall on the same axis: recall carries an *unguessable fact* (clean
+isolation), verify records an *already-held disposition* (legibility only). The
+domain-saturation bound was then tested (SOUL-136) with a low-stakes vehicle: bare still
+withheld 10/10, so "legibility, not behavior" holds off-saturation — the only behavioral
+residue is a thin frontier *stabilizer* effect (a coherent distractor eroded Sonnet's
+caution 3/5; the doctrine resisted it 5/5). The **handoff** form-verdict remains on the
+two-arm control — the one residual on this axis.
+
 ### The unified thesis, sharpened by this probe
 
 The split is not "doctrine vs no doctrine." It is **what the content is *for*:**

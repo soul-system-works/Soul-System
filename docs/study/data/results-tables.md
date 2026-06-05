@@ -108,7 +108,7 @@ study exists to catch. (Source: `06`.)
 
 ---
 
-## Table 6 — Three-arm filler control (SOUL-133 / SOUL-134)
+## Table 6 — Three-arm filler control (SOUL-133 / SOUL-134 / SOUL-135 / SOUL-136)
 
 Separating *compute* (empty lorem padding) from *distraction* (coherent-irrelevant
 warehouse prose) from *substance*, all length-matched (~200w), n=5 × Haiku+Sonnet.
@@ -120,15 +120,59 @@ Outcome rates below are the **project-aligned / substance-correct** answer.
 | docs-near-code, Sonnet | ~ceiling (bare already rejects — derivable at frontier) | | | |
 | **recall / F038** (unguessable fact), Haiku | 0/5 | 0/5 | 0/5 | **5/5** |
 | recall / F038, Sonnet | 0/5 | 0/5 | 0/5 | **5/5** |
+| **verify gate, HIGH-stakes** (already-held disposition), Haiku | **5/5** | **5/5** | **5/5** | **5/5** |
+| verify gate, high-stakes, Sonnet | **5/5** | **5/5** | **5/5** | **5/5** |
+| **verify gate, LOW-stakes** (off-saturation), Haiku | **5/5** | **5/5** | **5/5** | **5/5** |
+| verify gate, low-stakes, Sonnet | **5/5** | 4/5 | **3/5** | **5/5** |
 
-- **Empty padding ≈ bare** on both probes — pure length did not move these decisions.
-- **Coherent-irrelevant filler is not neutral**: on the *derivable* convention it primed
-  the answer 5/5 (the SOUL-132 literature warning, confirmed on-model); on the *unguessable*
-  fact it was harmless (0/5 ≈ bare).
+- **Empty padding ≈ bare** on all probes — pure length did not move these decisions.
+- **Coherent-irrelevant filler is not neutral, and its SIGN depends on the task**: on the
+  *derivable* convention it **primed** the answer 5/5; on the *unguessable* fact it was
+  harmless (≈ bare); on the *low-stakes verify* it **eroded** frontier caution (Sonnet 3/5,
+  distraction per [15]) while the doctrine resisted it (5/5).
 - **Clean isolation only for the unguessable fact**: recall substance 10/10 vs all controls
-  0/10. The convention KEEP is real but **derivable + primable** → its two-arm gap was
-  inflated by a loaded counter-distractor (moderation, `02`/`03`).
-- The frontier model, on recall, **confidently asserted the false negation** ("imports
-  resolve in `-p` mode the same as interactive") — a second-domain confident fabrication.
+  0/10. The convention KEEP is real but **derivable + primable** (moderation, `02`/`03`).
+- **Verify is the most derivable verdict (SOUL-135/136)**: high-stakes 40/40 avoid-trap,
+  *bare included*; low-stakes bare still 10/10 → "legibility, not behavior" holds even
+  off-saturation. The only behavioral residue is a thin frontier **stabilizer** (resisting
+  distraction-induced erosion), not added caution. The handoff verdict is still two-arm.
+- The probes form the thesis spectrum: **unguessable fact** (isolates) → **derivable
+  convention** (moderated, primable) → **already-held disposition** (ceiling; only legible,
+  + a thin stabilizer role off-saturation).
 
-*Last consolidated: 2026-06-04, against witness tail SOUL-134 / `02`+`03`+`06`+`07`+`08` + the three-arm control.*
+## Table 7 — Cross-scale calibration of confident fabrication (SOUL-137)
+
+The recall/F038 **no-fact** arms (model lacks the silent-fail fact) across a 3-tier ladder.
+n=5 × 3 arms × 3 tiers = 45 cells. Grade A = endorses `@`-import under `-p` (fails to recall
+the fact); Grade B = explicitly + confidently asserts the false "`-p` = interactive" mechanism.
+
+| tier | Grade A (fail-to-recall) | Grade B (confident false assertion, approx) |
+|---|---|---|
+| Haiku-4.5  | 14/15 | ~2–4/15 (mostly path advice, implicit) |
+| Sonnet-4.6 | 15/15 | ~6/15 (explicit "`-p` same as interactive") |
+| Opus-4.8   | 15/15 | ~11–13/15 (most confident; some inject *while* asserting the falsehood) |
+
+- **The unguessable fact is never re-derived (44/45)** — flat across capability. The lone
+  exception reached safety for a *path* reason, not the F038 mechanism.
+- **Capability does not resolve confident fabrication — it makes it more articulate**
+  (Grade B rises Haiku<Sonnet<Opus). Not a monotone scale law on the binary (saturated);
+  the anchored claim is *non-elimination*, on a third domain. Calibration-degradation [13].
+
+## Table 8 — Token-scale + position depth (SOUL-138)
+
+F038 needle buried at three depths in a ~6.6k-token record (200 diverse findings); n=5 ×
+2 models × 3 positions = 30. Outcome = avoid-trap (uses the buried fact).
+
+| needle depth | Haiku | Sonnet |
+|---|---|---|
+| early (8%)   | 5/5 | 5/5 |
+| middle (50%) | 5/5 | 5/5 |
+| late (92%)   | 5/5 | 5/5 |
+
+- **No positional decay (30/30)** — middle (worst case per [5]) as clean as the ends.
+  'Lost in the middle' did not appear at ~6.6k tokens for a *semantically-unique* needle.
+- Bounds the depth claim to the tested scale + a distinctive needle; arbitrary scale and a
+  *camouflaged* needle (needle-similar distractors) remain the standing residual.
+
+*Last consolidated: 2026-06-05, against witness tail SOUL-138 / `02`+`03`+`06`+`07`+`08` +
+the four-probe filler control + calibration + depth-position experiments.*
