@@ -1,5 +1,7 @@
 # Result — recall / F038 three-arm filler control (2026-06-04)
 
+> **Reproduced 2026-06-05** (full rerun, n=5, read-scored): the headline result held. Full cross-experiment report: [`../../REPRODUCIBILITY.md`](../../REPRODUCIBILITY.md) (witness SOUL-143).
+
 **Source of record:** witness `SOUL-134`; bears on study `docs/study/02` (recall KEEP),
 `paper.md` §4.2/§6. Pre-registration in `PREDICTION.md`. Paired with
 `2026-06-04-docs-convention` — the two together **are** the derivable-vs-unguessable thesis.

@@ -16,13 +16,13 @@
 # Records inlined into -p (NEVER @-import — F038). Each arm's exact prompt saved.
 # Usage: run-decay.sh <model-id> <model-label> <n> <arm> <N>   arm ∈ withrecord|control|floor
 set -u
-D="$(cd "$(dirname "$0")" && pwd)"; WD=/tmp/longitudinal-pref-wd; OUT="$D/arms"; POOL="$OUT/pool"
+D="$(cd "$(dirname "$0")" && pwd)"; WD=/tmp/longitudinal-pref-wd; OUT="$D/arms"; POOL="$OUT/pool"; V="$D/vehicle"
 mkdir -p "$WD" "$POOL"
 MODEL="${1:?model id}"; ML="${2:?model label}"; N="${3:-3}"; ARM="${4:?arm}"; DEPTH="${5:-0}"
 
 # Split the pool once (idempotent): p0..p20 from pool-raw.txt on ===ADR===
 if [ ! -f "$POOL/p0.md" ]; then
-  awk -v out="$POOL" 'BEGIN{i=0} /^===ADR===/{i++; next} {print >> (out"/p"i".md")}' "$D/pool-raw.txt"
+  awk -v out="$POOL" 'BEGIN{i=0} /^===ADR===/{i++; next} {print >> (out"/p"i".md")}' "$V/pool-raw.txt"
   echo "split pool → $(ls "$POOL" | wc -l) files"
 fi
 

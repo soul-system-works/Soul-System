@@ -80,6 +80,7 @@ not noise — which is exactly why the control has to be there.
 benchmark/
   README.md            ← you are here
   SCORING.md           ← the scoring spec + pre-registration + provenance rules
+  REPRODUCIBILITY.md   ← full re-run of every experiment (2026-06-05): what reproduced
   experiments/
     <date>-<slug>/
       PREDICTION.md     ← locked before outputs (or provenance-cited if reconstructed)

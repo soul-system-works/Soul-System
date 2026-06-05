@@ -1,5 +1,7 @@
 # Result — longitudinal carry of a counter-default reasoning-PREFERENCE (2026-06-04)
 
+> **Reproduced 2026-06-05** (full rerun, n=5, read-scored): the headline result held. Full cross-experiment report: [`../../REPRODUCIBILITY.md`](../../REPRODUCIBILITY.md) (witness SOUL-143).
+
 **Source of record:** witness `SOUL-124` (the sibling of SOUL-123). Pre-registration in
 `PREDICTION.md`. This probe tests whether a self-accumulated record carries a counter-default
 reasoning-**preference** across a session + task boundary, and whether that preference

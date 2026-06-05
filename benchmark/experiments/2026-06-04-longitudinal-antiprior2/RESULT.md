@@ -1,5 +1,7 @@
 # Result — longitudinal anti-prior erosion, second prior (token-caching) (2026-06-04)
 
+> **Reproduced 2026-06-05** (full rerun, n=5, read-scored): the headline result held. Full cross-experiment report: [`../../REPRODUCIBILITY.md`](../../REPRODUCIBILITY.md) (witness SOUL-143).
+
 **Source of record:** witness `SOUL-128` + `SOUL-129`; bears on finding **F045** (its last
 rung). Pre-registration in `PREDICTION.md`.
 

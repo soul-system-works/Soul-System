@@ -1,5 +1,7 @@
 # Result — longitudinal erosion (the /soul-distill stress test) (2026-06-04)
 
+> **Reproduced 2026-06-05** (full rerun, n=5, read-scored): the headline result held. Full cross-experiment report: [`../../REPRODUCIBILITY.md`](../../REPRODUCIBILITY.md) (witness SOUL-143).
+
 **Source of record:** witness `SOUL-126` + `SOUL-127`. This is the experiment behind finding
 **F045** (anti-prior facts are partly *incompressible*: their FORCE, not just their
 proposition, must survive compression). Pre-registration in `PREDICTION.md`.

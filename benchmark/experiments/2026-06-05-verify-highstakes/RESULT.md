@@ -1,5 +1,7 @@
 # Result — verify/completion-gate three-arm control (2026-06-05)
 
+> **Reproduced 2026-06-05** (full rerun, n=5, read-scored): the headline result held. Full cross-experiment report: [`../../REPRODUCIBILITY.md`](../../REPRODUCIBILITY.md) (witness SOUL-143).
+
 **Study §6.1 residual (a):** re-test the *verify* "form" verdict under the validated
 three-arm control (bare / empty=compute / cohirr=distraction / substance=completion-gate
 doctrine). Pre-registration in `PREDICTION.md`, locked before any output was read.
