@@ -6822,3 +6822,59 @@ STATUS:       Resolved (decisive: full suite reproduced; only the 2 pre-correcte
               partial in SOUL-141/142). Decay harness bug fixed. Raw arms gitignored. Next: queue
               item 3 (longitudinal self-mining) + push.
 ```
+
+```
+ID:           SOUL-144
+WHEN:         2026-06-08 / longitudinal self-mining (queue item 3). Mined THIS project's own
+              record for in-vivo instances where the recorded doctrine/gates caught OUR drift or
+              prevented OUR re-derivation — converting the asserted longitudinal claim into
+              measured-on-real-history. Tractable two only (mechanism + compounding); the
+              human-legibility-over-time residual deferred per the Body.
+WHERE:        witness.md (143 prior entries) + findings/ + amendments/. Sweep delegated to two
+              read-only Seer passes; every load-bearing anchor re-executed by hand (verbatim grep
+              vs source) before trusting it.
+WHAT:         (1) Does the accumulated record demonstrably catch OUR drift / prevent OUR
+              re-derivation in REAL work (not only in a controlled vehicle)? (2) Does the payoff
+              COMPOUND across findings, and by what mechanism?
+TYPE:         Seer (mined without present-bias); Skeptic (refused the sweep's blanket-STRONG
+              ratings — split in-vivo from in-vitro, residual-chain from frame-reuse); Emissary
+              (re-executed each load-bearing quote against source per F047 — caught my own
+              grep-scope miss, F040, before mistaking accurate quotes for fabrication); Revelator
+              (named the two compounding mechanisms the sweep had lumped as one).
+CONSEQUENCE:  (1) IN-VIVO PAYOFF, MEASURED — six verified instances where the project's OWN
+              record/gate caught the project's OWN drift in real work: SOUL-075 (sentinel + F028
+              caught a fabricated "Rule 9" in the Mind experiment's own measurement); SOUL-092
+              (completion gate caught SOUL-090's invalid-scope grep — --include="*.md" only);
+              SOUL-140 (completion gate caught the "[7]-[18] all re-fetched against arXiv"
+              over-claim; [10]/[12] were asserted from memory); SOUL-141 (reproducibility gate
+              caught the cohirr-erosion over-claim, 3/5 -> 10/10); SOUL-142 (reproducibility gate
+              caught the scoring-fragile calibration gradient); SOUL-076 (Mind-on reproduced the
+              A008->A009 decision a blind model got WRONG). Five caught-drift + one
+              prevented-rederivation. This table IS the asserted->measured conversion the cursor
+              asked for. (SOUL-143's harness-bug catch came from RUNNING tests, not READING the
+              record — footnoted, not headlined.) (2) IN-VITRO kept SEPARATE from in-vivo: the
+              SOUL-122->129 longitudinal experiments measure the MECHANISM rigorously but on a
+              synthetic ADR-001 vehicle; the six above measure the PAYOFF on real history — both
+              real, different evidentiary weight for a "the record pays off for US" claim. (3)
+              COMPOUNDING is two mechanically-distinct forms, not one: RESIDUAL-CHAIN /
+              self-sharpening (each link catches what the prior MISSED — F015->F028->F040 anchor
+              existence->validity->scope; F044->F045 carry->compression-limit; A008->A009 handoff
+              topology) vs FRAME-REUSE / recognition-acceleration (an earlier frame lets a later
+              instance be SLOTTED fast — F014->F037->F046->F047 activation gap across four axes;
+              A010 unifying six scattered findings). The sweep's blanket "STRONG causal chain"
+              over-claimed the frame-reuse ones: they are real, but the payoff is
+              speed-of-recognition, not error-catching. (4) METHOD: re-executed every load-bearing
+              anchor against source rather than trust the sweep's "verbatim" ratings — applying
+              F047's lesson to the mining OF F047. Two quotes failed first grep on LINE-WRAPPING
+              (not fabrication); a too-narrow grep nearly became a false over-claim catch (F040).
+              The accurate quotes survived re-execution.
+              BOUNDS: in-vivo n=6 is a CENSUS of the current record, not a rate (no denominator of
+              "times a gate COULD have fired and did not"); the frame-reuse "compounding" is
+              recognition-speed, unmeasured in wall-clock; the human-legibility-over-time payoff is
+              UNMINED here (deferred — needs the Body's lived experience, not the log).
+STATUS:       Resolved for the tractable two (mechanism + compounding, measured on real history).
+              Feeds the study's longitudinal claim (asserted -> 6 in-vivo instances). DEFERRED:
+              human-legibility residual; study edit (Body to decide); finding-graduation of the
+              in-vivo/in-vitro or residual/frame-reuse distinctions (earned call, not auto). Next:
+              queue item 4 (discuss) then THE CUT.
+```
