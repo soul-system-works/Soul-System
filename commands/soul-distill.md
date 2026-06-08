@@ -137,7 +137,7 @@ is deliberately deferred until the manual cadence proves insufficient.
    ```
 
 8. **Present the draft for curation — delta-first, gap-only, never commit.**
-   The Body curates and commits; do not auto-commit (mirrors `/soul-skill`).
+   The Body curates and commits; do not auto-commit (the curation is the earning).
    The review surface must make the *load-bearing question per entry* cheap to
    judge — the Body cannot weigh a draft buried in passing-check prose (the
    I037 pain). Apply the compact, gap-only discipline the completion gate

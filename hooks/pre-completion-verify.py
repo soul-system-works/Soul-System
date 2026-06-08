@@ -21,7 +21,7 @@ Scoping (so it is not noise):
 
 Claude Code specific (Stop-hook contract). The OBLIGATION it enforces is
 tool-agnostic; this is the reference implementation. Reference implementation
-for SOUL-F012; see commands/soul-verify.md for the manual form.
+for SOUL-F012; see operations/completion-gate.md for the gate doctrine.
 """
 
 import hashlib
@@ -261,7 +261,7 @@ def _checklist() -> str:
         "REPLY (Body-facing): lead with the ask / next step; place the gate LAST as ONE "
         "compact line — `— Verify: clean (<anchor>)` or `— Verify: GAP → <specific>`. "
         "Expand to the failing check(s) only when a gap is real; do not recite passing "
-        "checks. Full form: commands/soul-verify.md."
+        "checks. Full form: operations/completion-gate.md."
     )
 
 

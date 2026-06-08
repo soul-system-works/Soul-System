@@ -13,12 +13,11 @@ from real use — not through good intentions, clever reasoning, or enthusiasm.
 
 | Type | Folder | Shape |
 |---|---|---|
-| Witness entries | `witness.md` | Observations from a real run — the raw material the Council works from. Append-only, sequential IDs (`SOUL-###`). Use `/soul-witness` to capture; see `operations/witness-log-format.md`. |
-| Findings | `findings/open/` | Earned graduations from witness — patterns worth naming. Standard format (`SOUL-F###`). |
-| Proposed Amendments | `amendments/proposed/` | A change to a canonical document, supported by Witness log evidence. |
-| Upstream skills | `skills/` | Skills first proven in a project (via `/soul-skill` writing local `SKILL.md`), then submitted upstream for cross-project reuse. |
+| Witness entries | `witness.md` | Observations from a real run — the raw material the Council works from. Append-only, sequential IDs (`SOUL-###`). Use `/soul-capture witness`; see `operations/witness-log-format.md`. |
+| Findings | `findings/open/` | Earned graduations from witness — patterns worth naming. Standard format (`SOUL-F###`). Scaffold via `/soul-capture finding`. |
+| Proposed Amendments | `amendments/proposed/` | A change to a canonical document, supported by Witness log evidence. Answer the three Amendment Questions (`operations/amendment-process.md`). |
 | Hooks | `hooks/` | Automatic trigger definitions, tested in a real run. |
-| Commons Entries | `philosophy/the-commons.md` | Outside wisdom that illuminates something the Soul reaches for. |
+| Tested skills | `skills/` | The curated which-skill-when catalog — **deferred to a post-1.0 fast-follow** (see `skills/README.md`); populated when a verified success earns the first entry. |
 | Registry Entries | `registry/` | Record of a project that used the system. |
 
 Suggestions based on reasoning alone — however compelling — are not evidence.
@@ -38,7 +37,7 @@ Use the format in `operations/witness-log-format.md`.
 
 **3. For proposed amendments, answer the amendment questions.**
 The three questions (Evidence, Necessity, Coherence) are defined in
-`operations/council-synthesis.md`. Include your answers in the PR.
+`operations/amendment-process.md`. Include your answers in the PR.
 
 **4. Submit a pull request.**
 Target the appropriate folder. See the table above.

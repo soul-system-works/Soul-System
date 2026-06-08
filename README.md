@@ -70,9 +70,9 @@ If you found something worth sharing, see `CONTRIBUTING.md`.
 ## Structure
 
 ```
-philosophy/     The Soul, the Commons (outside wisdom that earned its place)
+philosophy/     The Soul — the full philosophy, consulted on demand
 operations/     The operational seed — imported by @ or copied by install.sh
-commands/       Slash commands — sixteen /soul-* instruments (see commands/)
+commands/       Slash commands — eight /soul-* instruments (see commands/)
 hooks/          Activation instruments (e.g. the pre-completion Stop hook)
 amendments/     Council Amendments to the Soul, by lifecycle state (accepted/proposed/returned)
 findings/       Council Findings, open/ and closed/

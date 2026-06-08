@@ -1,64 +1,48 @@
 ---
-description: List every /soul-* command with when it fires. Read the commands/ directory at runtime so the list stays current as commands are added or removed. Quality-of-life utility — does not change project state.
+description: A short intro to the Soul System — what it is, the core gates, the commands, and where the durable record lives. The onboarding entry point ("--help" for the Soul). Reads commands/ at runtime so the list stays current.
 ---
 
-# /soul-help — list the soul commands
+# /soul-help — what the Soul System is
 
-A read-only roster. Reads the commands directory at runtime so this stays current
-without manual maintenance — adding a `commands/soul-<name>.md` makes it show up
-here on next invocation; removing one makes it disappear.
+A short, plain-language intro for someone new to this project (or a returning Body who
+wants the lay of the land). Not a deep philosophy dump — point to depth, don't recite it.
 
 ## What to do
 
-1. **Find the commands directory.** Prefer the live source — `commands/` at the
-   Soul System repo root (the `@import` source if `CLAUDE.md` points there;
-   otherwise the symlink target of `~/.claude/commands/soul-help.md`). Fall back
-   to `~/.claude/commands/` listing if the repo path can't be resolved.
+1. **One-paragraph what-it-is.** The Soul is a living philosophy that loads into every
+   session (the seed `operations/CLAUDE.md` + the distilled `mind.md`) plus a durable record
+   that accumulates across sessions (`witness.md`, `findings/`, `ideas.md`, `amendments/`).
+   The seed orients; the record remembers what a later session couldn't re-derive. Full
+   philosophy on demand: `philosophy/the-soul.md`.
 
-2. **List every `soul-*.md`** in alphabetical order. For each:
-   - Command name: filename without `.md`, prefixed with `/`.
-   - One-line summary: the `description:` from frontmatter, **first sentence only,
-     capped at ~100 characters**. Truncate at whichever comes first: the first `. `
-     (sentence end) OR the last natural break (em-dash ` — `, semicolon, comma)
-     before the 100-char mark. If no natural break exists within ~100 chars, hard-
-     truncate with `…`. The cap keeps the roster scannable; the natural-break
-     preference keeps the summary informative. Author frontmatters with this in
-     mind — a too-thin opening clause (e.g. "Pre-X gate.") produces an
-     uninformative row.
+2. **The core gates** (one line each): understand the abstraction before building (the AL
+   gate); frame at two levels; explain existing state before changing it; verify against
+   reality before calling done (fires automatically as a Stop hook); anchor every absolute
+   claim with a valid external reference.
 
-3. **Present as a compact table:**
+3. **The commands.** Read `commands/` at runtime and list each `soul-*.md` with a one-line
+   "when it fires" (the first sentence of its `description:`, ~100 char cap) — so this can't
+   drift from what's on disk. As of 1.0 the core is: `soul-init` (set up a project),
+   `soul-capture <idea|witness|finding>` (write to the record), `soul-handoff` /
+   `soul-resume` (continuity across sessions), `soul-explain` (describe the present;
+   `council` mode for a multi-lens read), `soul-next` (what to do next), `soul-distill`
+   (refresh the Mind).
 
-   ```
-   /soul-init       — Initialize project as a Soul dogfood (creates CLAUDE.md with seed import).
-   /soul-resume     — Pick up where the last session left off (reads .soul/handoff.md).
-   /soul-handoff    — Write a thin handoff cursor for the session boundary.
-   /soul-tasks      — Refresh the task tracker, present a tiered now/next/later list.
-   /soul-idea       — Capture a forward-looking idea (low ceremony).
-   /soul-finding    — Scaffold a graduated finding (the Body decides graduation).
-   /soul-skill      — Capture verified tool know-how as a governed skill.
-   /soul-explain    — Read-only explanation of current state.
-   /soul-verify     — Pre-completion verification gate (Body-invoked).
-   /soul-expand     — Pre-framing expansion gate (Body-invoked).
-   /soul-help       — This list.
-   ```
+4. **Where the record lives:** `witness.md` (observations, append-only) · `findings/`
+   (earned patterns) · `ideas.md` (forward possibilities) · `amendments/` (doctrine
+   changes).
 
-   The example shows the SHAPE — generate from the actual directory each time.
-
-4. **End with two pointers** (one line each):
-   - `Full philosophy: philosophy/the-soul.md — consult on demand, not auto-loaded.`
-   - `Open findings: findings/open/ · Ideas: ideas.md · Witness: witness.md`
+Keep it skimmable. Quiet and clear (SOUL-I008) — an intro, not a manual.
 
 ## What not to do
 
-- **Do not hand-curate the list.** Generate from the directory each run, so adding
-  or removing a command keeps the help honest without a separate update step.
-- **Do not invent commands** that don't have a file. Only list what is on disk.
-- **Do not show full descriptions.** One line per command. The full doc is
-  one `Read` away.
-- **Do not change project state.** Read-only; no writes, no commits.
+- Do not recite the full philosophy — point to `the-soul.md`.
+- Do not hand-curate the command list from memory — generate from `commands/` so it can't
+  drift; only list what is on disk.
+- Read-only; no writes, no commits.
 
 ---
 
-**Source:** Built by the Artificer for SOUL-I015 (a roster utility — the smallest
-useful onboarding aid). Generates from the live directory so it cannot drift from
-reality. **Adopted:** 2026-05-26. **Status:** active.
+**Source:** Built by the Artificer for SOUL-I015 as a command roster; reframed at the Cut
+(→1.0, 2026-06-08) into a Soul-System intro / onboarding entry point. Generates the command
+list from the live directory so it cannot drift. **Status:** active.

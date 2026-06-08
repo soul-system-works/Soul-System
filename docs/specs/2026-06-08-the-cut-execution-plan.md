@@ -1,9 +1,14 @@
 # The Cut — execution plan (Soul System → 1.0)
 
-Status: **DRAFT for Body approval.** Nothing is cut until this plan is approved.
+Status: **EXECUTED 2026-06-08 → 1.0** (SOUL-146). Grilled with the Body (/grill-with-docs),
+both pre-1.0 gates passed (Gate-1 orientation 6/6 across both models; Gate-2 hook firing), then
+executed. **One mid-execution coherence catch:** the dangling-reference sweep found that cutting
+`council-synthesis.md` also dropped the **amendment process** (load-bearing for the kept
+`amendments/`/`findings/` records — a 4th hard requirement the SOUL-145 pass missed); extracted
+to `operations/amendment-process.md`. Final surface: **8 commands, 6 operations files.**
 Decision input: `docs/study/03-leandown.md` (the measured KEEP/CUT/MERGE matrix).
 Hard constraints: witness **SOUL-145** (the coherence pass — three load-bearing carry-forwards).
-Version target: **1.0** (Body-set, from `0.3.0`).
+Version: **1.0** (Body-set, from `0.3.0`).
 
 ## Resolved in grilling (2026-06-08, /grill-with-docs)
 
