@@ -173,7 +173,11 @@ ceremony to a line.
 The method has a deliberate blind spot, and pretending otherwise would undo the point.
 It's single-shot and single-resume. The numbers are small (five to seven runs a cell).
 The longitudinal results come from a *synthetic* session chain, not a year of real
-project history. And the one value I keep asserting but never actually measured — what
+project history — though when I went back and mined this project's own record, I found
+six real cases where the accumulated notes or a gate caught a mistake I'd actually made,
+which is the same effect showing up unstaged (just without the clean before/after the
+synthetic chain gives you). And the one value I keep asserting but never actually
+measured — what
 all this legibility is worth to a *human* coming back to the project months later — is
 exactly the kind of human, over-time claim the harness can't reach. I marked it on the
 map rather than coloring it in.
