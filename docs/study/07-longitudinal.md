@@ -272,3 +272,51 @@ through. (Raw arms: `.soul/experiments/2026-06-04-longitudinal-antiprior2/`.)
 **Raw arms:** `.soul/experiments/2026-05-29-longitudinal-drift-v2/` (v2, this result) and
 `.soul/experiments/2026-05-29-longitudinal-drift/` (v1, mechanism-validation + the C2 lesson).
 Design: [`docs/specs/2026-05-29-longitudinal-harness-design.md`](../specs/2026-05-29-longitudinal-harness-design.md).
+
+## The same payoff, observed on the project's own history
+
+The chain above is synthetic *by necessity*. A counterfactual — what a later session does
+*without* the record — exists only if you manufacture the no-record branch; real history
+runs only the with-record branch and cannot supply the contrast. What real history *can*
+supply is the complement the chain cannot: instances where this project's **own** record
+and gates caught this project's **own** drift, in live work, with nothing staged.
+
+Mining the 143-entry witness log (SOUL-144) surfaces six such instances — the agentic
+payoff happening in vivo:
+
+| instance | the record or gate caught | kind |
+|---|---|---|
+| SOUL-075 | a sentinel + the F028 anchor-validity finding caught a *fabricated* "Rule 9" the experiment's own measurement had invented | caught-drift |
+| SOUL-092 | the completion gate caught a prior session's retire-audit anchor — a grep scoped `--include="*.md"` only, blind to a live non-markdown reference | caught-drift |
+| SOUL-140 | the completion gate caught a citation over-claim ("all of refs [7]–[18] re-fetched directly"; two were asserted from memory) | caught-drift |
+| SOUL-141 | the reproducibility gate caught an over-stated behavioural effect (cohirr-erosion, 3/5 → 10/10 on rerun) | caught-drift |
+| SOUL-142 | the reproducibility gate caught a scoring-fragile calibration gradient that did not hold | caught-drift |
+| SOUL-076 | the Mind let a fresh session reproduce a decision (A008→A009) the same model, run blind, got *wrong* | prevented-rederivation |
+
+Five are drift caught before it shipped; one is a re-derivation prevented. They are
+**observational, not counterfactual** — weaker in form than the controlled chain (we
+cannot replay each one *without* the record to prove the catch would have failed) — but
+they answer the chain's standing limitation: the mechanism is not only demonstrable on a
+manufactured vehicle, it has *already paid off on this project's real multi-session
+history*. The two evidence forms are complementary: the chain has the counterfactual and
+lacks real history; these have real history and lack the counterfactual.
+
+The accumulation also **compounds**, in two mechanically distinct ways worth keeping
+separate. One is a **residual chain** — each finding catches what the prior one missed:
+anchor discipline went existence (F015) → validity (F028) → scope (F040), and the
+record-carry finding (F044) was sharpened by its compression-limit successor (F045). The
+other is **frame reuse** — an earlier frame lets a later instance be *recognised* fast
+rather than re-derived: the activation-gap frame (F014, scope axis) was reused for the
+knowledge axis (F037), the debugging axis (F046), and the verification axis (F047). The
+first compounding *corrects errors*; the second *buys speed of recognition*. Only the
+first catches bugs; calling both "the doctrine catching mistakes" would over-read the
+second.
+
+**Bounds on this evidence.** The six are a *census* of the current record, not a *rate* —
+there is no denominator of times a gate could have fired and did not, so they show the
+payoff is real, not how often it occurs. They measure the **agentic** payoff (a gate or a
+recorded finding catching drift); the **human**-legibility-over-time payoff — whether a
+person re-reading the record orients faster months later — remains asserted, not measured
+([`06`](06-bounds-and-open-questions.md)); it needs lived experience the log cannot
+supply. Each of the six anchors was re-executed against the witness source, not taken from
+a summary. (Source: witness SOUL-144.)

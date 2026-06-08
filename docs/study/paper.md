@@ -401,6 +401,22 @@ a fact that contradicts a strong model prior, preserve its *force* — the incid
 explicit negation — not merely its proposition, and keep the residual directive
 imperative and loophole-free.
 
+**The carry has also paid off in vivo, not only on the synthetic vehicle.** The chain
+above is synthetic *by necessity*: the counterfactual — what a later session does
+*without* the record — exists only if the no-record branch is manufactured, and real
+history runs only the with-record branch. What real history supplies instead is
+observational. Six instances in the project's own 143-entry record show the accumulated
+record or a gate catching the project's *own* drift in live work: a fabricated rule-
+citation in an experiment's measurement, a retire-audit anchor scoped too narrowly to
+see a live reference, a citation over-claim, two over-stated reproducibility results, and
+one decision a blind run of the same model got wrong that a record-carrying run
+reproduced (SOUL-144). These lack the controlled counterfactual and are a *census*, not
+a rate — no denominator of times a gate could have fired and did not — but they
+corroborate that the mechanism has already fired on real multi-session history, where the
+synthetic chain cannot reach. They measure the *agentic* payoff (a gate or finding
+catching drift); the *human*-legibility payoff over time remains asserted, not measured
+(Section 6).
+
 ### 4.6 The three-arm control (separating compute, distraction, substance)
 
 Motivated by the literature in Section 2, we ran the three-arm extension of C1 — adding
@@ -523,10 +539,12 @@ The method's deliberate blind spot is its honesty test. Several of the largest b
 on the side it cannot measure single-shot, and a faked single-shot proxy for one of them
 would be the exact self-consistent falsehood the study exists to catch.
 
-- **Longitudinal accumulation** is reached only by a *synthetic* session chain, not real
-  multi-session history; seven rungs are climbed (carry, convention, depth, erosion,
-  weak-distiller, second prior, form-vs-prior), but scale (many interacting facts, a long
-  eroding record) remains a widening of the harness.
+- **Longitudinal accumulation** is reached by a *synthetic* session chain — the
+  controlled counterfactual real history cannot supply — now corroborated by six
+  *observational* in-vivo catches on the project's own record (Section 4.5; SOUL-144),
+  which supply real multi-session history but not the counterfactual. Seven rungs are
+  climbed (carry, convention, depth, erosion, weak-distiller, second prior, form-vs-prior);
+  scale (many interacting facts, a long eroding record) remains a widening of the harness.
 - **Multi-task routing** (does a curated catalog pay off across a task distribution?) and
   a **built router** (vs. the oracle upper bound) are unmeasured; the routing win is one
   task and a perfect-routing bound.
