@@ -6926,3 +6926,54 @@ STATUS:       Open — feeds the execution plan (the three catches become HARD R
               the drafted lean seed. Next: draft the execution plan (Body to greenlight), or cut
               directly per Body.
 ```
+
+```
+ID:           SOUL-146
+WHEN:         2026-06-08 / EXECUTED THE CUT — Soul System graduated 0.3.0 → 1.0. Continuous
+              autonomous run, Body-authorized after full /grill-with-docs of the plan + reading
+              the three drafts. Gates first, then irreversible execution (all git-reversible vs
+              the tagged v0.3.0-pre-cut baseline).
+WHERE:        whole repo — commands/ (16→8), operations/ (CLAUDE.md seed + gate + amendment-
+              process), mind.md, philosophy/the-soul.md, hooks/, README, CONTRIBUTING, install.sh.
+              Plan: docs/specs/2026-06-08-the-cut-execution-plan.md.
+WHAT:         Execute the grilled KEEP/CUT/MERGE plan to the lean 1.0 surface, after the two
+              pre-1.0 gates pass.
+TYPE:         Craftsman (executed the swaps/merges/deletions); Artificer (authored soul-capture +
+              soul-next, leaned the hook); Emissary (ran both gates against reality before any
+              irreversible change); Guardian + Skeptic (caught a load-bearing drop mid-execution).
+CONSEQUENCE:  (1) BOTH GATES PASSED before any irreversible change. Gate-1 (fresh-agent
+              orientation, lean seed alone, F038-inlined, from a clean dir): 6/6 STRONG across
+              BOTH models (3 Sonnet + 3 Haiku) — every agent stopped, framed two levels, named the
+              AL (varies/can't-vary), fired Body-Input (F037), named a failure mode. The roster-
+              compression worry is RESOLVED: even Haiku oriented on gates+AL without the 700-line
+              chamber. Gate-2 (hook firing): positive (ship+claim) → exit 2 + checklist; negative
+              (claim, no ship) → exit 0 silent (turn-scoping intact); leaned pointer → completion-
+              gate.md. (2) EXECUTED: 16 commands → 8 (capture merges witness/idea/finding by mode,
+              ratchet preserved; tasks→next + Mind distill-staleness trigger; explain + `council`
+              lens-mode; help → system intro; cut verify[→hook]/council[→lens]/expand/ask-body/
+              roles/skill). Seed rewritten IN PLACE 263→168 ln; mind.md slimmed 174→113; gate
+              leaned 130→58. Cut 5 operations files + the-commons + resume-cost. install.sh
+              0.3.0→1.0.0. All THREE SOUL-145 hard requirements verified present in the live seed
+              (upstream obligation, F038 fact, witness invariants). (3) COHERENCE CATCH DURING
+              EXECUTION — the load-bearing one: the dangling-reference sweep caught that cutting
+              council-synthesis.md ALSO dropped the AMENDMENT PROCESS (the three acceptance
+              questions Evidence/Necessity/Coherence + accept/return/file-finding) — process
+              doctrine for the KEPT amendments/+findings/ records, NOT council ceremony. The
+              pre-execution coherence pass (SOUL-145) named 3 hard requirements and MISSED this
+              4th. Extracted to operations/amendment-process.md (NEW); cut only the convening
+              ceremony. LESSON: a pre-execution coherence pass catches what it can REASON about;
+              the dangling-reference sweep catches what only surfaces when a kept file still POINTS
+              at a cut one — complementary checks, the sweep finding the reasoning pass's residual
+              (same shape as the anchor four-faces: each check catches the prior's residual). (4)
+              ADOPTER-SAFE: no command symlinks (verified), seed rewritten in place at the absolute
+              @import path. Skill registry auto-dropped the 10 cut commands; the 2 NEW (capture,
+              next) need a registry sync (runtime, flagged to Body).
+              BOUNDS: operations ended at 6 files, not the planned 4 — the amendment-process catch
+              added one (honest, load-bearing). the-soul.md got a minimal slim (2 stale refs fixed
+              + council reframed as lens-mode), not a full rewrite. Gate-1 was a design-task
+              orientation test (n=3/model, no mid-implementation regime). Raw gate outputs were in
+              /tmp (ephemeral); results read-scored + recorded here.
+STATUS:       Resolved — 1.0 EXECUTED. The amendment-process catch (sweep-vs-reasoning
+              complementarity) is finding-worthy — flagged for Body graduation, not auto-created
+              (Rule 7). Next: closing finding (Body's call), commit, push. Spec status → EXECUTED.
+```

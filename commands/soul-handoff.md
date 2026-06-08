@@ -37,6 +37,10 @@ Optional argument: a short description of what the next session is for — let i
    SUGGESTED ROLES / SKILLS: [for the next session]
    ```
 3. Keep it **thin**: references, not duplicates. Nothing the durable records already hold gets copied in.
+   **Self-contained for correctness, not hermetic (A009):** the cursor + the records it points
+   to must reproduce the work without the original session's context — but it does not shield
+   the next session from the surrounding repo; a worker may still read sibling files for
+   consistency. A vague handoff is the named cause of duplicated work and gaps.
 4. Report that the cursor was written, and remind the Body that the next session should read `.soul/handoff.md` first.
 
 ## What not to do

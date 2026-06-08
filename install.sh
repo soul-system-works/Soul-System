@@ -5,7 +5,7 @@
 
 set -e
 
-SYSTEM_VERSION="0.3.0"
+SYSTEM_VERSION="1.0.0"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 TARGET="${1}"
 
@@ -34,7 +34,7 @@ EOF
 echo ""
 echo "Done. Next steps:"
 echo "  1. Read philosophy/the-soul.md in this repo — once, slowly"
-echo "  2. For a new problem, frame it with operations/problem-slot-template.md"
-echo "  3. Start your session"
+echo "  2. For a new problem, name the abstraction layer first (the seed's First Principle)"
+echo "  3. Run /soul-help for the commands, then start your session"
 echo ""
 echo "Soul System version ${SYSTEM_VERSION} installed."

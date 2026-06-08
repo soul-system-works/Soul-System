@@ -1,45 +1,38 @@
 # skills/
 
-The upstream-skill contribution channel. Skills first proven in a project
-(via `/soul-skill` writing a local `SKILL.md`) and then judged worth
-sharing across projects land here as pull requests.
+The **tested skills catalog** — deferred to a post-1.0 fast-follow (the Cut, 2026-06-08).
 
-## Why empty
+## Status: deferred, not abandoned
 
-This directory has held zero upstream skills since project genesis. Empty
-is the **honest state** — no project has yet judged a local SKILL.md ready
-for cross-project promotion. `/soul-skill` deliberately writes
-**project-local** SKILL.md files (per its own command file), not here;
-promotion to `skills/` is a separate, earned step.
+The catalog is the one *new* instrument the lean-down measured as valuable but could not yet
+populate: SOUL-120 showed that curated *which-skill-when* knowledge beats a model's own pick
+at the weak-model × tight-budget margin (oracle 5/5 vs budgeted self-pick 1/5). That value is
+real — but at 1.0 this directory was **empty** (zero skills ever captured), so shipping a
+catalog would have been shipping a promise. It is therefore the **#1 post-1.0 build**, to be
+populated when a genuine verified success earns the first entry.
 
-## Lifecycle (per SOUL-088 audit §1.10 DEFER-WITH-CRITERIA)
+## How capture works now (1.0)
 
-The audit set two trigger conditions on this directory:
+`/soul-skill` was **cut** at the lean-down. Its job is covered by two things that already
+exist:
 
-- **Un-defer trigger** — first upstream skill contribution arrives:
-  un-defer, document the precedent, update CONTRIBUTING.md if its row
-  needs sharpening.
-- **Retire trigger** — calendar-anchored to the audit moment, fires at
-  **2026-11-27** if no upstream contribution has arrived: RETIRE-NOW.
-  Delete `skills/` and remove the row from CONTRIBUTING.md. Empty
-  contribution-channel scaffolding past that date is aspiration without
-  evidence — Mind rule 4 (generation couples with retirement) applies.
-  Calendar here measures absence-of-external-signal (an external clock —
-  not the project's internal rhythm).
+- **The record** captures what happened (witness / findings) — the know-how isn't lost.
+- **Generic skill-authoring** (`write-a-skill`, `skill-creator`) writes a skill when one is
+  genuinely needed (Soul-composes-not-replaces).
 
-## What an upstream skill looks like
+So a skill gets authored by the generic tool, and the *catalog* — the curated
+which-to-deploy-when index, each entry earned via a verified success and carrying a
+`soul-status:` retire-handle (Rule 4) — is built here when the first one is earned.
 
-A SKILL.md that has earned cross-project relevance:
-- Started as a project-local `SKILL.md` via `/soul-skill`.
-- Was used in **at least two** distinct contexts (the F035 N=3 heuristic
-  scaled to skills — single-context skills stay project-local).
-- Carries verified-attribution provenance per `/soul-skill`'s draft-for-
-  curation discipline.
-- Has a `soul-status:` retire-handle per Mind rule 4.
+## When to un-defer
 
-Submit via the contribution flow in `CONTRIBUTING.md`. Upstream skills
-are reviewed for relevance + governance fit; project-paradigm skills
-stay home (per the seed §Reference Projects Soul-meta-vs-paradigm test).
+The first time a verified, cross-context-useful skill exists (the F035 N=3 heuristic scaled
+to skills — single-context skills stay project-local), open the catalog: add the entry, define
+the index/routing form, and update this README. A *built router* (vs. the oracle upper bound)
+is a later, separately-justified step.
 
 ---
-**Source:** SOUL-088 audit §1.10 DEFER-WITH-CRITERIA (skills/ "needs documenting OR retiring; empty directory is ambiguous"); SOUL-097 backfill beat (this README). **Sub-class:** PROCEDURE. **Adopted:** 2026-05-27. **Status:** active.
+**Source:** SOUL-120 (routing value) + the Cut execution plan
+(`docs/specs/2026-06-08-the-cut-execution-plan.md`, skills decision). Supersedes the
+SOUL-088/097 contribution-channel framing. **Sub-class:** PROCEDURE. **Status:** deferred
+(post-1.0 fast-follow). **Adopted:** 2026-06-08.
