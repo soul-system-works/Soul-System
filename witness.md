@@ -6878,3 +6878,51 @@ STATUS:       Resolved for the tractable two (mechanism + compounding, measured 
               in-vivo/in-vitro or residual/frame-reuse distinctions (earned call, not auto). Next:
               queue item 4 (discuss) then THE CUT.
 ```
+
+```
+ID:           SOUL-145
+WHEN:         2026-06-08 / coherence pass on THE CUT's lean target. Body chose "coherence pass
+              only, then decide" before graduating to 1.0 (version set by Body, from 0.3.0).
+              Skeptic/Steward/Guardian/Advocate/Cartographer stress-test of the proposed lean
+              Soul-System against three questions: load-bearing drop? fresh-agent orientation?
+              reference-project survival?
+WHERE:        docs/study/03-leandown.md (the lean proposal + matrix); operations/CLAUDE.md (the
+              seed §Reference Projects); registry/ (8 adopters); mind.md (invariants);
+              operations/experiment-harness.md (the F038 fact).
+WHAT:         Does the lean target as sketched silently drop load-bearing doctrine? Does the lean
+              seed still orient a fresh agent (two-parties-same-meaning)? Do the 8 reference
+              projects survive the cut?
+TYPE:         Skeptic (adversarial read of the CUT list); Guardian (named the silently-dropped
+              obligations); Steward (the lost re-distill mechanism); Advocate (shared-language
+              thinning); Cartographer (the empirical orientation test as a gate on the draft, not
+              resolvable now); Archaeologist (dug the adopter dependency surface from registry/).
+CONSEQUENCE:  (1) HIGH-SEVERITY CATCH — the lean-seed sketch silently drops THREE load-bearing,
+              unguessable doctrine items (NOT ceremony, so NOT covered by the "default to CUT"
+              appetite): (a) the reference-project UPSTREAM OBLIGATION (seed §Reference Projects)
+              — the evolution-fuel loop that produced F046/F047 THIS session; adopters reference
+              it directly. (b) The F038 experiment-harness FACT (cross-project @-import
+              confabulates ~43%) — an unguessable fact (Rule 13) that re-bites the next
+              measurement session if lost; must survive with its FORCE. (c) The witness INVARIANTS
+              — append-only + sequential IDs are kept by the matrix, but the I027 re-read-verify
+              concurrent-writer protocol + the earned-finding gate must be confirmed to ride
+              along. All three clear the Cut's OWN "clearly-argued unique value" bar; they were
+              MISSED in the sketch, not judged cuttable. (2) TWO WATCH-ITEMS: distill machinery
+              cut leaves NO re-distill mechanism (becomes a manual Steward action; activation lost
+              — make it a CONSCIOUS trade, not silent); role vocabulary -> one-liner thins
+              orientation-for-SHARED-LANGUAGE (behaviour survives per A017; but it spends exactly
+              the asserted-unmeasured legibility residual). (3) ONE QUESTION DEFERRED TO THE DRAFT:
+              the real two-parties-same-meaning test is EMPIRICAL — give a fresh agent ONLY the
+              drafted lean seed + a task and see if it orients; the lean seed is not a file yet, so
+              this is a GATE on the execution draft, not resolvable in this pass. (4) REFERENCE
+              PROJECTS SURVIVE: adopters depend on doctrine CONTENT (mind.md rules, upstream
+              obligation, contrast cases), not the interactive commands; symlinked or version-
+              pinned at 0.3.0 -> no surprise-break, migration is opt-in — PROVIDED catch (1a) is
+              carried into the lean seed.
+              VERDICT: the lean target is largely coherent and the cuts are defensible; the
+              blocker is SMALL AND SPECIFIC (carry the three load-bearing items forward + run the
+              orientation test on the draft), NOT "more study."
+STATUS:       Open — feeds the execution plan (the three catches become HARD REQUIREMENTS; the two
+              watch-items become conscious trades). Pre-1.0 gate: the empirical orientation test on
+              the drafted lean seed. Next: draft the execution plan (Body to greenlight), or cut
+              directly per Body.
+```
