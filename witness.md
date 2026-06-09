@@ -7062,3 +7062,43 @@ STATUS:       Open — cleanup done, uncommitted pending Body review of the work
               commit (cleanup + witness + F048), write the closing 1.0 Finding, then Body pushes
               v1.0.0 (held until after cleanup per Body). The v0.3.0-pre-cut tag is already pushed.
 ```
+
+```
+ID:           SOUL-149
+WHEN:         2026-06-09 / EXTRACTED soul-benchmark — split the benchmark/ suite into its own
+              sibling repo. Discussed-then-decided with the Body (product-vs-lab framing): the
+              benchmark is agnostic by its own design ("a reusable benchmark… change the vehicle,
+              the models, the n"), so it ships as a standalone shareable artifact; the record and a
+              soul-archive repo were CONSIDERED and rejected (git tags already are the wayback
+              machine; mind.md already is the resolved-state view; F045 says purging strips force).
+WHERE:        NEW repo /mnt/d/Projects/soul-benchmark (the Meta-Doctrine Ablation Suite, 99 files,
+              MIT LICENSE). Soul-System: benchmark/ removed; docs/study/paper.md + data/results-
+              tables.md benchmark refs repointed to the soul-benchmark repo.
+WHAT:         Reduce the repo's file mass by separating the LAB (the runnable benchmark) from the
+              PRODUCT + record. The system an adopter loads is ~18 files; benchmark/ was 98 of the
+              253. Extraction is the single biggest file-count win and the suite is genuinely
+              reusable (4-arm equal-compute control: bare/empty/cohirr/substance).
+TYPE:         Steward (separate lab from product); Emissary (the suite goes public — a shareable
+              contribution); Architect (history-preserving split topology).
+CONSEQUENCE:  (1) HISTORY PRESERVED: `git subtree split -P benchmark` → both source commits (the
+              SOUL-141/142 promote + SOUL-143 rerun) carried into soul-benchmark (tips 6f0f17d →
+              fc281cb), then an extraction commit (cross-ref fixes + LICENSE). Not a snapshot —
+              the experimental program's provenance travels with it. (2) CROSS-REFS REPAIRED both
+              ways: in soul-benchmark, 4 outward `../docs/study` refs → the Soul-System GitHub URL
+              (org soul-system-works); experiment-internal `../../SCORING.md`/`REPRODUCIBILITY.md`
+              refs SURVIVE unchanged (benchmark/ became the new root, so they resolve). In
+              Soul-System, the 2 study citations (paper.md §6.2, results-tables.md Table 7) →
+              the soul-benchmark repo. SYSTEM-VERSION's "benchmark suite" prose LEFT (historical —
+              records the measurement phase). (3) Dangling-ref sweep (the F048 practice) run on
+              BOTH repos post-move: clean. benchmark/ fully removed (git rm + rm -rf for the
+              gitignored arms/); temp split branch deleted.
+              BOUNDS: both repos are LOCAL only. The GitHub repo creation + push for soul-benchmark,
+              and the Soul-System removal commit's push, are OUTWARD-FACING → Body-owned (handed
+              off as gh/push commands). The soul-benchmark URL referenced in repaired refs
+              (github.com/soul-system-works/soul-benchmark) does not exist until the Body creates
+              it — the refs are correct-on-create, dangling-until-then (named, not hidden).
+STATUS:       Open — soul-benchmark committed locally (f33eee9); Soul-System removal staged,
+              committing now. Next: Body creates+pushes the soul-benchmark GitHub repo and pushes
+              the Soul-System removal commit. Then the v1.0.0 push (still held). Repo file mass
+              after: 253 → ~155 tracked.
+```
