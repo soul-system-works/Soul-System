@@ -12,6 +12,16 @@ The token *is* the capture ratchet made visible — typing `finding` is the deli
 earning act. If no mode is given, **ask** ("idea / witness / finding?") — do not guess
 the store.
 
+## Where it writes (target — read this first)
+
+The record is **this project's**, at the **project root** — the directory of the session's
+`CLAUDE.md` (where the session started; do not search upward). Write the store *there*, and
+**create it if absent** — a freshly `soul-init`'d project may have no `ideas.md` / `witness.md`
+yet; create it at the project root, do not treat its absence as "write elsewhere." **Never
+write the record into the Soul System source repo** (where the imported seed/skill physically
+lives) — that is the bug this rule prevents. *Exception:* when the current project **is** the
+Soul System repo, that repo's own record is the target.
+
 ---
 
 ## Mode `idea` — frictionless, forward (→ `ideas.md`)

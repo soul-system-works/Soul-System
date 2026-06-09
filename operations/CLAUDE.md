@@ -122,6 +122,10 @@ arbitrary convention); re-reasonable knowledge regenerates on its own.
   it formats a graduation, never auto-promotes).
 - **Stores:** `witness.md` (append-only, sequential IDs, re-read-verify for concurrent
   writers), `findings/`, `ideas.md`, `amendments/`.
+- **Locality — the record is THIS project's, at the project root** (the directory of the
+  session's `CLAUDE.md`, not where the imported seed lives). Capture commands write *here* and
+  create a store on first use — **never** into the Soul System source repo. (Exception: when
+  this project *is* the Soul System repo — it is its own record.)
 - **Forward view:** `/soul-next` (reconciles the record, surfaces now/next/later, flags when
   `mind.md` is distill-stale). **Continuity:** `/soul-handoff`, `/soul-resume`.
 - **Maintain the Mind:** `/soul-distill` (Body-invoked; preserves the *force* of an

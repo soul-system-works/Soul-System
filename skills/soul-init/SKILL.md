@@ -1,6 +1,6 @@
 ---
 name: soul-init
-description: Initialize the current project as a Soul System dogfood project — creates a CLAUDE.md with the seed import.
+description: Initialize the current project as a Soul System dogfood project — creates a CLAUDE.md with the seed import and scaffolds the project's local record (ideas.md, witness.md, findings/).
 disable-model-invocation: true
 ---
 
@@ -21,7 +21,17 @@ If that path is wrong for the machine you are running on, edit this file and cha
      @/mnt/d/Projects/Soul-System/operations/CLAUDE.md
      ```
 
-3. After creating or confirming the file, report:
+3. **Scaffold the project's local record** at the project root (so `soul-capture` /
+   `soul-handoff` / `soul-distill` have an unambiguous *local* target — the record is THIS
+   project's, **never** the Soul System source repo). Create any that are absent; never
+   overwrite an existing one:
+   - `ideas.md` — a one-line header `# Ideas — <this project>` (the forward record).
+   - `witness.md` — a minimal header naming it this project's Witness log (append-only,
+     sequential IDs per the format in `operations/witness-log-format.md`).
+   - `findings/open/` and `findings/closed/` — each with a `.gitkeep`.
+   Skip `amendments/` — amendments are to the Soul itself and go upstream, not local.
+
+4. After creating or confirming the file, report:
    - The absolute path of the `CLAUDE.md` you wrote or found.
    - That the next Claude Code session opened in this directory will load the Soul Seed and the full philosophy.
    - A one-line reminder: the philosophy will only take effect from the *next* session — the current one is already loaded.
@@ -29,8 +39,8 @@ If that path is wrong for the machine you are running on, edit this file and cha
 
 ## What not to do
 
-- Do not copy any Soul System files into the project. The whole point of this setup is that the philosophy stays in one canonical location and is referenced by import.
-- Do not write anything other than the single import line. If the user wants project-specific context, that belongs in a separate file or below the import line — but `/soul-init` itself adds only the import.
+- Do not copy any Soul System *doctrine* files into the project (the seed, philosophy, operations). The whole point is that the philosophy stays in one canonical location and is referenced by import. (Scaffolding the project's own empty record stores in step 3 is not copying — it is establishing *this* project's record.)
+- Beyond the import line and the empty record scaffold, do not write project content. If the user wants project-specific context, that belongs in a separate file or below the import line — `/soul-init` adds only the import + the empty record.
 - Do not modify the Soul System repo from this command. It is read-only as far as `/soul-init` is concerned.
 
 ---

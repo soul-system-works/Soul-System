@@ -7287,4 +7287,41 @@ STATUS:       Open — migrated + validated + (committing now). Next (Body): con
               skills in a fresh session; flip repo public. The "commands≈skills + guard the
               Body-decides ones" realization is finding-worthy → Body graduation (Rule 7).
 ```
+
+```
+ID:           SOUL-154
+WHEN:         2026-06-09 / ADOPTER-FLOW BUG caught by the Body's dogfood test — created a fresh
+              project (temp2), ran /soul-init, then /soul-capture idea; the capture targeted the
+              SOUL SYSTEM SOURCE REPO's ideas.md instead of the project's own. (No pollution — the
+              attempt did not complete; this repo's ideas.md untouched at I047.)
+WHERE:        operations/CLAUDE.md §Record + AGENTS.md §Record (new locality invariant);
+              skills/soul-init/SKILL.md (record scaffold); skills/soul-capture/SKILL.md (target rule).
+WHAT:         Fix record-target resolution for adopting projects: the record is the CURRENT project's,
+              at the project root — never the Soul System source repo.
+TYPE:         Skeptic/Emissary (the Body tested the real adopter flow — the outward reach the system
+              keeps under-doing); Guardian (protects the source repo's record from adopter writes);
+              Craftsman (the fix).
+CONSEQUENCE:  ROOT CAUSE — two coupled gaps: (1) soul-init installed only the @import line, never the
+              project's local record stores, so a fresh Soul project had no local target; (2) no rule
+              anchored the record to the current project root, so with the local store missing the
+              agent defaulted to the source repo's visible ideas.md (where the seed/skill physically
+              live). Bites EVERY record command (capture, handoff→.soul/, distill→mind.md, next/resume
+              reads) and every external adopter. FIX (Body chose BOTH — scaffold + rule): (a) DOCTRINE
+              — new locality invariant in the seed §Record + mirrored in AGENTS.md: the record is THIS
+              project's, at the project root (dir of the session's CLAUDE.md), create-on-first-use,
+              NEVER the source repo (exception: when the project IS this repo). Inherited by all
+              commands. (b) soul-init now SCAFFOLDS the local record (ideas.md, witness.md,
+              findings/open+closed; skip amendments/ — those go upstream) so it is unambiguous from
+              day 1; its "only the import line" rule revised to permit the empty-record scaffold
+              (still forbids copying DOCTRINE files). (c) soul-capture got an explicit "where it
+              writes" rule at the top (project root, create-if-absent, never source repo). Fix is LIVE
+              via the Body's ~/.claude/skills symlinks → re-test in temp2.
+              BOUNDS: the doctrine rule protects projects initialized BEFORE the fix (they get the
+              rule even without the scaffold). Read-commands (next/resume/help) rely on the inherited
+              doctrine rule, not an explicit per-command line (kept lean). Not yet re-tested live in
+              temp2 (Body's next step). Good in-vivo catch — the adopter flow is exactly where the
+              upstream can't see its own gaps; the Body's test surfaced it.
+STATUS:       Open — fixed + (committing). Finding-worthy (adopter record-locality) → Body graduation.
+              Next (Body): re-test in temp2 (/soul-init then /soul-capture idea → should write
+              temp2/ideas.md); flip repo public.
 ```
