@@ -1,5 +1,7 @@
 ---
-description: A short intro to the Soul System — what it is, the core gates, the commands, and where the durable record lives. The onboarding entry point ("--help" for the Soul). Reads commands/ at runtime so the list stays current.
+name: soul-help
+description: A short intro to the Soul System — what it is, the core gates, the commands, and where the durable record lives. The onboarding entry point ("--help" for the Soul). Reads skills/ at runtime so the list stays current.
+disable-model-invocation: true
 ---
 
 # /soul-help — what the Soul System is
@@ -20,9 +22,10 @@ wants the lay of the land). Not a deep philosophy dump — point to depth, don't
    reality before calling done (fires automatically as a Stop hook); anchor every absolute
    claim with a valid external reference.
 
-3. **The commands.** Read `commands/` at runtime and list each `soul-*.md` with a one-line
+3. **The commands.** Read `skills/` at runtime and list each `soul-*/SKILL.md` with a one-line
    "when it fires" (the first sentence of its `description:`, ~100 char cap) — so this can't
-   drift from what's on disk. As of 1.0 the core is: `soul-init` (set up a project),
+   drift from what's on disk. (The `/soul-*` instruments are Claude Code **skills**; invoked
+   the same way — `/soul-capture`, etc.) As of 1.0 the core is: `soul-init` (set up a project),
    `soul-capture <idea|witness|finding>` (write to the record), `soul-handoff` /
    `soul-resume` (continuity across sessions), `soul-explain` (describe the present;
    `council` mode for a multi-lens read), `soul-next` (what to do next), `soul-distill`
@@ -37,7 +40,7 @@ Keep it skimmable. Quiet and clear (SOUL-I008) — an intro, not a manual.
 ## What not to do
 
 - Do not recite the full philosophy — point to `the-soul.md`.
-- Do not hand-curate the command list from memory — generate from `commands/` so it can't
+- Do not hand-curate the command list from memory — generate from `skills/` so it can't
   drift; only list what is on disk.
 - Read-only; no writes, no commits.
 

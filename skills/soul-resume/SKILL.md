@@ -1,5 +1,7 @@
 ---
+name: soul-resume
 description: Resume a Soul session from the handoff cursor (.soul/handoff.md) — load the cursor and the durable records it points to, restate where we are, and continue from the next step. The twin of /soul-handoff.
+disable-model-invocation: true
 ---
 
 # /soul-resume — pick up where the last session left off

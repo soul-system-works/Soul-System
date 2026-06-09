@@ -1,5 +1,7 @@
 ---
+name: soul-next
 description: Refresh the task tracker against the durable records, then present a tiered list of likely next options (now / next / later) and flag when the Mind is distill-stale. The forward-momentum guardrail — surfaces grounded next steps so the agent doesn't invent direction and the Body doesn't have to ask.
+disable-model-invocation: true
 ---
 
 # /soul-next — refresh the tracker, show what's next

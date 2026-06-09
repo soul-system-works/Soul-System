@@ -1,5 +1,7 @@
 ---
+name: soul-init
 description: Initialize the current project as a Soul System dogfood project — creates a CLAUDE.md with the seed import.
+disable-model-invocation: true
 ---
 
 # /soul-init — load the Soul System into the current project

@@ -1,5 +1,7 @@
 ---
+name: soul-capture
 description: Capture to the record in one of three modes — idea (frictionless, forward), witness (light scaffold, backward), finding (earned scaffolder). The mode token is the first arg and selects friction + target store + format. Merges the former /soul-idea, /soul-witness, /soul-finding into one command; the ratchet is preserved by mode. Use to jot a forward possibility, log an observation, or scaffold a graduation the Body has decided.
+disable-model-invocation: true
 ---
 
 # /soul-capture — capture to the record

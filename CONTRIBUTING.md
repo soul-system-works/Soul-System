@@ -17,7 +17,7 @@ from real use — not through good intentions, clever reasoning, or enthusiasm.
 | Findings | `findings/open/` | Earned graduations from witness — patterns worth naming. Standard format (`SOUL-F###`). Scaffold via `/soul-capture finding`. |
 | Proposed Amendments | `amendments/proposed/` | A change to a canonical document, supported by Witness log evidence. Answer the three Amendment Questions (`operations/amendment-process.md`). |
 | Hooks | `hooks/` | Automatic trigger definitions, tested in a real run. |
-| Tested skills | `skills/` | The curated which-skill-when catalog — **deferred to a post-1.0 fast-follow** (see `skills/README.md`); populated when a verified success earns the first entry. |
+| Tested skills | (catalog) | The curated which-skill-when catalog — **deferred to a post-1.0 fast-follow** (see `docs/tested-skills-catalog.md`); populated when a verified success earns the first entry. (`skills/` itself now holds the Soul's own `/soul-*` instruments.) |
 
 Suggestions based on reasoning alone — however compelling — are not evidence.
 
