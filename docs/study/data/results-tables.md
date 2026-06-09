@@ -174,7 +174,7 @@ the fact); Grade B = explicitly + confidently asserts the false "`-p` = interact
   (run 1, lenient) gives a rising gradient; the strict reading (run 2) collapses Opus to
   **0/15** and the gradient inverts. **Surviving claim: non-elimination only** — even the top
   tier asserts the falsehood in a real fraction; NOT a capability gradient. Calibration-
-  degradation [13] holds only as non-elimination. (Scoring rule now pinned: `SCORING.md` in the [soul-benchmark](https://github.com/soul-system-works/soul-benchmark) repo.)
+  degradation [13] holds only as non-elimination. (Scoring rule now pinned: `SCORING.md` in the [Soul-Benchmark](https://github.com/soul-system-works/Soul-Benchmark) repo.)
 
 ## Table 8 — Token-scale + position depth (SOUL-138)
 
