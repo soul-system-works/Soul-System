@@ -7153,3 +7153,42 @@ STATUS:       Open — redaction complete + verified locally; uncommitted record
               committed. Next: Body force-pushes the rewritten history to origin (private), verifies,
               then flips public + pushes tags. v1.0.0 to be moved to the final post-redaction commit.
 ```
+
+```
+ID:           SOUL-151
+WHEN:         2026-06-09 / SECRET/PII SWEEP before going public — the Body asked "is there a sweep
+              or skill to confirm no other sensitive/PII info?" The SOUL-150 redaction targeted
+              project NAMES; this widened the net to credentials, third-party PII, infra, and —
+              the catch — commit METADATA.
+WHERE:        both repos (Soul-System + the now-public Soul-Benchmark), working tree AND full history.
+WHAT:         Verify the public-bound repos carry no secrets / PII beyond the intended public author
+              identity, before the visibility flip. Classes swept: credentials (API keys, tokens,
+              private keys), PII (emails / phones / IPs), and git commit metadata.
+TYPE:         Guardian (third-party + self confidentiality); Skeptic (completeness — content sweeps
+              miss metadata and binaries); Emissary (used real tooling, not just internal grep).
+CONSEQUENCE:  (1) CREDENTIALS: clean. detect-secrets (entropy + known patterns) = 0 in both working
+              trees; history-wide key-pattern grep (sk-ant / ghp_ / AKIA / AIza / xox / BEGIN
+              PRIVATE KEY) = 0 in both repos. The feared `claude -p` ANTHROPIC_API_KEY in a
+              benchmark run.sh did NOT exist. (2) PII: clean except ONE catch. No IPs, no phones, no
+              third-party emails; only `noreply@anthropic.com` (co-author trailer) in content. THE
+              CATCH: an institutional WORK email (national-lab affiliation) appeared as
+              author/committer on 7+6 early commits' METADATA — invisible to every content/name
+              sweep. Remapped → the public gmail identity via filter-repo --mailmap; verified 0
+              across all metadata; force-pushed. (3) BINARY blind spot closed earlier (the one PNG
+              verified via its clean generating .py). 
+              LESSON (Soul-meta, extends SOUL-150's Partial-Domain-Coverage family): a
+              confidentiality scrub is NOT just content/name redaction — it must also sweep (a) git
+              commit METADATA (author/committer name+email), (b) binary blobs (via their text
+              source), and (c) run a real secret/PII SCANNER (detect-secrets), not only project-name
+              greps. Each catches a class the others structurally miss. Redaction-completeness now =
+              {content names, paths, commit metadata, binaries, credentials} — five surfaces.
+              BOUNDS: dedicated scanners (gitleaks/trufflehog) not installed; used detect-secrets
+              (pip) + history-wide pattern greps — strong for known patterns + entropy, not a
+              guarantee against a novel-format secret in an old blob (none expected in a markdown
+              doctrine repo). Re-push was force (Body's call) — GitHub may retain pre-rewrite
+              commits by SHA briefly; acceptable while private + SHAs unpublished; delete+recreate is
+              the bulletproof alt if zero-retention is wanted before the public flip.
+STATUS:       Open — sweep complete, both repos clean, Soul-System force-pushed clean (origin/main
+              @ e286ac2). Remaining (Body): flip repo VISIBILITY to public when ready (content now
+              safe). The redaction-completeness lesson is finding-worthy → Body graduation (Rule 7).
+```
