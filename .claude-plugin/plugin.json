@@ -1,0 +1,12 @@
+{
+  "name": "soul-system",
+  "version": "1.0.0",
+  "description": "The Soul System — a living philosophy and operational framework for principled human–AI collaborative work. Ships the /soul-* commands and the pre-completion verification hook; pair with the always-on doctrine seed via @import.",
+  "author": {
+    "name": "Scott Greenwood"
+  },
+  "homepage": "https://github.com/soul-system-works/Soul-System",
+  "repository": "https://github.com/soul-system-works/Soul-System",
+  "license": "MIT",
+  "keywords": ["methodology", "human-ai-collaboration", "claude-code", "doctrine", "verification", "record-keeping"]
+}

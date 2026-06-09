@@ -7192,3 +7192,53 @@ STATUS:       Open — sweep complete, both repos clean, Soul-System force-pushe
               @ e286ac2). Remaining (Body): flip repo VISIBILITY to public when ready (content now
               safe). The redaction-completeness lesson is finding-worthy → Body graduation (Rule 7).
 ```
+
+```
+ID:           SOUL-152
+WHEN:         2026-06-09 / DISTRIBUTION STANDARD + top-level audit for the public release. Body asked
+              (a) are the top-level files updated + located right, (b) should we adopt a standard
+              packaging approach (npm?) and retire install.sh. Body steered me to use a SKILL rather
+              than hand-roll — correct: found the official anthropics plugin-dev skill.
+WHERE:        repo root. NEW: .claude-plugin/{plugin.json, marketplace.json}, hooks/hooks.json.
+              REMOVED: install.sh. UPDATED: README, SYSTEM-VERSION, GOVERNANCE, CONTRIBUTING.
+WHAT:         Adopt the idiomatic Claude Code distribution standard for the public release, and bring
+              the canonical top-level files current.
+TYPE:         Architect (distribution topology); Emissary (grounded against the live Claude Code docs
+              + the official plugin-dev skill, not memory); Steward (retired the unused install.sh);
+              Skeptic (Chesterton's Fence before removal; npm = category-error check).
+CONSEQUENCE:  (1) PACKAGING — Claude Code PLUGIN + MARKETPLACE is the idiomatic standard (verified via
+              the official `anthropics/claude-code` plugin-dev skill, already in the claude-plugins-
+              official marketplace on disk; `claude plugin validate` = PASS). npm/npx would be a
+              CATEGORY ERROR (that's for JS; this is markdown + a Python hook) — rejected. Built at
+              repo root: plugin.json (name `soul-system`, v1.0.0), marketplace.json (source `./`),
+              hooks/hooks.json (Stop → `${CLAUDE_PLUGIN_ROOT}/hooks/pre-completion-verify.py`; the
+              hook is portable — self-scopes, no hardcoded paths). Install UX: `/plugin marketplace
+              add soul-system-works/Soul-System` → `/plugin install soul-system@soul-system`.
+              KEY SPLIT (the doctrine/plugin boundary): a plugin CANNOT auto-load the always-on
+              doctrine (@import of the seed) — only commands/hooks/skills/agents. So the public model
+              is a HYBRID: @import for the lifetime doctrine layer + plugin for the instruments. This
+              is coherent with the seed's own "Soul composes, it does not replace." Commands kept
+              their filenames (no `name:` frontmatter) → namespaced `/soul-system:soul-capture`;
+              renaming was rejected (would break the Body's symlink dev workflow + ripple through the
+              record's /soul-capture references). (2) install.sh RETIRED — Chesterton's Fence: it
+              existed for the snapshot/offline path; the Body never used it, dev self-dogfoods via the
+              in-repo @import (not install.sh), and adopters use @import-by-path. Unused → retired
+              (Rule 2). README snapshot section → plugin section; SYSTEM-VERSION "snapshot install"
+              note → "plugin install"; historical install.sh changelog refs LEFT. (3) TOP-LEVEL
+              AUDIT — locations all correct (CLAUDE.md/mind.md must stay at root for the @import
+              paths; big record files witness.md/ideas.md kept at root deliberately, README features
+              them). Staleness fixed: GOVERNANCE pointed at the CUT `council-synthesis.md` for the
+              amendment process (a BROKEN ref the SOUL-146 cut's own sweep missed — another F048
+              instance) → `operations/amendment-process.md`; CONTRIBUTING listed `registry/` as a
+              contribution type but registry is now gitignored/purged → row removed; "Council
+              synthesis process" → "amendment process".
+              BOUNDS: the plugin and the Body's GLOBAL hook wiring both target the same Stop hook — an
+              external user installs ONE (the plugin); the Body keeps the global wiring for dev. If
+              the Body ever installs their own plugin AND keeps the global wiring, the gate would
+              double-fire (flagged, not a current issue). Plugin not yet test-installed end-to-end
+              (validate passed; a live `/plugin install` smoke test is the remaining confidence step).
+STATUS:       Open — built + validated + committed + pushed. Next (Body): flip repo VISIBILITY to
+              public; optionally smoke-test `/plugin marketplace add` + `/plugin install` from a
+              clean session to confirm the install UX end-to-end.
+```
+```

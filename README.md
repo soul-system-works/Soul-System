@@ -30,19 +30,23 @@ In any project you want to bring under the Soul, create a `CLAUDE.md` with one l
 
 Or run `/soul-init` from a Claude Code session in the project — the slash command writes that line for you.
 
-That is the entire install. Edits to the philosophy propagate immediately to every project that imports it.
+That installs the always-on **doctrine**. Edits to the philosophy propagate immediately to every project that imports it. For the `/soul-*` commands and the verification hook, add the plugin (below).
 
 ---
 
-## Alternative: Snapshot Install
+## Add the instruments (plugin)
 
-If you prefer a self-contained snapshot copied into the project (no upstream dependency, no auto-updates):
+The `@import` above brings the always-on **doctrine**. The **commands** (`/soul-*`) and the
+**pre-completion verification hook** ship as a Claude Code plugin:
 
-```bash
-./install.sh /path/to/your/project
+```
+/plugin marketplace add soul-system-works/Soul-System
+/plugin install soul-system@soul-system
 ```
 
-This copies `operations/` into the project and records the system version.
+Commands are namespaced under the plugin (e.g. `/soul-system:soul-capture`). The doctrine seed
+and the instruments **compose**: the seed is the always-on lifetime layer, the plugin is the
+tooling. Adopt the seed alone, the plugin alone, or both.
 
 ---
 
@@ -71,9 +75,9 @@ If you found something worth sharing, see `CONTRIBUTING.md`.
 
 ```
 philosophy/     The Soul — the full philosophy, consulted on demand
-operations/     The operational seed — imported by @ or copied by install.sh
+operations/     The operational seed — imported by @ into your project's CLAUDE.md
 commands/       Slash commands — eight /soul-* instruments (see commands/)
-hooks/          Activation instruments (e.g. the pre-completion Stop hook)
+hooks/          Activation instruments — the pre-completion Stop hook + plugin hooks.json
 amendments/     Amendments to the Soul, by lifecycle state (accepted/proposed/returned)
 findings/       Findings, open/ and closed/
 witness.md      The repo's own Witness log (what happened, backward)
@@ -81,9 +85,8 @@ ideas.md        The idea inbox (what might, forward) — graduates into findings
 mind.md         Optional project layer — compressed rule-set distilled from the record
 docs/           Live design specs + study/ (the measurement behind 1.0); historical provenance under docs/archive/
 skills/         Upstream skills — project-proven, submitted for cross-project reuse
-registry/       Where the system has been used
+.claude-plugin/ Plugin + marketplace manifests (install the /soul-* commands + hook)
 AGENTS.md       Cross-vendor entry point for any agent tool
-install.sh      Snapshot installer (alternative path)
 ```
 
 ---

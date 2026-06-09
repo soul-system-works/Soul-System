@@ -32,4 +32,4 @@ This is the single source of system version. Per-file versions were removed in 0
 
 **`@`-import workflow (recommended):** the version is the current state of the source repo — `git log` and `git tag` are authoritative; sync via `git pull`.
 
-**Snapshot install (`install.sh`):** the project carries a `.soul-version` file with the version at install time. Useful for findings to be traced back to the version that produced them.
+**Plugin install:** the installed version is the `version` field in `.claude-plugin/plugin.json`; `/plugin marketplace update` then `/plugin install` pulls a new release.
