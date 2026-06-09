@@ -220,8 +220,9 @@ working directory, so arms launched from a directory containing the answer file 
 **isolated empty directory**, and the contaminated run is retained as evidence.
 
 The harness, the per-experiment pre-registrations and results, and the scoring spec are
-packaged as a reusable benchmark — the *meta-doctrine ablation suite* — at
-[`benchmark/`](../../benchmark/), so the experiments in Sections 4 and 6.1 can be re-run
+packaged as a reusable benchmark — the *meta-doctrine ablation suite* — in its own repo
+[`soul-benchmark`](https://github.com/soul-system-works/soul-benchmark) (extracted from
+this repo at the 1.0 release), so the experiments in Sections 4 and 6.1 can be re-run
 and others can plug in their own doctrine and models.
 
 ### 3.6 Known bounds of the method
