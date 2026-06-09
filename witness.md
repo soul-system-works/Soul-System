@@ -6977,3 +6977,88 @@ STATUS:       Resolved — 1.0 EXECUTED. The amendment-process catch (sweep-vs-r
               complementarity) is finding-worthy — flagged for Body graduation, not auto-created
               (Rule 7). Next: closing finding (Body's call), commit, push. Spec status → EXECUTED.
 ```
+
+```
+ID:           SOUL-147
+WHEN:         2026-06-08 / authored the 1.0-announcement blog bundle (post + provenance) per the
+              greenwoodms06.github.io post-bundle-template; also synced the skill registry and
+              migrated adopter docs after the cut.
+WHERE:        docs/blog-bundle-1.0/ (post.md + CONTEXT.md + CLAIMS.md + BUILD.md); ~/.claude/
+              commands/ (symlink sync); adopter repos REF-05 + REF-13.
+WHAT:         Build the 1.0 announcement (Variant A single post) and finish post-cut migration.
+TYPE:         Craftsman (authored the bundle); Emissary (completion gate took the post's claims to
+              reality — caught one); Artificer (skill-registry symlink sync); Steward (adopter
+              doc migration: prescriptive refs updated, historical left).
+CONSEQUENCE:  (1) ANOTHER IN-VIVO GATE-CATCH — the completion gate caught a Coherent Falsehood in
+              the OUTWARD-FACING post: "a 700-line role chamber stopped being cited every session"
+              was false (philosophy/the-soul.md was ALREADY consult-on-demand pre-cut; the
+              always-on item that shrank was the seed's role ROSTER). Corrected in post.md +
+              recorded as claim #13 in the bundle's CLAIMS.md so it can't drift back. Same class as
+              SOUL-140/146 — reinforces the longitudinal in-vivo payoff (SOUL-144): the gate
+              catches our own drift, here on a public artifact where it matters most. (2) SKILL
+              REGISTRY SYNCED: commands are ~/.claude/commands/ SYMLINKS (Rule 9) — added
+              soul-capture + soul-next, removed 10 dangling (cut commands); now 8 resolving links,
+              picker confirmed. (3) ADOPTER MIGRATION: verified adopters @import the seed by
+              ABSOLUTE path → auto-upgraded to 1.0 safely (no symlinks to cut commands; install.sh
+              never distributed commands). Updated PRESCRIPTIVE cut-command refs in
+              REF-05 + REF-13/modelica (mind.md/CONTEXT.md/ideas.md); LEFT
+              historical refs (ADR provenance, COMPARISON study record, .soul/handoff runtime) to
+              avoid falsifying the record.
+              BOUNDS: bundle is authored, NOT published — the lift (into the Astro blog) is a
+              separate outward-facing step in the blog repo, awaiting Body go. Bundle uncommitted
+              in this repo (Body to decide commit). Adopter edits uncommitted in THOSE repos.
+STATUS:       Open — bundle ready for lift; provenance (CONTEXT/CLAIMS) to be committed at home per
+              the bundle contract. Next: Body reads/lifts/commits; push 1.0 commit + tags.
+```
+
+```
+ID:           SOUL-148
+WHEN:         2026-06-09 / 1.0 REPO CLEANUP — the "serious cleanup as part of 1.0" the Body called
+              for after the cut. Continuous run, Body-authorized via four scope/decision
+              checkpoints (four-op framing, archive-into-docs/archive, architecture.svg recaption).
+              Resolves the SOUL-147 bundle: the Body published the blog from the bundle, then had it
+              deleted here.
+WHERE:        repo root + docs/. SYSTEM-VERSION.md, README.md, architecture.svg (recaptioned via
+              README, file kept); docs/archive/ (NEW); docs/blog-bundle-1.0/ (deleted);
+              findings/closed/SOUL-F048 (NEW).
+WHAT:         Make the repo match the lean 1.0 it ships — a coherence/dogfood obligation, not
+              cosmetics (Rule 11/12: a wrong public artifact is worse than clutter). Framed as
+              FOUR distinct operations wearing one word: ① repair drift · ② delete cruft ·
+              ③ archive dead-instrument provenance · ④ hands-off the durable record's content.
+TYPE:         Steward (retire/archive what no longer serves); Emissary (drift repair = make
+              public-facing canonical artifacts true against the shipped state); Skeptic (named the
+              record-falsification + reference-breakage risks before moving anything).
+CONSEQUENCE:  (1) DRIFT REPAIR (the load-bearing find — it was coherence, not clutter):
+              SYSTEM-VERSION.md said "Current: 0.5.1" and its changelog STOPPED there — it never
+              recorded 1.0 or THE CUT. A public canonical artifact (Rule 12) was actively claiming
+              the wrong version. Fixed: Current → 1.0.0 + a 1.0.0 changelog entry (the cut, anchored
+              to SOUL-146/147/148 + tag v1.0.0; notes the version sat at 0.5.1 through the
+              measurement phase — no doctrine bumps during research). architecture.svg (last touched
+              May 18) made the 12–13-voice Council chamber the system CENTREPIECE — exactly what the
+              cut demoted to an on-demand lens; as the README hero it contradicted the release.
+              Body chose RECAPTION (keep diagram, reframe alt + tagline as "the full role model,
+              consulted on demand; 1.0 keeps the always-on surface lean") over remove/redraw —
+              cheapest, no visual gate. install.sh was ALREADY 1.0.0 (the cut updated it); SYSTEM-
+              VERSION was the lone lagging version artifact. AGENTS.md/GOVERNANCE.md clean (no
+              cut-command refs). (2) DELETE: docs/blog-bundle-1.0/ removed (published; Body
+              confirmed). (3) ARCHIVE → docs/archive/ via git mv (history preserved): councils/
+              (4 records of the retired /soul-council) + 10 superseded command/experiment-design
+              specs + docs/experiments|plans|audits. docs/specs/ now holds exactly the 3 live/
+              current specs (the-mind-design + soul-handoff-design — both live-referenced by
+              commands — and the-cut-execution-plan, the 1.0 provenance). docs/study/ KEPT in place
+              (the public evidence base the blog footnote leans on). (4) RECORD UNTOUCHED: witness/
+              findings/amendments/ideas CONTENT not edited (append-only honored — SOUL-147 left as
+              written, its resolution recorded here not by rewrite). SOUL-146 finding GRADUATED →
+              findings/closed/SOUL-F048 (mechanical dangling-ref sweep catches the reasoning
+              coherence pass's residual; run the sweep AFTER any deletion).
+              BOUNDS: archiving with git mv breaks PROSE path-references to old locations in the
+              append-only record and in historical specs (e.g. the-cut plan → soul-council-design).
+              STANCE (stated, not hidden): those are historical refs that RECORD past events — left
+              as-is per the don't-falsify-history rule; the files remain one `git log --follow`
+              away. Live-instrument references were checked first — none pointed at anything
+              archived. The closing 1.0 Finding (reference-project obligation) is still pending —
+              held LAST so it reflects cut + cleanup together; then Body pushes v1.0.0.
+STATUS:       Open — cleanup done, uncommitted pending Body review of the working tree. Next:
+              commit (cleanup + witness + F048), write the closing 1.0 Finding, then Body pushes
+              v1.0.0 (held until after cleanup per Body). The v0.3.0-pre-cut tag is already pushed.
+```

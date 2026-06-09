@@ -8,10 +8,10 @@ forged from real failure patterns, designed to make AI-assisted work more
 principled and self-correcting.
 
 <p align="center">
-  <img src="architecture.svg" alt="Soul System architecture: the Universe wraps the Body, which wraps the Soul, Witness, Council, and Judge. The Council is a chamber of thirteen symbolic voices in tiers (eight Magistrates, three Tribunes, two Censors). The Hands sit beneath the Judge; the Panel of Experts sits parallel to the Witness, summoned when needed." width="100%">
+  <img src="architecture.svg" alt="Soul System role model (the full philosophy, consulted on demand): the Universe wraps the Body, which inhabits the Soul, Witness, Council, Judge, and Hands. The Council is a chamber of symbolic voices in tiers; the Hands sit beneath the Judge; the Panel of Experts sits parallel to the Witness, summoned when needed." width="100%">
 </p>
 
-*The Soul governs. The Witness and the Panel inform; the Council synthesises; the Judge decides; the Hands produce.*
+*The Soul governs. The Witness and the Panel inform; the Council synthesises; the Judge decides; the Hands produce — the full role model, consulted on demand. 1.0 keeps the always-on surface lean: a one-paragraph roster in the seed, with this depth in `philosophy/`.*
 *The Body — the human — inhabits all of it and bears responsibility for the whole.*
 
 **Composes, does not replace.** The Soul System layers above how you already work — BMAD, TDD, Cursor Rules, your own conventions. Adopt what helps. Ignore what does not.
@@ -74,13 +74,12 @@ philosophy/     The Soul — the full philosophy, consulted on demand
 operations/     The operational seed — imported by @ or copied by install.sh
 commands/       Slash commands — eight /soul-* instruments (see commands/)
 hooks/          Activation instruments (e.g. the pre-completion Stop hook)
-amendments/     Council Amendments to the Soul, by lifecycle state (accepted/proposed/returned)
-findings/       Council Findings, open/ and closed/
-councils/       Council convening detail files — one per convening (witness pointer + detail D4 shape)
+amendments/     Amendments to the Soul, by lifecycle state (accepted/proposed/returned)
+findings/       Findings, open/ and closed/
 witness.md      The repo's own Witness log (what happened, backward)
 ideas.md        The idea inbox (what might, forward) — graduates into findings/
 mind.md         Optional project layer — compressed rule-set distilled from the record
-docs/           Design specs, plans, experiments, audits
+docs/           Live design specs + study/ (the measurement behind 1.0); historical provenance under docs/archive/
 skills/         Upstream skills — project-proven, submitted for cross-project reuse
 registry/       Where the system has been used
 AGENTS.md       Cross-vendor entry point for any agent tool
