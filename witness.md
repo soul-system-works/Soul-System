@@ -7102,3 +7102,54 @@ STATUS:       Open — soul-benchmark committed locally (f33eee9); Soul-System r
               the Soul-System removal commit. Then the v1.0.0 push (still held). Repo file mass
               after: 253 → ~155 tracked.
 ```
+
+```
+ID:           SOUL-150
+WHEN:         2026-06-09 / PRE-PUBLIC CONFIDENTIALITY REDACTION — the repo is private but the Body
+              intends to make it public with v1.0; a folder walk surfaced that the record names real
+              professional/client projects. Stop-and-discuss (Multiverse Warning: the task was not
+              "tidy files" but "is this safe to be public"). Body decisions: purge registry + redact
+              ALL reference-project names to opaque tokens, uniform, no exceptions ("the pattern I
+              want to follow"); unique IDs; done BEFORE the public push.
+WHERE:        whole repo + full git history. .gitignore (registry/ now ignored); registry/ purged
+              from all history; ~13 distinctive identifiers tokenized across blobs AND commit
+              messages in all 172 commits; registry/NAME-MAP.md (NEW, local-only key).
+WHAT:         Make the repo safe to publish without leaking the Body's project portfolio. Treated as
+              FOUR things: (1) the explicit deployment list (registry/) → purged; (2) pervasive name
+              leakage into the record → tokenized; (3) preserve what is NOT sensitive (public blog,
+              the Voyager academic paper, generic vocabulary words); (4) a forward invariant so it
+              can't recur.
+TYPE:         Guardian (protects third-party confidentiality); Skeptic (drove the completeness bar —
+              a missed name is a leak, an over-match corrupts the public paper citation); Steward
+              (retired the registry from the public surface); Emissary (verified against the real
+              public-exposure model, not internal coherence).
+CONSEQUENCE:  (1) REDACTION MAP — 13 opaque tokens REF-01..13 (real names in the gitignored
+              registry/NAME-MAP.md). Real-world/professional: REF-01/02/03 (client + personal
+              project work). Soul-System's own test family
+              (REF-04..13). Principle that resolved the F045 tension: REDACT THE NAME, KEEP THE
+              LESSON — anchored incidents (e.g. "REF-01's self-intersecting turbine polygon") keep
+              their force; only the proper noun becomes a token. (2) METHOD — git-filter-repo
+              (--path registry --invert-paths + --replace-text + --replace-message) over all history,
+              blobs AND commit messages. (3) PRECISION CATCHES (Partial-Domain-Coverage avoided): the
+              "7 projects" first guess was incomplete — a variant sweep found soul-heat/markers/
+              fanout-test + ~47 bare-token refs woven into the founding findings/amendments; and the
+              VERIFY pass caught a case-sensitivity miss (capitalized variants of REF-03's
+              identifier — incl. its `REF-03-011` witness-ID form — survived a lowercase rule →
+              fixed with (?i), re-ran, re-verified 0). Overload hazards handled:
+              all-caps token = project (redacted), mixed-case homonym = the public academic paper
+              (preserved); the generic vocabulary words (the project's own concept terms) left intact.
+              (4) FORWARD INVARIANT: registry/ gitignored; NAME-MAP carries the rule "every reference
+              project → token in the committed record, no exceptions." This is the concrete
+              instrument the F049 §5 gap asked for (the system now has a redaction discipline for what
+              it exposes). (5) BACKUP: full unredacted history preserved in a git bundle OUTSIDE the
+              repo before the rewrite (the only pre-redact restore point — filter-repo rewrote even
+              the backup tag).
+              BOUNDS: VERIFIED 0 sensitive identifiers across ALL 172 commits (blobs + messages) +
+              current tree; public blog + Voyager paper confirmed preserved. NOT yet pushed — the
+              force-push (history rewrite replaces the private remote) + the make-public flip are
+              OUTWARD/destructive and Body-owned. The internal backup tag must NOT be pushed (deleted
+              locally). Soul-Benchmark (already public) was re-checked: zero real names — clean.
+STATUS:       Open — redaction complete + verified locally; uncommitted record entry + NAME-MAP being
+              committed. Next: Body force-pushes the rewritten history to origin (private), verifies,
+              then flips public + pushes tags. v1.0.0 to be moved to the final post-redaction commit.
+```
