@@ -1,0 +1,15 @@
+{
+  "description": "Soul System — the pre-completion verification gate (SOUL-F012). Fires on Stop; self-scopes to Soul-governed projects and injects the completion checklist before a session ends after shipping.",
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/pre-completion-verify.py\""
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "name": "soul-system",
+  "metadata": {
+    "description": "The Soul System — methodology + instruments for principled human–AI collaborative work."
+  },
+  "owner": {
+    "name": "Scott Greenwood"
+  },
+  "plugins": [
+    {
+      "name": "soul-system",
+      "source": "./",
+      "description": "The /soul-* commands and the pre-completion verification hook (the Stop gate). Pair with the always-on doctrine seed by adding `@/path/to/Soul-System/operations/CLAUDE.md` to your project's CLAUDE.md."
+    }
+  ]
+}

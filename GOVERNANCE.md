@@ -2,7 +2,7 @@
 
 This system is governed by its own philosophy.
 
-Changes to this repo follow the amendment process in `council-synthesis.md`.
+Changes to this repo follow the amendment process in `operations/amendment-process.md`.
 Evidence from Witness logs must be cited. No amendment is accepted without it.
 
 ---
