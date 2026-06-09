@@ -1651,3 +1651,34 @@ IDEA:      Turn the study's experiment suite into a reusable public BENCHMARK �
            Post-1.0 public track; arguably what makes the study matter outside this repo.
 STATUS:    Raw
 ```
+
+```
+ID:        SOUL-I047
+WHEN:      2026-06-09
+IDEA:      Cross-tool portability strategy (Emissary deep-research, task w5txxvjz7; 26
+           sources, 24/25 claims confirmed 3-0). The three surfaces port unevenly:
+           (1) DOCTRINE ports trivially via AGENTS.md — read by 20+ tools (Cursor, Windsurf,
+           Codex, Copilot, Gemini CLI, Aider, Cline, Roo). Already shipped; and AGENTS.md now
+           CARRIES the doctrine inline + bootstraps the depth-read (was only pointing at
+           CLAUDE.md — a real always-on gap for non-Claude tools, fixed 2026-06-09). The CORE
+           Soul is now tool-agnostic.
+           (2) COMMANDS port best via MCP PROMPTS — one MCP server exposes the ~8 commands as
+           slash commands on Gemini CLI + Claude Code + Cursor IDE. NOT Codex (open gap, issue
+           #8342). Per-tool natives also exist (Codex ~/.codex/prompts, Windsurf workflows
+           [manual-only], Copilot prompt files).
+           (3) STOP-HOOK GATE is the scarce/irreducible surface — no cross-vendor standard.
+           Native analogs only: Cursor (stop hook, .cursor/hooks.json), Gemini CLI (AfterAgent
+           deny/retry), Copilot VS Code (Stop hook, Preview). Degraded/absent elsewhere.
+           MINIMAL PATH: AGENTS.md for doctrine (done) → optional small MCP server for commands
+           → accept the hook as a per-tool gap (wire where a native stop hook exists).
+           FORWARD FLAG (pairs with the commands→skills question): both Codex AND Claude Code
+           are migrating commands → "skills" (portable via the npx-skills / plugin-skills
+           ecosystem). The Soul's commands may be more future-proof + cross-tool AS SKILLS —
+           BUT most are deliberately Body-invoked (capture/distill/graduation are the Body's
+           call, never auto-fired), so any conversion must use `disable-model-invocation` to
+           preserve explicit invocation (else it breaks Rule 7 / the Body-decides invariant).
+           CAVEATS (time-sensitive, mid-2026): Codex prompts deprecating→skills; Copilot hooks
+           Preview; Windsurf→Devin acquisition flux; Gemini AfterAgent loop-guard bugs;
+           Cline/Roo command+hook surfaces not independently verified.
+STATUS:    Raw
+```

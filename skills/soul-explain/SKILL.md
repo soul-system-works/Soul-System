@@ -1,5 +1,7 @@
 ---
+name: soul-explain
 description: On-demand, read-only explanation of the current state or what was just shared — describe without deciding, re-planning, or proposing new options. The `council` mode gives a multi-lens read (Skeptic/Advocate/Accountant angles, single pass). Use when the Body wants understanding, not action.
+disable-model-invocation: true
 ---
 
 # /soul-explain — describe, don't decide

@@ -1,5 +1,7 @@
 ---
+name: soul-distill
 description: Refresh the project's Mind — compress the accumulated record (witness + findings + ideas + amendments) into mind.md as rules / tensions / invariants / contrast cases + named incompressible residual. Body-invoked, on-demand. Produces a draft for curation; never auto-commits. The Distiller's instrument. Use when the record has accumulated enough new rule-evidence to warrant a refresh.
+disable-model-invocation: true
 ---
 
 # /soul-distill — refresh the Mind

@@ -7241,4 +7241,50 @@ STATUS:       Open — built + validated + committed + pushed. Next (Body): flip
               public; optionally smoke-test `/plugin marketplace add` + `/plugin install` from a
               clean session to confirm the install UX end-to-end.
 ```
+
+```
+ID:           SOUL-153
+WHEN:         2026-06-09 / MIGRATED commands → skills (canonical format) for the public release.
+              Body corrected my initial "defer" call: shipping Claude's own LEGACY format in a
+              fresh 1.0 public repo is incoherent with the cleanup's purpose; "loaded identically"
+              makes the migration low-risk, which argues FOR doing it now, not deferring (Premature
+              Deferral named + reversed).
+WHERE:        skills/soul-*/SKILL.md (8, from commands/*.md); commands/ removed; skills/README.md
+              (deferred catalog) → docs/tested-skills-catalog.md; soul-help + README + CONTRIBUTING
+              updated; ~/.claude global symlinks re-pointed (commands/ → skills/).
+WHAT:         Move the 8 /soul-* instruments to the canonical Claude Code skills layout, preserving
+              behavior, for a clean public 1.0 + forward-compat (Codex + Claude both moving
+              commands→skills, SOUL-I047).
+TYPE:         Steward (retire the legacy format); Architect (layout + invocation semantics);
+              Craftsman (the migration). Body overrode the Steward's initial over-caution.
+CONSEQUENCE:  (1) COMMANDS ≈ SKILLS (the realization behind the Body's "I figured they were skills"):
+              Claude's own docs call commands/ a LEGACY layout — "both are loaded identically, the
+              only difference is file layout"; plugin-structure calls commands "skills as flat
+              Markdown files." So the migration is a LAYOUT change, not a behavior change. Done via
+              git mv (history preserved) → skills/<name>/SKILL.md + added frontmatter `name:` +
+              `disable-model-invocation: true`. (2) THE GUARD (F031-family, instrument-over-posture):
+              skills/commands are model-invocable by DEFAULT (SlashCommand tool); the Soul commands
+              never set the guard, so only DOCTRINE (Rule 7: graduation is the Body's call) prevented
+              the model auto-firing /soul-capture or /soul-distill. Set `disable-model-invocation:
+              true` on ALL 8 → the Body-decides invariant is now STRUCTURAL, not just doctrinal, AND
+              behavior is preserved (they were user-invoked-only in practice; stay so). (3) NAMING:
+              kept the soul- prefix (skills/soul-capture/) → /soul-capture standalone (muscle memory
+              + every doc/record ref preserved) and /soul-system:soul-capture via plugin. (4) skills/
+              CONCEPT COLLISION resolved: skills/ previously held a README for the deferred
+              "tested-skills catalog" (a curated which-EXTERNAL-skill-when index — a different
+              meaning) → relocated to docs/tested-skills-catalog.md so skills/ cleanly means the
+              Soul's own instruments. (5) DEV WORKFLOW: re-pointed the Body's global symlinks
+              (~/.claude/commands/soul-*.md → ~/.claude/skills/soul-* → repo dirs) so /soul-* keeps
+              working standalone. Plugin auto-discovers skills/ (no plugin.json change); `claude
+              plugin validate --strict` PASS.
+              BOUNDS: invocation NAME preserved (/soul-capture) but the underlying mechanism is now a
+              skill — for the Body's standalone use this is transparent; plugin users get the
+              namespaced form. The cross-tool reach is still AGENTS.md (doctrine) + MCP/per-tool
+              (commands) per SOUL-I047 — skills is the Claude-canonical format, NOT itself a
+              cross-vendor command standard. Skill loading via the re-pointed ~/.claude/skills/
+              symlinks not yet confirmed in a live session (validate passed; Body confirms next session).
+STATUS:       Open — migrated + validated + (committing now). Next (Body): confirm /soul-* load as
+              skills in a fresh session; flip repo public. The "commands≈skills + guard the
+              Body-decides ones" realization is finding-worthy → Body graduation (Rule 7).
+```
 ```

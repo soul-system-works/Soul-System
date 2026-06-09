@@ -76,7 +76,7 @@ If you found something worth sharing, see `CONTRIBUTING.md`.
 ```
 philosophy/     The Soul — the full philosophy, consulted on demand
 operations/     The operational seed — imported by @ into your project's CLAUDE.md
-commands/       Slash commands — eight /soul-* instruments (see commands/)
+skills/         The eight /soul-* instruments, as Claude Code skills (invoked /soul-capture, …)
 hooks/          Activation instruments — the pre-completion Stop hook + plugin hooks.json
 amendments/     Amendments to the Soul, by lifecycle state (accepted/proposed/returned)
 findings/       Findings, open/ and closed/
@@ -84,8 +84,7 @@ witness.md      The repo's own Witness log (what happened, backward)
 ideas.md        The idea inbox (what might, forward) — graduates into findings/
 mind.md         Optional project layer — compressed rule-set distilled from the record
 docs/           Live design specs + study/ (the measurement behind 1.0); historical provenance under docs/archive/
-skills/         Upstream skills — project-proven, submitted for cross-project reuse
-.claude-plugin/ Plugin + marketplace manifests (install the /soul-* commands + hook)
+.claude-plugin/ Plugin + marketplace manifests (install the /soul-* skills + hook)
 AGENTS.md       Cross-vendor entry point for any agent tool
 ```
 

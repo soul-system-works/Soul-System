@@ -1,5 +1,7 @@
 ---
+name: soul-handoff
 description: Write a thin Soul-native handoff cursor (.soul/handoff.md) so the next session resumes without re-deriving state. Flushes volatile state into the durable records first; leans on /compact for the prose recap.
+disable-model-invocation: true
 ---
 
 # /soul-handoff — hand off to the next session
