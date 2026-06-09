@@ -94,6 +94,10 @@ Carry what a later session cannot re-derive (an unguessable fact or arbitrary co
 re-reasonable knowledge regenerates on its own.
 - **Stores:** `witness.md` (append-only, sequential IDs), `findings/`, `ideas.md`,
   `amendments/`.
+- **Locality — the record is THIS project's, at the project root** (the directory of the
+  session's `CLAUDE.md`, not where the imported seed lives). Write *here*, creating a store on
+  first use — **never** into the Soul System source repo. (Exception: when this project *is*
+  that repo.)
 - **Capture** is three-tiered by friction: *idea* (frictionless, forward) · *witness*
   (light scaffold, backward) · *finding* (**earned** — the Body decides the graduation;
   never auto-promote).
