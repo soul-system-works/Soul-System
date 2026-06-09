@@ -15,7 +15,7 @@ If that path is wrong for the machine you are running on, edit this file and cha
 1. Determine the current working directory (the project root). Do not search upwards; use the directory the session was started in.
 
 2. Check whether `CLAUDE.md` already exists in that directory.
-   - **If it exists:** read it. If it already contains the line `@/mnt/d/Projects/Soul-System/operations/CLAUDE.md`, report "already initialized" and stop. If it exists but does not contain that line, report the existing contents and ask the user whether to append the import line or leave it alone. Do not overwrite without explicit confirmation.
+   - **If it exists:** read it. If it already contains the line `@/mnt/d/Projects/Soul-System/operations/CLAUDE.md`, note "import already present" — **do not stop; continue to step 3** to ensure the local record scaffold exists (soul-init is idempotent: it backfills a missing record for an already-imported project). If it exists but does not contain that line, report the existing contents and ask the user whether to append the import line or leave it alone. Do not overwrite without explicit confirmation.
    - **If it does not exist:** create it containing exactly one line:
      ```
      @/mnt/d/Projects/Soul-System/operations/CLAUDE.md
