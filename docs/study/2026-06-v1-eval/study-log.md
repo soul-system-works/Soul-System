@@ -210,3 +210,47 @@ WHAT:    PHASE 4 COMPLETE + scored (two read-passes, quote evidence; full matrix
          while B passed; both arms lost the planted incident STORIES (mechanism-why
          survived); T2 prediction inverted outright.
 NEXT:    Sonnet P2 remainder + stream t8; then Phase 2/3 RESULTs + 99-summary.
+
+---
+
+STUDY-010
+WHEN:    2026-06-10
+WHAT:    PHASE 2 COMPLETE (180/180 arms; RESULT.md committed on the benchmark
+         branch). All four F044 rungs climb at all three tiers: interaction 15/15,
+         middle-position 15/15, multi-fact 45/45 per-fact, decay N=50 and N=100
+         15/15 each — controls 0/5 everywhere. Two cross-cutting findings:
+         (1) FABRICATION GRADIENT — no-record drift is justified by an invented
+         idempotency/dedup or token-TTL contract at a rate that RISES with
+         capability: Haiku ~40% → Sonnet ~85% → Opus 100%. At the frontier, a
+         missing record is an active fabrication surface, not a knowledge gap.
+         (2) WITHIN-CELL DISSOCIATION — R3's derivable fact (integer money) is
+         held unaided along a capability gradient (O 10/10, S 1/10, H 0/10)
+         while its unguessable facts drift 0/30 at every tier. F044's line,
+         within-subject.
+         Calibration note: every locked Phase-2 prediction erred toward
+         UNDER-predicting record carry (Haiku interaction 5/5 vs predicted 2-3;
+         Haiku multi-fact 15/15 vs predicted drops).
+NEXT:    Stream t8 → Phase-3 RESULT + soul-bench gate decision → 99-summary +
+         merge-review package.
+
+---
+
+STUDY-011
+WHEN:    2026-06-10
+WHAT:    PHASE 3 COMPLETE + STUDY COMPLETE. Stream: cost crossover at the
+         pre-registered compounding positions (t7 on/off=0.92, t8=0.76) but the
+         record-accumulation mechanism was NULL (0/8 soul-on sessions wrote
+         durable record artifacts; only gate telemetry harvested) — crossover
+         unattributable; +20% total cost; quality 7/8 vs 8/8. SOUL-BENCH GATE:
+         DO NOT BUILD (pre-registered null clause honored; cost-economics closes
+         as overhead-at-this-scale with the carrier-design caveat: the harness
+         discarded code, and code is where the Soul arm's record actually lives
+         — corroborated by Phase 4's force-comments).
+         FINAL PACKAGE: 99-summary.md written — 4 phase verdicts, 7 ranked
+         finding candidates (top: force-at-temptation-site; fabrication
+         gradient; within-cell dissociation; salience-beats-coverage), incident
+         ledger, open-rung ledger, recommended merge-review sequence.
+         Study totals: ~390 scored arms/sessions, 3 models, 2 days wall-clock
+         (well under the 5-day ceiling), every PREDICTION locked pre-arm, no
+         pushes, no doctrine files touched.
+STATUS:  AWAITING BODY MERGE REVIEW.
