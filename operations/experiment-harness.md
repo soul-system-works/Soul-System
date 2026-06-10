@@ -56,6 +56,23 @@ The methodological discipline is F028 anchor-validity applied to the loading
 itself, not just to the user-facing claim — verify what loaded before
 verifying what the loaded content produced.
 
+Three additions from the v1.0 evaluation study (SOUL-155/156, A019):
+
+3. **Assert the executor exists before any quality gate runs.** A missing
+   toolchain once produced eight asserted-but-never-run build+test checks —
+   `bash -n` passes, `command -v` was never asked. Verify the verifier.
+
+4. **Arm validity is judged from artifact CONTENT, never exit codes.** A
+   session-limit storm stubbed 33 arms while every sweep exited 0. Check
+   `is_error` fields, sizes, and sentinel presence; an exit code is not an
+   anchor.
+
+5. **Sentinels go MID-output, not output-first.** Frontier models override
+   format-first instructions with sandbox-honesty disclosures ("the working
+   directory is empty…") — 9/40 Opus arms failed an open-with-quote sentinel
+   while demonstrably carrying the content. Ask for the quote after the work,
+   or score sentinel-fails by content inspection before discarding.
+
 ---
 
 ## When it fires

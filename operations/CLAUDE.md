@@ -128,6 +128,9 @@ arbitrary convention); re-reasonable knowledge regenerates on its own.
   this project *is* the Soul System repo — it is its own record.)
 - **Forward view:** `/soul-next` (reconciles the record, surfaces now/next/later, flags when
   `mind.md` is distill-stale). **Continuity:** `/soul-handoff`, `/soul-resume`.
+- **Carriers:** where capture instruments are unavailable (headless / automated sessions
+  write no record files on their own — measured 0/8), force-comments at the code site and
+  handoff documents ARE the record; place force at the point of temptation (A020).
 - **Maintain the Mind:** `/soul-distill` (Body-invoked; preserves the *force* of an
   unguessable fact, not just its proposition).
 

@@ -252,6 +252,8 @@ def _checklist() -> str:
     return (
         "[Soul gate · SOUL-F012] Shipped + claimed complete this turn — fires once.\n"
         "Run ALL of these honestly before ending:\n"
+        "0. Verify the verifier: does the executor for each execution-based check EXIST "
+        "and RUN? (asserted-but-never-run gates — SOUL-156/A019)\n"
         "1. Global invariant, not just local tests?\n"
         "2. Absolute claims have a VALID external anchor — trusted why / wrong if?\n"
         "   (anchor that merely EXISTS but is flawed = Coherent Falsehood — F028)\n"
@@ -260,6 +262,9 @@ def _checklist() -> str:
         "5. Unfinished business marked (TODO/FIXME/DEBT/HACK)?\n"
         "REPLY (Body-facing): lead with the ask / next step; place the gate LAST as ONE "
         "compact line — `— Verify: clean (<anchor>)` or `— Verify: GAP → <specific>`. "
+        "A GAP on the PRIMARY artifact (the thing the task exists to produce — code never "
+        "compiled/run, a doc never rendered, a measurement never executed) BLOCKS: obtain "
+        "an executor or stop and hand the Body the gap as a blocking question (A019). "
         "Expand to the failing check(s) only when a gap is real; do not recite passing "
         "checks. Full form: operations/completion-gate.md."
     )

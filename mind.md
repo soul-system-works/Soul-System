@@ -19,13 +19,19 @@ Rules produce decisions; source citations are anchors.
    it's trusted, how it could be wrong. Internal coherence is not truth. **Count /
    historical / scope claims: anchor at WRITING time** — they slip past prose coherence and
    survive into corrections. The anchor's FORCE, not just its existence, is partly
-   incompressible (Rule 13). *Source:* A010, F015, F028, F040, F045/A018.
+   incompressible (Rule 13). Absent grounding, capable models do not abstain — they invent
+   the premise their solution needs, at a rate that RISES with capability (40→85→100%
+   across tiers, F054); where the missing ground is unguessable, ask (F037) — the model
+   won't. *Source:* A010, F015, F028, F040, F045/A018, F054.
 
 4. **Generation couples with retirement.** Every instrument that creates artifacts ships
    with a retire handle. *Source:* SOUL-033.
 
 5. **Never always-on past the description budget.** Auto-loaded doctrine has a hard token
-   budget. Lensed always-on; depth on-demand. *Source:* SOUL-033/034.
+   budget. Lensed always-on; depth on-demand. Now a CORRECTNESS rule, not just cost: the
+   1.0 cut improved weak-model rule activation 1/5→5/5 on identical content (salience
+   beats coverage), and bloat split quoting from obeying (F055). *Source:* SOUL-033/034,
+   F055.
 
 6. **The gate fires where the failure mode happens, not where it's named.** Doctrine that
    describes a check but doesn't position it at the failure moment doesn't fire. The recipe
@@ -56,6 +62,14 @@ Rules produce decisions; source citations are anchors.
     dissolves (property: unguessability, not fact-ness). When compressing, preserve the
     unguessable's FORCE (incident, explicit negation), not just its proposition — else the
     frontier refabricates it as a Coherent Falsehood. *Source:* F044, F045/A018.
+
+14. **Record force at the point of temptation.** A counter-default decision lives AT the
+    site where future pressure will arrive — explicit negation ("never X — not once"), an
+    executable negation where the medium allows (a test that fails if broken), and the
+    boundary pinned (which side wins at the edge). A proposition recorded elsewhere
+    mutates under pressure, and the drift then documents itself as doctrine for the next
+    reader. Code-site force-comments and handoffs ARE first-class record carriers.
+    *Source:* F053, A020.
 
 ## Tensions (rules that pull against each other)
 
@@ -110,4 +124,14 @@ Examples whose handling shows the boundary between rules.
 - **In-vivo vs in-vitro longitudinal payoff (SOUL-144).** The synthetic chain
   (SOUL-122→129) has the counterfactual but not real history; the six in-vivo catches (the
   record/gate catching our own drift) have real history but not the counterfactual.
-  Complementary, different evidentiary weight.
+  Complementary, different evidentiary weight. (SOUL-155 Phase 4 later closed the gap:
+  twin chains = real multi-session history AND a counterfactual.)
+
+- **The twin-arm inversion (SOUL-155 / F053) — placement, not existence.** Both arms
+  RECORDED "no retries; DLQ is the only retry path." Control: clean proposition in a
+  migration comment → reinterpreted into an opt-in retry feature under pressure → handoff
+  taught the drift as intended design. Soul: negation-force at the worker code site + a
+  failing-if-broken test → built a reconciler around the fence. SAME rule, opposite
+  outcomes; and the same planted clause ("display is the consumer's problem") served one
+  arm as drift vector and the other as hold anchor. **Rule:** force at the temptation
+  site, boundary pinned (Rule 14); writing it down is not carriage.

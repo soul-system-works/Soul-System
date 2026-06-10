@@ -17,6 +17,10 @@ does not.
 
 Each must change what happens or be skipped honestly.
 
+0. **Verify the verifier first.** Before asserting any execution-based check, confirm the
+   executor exists and runs (a missing toolchain once produced eight asserted-but-never-run
+   quality gates — SOUL-156). An exit code is not arm-/artifact-validity; judge from
+   content (A019).
 1. **Global invariant, not local tests.** What invariant must the WHOLE satisfy (a
    conservation law, an end-to-end balance, the behavior the whole must exhibit)? Verified —
    not just unit tests? Verification ≠ validation (A005).
@@ -41,6 +45,14 @@ The reply leads with the ask or result; the gate lands **last, as one compact li
 its anchor or the specific gap, expanding to a failing check only when a gap is real:
 
 `— Verify: clean (<anchor>)` or `— Verify: GAP → <specific>`
+
+**A GAP on the primary artifact blocks.** If the gap sits on the thing the task exists to
+produce (code never compiled or run, a document never rendered, a measurement never
+executed), disclosure is NOT a permissible ending: obtain an executor, or stop and hand the
+gap to the Body as a blocking question. GAP remains a legitimate close only for
+secondary/residual surfaces. (A019 — six honest "Verify: GAP" lines once shipped alongside
+code that did not compile; honesty about non-verification must change the outcome, not just
+the report.)
 
 A silent gate is an unrun gate — but a rote multi-line "no gaps" recitation is the theatre
 the gate exists to prevent (F022) and it buries the ask (I018). **Visible means specific and
