@@ -1,4 +1,4 @@
-# The Mind — Soul System (1.0)
+# The Mind — Soul System (1.1)
 
 Project-scoped compressed doctrine, `@import`ed after the seed. Doctrine here;
 obligations in the records. Maintained by `/soul-distill` (Body-invoked).
@@ -18,20 +18,20 @@ Rules produce decisions; source citations are anchors.
 3. **Anchor every absolute claim with a valid external reference.** Name the anchor, why
    it's trusted, how it could be wrong. Internal coherence is not truth. **Count /
    historical / scope claims: anchor at WRITING time** — they slip past prose coherence and
-   survive into corrections. The anchor's FORCE, not just its existence, is partly
-   incompressible (Rule 13). Absent grounding, capable models do not abstain — they invent
+   survive into corrections. Absent grounding, capable models do not abstain — they invent
    the premise their solution needs, at a rate that RISES with capability (40→85→100%
    across tiers, F054); where the missing ground is unguessable, ask (F037) — the model
-   won't. *Source:* A010, F015, F028, F040, F045/A018, F054.
+   won't. The anchor's FORCE is partly incompressible (Rule 13). *Source:* A010, F015,
+   F028, F040, F045/A018, F054.
 
 4. **Generation couples with retirement.** Every instrument that creates artifacts ships
    with a retire handle. *Source:* SOUL-033.
 
 5. **Never always-on past the description budget.** Auto-loaded doctrine has a hard token
-   budget. Lensed always-on; depth on-demand. Now a CORRECTNESS rule, not just cost: the
-   1.0 cut improved weak-model rule activation 1/5→5/5 on identical content (salience
-   beats coverage), and bloat split quoting from obeying (F055). *Source:* SOUL-033/034,
-   F055.
+   budget. Lensed always-on; depth on-demand. A CORRECTNESS rule, not just cost: the 1.0
+   cut improved weak-model activation 1/5→5/5 on identical content; bloat split quoting
+   from obeying (F055); re-verified after the 1.1 growth (5/5, SOUL-159 pass). *Source:*
+   SOUL-033/034, F055.
 
 6. **The gate fires where the failure mode happens, not where it's named.** Doctrine that
    describes a check but doesn't position it at the failure moment doesn't fire. The recipe
@@ -69,7 +69,7 @@ Rules produce decisions; source citations are anchors.
     boundary pinned (which side wins at the edge). A proposition recorded elsewhere
     mutates under pressure, and the drift then documents itself as doctrine for the next
     reader. Code-site force-comments and handoffs ARE first-class record carriers.
-    *Source:* F053, A020.
+    *Source:* F053, A020, SOUL-159.
 
 ## Tensions (rules that pull against each other)
 
@@ -81,10 +81,9 @@ The tension names the recurring case-by-case decision; do not pick a side.
 - **Earned-graduation ↔ upstream-obligation.** Findings must be earned (I024) AND reference
   projects owe Soul-meta findings (I014). Resolution: lower friction on the duty, preserve
   the earning.
-- **Activation in code ↔ activation in doctrine.** A gate's text presence ≠ its firing. The
-  hook + commands are the activation; doctrine alone isn't. *Source:* F012 family.
-- **Cheap capture ↔ inflation risk.** `/soul-capture idea` cheap; `finding` earned. The
-  ratchet stays meaningful only if next-tier graduations cost something.
+- **Cheap capture ↔ inflation risk.** `/soul-capture idea` frictionless; `finding` earned —
+  same shape, different friction, and the differential is what preserves each artifact's
+  meaning (I024). The ratchet stays meaningful only if next-tier graduations cost something.
 
 ## Invariants (cannot vary without breaking the project)
 
@@ -107,31 +106,41 @@ Examples whose handling shows the boundary between rules.
   writing Modelica, caught a self-intersecting turbine polygon. **Rule:** the recipe IS the
   activation. Doctrine without instrument is posture.
 
-- **Anchor discipline, four faces (F015 → F028 → F040 → SOUL-103/105).** EXISTENCE (name one
-  — F015); VALIDITY (the anchor can be wrong — F028); SCOPE (the claim's reach
-  under-examined — F040 wrong-scope grep); TIMING (count/historical slip past coherence INTO
-  the correction — anchor at WRITING time). Each face catches the prior's residual.
+- **Anchor discipline, four faces (F015 → F028 → F040 → SOUL-103/105).** EXISTENCE (name
+  one); VALIDITY (the anchor can be wrong); SCOPE (the claim's reach under-examined);
+  TIMING (count/historical slip past coherence INTO the correction — anchor at WRITING
+  time). Each face catches the prior's residual.
 
-- **A008 vs A009 — handoff topology.** A008 prescribed hermetic context for subagents. A009
-  refined: self-contained for *restart* correctness, not for hermeticism. The handoff
-  reproduces the work without the original context; it doesn't shield the worker from
-  related context.
+- **A008 vs A009 — handoff topology.** Self-contained for *restart* correctness, not for
+  hermeticism: the handoff reproduces the work without the original context; it doesn't
+  shield the worker from related context.
 
-- **`/soul-capture idea` vs `finding` — the capture ratchet.** Same shape (append-record),
-  different friction. Idea: frictionless. Finding: requires the Body's explicit graduation.
-  The friction differential preserves what each artifact *means*.
+- **The twin-arm inversion, two eras (SOUL-155/F053 → SOUL-159) — what a pin really
+  does.** v1.0: both arms RECORDED "no retries; DLQ is the only retry path." Control:
+  clean proposition → reinterpreted into an opt-in retry feature under pressure → handoff
+  taught the drift as intended design. Soul: negation-force at the code site + a
+  failing-if-broken test → held; the same planted clause ("display is the consumer's
+  problem") served one arm as drift vector, the other as hold anchor. v1.1: boundary
+  PINNED at plant time — the agent reached for the same interpretive move, but the pin
+  converted replacement-drift into ADDITIVE rendering (canonical never displaced).
+  **Rule:** force at the site carries (Rule 14); a pin does not prevent interpretation —
+  it bounds the damage.
 
-- **In-vivo vs in-vitro longitudinal payoff (SOUL-144).** The synthetic chain
-  (SOUL-122→129) has the counterfactual but not real history; the six in-vivo catches (the
-  record/gate catching our own drift) have real history but not the counterfactual.
-  Complementary, different evidentiary weight. (SOUL-155 Phase 4 later closed the gap:
-  twin chains = real multi-session history AND a counterfactual.)
+- **Described vs lived temptation (SOUL-158).** Same doctrine, same completion moment:
+  described in a scenario → 44/45 refuse at every tier INCLUDING the no-doctrine floor
+  (ceiling — disposition, not doctrine); lived in a chain → 6/6 shipped broken under
+  v1.0, 0/12 false-done under v1.1. **Rule:** probe doctrine effects lived (chain-form)
+  or low-stakes; a described temptation cannot discriminate.
 
-- **The twin-arm inversion (SOUL-155 / F053) — placement, not existence.** Both arms
-  RECORDED "no retries; DLQ is the only retry path." Control: clean proposition in a
-  migration comment → reinterpreted into an opt-in retry feature under pressure → handoff
-  taught the drift as intended design. Soul: negation-force at the worker code site + a
-  failing-if-broken test → built a reconciler around the fence. SAME rule, opposite
-  outcomes; and the same planted clause ("display is the consumer's problem") served one
-  arm as drift vector and the other as hold anchor. **Rule:** force at the temptation
-  site, boundary pinned (Rule 14); writing it down is not carriage.
+## Incompressible residual (named, not forced)
+
+- **The calibration bias.** Every locked prediction that erred — v1.0 study (two phases)
+  AND the v1.1 pass — UNDER-predicted record/doctrine carry. Self-model fact, not yet a
+  rule: lean upward on record carry; re-check after each study. (SOUL-155/158)
+- **The dual-use clause.** One planted sentence cut three ways across three arms (drift
+  vector / hold anchor / bounded accommodation). Path-dependent; no rule generates it —
+  the record carries the instances (SOUL-155/159).
+
+---
+**Last distilled:** 2026-06-10 against SOUL-159 (prior distill bf84bd4; THE CUT and the
+v1.1 graduation edited without distilling).
