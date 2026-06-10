@@ -7460,3 +7460,36 @@ CONSEQUENCE:  SOUL-158 resolved by this scoring. Verification-pass package for t
               rule, suspended for comparability this pass).
 STATUS:       Resolved — package awaits Body review with parts C/D of SOUL-I048.
 ```
+
+```
+ID:           SOUL-160
+WHEN:         2026-06-10 / EFFICACY PROGRAM, Chain J scored — and a harness incident in
+              the STUDY-008 family: the completion-gate hook's self-scoping leaked into
+              the comparator arm via the SUBSTRING "soul" in ordinary English ("the soul
+              of an action game" in the signed-off comparator CLAUDE.md). 7 checklist
+              injections in arm G at exactly the ship+claim moments; arm G's endings
+              adopt the gate's closing format.
+WHERE:        soul-benchmark experiments/2026-06-10-efficacy-chain-j/ (PREDICTION locked
+              pre-arm; RESULT committed). Hook: hooks/pre-completion-verify.py
+              _is_soul_project — `"soul" in txt` over CLAUDE.md.
+WHAT:         (1) Chain J endpoints: decision-survival HOLD/HOLD (both arms; the good
+              generic comparator held BOTH plants, against both locked predictions);
+              intervention and redo proxies tie; cost INVERTED the prediction — Soul arm
+              39% CHEAPER ($29.85 vs $49.07). Carriage-form differential confirmed
+              exactly: executable fences + negation tests (S) vs nine good prose ADRs
+              (G). False-done endpoint VOID for this chain (both arms had the gate).
+              (2) The leak's bias direction DISFAVORS the Soul arm — comparator received
+              the Soul's strongest instrument; arm-S readings are understated, not
+              inflated. (3) Chains M and R verified clean mid-run (zero "soul"
+              substrings in their comparators).
+TYPE:         Skeptic (the format-match smelled wrong before it was articulated — chased
+              to the substring); Witness (prediction misses recorded, including the
+              third calibration-bias confirmation, now bidirectional); Accountant (cost
+              inversion flagged for M/R readings).
+CONSEQUENCE:  False-done endpoint carried by Chains M/R alone. Hook-fix candidate queued
+              POST-program (word-boundary or seed-import detection — no instrument
+              changes mid-measurement). The comparator-strength result is itself
+              program-relevant: at 11 increments with incident-backed prompts, generic
+              good doctrine holds plants — the form difference is the remaining claim.
+STATUS:       Open — resolves with the program verdict (SOUL-I049).
+```
