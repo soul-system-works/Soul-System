@@ -1738,33 +1738,37 @@ STATUS:    Raw — Body-directed; next session's primary activity.
 
 ```
 ID:        SOUL-I049
-DATE:      2026-06-10
+DATE:      2026-06-10 (REVISED same day — Body pushback: benchmark-carried, no
+           live-workflow burden; the original blind-twin-arm-on-real-tasks design is
+           superseded. Domain language: CONTEXT.md.)
 SOURCE:    Body directive + grilling session (the fundamental value question), same day
-           as the part-(A) verification pass. Domain language captured in CONTEXT.md
-           (new this session).
-WHAT:      THE EFFICACY TRIAL — answer "is the Soul actually improving my real projects,
-           or does it just feel like it?" with a blind, pre-registered trial on the
-           Body's own work. Protocol as grilled and locked:
-           - COMPARATOR: a genuinely good, Soul-free, project-specific CLAUDE.md
-             (authored by a Soul-free session, Body sign-off: "would I run on this if
-             the Soul didn't exist?"). Bare Claude is at most a floor arm.
-           - VEHICLE: blind twin-arm on real tasks — next 12 eligible tasks across 2-3
-             active projects (no picking), each run Soul vs Comparator in isolated
-             worktrees; >=4 multi-session (>=3 sessions).
-           - PRIMARY ENDPOINTS: Body-intervention rate (proxied in-arm by
-             clarification/blocking asks), false-"done" rate, redo cycles /
-             turns-to-accepted. Secondary: decision-survival, defects, cleanliness.
-             Economics decisive only if primaries null.
-           - BLINDING: rubric-first scoring + brand-vocabulary normalization; Body's
-             arm-guess recorded to measure leakage.
-           - DECISION RULE (pre-registered): KEEP if blind preference >=60% AND a
-             mechanism advantage shows; SLIM to the measured core (record-force,
-             anchor, blocking gate) if ~50/50 but drift-class wins persist; DROP if
-             Comparator wins or primaries null at n>=10. Nulls honored (stream
-             precedent).
-           - POWER HONESTY: decision-grade, not publication-grade, at n=12.
-           Full pre-registration spec (docs/specs/) to be written and locked before
-           the first sampled task; the trial does not start until the Body opens
-           enrollment.
-STATUS:    Raw — Body-directed; graduates to a spec at trial launch.
+           as the part-(A) verification pass.
+WHAT:      THE BENCHMARK-CARRIED EFFICACY PROGRAM — answer "is the Soul actually
+           improving my real projects, or does it just feel like it?" with benchmarks
+           plus retrospective mining; zero live-workflow cost. Protocol as re-grilled:
+           - COMPARATOR (unchanged): genuinely good Soul-free project CLAUDE.md,
+             authored by a Soul-free session, Body sign-off.
+           - COMPONENT 1 — domain-faithful twin chains: 3-5 P4-pattern chain benchmarks
+             (frozen increments, parallel Soul/Comparator arms) whose vehicles and
+             planted conventions are MINED from the Body's real repos. Chain-form
+             mandatory (SOUL-158: described probes ceiling out). PREDICTION locked per
+             chain pre-arm. ~$70/chain.
+           - COMPONENT 2 — base-rate mining: count drift-class opportunities in
+             EXISTING transcripts/repos (unguessable plants, unverifiable completion
+             moments, multi-session carry points) per unit of real work. Effect x
+             base rate = expected real value; this is the anti-overclaim component.
+           - OPTIONAL: Body blind-judges sanitized chain outputs (arm-guess recorded).
+           - PRIMARY ENDPOINTS (proxied in-chain): false-done rate, intervention proxy
+             (blocking asks), redo proxy (cross-increment rework), decision-survival.
+             The Body's felt metrics are explicitly NOT measured — named blind spot.
+           - DECISION RULE: KEEP if Soul beats Comparator on >=2/3 proxies +
+             decision-survival AND the mined base rate clears a threshold locked at
+             spec time BEFORE mining results are seen; SLIM to the measured core if
+             mechanism wins but base rate is low; DROP if Comparator matches at n>=3
+             chains or wins are confined to never-occurring scenarios. Nulls honored.
+           - POWER: decision-grade (locked predictions + base rate carry the weight),
+             not publication-grade.
+           Full pre-registration spec (docs/specs/) written and locked before the first
+           chain; the program does not start until the Body opens it.
+STATUS:    Raw — Body-directed; revised once; graduates to a spec at launch.
 ```
