@@ -32,6 +32,16 @@ cells hand-confirmed; nulls reported as results; every stopping-rule firing logg
    contract at Haiku ~40% → Sonnet ~85% → Opus 100% (n=120 no-record arms).
    At the frontier a missing record is an active fabrication surface, not a
    knowledge gap. Extends SOUL-128. *Evidence: P2 RESULT; 10/10 grep-confirmed.*
+   *Outward anchors (checked 2026-06-10):* consistent with the answer-instead-of-
+   abstain literature — Zhou et al., Nature 2024 (scaled+instructed models avoid
+   less, give "apparently sensible yet wrong" answers more) and AbstentionBench
+   2025 (reasoning training drops abstention ~24%; models hallucinate the missing
+   context). DISTINCT from per-claim hallucination rates, which FALL with
+   capability (USENIX Sec. 2025 package study) — our claim is the behavioral
+   dimension (confident confabulation of absent grounding), not raw error rate;
+   OpenAI 2025 attributes the mechanism to post-training/eval incentives that
+   co-travel with capability. Wording for any graduation should preserve this
+   distinction.
 3. **Derivable/unguessable dissociation within one cell.** R3 controls: integer-
    money (derivable) held unaided along a capability gradient (O 10/10, S 1/10,
    H 0/10) while unguessable facts drifted 0/30 at all tiers. F044's thesis,
