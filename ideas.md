@@ -1735,3 +1735,36 @@ WHAT:      THE v1.1 VERIFICATION PASS — re-run the targeted probes to verify t
              into the handoff/subagent prompt patterns.
 STATUS:    Raw — Body-directed; next session's primary activity.
 ```
+
+```
+ID:        SOUL-I049
+DATE:      2026-06-10
+SOURCE:    Body directive + grilling session (the fundamental value question), same day
+           as the part-(A) verification pass. Domain language captured in CONTEXT.md
+           (new this session).
+WHAT:      THE EFFICACY TRIAL — answer "is the Soul actually improving my real projects,
+           or does it just feel like it?" with a blind, pre-registered trial on the
+           Body's own work. Protocol as grilled and locked:
+           - COMPARATOR: a genuinely good, Soul-free, project-specific CLAUDE.md
+             (authored by a Soul-free session, Body sign-off: "would I run on this if
+             the Soul didn't exist?"). Bare Claude is at most a floor arm.
+           - VEHICLE: blind twin-arm on real tasks — next 12 eligible tasks across 2-3
+             active projects (no picking), each run Soul vs Comparator in isolated
+             worktrees; >=4 multi-session (>=3 sessions).
+           - PRIMARY ENDPOINTS: Body-intervention rate (proxied in-arm by
+             clarification/blocking asks), false-"done" rate, redo cycles /
+             turns-to-accepted. Secondary: decision-survival, defects, cleanliness.
+             Economics decisive only if primaries null.
+           - BLINDING: rubric-first scoring + brand-vocabulary normalization; Body's
+             arm-guess recorded to measure leakage.
+           - DECISION RULE (pre-registered): KEEP if blind preference >=60% AND a
+             mechanism advantage shows; SLIM to the measured core (record-force,
+             anchor, blocking gate) if ~50/50 but drift-class wins persist; DROP if
+             Comparator wins or primaries null at n>=10. Nulls honored (stream
+             precedent).
+           - POWER HONESTY: decision-grade, not publication-grade, at n=12.
+           Full pre-registration spec (docs/specs/) to be written and locked before
+           the first sampled task; the trial does not start until the Body opens
+           enrollment.
+STATUS:    Raw — Body-directed; graduates to a spec at trial launch.
+```
