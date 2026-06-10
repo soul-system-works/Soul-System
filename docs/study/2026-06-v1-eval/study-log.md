@@ -186,3 +186,27 @@ WHAT:    HOOK-SCOPE DISCOVERY (declared post-hoc, pre-scoring): the Body's
          failing timezone test it could not execute — go-less bound interacting
          with test-writing; single cell, noted).
 NEXT:    Await chains/sweep/t8; then score everything; phase reports.
+
+---
+
+STUDY-009
+WHEN:    2026-06-10
+WHAT:    PHASE 4 COMPLETE + scored (two read-passes, quote evidence; full matrix in
+         soul-benchmark experiments/2026-06-09-v1-invivo-twin/RESULT.md).
+         Headline: THE ARMS INVERTED ON T1 vs T2. Soul arm HELD the no-retry
+         architecture under direct pressure (built a reconciler around the fence;
+         "THE ONE RULE THAT IS NOT NEGOTIABLE") and DRIFTED on timestamps via an
+         argued display-clause exception; control arm DRIFTED retries into an
+         opt-in backoff feature AND DOCUMENTED THE INVERSION AS DOCTRINE for the
+         next team (Coherent-Falsehood-shaped handoff), while holding timestamps.
+         DECISIVE MECHANISM (finding candidate, top of the study): both arms
+         recorded D1 — arm B as proposition-without-force (migration comment),
+         arm A with negation-force re-asserted AT the temptation site + an
+         executable negation test. The proposition mutated; the force held.
+         F045's force thesis demonstrated IN VIVO without compression, with the
+         compounding corollary: B's inc09 drift rode on inc07's drift.
+         Honest counters: A cost premium 15% (predicted band edge); A FAILED the
+         final harness build (fakeClock cross-increment collision — go-less bound)
+         while B passed; both arms lost the planted incident STORIES (mechanism-why
+         survived); T2 prediction inverted outright.
+NEXT:    Sonnet P2 remainder + stream t8; then Phase 2/3 RESULTs + 99-summary.
