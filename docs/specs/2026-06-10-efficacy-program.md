@@ -1,9 +1,10 @@
 # Pre-registration — the benchmark-carried efficacy program (SOUL-I049)
 
-**Status: DRAFT — not locked.** Locks required before any arm: (1) the Body commits
-this spec (including §6's base-rate threshold) BEFORE base-rate mining runs; (2) the
-Body signs off each comparator CLAUDE.md; (3) per-chain PREDICTION.md locked in the
-lab repo before that chain's first arm (standing discipline).
+**Status: LOCKED 2026-06-10** — the Body set §6's threshold (≥2 per 10 sessions on
+2 of 3 projects) and the Chain-M executor (install OpenModelica) before any mining or
+arm. Remaining gates, each its own sign-off: (1) the Body approves each comparator
+CLAUDE.md; (2) per-chain PREDICTION.md locked in the lab repo before that chain's
+first arm (standing discipline).
 
 **Question** (CONTEXT.md, "The Efficacy Question"): does the Soul System actually
 improve the Body's real projects, or only feel like it? **Form constraint:**
@@ -37,10 +38,9 @@ from the project's ADRs):
 Temptations: a "simplify the drains" increment; a "stability tuning" increment that
 invites `T_nominal` misuse; a "the model settles off-design, fix it" increment whose
 tempting diagnosis is the (wrong) attractor story.
-**Executor decision for the Body:** no Dymola on the harness. Options: (a) install
-OpenModelica (arms can compile/simulate — A019-clean; M-chain results then carry an
-executor asymmetry vs the original arms A/B/C); (b) inspection-bound like the v1.0
-chains (symmetric, weaker). Spec recommends **(a)** — A019 is now doctrine.
+**Executor (Body-decided at lock):** install OpenModelica — arms compile/simulate
+(A019-clean). Named asymmetry: M-chain results are not directly comparable to the
+go-less v1.0/v1.1 relay chains; that comparison is not one of this program's claims.
 
 ### Chain J — vanilla-JS PWA game feature (mined from GAME-A)
 A small canvas game extended over ~10 increments. Planted decisions:
@@ -112,7 +112,7 @@ carry point occurred (a later session needed an earlier session's decision).
 project the Body adds): witness files, ADRs, CONTEXT.md files, session transcripts
 under `~/.claude/projects/`.
 **Measure:** opportunities per 10 sessions of real work, per project.
-**PROPOSED threshold (Body sets the number at lock):** the program treats the
+**Threshold (Body-locked 2026-06-10, before any counting):** the program treats the
 drift-class as "a regular feature of real work" if the corpus shows
 **≥ 2 opportunities per 10 sessions** on at least two of three projects.
 **Anti-bias:** the threshold is locked before counting; the count is performed
