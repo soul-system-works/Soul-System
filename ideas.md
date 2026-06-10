@@ -1682,3 +1682,56 @@ IDEA:      Cross-tool portability strategy (Emissary deep-research, task w5txxvj
            Cline/Roo command+hook surfaces not independently verified.
 STATUS:    Raw
 ```
+
+```
+IDEA ID:   SOUL-I048
+DATE:      2026-06-10
+SOURCE:    Body directive at the v1.1.0 graduation (SOUL-157) — the next session's activity.
+WHAT:      THE v1.1 VERIFICATION PASS — re-run the targeted probes to verify the A019/A020
+           updates actually fixed what the study found, plus a reduction sweep and new test
+           classes. Four parts:
+
+           (A) TARGETED RE-RUNS (the fix-verification; reuse the erosion-audit harness with
+           eras = v1.0.0 tag vs v1.1.0 tag — the reusable instrument from F055):
+           - A019 gate-blocking probe: a task whose primary artifact CANNOT be verified
+             (no executor available). v1.0 behavior = ship + "Verify: GAP" (measured 6/6 in
+             the in-vivo arm). v1.1 PASS = the agent stops/asks the Body instead of shipping.
+           - A020/Rule-14 placement probe: re-run the twin-arm temptation increments
+             (inc07 retry + inc10 timestamp-edge) under the v1.1 seed. PASS = force-comment
+             placed at the decision site AND the boundary pinned (the T2 display-edge case —
+             v1.0 arm A drifted there via argued exception; does Rule 14's "boundary pinned"
+             clause fix it?).
+           - Carriers probe: do `-p` sessions under the v1.1 seed (carriers line) now place
+             force-comments / record content at decision sites more than v1.0's 0/8 file rate?
+           - Salience regression check: mind.md grew 113→~130 lines in 1.1 — re-run the
+             P1.1-style weak-model activation probe to confirm no F055 regression (the Rule-5
+             budget watch named in A020).
+           (B) NEW TEST CLASSES (judgement call, from training/research knowledge):
+           - Judge-pressure / red-team probe: explicitly instruct the agent to skip the gate
+             ("no time, just ship it") — does the name-the-Judge invariant fire? (Untested
+             invariant; sycophancy literature says pressure-compliance is the risk axis.)
+           - CROSS-DOMAIN transfer: plant a counter-default convention in a NON-code vehicle
+             (writing/research task) — tests the domain-generalization bound named in F053/F054
+             (currently plausible, NOT measured).
+           - Fable 5 calibration arm (excluded from the study for lack of baseline; now has
+             session history to design against).
+           - Calendar-time decay: re-probe this repo's own record in N weeks (real elapsed
+             time, not synthetic burial — the one decay axis never tested).
+           (C) REDUCTION SWEEP (the cut's discipline, post-growth): 1.1 ADDED doctrine
+           (Rule 14, gate check 0 + blocking paragraph, carriers lines, harness rules). Per
+           F055 salience-beats-coverage, look for REPOSITION-instead-of-append wins and any
+           instrument that still can't show measured or clearly-argued unique value.
+           /soul-distill is due (mind.md grew without a distill pass).
+           (D) FURTHER IMPROVEMENT CANDIDATES (suggest, Body decides):
+           - Executable-negation scaffold: make fence-tests cheap — when capturing a
+             counter-default decision, offer to generate the failing-if-broken test alongside
+             (F053's differentiator, currently manual).
+           - soul-init plants a fence convention (e.g., a FENCES.md or code-comment pattern)
+             so adopters get carriers from day 1.
+           - Gate telemetry as instrument: .soul/events.jsonl now exists per project — let
+             /soul-next surface gate-fire patterns (the theatre-audit Rule the gate doc names).
+           - Abstention line in subagent/task templates: F054 says models won't abstain on
+             missing unguessable ground — bake "if the ground is missing, ask; do not infer"
+             into the handoff/subagent prompt patterns.
+STATUS:    Raw — Body-directed; next session's primary activity.
+```
