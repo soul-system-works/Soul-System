@@ -101,6 +101,11 @@ re-reasonable knowledge regenerates on its own.
 - **Capture** is three-tiered by friction: *idea* (frictionless, forward) · *witness*
   (light scaffold, backward) · *finding* (**earned** — the Body decides the graduation;
   never auto-promote).
+- **Carriers & placement:** where capture instruments are unavailable (headless / automated
+  sessions), force-comments at the code site and handoff documents ARE the record. Record a
+  counter-default decision **at the site of future temptation, with its force** — explicit
+  negation, the incident behind it, the boundary pinned; a bare proposition elsewhere gets
+  reinterpreted under pressure (A020).
 
 ## The instruments
 

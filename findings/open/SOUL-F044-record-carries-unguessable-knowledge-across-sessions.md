@@ -140,15 +140,29 @@ RELATED:         [[SOUL-122]] [[SOUL-123]] [[SOUL-124]] [[SOUL-125]] (the v1 mec
                  [[mind-rule-3]] (anchor every absolute claim — the read-confirm-in-code
                  scoring IS the anchor discipline at writing time).
 
-STATUS:          Open — decisive within scope (unguessable content, both fact and
-                 convention, two capabilities; depth-burial robust through N=20). The
-                 fact/preference axis is closed and the frontier line is reframed to
-                 derivable-vs-unguessable; the depth-decay rung is climbed. Promote to a Soul
-                 amendment once the erosion rung (survives /soul-distill compression?) and
-                 interaction rung (survives a contradicting later entry?) extend the claim to
-                 the conditions doctrine assumes. The result is operational TODAY as the
-                 measured backing for the accumulating record's value wherever it carries
-                 something the model cannot regenerate on its own.
+ADDENDUM:        2026-06-10 (SOUL-155, the v1.0 evaluation study, Phase 2 — 180 arms,
+                 THREE capabilities incl. Opus 4.8): the remaining rungs are CLIMBED.
+                 - INTERACTION: D survives a later generically-contradicting ADR 15/15
+                   (Sonnet/Opus reconcile explicitly 10/10 via the conflicting ADR's own
+                   exception clause).
+                 - MIDDLE-POSITION: D in the middle of 21 entries fires 15/15.
+                 - MULTI-FACT: three planted decisions hold simultaneously 45/45 per-fact,
+                   all cited.
+                 - DEPTH: no cliff through N=100 (5× the prior bound), all tiers.
+                 - WITHIN-CELL DISSOCIATION (the thesis, within-subject): the same control
+                   arms that drift 0/30 on unguessable facts hold the DERIVABLE fact
+                   (integer money) along a capability gradient — Opus 10/10 unaided,
+                   Sonnet 1/10, Haiku 0/10. Derivable improves with capability; unguessable
+                   requires the record at EVERY capability.
+                 - Fabrication asymmetry spun off as its own finding ([[SOUL-F054]]).
+                 In-vivo corroboration + the placement mechanism: [[SOUL-F053]].
+
+STATUS:          Open — promotion conditions MET 2026-06-10: the erosion rung closed via
+                 F045/A018, the interaction rung (and middle/multi/N=100) closed via
+                 SOUL-155 Phase 2. Doctrine carriage already exists (Rule 13, A018, and now
+                 A020); the Body may close this finding at its discretion. The result is
+                 operational as the measured backing for the accumulating record's value
+                 wherever it carries something the model cannot regenerate on its own.
 
                  UPSTREAM: this repo IS the Soul System (the upstream) — no cross-project
                  harvest needed. The finding is Soul-meta (about the value of the

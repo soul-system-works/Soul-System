@@ -21,6 +21,10 @@ Optional argument: a short description of what the next session is for — let i
    - Any witness-worthy moment this session not yet in `witness.md`? Add it.
    - Any new idea not captured? Append it to `ideas.md` (minimal).
    - Is the task tracker current? Update it.
+   - Any counter-default fence relied on this session? Verify its **force** — the incident
+     and the explicit negation, not just the rule — lives in a durable record at the site
+     of future temptation. A rule handed off without its incident gets reinterpreted under
+     pressure, and the drift documents itself (F053/A020).
 2. **Write `.soul/handoff.md`** (create `.soul/` if missing — it is gitignored runtime state):
    ```
    # Handoff cursor — [date]

@@ -7325,3 +7325,76 @@ STATUS:       Open — fixed + (committing). Finding-worthy (adopter record-loca
               Next (Body): re-test in temp2 (/soul-init then /soul-capture idea → should write
               temp2/ideas.md); flip repo public.
 ```
+
+```
+ID:           SOUL-155
+WHEN:         2026-06-09→10 / THE v1.0 EVALUATION STUDY — first fully-autonomous multi-phase
+              study; grilled pre-registration (docs/specs/2026-06-09-v1-evaluation-study.md),
+              paired branches, ~393 scored arms/sessions, 3 models, 2 days, every PREDICTION
+              locked pre-arm, no doctrine touched during the run.
+WHERE:        Corpus: docs/study/2026-06-v1-eval/ (study-log STUDY-001..011 + 99-summary).
+              Lab: soul-benchmark experiments/2026-06-09-v1-{erosion-audit,f044-rungs,
+              invivo-twin,stream}/ (locked PREDICTION + RESULT each).
+WHAT:         Four verdicts: (1) EROSION AUDIT of THE CUT: gate PASS 12/12 cells — and the cut
+              IMPROVED weak-model activation (P1.1-Haiku 1/5→5/5 on identical content; bloat
+              also produced cite-without-compliance at Sonnet-pre). (2) F044 RUNGS: interaction,
+              middle-position, multi-fact, decay N=100 ALL climb at all tiers (withrecord 5/5
+              everywhere; controls 0/5; fabrication gradient H~40%→S~85%→O 100% in no-record
+              arms). (3) STREAM: soul-bench gate = DO-NOT-BUILD (cost crossover at t7/t8
+              unattributable — record-accumulation mechanism NULL 0/8; +20% cost; null honored).
+              (4) IN-VIVO TWINS: Soul arm held planted no-retry under direct pressure (force-
+              comment at the temptation site + negation test); control arm drifted retries into
+              a feature AND taught the drift in its handoff; Soul arm cost +15%, drifted
+              timestamps by argued exception, and lost the final build check (go-less bound).
+TYPE:         Emissary (the whole study is outward verification of the system against reality);
+              Witness/Accountant (nulls and counters recorded with equal weight).
+CONSEQUENCE:  Finding candidates ranked in 99-summary; calibration meta-note: every locked
+              prediction that erred UNDER-predicted record carry. Body read the package and
+              decided graduation (SOUL-157).
+STATUS:       Resolved — study complete; branches merged to main 2026-06-10.
+```
+
+```
+ID:           SOUL-156
+WHEN:         2026-06-09 / THREE HARNESS INCIDENTS during the study, all caught by the study's
+              own discipline, all carrying the same lesson-class: VERIFICATION MUST BE EXECUTED
+              AGAINST AN EXECUTOR THAT EXISTS.
+WHERE:        STUDY-005/007/008 in docs/study/2026-06-v1-eval/study-log.md; fixes in the lab
+              harness (stream.sh GO absolute path; *.limitstorm1 ledgers).
+WHAT:         (a) `go` was never installed on the host — the quality gate asserted build+test
+              for 8 tasks without checking the executor existed (F047 applied to OUR harness);
+              caught by 8/8 implausible FAILs; fixed via non-PATH toolchain; sessions left
+              uniformly go-less (symmetric bound — but it cost the in-vivo Soul arm the final
+              build check: a fakeClock cross-increment collision no blind session could see).
+              (b) Session-limit storm stubbed 33 outputs while sweeps reported exit code 0 —
+              arm validity must be read from artifact content (is_error/size/sentinel), never
+              exit codes. (c) The Body's user-global completion-gate hook fires in every session
+              on this machine; self-scoping verified (witness.md / Soul-marked CLAUDE.md) — all
+              study baselines confirmed clean; declared as pre-registration addendum; its
+              events.jsonl admitted as conformance telemetry (6/6 fires = honest Verify-GAP
+              disclosures... attached to code that did not compile).
+TYPE:         Skeptic (each catch); Archaeologist (root causes); Guardian (baseline cleanliness).
+CONSEQUENCE:  Feeds SOUL-A019 (completion gate: unverifiable primary artifact BLOCKS;
+              verify-the-verifier preflight; harness additions to experiment-harness.md).
+STATUS:       Resolved — fixes live; doctrine changes via A019.
+```
+
+```
+ID:           SOUL-157
+WHEN:         2026-06-10 / GRADUATION + AMENDMENT ACT — the Body read 99-summary and decided:
+              graduate findings, amend doctrine, incorporate improvements.
+WHERE:        findings/open/SOUL-F053..F055; findings/open/SOUL-F044 (evidence strengthened);
+              amendments/accepted/SOUL-A019, SOUL-A020; operations/completion-gate.md; mind.md;
+              operations/CLAUDE.md §Record; operations/experiment-harness.md;
+              skills/soul-handoff/SKILL.md; hooks/pre-completion-verify.py (checklist text).
+WHAT:         F053 force-at-temptation-site (carriage mechanism, in-vivo); F054 capability
+              amplifies confident confabulation absent record (with outward anchors: Nature'24,
+              AbstentionBench'25 support; USENIX'25 per-claim contradiction — wording preserves
+              the distinction); F055 salience-beats-coverage (compression improved weak-model
+              activation). F044 gains the four climbed rungs + within-cell dissociation as
+              evidence. A019 verification-execution family; A020 record-force-placement family.
+TYPE:         Body (all graduation decisions); Craftsman (the edits).
+CONSEQUENCE:  Doctrine now carries the study's two load-bearing lessons: unverifiable work
+              blocks, and force lives at the point of temptation.
+STATUS:       Open — edits applying this session; adopters get changes via plugin distribution.
+```
