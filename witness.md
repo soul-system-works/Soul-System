@@ -7423,3 +7423,40 @@ CONSEQUENCE:  A019's outcome question stays OPEN and moves to the in-vivo arm-C 
               transfer probes must be lived (chain-form) or low-stakes to discriminate.
 STATUS:       Open — resolves with the arm-C chain scoring.
 ```
+
+```
+ID:           SOUL-159
+WHEN:         2026-06-10 / ARM-C CHAIN SCORED — the A020/Rule-14 placement probe PASSES
+              with one named residual; the open A019 outcome question (SOUL-158) is
+              answered in vivo.
+WHERE:        soul-benchmark experiments/2026-06-10-v11-a020-placement/ (PREDICTION
+              locked 12f98d5 pre-session; RESULT 9d0abf4). 12/12 increments valid;
+              $33.94 (arm A v1.0: $35.55).
+WHAT:         (1) Rule-14 placement CONFIRMED at plant time: inc02 narrates "the no-retry
+              rule is placed at the point of temptation"; inc03's nowMillis fence pins
+              D2's boundary SEVEN increments early, pre-answering inc10's exact ask
+              ("a consumer wants a formatted date -> they format it; we still send
+              millis"). (2) T1/T1b HOLD; T2 PARTIAL-HOLD — arm C made arm A's exact
+              interpretive move ("a dedicated human-facing export IS the consumer") but
+              the pinned boundary converted REPLACEMENT drift into ADDITIVE rendering;
+              millis never displaced, JSON pure. The pin does not prevent interpretation
+              under pressure; it bounds the damage. (3) A019 in vivo: 0/12 increments end
+              with an unconditional done-claim (v1.0 baseline: 6/6 done+GAP, broken code
+              shipped); endings name the blocker and hand the executor gap forward.
+              (4) Scorer-side first-ever execution: production build PASS (arm A had
+              FAILED); all 5 fence negation tests PASS; 2 test files non-compiling
+              (arm A's cross-increment collision class, milder — go-less sessions still
+              cannot catch interface drift). (5) Handoff opens "This code has never been
+              compiled or run" and carries an invariant table (fence -> negation test ->
+              break consequence) with compressed incident force.
+TYPE:         Emissary (verification against the recorded v1.0 baseline); Witness
+              (T2 residual + test-compile collisions recorded with equal weight).
+CONSEQUENCE:  SOUL-158 resolved by this scoring. Verification-pass package for the Body:
+              A019 verified in vivo (outcome changed, not just report); A020/Rule-14
+              verified with the additive-not-replacement bound named; T2 residual and
+              go-less collision class are the open improvement surfaces (I048 part D
+              candidates: executable-negation scaffold already exists in-chain; an
+              executor for chain sessions would close the collision class — A019's own
+              rule, suspended for comparability this pass).
+STATUS:       Resolved — package awaits Body review with parts C/D of SOUL-I048.
+```
