@@ -2,3 +2,10 @@
 .soul/
 registry/
 __pycache__/
+
+# LaTeX build intermediates
+docs/study/tex/**/main.aux
+docs/study/tex/**/main.fdb_latexmk
+docs/study/tex/**/main.fls
+docs/study/tex/**/main.log
+docs/study/tex/**/main.out
