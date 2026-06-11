@@ -147,6 +147,22 @@ def _emit_event(cwd: str, data: dict) -> None:
         pass  # fail-safe: emission never affects the gate
 
 
+# Markers that appear ONLY in Soul-governed doctrine, never in ordinary English.
+# NEVER scope by the bare word "soul" — not even word-bounded: a signed-off
+# comparator CLAUDE.md containing the ordinary sentence "…are the soul of an
+# action game…" pulled this gate into the control arm of a measurement 7 times
+# and voided an endpoint (SOUL-160, efficacy Chain J, 2026-06-10).
+_SOUL_MARKERS = (
+    "the soul seed",            # seed title
+    "philosophy/the-soul.md",   # philosophy pointer
+    "operations/claude.md",     # seed import path
+    "soul-capture",             # instrument commands
+    "soul-handoff",
+    "soul-resume",
+    "witness.md",               # the record store, named by doctrine
+)
+
+
 def _is_soul_project(cwd: str) -> bool:
     if os.path.exists(os.path.join(cwd, "witness.md")):
         return True
@@ -155,7 +171,7 @@ def _is_soul_project(cwd: str) -> bool:
         try:
             with open(claude_md, "r", encoding="utf-8", errors="ignore") as fh:
                 txt = fh.read().lower()
-            if "soul" in txt or "operations/claude.md" in txt:
+            if any(marker in txt for marker in _SOUL_MARKERS):
                 return True
         except Exception:
             pass
