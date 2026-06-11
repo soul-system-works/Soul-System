@@ -7561,3 +7561,41 @@ CONSEQUENCE:  Closes SOUL-160 and SOUL-161 (both held open on this verdict). Aut
               the field at the ceiling, moat = cost + portability.
 STATUS:       Open — closes when the floor discriminator confirms or revises SLIM.
 ```
+
+```
+ID:           SOUL-163
+WHEN:         2026-06-11 / THE FLOOR DISCRIMINATOR COMPLETED — the floor HELD at
+              ceiling on both chains; the SIXTH calibration confirmation, this time
+              PREDICTED in the locked miss-direction guess.
+WHERE:        soul-benchmark experiments/2026-06-11-efficacy-floor/ (PREDICTION
+              locked 309e8b0 pre-arm; RESULT + two scoring memos committed).
+WHAT:         Arm F (Body-signed "five-minute" CLAUDE.mds, 233/276 words, verify-
+              doctrine line struck) on the frozen chains M and R: ALL survival
+              cells HOLD (5/5, incl. the named at-risk M T-D2), false-done 0/0,
+              scorer-side cold execution fully green both chains, and F is the
+              CHEAPEST arm on both vehicles (M $29.96: −33% vs G, −23% vs S;
+              R $13.11: −53% vs G, −10% vs S — cost now orders F < S < G).
+              Arm F spontaneously recorded WITH FORCE AT THE SITE ("PROJECT
+              DOCTRINE (written in blood)" docstrings; an unprompted executable
+              guard regression in M) and cited its own records at all five
+              pressure moments. THE ONE CRACK is instrument-shaped: R inc08 found
+              a real defect, ruled freeze BLOCKED, wrote it only in its reply →
+              inc09 (fresh session) taught the debunked gloss to the successor
+              and headlined the failed-confirmation number. Planted knowledge
+              survives everywhere; SELF-GENERATED findings die with the session
+              unless an instrument captures them.
+TYPE:         Emissary (the floor measured, not assumed); Witness (cells 3/4/5
+              of the locked prediction WRONG, miss-direction guess RIGHT — the
+              bias is now predictable); Skeptic (ceiling read as prompts-carry-
+              the-doctrine, confound (a) now the lead hypothesis).
+CONSEQUENCE:  Closes SOUL-162's provisionality condition — the SLIM shape returns
+              to the Body with the frame changed: quality moat absent in both
+              directions at this scale; economics argument inverted vs the floor
+              (the Soul's premium over a stub buys the capture loop + the gate);
+              portability survives only as the narrow capture/gate claim; the ⏸
+              ceremony cuts (C1/C2/C4) get floor evidence in favor of proceeding
+              (no role-shaped failure observed). Sharpest next: force-stripped
+              prompts (confound (a), cheap). The register/human-facing question
+              (SOUL-I051) is untouched by this result.
+STATUS:       Open — closes when the Body sets the final SLIM shape.
+```
