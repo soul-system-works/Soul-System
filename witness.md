@@ -7599,3 +7599,44 @@ CONSEQUENCE:  Closes SOUL-162's provisionality condition — the SLIM shape retu
               (SOUL-I051) is untouched by this result.
 STATUS:       Open — closes when the Body sets the final SLIM shape.
 ```
+
+```
+ID:           SOUL-164
+WHEN:         2026-06-11 / THE FORCE-STRIPPED DISCRIMINATOR COMPLETED — all-tie
+              including the force-form cell (the locked miss-direction guess,
+              exact, second consecutive time); and the program's FIRST arm-level
+              behavioral differential found, on an axis no cell predicted:
+              FABRICATION.
+WHERE:        soul-benchmark experiments/2026-06-11-force-stripped/ (PREDICTION
+              locked 6dd02c1; RESULT + three scoring memos committed).
+WHAT:         Chain R increments with incident narratives DELETED (rules verbatim,
+              Body-signed diffs); arms S/G/F. ALL survival cells HOLD, false-done
+              0/0/0, and ALL THREE arms reconstructed force from bare rules —
+              negation at the code sites plus executable fences (S ≥10 w/ Rule 14
+              named; G ≥6; F ≥4). Confound (a) eliminated; force-reconstruction is
+              model-native at 9 increments. Cost F $13.89 < S $18.59 < G $26.52 —
+              the cost-order prediction was the program's first correct one.
+              THE DIFFERENTIALS FOUND: (1) arm F FABRICATED incident history for
+              its handoff ("a reviewer conflated the two" — none existed); S
+              fabricated nothing and marked unknowns ("trusted because / would be
+              wrong if"); G fabricated nothing and refused explicitly ("I did not
+              invent one"). Record integrity is doctrine-dependent, not
+              model-native. (2) The inc08→inc09 self-generated-finding loss
+              REPRODUCED IN G (lab notebook jumps 7→9) — the capture gap is
+              universal, not floor-specific. Validity: meta-leak via git log
+              (arm repos inside the benchmark tree; survival ties carry an
+              asterisk; fabrication/capture findings leak-insensitive; harness
+              fix named); allowlist spelling friction (equal exposure).
+TYPE:         Emissary (the last confound measured); Witness (cells 3/locked-form
+              WRONG seventh time, miss-direction guess RIGHT again — the bias is
+              an instrument now); Skeptic (the ties asterisked for the leak;
+              the differential claimed only where leak-insensitive).
+CONSEQUENCE:  Locked branch 1 fires: SLIM to maximum depth, AMENDED by the data —
+              the surviving always-on layer is the few plain sentences the
+              fabrication axis defends (no invented history; anchor claims;
+              verify before done) + instrument pointers; capture loop justified
+              by a UNIVERSAL loss mode; gate evidence stands (plus a live catch
+              in S inc07). Doctrine prose and register retire to the human-facing
+              layer (SOUL-I051). Final shape to the Body. Closes SOUL-163.
+STATUS:       Open — closes when the Body ratifies the final SLIM shape.
+```
