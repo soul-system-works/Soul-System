@@ -7527,3 +7527,37 @@ CONSEQUENCE:  Three readings packaged for the Body (DROP-by-letter /
               at these scales, is cost, not correctness.
 STATUS:       Open — closes when the Body renders the SOUL-I049 verdict.
 ```
+
+```
+ID:           SOUL-162
+WHEN:         2026-06-11 / THE BODY RENDERS THE SOUL-I049 VERDICT — SLIM, PROVISIONAL.
+WHERE:        This session (resume from the 2026-06-10 handoff cursor); verdict file
+              soul-benchmark experiments/2026-06-10-efficacy-program-VERDICT.md
+              (rendered section appended).
+WHAT:         After a 7-step plain-language walkthrough of the program corpus, the Body
+              chose SLIM-by-synthesis, provisional: keep the measured core (completion
+              gate, force-at-site/Rule-14, record stores + cheap capture,
+              handoff/resume, anchor discipline, Rule-5 budget), REVISE the register and
+              shrink the always-on seed (SOUL-I050 carries the language), CUT the named
+              ceremony (nine-role Council as operating doctrine, philosophy file as
+              living layer, activation ceremonies whose behavior survives as plain
+              sentences). Provisional on the mediocre-CLAUDE.md FLOOR discriminator —
+              queued as the confirming experiment. The decisive reframe arose from the
+              Body's own question mid-walkthrough: the program measured the CEILING
+              (Soul vs excellent doctrine) and deliberately not the FLOOR; the Soul's
+              undefended value claim is PORTABILITY — best practice in a box, with
+              teeth, for users who do not author excellent doctrine. DROP was rejected
+              as betting on an unmeasured floor against the v1.0 6/6 collapse and the
+              45-70/10-session base rate; KEEP was declined because it preserves the
+              ceremony the data conspicuously failed to defend.
+TYPE:         Body (the verdict is the inhabitant's, per program discipline); Steward
+              (the retirement pass it authorizes); Witness (the floor-reframe origin
+              recorded — it was the Body's question, not the instrument's analysis).
+CONSEQUENCE:  Closes SOUL-160 and SOUL-161 (both held open on this verdict). Authorizes
+              drafting the Steward retirement spec (item-by-item, Body-approved, nothing
+              auto-deletes); reshapes SOUL-I050 (register work becomes part of SLIM's
+              REVISE bucket); queues the floor discriminator; the 1.0/1.1 writing
+              package (blog + paper) tells the SLIM story: core validated, absorbed by
+              the field at the ceiling, moat = cost + portability.
+STATUS:       Open — closes when the floor discriminator confirms or revises SLIM.
+```

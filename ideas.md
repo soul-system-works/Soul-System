@@ -1770,5 +1770,53 @@ WHAT:      THE BENCHMARK-CARRIED EFFICACY PROGRAM — answer "is the Soul actual
              not publication-grade.
            Full pre-registration spec (docs/specs/) written and locked before the first
            chain; the program does not start until the Body opens it.
-STATUS:    Raw — Body-directed; revised once; graduates to a spec at launch.
+STATUS:    Closed — program ran 2026-06-10 (spec LOCKED, 3 chains + base-rate mining);
+           locked rule self-conflicted on the observed ties-at-ceiling + cost outcome;
+           Body verdict 2026-06-11: SLIM, PROVISIONAL (witness SOUL-162; rendered
+           section in the program VERDICT file). Floor discriminator
+           (mediocre-CLAUDE.md arm) queued as the confirming experiment.
+```
+
+```
+ID:        SOUL-I050
+DATE:      2026-06-10
+SOURCE:    Body, mid-session (during the efficacy program runs).
+WHAT:      JARGON/VERBOSITY CONTROL FOR NORMAL RESPONSES. Sessions drift jargony enough
+           that the Body has to invoke /soul-explain; normal responses are too verbose.
+           Wanted: standard, concise responses with limited jargon that still describe
+           the result well — teaching/introducing terms gradually over time rather than
+           assuming them. Possible shapes: a flag chosen at soul-init and changeable
+           later (a "flavor"), or a rule somewhere that strikes the balance. Relates to
+           SOUL-I008 (verbosity/clarity) and the plain-description-before-decisions
+           feedback; distinct in that it targets the DEFAULT register, not the
+           explain-on-demand path.
+STATUS:    Raw
+```
+
+```
+ID:        SOUL-I051
+DATE:      2026-06-11 (REVISED same day — first capture over-fit the AI-facing
+           frame; the Body's point is an AUDIENCE shift, recorded below.)
+SOURCE:    Body, while reviewing the SLIM retirement spec (same session as the
+           SOUL-I049 verdict).
+WHAT:      THE-SOUL.MD AND THE COUNCIL AS A HUMAN-FACING LAYER. Not AI doctrine,
+           not archive — a third role: the way a PERSON who picks up the repo
+           understands the system. They get the repo, they read the-soul; the
+           Council is an introspective LENS a human uses to look at something
+           (which perspective is missing here?). The roles come into play
+           naturally in the work; the doctrine merely names them — and the names
+           are for the human reader, not instructions to the model.
+           Consequences for the SLIM spec:
+           (1) C1/C2 stop being "cut vs keep doctrine" — the-soul.md can be cut
+           from the AI-facing layer entirely AND kept as the human onboarding/
+           understanding document. Different audience, different budget: Rule 5
+           (always-on token budget) does not apply to a document only humans read.
+           (2) Roles need NOT show up in the record at all. BUT if they do (e.g.,
+           witness TYPE lines), they are structured data — and tools can MINE that
+           for visuals/analytics. Precedent: soul-visual-test (registry entry;
+           27 witness entries, portfolio layer, golden tests — the early proof
+           that record data can feed visual artifacts). A role-annotated record
+           is an optional analytics substrate, not a ceremony obligation.
+STATUS:    Raw — revisit AFTER the floor result; C1/C2/C4 in the retirement spec
+           are ⏸ pending this.
 ```
