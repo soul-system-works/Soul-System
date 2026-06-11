@@ -7493,3 +7493,37 @@ CONSEQUENCE:  False-done endpoint carried by Chains M/R alone. Hook-fix candidat
               good doctrine holds plants — the form difference is the remaining claim.
 STATUS:       Open — resolves with the program verdict (SOUL-I049).
 ```
+
+```
+ID:           SOUL-161
+WHEN:         2026-06-10 / THE EFFICACY PROGRAM COMPLETED — chains M and R scored
+              (both clean), the program verdict assembled, and the locked decision
+              rule found to CONFLICT WITH ITSELF on the observed outcome.
+WHERE:        soul-benchmark experiments/2026-06-10-efficacy-{chain-m,chain-r,
+              program-VERDICT}.md; spec docs/specs/2026-06-10-efficacy-program.md.
+WHAT:         Every primary proxy and every decision-survival cell TIED, mostly at
+              ceiling, across all three chains — the signed-off Soul-free comparator
+              recorded its own ADRs/decision logs and cited them under pressure,
+              holding every planted decision including the certificate-swap and
+              pressure-drive traps. Economics inverted every locked prediction: the
+              Soul arm was cheaper in 3/3 chains (-13% and -48% in the clean ones) at
+              equal scorer-executed quality. The §5 letter (comparator matched →
+              DROP) and the §4 tiebreaker (primaries null → economics decisive →
+              Soul) give OPPOSITE verdicts; per program discipline the conflict goes
+              to the Body unresolved. Also: Soul arms self-started witness logs in
+              2/3 chains (v1.0: 0/8); the comparator self-started prose records too;
+              a second harness incident (seq -w zero-pad → empty prompts, $1.41
+              sunk) was caught by cost+content inspection, invisible to exit codes.
+TYPE:         Emissary (the whole program); Witness (five-fold calibration-bias
+              confirmation: every comparator-failure prediction wrong, every cost
+              sign wrong); Skeptic (ceiling read as convergence-of-best-practice,
+              not as Soul vindication).
+CONSEQUENCE:  Three readings packaged for the Body (DROP-by-letter /
+              KEEP-by-economics / SLIM-by-synthesis). Candidate next discriminators
+              named, not run: force-stripped prompts, chains >=20 increments, a
+              mediocre-CLAUDE.md floor arm. The deepest observation for the record:
+              the comparator was strong BECAUSE it embodied the Soul's measured core
+              as 2026 best practice — the core is validated and the moat above it,
+              at these scales, is cost, not correctness.
+STATUS:       Open — closes when the Body renders the SOUL-I049 verdict.
+```
