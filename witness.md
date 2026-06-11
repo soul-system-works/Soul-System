@@ -7640,3 +7640,37 @@ CONSEQUENCE:  Locked branch 1 fires: SLIM to maximum depth, AMENDED by the data 
               layer (SOUL-I051). Final shape to the Body. Closes SOUL-163.
 STATUS:       Open — closes when the Body ratifies the final SLIM shape.
 ```
+
+```
+ID:           SOUL-165
+WHEN:         2026-06-11 / THE BODY RATIFIES THE FINAL SLIM SHAPE — the efficacy
+              program's terminal verdict, rendered on two days of evidence
+              (3 twin chains + base-rate mining + floor + force-stripped).
+WHERE:        This session; docs/specs/2026-06-11-slim-retirement.md §6
+              (ratification record); the deltas-from-proposal table presented
+              and accepted.
+WHAT:         FINAL SHAPE: (1) always-on AI-facing layer cuts to ONE PLAIN
+              CONTRACT (~10 sentences: force-at-site recording; never-invent-
+              history; anchor discipline; verify-before-done w/ Stop hook;
+              capture-before-session-end; handoff/resume; pointer to the human
+              doc). (2) Instruments all stay: completion gate, /soul-capture +
+              stores, /soul-handoff, /soul-resume, /soul-next, /soul-distill.
+              (3) Everything else — mythological register, Council, philosophy,
+              doctrine prose incl. most of mind.md — retires to the HUMAN-FACING
+              layer (the-soul.md rewritten as the understanding document,
+              SOUL-I051). Deltas from the morning proposal: seed cut deepens
+              (~60% → ~10 sentences); Rule-14 doctrine text retires (behavior
+              measured model-native); mind.md mostly retires; anchor discipline
+              PROMOTED (the fabrication axis is the program's only arm-level
+              behavioral differential); "never invent history" added as a core
+              sentence; C1/C2/C4 proceed with C2-alt (human-facing rewrite).
+TYPE:         Body (the verdict); Steward (execution authorized, artifact-by-
+              artifact approval retained).
+CONSEQUENCE:  Closes SOUL-164 (and the SOUL-162→163→164 verdict arc). Execution
+              queue: spec §6 ratification record; slim-contract draft; human-
+              facing rewrite plan; papers/blog updated with both discriminators;
+              harness fix (git-isolate arm repos) for any future runs. All land
+              as drafts for Body approval; push still held.
+STATUS:       Closed — the verdict arc is complete; execution items track in
+              the spec and the task list.
+```
