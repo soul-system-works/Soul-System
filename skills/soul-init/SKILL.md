@@ -12,11 +12,22 @@ states this skill's base directory when it loads; the root is two levels up
 correctly for every distribution model: a symlinked skill resolves through the
 symlink to the cloned repo (the SOUL-F029 model); a plugin-installed skill
 resolves to the plugin's installed copy, which ships the whole repo — making
-**plugin install + `/soul-init` a complete setup with no clone**. VERIFY before
-writing: the derived root must contain `operations/CLAUDE.md` (resolve symlinks
-to an absolute path first, e.g. `realpath`). If it does not, say so and ask the
-Body where the Soul System lives — never write an import line you have not
-verified resolves.
+**plugin install + `/soul-init` a complete setup with no clone**.
+
+**Version-pin guard (measured on the first live install):** a plugin-cache root
+looks like `~/.claude/plugins/cache/<marketplace>/<plugin>/<version>/` — that
+path DIES at the next plugin update (new version directory), and a dead
+`@import` fails silently (the F038 failure mode). When the derived root matches
+that pattern, prefer the UNVERSIONED marketplace clone —
+`~/.claude/plugins/marketplaces/<marketplace>/` — if it contains
+`operations/CLAUDE.md`; it is updated in place and survives updates. If only
+the versioned path exists, use it but TELL the Body: "this import is pinned to
+plugin version <v>; re-run /soul-init after plugin updates."
+
+VERIFY before writing: the chosen root must contain `operations/CLAUDE.md`
+(resolve symlinks to an absolute path first, e.g. `realpath`). If it does not,
+say so and ask the Body where the Soul System lives — never write an import
+line you have not verified resolves.
 
 ## What to do
 
