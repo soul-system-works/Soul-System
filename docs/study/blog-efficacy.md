@@ -14,7 +14,7 @@ anyway*: a genuinely good CLAUDE.md, the kind with build commands and convention
 and a few hard-won warnings. If it can't beat that, the honest move is to delete the
 philosophy and just write the good file.
 
-So I spent three days trying to lose.
+So I set out to lose.
 
 ## First, the part where my own system failed
 
