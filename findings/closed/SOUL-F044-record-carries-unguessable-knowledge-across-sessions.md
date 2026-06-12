@@ -157,7 +157,9 @@ ADDENDUM:        2026-06-10 (SOUL-155, the v1.0 evaluation study, Phase 2 — 18
                  - Fabrication asymmetry spun off as its own finding ([[SOUL-F054]]).
                  In-vivo corroboration + the placement mechanism: [[SOUL-F053]].
 
-STATUS:          Open — promotion conditions MET 2026-06-10: the erosion rung closed via
+STATUS:          CLOSED 2026-06-12 — the Body's explicit nod (SOUL-168) on the
+                 closure proposed below. Original status text preserved:
+                 Open — promotion conditions MET 2026-06-10: the erosion rung closed via
                  F045/A018, the interaction rung (and middle/multi/N=100) closed via
                  SOUL-155 Phase 2. Doctrine carriage already exists (Rule 13, A018, and now
                  A020); the Body may close this finding at its discretion. The result is
