@@ -7782,3 +7782,42 @@ CONSEQUENCE:  SOUL-167 closes. The system is public after the push; reference
 STATUS:       Closed — the ship acts execute in this session; results recorded
               in the handoff.
 ```
+
+```
+ID:           SOUL-169
+WHEN:         2026-06-12 / PRE/POST-PUBLIC REDACTION — mined-project identities
+              anonymized across both repos' trees AND histories; one exposure
+              window disclosed.
+WHERE:        soul-benchmark experiments/2026-06-10-efficacy-base-rate/ (reports
+              renamed + scrubbed); this repo docs/specs/2026-06-10-efficacy-
+              program.md + findings F047; git filter-repo on both histories
+              (F052 five-surfaces precedent, second application).
+WHAT:         The base-rate mining artifacts named the Body's three real
+              projects and quoted work detail, including a safety-analysis
+              document section reference. Body verdict: anonymize all three
+              (PLANT-BOP / GAME-A / RESEARCH-N), strike the safety-document
+              reference, rewrite history before public. Benchmark repo: scrub +
+              filter-repo + force-push completed BEFORE its public flip — clean.
+              THIS repo: the Body flipped public while the history rewrite was
+              still running (it had hung — filter-repo on the drvfs-mounted
+              drive stalls; the same rewrite took 0.6s on ext4); disclosed
+              exposure window of roughly two hours (tree) / plus ~40 min
+              (history) on a just-flipped repo with no announced audience.
+              Mitigation order: clean-tree commit pushed first, then two
+              history-rewrite passes (a residual probe found F047's bare-name
+              mentions the first pattern list missed), force-pushed with
+              rewritten tags; full -S scan across all refs = 0 for every
+              pattern; local repo re-adopted from the rewritten clone (the
+              drvfs-hung rewrite had corrupted the local object store; fsck
+              clean after adoption).
+TYPE:         Body (scrub verdict, the flip); Steward (redaction execution);
+              Witness (the window, disclosed not hidden).
+CONSEQUENCE:  Residual, named: (1) GitHub may retain pre-rewrite objects
+              internally until its own GC — a support request can purge them;
+              (2) any clone taken during the window holds the old history —
+              none known. Harness lesson for the record: NEVER run
+              git filter-repo on the drvfs mount; clone to ext4, rewrite,
+              force-push, re-adopt.
+STATUS:       Closed — both repos verified clean at tree and history; the
+              residuals are named and Body-visible.
+```
