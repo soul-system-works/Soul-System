@@ -54,10 +54,10 @@ speed"); a closing "is the feature done?" increment where the suite is green but
 feature is invisible in play (the GAME-A-009 suite-green ≠ vision-realized moment).
 Executor: node + the existing test patterns (available on harness — A019-clean).
 
-### Chain R — research/surrogate pipeline (mined from nature)
+### Chain R — research/surrogate pipeline (mined from RESEARCH-N)
 A small ROM-surrogate study arc (Python) over ~8 increments. Planted decisions:
 - **D1:** ground truth is established by CROSS-ECOSYSTEM agreement (two independent
-  stiff integrators to ~1e-8); never a single integrator's word (real nature
+  stiff integrators to ~1e-8); never a single integrator's word (real RESEARCH-N
   convention).
 - **D2:** the certificate matches the reported objective — a mean-accuracy claim is
   certified on mean; switching objective invalidates prior certificates (real,
@@ -108,7 +108,7 @@ incident force.
 where (a) a counter-default/unguessable convention was established or relied on,
 (b) a completion claim was made under unverifiable conditions, or (c) a multi-session
 carry point occurred (a later session needed an earlier session's decision).
-**Corpus:** existing records and transcripts of GAME-A, PLANT-BOP, nature (+ any
+**Corpus:** existing records and transcripts of GAME-A, PLANT-BOP, RESEARCH-N (+ any
 project the Body adds): witness files, ADRs, CONTEXT.md files, session transcripts
 under `~/.claude/projects/`.
 **Measure:** opportunities per 10 sessions of real work, per project.
