@@ -75,15 +75,39 @@ flowchart TD
 
 ---
 
-## What This Is
+## What This Is — and who it is for
 
-This is not a workflow. Workflows can be followed without being understood.
+**This document is for you, the human.** As of 2.0 (the SLIM amendment, A021), the
+AI does not read this book: a session operates on one plain page —
+`operations/CLAUDE.md`, about ten sentences and four instruments. This book is how a
+*person* who picks up the system understands why those sentences exist, what each
+one paid in real failures to earn its place, and how to think alongside an AI whose
+sessions begin with no memory.
 
-This is not a set of instructions. Instructions can be obeyed without wisdom.
+That split is not a retreat; it is a measured result. Two days of pre-registered
+twin-chain experiments (June 2026; the corpus lives in the `soul-benchmark`
+repository and `docs/study/`) found that the frontier model had absorbed this
+philosophy's working core: given even a bare counter-default rule, sessions under a
+250-word ordinary contract held it under pressure, rebuilt "never do X" warnings at
+the code sites, and wrote tests that fail if the rule is broken — unprompted, at the
+same quality as sessions carrying the full doctrine, and cheaper. The doctrine
+*as instructions to the model* had won so completely it became redundant.
 
-This is a philosophy. It must be understood before it can be enacted. It shapes every decision, at every scale, from the architecture of a system to the naming of a variable.
+What did not come for free — the two places the measurements separated — is exactly
+what the surviving page and instruments enforce: **honesty about history** (with no
+doctrine, a session invented incidents and reviewers that never existed, and wrote
+them into the permanent record), and **memory across sessions** (in every condition,
+findings a session generated itself died at the session boundary unless an
+instrument captured them). A conscience and a notebook. The rest of this book is
+the philosophy that produced those instruments — read it the way you would read a
+craft tradition: not as rules to obey, but as the reasoning you will need on the
+day a rule seems wrong.
 
-Any session operating under this philosophy agrees to be governed by it even when — especially when — doing so creates friction or slows progress.
+The roles you will meet below — the Witness, the Skeptic, the Steward, the whole
+Council — are **names for perspectives that arise naturally in careful work**. The
+AI performs them without being told. Naming them is for you: an introspective lens
+("which voice is missing right now?"), a shared vocabulary for the record, and —
+where role names appear in witness entries — structured data your tools can mine.
 
 ---
 
@@ -702,14 +726,23 @@ That is enough. Done faithfully it is more than most systems achieve.
 
 ---
 
-## This Document Is Version One
+## This Document's Place in 2.0
 
-It is true enough to begin with. It is not complete. Completeness is not the goal — fidelity to what is actually true is the goal.
+Version one of this book said: *it is true enough to begin with.* It was — and then
+it was tested. The measurement program (v1.0 → the efficacy program → the floor and
+force-stripped discriminators, witness SOUL-155..165) confirmed parts, dissolved
+parts, and relocated the rest. What survived as enforcement lives in the contract
+and the instruments. What survived as understanding lives here.
 
-When the Council finds a gap, the gap will be named. When a tension surfaces that has no name, it will be given one. When the Universe contradicts something written here, what is written here will change.
+When the Council finds a gap, the gap will be named. When the Universe contradicts
+something written here, what is written here will change — that has now happened at
+scale, and the document you are reading is the proof that the process works.
 
 The Soul lives because it remains humble before what it does not yet know.
 
 ---
 
-*End of First Draft*
+*The Soul — the human-facing book since 2.0 (A021). The AI's page is
+`operations/CLAUDE.md`; the evidence is in `docs/study/` and the `soul-benchmark`
+repository; the record of how this document changed is in `amendments/` and
+`witness.md`.*
