@@ -1,7 +1,6 @@
 ---
 name: soul-distill
-description: Refresh the project's Mind — compress the accumulated record (witness + findings + ideas + amendments) into mind.md as rules / tensions / invariants / contrast cases + named incompressible residual. Body-invoked, on-demand. Produces a draft for curation; never auto-commits. The Distiller's instrument. Use when the record has accumulated enough new rule-evidence to warrant a refresh.
-disable-model-invocation: true
+description: Refresh the project's Mind — compress the accumulated record (witness + findings + ideas + amendments) into mind.md as rules / tensions / invariants / contrast cases + named incompressible residual. Produces a draft for curation; never auto-commits. The Distiller's instrument. Use when the Body asks, OR propose it proactively when the record has grown materially since the Last-distilled stamp (~15+ new witness entries, or any finding closure / accepted amendment) — ask first, run on the Body's yes (A022).
 ---
 
 # /soul-distill — refresh the Mind
@@ -18,14 +17,24 @@ Tier 2 evidence: Mind-only reasoning was ~41% cheaper than full-record on
 doctrinal questions; arms disagreed on obligation-shaped questions exactly where
 the residual lives.
 
-**Manual-fire only.** Auto-distillation (session-end hooks, threshold triggers)
-is deliberately deferred until the manual cadence proves insufficient.
+**Model-proposable, Body-confirmed (A022).** The original manual-fire-only stance
+deferred automation "until the manual cadence proves insufficient" — the Body's
+v2.0 review declared it so ("not clear WHEN I should use these"). The model now
+watches a simple growth signal and PROPOSES; the Body's yes is still the trigger,
+and the draft-for-curation / never-auto-commit discipline is unchanged.
+
+**The growth signal:** material record activity since the `Last distilled` stamp
+in `mind.md` — as a guideline, ~15+ new witness entries, or any finding closure
+or accepted amendment. Event-anchored, not calendar-anchored. No `mind.md` yet?
+Then the signal is the first accumulation that would fill one (see /soul-init's
+"the Mind is earned" note).
 
 ## What to do
 
-1. **Confirm the Body invoked this.** `/soul-distill` is Body-invoked; if there
-   is no explicit ask, stop. The cadence is "when the Body says it's time," not
-   "after every change." Default-deny.
+1. **Confirm the trigger.** Either the Body invoked this, or you are proposing:
+   state the signal plainly ("N witness entries and M finding closures since the
+   last distill — want me to refresh the Mind?") and WAIT for the yes. No yes,
+   no distill. The cadence is still the Body's; only the noticing moved.
 
 2. **Read the project's record AND the existing Mind.** Pull from the project root:
    - `witness.md` (tail at minimum; full if recent distill is stale)
@@ -199,7 +208,9 @@ is deliberately deferred until the manual cadence proves insufficient.
 
 ## What not to do
 
-- **Do not auto-fire.** Body-invoked only; cadence is earned, not scheduled.
+- **Do not run without the Body's yes.** Proposing on the growth signal is
+  encouraged (A022); running before the Body answers is forbidden. Never
+  schedule or hook this — the proposal is conversational, the trigger is human.
 - **Do not auto-commit.** Draft for curation; the Body owns the commit.
 - **Do not let the Mind grow.** Default-deny growth (check 4 in step 4).
 - **Do not force-fit the residual to zero.** Honesty about what doesn't compress
@@ -228,5 +239,7 @@ constitutional-AI's rules-over-examples, SOUL-033 description budget,
 the system-level amendment process (this is its project-level analog).
 **Shapes:** the four-buckets-plus-residual schema, the doctrine-vs-obligation
 boundary, the draft-for-curation discipline. **Adopted:** 2026-05-26.
-**Status:** active — MVP; auto-fire, `/soul-mind` viewer, cross-project
-synthesis, reproduction-fidelity automation, and plugin packaging deferred.
+**Status:** active — MVP; model-proposed on the growth signal since SOUL-A022
+(2026-06-12; the manual-fire-only deferral discharged by the Body's v2.0 review).
+`/soul-mind` viewer, cross-project synthesis, and reproduction-fidelity
+automation remain deferred.

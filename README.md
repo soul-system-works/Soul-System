@@ -7,7 +7,7 @@ Not a prompt collection. Not a workflow template. A measured system: **one plain
 page the AI reads** (about ten rules), **four instruments with teeth** (a capture
 command, a completion gate, a handoff, a distiller), and **a book for humans**
 (the philosophy that produced them). 2.0 is the shape the measurements left
-standing — two days of pre-registered twin-chain experiments showed the frontier
+standing — a program of pre-registered twin-chain experiments showed the frontier
 model has absorbed this system's reasoning core; what it still cannot do is keep
 its project history honest or carry what it learned across sessions. So that is
 what the system does: a conscience and a notebook.
@@ -27,33 +27,36 @@ The AI reads one page (`operations/CLAUDE.md`); people read `philosophy/the-soul
 
 ## Quick Start
 
-Clone the Soul System repo to a stable path on your machine, once.
-
-In any project you want to bring under the Soul, create a `CLAUDE.md` with one line:
-
-```
-@/path/to/Soul-System/operations/CLAUDE.md
-```
-
-Or run `/soul-init` from a Claude Code session in the project — the slash command writes that line for you.
-
-That installs the always-on **contract** — one page. Edits propagate immediately to every project that imports it. `/soul-init` also asks one register question (plain or fluent language; plain is the default). For the `/soul-*` commands and the verification hook, add the plugin (below).
-
----
-
-## Add the instruments (plugin)
-
-The `@import` above brings the always-on **doctrine**. The **commands** (`/soul-*`) and the
-**pre-completion verification hook** ship as a Claude Code plugin:
+Two commands in Claude Code, in any project:
 
 ```
 /plugin marketplace add soul-system-works/Soul-System
 /plugin install soul-system@soul-system
 ```
 
-Commands are namespaced under the plugin (e.g. `/soul-system:soul-capture`). The doctrine seed
-and the instruments **compose**: the seed is the always-on lifetime layer, the plugin is the
-tooling. Adopt the seed alone, the plugin alone, or both.
+Then, in the project you want to bring under the Soul:
+
+```
+/soul-init
+```
+
+That's the whole install. The plugin ships everything: the **contract** (the one
+page the AI reads, wired in by `/soul-init` as an `@import`), the **commands**
+(`/soul-*`, namespaced as e.g. `/soul-system:soul-capture`), and the
+**pre-completion verification hook** (the gate that blocks unverified "done").
+`/soul-init` also asks one register question — plain or fluent language; plain is
+the default — and scaffolds the project's record files.
+
+---
+
+## For developers (clone)
+
+If you want to read, edit, or contribute to the system itself — or pin the
+contract to a path you control — clone the repo to a stable location and let
+`/soul-init` write the import against your clone instead (it derives the root
+from wherever its skill is installed). Contract edits in a clone propagate
+immediately to every project that imports it. The seed and the instruments
+compose: adopt the contract alone, the plugin alone, or both.
 
 ---
 
@@ -68,7 +71,7 @@ tooling. Adopt the seed alone, the plugin alone, or both.
 1. Open a session in your project — the contract page is all the AI needs.
 2. When you want to understand *why* the system is shaped this way, read
    `philosophy/the-soul.md` — it is written for you, not the model.
-3. The honest claims ledger — what this will and will not do for you, each
+3. The release post — what this does for you, what it won't, each claim
    anchored to a measured result — is in `docs/study/blog-release.md`.
 
 ---

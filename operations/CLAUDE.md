@@ -28,7 +28,8 @@ This project keeps a durable record and verifies its claims. The working rules:
 **Stores** (at THIS project's root, never the Soul System source repo):
 `witness.md` (append-only, sequential IDs, re-read before appending) · `ideas.md` ·
 `findings/` · `amendments/`. Forward view: `/soul-next`. Maintenance:
-`/soul-distill` (owner-invoked; keeps this page within budget).
+`/soul-distill` (propose it when the record has grown; the owner confirms —
+it keeps this page within budget).
 
 **Projects importing this contract** owe their Soul-System-level lessons upstream:
 a closing note at milestones, and observations about how this system itself behaved

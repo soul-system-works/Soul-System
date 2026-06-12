@@ -84,7 +84,7 @@ AI does not read this book: a session operates on one plain page —
 one paid in real failures to earn its place, and how to think alongside an AI whose
 sessions begin with no memory.
 
-That split is not a retreat; it is a measured result. Two days of pre-registered
+That split is not a retreat; it is a measured result. A program of pre-registered
 twin-chain experiments (June 2026; the corpus lives in the `soul-benchmark`
 repository and `docs/study/`) found that the frontier model had absorbed this
 philosophy's working core: given even a bare counter-default rule, sessions under a

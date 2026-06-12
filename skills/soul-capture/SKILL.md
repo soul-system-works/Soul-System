@@ -1,7 +1,6 @@
 ---
 name: soul-capture
-description: Capture to the record in one of three modes — idea (frictionless, forward), witness (light scaffold, backward), finding (earned scaffolder). The mode token is the first arg and selects friction + target store + format. Merges the former /soul-idea, /soul-witness, /soul-finding into one command; the ratchet is preserved by mode. Use to jot a forward possibility, log an observation, or scaffold a graduation the Body has decided.
-disable-model-invocation: true
+description: Capture to the record in one of three modes — idea (frictionless, forward), witness (light scaffold, backward), finding (earned scaffolder). The mode token is the first arg and selects friction + target store + format. Use when the Body asks to capture, OR proactively when you spot an UNGUESSABLE mid-session — a fact, decision, or convention a later session could not re-derive (F044 triage) — in idea/witness mode only: draft the entry and hold for the Body's confirmation before appending. Never self-invoke finding mode; graduation is the Body's explicit call (A022).
 ---
 
 # /soul-capture — capture to the record
@@ -19,6 +18,22 @@ re-derives it 10/10) and only inflates the store. When in doubt: "could a fresh
 session reason its way back to this?" No → capture. Yes → skip. And per contract
 rule 2: capture what HAPPENED — never dramatize, never invent the incident a rule
 "deserves" (SOUL-164).
+
+## Who fires this (A022 — model-proposable, Body-confirmed)
+
+The Body can invoke this at any time. The MODEL may also invoke it **proactively**
+— the capture gap is the program's most universal failure (in every condition
+tested, a mid-session finding died at the session boundary unless an instrument
+caught it, SOUL-163/164) — under these limits:
+
+- **Modes `idea` and `witness` only.** Never self-invoke `finding` — graduation
+  is the Body's explicit, earned act (Rule 7 / I024).
+- **The F044 triage rule is the trigger.** Propose only for the unguessable; do
+  not propose for what a fresh session would re-derive.
+- **Always hold for confirmation.** Model-initiated captures draft the entry and
+  show it; nothing is appended until the Body says go. (Body-initiated `idea`
+  keeps its near-zero ceremony; model-initiated `idea` shows the one-liner first.)
+- The Body's "no" is final and costs nothing — proposals are cheap, vetoes cheaper.
 
 ## Where it writes (target — read this first)
 
@@ -102,4 +117,6 @@ part (ID, format, placement, upstream reminder) — it does NOT graduate on its 
 **Source:** Merged at the Cut (→1.0) from `/soul-idea` (SOUL-I-inbox), `/soul-witness`
 (SOUL-I029), `/soul-finding` (SOUL-I024) into one mode-dispatched command. The friction
 differential (Mind contrast case; I024) is preserved by mode, not by command count. Carries
-the I027 re-read-verify protocol. **Adopted:** 2026-06-08. **Status:** active.
+the I027 re-read-verify protocol. Model-proposable for idea/witness since
+SOUL-A022 (2026-06-12; the Body's v2.0 review — "not clear WHEN").
+**Adopted:** 2026-06-08. **Status:** active.

@@ -6,21 +6,29 @@ disable-model-invocation: true
 
 # /soul-init — load the Soul System into the current project
 
-**Soul System root on this machine:** `/mnt/d/Projects/Soul-System`
-
-If that path is wrong for the machine you are running on, edit this file and change the path above before invoking the command. (When this command is installed as a symlink to the repo — the SOUL-F029 distribution model — editing the symlink edits the repo's canonical copy.)
+**Derive the Soul System root from this skill's own location (A022).** The harness
+states this skill's base directory when it loads; the root is two levels up
+(`<base>/../..` — this file lives at `<root>/skills/soul-init/`). That resolves
+correctly for every distribution model: a symlinked skill resolves through the
+symlink to the cloned repo (the SOUL-F029 model); a plugin-installed skill
+resolves to the plugin's installed copy, which ships the whole repo — making
+**plugin install + `/soul-init` a complete setup with no clone**. VERIFY before
+writing: the derived root must contain `operations/CLAUDE.md` (resolve symlinks
+to an absolute path first, e.g. `realpath`). If it does not, say so and ask the
+Body where the Soul System lives — never write an import line you have not
+verified resolves.
 
 ## What to do
 
 1. Determine the current working directory (the project root). Do not search upwards; use the directory the session was started in.
 
 2. Check whether `CLAUDE.md` already exists in that directory.
-   - **If it exists:** read it. If it already contains the line `@/mnt/d/Projects/Soul-System/operations/CLAUDE.md`, note "import already present" — **do not stop; continue to step 3** to ensure the local record scaffold exists (soul-init is idempotent: it backfills a missing record for an already-imported project). If it exists but does not contain that line, report the existing contents and ask the user whether to append the import line or leave it alone. Do not overwrite without explicit confirmation.
+   - **If it exists:** read it. If it already contains an import line ending in `/operations/CLAUDE.md` (any root — a prior install may have used a different path), note "import already present" — **do not stop; continue to step 3** to ensure the local record scaffold exists (soul-init is idempotent: it backfills a missing record for an already-imported project). If it exists but does not contain that line, report the existing contents and ask the user whether to append the import line or leave it alone. Do not overwrite without explicit confirmation.
    - **If it does not exist:** ask one question — "Response register: plain or
      fluent?" (default **plain** if the user has no preference) — then create it
      containing the import line plus the Register line:
      ```
-     @/mnt/d/Projects/Soul-System/operations/CLAUDE.md
+     @<derived-root>/operations/CLAUDE.md
 
      **Register: plain** — keep responses concise and in plain language; use a Soul
      or project term only when it earns its place, gloss it on first use in a
@@ -57,4 +65,4 @@ If that path is wrong for the machine you are running on, edit this file and cha
 ---
 
 **Source:** Built by the Artificer as the Soul System's bootstrap command (the `@import` installer). Brought into the repo and put on the symlink (live-reference) distribution model under [[SOUL-F029]] — it previously lived only in `~/.claude/commands/`, the source-of-truth gap that finding names. **Adopted:** 2026-05-19 (repo-canonical 2026-05-22). **Status:** active.
-**NOTE (machine-local):** the "Soul System root on this machine" path above is the one machine-specific datum in this command; on a new machine, edit it (or template it) — the F029 portability wrinkle, deferred.
+**NOTE:** the former machine-local root path (the F029 portability wrinkle) was retired by SOUL-A022 — the root now derives from the skill's own location, which also makes the plugin a complete install path.
