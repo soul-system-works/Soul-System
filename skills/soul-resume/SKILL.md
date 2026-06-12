@@ -17,7 +17,9 @@ source of truth; this loads them and continues.
 2. **Load the pointers the cursor names**, in priority order — witness tail, open
    findings, ripe ideas, the task tracker, the named specs/ADRs. Actually read them so
    the durable state is in context; don't just glance at the cursor.
-3. **Restate, in 2–3 lines:** where we are · the LIVE AL (if any) · the NEXT STEP.
+3. **Restate, in 2–3 lines:** where we are · the live design frame (if any) · the
+   next step. Under a `plain` register (the project CLAUDE.md's Register line), say
+   "the current design frame" rather than "the LIVE AL"; plain language throughout.
 4. **Continue from the NEXT STEP** — but if it is a non-trivial build or a decision the
    Body should make, confirm first rather than diving in (explore before execute).
 

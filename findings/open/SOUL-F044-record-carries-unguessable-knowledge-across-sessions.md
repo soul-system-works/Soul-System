@@ -168,4 +168,15 @@ STATUS:          Open — promotion conditions MET 2026-06-10: the erosion rung 
                  harvest needed. The finding is Soul-meta (about the value of the
                  accumulating record itself, a core Soul premise), so it belongs in this
                  findings/ stream and feeds /soul-distill.
+
+PROPOSED CLOSURE (2026-06-11, drafted for Body sign-off — the file moves to
+                 findings/closed/ on the nod): every promotion condition has been met
+                 and the result is now load-bearing doctrine three times over — the
+                 contract's capture sentence carries the derivable-vs-unguessable
+                 triage as its selection rule, /soul-capture's doc states it with the
+                 0/30-vs-10/10 anchors, and the SLIM verdict (SOUL-165) rests on it.
+                 The efficacy program added the boundary the original finding lacked:
+                 the record's value at CEILING conditions is integrity + capture (the
+                 fabrication axis F056; the universal session-boundary loss), not
+                 decision-quality lift. Closing leaves F056 as the live successor.
 ```

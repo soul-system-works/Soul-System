@@ -16,10 +16,21 @@ If that path is wrong for the machine you are running on, edit this file and cha
 
 2. Check whether `CLAUDE.md` already exists in that directory.
    - **If it exists:** read it. If it already contains the line `@/mnt/d/Projects/Soul-System/operations/CLAUDE.md`, note "import already present" — **do not stop; continue to step 3** to ensure the local record scaffold exists (soul-init is idempotent: it backfills a missing record for an already-imported project). If it exists but does not contain that line, report the existing contents and ask the user whether to append the import line or leave it alone. Do not overwrite without explicit confirmation.
-   - **If it does not exist:** create it containing exactly one line:
+   - **If it does not exist:** ask one question — "Response register: plain or
+     fluent?" (default **plain** if the user has no preference) — then create it
+     containing the import line plus the Register line:
      ```
      @/mnt/d/Projects/Soul-System/operations/CLAUDE.md
+
+     **Register: plain** — keep responses concise and in plain language; use a Soul
+     or project term only when it earns its place, gloss it on first use in a
+     session, and introduce vocabulary gradually. (Switch by editing this line;
+     other value: `fluent` — full Soul vocabulary.)
      ```
+     For `fluent`, write the line as `**Register: fluent** — full Soul vocabulary.`
+     For an EXISTING CLAUDE.md that lacks a Register line, offer to add one
+     (same default) — per the SOUL-I050 spec, the line lives in the project's
+     CLAUDE.md, never in the seed.
 
 3. **Scaffold the project's local record** at the project root (so `soul-capture` /
    `soul-handoff` / `soul-distill` have an unambiguous *local* target — the record is THIS

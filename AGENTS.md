@@ -9,18 +9,22 @@ science, engineering, and coding.
 
 This file is the **always-on layer for any agent tool that reads `AGENTS.md`** (Cursor,
 Windsurf, OpenAI Codex, Gemini CLI, GitHub Copilot, Aider, Cline, Roo, Zed, Jules, and
-others). On Claude Code the same doctrine loads via `operations/CLAUDE.md` (the seed) +
-`mind.md`; the filename `CLAUDE.md` is historical, not a tool restriction. **When this
-file and the seed disagree, this public file is canonical.**
+others). On Claude Code the same doctrine loads via `operations/CLAUDE.md` (the contract) +
+`mind.md` (project notes); the filename `CLAUDE.md` is historical, not a tool
+restriction. **When this file and the contract disagree, this public file is
+canonical.** Since 2.0 (A021) the AI-facing layer is ONE PAGE; the philosophy is
+the human-facing book.
 
 ## First actions (any tool, at session start)
 
 The full doctrine is on disk. Your tool auto-loads *this file*; you must **open the rest
 yourself**:
 
-1. Read `philosophy/the-soul.md` — once, slowly. The governing philosophy + full role roster.
-2. Read `mind.md` — the distilled rules / tensions / invariants / contrast cases.
+1. Read `operations/CLAUDE.md` — the contract; one page; everything in force.
+2. Read `mind.md` — this repo's project notes (unguessables only).
 3. Read the tail of `witness.md` — the durable record of what this project has learned.
+(`philosophy/the-soul.md` is the human-facing book — read it to understand the
+system, not to operate under it.)
 
 Everything below is the irreducible core, always in force.
 
