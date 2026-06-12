@@ -7821,3 +7821,32 @@ CONSEQUENCE:  Residual, named: (1) GitHub may retain pre-rewrite objects
 STATUS:       Closed — both repos verified clean at tree and history; the
               residuals are named and Body-visible.
 ```
+
+```
+ID:           SOUL-170
+WHEN:         2026-06-12 / LIVE INSTALL VERIFIED — the Body exercises the public
+              plugin path end-to-end; A022's last unrun act closes.
+WHERE:        The Body's machine (marketplace install + /soul-init in a scratch
+              project); skills/soul-init (the version-pin guard, 4841fed).
+WHAT:         The Body ran marketplace add/update + /soul-init live. Verified:
+              the installed plugin ships the full repo (contract + skills);
+              /soul-init wrote a correct resolving import + complete record
+              scaffold + Register line; repeat runs hit the import-already-
+              present branch and changed nothing (idempotency observed live,
+              including a no-reload first attempt). DISCOVERED on the first
+              install: the plugin cache path is VERSION-PINNED
+              (.../soul-system/1.0.0/) — an @import against it would die
+              silently at the next plugin update (the F038 failure shape).
+              Guard added to /soul-init: prefer the unversioned marketplace
+              clone; warn when pinning is unavoidable. Both of the Body's
+              plugin copies confirmed current with the guard after a second
+              marketplace update.
+TYPE:         Body (the live test); Emissary (the verification); Craftsman
+              (the guard).
+CONSEQUENCE:  A022 fully verified except one by-construction-unreachable-here
+              branch: the guard WRITING a marketplace-path import only occurs
+              on a machine with no dev clone; its self-check degrades to a
+              question, not a bad file. Closes the v2.0.0 ship arc
+              (SOUL-162..170).
+STATUS:       Closed.
+```
