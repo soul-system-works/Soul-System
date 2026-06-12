@@ -47,6 +47,9 @@ page the AI reads, wired in by `/soul-init` as an `@import`), the **commands**
 `/soul-init` also asks one register question — plain or fluent language; plain is
 the default — and scaffolds the project's record files.
 
+**What happens after install — who does what, and when:**
+[`docs/using-the-soul.md`](docs/using-the-soul.md), one page.
+
 ---
 
 ## For developers (clone)

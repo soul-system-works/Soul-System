@@ -1,6 +1,6 @@
 ---
 name: soul-help
-description: A short intro to the Soul System — what it is, the core gates, the commands, and where the durable record lives. The onboarding entry point ("--help" for the Soul). Reads skills/ at runtime so the list stays current.
+description: A short intro to the Soul System — what it is, the usage lifecycle (docs/using-the-soul.md), the commands, and where the durable record lives. The onboarding entry point ("--help" for the Soul). Reads skills/ at runtime so the list stays current.
 disable-model-invocation: true
 ---
 
@@ -11,16 +11,18 @@ wants the lay of the land). Not a deep philosophy dump — point to depth, don't
 
 ## What to do
 
-1. **One-paragraph what-it-is.** The Soul is a living philosophy that loads into every
-   session (the seed `operations/CLAUDE.md` + the distilled `mind.md`) plus a durable record
-   that accumulates across sessions (`witness.md`, `findings/`, `ideas.md`, `amendments/`).
-   The seed orients; the record remembers what a later session couldn't re-derive. Full
-   philosophy on demand: `philosophy/the-soul.md`.
+1. **One-paragraph what-it-is.** The Soul is one plain contract the AI reads every
+   session (`operations/CLAUDE.md`, ~10 rules) plus a durable record that accumulates
+   across sessions (`witness.md`, `findings/`, `ideas.md`, `amendments/`). The contract
+   orients; the record remembers what a later session couldn't re-derive. The book for
+   humans: `philosophy/the-soul.md`.
 
-2. **The core gates** (one line each): understand the abstraction before building (the AL
-   gate); frame at two levels; explain existing state before changing it; verify against
-   reality before calling done (fires automatically as a Stop hook); anchor every absolute
-   claim with a valid external reference.
+2. **The lifecycle in three lines** (the full page: `docs/using-the-soul.md` — read it
+   and summarize rather than reciting from memory): day one is `/soul-init` and nothing
+   else; every session, the completion gate fires by itself and the AI *proposes*
+   captures (the Body answers yes/no; only the Body promotes a `finding`); over time
+   the AI proposes `/soul-distill` when the record has grown, and the Body curates
+   the draft.
 
 3. **The commands.** Read `skills/` at runtime and list each `soul-*/SKILL.md` with a one-line
    "when it fires" (the first sentence of its `description:`, ~100 char cap) — so this can't
