@@ -106,6 +106,24 @@ is deliberately deferred until the manual cadence proves insufficient.
      calendar time, surface the Steward question: is the Mind still load-bearing
      or should it retire?
 
+5b. **Apply the measured compression rules (2.0 — these are results, not style):**
+
+   - **Dedicated-bullet salience beats coverage** (F055): a rule a weak model must
+     act on gets its OWN bullet; folding it into a paragraph took activation
+     5/5 → 1/5 on identical content. Bloat also splits quoting from obeying —
+     a model can cite a rule it then violates; the budget is a correctness rule.
+   - **Negation + executable fence is the surviving form** (SOUL-164,
+     erosion-audit): "never X" at the site plus a test that fails if broken
+     survives compression 30/30; prose rationale erodes. When a distilled entry
+     can point at an executable fence, point at it.
+   - **Imperative, loophole-free residuals** (SOUL-128/129): "unless / except /
+     when appropriate" is the gap a frontier model walks through with an invented
+     reconciling fact; terseness is the gap a weak model reverts through.
+   - **Anti-prior facts are partly incompressible** (F045/A018): keep the
+     incident and the explicit negation, or leave the fact un-distilled — and
+     NEVER fabricate an incident to give a bare rule force (the fabrication
+     axis, SOUL-164: that is the model's own failure mode, not a technique).
+
 6. **Run the three diagnostic self-test questions** on the draft:
 
    1. **Load-bearing or renamed-seed?** Does this Mind generate decisions the

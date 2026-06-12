@@ -7674,3 +7674,45 @@ CONSEQUENCE:  Closes SOUL-164 (and the SOUL-162→163→164 verdict arc). Execut
 STATUS:       Closed — the verdict arc is complete; execution items track in
               the spec and the task list.
 ```
+
+```
+ID:           SOUL-166
+WHEN:         2026-06-11 / THE SLIM EXECUTED — v2.0.0 assembled unattended to the
+              releasable milestone (Body-authorized; push and public flip remain
+              held).
+WHERE:        Amendment SOUL-A021; this repo (seed, mind, philosophy, README,
+              AGENTS, skills, hook, version); docs/study/blog-release.md;
+              docs/specs/2026-06-11-slim-contract-draft.md (now installed).
+WHAT:         (1) The contract installed: operations/CLAUDE.md rewritten to 8
+              plain rules + stores + reference-project obligation + human-book
+              pointer (~300 words, from ~2,000 + mind's ~1,800). mind.md → 4
+              project notes (calibration lean; F038/harness incl. git-isolation;
+              fabrication-axis force; dual-use clause). SENTINEL PASS at Haiku:
+              F038 probe 5/5 HOLD+CITE, never-invent-history probe 3/3
+              REFUSE+CITE (the Rule-5 protocol, third application).
+              (2) Register implemented (SOUL-I050): init question + line (plain
+              default), resume/hook plain wording, this repo dogfooding plain.
+              (3) Capability audit (12-item sweep of the full corpus) folded its
+              three IN-items: measured compression rules → /soul-distill §5b
+              (F055 salience, fence-form survival, loophole-free imperatives,
+              F045 incompressibility, never-fabricate-force); F044 triage rule →
+              /soul-capture; gate second-function paragraph →
+              completion-gate.md. (4) philosophy/the-soul.md reframed as the
+              human-facing book (audience + measurement summary at top, 2.0
+              place note at bottom; body preserved). (5) Public canon aligned:
+              README + AGENTS.md (Rule 12). (6) Release blog written: the
+              will/wont ledger, every claim anchored (the audit's 8-bullet
+              wont-do list). (7) F056 drafted + F044 closure proposed — BOTH
+              awaiting the Body's explicit graduation nod (Rule 7 preserved).
+              (8) SYSTEM-VERSION 2.0.0; pre-state tagged v1.1.0-pre-slim.
+TYPE:         Steward (the retirement executed item-by-item per A021); Craftsman
+              (the contract page); Emissary (sentinel re-verification before
+              install counted).
+CONSEQUENCE:  Releasable shape reached. Remaining Body acts: F056/F044 nods,
+              draft reviews (contract installed but editable; papers; blogs),
+              push v2.0.0 + public flip. Reference projects inherit the new
+              contract automatically via live import at their next session —
+              their registers default to fluent until they opt in (the line
+              lives per-project).
+STATUS:       Closed — the milestone; review items tracked in the handoff.
+```

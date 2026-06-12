@@ -3,15 +3,22 @@
 A living philosophy and operational framework for human-AI collaborative work
 in research, science, engineering, and coding.
 
-Not a prompt collection. Not a workflow template. A craft tradition — principles
-forged from real failure patterns, designed to make AI-assisted work more
-principled and self-correcting.
+Not a prompt collection. Not a workflow template. A measured system: **one plain
+page the AI reads** (about ten rules), **four instruments with teeth** (a capture
+command, a completion gate, a handoff, a distiller), and **a book for humans**
+(the philosophy that produced them). 2.0 is the shape the measurements left
+standing — two days of pre-registered twin-chain experiments showed the frontier
+model has absorbed this system's reasoning core; what it still cannot do is keep
+its project history honest or carry what it learned across sessions. So that is
+what the system does: a conscience and a notebook.
 
 <p align="center">
   <img src="architecture.svg" alt="Soul System role model (the full philosophy, consulted on demand): the Universe wraps the Body, which inhabits the Soul, Witness, Council, Judge, and Hands. The Council is a chamber of symbolic voices in tiers; the Hands sit beneath the Judge; the Panel of Experts sits parallel to the Witness, summoned when needed." width="100%">
 </p>
 
-*The Soul governs. The Witness and the Panel inform; the Council synthesises; the Judge decides; the Hands produce — the full role model, consulted on demand. 1.0 keeps the always-on surface lean: a one-paragraph roster in the seed, with this depth in `philosophy/`.*
+*The role model above is the **human-facing** layer since 2.0: names for perspectives
+that arise naturally in careful work, kept as a reading lens and a record vocabulary.
+The AI reads one page (`operations/CLAUDE.md`); people read `philosophy/the-soul.md`.*
 *The Body — the human — inhabits all of it and bears responsibility for the whole.*
 
 **Composes, does not replace.** The Soul System layers above how you already work — BMAD, TDD, Cursor Rules, your own conventions. Adopt what helps. Ignore what does not.
@@ -30,7 +37,7 @@ In any project you want to bring under the Soul, create a `CLAUDE.md` with one l
 
 Or run `/soul-init` from a Claude Code session in the project — the slash command writes that line for you.
 
-That installs the always-on **doctrine**. Edits to the philosophy propagate immediately to every project that imports it. For the `/soul-*` commands and the verification hook, add the plugin (below).
+That installs the always-on **contract** — one page. Edits propagate immediately to every project that imports it. `/soul-init` also asks one register question (plain or fluent language; plain is the default). For the `/soul-*` commands and the verification hook, add the plugin (below).
 
 ---
 
@@ -58,9 +65,11 @@ tooling. Adopt the seed alone, the plugin alone, or both.
 
 ## Start
 
-1. Read `philosophy/the-soul.md` — once, slowly, before anything else.
-2. Open a session in your project.
-3. State the problem at two levels (the Frame gate). The session continues from there.
+1. Open a session in your project — the contract page is all the AI needs.
+2. When you want to understand *why* the system is shaped this way, read
+   `philosophy/the-soul.md` — it is written for you, not the model.
+3. The honest claims ledger — what this will and will not do for you, each
+   anchored to a measured result — is in `docs/study/blog-release.md`.
 
 ---
 
@@ -74,16 +83,16 @@ If you found something worth sharing, see `CONTRIBUTING.md`.
 ## Structure
 
 ```
-philosophy/     The Soul — the full philosophy, consulted on demand
-operations/     The operational seed — imported by @ into your project's CLAUDE.md
+philosophy/     The Soul — the human-facing book (the AI does not read this)
+operations/     The contract page — imported by @ into your project's CLAUDE.md
 skills/         The eight /soul-* instruments, as Claude Code skills (invoked /soul-capture, …)
 hooks/          Activation instruments — the pre-completion Stop hook + plugin hooks.json
 amendments/     Amendments to the Soul, by lifecycle state (accepted/proposed/returned)
 findings/       Findings, open/ and closed/
 witness.md      The repo's own Witness log (what happened, backward)
 ideas.md        The idea inbox (what might, forward) — graduates into findings/
-mind.md         Optional project layer — compressed rule-set distilled from the record
-docs/           Live design specs + study/ (the measurement behind 1.0); historical provenance under docs/archive/
+mind.md         Optional project layer — project notes distilled from the record (unguessables only)
+docs/           Live design specs + study/ (the measurements behind 1.0 and 2.0); historical provenance under docs/archive/
 .claude-plugin/ Plugin + marketplace manifests (install the /soul-* skills + hook)
 AGENTS.md       Cross-vendor entry point for any agent tool
 ```

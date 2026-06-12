@@ -63,6 +63,14 @@ State the gate's reach honestly: it guarantees **sourcing discipline, not measur
 validity**. A green gate is not a truth certificate; the load-bearing assumption still needs
 a Skeptic's eye.
 
+**The gate's measured second function: a late-stage defect detector.** Beyond blocking
+false completion claims (v1.0 in-vivo 6/6 ship-with-gaps → v1.1 0/12, SOUL-159), the
+re-verification the gate forces has caught REAL defects in otherwise-finished work:
+a false provenance pointer in a safety document (SOUL-164, force-stripped arm S), a
+citation over-claim (SOUL-140), and a conflated incident in a paper draft corrected
+against source files (the SOUL-162 session). Treat the fired gate as a last read of
+the artifact, not a formality to satisfy.
+
 ---
 
 **Source:** the Soul's failure vocabulary (Universe Collapse, Ad Hoc Methodology),

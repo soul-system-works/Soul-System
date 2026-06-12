@@ -12,6 +12,14 @@ The token *is* the capture ratchet made visible — typing `finding` is the deli
 earning act. If no mode is given, **ask** ("idea / witness / finding?") — do not guess
 the store.
 
+**What earns capture (the measured triage rule, F044):** record the UNGUESSABLE — a
+fact or arbitrary convention a later session cannot re-derive (those carried 0/30
+drift at every model tier). The derivable regenerates on its own (the frontier
+re-derives it 10/10) and only inflates the store. When in doubt: "could a fresh
+session reason its way back to this?" No → capture. Yes → skip. And per contract
+rule 2: capture what HAPPENED — never dramatize, never invent the incident a rule
+"deserves" (SOUL-164).
+
 ## Where it writes (target — read this first)
 
 The record is **this project's**, at the **project root** — the directory of the session's
