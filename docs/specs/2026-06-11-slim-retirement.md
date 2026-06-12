@@ -150,3 +150,36 @@ The doctrine-explain path stays (it serves the register work, R2) or merges into
 - Does not pre-empt the floor discriminator: ⏸ items wait; a floor result showing
   the ceremony protects weak-doctrine users reverses those cuts by design, not by
   re-litigation.
+
+---
+
+## 6. RATIFICATION RECORD — 2026-06-11 (witness SOUL-165)
+
+The Body ratified the FINAL shape after the floor and force-stripped
+discriminators (soul-benchmark `2026-06-11-efficacy-floor/`,
+`2026-06-11-force-stripped/`). Branch 1 of the force-stripped decision mapping
+fired (all-tie including force-form), amended by the two found differentials
+(the fabrication axis; the universal capture gap).
+
+**Deltas from the proposal above (supersede the item text where they conflict):**
+
+- **R1 deepens:** the always-on seed cuts not to ~60% but to ONE PLAIN CONTRACT
+  (~10 sentences + instrument pointers; draft at
+  `docs/specs/2026-06-11-slim-contract-draft.md`). Rule-5 sentinel test still
+  applies before it replaces `operations/CLAUDE.md`.
+- **K2 amends:** Rule 14's BEHAVIOR is measured model-native (all three FS arms
+  reconstructed negation + executable fences from bare rules); the doctrine TEXT
+  retires to the human layer; the behavior survives as contract sentence 1.
+- **K5 promotes:** anchor discipline is the program's only arm-level behavioral
+  differential (floor fabricated incident history; doctrine arms did not).
+  New core sentence added: "never invent history."
+- **R3 amends:** mind.md mostly retires (contents → contract sentences, human
+  doc, or the record). /soul-distill maintains the contract + human doc.
+- **C1/C2/C4 proceed**, C2 via C2-alt: the-soul.md rewritten as the HUMAN-FACING
+  understanding document (SOUL-I051) — not archived.
+- **New operational item:** experiment-harness fix — arm repos must be
+  git-isolated (`git init` per arm or run outside the benchmark tree) and
+  Glob/Read above the repo root denied (the FS meta-leak class).
+
+All execution artifacts land as drafts for Body approval. Records untouched;
+hook untouched beyond the landed scope fix; upstream obligation unchanged.
