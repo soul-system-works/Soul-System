@@ -193,9 +193,55 @@ survivor beats best practice, and it doesn't — best practice grew the same cor
 while I was measuring it. What's left standing is small, cheap, enforceable, and
 portable. Honestly? That's a better system than the one I started defending.
 
+## Postscript: then I ran the floor test. And then one more.
+
+Everything above was written the morning after the program closed, with the floor
+test still on the to-do list. By that evening it had run — twice over — and the
+ending got better, so here it is.
+
+**The floor test:** same frozen chains, third arm, a genuinely mediocre CLAUDE.md —
+233 words a "busy developer" persona wrote in five minutes (I had to *strike* a
+verify-before-shipping sentence it wrote spontaneously; even the five-minute author
+reaches for my system's core now). Result: **the floor held everything.** Every
+planted decision, zero false-dones, all green when I executed its work cold. And it
+was the cheapest arm yet — cheaper than my system, cheaper than the excellent
+comparator. Cost now orders: floor < Soul < excellent. The more doctrine you load,
+the more you pay, and at these project lengths the quality is identical.
+
+**Then the last confound:** maybe my increment prompts — which carried each rule's
+origin story to every arm — were the real doctrine all along. So one more run:
+strip the incident stories from the prompts, leave bare rules, all three CLAUDE.md
+conditions. Result: nothing changed. All three arms held the bare rules, and all
+three *rebuilt the force I'd stripped* — "never" comments at the code sites, tests
+that fail if the rule is broken. The carriage mechanism I spent a version
+engineering is just… what the model does now.
+
+Except for one thing, and it's the finding I'll be chewing on for a while. **Given
+no incident stories, the floor arm invented them.** Its handoff cites "a reviewer"
+who never existed and lists design decisions under "mistakes this project already
+paid for" — mistakes nobody made. The doctrine arm invented nothing, and marked
+every unknown as unknown. The excellent arm refused in writing: "I did not invent
+one." The model reaches for the *shape* of hard-won experience even when there's no
+experience to draw on — and whether it fills that shape with truth or fiction turns
+out to be the one thing, in this entire program, that the doctrine measurably
+controlled. Meanwhile, in *every* arm — floor, excellent, mine — findings a session
+generated itself died at the session boundary unless an instrument caught them; the
+excellent arm's audit session found real release-blockers and its own successor
+never learned of them.
+
+So the final shape, ratified the same evening: **ten true sentences** (record at
+the point of pressure; never invent history; anchor your claims; nothing is done
+until it runs; capture what can't be re-derived; leave a cursor), **four
+instruments with teeth** (the capture command, the completion gate, the handoff,
+the distiller), **and a book for the humans** — the philosophy, the roles, the
+whole mythology, rewritten as the document you read to understand the system, not
+the document the AI obeys. The model absorbed the doctrine. What it can't do is
+keep its own history honest, or remember what it learned an hour ago. So that's
+what the system is now: a conscience and a notebook.
+
 ---
 
-*The formal write-up — both studies, the locked predictions, every miss — is in the
-companion paper. The first study's paper and data are [here](paper.md); the program
-corpus (chain results, mining reports, the verdict file) lives in the
-`soul-benchmark` repository.*
+*The formal write-up — all three studies, the locked predictions, every miss — is
+in the companion paper. The first study's paper and data are [here](paper.md); the
+program corpus (chain results, mining reports, the verdict files, both
+discriminators) lives in the `soul-benchmark` repository.*
