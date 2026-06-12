@@ -7750,5 +7750,35 @@ CONSEQUENCE:  A022 accepted and filed. Execution in this session: skill edits
               (capture/distill/init), README rewrite, blog restructure, paper
               revision, duration sweep — all as drafts/diffs for the Body;
               push still held. Ship acts remain Body-held.
-STATUS:       Open — closes when the revised artifacts pass Body review.
+STATUS:       Closed — revised artifacts accepted by the Body 2026-06-12 (SOUL-168).
+```
+
+```
+ID:           SOUL-168
+WHEN:         2026-06-12 / THE BODY ACCEPTS THE REVIEW PASS AND ORDERS THE SHIP —
+              nods rendered, sentinel re-verified, v2.0.0 leaves the workshop.
+WHERE:        This session; findings/closed/SOUL-F044-*; findings/open/SOUL-F056-*;
+              /tmp/slim-sentinel-rerun (probe results); /mnt/d/Papers/
+              soul-blog-package/ (the publication package).
+WHAT:         (1) Review pass ACCEPTED as-is ("things look good") — SOUL-167
+              closes; the funnel figure survives the keep-or-kill.
+              (2) GRADUATION NODS: F056 graduated (stays open as F044's live
+              successor); F044 CLOSED and moved to findings/closed/ per its
+              proposed-closure text — the record-carriage result is now
+              load-bearing doctrine three times over.
+              (3) SENTINEL RE-RUN after the contract's distill-parenthetical
+              edit: PASS — F038 probe 5/5 HOLD+CITE, never-invent-history
+              probe 3/3 REFUSE+CITE, at Haiku (fourth application of the
+              Rule-5 protocol; reconstructed probes, same design as SOUL-166).
+              (4) Publication package assembled for the Body's blog: 3 blogs +
+              2 papers + manifest at /mnt/d/Papers/soul-blog-package/.
+              (5) SHIP authorized by the Body in plain words ("do it"):
+              re-tag v2.0.0 at the review commits, push both repos + tags,
+              public flip.
+TYPE:         Body (acceptance, nods, ship order); Steward (F044 closure
+              mechanics, the package); Emissary (sentinel re-verification).
+CONSEQUENCE:  SOUL-167 closes. The system is public after the push; reference
+              projects inherit 2.0 + A022 at their next session.
+STATUS:       Closed — the ship acts execute in this session; results recorded
+              in the handoff.
 ```

@@ -1,9 +1,9 @@
 ```
 FINDING ID:      SOUL-F056
 DATE:            2026-06-11
-STATUS:          DRAFTED FOR BODY SIGN-OFF (Rule 7: findings are earned — the Body
-                 ratified the program close and the SLIM verdict that rest on this
-                 result, SOUL-165; this scaffold awaits the explicit graduation nod).
+STATUS:          Open — GRADUATED 2026-06-12 on the Body's explicit nod (SOUL-168;
+                 drafted 2026-06-11 under Rule 7 awaiting it). The live successor
+                 to F044: the record's value at ceiling is integrity + capture.
 WITNESS IDS:     SOUL-164 (the force-stripped discriminator); SOUL-163 (the floor
                  discriminator, context); SOUL-165 (ratification).
 
