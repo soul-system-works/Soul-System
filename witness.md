@@ -7716,3 +7716,39 @@ CONSEQUENCE:  Releasable shape reached. Remaining Body acts: F056/F044 nods,
               lives per-project).
 STATUS:       Closed — the milestone; review items tracked in the handoff.
 ```
+
+```
+ID:           SOUL-167
+WHEN:         2026-06-12 / THE BODY REVIEWS v2.0.0 — five review verdicts
+              rendered in a grilling session; one amendment (A022) accepted.
+WHERE:        This session (grill-with-docs over the release package);
+              amendments/accepted/SOUL-A022-instrument-ergonomics.md.
+WHAT:         The Body's review of the assembled release, with decisions:
+              (1) INSTRUMENTS — "not clear WHEN I should use these": capture
+              becomes model-proposable (idea/witness; finding stays Body-gated);
+              distill becomes model-proposable on a record-growth signal; both
+              keep Body confirmation on every write. Reverses the documented
+              manual-fire-only deferral — out loud, via A022.
+              (2) README — plugin becomes the COMPLETE featured install path
+              (/soul-init derives the root from its own location); clone
+              demoted to the developer path.
+              (3) RELEASE BLOG — full restructure, shape to be informed by
+              research on popular launch posts; plain language; the model-scope
+              sentence made exact (chains on Opus 4.8; probe battery ~390
+              sessions at Haiku 4.5 / Sonnet 4.6 / Opus 4.8; 2.0 sentinel at
+              Haiku). The will/wont claims survive as content, not necessarily
+              as the spine.
+              (4) SEQUEL PAPER — plain-language bridge layer (abstract, intro,
+              discussion; technical middle keeps precision with first-use
+              glosses); a consolidating summary table; a trial survival-funnel
+              figure the Body will keep or kill on sight.
+              (5) DURATIONS — specific time-spans ("two days", "three days")
+              stripped from all PUBLICATIONS (paper, blogs, README, the-soul);
+              internal records keep them (lab notebook, not publication).
+TYPE:         Body (every verdict); Witness (this record).
+CONSEQUENCE:  A022 accepted and filed. Execution in this session: skill edits
+              (capture/distill/init), README rewrite, blog restructure, paper
+              revision, duration sweep — all as drafts/diffs for the Body;
+              push still held. Ship acts remain Body-held.
+STATUS:       Open — closes when the revised artifacts pass Body review.
+```
