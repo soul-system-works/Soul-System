@@ -22,31 +22,36 @@ legible? A self-ablation study under equal compute}
 \maketitle
 
 \begin{abstract}
-``Agentic'' coding setups increasingly ship a \emph{meta-doctrine layer}: a body of always-on
-guidance---roles, gates, principles---plus a record that accumulates across sessions,
-on the premise that this scaffolding improves the work. We ablate one such system (the
-``Soul System'') against the confound that dominates this class of claim: loading
-doctrine also loads \emph{tokens}, and additional context alone can make a model more
-thorough. Every apparent gain is therefore re-run against a \textbf{length-matched,
-semantically-empty filler} of equal token budget; a gain that vanishes under this
-control was compute, not doctrine. Across ten doctrine probes and six instrument
-probes (Haiku 4.5, Sonnet 4.6, Opus 4.8; $n = 5$--$7$ per cell), the equal-compute control
-catches four false positives, and the surviving substance collapses onto a single
-axis: the system changes the model's \emph{decisions} only when it carries \textbf{project-specific
-knowledge or counter-default conventions the model cannot regenerate and a generic
-equivalent gets wrong} (record-recall 10/10 vs.\ 2/5 for a length-matched irrelevant
-record; convention-transmission flips a counter-default decision 10/10 where generic
-principles give the default answer 0/10). Everything aimed at generic reasoning-lift---forced
-roles (as prose \emph{and} as dedicated sub-agents), trajectory-reading,
-compliance-resistance, the handoff and verification \emph{formats}---is reproduced by the
-filler. A synthetic multi-session harness extends this to the system's strongest claim:
-a counter-default fact recorded early and buried under later work prevents a dangerous
-drift 5/5 $\rightarrow$ 0/5 in a later session, and---uniquely among our results---\textbf{does not
-dissolve at the frontier}: the strong model, lacking the recorded fact, fails \emph{more}
-confidently, fabricating a non-existent API affordance to justify the unsafe path. The
-organizing principle is \textbf{derivable-dissolves, unguessable-persists}. We give the
-resulting keep/cut decision and a precise ledger of what a single-shot method cannot
-settle.
+``Agentic'' coding setups increasingly ship a \emph{meta-doctrine layer}: always-on
+guidance---roles, gates, principles---together with a project record that grows across
+sessions, on the premise that this scaffolding improves the work. That premise is hard
+to test because of one confound: loading the guidance also loads \emph{tokens}, and extra
+context alone can make a model more thorough. We therefore test one such system (the
+``Soul System'') by re-running every apparent gain with the guidance \textbf{replaced by an
+equal volume of unrelated filler text}. A gain that survives the swap is real; a gain
+that disappears was the tokens, not the doctrine. Across ten doctrine probes and six
+instrument probes (Haiku 4.5, Sonnet 4.6, Opus 4.8; $n = 5$--$7$ per cell), this
+equal-compute control exposes four false positives, and what remains comes down to one
+principle: the system changes the model's \emph{decisions} only when it supplies
+\textbf{project-specific knowledge or against-the-grain conventions that the model cannot
+reconstruct on its own and that a generic substitute gets wrong}. Recalling a recorded
+project fact avoided a trap 10/10 times, versus 2/5 with an equal-length irrelevant
+record; a recorded convention flipped an against-the-grain decision 10/10, where generic
+best-practice text gave the default answer 0/10. Everything aimed instead at \emph{general
+reasoning lift}---forced roles (as prose \emph{and} as dedicated sub-agents),
+trajectory-reading, compliance-resistance, and the handoff and verification
+\emph{formats}---is reproduced by the filler. A synthetic multi-session test reaches the
+system's strongest claim: an against-the-grain fact recorded early and then buried under
+later work still prevented a dangerous drift in a much later session (5/5 $\rightarrow$ 0/5),
+and---alone among our results---this held even for the strongest model. Lacking the
+recorded fact, that model failed \emph{more} confidently, inventing a non-existent API
+feature to justify the unsafe path. The organizing principle: \textbf{what the model can
+re-derive dissolves; what it cannot regenerate persists} (\emph{derivable dissolves,
+unguessable persists}). \textbf{In short: the layer's measured value is memory, not
+reasoning.} It changes what the model decides only where it carries facts or conventions
+the model cannot regenerate; everything aimed at general reasoning is reproduced by
+equal-length filler and already supplied at the frontier. We give the resulting
+keep-or-cut decision and a ledger of what a single-interaction method cannot settle.
 \end{abstract}
 
 \section{Introduction}
@@ -66,7 +71,7 @@ work legible. Distinguishing the two requires a control the field rarely applies
 
 We study one mature instance---an open meta-doctrine system we call the Soul System,
 comprising $\sim$16 commands, a three-layer always-on doctrine, and an append-only record---and
-ask a deliberately deflationary question: \textbf{which parts change what the model
+ask a deliberately skeptical question: \textbf{which parts change what the model
 decides, and which only change how the work reads?} Our contributions are:
 
 \begin{enumerate}
@@ -83,8 +88,8 @@ decides, and which only change how the work reads?} Our contributions are:
 \end{enumerate}
 
 The result is not a defence of the system and not a debunking. It is a separation: a
-narrow, real, capability-robust value (carrying the unguessable) from a larger body of
-legibility that a generic equivalent matches.
+narrow, real value that holds even for strong models---carrying the unguessable---from a
+larger body of legibility that a generic equivalent matches.
 
 \section{Related work}
 
@@ -165,8 +170,7 @@ fresh process, no chat history); the thing under test (doctrine, a role lens, a 
 checklist, a handoff cursor, a record) is supplied via the system prompt or pasted into
 the task, and the bare arm receives the task alone. We run $n \geq 5$ per cell unless noted,
 across a capability range---Haiku 4.5 (weak), Sonnet 4.6 (mid), Opus 4.8 (frontier)---because
-the effect size of any aid depends on whether the bare baseline already
-succeeds.
+how much any aid helps depends on whether the model already succeeds without it.
 
 \subsection{The three controls}
 
@@ -178,18 +182,20 @@ work'' in place of a named gate checklist; a plain summary in place of a structu
 cursor. \emph{A substance verdict that vanishes under equal compute is not substance.} C1
 caught four false positives here (Section 4.1--4.2).
 
-A direction caveat (developed in Section 6). The filler is not a neutral inflator: the
-literature shows added irrelevant tokens more often \emph{degrade} than improve a model [15],
-while empty filler can occasionally \emph{supply} compute [14]---both effects are model- and
-content-dependent. This makes C1 a \textbf{conservative} control rather than a symmetric one:
-a gain that \emph{survives} the filler is real a fortiori (the filler, if anything, biased
-against the bare-plus-filler arm), but a gain that \emph{vanishes} is ambiguous between ``was
-compute'' and ``the filler actively hurt the control arm.'' Our four filler types are
-\emph{coherent-but-irrelevant} (warehouse prose) or \emph{generic-nudge} (``double-check''); where
-they tied doctrine they generally also beat the bare baseline (Section 4.2), so they were
-not degrading in those cells. We run the clean separation---a three-arm control with a
-coherent-irrelevant distractor alongside empty padding---in Section 4.6, and it confirms
-on-model that coherent-irrelevant filler is not neutral while empty padding $\approx$ bare.
+A caveat on direction (developed in Section 6). The filler is not neutral padding: the
+literature shows that added irrelevant tokens more often \emph{degrade} a model than improve
+it [15], while empty filler can occasionally \emph{supply} extra computation [14]---and both
+effects depend on the model and the content. That makes C1 a \textbf{conservative} control,
+not a symmetric one. A gain that \emph{survives} the filler is real with room to spare, since
+the filler, if anything, worked against the comparison arm. But a gain that \emph{vanishes}
+is ambiguous: it may have been the extra tokens, or the filler may have actively hurt the
+control arm. Our four filler types are either \emph{coherent-but-irrelevant}
+(warehouse-logistics prose) or a \emph{generic nudge} (``double-check''); where they tied the
+doctrine they usually also beat the bare baseline (Section 4.2), so they were not degrading
+in those cells. The clean separation---a three-arm control that adds a coherent-irrelevant
+distractor alongside empty padding---is run in Section 4.6, and it confirms on our models
+that coherent-irrelevant filler is not neutral, while empty padding behaves like bare
+($\approx$ bare).
 
 \textbf{C2 --- Difficulty validation.} A task measures an aid only if the bare baseline
 plausibly fails it. Before scoring, the bare arm is run $n \geq 5$; if it already succeeds,
@@ -268,7 +274,7 @@ Probe & Control & Key result & Survives? & Verdict \\
 Doctrine: roles / gates (frontier) & C1 & changes \emph{form} (named, legible), not substance & --- (form) & lean to a line \\
 Doctrine: hard regime, weak baseline & C1 & substance only on \textbf{anchoring} (filler 0/3) & \textbf{yes} (narrow) & KEEP anchoring \\
 \textbf{Record recall} (unguessable fact, F038) & C1 + 3-arm & \textbf{record 10/10} vs filler $\approx$ 0; isolates cleanly & \textbf{yes} & \textbf{KEEP --- clearest win} \\
-Convention transmission (docs-near-code) & 3-arm & flips a counter-default decision; but derivable + primable & \textbf{yes} (narrower) & KEEP content, moderated \\
+Convention transmission (docs-near-code) & 3-arm & flips an against-the-grain decision; but derivable + primable & \textbf{yes} (narrower) & KEEP content, moderated \\
 Roles as sub-agents & C1 & A2 $\approx$ C1; multi-agent $\leq$ single; synthesis drops findings & no & form, prose$\rightarrow$agents \\
 \textbf{Skill routing} & oracle vs self-pick & \textbf{oracle 5/5 vs budgeted 1/5} (weak) & \textbf{yes} (bounded) & KEEP tested catalog \\
 \textbf{Longitudinal carry} (7 rungs) & C1, synthetic chain & drift \textbf{5/5$\rightarrow$0/5}; \textbf{persists at the frontier} (fabricates when missing) & \textbf{yes} & \textbf{KEEP --- strongest} \\
@@ -284,197 +290,205 @@ Depth + position & token-scale burial & \textbf{30/30}, no middle decay (unique 
 
 \subsection{Doctrine (the always-on layer)}
 
-Against a careful frontier baseline, single-role and single-gate ablations changed the
-\emph{form} of the work (named, legible, auditable) far more than its substance or
-reliability. An engineered hard regime---a buried logic trap, a false premise under
-authority pressure, and a ten-constraint long-horizon task---was also form-not-substance
-at the frontier (the completion-gate ablation on the long-horizon task was null,
-gate $\approx$ bare).
+Against a careful frontier baseline, removing a single role or a single gate changed the
+\emph{form} of the work (it became named, legible, auditable) far more than its substance or
+reliability. A deliberately hard set of tasks---a buried logic trap, a false premise pushed
+under authority pressure, and a ten-constraint long-horizon task---was also form, not
+substance, at the frontier (removing the completion gate on the long-horizon task changed
+nothing: gate $\approx$ bare).
 
-At a \textbf{weak baseline} (Haiku), with the integrated doctrine and C1 throughout,
-doctrine-attributable substance survives in exactly one place: \textbf{challenging an
-unverified premise} (``anchoring''). It lifted the false-premise task 0/3 $\rightarrow$ $\sim$1.5/3 while
-the filler stayed 0/3, and replicated on a second anchor task (whole 3/3 vs.\ filler
-0/3). This substance is \emph{content-dependent} (generic thoroughness cannot fake it),
-\emph{weak-baseline-only} (a mid-capability model self-catches), and \emph{task-structure-gated}
-(analysis-inviting tasks self-catch earlier than compliance-inviting ones).
+At a \textbf{weak baseline} (Haiku), with the full doctrine loaded and C1 applied throughout,
+the doctrine adds real substance in exactly one place: \textbf{challenging an unverified
+premise} (``anchoring''). It lifted the false-premise task from 0/3 to $\sim$1.5/3 while the
+filler stayed at 0/3, and it replicated on a second anchoring task (full doctrine 3/3 vs.\
+filler 0/3). This substance is \emph{content-dependent} (generic thoroughness cannot fake
+it), appears \emph{only at a weak baseline} (a mid-capability model already self-corrects),
+and \emph{depends on task structure} (tasks that invite analysis self-correct earlier than
+tasks that invite compliance).
 
 \textbf{Everything else dissolved under C1, including three apparent generalizations:}
-trajectory-reading (bare 1/3 $\rightarrow$ whole 3/3, but filler 2/3---generic long-context),
-compliance-flagging (filler reproduced it---disposition), and stakes-gated withholding
-(filler 5/5 = whole---disposition, not doctrine). Without the equal-compute control the
-study would have claimed a ``frontier-ward compliance edge'' that does not exist. The
-consonance with Zheng et al.\ [1] (roles don't lift accuracy) is direct.
+trajectory-reading (bare 1/3 $\rightarrow$ full doctrine 3/3, but filler 2/3---generic long context
+did the work), compliance-flagging (the filler reproduced it---a matter of disposition),
+and stakes-dependent withholding (filler 5/5 = full doctrine---disposition, not doctrine).
+Without the equal-compute control, the study would have claimed an edge in frontier-model
+compliance that does not exist. This lines up directly with Zheng et al.\ [1] (roles do not
+lift accuracy).
 
 \subsection{Instruments and the record}
 
-\textbf{Handoff/resume (Measured; form).} A fresh session given a curated record snapshot
-plus one of \{structured cursor, length-matched generic prose summary, terse compact,
-nothing\} surfaced more constraints with any rich note than cold ($\approx$ +2 constraints; 0
-vs.\ 1 scope-invention error)---but the \emph{Soul format is form}: a length-matched generic
-summary tied or beat the cursor (Sonnet 4.8 generic $\geq$ 4.6 cursor; Haiku equal).
-Richness matters, structure does not.
+\textbf{Handoff/resume (Measured; form).} A fresh session was given a curated snapshot of
+the record plus one of four resume notes---a structured cursor, a length-matched generic
+prose summary, a terse compact note, or nothing. Any rich note surfaced more constraints
+than a cold start ($\approx$ +2 constraints; 0 scope-invention errors vs.\ 1)---but the
+\emph{Soul-specific format is just form}: a length-matched generic summary tied or beat the
+structured cursor (on Sonnet the generic note surfaced 4.8 constraints on average
+vs.\ the cursor's 4.6; on Haiku the two tied at 4.6, both out of 5). The richness of the note matters; its structure does not.
 
 \textbf{Record-recall (Measured; KEEP --- the clearest win).} A trap task whose deciding
-knowledge is a real, non-obvious project finding was run with \{relevant record, no
-record, length-matched \emph{irrelevant} record (C1)\}. The relevant record produced
-trap-avoidance \textbf{10/10}; the irrelevant record \textbf{2/5}; no record 2--3/5 (capable arms
-partially reason toward the right hedge but mostly still recommend the trap). The
-\emph{specific recorded content}---not ``having a record,'' not the tokens---makes the model
-reliably correct.
+piece of knowledge is a real, non-obvious finding from the project was run with three
+conditions: the relevant record, no record, and a length-matched \emph{irrelevant} record
+(C1). The relevant record produced trap-avoidance \textbf{10/10}; the irrelevant record
+\textbf{2/5}; no record 2--3/5 (capable arms partly reason toward the right caution but mostly
+still recommend the trap). The \emph{specific recorded content}---not ``having a record,'' and
+not the extra tokens---is what makes the model reliably correct.
 
-\textbf{Verification gate (Measured; concept yes, format no).} Finalizing a draft with one
-planted unanchored-claim defect: bare caught it 2/5; \emph{any} check (generic-vague,
-generic-checklist, or the Soul checklist) lifted it to $\sim$5/5. The gate \emph{concept} earns
-its place; the Soul-specific checklist does \textbf{not} beat a generic ``double-check
-carefully'' on catch-rate (both 5/5)---it adds itemized legibility, which is form. (A
-second, dropped-requirement defect was a C2 ceiling, 5/5 everywhere.)
+\textbf{Verification gate (Measured; concept yes, format no).} We asked the model to
+finalize a draft that contained one planted defect---an unsupported claim. Bare caught it
+2/5; \emph{any} check (a vague generic one, a generic checklist, or the Soul checklist) lifted
+this to $\sim$5/5. The gate \emph{concept} earns its place, but the Soul-specific checklist does
+\textbf{not} beat a generic ``double-check carefully'' on catch-rate (both 5/5)---it only adds
+itemized legibility, which is form. (A second defect, a dropped requirement, was a C2
+ceiling: 5/5 everywhere.)
 
-\textbf{Distillation / the ``Mind'' (Measured; KEEP the content).} A decision where the
-project's convention \emph{contradicts the trained-in default} (keep docs adjacent to code,
-vs.\ the default separate docs tree). Loading the project's rules---compressed Mind \emph{or}
-a raw-records excerpt---flipped the recommendation to the project's answer $\sim$10/10; a
-length-matched \emph{generic-principles} set gave the opposite, default answer $\sim$0/10. This
-is the same axis as recall: carrying a counter-default convention a generic equivalent
-gets wrong. Note the compressed Mind transmitted the convention no better than an
-equal-size raw excerpt (\texttt{Mind} $\approx$ \texttt{raw}), so the rule \emph{content} is the substance; whether
-it needs auto-distillation versus hand-curation is not settled here. \textbf{Moderation
-(Section 4.6):} under a stricter three-arm control this particular convention proved
-partly \emph{derivable} and disposition-primable---its two-arm gap was inflated by a loaded
-counter-distractor. The recall result (an unguessable \emph{fact} a generic equivalent gets
-confidently wrong) is the stronger, cleaner member of this KEEP; the convention is real
-but narrower.
+\textbf{Distillation / the ``Mind'' (Measured; KEEP the content).} Here the deciding item is
+a decision where the project's convention \emph{goes against the model's trained-in default}:
+keep docs next to the code, versus the default of a separate docs tree. Loading the
+project's rules---either the compressed ``Mind'' or a raw excerpt of the records---flipped
+the recommendation to the project's answer $\sim$10/10; a length-matched set of \emph{generic
+principles} gave the opposite, default answer $\sim$0/10. This is the same axis as recall:
+carrying an against-the-grain convention that a generic equivalent gets wrong. The
+compressed Mind transmitted the convention no better than an equal-size raw excerpt
+(\texttt{Mind} $\approx$ \texttt{raw}), so the rule's \emph{content} is the substance; whether it is better
+produced by auto-distillation or by hand-curation is not settled here. \textbf{Moderation
+(Section 4.6):} under a stricter three-arm control, this particular convention turned out
+to be partly \emph{derivable} and primable by disposition---the two-arm comparison overstated
+the gap because its control text was a loaded counter-example. The recall result (an
+unguessable \emph{fact} that a generic equivalent gets confidently wrong) is the stronger,
+cleaner member of this KEEP; the convention is real but narrower.
 
 \subsection{Roles as agents}
 
-A natural objection to ``roles = form'' is that roles were measured as prose, never as
-\emph{dedicated sub-agents}. Rebuilt as agents---one sub-agent per Council role plus a
-synthesis step---Soul's roles still only matched a generic decomposition at equal
-compute, and the multi-agent topology did not beat a single agent told to work through
-the same perspectives in one context (it tied at best and lost where the synthesis step
-pruned valid findings). The substance is \emph{decomposition into explicit perspectives}---cheap,
-generic, single-context---not the Soul framing or the agentic orchestration. The
-``form'' verdict thus extends from prose to agents, consistent with Tran and Kiela [2] and
-Gao et al.\ [3].
+A natural objection to ``roles = form'' is that the roles were tested as prose, never as
+\emph{dedicated sub-agents}. Rebuilt as agents---one sub-agent per Council role, plus a
+synthesis step---Soul's roles still only matched a generic decomposition at equal compute,
+and the multi-agent setup did not beat a single agent told to work through the same
+perspectives in one context (it tied at best, and lost where the synthesis step pruned
+valid findings). The substance is \emph{breaking the problem into explicit perspectives}---which
+is cheap, generic, and works in a single context---not the Soul framing or the multi-agent
+orchestration. The ``form'' verdict therefore extends from prose to agents, consistent with
+Tran and Kiela [2] and Gao et al.\ [3].
 
 \subsection{Skill routing (a bounded win)}
 
-One reasoning-adjacent capability survived the control: \emph{knowing which specialized skill
-to deploy when}, under a selection budget. Given a catalog with a tempting-but-wrong
-trap skill and a non-obvious-correct skill, a weak model forced to pick $\leq 2$ reliably
-grabbed the trap and missed the right skill (self-pick 1/5); handed the right skill, it
-solved 5/5 (oracle vs.\ budgeted self-pick = 5/5 vs.\ 1/5 at Haiku). It dissolves at the
-frontier (the strong model knows the answer) and without a budget (free selection
-over-selects and catches the skill anyway). It thus lives in the same cell as
-anchoring---\emph{weak baseline $\times$ counter-default knowledge $\times$ tight budget}---the
-deployment-face of the record, and it is an oracle (perfect-routing) upper bound. The
-retrieval framing matches Gan and Sun [4].
+One capability close to reasoning survived the control: \emph{knowing which specialized skill
+to reach for}, when the model can select only a few. Given a catalog that held a
+tempting-but-wrong trap skill alongside a non-obvious correct one, a weak model forced to
+pick $\leq 2$ reliably grabbed the trap and missed the right skill (self-pick 1/5); handed
+the right skill outright, it solved the task 5/5 (given-the-answer vs.\ budgeted self-pick
+= 5/5 vs.\ 1/5 at Haiku). The effect dissolves at the frontier (the strong model already
+knows the answer) and without a budget (free selection over-picks and catches the right
+skill anyway). It thus lives in the same cell as anchoring---\emph{weak baseline $\times$
+against-the-grain knowledge $\times$ tight budget}---and is the deployment side of the
+record; the number is a best-case (perfect-routing) upper bound. The retrieval framing
+matches Gan and Sun [4].
 
 \subsection{Longitudinal accumulation (the strongest claim)}
 
-The system's central promise is intrinsically multi-session and cannot be faked
-single-shot. We reach it with a synthetic \textbf{session chain}: an early session records a
-counter-default decision D (with the incident that established it); later sessions bury
-D under unrelated entries; a fresh session, with D's triggering context gone, faces a
-new task that tempts the dangerous default. Drift = the default returns. Outcomes are
-read in the produced code, not by keyword.
+The system's central promise is inherently about many sessions and cannot be faked in a
+single interaction. We reach it with a synthetic \textbf{session chain}: an early session
+records an against-the-grain decision D (together with the incident that established it);
+later sessions bury D under unrelated entries; then a fresh session, with D's original
+context gone, faces a new task that tempts the dangerous default. \emph{Drift} means the
+default returns. Outcomes are read from the code the model produces, not from keywords.
 
-\textbf{The carry prevents drift, and it persists at the frontier.} With D recorded and
-carried, drift fell \textbf{5/5 $\rightarrow$ 0/5}; a length-matched filler record drifted exactly like
-having no record (C1 passes). Crucially, this is the \textbf{first win in the study that does
-not dissolve at the frontier}: the strong model drifts \emph{too}, and worse---lacking the
-recorded fact it does not merely choose the default, it \emph{invents} a reassuring
-affordance that does not exist (a payment idempotency key the API lacks) and explains
-why that makes the unsafe retry safe---a confident fabrication rather than an
-abstention, consistent with the calibration-degradation documented for post-trained
-frontier models [12]. The mechanism is that D is knowledge the model \emph{cannot
-regenerate}, not a reasoning skill it can. (We are careful in Section 6 not to over-read
-this as a \emph{monotonic} ``stronger $\Rightarrow$ more confident fabrication'' scale law---our own data,
-Section 4.5 below, shows the failure direction is gated by the rule's \emph{form}, not by
-capability alone.)
+\textbf{Carrying the fact prevents drift, and this holds even at the frontier.} With D
+recorded and carried forward, drift fell \textbf{5/5 $\rightarrow$ 0/5}; a length-matched filler record
+drifted exactly as if there were no record at all (C1 passes). Crucially, this is the
+\textbf{first win in the study that does not dissolve at the frontier}: the strong model drifts
+\emph{too}, and worse---lacking the recorded fact, it does not merely fall back to the default,
+it \emph{invents} a reassuring feature that does not exist (a payment idempotency key the API
+does not have) and explains why that makes the unsafe retry safe. That is a confident
+fabrication rather than an abstention, consistent with the loss of calibration documented
+for post-trained frontier models [12]. The mechanism is that D is knowledge the model
+\emph{cannot regenerate}, not a reasoning skill it can. (In Section 6 we are careful not to
+over-read this as a \emph{monotonic} ``stronger $\Rightarrow$ more confident fabrication'' scale law---our
+own data below shows the failure direction depends on the rule's \emph{form}, not on capability
+alone.)
 
-\textbf{Facts and conventions both carry; the line is derivability.} A sibling probe recorded
-an arbitrary \emph{convention} (return a Result type, never raise) rather than a fact; it
-persisted at the frontier too---the strong model deferred to the recorded convention
-instead of overriding it with its own idiom. The organizing line is therefore
-\textbf{derivable-dissolves, unguessable-persists}: what the model can re-reason
+\textbf{Facts and conventions both carry; the dividing line is derivability.} A companion probe
+recorded an arbitrary \emph{convention} (return a Result type, never raise) rather than a
+fact; it too persisted at the frontier---the strong model deferred to the recorded
+convention instead of overriding it with its own habit. The organizing line is therefore
+\textbf{derivable dissolves, unguessable persists}: what the model can re-reason its way to
 (generic anchoring, routing at the frontier) dissolves under the control; what it cannot
 regenerate (a fact \emph{or} an arbitrary convention) persists.
 
-\textbf{The carry is depth-robust.} Varying record depth, the fact still fired 5/5 buried
-under 20 intervening decision records at both capabilities, with no decay cliff through
-$N = 20$ (the frontier control still drifted at depth). This is the regime where
-lost-in-the-middle degradation [5] would predict failure; within the tested depth it did
-not appear.
+\textbf{The carry holds even when the fact is buried deep.} Varying how deep the fact sat in
+the record, it still worked 5/5 when buried under 20 intervening decision records, at both
+capabilities, with no sharp drop-off through $N = 20$ (the frontier control still drifted
+at depth). This is exactly the regime where lost-in-the-middle degradation [5] would
+predict failure; within the depth we tested, it did not appear.
 
-\textbf{Compression preserves the rule but not the fact's force.} Distilling D exposes a
-limit relevant to any always-on rule-set. The \emph{directive} survives compression to a
-single line (0 violations across 45 cells, both capabilities). The unguessable \emph{fact}
-behind it does not: strip the incident and the explicit negation, leave the terse rule,
-and the frontier model fabricates a replacement justification on a gradient by how much
-force survived---full record 0/5, faithful distillation 2/5, aggressive erosion 4/5,
-while the weak model never fabricates (0/15, it lacks the confident prior). A second,
-independent counter-prior fact replicated the gradient but \emph{inverted} the
-capability-direction (the weak model drifted where the frontier held), and an isolating
-probe---holding the prior constant and varying only the directive's \emph{form}---resolved
-the mechanism: the frontier flips 0/5 $\rightarrow$ 5/5 when an imperative rule is replaced by a
-\emph{loophole} (``reuse only if validity is confirmed''), fabricating the affordance to walk
-through the opening; \textbf{directive form gates the frontier, prior-strength gates the weak
-model.} The operational consequence (adopted as a doctrine amendment): when compressing
-a fact that contradicts a strong model prior, preserve its \emph{force}---the incident, the
-explicit negation---not merely its proposition, and keep the residual directive
-imperative and loophole-free.
+\textbf{Compression preserves the rule but not the force of the fact behind it.} Distilling D
+down exposes a limit that matters for any always-on rule-set. The \emph{directive} itself
+survives compression to a single line (0 violations across 45 cells, at both
+capabilities). The unguessable \emph{fact} behind it does not: strip the incident and the
+explicit ``no,'' leave only the terse rule, and the frontier model fabricates a replacement
+justification---on a gradient set by how much of the original force survived (full record
+0/5, faithful distillation 2/5, aggressive erosion 4/5), while the weak model never
+fabricates (0/15---it lacks the confident prior). A second, independent counter-prior fact
+reproduced the gradient but \emph{reversed} the capability direction (the weak model drifted
+where the frontier held). A further probe---holding the prior fixed and varying only the
+\emph{form} of the directive---pinned down the mechanism: the frontier model flips 0/5
+$\rightarrow$ 5/5 when an imperative rule is replaced by one with a \emph{loophole} (``reuse only if
+validity is confirmed''), fabricating the missing feature to walk through the opening. So
+\textbf{the form of the directive governs the frontier model, and the strength of the prior
+governs the weak model.} The practical consequence (adopted as a doctrine amendment): when
+compressing a fact that contradicts a strong model's prior, preserve its \emph{force}---the
+incident, the explicit negation---not just its statement, and keep the surviving directive
+imperative and free of loopholes.
 
-\textbf{The carry has also paid off in vivo, not only on the synthetic vehicle.} The chain
+\textbf{The carry has also paid off in real use, not only on the synthetic test.} The chain
 above is synthetic \emph{by necessity}: the counterfactual---what a later session does
-\emph{without} the record---exists only if the no-record branch is manufactured, and real
-history runs only the with-record branch. What real history supplies instead is
-observational. Six instances in the project's own 143-entry record show the accumulated
-record or a gate catching the project's \emph{own} drift in live work: a fabricated rule-citation
-in an experiment's measurement, a retire-audit anchor scoped too narrowly to
-see a live reference, a citation over-claim, two over-stated reproducibility results, and
-one decision a blind run of the same model got wrong that a record-carrying run
-reproduced (SOUL-144). These lack the controlled counterfactual and are a \emph{census}, not
-a rate---no denominator of times a gate could have fired and did not---but they
-corroborate that the mechanism has already fired on real multi-session history, where the
-synthetic chain cannot reach. They measure the \emph{agentic} payoff (a gate or finding
-catching drift); the \emph{human}-legibility payoff over time remains asserted, not measured
-(Section 6).
+\emph{without} the record---exists only if we manufacture the no-record branch, since real
+history only ever runs the with-record branch. What real history offers instead is
+observational evidence. Six instances in the project's own 143-entry record show the
+accumulated record or a gate catching the project's \emph{own} drift in live work: a
+fabricated rule-citation in an experiment's measurement, a retire-audit whose anchor was
+scoped too narrowly to see a live reference, a citation over-claim, two over-stated
+reproducibility results, and one decision that a blind run of the same model got wrong but
+a record-carrying run got right (SOUL-144). These lack a controlled counterfactual and are
+a \emph{census}, not a rate---there is no count of the times a gate could have fired and did
+not---but they confirm that the mechanism has already fired on real multi-session history,
+which the synthetic chain cannot reach. They measure the payoff \emph{to the agent} (a gate or
+finding catching drift); the payoff to a \emph{human} in legibility over time remains
+asserted, not measured (Section 6).
 
 \subsection{The three-arm control (separating compute, distraction, substance)}
 
-Motivated by the literature in Section 2, we ran the three-arm extension of C1---adding
-\textbf{empty padding} (length-matched lorem = pure compute) and \textbf{coherent-but-irrelevant}
-prose (length-matched off-topic operations text = distraction) alongside bare and the
-substance arm. We ran it on five vehicles in all; the first two were chosen to differ on
-one axis---whether the project's answer is \emph{derivable}---and that pair is the clearest
-single illustration of the study's organizing thesis.
+Motivated by the literature in Section 2, we ran the three-arm version of C1---adding
+\textbf{empty padding} (length-matched lorem ipsum, i.e.\ pure compute) and
+\textbf{coherent-but-irrelevant} prose (length-matched off-topic operations text, i.e.\
+distraction) alongside the bare arm and the substance arm. We ran it on five test vehicles
+in all; the first two were chosen to differ on a single dimension---whether the project's
+answer is \emph{derivable}---and that pair is the clearest single illustration of the study's
+organizing thesis.
 
-On a \textbf{derivable convention} (the project keeps documentation adjacent to code, vs.\ the
-common default of a separate \texttt{docs/} tree), the binary outcome did \emph{not} isolate
-substance. The frontier model already gave the project's answer at baseline (it
-re-derives ``central docs drift''), and at the weak baseline a \emph{coherent-irrelevant} filler
-drove the project's answer 5/5---its disciplined operational register primed a cautious
-disposition that re-derived the same conclusion---while empty padding sat at the bare
-level (2/5). Only the \emph{reasoning} distinguished the substance arm (it cited the specific
-recorded incident; the distractor re-derived generically). This is a direct, on-model
-confirmation of Section 2's warning that coherent-irrelevant tokens are not neutral, and
-it \textbf{moderates the convention-transmission result of Section 4.2}: a project answer that
-is also a defensible generic answer is partly derivable and disposition-primable, so its
-two-arm ``win'' overstated the isolable substance (the original generic-principles control
-there was a \emph{loaded} counter-distractor, which inflated the gap).
+On a \textbf{derivable convention} (the project keeps documentation next to the code, versus
+the common default of a separate \texttt{docs/} tree), the yes/no outcome did \emph{not} isolate
+substance. The frontier model already gave the project's answer at baseline (it re-derives
+``central docs drift''), and at the weak baseline a \emph{coherent-irrelevant} filler drove the
+project's answer 5/5---its disciplined, businesslike tone primed a cautious disposition
+that re-derived the same conclusion---while empty padding sat at the bare level (2/5). Only
+the \emph{reasoning} set the substance arm apart (it cited the specific recorded incident; the
+distractor re-derived the answer generically). This directly confirms, on our own models,
+Section 2's warning that coherent-irrelevant tokens are not neutral, and it
+\textbf{moderates the convention-transmission result of Section 4.2}: a project answer that is
+also a defensible generic answer is partly derivable and can be primed by disposition, so
+its two-arm ``win'' overstated the substance actually isolated (the original
+generic-principles control there was a \emph{loaded} counter-example, which inflated the gap).
 
 On an \textbf{unguessable fact} (a recorded finding that a certain import mechanism fails
-silently in non-interactive mode and the model confabulates around it---the recall probe
-of Section 4.2), the same three-arm control isolated substance \textbf{cleanly}: the record
-produced the correct, trap-avoiding recommendation \textbf{10/10}, while bare, empty padding,
-and coherent-irrelevant filler each endorsed the trap \textbf{0/10}---the coherent filler was
-\emph{harmless} here ($\approx$ bare), the opposite of the convention probe, because no disposition
-re-derives a fact the model simply does not have. Two incidental confirmations: empty
-padding $\approx$ bare on both probes (pure length did not move these decisions on our models),
-and the frontier model, lacking the fact, \emph{confidently asserted its negation} (``imports
-resolve in non-interactive mode the same as interactive''---false)---a second-domain
-instance of the confident-fabrication of Section 4.5.
+silently in non-interactive mode, and the model makes things up around it---the recall
+probe of Section 4.2), the same three-arm control isolated substance \textbf{cleanly}: the
+record produced the correct, trap-avoiding recommendation \textbf{10/10}, while bare, empty
+padding, and coherent-irrelevant filler each recommended the trap \textbf{0/10}. Here the
+coherent filler was \emph{harmless} ($\approx$ bare)---the opposite of the convention probe---because
+no disposition can re-derive a fact the model simply does not have. Two side confirmations:
+empty padding $\approx$ bare on both probes (pure length did not move these decisions on our
+models), and the frontier model, lacking the fact, \emph{confidently asserted the opposite}
+(``imports resolve in non-interactive mode the same as interactive''---false), a second,
+separate instance of the confident fabrication from Section 4.5.
 
 The pair is the thesis in miniature: a coherent-irrelevant filler reproduces a
 \emph{derivable} answer and is powerless against an \emph{unguessable} one. The recall (record)
@@ -482,52 +496,54 @@ KEEP survives the stricter control; the convention KEEP is real but narrower tha
 two-arm number suggested.
 
 A third probe extends the control to a \textbf{``form'' verdict}---the completion/verify gate
-(``local tests passing is not global correctness; validate the invariant the whole must
-satisfy before declaring done''). On a high-stakes vehicle (a payment-splitting refactor
-with green unit tests, asked ``ship it?''), the three-arm control did not merely moderate
-the gate---it found it \emph{fully derivable}: \textbf{all four arms avoided the trap 40/40},  bare
-included. With zero injected context both models already withhold the ship and demand
-real-world validation (a reconciliation invariant, shadow-replay against production data,
-a canary); the substance arm's only isolable contribution is a \emph{citation}---it names the
-specific doctrine (6/10 cells) where no other arm does, and lifts the explicit ``invariant''
-framing from re-derived (bare 7/10) to universal---while leaving the decision unchanged.
-The verify gate is thus the \emph{most} derivable verdict measured, more so than the convention
-(whose bare baseline at least sat at 2/5): its value is \textbf{legibility} (a named invariant,
-an auditable citation), not behaviour change, because the disposition it records is one the
-model already holds. The probes form a three-position spectrum of the organizing thesis---\emph{unguessable
-fact} (recall, clean isolation 10/10 vs 0) $\rightarrow$ \emph{derivable convention} (docs,
-moderated, disposition-primable) $\rightarrow$ \emph{already-held disposition} (verify, fully derivable,
-ceiling). One bound on the verify probe---that its high-stakes vehicle is domain-saturated
-(financial-correctness maximally primes caution)---was then tested with a low-stakes vehicle
-(an internal analytics dashboard, where shipping on green tests is defensible). Bare still
-withheld 10/10: caution is re-derived even off-saturation, so ``legibility, not behaviour''
-survives the stricter test. An \emph{apparent} behavioural residue---a coherent-irrelevant
-distractor lowering Sonnet's caution to 3/5 at $n=5$ (two cells flipping to ``ship now, verify
-post-deploy'')---did \textbf{not} survive replication: a reproducibility rerun at $n=10$ returned
-10/10 (no erosion), with Haiku unchanged at 5/5, so the 3/5 was small-sample noise rather
-than a real effect. Off-saturation, then, the low-stakes verify is \emph{purely} legibility---no
-behavioural residue survives the control. (Coherent-irrelevant filler is still not neutral:
-on the \emph{derivable} convention probe it \emph{primed} the answer 5/5 and on the \emph{unguessable} fact
-it was harmless---its sign depends on the task---but it did not erode vigilance here once
-re-run; cf.\ [15].)
+(``passing the local tests is not the same as global correctness; check the property the
+whole system must satisfy before declaring done''). On a high-stakes vehicle (a
+payment-splitting refactor with green unit tests, asked ``ship it?''), the three-arm control
+did not merely moderate the gate---it found it \emph{fully derivable}: \textbf{all four arms
+avoided the trap 40/40}, bare included. With no injected context, both models already
+withhold the ship and demand real-world validation (a reconciliation check, shadow-replay
+against production data, a canary release). The substance arm's only isolable contribution
+is a \emph{citation}: it names the specific doctrine (6/10 cells) where no other arm does, and
+it lifts the explicit ``invariant'' framing from re-derived (bare 7/10) to universal---while
+leaving the decision itself unchanged. The verify gate is thus the \emph{most} derivable
+verdict we measured, more so than the convention (whose bare baseline at least sat at 2/5):
+its value is \textbf{legibility} (a named property to check, an auditable citation), not a
+change in behaviour, because the disposition it records is one the model already holds. The
+three probes form a spectrum of the organizing thesis---from an \emph{unguessable fact}
+(recall, clean isolation, 10/10 vs 0), through a \emph{derivable convention} (docs: moderated,
+primable by disposition), to an \emph{already-held disposition} (verify: fully derivable, at
+ceiling). One limitation of the verify probe---that its high-stakes vehicle maximally primes
+caution (financial correctness)---was then tested with a low-stakes vehicle (an internal
+analytics dashboard, where shipping on green tests is defensible). Bare still withheld
+10/10: caution is re-derived even away from the high-caution domain, so ``legibility, not
+behaviour'' survives the stricter test. An \emph{apparent} residual behavioural effect---a
+coherent-irrelevant distractor lowering Sonnet's caution to 3/5 at $n=5$ (two cells flipping
+to ``ship now, verify post-deploy'')---did \textbf{not} survive replication: a rerun at $n=10$
+returned 10/10 (no erosion), with Haiku unchanged at 5/5, so the 3/5 was small-sample
+noise, not a real effect. Away from the high-caution domain, then, the low-stakes verify
+gate is \emph{purely} legibility---no behavioural effect survives the control.
+(Coherent-irrelevant filler is still not neutral: on the \emph{derivable} convention probe it
+\emph{primed} the answer 5/5, and on the \emph{unguessable} fact it was harmless---its sign depends
+on the task---but it did not erode vigilance here once re-run; cf.\ [15].)
 
-The last ``form'' verdict, \textbf{handoff}, closes the same way and completes the picture. Testing
-the actual handoff claim---does a structured resume \emph{cursor} beat an equal-length \emph{prose}
-summary carrying the same state?---the two tied exactly (10/10 = 10/10): both produced a
-flawless resumption (correct next action, every live constraint restated), while no-state
-arms scored 0/30. The cursor's structure is legibility; the state \emph{content}, which prose
-carries equally, is the substance. A side-result sharpens the fabrication thesis: the
-no-state arms did not \emph{invent} a resumption---all 30 recognised the empty context and asked
-for the state. Confident fabrication (Section 4.5) fires when the model has a plausible prior
-to confabulate from, not when the gap is salient; a visibly empty context makes the absence
-obvious, so the model abstains. With both form verdicts now resolved as legibility, \textbf{no
-``form'' verdict survives the control as behavioural substance.}
+The last ``form'' verdict, \textbf{handoff}, closes the same way and completes the picture.
+Testing the actual handoff claim---does a structured resume \emph{cursor} beat an equal-length
+\emph{prose} summary carrying the same state?---the two tied exactly (10/10 = 10/10): both
+resumed flawlessly (correct next action, every live constraint restated), while the
+no-state arms scored 0/30. The cursor's structure is legibility; the state \emph{content},
+which prose carries equally well, is the substance. A side-result sharpens the fabrication
+thesis: the no-state arms did not \emph{invent} a resumption---all 30 recognised the empty
+context and asked for the state. Confident fabrication (Section 4.5) fires when the model
+has a plausible prior to make something up from, not when the gap is obvious; a visibly
+empty context makes the absence plain, so the model abstains. With both ``form'' verdicts
+now resolved as legibility, \textbf{no ``form'' verdict survives the control as a change in
+behaviour.}
 
 \section{The lean-down: what survives}
 
-Applying a default-cut rule (keep only measured value or a clearly-argued unique value a
-generic equivalent lacks), with one counterweight---\emph{scaffolding that makes a good
-practice reliably happen has value even when its content is not unique} (a completion
+Applying a default-to-cut rule (keep only measured value, or a clearly argued unique value
+that a generic equivalent lacks), with one counterweight---\emph{scaffolding that makes a
+good practice reliably happen has value even when its content is not unique} (a completion
 hook that fires; a capture command that lowers the friction of recording; a format that
 makes knowledge findable)---the system reduces to a small core:
 
@@ -535,128 +551,132 @@ makes knowledge findable)---the system reduces to a small core:
 \item \textbf{The records} (append-only log, findings, ideas): the proven carrier of specific,
    otherwise-un-derivable knowledge. \emph{Keep --- the core.}
 \item \textbf{A minimal always-on seed}: the framing principle, the anchor obligation (the one
-   reasoning-substance), the project's counter-default conventions as a short rule-set
-   (the distill result), and one-line expansion / ask-the-human nudges. No role-chamber
-   prose.
+   bit of reasoning substance), the project's against-the-grain conventions as a short
+   rule-set (the distill result), and one-line expansion / ask-the-human nudges. No
+   role-chamber prose.
 \item \textbf{A completion gate}: a short pre-ship check whose load-bearing item is the anchor
    check, fired as a hook (activation over prose).
 \item \textbf{One capture command} (plus an earned-finding gate) and setup.
 \item \textbf{A tested, selective skills catalog} with budget-aware routing---the deployment
-   face of the record, valuable where weak models meet selection pressure.
+   side of the record, valuable where weak models face selection pressure.
 \end{enumerate}
 
-Cut or folded to a one-line convention: the forced-perspective council (form, as prose
-\emph{and} as agents), the role-as-subagent engine, the handoff-cursor \emph{format}, the
+Cut, or folded into a one-line convention: the forced-perspective council (form, both as
+prose \emph{and} as agents), the role-as-subagent engine, the handoff-cursor \emph{format}, the
 read-only utilities, and the elaborate verification checklist. The bet is explicit: the
-value is counter-default project knowledge in three faces---\emph{having} it (recall),
+value is against-the-grain project knowledge in three forms---\emph{having} it (recall),
 \emph{compressing} it (the seed rule-set), and \emph{deploying the right piece when} it is not
-obvious (routing)---plus the anchor discipline and activation, all concentrated where
-the generic default is wrong; the frontier dissolves the reasoning-ceremony because it
-already knows. The keep/cut matrix below is what the evidence supports retaining and
-what it supports retiring.
+obvious (routing)---plus the anchor discipline and the activation scaffolding, all
+concentrated where the generic default is wrong; the frontier model dissolves the
+reasoning-ceremony because it already knows. This is what the evidence supports retaining,
+and what it supports retiring.
 
 \section{Threats to validity and what was not settled}
 
 The method's deliberate blind spot is its honesty test. Several of the largest bets sit
-on the side it cannot measure single-shot, and a faked single-shot proxy for one of them
-would be the exact self-consistent falsehood the study exists to catch.
+on the side it cannot measure in a single interaction, and faking a single-interaction
+proxy for one of them would be the exact self-consistent falsehood the study exists to
+catch.
 
 \begin{itemize}
-\item \textbf{Longitudinal accumulation} is reached by a \emph{synthetic} session chain---the
-  controlled counterfactual real history cannot supply---now corroborated by six
-  \emph{observational} in-vivo catches on the project's own record (Section 4.5; SOUL-144),
-  which supply real multi-session history but not the counterfactual. Seven rungs are
-  climbed (carry, convention, depth, erosion, weak-distiller, second prior, form-vs-prior);
-  scale (many interacting facts, a long eroding record) remains a widening of the harness.
-\item \textbf{Multi-task routing} (does a curated catalog pay off across a task distribution?) and
-  a \textbf{built router} (vs.\ the oracle upper bound) are unmeasured; the routing win is one
-  task and a perfect-routing bound.
-\item \textbf{Tool-skills} (differential real tools) cannot be granted to headless arms; routing
-  used procedure-knowledge as a faithful proxy for the selection kernel.
-\item \textbf{Retrieval in a large repo} is closeable but deferred as low marginal value
-  (predicted to re-confirm ``the record carries the value'').
+\item \textbf{Longitudinal accumulation} is reached by a \emph{synthetic} session chain---which
+  supplies the controlled counterfactual that real history cannot---now corroborated by six
+  \emph{observational} real-world catches on the project's own record (Section 4.5; SOUL-144),
+  which supply real multi-session history but not the counterfactual. Seven aspects are
+  tested (carry, convention, depth, erosion, weak distiller, a second prior, form-vs-prior);
+  scale (many interacting facts, a long eroding record) remains a broadening of the harness
+  still to be done.
+\item \textbf{Multi-task routing} (does a curated catalog pay off across a range of tasks?) and
+  a \textbf{built router} (versus the best-case, given-the-answer bound) are unmeasured; the
+  routing win rests on one task and a perfect-routing upper bound.
+\item \textbf{Tool-skills} (giving arms genuinely different real tools) cannot be granted to
+  headless arms; the routing probe used procedure-knowledge as a faithful proxy for the core
+  selection problem.
+\item \textbf{Retrieval in a large repo} could be closed, but was deferred as low marginal
+  value (it is predicted to simply re-confirm that ``the record carries the value'').
 \item \textbf{Legibility's payoff to a human over time}---the standing justification for keeping
-  the record readable---is asserted, not measured; it is human and longitudinal.
+  the record readable---is asserted, not measured; it is inherently human and longitudinal.
 \item \textbf{The filler control is conservative, not symmetric.} As Section 3.2 notes and the
-  literature establishes, irrelevant tokens more often degrade than inflate [15], so a
-  vanished gain conflates ``was compute'' with ``filler hurt the control.'' This biases
-  the study toward \emph{under}-stating doctrine, which makes the surviving wins (recall, distill,
-  longitudinal) robust but leaves some ``form'' verdicts with a residual ambiguity. The
-  three-arm control (Section 6.1) was run to address this; it confirmed the recall KEEP,
-  moderated the convention KEEP, and resolved both ``form'' verdicts---verify (derivable) and
-  handoff (a structured cursor ties equal-length prose)---as legibility, not behaviour. No
-  residual remains on this axis except the human-legibility-over-time payoff, which is
-  longitudinal and unmeasured (below).
+  literature establishes, irrelevant tokens more often degrade a model than inflate it [15],
+  so a vanished gain confuses ``it was just compute'' with ``the filler hurt the control.''
+  This biases the study toward \emph{under}-stating the doctrine, which makes the surviving
+  wins (recall, distill, longitudinal) robust but leaves some ``form'' verdicts with a
+  residual ambiguity. The three-arm control (Section 6.1) was run to address this; it
+  confirmed the recall KEEP, moderated the convention KEEP, and resolved both ``form''
+  verdicts---verify (derivable) and handoff (a structured cursor ties equal-length
+  prose)---as legibility, not behaviour. No residual remains on this axis except the
+  human-legibility-over-time payoff, which is longitudinal and unmeasured (below).
 \item \textbf{``Stronger $\Rightarrow$ more confident fabrication'' is not claimed as a scale law --- and the apparent
-  gradient did not reproduce.} The anchored result [12,13] is that capability does not
-  \emph{eliminate} confident fabrication and that RLHF degrades calibration---a training-incentive
-  effect, not a monotonic function of scale. The cross-scale calibration probe (Section 6.1)
-  tested this on a 3-tier ladder. \emph{What survives a rerun:} recall of the unguessable fact does
-  not improve with capability (no tier spontaneously recalls it, flat across tiers), and
-  capability does not \emph{eliminate} the confident false assertion (the top tier still states it
-  in a real fraction of cells). \emph{What does not survive:} the \textbf{gradient} (Haiku $<$ Sonnet $<$
-  Opus, strongest-states-it-most)---a reproducibility rerun under stricter scoring moved the
-  top tier from $\sim$80\% to $\sim$0\% (the count is scoring-fragile: the strongest model tends to assert
-  the falsehood \emph{then} recommend verifying it, and rejected the shortcut outright 9/15;
-  SOUL-142). The honest claim is \emph{non-elimination only}---not a scale law on either the binary
-  (saturated) or the confidence rate (unstable).
-\item \textbf{The depth result, now with needle position varied at token scale.} ``Lost in the
-  middle'' [5] is a large-\emph{token} phenomenon; our original no-decay result was at $N = 20$
-  record \emph{units} at primacy position. The token-scale probe (Section 6.1) re-ran it at
-  $\sim$6.6k tokens with the needle at 8\% / 50\% / 92\% depth: no positional decay (30/30, both
-  models; middle as clean as the ends). We bound this to the tested scale and a
-  \emph{semantically-unique} needle; arbitrary token scale and a \emph{camouflaged} needle (the regime
-  where [5] bites hardest) remain the standing residual.
-\item $n$ is small; the scorer is the experimenter (bias runs toward the system, so nulls are
-  conservative). Citation hygiene was itself a live test of the study's own thesis: a
-  verification pass over the project record found one anchor (a review paper) cited for a
-  framing slightly stronger than a review supports---downgraded to background here, with
-  the load-bearing anchors retained [1,2]---and an \emph{initial over-correction} that labelled
-  it ``fabricated'' before re-checking showed the identifier was real and correct. Both the
-  weak-anchor and the over-correction are instances of the anchor-validity discipline the
-  study formalizes, applied reflexively.
+  gradient did not reproduce.} The established result [12,13] is that capability does not
+  \emph{eliminate} confident fabrication, and that RLHF degrades calibration---a
+  training-incentive effect, not a smooth function of scale. The cross-scale calibration probe (Section 6.1)
+  tested this on a three-tier ladder. \emph{What survives a rerun:} recall of the unguessable
+  fact does not improve with capability (no tier spontaneously recalls it---flat across
+  tiers), and capability does not \emph{eliminate} the confident false assertion (the top tier
+  still states it in a real fraction of cells). \emph{What does not survive:} the \textbf{gradient} (Haiku $<$ Sonnet $<$
+  Opus, strongest states it most). A rerun under stricter scoring moved the top tier from
+  $\sim$80\% to $\sim$0\%, because the count is fragile to how it is scored: the strongest model
+  tends to assert the falsehood \emph{and then} recommend verifying it, and it rejected the
+  shortcut outright 9/15 (SOUL-142). The honest claim is \emph{non-elimination only}---not a
+  scale law on either the yes/no measure (saturated) or the confidence rate (unstable).
+\item \textbf{The depth result, now with the target's position varied at token scale.} ``Lost in
+  the middle'' [5] is a large-\emph{token} phenomenon; our original no-decay result was at $N =
+  20$ record \emph{units}, with the target item at the start (primacy). The token-scale probe
+  (Section 6.1) re-ran it at $\sim$6.6k tokens with the target (the ``needle'') at 8\% / 50\% /
+  92\% depth: no positional decay (30/30, both models; the middle as clean as the ends). We
+  bound this to the tested scale and a \emph{semantically-unique} target; arbitrary token scale
+  and a \emph{camouflaged} target (the regime where [5] bites hardest) remain the standing
+  residual.
+\item $n$ is small; the scorer is the experimenter (bias runs toward the system, so null
+  results are conservative). Keeping the citations honest was itself a live test of the
+  study's own thesis: a verification pass over the project record found one anchor (a review
+  paper) cited for a claim slightly stronger than a review can support---downgraded to
+  background here, with the load-bearing anchors kept [1,2]---and an \emph{initial
+  over-correction} that labelled it ``fabricated'' before a re-check showed the identifier was
+  real and correct. Both the weak anchor and the over-correction are instances of the
+  anchor-validity discipline the study formalizes, applied to itself.
 \end{itemize}
 
-For the measurable rows, closure is a probe; for the unmeasurable rows, closure is this
-ledger---naming each precisely, with why it resists single-shot measurement. The study
-marks the open ground rather than claiming it.
+For the measurable rows, closure is an experiment; for the unmeasurable rows, closure is
+this ledger---naming each one precisely, with the reason it resists single-interaction
+measurement. The study marks the open ground rather than claiming it.
 
 \subsection{Experiments --- all four run}
 
-The literature review surfaced four measurements that would each sharpen a result above.
+The literature review pointed to four measurements that would each sharpen a result above.
 All four were subsequently run (each pre-registered with a locked prediction before any
-output was read); the residuals are now bounds, not blanks.
+output was read); the open questions are now bounded, not blank.
 
 \begin{enumerate}
 \item \textbf{Three-arm filler control} --- \emph{done, five vehicles} (Section 4.6). Re-running with
-   \{empty-padding, coherent-irrelevant, substance\} confirmed the recall (record) KEEP
-   cleanly (10/10 vs 0), moderated the convention KEEP (derivable + disposition-primable),
-   and---extended to the \textbf{verify} ``form'' verdict on two vehicles---found it the \emph{most}
-   derivable verdict. A high-stakes completion-gate vehicle ceilinged at 40/40 avoid-trap
-   across all four arms (bare included); a \emph{low-stakes} vehicle, run to test whether that
-   ceiling was domain-saturation, still showed bare withholding 10/10---caution is derived
-   even off-saturation, so ``legibility, not behaviour'' holds. (An apparent residue---a
-   distractor lowering Sonnet caution to 3/5---did \emph{not} replicate: a reproducibility rerun
-   at $n=10$ returned 10/10, Haiku 5/5, so it was $n=5$ noise; off-saturation the result is
-   purely legibility.) The remaining
+   \{empty padding, coherent-irrelevant, substance\} confirmed the recall (record) KEEP
+   cleanly (10/10 vs 0), moderated the convention KEEP (partly derivable and primable by
+   disposition), and---extended to the \textbf{verify} ``form'' verdict on two vehicles---found
+   it the \emph{most} derivable verdict. A high-stakes completion-gate vehicle hit the ceiling
+   at 40/40 avoid-trap across all four arms (bare included); a \emph{low-stakes} vehicle, run to
+   test whether that ceiling was just the domain priming caution, still showed bare
+   withholding 10/10---caution is derived even away from the high-caution domain, so
+   ``legibility, not behaviour'' holds. (An apparent residue---a distractor lowering Sonnet's
+   caution to 3/5---did \emph{not} replicate: a rerun at $n=10$ returned 10/10, Haiku 5/5, so it
+   was noise at $n=5$; away from that domain the result is purely legibility.) The remaining
    ``form'' verdict, \textbf{handoff}, was then closed the same way: a structured resume cursor
    \emph{tied} an equal-length prose summary carrying the same state (10/10 = 10/10), no-state
    arms 0/30---the structure is legibility, the state content (which prose carries equally)
-   is the substance. No ``form'' verdict survives the control as behavioural substance.
+   is the substance. No ``form'' verdict survives the control as a change in behaviour.
 \item \textbf{Direct empty-filler check on the study's own models} --- \emph{done}: empty padding $\approx$ bare on
-   all probes (pure length did not move these decisions), so the inflation direction did not
-   fire here. The conservative-control caveat (\S3.2) therefore biases toward \emph{under}-stating
-   doctrine, as expected.
-\item \textbf{Cross-scale calibration} --- \emph{done} (3-tier ladder, Haiku$\rightarrow$Sonnet$\rightarrow$Opus, 45 no-fact
+   all probes (pure length did not move these decisions), so filler did not inflate the
+   results here. The conservative-control caveat (\S3.2) therefore biases toward
+   \emph{under}-stating the doctrine, as expected.
+\item \textbf{Cross-scale calibration} --- \emph{done} (three-tier ladder, Haiku$\rightarrow$Sonnet$\rightarrow$Opus, 45 no-fact
    cells), \textbf{with a reproducibility caveat}. Two parts. \emph{Robust:} recall of the unguessable
    fact does \emph{not} improve with capability---no tier spontaneously recalls the hidden
-   mechanism (flat across tiers, both runs), and capability does not \emph{eliminate} the
+   mechanism (flat across tiers, in both runs), and capability does not \emph{eliminate} the
    confident false assertion (even the top tier states it in a real fraction of cells).
    \emph{Not reproducible:} the apparent \textbf{gradient}---``confident fabrication rises Haiku $<$
-   Sonnet $<$ Opus, strongest states it most''---did \textbf{not} survive a re-run. The Grade-B
-   count is scoring-fragile: an independent rerun under stricter scoring moved the top tier
-   (Opus) from $\sim$80\% to $\sim$0\%, because Opus tends to assert the falsehood \emph{and then} recommend
-   verifying it loaded, and rejected the shortcut outright 9/15. So the anchored claim is
+   Sonnet $<$ Opus, strongest states it most''---did \textbf{not} survive a re-run. The count is
+   fragile to how it is scored: an independent rerun under stricter scoring moved the top
+   tier (Opus) from $\sim$80\% to $\sim$0\%, because Opus tends to assert the falsehood \emph{and then}
+   recommend verifying it, and rejected the shortcut outright 9/15. So the anchored claim is
    \emph{non-elimination only}---not a capability gradient (Figure~\ref{fig:calibration}; SOUL-141/142).
 
    \begin{figure}[t]
@@ -664,37 +684,36 @@ output was read); the residuals are now bounds, not blanks.
    \includegraphics[width=\textwidth]{../../figures/calibration-gradient.png}
    \caption{Cross-scale calibration ($n = 15$ / tier), two independent runs. Failing to
    recall the hidden fact is flat at the ceiling---the fact is unguessable at every
-   capability (robust). The ``confidently asserts the falsehood'' rate is \textbf{scoring-fragile}:
+   capability (robust). The ``confidently asserts the falsehood'' rate is \textbf{fragile to how it is scored}:
    run 1 (lenient) rises with capability, but run 2 (strict rerun) collapses at the top tier
-   (12/15 $\rightarrow$ 0/15), because the strongest model pairs the false assertion with a ``verify it
-   loaded'' step and often rejects the shortcut. There is no reliable capability gradient; the
+   (12/15 $\rightarrow$ 0/15), because the strongest model pairs the false assertion with a ``verify it''
+   step and often rejects the shortcut. There is no reliable capability gradient; the
    surviving claim is non-elimination, not ``stronger $\Rightarrow$ more confident'' (SOUL-142).}
    \label{fig:calibration}
    \end{figure}
 
-\item \textbf{Token-scale and position depth test} --- \emph{done} (F038 needle at 8\%/50\%/92\% depth in a
+\item \textbf{Token-scale and position depth test} --- \emph{done} (the F038 target at 8\%/50\%/92\% depth in a
    $\sim$6.6k-token record). No positional decay: 30/30 recall at every position, both models;
-   middle (the worst case per [5]) as clean as primacy/recency. `Lost in the middle' did not
-   appear at this scale for a \emph{semantically-unique} needle. This bounds the depth claim to
-   the tested scale and a distinctive needle; arbitrary scale and a \emph{camouflaged} needle
-   (needle-similar distractors, where [5] bites hardest) remain the standing residual.
+   the middle (the worst case per [5]) as clean as the start and end. `Lost in the middle'
+   did not appear at this scale for a \emph{semantically-unique} target. This bounds the depth
+   claim to the tested scale and a distinctive target; arbitrary scale and a \emph{camouflaged}
+   target (distractors similar to the target, where [5] bites hardest) remain the standing residual.
 \end{enumerate}
 
 \section{Discussion}
 
-The findings collapse onto one distinction. A meta-doctrine layer can try to make a
-model \emph{reason better generically}, or it can \emph{carry information the model cannot
-regenerate}. The first is reproduced, at equal compute, by an equivalent quantity of any
-content---it is legibility, disposition, or compute, and it fades as the base model
-improves. The second is not: a fact about a specific API, a convention specific to a
-project, an incident specific to a team---these have no generic substitute, and they
-remain decisive at the frontier. And the frontier failure mode is not benign: a capable
-model that lacks the fact does not abstain; it can generate a confident, plausible,
-wrong justification (Section 4.5)---the precise hazard against which an external,
-unguessable anchor is the only defense. We resist the stronger claim that capability
-\emph{monotonically} worsens this; our evidence is that capability does not \emph{resolve} it, and
-that whether the strong or the weak model fails is gated by the form of the surviving
-rule.
+The findings come down to one distinction. A meta-doctrine layer can try to make a model
+\emph{reason better in general}, or it can \emph{carry information the model cannot regenerate}.
+The first is reproduced, at equal compute, by an equal amount of any content---it is
+legibility, disposition, or compute, and it fades as the base model improves. The second
+is not: a fact about a specific API, a convention specific to a project, an incident
+specific to a team---these have no generic substitute, and they remain decisive at the
+frontier. And the way the frontier model fails is not benign: a capable model that lacks
+the fact does not abstain; it can generate a confident, plausible, wrong justification
+(Section 4.5)---the exact hazard that an external, unguessable anchor is the only defense
+against. We resist the stronger claim that capability \emph{monotonically} worsens this; our
+evidence is that capability does not \emph{resolve} it, and that whether the strong or the
+weak model fails depends on the form of the surviving rule.
 
 This reframes what such systems are \emph{for}. Their durable value is not a reasoning
 prosthesis but a \textbf{memory of the unguessable}, plus the \emph{activation} scaffolding that
@@ -704,22 +723,24 @@ That it reads like substance is not incidental: the same verbosity that makes it
 \emph{feel} like better thinking is what a length-matched control reproduces.
 
 The compression result sharpens the design rule. Because the dangerous failure is the
-frontier model fabricating around a missing fact, an always-on rule-set must preserve
-not just a rule's proposition but the \emph{force} of the counter-prior fact behind it; a
-terse rule with the incident stripped invites the very fabrication it was meant to
-prevent, and a loophole in the rule is the opening the strong model takes.
+frontier model fabricating around a missing fact, an always-on rule-set must preserve not
+just a rule's bare statement but the \emph{force} of the fact behind it---the fact that runs
+against the model's prior; a terse rule with the incident stripped out invites the very
+fabrication it was meant to prevent, and a loophole in the rule is the opening the strong
+model takes.
 
 \section{Conclusion}
 
 Most of what makes a meta-doctrine system \emph{feel} effective is the system making the work
 legible and the model more verbose---reproduced, at equal compute, by semantically-empty
-filler, and fading at the frontier. The part that genuinely changes what the model
-decides is narrow and capability-robust: carrying project-specific, counter-default
-knowledge the model cannot regenerate and a generic equivalent gets wrong, together with
-the scaffolding that makes recording and checking reliably happen. \emph{Derivable dissolves;
-unguessable persists.} A lean system that keeps the record, a small counter-default
-rule-set, a tested skills catalog, and a firing completion gate---and cuts the
-reasoning-ceremony to a line---captures the measured value at a fraction of the surface.
+filler, and fading at the frontier. The part that genuinely changes what the model decides
+is narrow and holds even for strong models: carrying project-specific, against-the-grain
+knowledge that the model cannot regenerate and that a generic equivalent gets wrong,
+together with the scaffolding that makes recording and checking reliably happen.
+\emph{Derivable dissolves; unguessable persists.} A lean system that keeps the record, a small
+against-the-grain rule-set, a tested skills catalog, and a completion gate that actually
+fires---and cuts the reasoning-ceremony to a line---captures the measured value with far
+less bulk.
 
 \section*{References}
 
@@ -782,27 +803,5 @@ arXiv:2310.08560, 2023.
 Simulacra of Human Behavior.} UIST 2023, arXiv:2304.03442, 2023.
 
 \endgroup
-
-\bigskip
-
-\emph{Citation provenance: [1]--[6] were resolved directly against arXiv during drafting;
-[7]--[18] were fetched and adversarially cross-checked by a multi-agent literature sweep
-(22 of 25 sampled claims confirmed, 3 refuted), then---in a final per-identifier sweep
-(2026-06-05)---every one of [7]--[18] was re-fetched directly against arXiv and confirmed
-correct on identifier, title, and authors (zero bad identifiers). That sweep did surface
-two \textbf{venue} annotations that neither the arXiv page nor a targeted search could anchor---``[7]
-EMNLP 2024 Findings'' and ``[14] COLM 2024''---which have been softened to arXiv-only
-rather than asserted; venues that were confirmed are retained ([8] NAACL 2024 main, [11]
-EMNLP 2024 main, [16] ICLR 2024, [18] UIST '23). This is a third reflexive instance of the study's own
-anchor-validity discipline (cf.\ the TRiSM downgrade and the over-correction in \S6): an
-unanchored attribution corrected at writing time rather than carried. The ``interpretability''
-framing previously cited to a review paper (TRiSM, 2506.04133) remains downgraded to
-background---see \S6.}
-
-\bigskip
-
-\emph{Companion blog (the narrative): \href{blog.md}{\texttt{blog.md}}. Consolidated result tables:
-\href{data/results-tables.md}{\texttt{data/results-tables.md}}. The format-agnostic corpus this
-paper renders---every probe's full design and data---is \href{00-method.md}{\texttt{00}}--\href{08-longitudinal-preference.md}{\texttt{08}}.}
 
 \end{document}
