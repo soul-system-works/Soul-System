@@ -79,7 +79,7 @@ flowchart TD
 
 **This document is for you, the human.** As of 2.0 (the SLIM amendment, A021), the
 AI does not read this book: a session operates on one plain page —
-`operations/CLAUDE.md`, about ten sentences and four instruments. This book is how a
+`operations/CLAUDE.md`, a handful of plain sentences and its instruments. This book is how a
 *person* who picks up the system understands why those sentences exist, what each
 one paid in real failures to earn its place, and how to think alongside an AI whose
 sessions begin with no memory.

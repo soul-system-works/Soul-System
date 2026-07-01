@@ -229,9 +229,10 @@ generated itself died at the session boundary unless an instrument caught them; 
 excellent arm's audit session found real release-blockers and its own successor
 never learned of them.
 
-So the final shape, ratified the same evening: **ten true sentences** (record at
+So the final shape, ratified the same evening: **one plain page of rules** (record at
 the point of pressure; never invent history; anchor your claims; nothing is done
-until it runs; capture what can't be re-derived; leave a cursor), **four
+until it runs; capture what can't be re-derived; leave a cursor; ask when only the
+owner knows; flag overrides out loud), **four
 instruments with teeth** (the capture command, the completion gate, the handoff,
 the distiller), **and a book for the humans** — the philosophy, the roles, the
 whole mythology, rewritten as the document you read to understand the system, not
