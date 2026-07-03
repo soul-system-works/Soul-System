@@ -1300,6 +1300,7 @@ NOTES:     Umbrella over existing threads, NOT a duplicate: [[SOUL-I011]] is
            here. Default-simplicity at execution: start with ONE bounded tracer
            experiment (e.g., role-firing on a fresh dogfood project), NOT the
            generic harness first. Related: [[SOUL-I001]], [[SOUL-I034]].
+```
 
 ```
 ID:        SOUL-I041
@@ -1684,7 +1685,7 @@ STATUS:    Raw
 ```
 
 ```
-IDEA ID:   SOUL-I048
+ID:        SOUL-I048
 DATE:      2026-06-10
 SOURCE:    Body directive at the v1.1.0 graduation (SOUL-157) — the next session's activity.
 WHAT:      THE v1.1 VERIFICATION PASS — re-run the targeted probes to verify the A019/A020
