@@ -7850,3 +7850,38 @@ CONSEQUENCE:  A022 fully verified except one by-construction-unreachable-here
               (SOUL-162..170).
 STATUS:       Closed.
 ```
+
+```
+ID:           SOUL-171
+WHEN:         2026-07-02 / External landscape review — Body-directed ("is the
+              system now obsolete?")
+WHERE:        Deep-research run (104 subagents, per-claim 3-0 adversarial
+              verification) against primary sources: Claude Code docs (memory,
+              hooks, changelog), claude-obsidian, Basic Memory, Anthropic
+              reference memory MCP server, MCPVault, BMAD v6, GitHub Spec Kit.
+WHAT:         The persistence plumbing is now commodity: native auto-memory
+              (per-repo MEMORY.md, on by default, machine-local), @-imports,
+              SessionStart resume hooks, MEMORY.md compaction reminders
+              (v2.1.181, 2026-06-17); Basic Memory / Spec Kit / BMAD ship
+              markdown stores and planning records at 3.4k-117k stars. No
+              surveyed tool ships the discipline layer: a blocking completion-
+              gate POLICY (only the Stop-hook mechanism is native), honest-
+              history rules, an append-only witness->findings->amendments
+              lifecycle (every surveyed store is mutable by design), or a
+              measured harness. Obsidian: the record is vault-readable, but
+              fenced entries + plain-ID cross-references light up no graph
+              without a derived view.
+TYPE:         Emissary (the outward survey); Cartographer (the external map
+              updated). Confirms the Cut's derivable/unguessable boundary
+              from outside.
+CONSEQUENCE:  Keep verdict, recorded. Two watch items named: (a) gate FIRING
+              reliability is unmeasured — upstream issue reports document
+              plugin-path bugs and hooks dying in long sessions, so the gate
+              may silently not fire; (b) the commoditization boundary moves
+              weekly — a native or popular gate policy could appear. Derived
+              visual layer (gitignored .soul/vault/) prototyped this session
+              for the Body's evaluation. Graduation of the watch items to
+              findings is the Body's call.
+STATUS:       Closed — review complete; watch items are named here and in the
+              session report.
+```
