@@ -34,20 +34,28 @@ Optional argument: a short description of what the next session is for — let i
                         can't vary; else "none open"]
    OPEN GATES:         [any gate mid-evaluation; else "none"]
    NEXT STEP:          [the immediate next action — the cursor]
-   POINTERS (reference, do not duplicate):
-     - witness tail:   last entries in witness.md ([ids])
-     - open findings:  findings/open/ ([ids])
-     - ideas:          ideas.md ([ripe ids])
-     - tasks:          [open task ids / subjects]
-     - specs/ADRs:     [relevant paths]
+   POINTERS (reference, do not duplicate; mark provenance on every entry):
+     - witness tail:   last entries in witness.md ([ids]) [read]
+     - open findings:  findings/open/ ([ids]) [read]
+     - ideas:          ideas.md ([ripe ids]) [read]
+     - tasks:          [open task ids / subjects] [read|inherited]
+     - specs/ADRs:     [relevant paths] [read|inherited]
    SUGGESTED ROLES / SKILLS: [for the next session]
    ```
-3. Keep it **thin**: references, not duplicates. Nothing the durable records already hold gets copied in.
+3. **Mark pointer provenance (A023/F061):** every POINTERS entry carries `[read]` — this
+   session actually opened it — or `[inherited]` — carried from a prior cursor or from
+   memory, unverified. A cursor pointer is a claim, not a fact: an unmarked or
+   `[inherited]` pointer once propagated a false "the ADR is not on disk" into a Body
+   decision (F061; cost to check was one `ls`). Never upgrade a pointer to `[read]`
+   without opening it this session. Where a **cross-repo pointer is load-bearing**,
+   prefer removing the seam (move the artifact in; add a red/green check) over
+   annotating it.
+4. Keep it **thin**: references, not duplicates. Nothing the durable records already hold gets copied in.
    **Self-contained for correctness, not hermetic (A009):** the cursor + the records it points
    to must reproduce the work without the original session's context — but it does not shield
    the next session from the surrounding repo; a worker may still read sibling files for
    consistency. A vague handoff is the named cause of duplicated work and gaps.
-4. Report that the cursor was written, and remind the Body that the next session should read `.soul/handoff.md` first.
+5. Report that the cursor was written, and remind the Body that the next session should read `.soul/handoff.md` first.
 
 ## What not to do
 
@@ -60,4 +68,6 @@ Optional argument: a short description of what the next session is for — let i
 **Source:** Built by the Artificer for the handoff design
 (docs/specs/2026-05-21-soul-handoff-design.md); grows only the Soul delta, leaning on
 `/compact` + the durable records (SOUL-I007). Pocock's handoff skill informed the
-"reference, don't duplicate" principle. **Adopted:** 2026-05-21. **Status:** active.
+"reference, don't duplicate" principle. **Amended:** SOUL-A023 (2026-07-16) — pointer
+provenance marks, from F061 (a cursor pointer propagated a false claim into a Body
+decision). **Adopted:** 2026-05-21. **Status:** active.

@@ -14,9 +14,14 @@ source of truth; this loads them and continues.
 1. **Read `.soul/handoff.md`** (the cursor). If it does not exist, fall back: read the
    `witness.md` tail, `ideas.md`, open `findings/`, and the task tracker; report the
    state; and ask the Body for direction.
-2. **Load the pointers the cursor names**, in priority order — witness tail, open
-   findings, ripe ideas, the task tracker, the named specs/ADRs. Actually read them so
-   the durable state is in context; don't just glance at the cursor.
+2. **Resolve every pointer the cursor names** (A023/F061), in priority order — witness
+   tail, open findings, ripe ideas, the task tracker, the named specs/ADRs. Actually
+   read what resolves, so the durable state is in context; don't just glance at the
+   cursor. When a named path or artifact **cannot be found, report the miss explicitly**
+   ("cursor names X; X not found") — a miss is a signal worth surfacing, never a silent
+   skip. The pointer most in need of resolution is exactly the one that doesn't resolve.
+   Treat `[inherited]` pointers (and any unmarked ones from pre-A023 cursors) as claims
+   to verify before repeating them to the Body — a cursor pointer is a claim, not a fact.
 3. **Restate, in 2–3 lines:** where we are · the live design frame (if any) · the
    next step. Under a `plain` register (the project CLAUDE.md's Register line), say
    "the current design frame" rather than "the LIVE AL"; plain language throughout.
@@ -35,4 +40,6 @@ source of truth; this loads them and continues.
 
 **Source:** Built by the Artificer as the twin of `/soul-handoff`
 (docs/specs/2026-05-21-soul-handoff-design.md); the resume half of the context-limit
-handoff (SOUL-I007). **Adopted:** 2026-05-21. **Status:** active.
+handoff (SOUL-I007). **Amended:** SOUL-A023 (2026-07-16) — resolve-and-report-misses,
+from F061 (the unresolvable pointer is the one most in need of resolution).
+**Adopted:** 2026-05-21. **Status:** active.
