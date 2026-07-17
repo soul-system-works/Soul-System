@@ -32,6 +32,18 @@ book (`philosophy/the-soul.md`); everything else regenerates from the record.
    vector, hold anchor, and bounded accommodation across three arms. Path-
    dependent; no rule generates it — the record carries the instances.
 
+5. **Repo conventions that live nowhere else.** (a) Branch-per-release: main is
+   the plugin DISTRIBUTION CHANNEL — record captures (witness/ideas/findings/
+   amendments) commit to main; new WORK ships on a branch until release. Before
+   2026-07-16 this rule's only durable trace was an ideas aside (I052 NOTES) +
+   the gitignored cursor — carried here so it survives the cursor (the F061
+   lesson applied to conventions). (b) NEVER run `git filter-repo` on the
+   drvfs mount (/mnt/d) — it silently stalls; the identical rewrite took 0.6 s
+   on ext4, and the stall caused the SOUL-169 public exposure window (~2 h).
+   Clone to ext4 for any history surgery.
+
 ---
-**Last distilled:** 2026-06-11 against SOUL-165 (the SLIM ratification; prior form
-v1.1 at e5e4820, recoverable via git — A021 names the retire handles).
+**Last distilled:** 2026-07-16 against SOUL-172 / A023 (delta window SOUL-166→172,
+F059–F063, A023; prior form at commit 4a4c287. Conscious growth 37→48 lines —
+item 5 rescues two standing conventions whose only durable carrier was runtime
+state; the Body's commit of this file is the sign-off).
