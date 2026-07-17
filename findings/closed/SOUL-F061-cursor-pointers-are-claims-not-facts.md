@@ -10,7 +10,12 @@ REFERENCE PROJECT: RealisticSensors (UE 5.7 plugin; imports the contract via CLA
                  @-include; register: plain).
 WITNESS IDS:     RSENS-012 (project-local log; the anchoring instance. RSENS-009 is a prior
                  instance of the same shape not recognised as systemic at the time.)
-STATUS:          Open — proposes an amendment to /soul-handoff + /soul-resume.
+STATUS:          Closed 2026-07-16 — amendment SOUL-A023 accepted and applied
+                 (provenance marks in /soul-handoff; resolve-and-report-misses
+                 in /soul-resume). Proposal (c), remove-the-seam, was already
+                 executed in the reference project (ADRs moved in +
+                 tests/check_adr_references.py) and is carried as guidance in
+                 the amended /soul-handoff.
 
 WHAT:            A cursor pointer that NAMES a location is treated by the resuming session as a
                  verified fact, but nothing in the cursor distinguishes a pointer that was
