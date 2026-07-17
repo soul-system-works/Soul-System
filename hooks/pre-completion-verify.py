@@ -34,19 +34,37 @@ import time
 import uuid
 from datetime import datetime, timezone
 
-COOLDOWN_SECONDS = 900  # 15 min — fire at most once per window per project
+COOLDOWN_SECONDS = 2700  # 45 min — fire at most once per window per project.
+# Retuned 900 → 2700 (SOUL-F063): at 15 min against 8–10 h sessions the gate
+# fired 8–20×/session vs ~1–3 genuine completion moments; each fire forces one
+# extra full-context turn at the most expensive point of the session.
 
 _EDIT_TOOLS = {"Write", "Edit", "MultiEdit", "NotebookEdit"}
-# NOTE: claim detection is a heuristic regex — it can false-positive (e.g. "done"
-# in an unrelated sentence) or false-negative (completion phrased unusually). This
-# is acceptable because the hook is fail-open and fires at most once per turn, so a
-# spurious fire costs only one verification pass and a missed fire degrades to the
-# pre-hook status quo. A precise "claim" signal would need model-level intent, not
-# a regex; deliberately not attempted here.
+# NOTE: claim detection is a heuristic regex — it can false-positive or
+# false-negative (completion phrased unusually). This is acceptable because the
+# hook is fail-open and fires at most once per turn, so a spurious fire costs
+# only one verification pass and a missed fire degrades to the pre-hook status
+# quo. A precise "claim" signal would need model-level intent, not a regex;
+# deliberately not attempted here.
+# Retuned 2026-07-16 (SOUL-F063): the original word-presence match (bare "done",
+# "complete", "✓" anywhere) made ship+claim true on nearly every iterative turn,
+# so the firing rate was set by the cooldown rather than by completions. Now
+# requires a strong completion SHAPE — a claim that the work is finished, not
+# the words appearing mid-sentence.
 _CLAIM_RE = re.compile(
-    r"(complete|completed|\bdone\b|finished|all tests pass|tests pass|"
-    r"tests passed|definition of done|shipped|✓)",
-    re.IGNORECASE,
+    r"(?:"
+    r"\b(?:is|are)\s+(?:now\s+|all\s+)?(?:complete|completed|done|finished)\b"
+    r"|\b(?:task|work|implementation|migration|refactor|fix|feature|everything)"
+    r"\s+(?:is\s+|are\s+)?(?:now\s+)?(?:complete|completed|done|finished)\b"
+    r"|\ball\s+(?:done|set)\b"
+    r"|\ball\s+tests?\s+pass(?:ed|ing)?\b"
+    r"|\btests?\s+(?:are\s+)?(?:now\s+)?pass(?:ed|ing)\b"
+    r"|\bready\s+(?:to\s+(?:ship|merge)|for\s+review)\b"
+    r"|\bdefinition\s+of\s+done\b"
+    r"|\bshipped\b"
+    r"|^\W{0,4}done[.!]?\s*$"
+    r")",
+    re.IGNORECASE | re.MULTILINE,
 )
 _SCAN_TAIL = 200  # records from the end to read; scan is then sliced to the CURRENT turn
 
