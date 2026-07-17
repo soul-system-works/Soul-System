@@ -7885,3 +7885,28 @@ CONSEQUENCE:  Keep verdict, recorded. Two watch items named: (a) gate FIRING
 STATUS:       Closed — review complete; watch items are named here and in the
               session report.
 ```
+
+```
+ID:           SOUL-172
+WHEN:         2026-07-16 / Body-commissioned setup diagnosis (Claude Code
+              session-history analysis, 2026-04 → 2026-07)
+WHERE:        hooks/pre-completion-verify.py — COOLDOWN_SECONDS and _CLAIM_RE,
+              measured across ~/.claude/projects transcripts on the Body's
+              machine (all Soul-governed projects)
+WHAT:         The completion gate fired 225 times in the window — 8–20 per long
+              session (median ~10) against ~1–3 genuine completion moments, each
+              fire injecting the ~450-token checklist and forcing one extra
+              full-context turn (300–700k cache-read tokens at end-of-session
+              sizes; ≈1–2% of the machine's total token volume). The claim regex
+              matched ordinary iterative language (bare "done", "complete",
+              "✓"), so the firing rate was set by the 15-min cooldown, not by
+              completions, against 8–10-hour sessions.
+TYPE:         Council Note — instrument calibration (completion gate,
+              SOUL-F012); bears on SOUL-171 watch item (a): gate firing
+              reliability now measured on one machine — over-firing, not
+              under-firing
+CONSEQUENCE:  ≈100–150M cache-read tokens of extra verification turns over the
+              window; 10–20 interrupted stops per long session. Correction cost:
+              two constants (cooldown 900→2700 s, claim-regex shape tightening).
+STATUS:       Resolved — graduated to SOUL-F063 (retune applied same session)
+```
