@@ -1821,3 +1821,65 @@ WHAT:      THE-SOUL.MD AND THE COUNCIL AS A HUMAN-FACING LAYER. Not AI doctrine,
 STATUS:    Raw — revisit AFTER the floor result; C1/C2/C4 in the retirement spec
            are ⏸ pending this.
 ```
+
+```
+ID:        SOUL-I052
+WHEN:      2026-07-02
+IDEA:      Graduate the derived visual layer into the plugin. Prototype lives in
+           .soul/ (gitignored): vault-gen.py regenerates an Obsidian-ready vault
+           (per-entry notes, real wikilinks, Dashboard) + record-graph.html
+           (interactive graph, embedded-data snapshot). Body evaluated it live
+           (SOUL-171 session): it surfaced two real record defects within
+           minutes (the I041 fence, the I048 field name — repaired, 5044aaf)
+           and read the record's shape (F014 = most-cited open problem). Known
+           gap before graduation: the interactive page embeds a data snapshot;
+           regeneration needs a build step in vault-gen.py.
+STATUS:    Raw
+WHY:       First instrument that makes the record's cross-reference structure
+           visible; also acts as a mechanical record-hygiene checker.
+DEVELOP:   Artificer (build step + plugin packaging); Steward (does a derived
+           view belong in the plugin, or stay a local tool?)
+NOTES:     Born from the SOUL-171 landscape review — Obsidian judged
+           augment-not-replace; derived view keeps git canonical. New work =
+           branch first (branch-per-release rule).
+```
+
+```
+ID:        SOUL-I053
+WHEN:      2026-07-16
+IDEA:      Deploy the Stop hook (pre-completion-verify.py) as a Linux-FS runtime
+           copy with a bash pre-gate, keeping the repo file as source of truth.
+           Today settings.json spawns python3 against /mnt/d on EVERY turn-end
+           in EVERY project — a WSL 9p read + interpreter startup (~100–400 ms)
+           paid thousands of times, usually to exit(0) out of scope. A pre-gate
+           ([ -e .soul ] || [ -e witness.md ] || exit 0) makes non-Soul stops
+           free; a deploy step (copy + version comment) manages drift.
+STATUS:    Raw
+WHY:       Latency win on every turn-end machine-wide, zero behavior change.
+DEVELOP:   Artificer (deploy step; decide the pre-gate marker set — bash cannot
+           cheaply grep the CLAUDE.md soul markers, so a dir-marker-only gate is
+           weaker than _is_soul_project and must stay a PRE-filter, not replace
+           the Python scope check).
+NOTES:     Body deferred implementation 2026-07-16 (setup-diagnosis session);
+           recorded so it is not forgotten. Companion retune: SOUL-F063.
+```
+
+```
+ID:        SOUL-I054
+WHEN:      2026-07-16
+IDEA:      Responses are still generally too verbose, even under the plain
+           register. Two prongs: (1) update the register/contract guidance to
+           push responses toward genuinely concise output (Body reference:
+           https://www.youtube.com/shorts/I12Mf8KBT1I); (2) retire the
+           restatement after the completion-gate hook fires — the post-gate
+           turn currently re-states the session summary on top of verifying,
+           doubling end-of-session output at the most expensive context size.
+STATUS:    Raw
+WHY:       Verbosity is a per-turn cost paid across every Soul-governed
+           session; the post-gate restatement compounds the F063 cost (the
+           extra inference pass is unavoidable when the gate fires, but the
+           restatement length is ours to cut).
+NOTES:     Body-captured 2026-07-16, same day as the F063 retune — companion
+           cost item. The gate checklist text itself was left unchanged in
+           F063; this idea targets the RESPONSE side.
+```
