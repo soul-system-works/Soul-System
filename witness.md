@@ -7910,3 +7910,38 @@ CONSEQUENCE:  ≈100–150M cache-read tokens of extra verification turns over t
               two constants (cooldown 900→2700 s, claim-regex shape tightening).
 STATUS:       Resolved — graduated to SOUL-F063 (retune applied same session)
 ```
+
+```
+ID:           SOUL-173
+WHEN:         2026-08-07 / SOUL-I054 prong-1 build (response verbosity)
+WHERE:        Turn-level analysis of ~/.claude/projects transcripts (299 files,
+              908 Body-facing turns, 8 Soul-governed projects + 6 control);
+              method preserved in tools/gate-cost-measure.py
+WHAT:         Measured per assistant TEXT BLOCK, Body-facing output looked
+              healthy — median 170 chars, and the classic verbosity patterns
+              (preamble openers, request-restating, trailing "Summary"
+              sections, hedging closers) all at or near 0% — and the session
+              concluded on that basis that the Body's verbosity complaint was
+              not supported by the corpus. Measured per TURN, the unit the Body
+              actually reads, the median reply was 2,537 chars, 76% of turns
+              exceeded 1,500, and sub-80-character questions drew back a median
+              2,106 chars; the block-level figure was an artifact of Claude Code
+              splitting one turn into several text records around tool calls.
+TYPE:         Failure Mode — Proxy Unit Mismatch. A measurement was used to
+              override the Body's direct report ("practically every message I
+              get I have to say to have it respond in a clear and concise
+              format") before anyone checked that the measured unit was the
+              experienced unit.
+CONSEQUENCE:  The session reported the complaint as unfounded and asked the Body
+              for specific examples they had already said they could not give;
+              SOUL-I054 prong 1 was one turn from being dropped as unsupported.
+              Correction came from the Body pushing back a second time, not from
+              the instrument. Correction cost: one re-analysis at turn
+              granularity (minutes). Two adjacent measurement errors in the same
+              session: subagent reports counted as Body-facing output (inflating
+              the total 951k → 702k tokens), and a name-derived path check that
+              silently misfiled Soul-System into the control arm because its
+              directory name contains a hyphen.
+STATUS:       Resolved — turn-level number became contract rule 9 (SOUL-A024);
+              baseline for both arms recorded in SOUL-I054 for later comparison.
+```
