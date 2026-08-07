@@ -1882,4 +1882,64 @@ WHY:       Verbosity is a per-turn cost paid across every Soul-governed
 NOTES:     Body-captured 2026-07-16, same day as the F063 retune — companion
            cost item. The gate checklist text itself was left unchanged in
            F063; this idea targets the RESPONSE side.
+MEASURED:  2026-08-07 (tools/gate-cost-measure.py, 299 transcripts, 102 gate
+           firings, 7 projects, 2026-07-07 → 2026-08-05 — a LATER window than
+           SOUL-172's 225 fires; transcripts before 2026-07-07 are gone from
+           this machine, so the two do not overlap).
+           · Prong 2's premise is FALSE. The post-gate turn is not a doubling:
+             median 874 chars vs 2,536 for the turn it answers (ratio 0.36;
+             mean 0.45). All post-gate replies in the window total ~31k tokens
+             = 4.5% of Body-facing output, ~0.02% of the ~100–150M cache-read
+             tokens F063 measured the firings themselves costing. Deleting the
+             restatement entirely would save almost nothing. PRONG 2 DROPPED
+             (Body's call, 2026-08-07). Residual if ever wanted: 13 of 102
+             fires exceeded 2,500 chars — a tail, not the norm.
+           · Post-retune slice (2026-07-17+) shows the F063 fix working: 15
+             fires / 10 sessions. Post-gate replies there are LONGER (median
+             2,014, ratio 0.49) — fires now land on genuine completion
+             moments, which earn a real reply. Cutting them would be wrong.
+           · Prong 1 CONFIRMED, and the first pass got it backwards. Measured
+             per TEXT BLOCK, output looked fine (median 170 chars) and the
+             classic targets looked already-solved (preamble openers 4%, 0% in
+             the longest decile; request-restating, "Summary" sections, and
+             hedging closers ≈0%) — reading as "remaining length is earned
+             content." WRONG UNIT: Claude Code splits one turn into several
+             text blocks around tool calls, and the Body experiences the TURN.
+             Per turn (n=908): median 2,537 chars, 76% over 1,500, and
+             sub-80-char questions drew a median 2,106-char reply with 72%
+             over 1,500. Verbosity is the CENTRAL TENDENCY, not a tail — and
+             it is not classic filler, so "cut the fluff" guidance cannot
+             reach it. The fix is a LENGTH TARGET tied to the size of the ask.
+           · The Body's direct report ("practically every message") was right
+             while the block-level measurement said otherwise. Testimony
+             outranked the proxy because the proxy measured a unit the Body
+             never sees. Check that the measured unit is the EXPERIENCED unit
+             before letting a number override a report.
+BASELINE:  Body's call 2026-08-07: the rule stays inside the Soul System, NOT
+           the machine-global CLAUDE.md — so non-Soul projects remain a control
+           arm and the rule's effect is observable. Placement corrected mid-
+           session: first written into the Register line, which is COPIED into
+           each project's CLAUDE.md and therefore reaches only the project
+           edited. Moved to operations/CLAUDE.md as contract rule 9 — the file
+           all eight Soul projects @-import by absolute path — so it propagates
+           to every project at next session start with no deploy step, and
+           holds under either register. The Register line is now vocabulary
+           only. General lesson: doctrine that must reach every project belongs
+           in the IMPORTED contract; only per-project CHOICES belong in the
+           copied line. Pre-change baseline, chars of
+           Body-facing text per TURN (classified by each transcript's recorded
+           cwd, not by directory name — name-derived paths break on hyphenated
+           projects and silently put Soul-System in the control arm):
+             Soul-governed  n=693  median 2,608  mean 3,159  77% >1500
+             control        n=217  median 2,350  mean 2,873  73% >1500
+           Soul projects were slightly LONGER than control at baseline — the
+           old "keep responses concise" wording bought nothing. Caveat: arms
+           differ in task mix and the control is small; treat a post-change
+           gap as a signal to look, not a proven effect. Re-measure with the
+           turn-level script (method preserved in tools/gate-cost-measure.py).
+           · Measurement trap worth keeping: the first pass counted SUBAGENT
+             reports as Body-facing output (they dominate the long tail and
+             inflated the total 951k → true 702k tokens). Filter isSidechain
+             and the `subagents` project dir. Gate numbers were unaffected —
+             0 of 102 fires were in sidechains.
 ```

@@ -41,10 +41,11 @@ line you have not verified resolves.
      ```
      @<derived-root>/operations/CLAUDE.md
 
-     **Register: plain** — keep responses concise and in plain language; use a Soul
-     or project term only when it earns its place, gloss it on first use in a
-     session, and introduce vocabulary gradually. (Switch by editing this line;
-     other value: `fluent` — full Soul vocabulary.)
+     **Register: plain** — plain language: use a Soul or project term only when
+     it earns its place, gloss it on first use in a session, and introduce
+     vocabulary gradually. (Vocabulary only — response LENGTH is contract rule 9,
+     which applies under either register. Switch by editing this line; other
+     value: `fluent` — full Soul vocabulary.)
      ```
      For `fluent`, write the line as `**Register: fluent** — full Soul vocabulary.`
      For an EXISTING CLAUDE.md that lacks a Register line, offer to add one

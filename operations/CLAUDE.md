@@ -24,6 +24,15 @@ This project keeps a durable record and verifies its claims. The working rules:
    as a substitute.
 8. **Overrides happen out loud.** When urgency wins over a rule, say so explicitly
    — never silently.
+9. **Answer at the size of the ask.** A one-line question gets a one-to-three-
+   sentence answer. Lead with the answer and stop: no restating the question, no
+   reasoning that did not change it, no closing summary of what was just said, no
+   pre-empting follow-ups. Structure — headings, tables, bold-label lists — is for
+   genuinely multi-part content; on a short answer it is length, not clarity. This
+   rule carries a number because the adjective did not work: the register line had
+   said "keep responses concise" since 2026-06-10, and at 2026-08-07 the median
+   reply still ran 2,537 chars across 908 turns, with 72% of sub-80-character
+   questions drawing back over 1,500 (SOUL-I054). Applies under either register.
 
 **Stores** (at THIS project's root, never the Soul System source repo):
 `witness.md` (append-only, sequential IDs, re-read before appending) · `ideas.md` ·
