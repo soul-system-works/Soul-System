@@ -7978,3 +7978,49 @@ CONSEQUENCE:  One extra Body turn, and a skill invocation (/soul-explain), to
 STATUS:       Resolved — SOUL-A025 adds rule 10 (Land the verdict) as a separate
               rule, because short and clear are different properties.
 ```
+
+```
+ID:           SOUL-175
+WHEN:         2026-08-07 / Body-requested PII scan of the session's commits,
+              before pushing
+WHERE:        findings/open/SOUL-F063 (blob, committed 2026-07-16) and the
+              commit MESSAGE of the 2026-06-10 efficacy-program spec draft;
+              both are surfaces of the SOUL-169 anonymization (2026-06-12)
+WHAT:         A scan run at the Body's request found the anonymization broken in
+              two places: a finding committed five weeks AFTER the redaction
+              named the real client again in two lines, and a public commit
+              message from before it named all three mined projects in one
+              subject line, in the same context as the codenames they became.
+              The SOUL-169 rewrite had scanned file contents across both repos'
+              trees and histories; it never scanned commit messages, so the
+              subject line survived the rewrite that existed to remove exactly
+              that information.
+TYPE:         Failure Mode — Redaction Without A Carrier, twice over. (1) The
+              decision to anonymize lived only in a witness entry, so a later
+              session with no memory of it simply wrote the real name; nothing
+              at the point of writing said "these names are redacted." (2) The
+              redaction's own SCAN SURFACE was incomplete — F052's "five
+              surfaces" did not include commit messages.
+CONSEQUENCE:  The client name was public for three weeks (2026-07-16 → 08-07);
+              the three-name subject line for eight weeks (2026-06-10 → 08-07),
+              and that one line reconstructs the mapping the whole SOUL-169
+              rewrite was run to protect. Correction: tree fix, then filter-repo
+              over content AND messages on an ext4 clone (0.59 s — mind.md item
+              5 confirmed in practice), force-push with rewritten tags, local
+              re-adoption; verified 0 hits from a fresh clone across every
+              revision, message and tag object; all three pre-rewrite SHAs no
+              longer fetchable by SHA from the remote. Two traps found in the
+              act of fixing it: the redaction commit QUOTED the Body's
+              instruction verbatim and so reintroduced the name in its own
+              message (caught pre-push, case-insensitively — the first scan was
+              case-sensitive and missed it); and filter-repo then pruned that
+              redaction commit as empty, because once history is rewritten the
+              removal is a no-op. Git history therefore holds NO record that any
+              of this happened — this entry is the only carrier.
+              Body's chosen control (2026-08-07): review commits before
+              committing. A mechanical forbidden-strings guard was offered and
+              declined.
+STATUS:       Resolved — published surfaces verified clean. Standing residual:
+              any clone taken before 2026-08-07 holds the old history, and the
+              sibling benchmark repo was checked clean (0 hits, both names).
+```
