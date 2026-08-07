@@ -40,10 +40,20 @@ book (`philosophy/the-soul.md`); everything else regenerates from the record.
    lesson applied to conventions). (b) NEVER run `git filter-repo` on the
    drvfs mount (/mnt/d) — it silently stalls; the identical rewrite took 0.6 s
    on ext4, and the stall caused the SOUL-169 public exposure window (~2 h).
-   Clone to ext4 for any history surgery.
+   Clone to ext4 for any history surgery. (c) REVIEW EVERY COMMIT for real
+   project/client names before making it — the SOUL-169 set stays anonymized
+   (PLANT-BOP / GAME-A / RESEARCH-N); main is public. Scan the diff AND the
+   commit message, case-insensitively: the message is a surface the SOUL-169
+   rewrite never covered, and a message leaked all three real names for eight
+   weeks (SOUL-175). This is the Body's chosen control, taken over a mechanical
+   guard — which means it holds only if it is read, which is why it is here.
 
 ---
 **Last distilled:** 2026-07-16 against SOUL-172 / A023 (delta window SOUL-166→172,
 F059–F063, A023; prior form at commit 4a4c287. Conscious growth 37→48 lines —
 item 5 rescues two standing conventions whose only durable carrier was runtime
 state; the Body's commit of this file is the sign-off).
+**Amended 2026-08-07** outside a distill: item 5(c) added on the Body's call from
+SOUL-175 — a redaction convention whose only carrier was the session that made it.
+Not a redistill; the delta window since 2026-07-16 (SOUL-173–175, A024, A025)
+still awaits one.
