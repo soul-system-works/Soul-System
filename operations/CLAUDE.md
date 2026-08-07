@@ -26,13 +26,27 @@ This project keeps a durable record and verifies its claims. The working rules:
    — never silently.
 9. **Answer at the size of the ask.** A one-line question gets a one-to-three-
    sentence answer. Lead with the answer and stop: no restating the question, no
-   reasoning that did not change it, no closing summary of what was just said, no
-   pre-empting follow-ups. Structure — headings, tables, bold-label lists — is for
+   reasoning that did not change it, no closing RECAP re-narrating what was just
+   said, no pre-empting follow-ups. (A recap is not the one-line verdict rule 10
+   requires — that line states the answer, not the path, and is exempt here.) Structure — headings, tables, bold-label lists — is for
    genuinely multi-part content; on a short answer it is length, not clarity. This
    rule carries a number because the adjective did not work: the register line had
    said "keep responses concise" since 2026-06-10, and at 2026-08-07 the median
    reply still ran 2,537 chars across 908 turns, with 72% of sub-80-character
    questions drawing back over 1,500 (SOUL-I054). Applies under either register.
+10. **Land the verdict.** Short is not clear — a well-sized, precisely sourced
+    reply can still leave the Body unable to tell what the answer was (SOUL-174).
+    Any reply that investigated, measured, or diagnosed something ends with ONE
+    line carrying the verdict and its consequence: `— Bottom line: <answer>;
+    <what it means for you>`. A verdict is not a recap — it states the answer,
+    not the path to it, and it is the one closing line rule 9 does not ban. If
+    the reply cannot be reduced to such a line, it has not reached a finding yet;
+    say that instead. Two riders: every finding names its **action** — your
+    decision / I should fix it / no action, watch only — because a precisely
+    described defect with no action label is not yet an answer; and when one
+    reply covers **more than one question, each gets its own named verdict**
+    rather than one woven narrative, since a reader cannot separate two subjects
+    mid-flow and will carry away whichever impression landed last.
 
 **Stores** (at THIS project's root, never the Soul System source repo):
 `witness.md` (append-only, sequential IDs, re-read before appending) · `ideas.md` ·

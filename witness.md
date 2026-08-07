@@ -7945,3 +7945,36 @@ CONSEQUENCE:  The session reported the complaint as unfounded and asked the Body
 STATUS:       Resolved — turn-level number became contract rule 9 (SOUL-A024);
               baseline for both arms recorded in SOUL-I054 for later comparison.
 ```
+
+```
+ID:           SOUL-174
+WHEN:         2026-08-07 / reference-project memory-scaling investigation,
+              mid-session (reply produced BEFORE SOUL-A024 rule 9 existed;
+              brought back by the Body the same day as the anchoring instance
+              for A025)
+WHERE:        Assistant reply reporting a memory-scaling analysis in a reference
+              project, followed by the Body's /soul-explain follow-up
+WHAT:         One reply answered two distinct memory questions — "are there other
+              code paths that exhaust memory at full scale?" (yes, two; neither
+              on the default execution path) and "does the parent process hold at
+              full scale?" (verified clean, measured end-to-end) — woven into a
+              single unlabeled narrative, gave the two flagged paths no action
+              label, and closed on a NEW finding of a different kind (a runtime
+              ceiling, not a memory result) followed by housekeeping instead of a
+              verdict. The Body invoked /soul-explain to ask which it was: "it
+              sounded like it one spot you were saying there was and issue and
+              towards the end it sounded like there wasn't any issues."
+TYPE:         Failure Mode — Verdict Never Landed. Distinct from verbosity: the
+              reply was well-sized, precisely sourced, and honest about its
+              evidence. It failed on CLARITY, and the failure was structural —
+              two subjects unseparated, no action label, no closing answer.
+CONSEQUENCE:  One extra Body turn, and a skill invocation (/soul-explain), to
+              extract an answer the reply had already computed. Sharper cost:
+              SOUL-A024's rule 9 — accepted hours earlier the same day — would
+              have FORBIDDEN the fix, since its "no closing summary of what was
+              just said" clause bans exactly the closing verdict line this reply
+              needed. A length rule written from aggregate statistics could not
+              see a clarity defect; one real transcript exposed it immediately.
+STATUS:       Resolved — SOUL-A025 adds rule 10 (Land the verdict) as a separate
+              rule, because short and clear are different properties.
+```
