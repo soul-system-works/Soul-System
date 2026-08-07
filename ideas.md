@@ -1943,3 +1943,32 @@ BASELINE:  Body's call 2026-08-07: the rule stays inside the Soul System, NOT
              and the `subagents` project dir. Gate numbers were unaffected —
              0 of 102 fires were in sidechains.
 ```
+
+```
+ID:        SOUL-I055
+WHEN:      2026-08-07
+IDEA:      Amend /soul-distill to match A021. Step 7 still prescribes the
+           four-bucket schema (Rules / Tensions / Invariants / Contrast cases /
+           Residual); A021 replaced it with the slim "unguessables only" form,
+           which is what mind.md has carried since. Every distill now hits the
+           fork and re-decides it. Second half: the skill's reproduction-
+           coherence self-test ("a fresh agent reading ONLY this Mind could
+           propose next-work and predict the project's response") fails against
+           a slim Mind BY CONSTRUCTION — the slim form deliberately leaves
+           doctrine in the contract, so the test asks the Mind to carry what
+           A021 moved out.
+STATUS:    Raw
+WHY:       An instrument that instructs a shape its own doctrine replaced yields
+           either a wrong-shaped Mind or a per-distill judgment call. The
+           2026-08-07 distill spent real effort resolving it and would have
+           produced a four-bucket rewrite had it followed the skill literally.
+DEVELOP:   Artificer (rewrite step 7 + the self-test for the slim form);
+           Steward (does the four-bucket form survive for projects that never
+           adopted A021's slim contract? If yes the skill needs both shapes and
+           a selector, not a replacement).
+NOTES:     Surfaced at the SOUL-175 / A024–A025 distill; both flags were raised
+           at curation and accepted by the Body with commit 41e658e. Captured
+           under /soul-handoff's flush step — the Body's invocation of the
+           instrument is the confirmation, stated here out loud (A022 normally
+           wants an explicit yes before appending).
+```
