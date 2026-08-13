@@ -57,10 +57,13 @@ never merged.
 4. **Spawn ONE subagent** with the brief below. Do not spawn more, and do not answer the
    rough prompt yourself while waiting.
 
-5. **Print what comes back, verbatim, in a fenced block**, then one line:
+5. **Print what comes back, verbatim, unfenced, between two `---` rules**, then one line:
    `Say go to run it, or copy and edit.` Nothing else — no commentary on the artifact, no
    preview of how the work would go. Commentary is this session's interpretation leaking
    back in through the side door, which is the thing the separation exists to prevent.
+   Unfenced because the artifact is markdown and the terminal renders it; a fence would
+   show it raw. The rules mark where the artifact ends and this session's one line begins.
+   Verbatim still means verbatim: rendering is the terminal's doing, not yours.
 
 6. **Check the sentinel.** The artifact ends with a footer naming the Mind's
    last-distilled date. If it is missing or wrong, the doctrine did not arrive — say so
@@ -112,22 +115,39 @@ no conversation to fall back on, which is the point.
 
 ## The artifact shape
 
+The artifact is **markdown** — it is printed rendered, and a markdown prompt reads
+just as well for the session that eventually consumes it. The shape:
+
 ```
-<Task — one paragraph, imperative, with the real names, paths, and IDs in it.>
+## <Short task title>
 
-Files: <concrete paths>
-Check against: <what to compare with, if anything>
+<The goal in one or two sentences — what kind of pass this is, and what is
+explicitly open (e.g. "leave as is" being acceptable).>
 
-Done when: <a check that can actually be run>
+**1 — <part name>.** <That part, imperative, with the real names, paths, and IDs
+in it. Numbered bold-led items ONLY when the task has genuinely separable parts;
+a single-action task stays one short paragraph with no numbering. Never one
+paragraph carrying three questions — that is the wall this shape exists to
+prevent.>
 
-Conventions in play: <only if a real one bears — the branch rule, the anonymization
-rule, a schema. Omit this line entirely when none applies; an empty ceremonial
-heading trains the reader to skip the section on the day it matters.>
+**Files:**
+- <one concrete path per line>
 
-Assumed: <bullets for anything guessed, and any addition the Body did not ask for,
-phrased so it can be corrected in a few words. This is the honesty channel — an
-assumption that only lives in the task paragraph is a decision made on the Body's
-behalf without telling them.>
+**Check against:** <what to compare with, if anything>
+
+**Done when:** <a check that can actually be run>
+
+**Conventions in play:**
+- <one bullet per convention, only if a real one bears — the branch rule, the
+  anonymization rule, a schema. Omit the heading entirely when none applies; an
+  empty ceremonial heading trains the reader to skip the section on the day it
+  matters.>
+
+**Assumed:**
+- <anything guessed, and any addition the Body did not ask for, phrased so it can
+  be corrected in a few words. This is the honesty channel — an assumption that
+  only lives in the task text is a decision made on the Body's behalf without
+  telling them.>
 
 [doctrine: <the Last-distilled date from the Mind you read>]
 ```
@@ -155,4 +175,9 @@ manual workflow (paste into a blank session, edit, bring back) was already doing
 hand; this keeps that separation and adds the project doctrine the blank session lacked.
 Measurement of whether the project-informed rewrite beats the blank-session one was
 raised and the Body declined it as unnecessary (contract rule 8 — said out loud, not
-silently). No finding or idea ID yet. **Status:** draft, unproven in use.
+silently). No finding or idea ID yet. **Revised 2026-08-13:** the first real output (a
+three-question PLANT-BOP design brief) came back as one ~500-word paragraph in a fence —
+unreadable in the terminal. The shape now mandates markdown (numbered parts, bulleted
+sections) printed unfenced so it renders; the Body chose rendering over byte-exact
+terminal copy, and declined a `.soul/prompt.md` save as premature (revisit if the
+copy-edit loop proves common). **Status:** draft, unproven in use.
