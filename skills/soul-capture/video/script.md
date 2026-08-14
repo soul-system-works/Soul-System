@@ -1,66 +1,64 @@
-# Script — soul-capture
+# Script — soul-capture (v2, motion-first)
 
 Format: skill · Audience: prospective adopter
-Sources read: skills/soul-capture/SKILL.md · docs/video-pipeline.md
+Sources read: skills/soul-capture/SKILL.md · docs/video-pipeline.md (Q14–Q16)
+Supersedes: v1 (8dda4f8) — Body redirect at checkpoint 3: static/slide-like,
+second half unclear. v2 shows the mechanism instead of asserting it.
 
-## Beat 1 — hook (title)
+## Beat 1 — hook (title, kinetic landing)
 
 On screen: "Your session is about to forget something."
 Sub: "soul-capture"
-Intent: name the mortality problem in one line, second person, before any
-vocabulary exists.
+Intent: unchanged from v1 — the mortality problem in one line, but the words
+land with weight instead of appearing as a finished card.
 
-## Beat 2 — what dies (bullets)
+## Beat 2 — mortality, drawn (custom, ~9s)
 
-On screen — heading: "Sessions regenerate code — not decisions"
-- "the decision and its reason"
-- "the incident behind the rule"
-- "the convention nobody wrote down"
-Intent: define the category worth saving (the unguessable) purely by example,
-without using the word yet.
+Motion: a bright thread draws left-to-right — a session at work. As it draws,
+three small marks attach to it, labeled "a decision", "an incident",
+"a convention". The thread reaches its end, stops, and fades — the marks fade
+with it.
+On screen (overlay, after the fade): "When the session ends, they die with it."
+Intent: v1's bullets *listed* what dies; this shows the dying. One continuous
+gesture replaces the what-dies card.
 
-## Beat 3 — the act (terminal)
+## Beat 3 — capture and survival (custom, ~15s, cut from beat 2's world)
 
-On screen: a real `/soul-capture idea "…"` invocation and the session's short
-confirmation with the assigned SOUL-I### ID. ~8 lines, revealed line by line.
-Intent: show that capture is one line typed mid-work — near-zero ceremony.
+Motion: a second thread begins — another session. Mid-thread, a terminal panel
+slides in and replays the real capture, verbatim excerpt (capture-idea.txt
+lines 1–5: the invocation and "Captured SOUL-I056 → ideas.md"). The captured
+idea lifts out of the terminal as a small card stamped SOUL-I056 and flies
+into a document card labeled ideas.md, which settles at the frame's edge. The
+thread ends and fades like the first — the ideas.md card stays. A third
+thread begins, and the card feeds into its start.
+On screen (final overlay): "The next session starts knowing it."
+Intent: this is the fix for v1's unclear second half — landing + survival +
+inheritance as one continuous visible mechanism, replacing v1's raw-file-tail
+scene and its unexplained juxtaposition.
 
-## Beat 4 — it landed (code)
-
-On screen: the tail of `ideas.md` after the run, the new entry's lines
-highlighted. ~6 lines.
-Intent: proof, not narration — the thought now exists in a file that outlives
-the session.
-
-## Beat 5 — the range (bullets)
-
-On screen — heading: "Three modes, graduated friction"
-- "idea — frictionless, forward"
-- "witness — light scaffold, backward"
-- "finding — earned; the owner's call"
-Intent: one glance at the full instrument; friction as a deliberate design,
-rising with the claim being made.
-
-## Beat 6 — the rule (title)
+## Beat 4 — the rule (title)
 
 On screen: "Could a fresh session reason its way back to this?"
 Sub: "No → capture it.  Yes → skip."
-Intent: hand the viewer the triage test as the takeaway — the one sentence
-that explains when this skill fires.
+Intent: unchanged — the triage test as the takeaway, now landing after the
+viewer has watched something both die and survive.
 
-## Beat 7 — outro (outro)
+## Beat 5 — outro (outro)
 
 On screen: "Capture the unguessable."
 URL: "github.com/soul-system-works/Soul-System"
-Intent: close on the skill's core imperative.
 
 ---
 
-Captures needed at storyboard stage: one real `/soul-capture idea` run in this
-repo, frozen as text (invocation + confirmation), plus the matching `ideas.md`
-tail afterwards. Both reviewed against the denylist before commit.
+Cut from v1: the "three modes" bullets beat. Reason: it is reference material
+(mechanics), and Q1 says orient, don't teach — the SKILL.md carries the modes;
+the overview video can carry the friction idea. Cutting it pays for beat 3's
+motion time.
 
-Estimated runtime: ~47s — holds ≈ 4.3 + 8.9 + 7.3 + 6.1 + 7.8 + 7.1 + 2.9,
-plus 6 fades ≈ 2.4 (BASE_HOLD 1.5 + 0.35/word; code/terminal +1.0 + 0.6/line).
-Budget 60s — fits with margin; if a capture runs long, Beat 3 loses lines, not
-hold time.
+Captures: reuses the committed captures/capture-idea.txt (verbatim excerpt,
+whole lines only — no re-typing). ideas-after.md is no longer shown raw; its
+content is carried by the ideas.md card motion.
+
+Estimated runtime: ~40s — 4.3 (hook) + 9 (mortality) + 15 (capture/survival)
++ 7.5 (rule) + 2.9 (outro) + transitions ≈ 40. At the Q16 target; storyboard
+lint arbitrates, and beat 3 gives up motion time (not text time) if over.
