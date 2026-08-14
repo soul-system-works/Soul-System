@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
 """Smoke test for the stage-3 renderer.
 
-Three load-bearing assertions:
+Four load-bearing assertions:
   - the same storyboard produces byte-identical mp4s (the manifest means nothing
-    without it);
+    without it), and the fixture includes a `custom` scene so that covers a
+    hand-written motion builder and not only the declarative types;
   - the planned runtime matches the rendered runtime to within one frame (a plan
     that drifts can pass a 60s budget and render over it);
+  - a custom builder that does not spend its slot exactly aborts the render,
+    because timings.json is published and a drifting builder makes it wrong;
   - every malformed storyboard exits 1 with a message, because the linter IS the
     gate the human reads.
 
@@ -31,7 +34,11 @@ import timing    # noqa: E402
 
 SMOKE = RENDER_DIR / "tests" / "smoke" / "storyboard.yaml"
 OVERVIEW = RENDER_DIR / "tests" / "smoke" / "overview.yaml"
+WARN_LONG = RENDER_DIR / "tests" / "smoke" / "warn-long.yaml"
 BAD = RENDER_DIR / "tests" / "bad"
+# Planted fixtures have to live INSIDE the repo: every reference is containment
+# checked, so a storyboard under $HOME cannot be linted at all.
+TMP = RENDER_DIR / "tests" / ".tmp"
 LINT_PY = RENDER_DIR / "lint.py"
 RENDER_PY = RENDER_DIR / "render.py"
 WORK = theme.CACHE_ROOT / "smoke-test"
@@ -47,6 +54,10 @@ NEGATIVES = [
     ("ns-text-asset.yaml", "SVGMobject silently drops"),
     ("outside-repo.yaml", "resolves outside the repo"),
     ("bad-input-path.yaml", "declared input"),
+    ("custom-short.yaml", "below the read-rate minimum"),
+    ("custom-missing-module.yaml", "does not exist"),
+    ("custom-hold.yaml", "custom scenes size themselves with duration:"),
+    ("custom-sibling-import.yaml", "custom builders are a single file"),
 ]
 
 
@@ -101,6 +112,36 @@ def negatives() -> None:
           "out-of-repo storyboard: message names the cause")
 
 
+def custom_scenes() -> None:
+    """The `custom` path: the builder's slot is a contract, checked at render.
+
+    Lint cannot see inside a builder, so the drift abort is the only thing
+    standing between an overrunning builder and a timings.json that is wrong for
+    every scene after it.
+    """
+    print("\n== custom scenes ==")
+    result = run(RENDER_PY, str(BAD / "drift.yaml"),
+                 "--out", str(WORK / "drift"), "--no-manifest")
+    blob = result.stdout + result.stderr
+    check(result.returncode == 1, "an overrunning builder fails the render")
+    check("overran its slot by 15 frame(s)" in blob,
+          "the abort names the drift in frames")
+    check(not (WORK / "drift").exists(), "nothing was written for the drifting render")
+
+    ok, plan, _report = lint.lint(WARN_LONG)
+    check(ok, "warn-long.yaml passes lint (over WARN_SKILL is not a failure)")
+    check(plan["duration"] > timing.WARN_SKILL,
+          f"warn-long.yaml really is over WARN_SKILL "
+          f"({plan['duration']:.2f}s > {timing.WARN_SKILL}s)")
+    check(plan["duration"] <= timing.BUDGET_SKILL,
+          "warn-long.yaml is still inside the hard budget")
+    result = run(LINT_PY, str(WARN_LONG))
+    blob = result.stdout + result.stderr
+    check(result.returncode == 0, "lint.py exits 0 on a WARN_SKILL storyboard")
+    check("WARNING" in blob and "WARN_SKILL" in blob,
+          "the WARN_SKILL warning is printed anyway")
+
+
 def denylist_gate() -> None:
     """The list is gitignored and the names must never reach stdout.
 
@@ -125,6 +166,34 @@ def denylist_gate() -> None:
     check("denylist hit" in blob, "the hit is reported")
     check(secret not in blob, "the matched name is NOT echoed to output")
 
+    # A custom scene's module is code, and code carries string literals. The
+    # storyboard below is clean; only the .py it names is dirty, so this fails
+    # only if the module FILE is a scanned surface.
+    planted = "zarquon"
+    deny.write_text(planted + "\n", encoding="utf-8")
+    TMP.mkdir(parents=True, exist_ok=True)
+    try:
+        (TMP / "planted_motion.py").write_text(
+            '"""Temp fixture. The name lives ONLY in this module\'s source."""\n'
+            f'INTERNAL_NOTE = "{planted}"\n\n\n'
+            'def build(scene, theme, components, duration):\n'
+            '    components.kinetic_line(scene, ["one two three"], duration=duration)\n',
+            encoding="utf-8")
+        (TMP / "storyboard.yaml").write_text(
+            "video: smoke-planted\nschema: 1\nformat: skill\n"
+            "inputs: [docs/video-pipeline.md]\nscenes:\n"
+            "  - id: planted\n    type: custom\n    module: planted_motion.py\n"
+            "    name: build\n    duration: 4.0\n    text: [\"one two three\"]\n",
+            encoding="utf-8")
+        result = run(LINT_PY, str(TMP / "storyboard.yaml"),
+                     env_extra={lint.DENYLIST_ENV: str(deny)})
+        blob = result.stdout + result.stderr
+        check(result.returncode == 1, "a name inside a custom module's source fails lint")
+        check("planted_motion.py" in blob, "the hit names the module file")
+        check(planted not in blob, "the planted name is NOT echoed to output")
+    finally:
+        shutil.rmtree(TMP, ignore_errors=True)
+
     after = production.read_bytes() if production.exists() else None
     check(after == before, "the production denylist was not touched")
 
@@ -134,6 +203,7 @@ def main() -> int:
         shutil.rmtree(WORK)
 
     negatives()
+    custom_scenes()
     denylist_gate()
 
     print("\n== lint ==")
@@ -143,6 +213,11 @@ def main() -> int:
         print(report)
         check(ok, f"lint passes: {path.name}")
         plans[path] = plan
+
+    custom_ids = [s["id"] for s in plans[SMOKE]["scenes"] if s["type"] == "custom"]
+    check(custom_ids,
+          f"the smoke fixture carries a custom scene ({', '.join(custom_ids)}) — "
+          f"so everything below covers a builder, not just the slide types")
 
     print("\n== double render (determinism) ==")
     started = time.monotonic()

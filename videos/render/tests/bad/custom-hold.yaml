@@ -1,0 +1,14 @@
+# Negative fixture: `hold` on a custom scene — a second source of truth for the
+# same number, and the drift check would fail on whichever one lost.
+video: bad-custom-hold
+schema: 1
+format: skill
+inputs: [docs/video-pipeline.md]
+scenes:
+  - id: doubled
+    type: custom
+    module: ../smoke/motion.py
+    name: build
+    duration: 4.0
+    hold: 6.0
+    text: ["one two three"]

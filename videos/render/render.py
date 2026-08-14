@@ -10,6 +10,7 @@ Usage: render.py <storyboard.yaml> [--out DIR] [--no-manifest]
 
 import argparse
 import hashlib
+import importlib.util
 import json
 import random
 import shutil
@@ -43,24 +44,54 @@ def repo_key(path: Path) -> str:
         return str(path.resolve())
 
 
-def run_time(frames: int) -> float:
-    """Seconds to ask an ANIMATION for so it emits exactly `frames` frames.
+# The frame quantisers live in components.py: custom-scene builders need the
+# same two functions, and two copies of this arithmetic would drift.
+run_time = components.run_time
+hold_time = components.hold_time
 
-    Manim steps animations with np.arange(0, run_time, 1/fps) — effectively
-    ceil(run_time * fps). Asking half a frame short of the target keeps float
-    error from ever tipping that ceil to frames + 1.
+# Keyed by resolved path so a video whose scenes share one module imports it
+# once — a module with import-time side effects must not run twice per render.
+_BUILDER_MODULES: dict[Path, object] = {}
+
+
+def load_builder(scene: dict, sb_dir: Path):
+    """Import a `custom` scene's module from its file and fetch its builder.
+
+    Direct importlib from the path, deliberately: the storyboard's directory is
+    not a package and must not become one — a video's motion module is a source
+    file next to the storyboard it belongs to, not an installable. lint has
+    already proved the path exists and stays inside the repo.
     """
-    return (frames - 0.5) / theme.FPS
+    path = (sb_dir / scene["module"]).resolve()
+    module = _BUILDER_MODULES.get(path)
+    if module is None:
+        # A path-derived module name: two videos may both ship a `motion.py`,
+        # and colliding on sys.modules would silently render the wrong one.
+        name = "soul_video_custom_" + hashlib.sha256(
+            str(path).encode("utf-8")).hexdigest()[:12]
+        spec = importlib.util.spec_from_file_location(name, path)
+        if spec is None or spec.loader is None:
+            raise SystemExit(f"error: scene '{scene['id']}': cannot import {path}")
+        module = importlib.util.module_from_spec(spec)
+        sys.modules[name] = module
+        try:
+            spec.loader.exec_module(module)
+        except Exception as exc:
+            # A failed exec leaves a half-initialised module bound; drop it so a
+            # retry in the same process re-executes rather than importing a shell.
+            sys.modules.pop(name, None)
+            raise SystemExit(f"error: scene '{scene['id']}': {path} failed to "
+                             f"import: {exc.__class__.__name__}: {exc}")
+        _BUILDER_MODULES[path] = module
 
-
-def hold_time(frames: int) -> float:
-    """Seconds to ask a frozen WAIT for so it emits exactly `frames` frames.
-
-    Different quantiser from run_time, and the difference is silent: a frozen
-    wait goes through freeze_current_frame, which TRUNCATES (int(duration/dt))
-    instead of rounding up. Half a frame long, not short.
-    """
-    return (frames + 0.5) / theme.FPS
+    builder = getattr(module, scene["name"], None)
+    if not callable(builder):
+        offered = sorted(n for n, v in vars(module).items()
+                         if callable(v) and not n.startswith("_"))
+        raise SystemExit(
+            f"error: scene '{scene['id']}': {path.name} has no callable "
+            f"'{scene['name']}' (found: {', '.join(offered) or 'nothing'})")
+    return builder
 
 
 class StoryboardScene(Scene):
@@ -68,9 +99,58 @@ class StoryboardScene(Scene):
     plan = None
     ctx = None
 
+    def custom_scene(self, entry, live):
+        """Hand the slot to a builder, then prove it gave the slot back.
+
+        A custom scene has no static group to fade IN — the builder draws its
+        own opening — so the incoming transition only clears the previous scene.
+        Nothing is added after the builder either: `duration` is the whole slot.
+        """
+        trans_f = entry["transition_frames"]
+        if trans_f:
+            if live:
+                self.play(*[FadeOut(m) for m in live], run_time=run_time(trans_f))
+            else:
+                self.wait(hold_time(trans_f), frozen_frame=True)
+        else:
+            for m in live:
+                self.remove(m)
+
+        builder = load_builder(entry["scene"], self.ctx["sb_dir"])
+        # renderer.time advances by exactly dt per frame WRITTEN (add_frame),
+        # not by the run_time asked for, so this measures emitted frames — the
+        # thing timings.json claims — and not the builder's intent.
+        before = self.renderer.time
+        where = f"{entry['scene']['module']}:{entry['scene']['name']}"
+        try:
+            builder(self, theme, components, entry["hold"])
+        except SystemExit:
+            raise
+        except Exception as exc:
+            # Builder bugs and the primitives' ValueErrors are storyboard
+            # defects, not renderer crashes: they get the same one-line form as
+            # every other refusal rather than a traceback the author must read.
+            raise SystemExit(f"error: scene '{entry['id']}': builder {where} "
+                             f"raised {exc.__class__.__name__}: {exc}")
+        spent = int(round((self.renderer.time - before) * theme.FPS))
+        drift = spent - entry["hold_frames"]
+        if drift:
+            raise SystemExit(
+                f"error: scene '{entry['id']}': builder {where} "
+                f"{'over' if drift > 0 else 'under'}ran its slot by {abs(drift)} "
+                f"frame(s) ({abs(drift) / theme.FPS:.3f}s) — spent {spent} of the "
+                f"{entry['hold_frames']} frames ({entry['hold']:.3f}s) it was "
+                f"given. timings.json would be wrong for every later scene; "
+                f"quantise with components.run_time / hold_time and spend the "
+                f"remainder as a trailing wait.")
+        return list(self.mobjects)
+
     def construct(self):
         live = []
         for entry in self.plan["scenes"]:
+            if entry["type"] == "custom":
+                live = self.custom_scene(entry, live)
+                continue
             build = components.build(entry["scene"], self.ctx)
             if len(build.reveals) != entry["n_reveals"]:
                 raise SystemExit(

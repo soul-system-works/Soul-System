@@ -1,0 +1,19 @@
+# Negative fixture: duration below the read-rate minimum its own `text` buys.
+# 11 words => 1.5 + 0.35*11 = 5.35s minimum; it declares 2.0s.
+video: bad-custom-short
+schema: 1
+format: skill
+inputs: [docs/video-pipeline.md]
+scenes:
+  - id: rushed
+    type: custom
+    module: ../smoke/motion.py
+    name: build
+    duration: 2.0
+    text:
+      - "The record outlives the session."
+      - "session one"
+      - "capture"
+      - "handoff"
+      - "idea"
+      - "witness.md"

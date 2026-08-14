@@ -1,0 +1,12 @@
+# Smoke fixture: a skill storyboard over WARN_SKILL (40s) but under the 60s hard
+# budget. Must PASS lint and still say so out loud — five 12-line code scenes.
+video: smoke-warn-long
+schema: 1
+format: skill
+inputs: [docs/video-pipeline.md]
+scenes:
+  - {id: a, type: code, lang: python, source: &src "1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n"}
+  - {id: b, type: code, lang: python, source: *src}
+  - {id: c, type: code, lang: python, source: *src}
+  - {id: d, type: code, lang: python, source: *src}
+  - {id: e, type: code, lang: python, source: *src}

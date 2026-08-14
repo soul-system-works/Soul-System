@@ -35,6 +35,21 @@ scenes:
     heading: "The system it documents"
     hold: 4.0            # explicit: a diagram earns more air than its words buy
 
+  - id: motion
+    type: custom
+    module: motion.py
+    name: build
+    duration: 7.5
+    text:                # every on-screen string the builder draws
+      - "The record"
+      - "outlives"
+      - "the session."
+      - "session one"
+      - "capture"
+      - "handoff"
+      - "idea"
+      - "witness.md"
+
   - id: outro
     type: outro
     transition: cut

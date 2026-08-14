@@ -1,0 +1,13 @@
+# Negative fixture: the module imports a file beside it. That helper is neither
+# denylist-scanned nor hashed, so the import is refused rather than followed.
+video: bad-custom-sibling-import
+schema: 1
+format: skill
+inputs: [docs/video-pipeline.md]
+scenes:
+  - id: split
+    type: custom
+    module: sibling_motion.py
+    name: build
+    duration: 4.0
+    text: ["one two three"]

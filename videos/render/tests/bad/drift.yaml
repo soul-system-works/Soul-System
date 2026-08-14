@@ -1,0 +1,14 @@
+# Negative fixture for the RENDERER, not the linter: this passes lint by design
+# (the drift it provokes is invisible until the builder actually runs) and must
+# abort the render naming the overrun.
+video: bad-drift
+schema: 1
+format: skill
+inputs: [docs/video-pipeline.md]
+scenes:
+  - id: greedy
+    type: custom
+    module: drift_module.py
+    name: overrun
+    duration: 4.0
+    text: ["Takes more than it was given."]

@@ -1,0 +1,12 @@
+# Negative fixture: the named module does not exist next to the storyboard.
+video: bad-custom-missing-module
+schema: 1
+format: skill
+inputs: [docs/video-pipeline.md]
+scenes:
+  - id: absent
+    type: custom
+    module: no-such-motion.py
+    name: build
+    duration: 4.0
+    text: ["one two three"]

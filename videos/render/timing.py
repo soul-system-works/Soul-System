@@ -13,5 +13,6 @@ TRANSITION_DUR  = 0.4    # s (fade); cut = 0. Not counted against hold
 MAX_WORDS_SCENE = 26     # one-idea-per-scene proxy (prose scenes)
 MAX_BULLETS     = 4      # per bullets scene
 MAX_CODE_LINES  = 12     # per code/terminal scene
+WARN_SKILL      = 40.0   # s — lint warning, not failure; the Q16 target
 BUDGET_SKILL    = 60.0   # s — hard lint failure
 BUDGET_OVERVIEW = 180.0  # s — hard lint failure

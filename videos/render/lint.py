@@ -13,6 +13,7 @@ bug in the linter, not a verdict on the storyboard.
 Usage: lint.py <storyboard.yaml>   (exit 0 pass, 1 fail)
 """
 
+import ast
 import math
 import os
 import re
@@ -47,14 +48,19 @@ SCENE_FIELDS = {
     "terminal": ({"capture"}, {"reveal"}),
     "diagram":  ({"asset"}, {"heading"}),
     "outro":    ({"text"}, {"url"}),
+    "custom":   ({"module", "name", "duration", "text"}, set()),
 }
 FIELD_TYPES = {
     "id": str, "type": str, "heading": str, "sub": str, "text": str,
     "url": str, "lang": str, "file": str, "source": str, "capture": str,
     "asset": str, "transition": str, "reveal": str, "chapter": str,
     "narration": str, "items": list, "highlight": list, "hold": (int, float),
+    "module": str, "name": str, "duration": (int, float),
 }
-PATH_FIELDS = ("capture", "file", "asset")
+# Per-type overrides of FIELD_TYPES: `text` is one string on an outro and the
+# list of every on-screen string on a custom scene.
+SCENE_FIELD_TYPES = {"custom": {"text": list}}
+PATH_FIELDS = ("capture", "file", "asset", "module")
 TRANSITIONS = {"fade", "cut"}
 REVEALS = {"line", "block"}
 
@@ -63,7 +69,7 @@ class LintError(Exception):
     pass
 
 
-def _frames_up(seconds: float) -> int:
+def frames_up(seconds: float) -> int:
     """Whole frames, rounded UP — a computed minimum is never undercut."""
     return int(math.ceil(seconds * theme.FPS - 1e-9))
 
@@ -138,18 +144,29 @@ def _check_scene_schema(scene, index: int) -> None:
                         f"expected one of {', '.join(sorted(SCENE_FIELDS))}")
     required, optional = SCENE_FIELDS[stype]
     allowed = {"id", "type"} | required | optional | COMMON_OPTIONAL
+    if stype == "custom":
+        # A custom scene's builder owns its whole slot; `hold` would be a second
+        # source of truth for the same number and the drift check would fail on
+        # whichever one the builder did not honour.
+        allowed.discard("hold")
     unknown = set(scene) - allowed
     if unknown:
-        raise LintError(f"scene '{sid}': unknown field(s) {', '.join(sorted(unknown))}")
+        raise LintError(f"scene '{sid}': unknown field(s) {', '.join(sorted(unknown))}"
+                        + (" (custom scenes size themselves with duration:)"
+                           if stype == "custom" and "hold" in unknown else ""))
     missing = required - set(scene)
     if missing:
         raise LintError(f"scene '{sid}': missing field(s) {', '.join(sorted(missing))}")
 
+    types = {**FIELD_TYPES, **SCENE_FIELD_TYPES.get(stype, {})}
     for field in scene:
-        if field in FIELD_TYPES:
-            _typed(scene, field, FIELD_TYPES[field])
+        if field in types:
+            _typed(scene, field, types[field])
     if "items" in scene and not all(isinstance(i, str) for i in scene["items"]):
         raise LintError(f"scene '{sid}': items must all be strings")
+    if stype == "custom" and not all(isinstance(t, str) for t in scene["text"]):
+        raise LintError(f"scene '{sid}': text must be a list of strings "
+                        f"(every on-screen string the scene shows; [] if none)")
     if "highlight" in scene and not all(
             isinstance(n, int) and not isinstance(n, bool) for n in scene["highlight"]):
         raise LintError(f"scene '{sid}': highlight must be a list of line numbers")
@@ -197,9 +214,68 @@ def _check_asset(path: Path, sid: str) -> None:
             f"frame. Convert text to paths, rasterise, or use a text-free asset.")
 
 
+def _check_module_imports(path: Path, sb_dir: Path, sid: str) -> None:
+    """Custom builders are ONE file. Enforce it, because the gaps are silent.
+
+    A local `from helpers import x` pulls in a file that is not a scanned
+    surface (a real name in it reaches a public video unchecked) and not a
+    hashed input (editing it leaves the video reported FRESH). Rather than
+    chase the import graph, the graph is kept to one node: shared motion code
+    graduates into components.py, which every video already hashes via the
+    theme version.
+    """
+    tree_src = _read_text(path, f"scene '{sid}' module")
+    try:
+        tree = ast.parse(tree_src, filename=str(path))
+    except SyntaxError as exc:
+        raise LintError(f"scene '{sid}': {path.name} does not parse "
+                        f"(line {exc.lineno}): {exc.msg}")
+
+    def refuse(what: str) -> None:
+        raise LintError(
+            f"scene '{sid}': {path.name} imports {what} — custom builders are a "
+            f"single file. A local helper is neither denylist-scanned nor hashed "
+            f"into the staleness manifest, so editing it leaves the video falsely "
+            f"FRESH and its strings unchecked. Inline it, or graduate the shared "
+            f"part into videos/render/components.py.")
+
+    for node in ast.walk(tree):
+        if isinstance(node, ast.ImportFrom) and node.level:
+            refuse(f"relatively ('{'.' * node.level}{node.module or ''}')")
+        roots = []
+        if isinstance(node, ast.Import):
+            roots = [alias.name.split(".")[0] for alias in node.names]
+        elif isinstance(node, ast.ImportFrom) and node.module:
+            roots = [node.module.split(".")[0]]
+        for root in roots:
+            if (sb_dir / f"{root}.py").exists() or \
+                    (sb_dir / root / "__init__.py").exists():
+                refuse(f"sibling module '{root}'")
+
+
 def _check_limits(scene: dict, sb_dir: Path) -> tuple[float, int, int]:
     """Returns (computed_hold_seconds, line_count, reveal_count)."""
     sid, stype = scene["id"], scene["type"]
+
+    if stype == "custom":
+        module = resolve(sb_dir, scene["module"], f"scene '{sid}' module")
+        if module.suffix != ".py":
+            raise LintError(f"scene '{sid}': module {scene['module']} is not a .py file")
+        _check_module_imports(module, module.parent, sid)
+        # The declared `text` is the whole readability contract for a custom
+        # scene: the linter cannot see inside the builder, so the storyboard has
+        # to declare what the frame will say, and the same read rate a title
+        # scene gets is applied to it.
+        words = _words(*scene["text"])
+        minimum = timing.BASE_HOLD + timing.WORD_RATE * words
+        duration = float(scene["duration"])
+        if duration + 1e-9 < minimum:
+            raise LintError(
+                f"scene '{sid}': duration {duration:.2f}s is below the read-rate "
+                f"minimum {minimum:.2f}s for its {words} declared word(s) of "
+                f"on-screen text (BASE_HOLD + WORD_RATE x words) — lengthen the "
+                f"beat or cut text")
+        return duration, 0, 0
 
     if stype in ("code", "terminal"):
         if stype == "code":
@@ -251,7 +327,7 @@ def build_plan(doc: dict, sb_dir: Path) -> dict:
     for entry in doc["inputs"]:
         resolve(theme.REPO_ROOT, entry, "declared input")
 
-    reveal_frames = _frames_up(theme.REVEAL_STEP)
+    reveal_frames = frames_up(theme.REVEAL_STEP)
     seen: set[str] = set()
     entries = []
     clock = 0  # frames
@@ -274,10 +350,10 @@ def build_plan(doc: dict, sb_dir: Path) -> dict:
                 f"({theme.REVEAL_STEP}s) leave under 1.0s of the computed hold "
                 f"({computed_s:.2f}s) — lower theme.REVEAL_STEP or cut content")
 
-        computed_f = _frames_up(computed_s)
+        computed_f = frames_up(computed_s)
         hold_f = computed_f
         if "hold" in scene:
-            explicit_f = _frames_up(float(scene["hold"]))
+            explicit_f = frames_up(float(scene["hold"]))
             if explicit_f < computed_f:
                 raise LintError(
                     f"scene '{sid}': explicit hold {float(scene['hold'])}s below "
@@ -288,7 +364,7 @@ def build_plan(doc: dict, sb_dir: Path) -> dict:
             raise LintError(f"scene '{sid}': reveals do not fit inside the hold")
 
         trans = scene.get("transition", "fade")
-        trans_f = _frames_up(timing.TRANSITION_DUR) if trans == "fade" else 0
+        trans_f = frames_up(timing.TRANSITION_DUR) if trans == "fade" else 0
 
         entries.append({
             "id": sid, "type": scene["type"], "transition": trans,
@@ -311,6 +387,23 @@ def build_plan(doc: dict, sb_dir: Path) -> dict:
 
     return {"video": doc["video"], "format": doc["format"], "inputs": doc["inputs"],
             "scenes": entries, "frames": clock, "duration": duration, "budget": budget}
+
+
+def budget_warning(plan: dict) -> str | None:
+    """Q16: skill videos target 35-40s. Over WARN_SKILL is a smell, not a defect.
+
+    A warning rather than a failure because the number is taste calibrated on one
+    video (pilot v1's 51.5s read long), while BUDGET_SKILL is the contract. The
+    two must not be confused, so this never changes the exit code.
+    """
+    if plan["format"] != "skill":
+        return None
+    if plan["duration"] <= timing.WARN_SKILL + 1e-9:
+        return None
+    return (f"WARNING: runtime {plan['duration']:.2f}s over WARN_SKILL "
+            f"({timing.WARN_SKILL}s) — the Q16 target is 35-40s of motion, not "
+            f"stacked holds. Not a failure; the hard budget is "
+            f"{timing.BUDGET_SKILL}s.")
 
 
 def denylist_path() -> Path:
@@ -398,6 +491,9 @@ def lint(path: Path) -> tuple[bool, dict | None, str]:
 
     hits = _denylist_scan(surfaces)
     report = format_table(plan)
+    warning = budget_warning(plan)
+    if warning:
+        report += "\n\n" + warning
     if hits:
         return False, plan, report + "\n\nFAIL — anonymisation:\n  " + "\n  ".join(hits)
     return True, plan, report + f"\n\nOK {path}"

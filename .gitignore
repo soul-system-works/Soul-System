@@ -13,3 +13,7 @@ docs/study/tex/**/main.out
 # Video pipeline — rendered artifacts and fetched fonts
 videos/out/
 videos/.fonts/
+# Fixtures the smoke test plants inside the repo (containment rules leave it no
+# choice) and removes again; ignored so a killed run leaves nothing tracked.
+videos/render/tests/.tmp/
+videos/render/media/

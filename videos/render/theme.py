@@ -68,6 +68,10 @@ SIZE_CODE     = 22
 SIZE_TERMINAL = 22
 SIZE_OUTRO    = 46
 SIZE_URL      = 26
+SIZE_KINETIC  = 46     # a kinetic_line word-group
+SIZE_MARK     = 24     # a thread mark's label
+SIZE_CARD     = 26     # a file_card's label
+SIZE_CHIP     = 22     # a fly_card chip's label
 
 # Layout — everything lives inside a centred column so a later 9:16 cut is a
 # re-layout, not a re-author (Q6).
@@ -80,6 +84,23 @@ PANEL_PAD = 0.32       # terminal panel padding around its text
 # Animation speeds. Reveals are consumed OUT of a scene's hold, never added to
 # it, so total runtime stays exactly sum(transition + hold).
 REVEAL_STEP = 0.25     # s per sequentially revealed bullet / terminal line
+
+# Motion primitives, used by `custom` scenes (components.thread / fly_card /
+# kinetic_line). Geometry is in Manim units on a frame 8 units tall; every one of
+# these is a look, so they live here and not in timing.py — timing.py owns how
+# long a VIEWER needs, these own how long a GESTURE takes.
+THREAD_STROKE   = 3.0    # thread line and mark-tick stroke width
+THREAD_TICK     = 0.16   # half-length of a mark tick across the thread
+MARK_GAP        = 0.14   # between a mark tick and its label
+MARK_POP        = 0.20   # s — one mark landing on the thread
+CARD_W          = 1.50   # file_card body
+CARD_H          = 1.90
+CARD_FOLD       = 0.38   # the folded document corner
+CHIP_PAD        = 0.18   # fly_card chip padding around its label
+CARD_LAND_SCALE = 1.06   # overshoot a landing chip relaxes out of
+CARD_SETTLE     = 0.18   # s — that relaxation
+WORD_GAP        = 0.22   # between kinetic_line word-groups
+KINETIC_DROP    = 0.35   # distance a landing word-group falls through
 
 PYGMENTS_STYLE = "friendly"   # light-background style; no LaTeX involved
 
