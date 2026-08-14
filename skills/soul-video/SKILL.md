@@ -67,11 +67,16 @@ philosophy, handoff-resume).
    `<source-dir>/captures/`. Collect them *with* the Body — never synthesize.
 3. Draft `<source-dir>/storyboard.yaml` against the schema in
    `docs/video-pipeline.md`. Omit `hold` unless a scene genuinely needs more
-   air than the computed minimum; give every scene a stable `id`.
+   air than the computed minimum; give every scene a stable `id`. Motion
+   beats the standard types can't express become `custom` scenes (a builder
+   in the video's source dir, declared `duration` + `text`) — prefer an
+   existing shared primitive from `components.py` before writing a new one,
+   and graduate recurring patterns into the shared library.
 4. Lint it: `~/.cache/soul-video/venv/bin/python videos/render/lint.py
    <storyboard>`. Fix failures before presenting.
-5. **Show the draft plus the lint report** (per-scene holds, total runtime)
-   and hold for the Body.
+5. **Render a draft and show it with the lint report** — the Body watches
+   the draft; that is the gate-2 review surface (a render costs ~1 minute).
+   Hold for the Body.
 
 ## Mode `render` — stage 3 wrapper (pure code, NO LLM decisions)
 

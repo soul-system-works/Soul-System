@@ -42,6 +42,9 @@ Settled during alignment; do not relitigate without new evidence.
 | Q11 | Staleness check is a local `tools/` script; no CI | Repo has zero CI; release cadence is manual (branch-per-release); revisit only when rendering is proven |
 | Q12 | Renderer = **Manim CE**, not Motion Canvas | Motion Canvas is abandoned (last stable 2024-12, site offline) and has no headless mode; Manim CE is active (v0.21.0, 2026-08), CLI-native, deterministic, and Python — the repo's only existing runtime dependency |
 | Q13 | VHS is a **capture instrument only** — renderer draws terminal scenes from committed text | VHS video output is not byte-deterministic; its `.ascii`/text output is |
+| Q14 | **Motion-first hybrid**: shared motion primitives + per-video `custom` Manim scenes; the slide types remain for simple beats. The brief's "boring typography over motion-graphics flourish" guardrail is amended: text carries *meaning*, motion carries *mechanism* | Pilot v1 (2026-08-14) passed every machine check and still read as animated slides — the Body redirected toward 3b1b-style motion at checkpoint 3, and the v1 second half showed why: static cards can only *assert* a mechanism, not show it |
+| Q15 | Fully silent reaffirmed — no music bed either | Body call at the v1 feedback round; motion, not audio, does the pacing work |
+| Q16 | Skill budget tightened: 35–40s target (lint **warns** >40s), hard fail stays 60s | v1's 51.5s of stacked static holds felt long; motion overlaps reading instead of queueing behind it |
 
 ---
 
@@ -149,8 +152,16 @@ scenes:
     url: "github.com/soul-system-works/Soul-System"
 ```
 
-Scene types (complete set for v1): `title`, `bullets`, `code`, `terminal`,
-`diagram` (renders a theme-recolored SVG asset: `asset: <path>`), `outro`.
+Scene types: `title`, `bullets`, `code`, `terminal`, `diagram` (renders a
+theme-recolored SVG asset: `asset: <path>`), `outro`, and — since Q14 —
+`custom`: a motion beat the standard types can't express. A `custom` scene
+declares `module:` (a Python file in the video's source dir), `name:` (the
+builder function), `duration:` (explicit seconds), and `text:` (every
+on-screen string, so lint can denylist-scan it and enforce the read-rate
+minimum against the declared duration). The builder receives the shared
+theme/components, must be deterministic pure code, and is reviewed at gate 2
+like any other source. Motion patterns that recur across videos graduate into
+the shared `components.py` as declarative primitives.
 Overview storyboards may add `chapter: "<name>"` to a scene; the renderer
 emits ffmpeg chapter metadata at each chapter boundary.
 
@@ -172,6 +183,7 @@ TRANSITION_DUR  = 0.4    # s (fade); cut = 0. Not counted against hold
 MAX_WORDS_SCENE = 26     # one-idea-per-scene proxy (prose scenes)
 MAX_BULLETS     = 4      # per bullets scene
 MAX_CODE_LINES  = 12     # per code/terminal scene
+WARN_SKILL      = 40.0   # s — lint warning; the Q16 target
 BUDGET_SKILL    = 60.0   # s — hard lint failure
 BUDGET_OVERVIEW = 180.0  # s — hard lint failure
 ```
@@ -243,8 +255,10 @@ true` (operator-invoked only, like the other utility skills).
 - `/soul-video script <video-id>` — stage 1. Reads the declared inputs (never
   assumptions), drafts `script.md`, holds for the Body.
 - `/soul-video storyboard <video-id>` — stage 2. Reads the approved script,
-  drafts `storyboard.yaml`, runs `lint.py`, presents the lint result with the
-  draft, holds for the Body.
+  drafts `storyboard.yaml` (plus any `custom` scene modules), runs `lint.py`,
+  renders a **draft**, and presents draft video + lint report together —
+  watching the ~40s draft *is* the gate-2 review (a render costs ~1 minute).
+  Holds for the Body.
 - `/soul-video render <video-id>` — thin wrapper over `render.py` (stage 3
   itself contains no LLM).
 - `/soul-video status` — thin wrapper over `tools/video-staleness.py`.
