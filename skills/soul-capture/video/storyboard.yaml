@@ -1,0 +1,47 @@
+video: soul-capture
+schema: 1
+format: skill
+inputs:
+  - skills/soul-capture/SKILL.md
+scenes:
+  - id: hook
+    type: title
+    heading: "Your session is about to forget something."
+    sub: "soul-capture"
+
+  - id: what-dies
+    type: bullets
+    heading: "Sessions regenerate code — not decisions"
+    items:
+      - "the decision and its reason"
+      - "the incident behind the rule"
+      - "the convention nobody wrote down"
+
+  - id: the-act
+    type: terminal
+    capture: captures/capture-idea.txt
+    reveal: line
+
+  - id: landed
+    type: code
+    lang: markdown
+    file: captures/ideas-after.md
+    highlight: [2]
+
+  - id: modes
+    type: bullets
+    heading: "Three modes, graduated friction"
+    items:
+      - "idea — frictionless, forward"
+      - "witness — light scaffold, backward"
+      - "finding — earned; the owner's call"
+
+  - id: the-rule
+    type: title
+    heading: "Could a fresh session reason its way back to this?"
+    sub: "No → capture it.  Yes → skip."
+
+  - id: outro
+    type: outro
+    text: "Capture the unguessable."
+    url: "github.com/soul-system-works/Soul-System"

@@ -1,0 +1,10 @@
+> /soul-capture idea "Graduate the video theme tokens
+    (videos/render/theme.py) into the plugin's canonical
+    visual identity — extends SOUL-I052"
+
+  Captured SOUL-I056 → ideas.md
+
+  ID:    SOUL-I056
+  WHEN:  2026-08-14
+  IDEA:  Graduate the video theme tokens into the
+         plugin's canonical visual identity.
