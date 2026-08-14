@@ -1,0 +1,9 @@
+# Negative fixture: namespace-prefixed <svg:text> must not dodge the asset scan.
+video: bad-ns-text
+schema: 1
+format: skill
+inputs: [docs/video-pipeline.md]
+scenes:
+  - id: shape
+    type: diagram
+    asset: ns-text.svg

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Text-free by construction: Manim's SVGMobject drops <text>, and lint.py
+     hard-fails any asset containing it. Theme colours, three stages, two arrows. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 200">
+  <rect x="10" y="60" width="150" height="80" rx="10"
+        fill="#fff8cc" stroke="#8a5a09" stroke-width="3"/>
+  <rect x="225" y="60" width="150" height="80" rx="10"
+        fill="#f5d78e" stroke="#8a5a09" stroke-width="3"/>
+  <rect x="440" y="60" width="150" height="80" rx="10"
+        fill="#ffffff" stroke="#2c4670" stroke-width="3"/>
+  <path d="M 165 100 L 215 100" stroke="#5d6d7e" stroke-width="3" fill="none"/>
+  <path d="M 205 92 L 220 100 L 205 108 Z" fill="#5d6d7e"/>
+  <path d="M 380 100 L 430 100" stroke="#5d6d7e" stroke-width="3" fill="none"/>
+  <path d="M 420 92 L 435 100 L 420 108 Z" fill="#5d6d7e"/>
+  <circle cx="515" cy="100" r="18" fill="none" stroke="#1e4528" stroke-width="3"/>
+</svg>

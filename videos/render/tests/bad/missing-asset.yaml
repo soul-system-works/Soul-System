@@ -1,0 +1,9 @@
+# Negative fixture: asset does not exist. Must fail lint, not SVGMobject mid-render.
+video: bad-missing-asset
+schema: 1
+format: skill
+inputs: [docs/video-pipeline.md]
+scenes:
+  - id: shape
+    type: diagram
+    asset: does-not-exist.svg

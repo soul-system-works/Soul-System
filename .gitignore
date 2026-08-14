@@ -9,3 +9,7 @@ docs/study/tex/**/main.fdb_latexmk
 docs/study/tex/**/main.fls
 docs/study/tex/**/main.log
 docs/study/tex/**/main.out
+
+# Video pipeline — rendered artifacts and fetched fonts
+videos/out/
+videos/.fonts/

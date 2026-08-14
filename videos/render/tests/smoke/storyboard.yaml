@@ -1,0 +1,42 @@
+# Smoke fixture — exercises every v1 scene type. Not a shipping video.
+video: smoke
+schema: 1
+format: skill
+inputs:
+  - docs/video-pipeline.md
+scenes:
+  - id: hook
+    type: title
+    heading: "A pipeline that renders itself."
+    sub: "smoke fixture"
+
+  - id: checks
+    type: bullets
+    heading: "What the linter holds"
+    items:
+      - "schema, strictly"
+      - "computed holds"
+      - "the anonymisation backstop"
+
+  - id: demo
+    type: terminal
+    capture: capture-demo.txt
+    reveal: line
+
+  - id: listing
+    type: code
+    lang: python
+    file: example.py
+    highlight: [1, 6]
+
+  - id: shape
+    type: diagram
+    asset: shape.svg
+    heading: "The system it documents"
+    hold: 4.0            # explicit: a diagram earns more air than its words buy
+
+  - id: outro
+    type: outro
+    transition: cut
+    text: "Same input, same bytes."
+    url: "github.com/soul-system-works/Soul-System"

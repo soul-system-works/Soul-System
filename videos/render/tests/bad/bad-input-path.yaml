@@ -1,0 +1,9 @@
+# Negative fixture: a typo'd declared input must fail at lint, not at manifest time.
+video: bad-input-path
+schema: 1
+format: skill
+inputs: [docs/video-pipelin.md]
+scenes:
+  - id: hook
+    type: title
+    heading: "Fine heading."

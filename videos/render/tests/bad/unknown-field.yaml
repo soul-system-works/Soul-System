@@ -1,0 +1,10 @@
+# Negative fixture: a field no scene type declares. Strict schema must reject.
+video: bad-unknown-field
+schema: 1
+format: skill
+inputs: [docs/video-pipeline.md]
+scenes:
+  - id: hook
+    type: title
+    heading: "Fine heading."
+    subtitle: "not a schema field"

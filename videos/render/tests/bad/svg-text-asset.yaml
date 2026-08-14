@@ -1,0 +1,9 @@
+# Negative fixture: architecture.svg carries <text>, which SVGMobject drops.
+video: bad-svg-text
+schema: 1
+format: skill
+inputs: [docs/video-pipeline.md]
+scenes:
+  - id: shape
+    type: diagram
+    asset: ../../../../architecture.svg

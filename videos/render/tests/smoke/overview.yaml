@@ -1,0 +1,18 @@
+# Smoke fixture — format: overview, so chapter: is legal and gets muxed.
+video: smoke-overview
+schema: 1
+format: overview
+inputs:
+  - docs/video-pipeline.md
+scenes:
+  - id: open
+    type: title
+    chapter: "Opening"
+    heading: "Two chapters, one file."
+    sub: "smoke fixture"
+
+  - id: close
+    type: outro
+    chapter: "Closing"
+    text: "Chapters are metadata."
+    url: "github.com/soul-system-works/Soul-System"

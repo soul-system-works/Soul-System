@@ -59,7 +59,10 @@ Settled during alignment; do not relitigate without new evidence.
 Known risks, accepted: Manim has no live-preview editor (mitigation: fast
 low-res preview via `-ql` during theme development); the Manim CE upstream
 could slow (mitigation: version pinned; renderer is ~6 scene components, small
-surface to port).
+surface to port); Manim's SVG import silently drops `<text>` elements, so a
+`diagram` asset must be text-free, text-to-path converted, or rasterized —
+found during Phase 2 build; the pilot has no diagram scene, solve when the
+first real one does (likely the intro video).
 
 ---
 
@@ -183,8 +186,13 @@ mechanical).
 
 **Determinism**: stage 3 is pure code. Same storyboard + captures + theme +
 pinned environment ⇒ byte-identical mp4 (Manim's frame-stepped rendering plus
-ffmpeg bitexact flags). No wall-clock recording and no LLM sit anywhere in the
-render path — that property is what makes hashing meaningful.
+a final ffmpeg pass with bitexact flags and pinned single-threaded x264
+parameters — default x264 threading bakes the machine's core count into the
+bitstream). "Pinned environment" means the fully frozen `requirements.txt`
+venv and the same system ffmpeg build; the manifest records the encoder
+versions so a mismatch is detectable rather than silent. No wall-clock
+recording and no LLM sit anywhere in the render path — that property is what
+makes hashing meaningful.
 
 **Manifest** (`videos/manifest.json`, written by `render.py` on success):
 

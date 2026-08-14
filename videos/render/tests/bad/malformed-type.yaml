@@ -1,0 +1,11 @@
+# Negative fixture: highlight is a scalar, not a list. Must fail, not traceback.
+video: bad-malformed-type
+schema: 1
+format: skill
+inputs: [docs/video-pipeline.md]
+scenes:
+  - id: listing
+    type: code
+    lang: python
+    file: ../smoke/example.py
+    highlight: 3

@@ -1,0 +1,6 @@
+$ example command --fixture
+reading storyboard.yaml
+  6 scenes
+  budget 60.0s  OK
+$ example render
+wrote out/example-t1.mp4

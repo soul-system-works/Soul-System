@@ -1,0 +1,10 @@
+# Negative fixture: explicit hold under the computed minimum.
+video: bad-short-hold
+schema: 1
+format: skill
+inputs: [docs/video-pipeline.md]
+scenes:
+  - id: hook
+    type: title
+    heading: "A heading that buys more hold than this."
+    hold: 0.5

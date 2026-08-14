@@ -1,0 +1,10 @@
+# Negative fixture: a reference escaping the repo would leak $HOME into the
+# committed manifest and put an unreviewed file in a public video.
+video: bad-outside-repo
+schema: 1
+format: skill
+inputs: [docs/video-pipeline.md]
+scenes:
+  - id: demo
+    type: terminal
+    capture: /etc/hostname

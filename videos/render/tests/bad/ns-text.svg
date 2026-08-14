@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg:svg xmlns:svg="http://www.w3.org/2000/svg" viewBox="0 0 200 100">
+  <svg:rect x="10" y="10" width="180" height="80" fill="#fbf7ec" stroke="#2c3e50"/>
+  <svg:text x="100" y="55" text-anchor="middle" fill="#2c3e50">dropped silently</svg:text>
+</svg:svg>
