@@ -1,0 +1,19 @@
+{
+  "soul-capture": {
+    "encoder": {
+      "crf": "18",
+      "ffmpeg": "ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers",
+      "preset": "medium",
+      "x264_params": "threads=1:sliced-threads=0:lookahead-threads=1"
+    },
+    "hashes": {
+      "skills/soul-capture/SKILL.md": "sha256:cdc0ddc93941f71cc92efbc0adc3b50f19908c74199a34bd5b0783dcbd5b35aa",
+      "skills/soul-capture/video/captures/capture-idea.txt": "sha256:ce51b5ed7ae5f5c1b70495ff91fd720fcf19b0ace7d54f6b5127471721bbe7e1",
+      "skills/soul-capture/video/captures/ideas-after.md": "sha256:2afdf81eab349bbfcdd08d0ed4d432917cb9f17289195251c8a8888ec87afd7e",
+      "skills/soul-capture/video/storyboard.yaml": "sha256:c9a1373b4cf6224ea81b1eb26eb47cf18fbdd0c42609856084e7baabf1367fb4"
+    },
+    "output": "sha256:808188839219184a3ed1b2869935087841cb33ca2062265f70dfcb78f65b57c6",
+    "storyboard": "skills/soul-capture/video/storyboard.yaml",
+    "theme_version": 1
+  }
+}
