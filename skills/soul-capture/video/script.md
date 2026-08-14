@@ -36,12 +36,16 @@ Intent: this is the fix for v1's unclear second half — landing + survival +
 inheritance as one continuous visible mechanism, replacing v1's raw-file-tail
 scene and its unexplained juxtaposition.
 
-## Beat 4 — the rule (title)
+## Beat 4 — the rule (over the living world)
 
 On screen: "Could a fresh session reason its way back to this?"
 Sub: "No → capture it.  Yes → skip."
-Intent: unchanged — the triage test as the takeaway, now landing after the
-viewer has watched something both die and survive.
+Motion: no slide — the question lands kinetically above the scene while the
+third thread keeps drawing beneath; the answer line follows. The world stays
+continuous until the outro (Q18).
+Intent: the takeaway reads as a conclusion drawn from what was just watched,
+not a lesson card after it. (Restaged from a static title at the Body's v2
+draft review.)
 
 ## Beat 5 — outro (outro)
 

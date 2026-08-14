@@ -45,6 +45,8 @@ Settled during alignment; do not relitigate without new evidence.
 | Q14 | **Motion-first hybrid**: shared motion primitives + per-video `custom` Manim scenes; the slide types remain for simple beats. The brief's "boring typography over motion-graphics flourish" guardrail is amended: text carries *meaning*, motion carries *mechanism* | Pilot v1 (2026-08-14) passed every machine check and still read as animated slides — the Body redirected toward 3b1b-style motion at checkpoint 3, and the v1 second half showed why: static cards can only *assert* a mechanism, not show it |
 | Q15 | Fully silent reaffirmed — no music bed either | Body call at the v1 feedback round; motion, not audio, does the pacing work |
 | Q16 | Skill budget tightened: 35–40s target (lint **warns** >40s), hard fail stays 60s | v1's 51.5s of stacked static holds felt long; motion overlaps reading instead of queueing behind it |
+| Q17 | **Luminous dark theme** (THEME_VERSION 2): deep warm ink-navy ground, cream text (the old paper color inverted into the ink role), threads/chips as softly glowing gold/amber filaments — a session's death is a light going out; the captured card is the light that stays on | Body at the v2 draft watch (2026-08-14): the paper theme was too bright, but the angelic/soul feel should survive — it does, by making the *content* the light source; the mortality metaphor gets stronger on dark |
+| Q18 | No standalone concluding slide: the triage question lands kinetically over the still-living world; the outro is the only true card in any video | Body at the v2 draft watch: the rule-slide stopped 28s of continuous world dead — it was the last remaining slide before the outro |
 
 ---
 
