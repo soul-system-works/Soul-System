@@ -8024,3 +8024,26 @@ STATUS:       Resolved — published surfaces verified clean. Standing residual:
               any clone taken before 2026-08-07 holds the old history, and the
               sibling benchmark repo was checked clean (0 hits, both names).
 ```
+
+```
+ID:           SOUL-176
+WHEN:         2026-08-14 / pilot video v1 checkpoint 3, the Body's watch
+WHERE:        videos/render/ pipeline (branch video-pipeline);
+              docs/video-pipeline.md ledger Q14–Q18 carry the decisions
+WHAT:         Pilot video v1 (soul-capture) passed every machine gate — lint,
+              byte-identical double render, per-scene visual QA all PASS — and
+              the Body rejected it at the watch: static, slide-like, second
+              half unclear. The storyboard schema itself had encoded the slide
+              form, and the brief's own guardrail ("boring, legible typography
+              over motion-graphics flourish") steered into it. The redirect
+              produced motion-first (Q14), luminous dark (Q17), no concluding
+              slide (Q18), and gate 2 was redefined from "read the storyboard
+              YAML" to "watch a draft render."
+TYPE:         Universe Contradiction — every machine gate green while the
+              artifact failed the only gate that judges the artifact
+CONSEQUENCE:  The human gate moved onto the artifact itself; machine checks
+              stand as necessary-not-sufficient. Captured at /soul-handoff's
+              flush step — the Body's invocation of the instrument is the
+              confirmation, stated here out loud (A022; I055 precedent).
+STATUS:       Raw
+```

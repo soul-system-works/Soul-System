@@ -1972,3 +1972,25 @@ NOTES:     Surfaced at the SOUL-175 / A024–A025 distill; both flags were raise
            instrument is the confirmation, stated here out loud (A022 normally
            wants an explicit yes before appending).
 ```
+
+```
+ID:        SOUL-I056
+WHEN:      2026-08-14
+IDEA:      Graduate the video theme tokens (videos/render/theme.py) into the
+           plugin's canonical visual identity — extends SOUL-I052. The pilot
+           video work codified architecture.svg's palette and Georgia-metric
+           type into one tokens file; that file could become the single place
+           the brand lives (README diagram, videos, any future docs surface).
+STATUS:    Raw
+```
+
+```
+ID:        SOUL-I057
+WHEN:      2026-08-14
+IDEA:      Primitive-contract hardening before video 2 (deferred from the v2
+           builder's friction report): let custom scenes declare data files
+           (capture:/assets:) instead of the top-level inputs: idiom; pass
+           sb_dir/ctx to builders; a resumable thread (advance(to=...)) so
+           events can interleave with the draw; Lifeline.end(remove=True).
+STATUS:    Raw
+```
