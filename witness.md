@@ -8047,3 +8047,34 @@ CONSEQUENCE:  The human gate moved onto the artifact itself; machine checks
               confirmation, stated here out loud (A022; I055 precedent).
 STATUS:       Raw
 ```
+
+```
+ID:           SOUL-177
+WHEN:         2026-08-17 / after the pilot closed (gate 3)
+WHERE:        new repo Soul-Studio (soul-system-works/Soul-Studio); this
+              repo's video-pipeline branch (11 commits, never pushed, never
+              merged; preserved locally as tag archive/video-pipeline)
+WHAT:         The explainer-video pipeline and every video source moved to
+              their own repository at the Body's decision. Sequence: the Body
+              first ordered the branch never merged without explicit say-so,
+              then upgraded the same fence to its structural form — a
+              separate repo — while main had never carried the work, so the
+              split cost nothing. Fresh history: one squashed initial commit,
+              held unpushed for the Body's name-scan. No submodule in either
+              direction; the staleness manifest content-hashes upstream
+              files (upstream: prefix, SOUL_UPSTREAM_ROOT) as the mechanical
+              cross-repo check. Migration verified by execution: the pilot
+              rendered from the new repo byte-identical to the approved
+              final (sha256 7492ecba…).
+TYPE:         Boundary Drawn — a disciplinary rule upgraded to a structural
+              one before pressure could test it
+CONSEQUENCE:  Main stays the lean public plugin channel (Soul-Studio ledger
+              Q3/Q23 carry the reasons); video work, gates, and ledger
+              continue in Soul-Studio. One dependency remains, content-
+              addressed: videos declare upstream skills/<id>/SKILL.md files
+              as staleness inputs, resolved from a sibling checkout. The
+              split also exposed one hidden cross-repo dependency (a test
+              fixture leaning on this repo's architecture.svg) — fixed by
+              making the fixture self-contained.
+STATUS:       Raw
+```
