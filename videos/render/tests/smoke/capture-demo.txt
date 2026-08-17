@@ -1,6 +1,7 @@
+
 $ example command --fixture
 reading storyboard.yaml
   6 scenes
   budget 60.0s  OK
-$ example render
-wrote out/example-t1.mp4
+$ example render --set snake_case_flag
+wrote out/example_video-t1.mp4

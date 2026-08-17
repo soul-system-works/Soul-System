@@ -2,44 +2,57 @@ video: soul-capture
 schema: 1
 format: skill
 inputs:
+  # capture-idea.txt left this list with the terminal replay (v2.4 / Q22): the
+  # file stays committed as the frozen record of the real run, but nothing in
+  # the video reads it any more, so hashing it would claim a dependency the
+  # render does not have.
   - skills/soul-capture/SKILL.md
 scenes:
   - id: hook
-    type: title
-    heading: "Your session is about to forget something."
-    sub: "soul-capture"
+    type: custom
+    module: scenes.py
+    name: hook
+    duration: 4.3
+    text:
+      - "Your session is about to forget something."
+      - "soul-capture"
 
-  - id: what-dies
-    type: bullets
-    heading: "Sessions regenerate code — not decisions"
-    items:
-      - "the decision and its reason"
-      - "the incident behind the rule"
-      - "the convention nobody wrote down"
+  - id: mortality
+    type: custom
+    module: scenes.py
+    name: mortality
+    duration: 9.0
+    text:
+      - "a decision"
+      - "an incident"
+      - "a convention"
+      - "This session is about to end — these die with it."
 
-  - id: the-act
-    type: terminal
-    capture: captures/capture-idea.txt
-    reveal: line
-
-  - id: landed
-    type: code
-    lang: markdown
-    file: captures/ideas-after.md
-    highlight: [2]
-
-  - id: modes
-    type: bullets
-    heading: "Three modes, graduated friction"
-    items:
-      - "idea — frictionless, forward"
-      - "witness — light scaffold, backward"
-      - "finding — earned; the owner's call"
-
-  - id: the-rule
-    type: title
-    heading: "Could a fresh session reason its way back to this?"
-    sub: "No → capture it.  Yes → skip."
+  # One scene on purpose (Q22): the rail of store cards is pinned from its
+  # FadeIn to the final self-fade — never animated out and back — and a scene
+  # boundary would clear it. The three examples are REAL record entries,
+  # abbreviated but not invented.
+  - id: capture
+    type: custom
+    module: scenes.py
+    name: capture
+    duration: 24.5
+    text:
+      - "/soul-capture <tag>"
+      - "idea — a thought worth coming back to"
+      - "witness — what just happened, on the record"
+      - "finding — a lesson that proved itself"
+      - "ideas.md"
+      - "witness.md"
+      - "findings/"
+      - "SOUL-I056"
+      - "graduate the theme tokens into the brand"
+      - "SOUL-176"
+      - "every gate green — still rejected at the watch"
+      - "SOUL-F038"
+      - "cross-project imports silently fail"
+      - "These survive the session."
+      - "Everything else is gone."
 
   - id: outro
     type: outro

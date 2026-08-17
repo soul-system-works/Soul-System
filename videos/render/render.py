@@ -263,7 +263,7 @@ def render(plan: dict, sb_path: Path, out_dir: Path) -> dict:
         "pixel_width": theme.RESOLUTION[0],
         "pixel_height": theme.RESOLUTION[1],
         "frame_rate": theme.FPS,
-        "background_color": theme.PAPER,
+        "background_color": theme.GROUND,
         "media_dir": str(work),
         "output_file": f"{video_id}-raw",
         "disable_caching": True,

@@ -12,28 +12,62 @@ theme FIRST — the ordering is load-bearing, not stylistic.
 import os
 from pathlib import Path
 
-THEME_VERSION = 1
+THEME_VERSION = 2
 
 RESOLUTION = (1920, 1080)
 FPS = 30
 
-# Palette — hex tokens lifted verbatim from architecture.svg.
-PAPER           = "#fbf7ec"   # background
-INK             = "#2c3e50"   # primary text / strokes
-MUTED           = "#5d6d7e"   # secondary text, hairlines
-NAVY            = "#2c4670"   # accent
-NAVY_DARK       = "#1a2d4a"   # accent, dark variant
-AMBER           = "#8a5a09"   # emphasis
-AMBER_FILL      = "#f5d78e"   # emphasis fill
-AMBER_HIGHLIGHT = "#fff8cc"   # emphasis fill, lightest
-GREEN           = "#1e4528"
-RED             = "#b7472a"
+# Palette, v2 — the LUMINOUS DARK theme (Q17). v1's roles are inverted: the
+# ground is the navy lineage (#1a2d4a) taken down to night, and v1's paper
+# (#fbf7ec) becomes the ink. Warm-dark throughout — there is no neutral gray and
+# no pure black anywhere in here, because the ground has to read as depth rather
+# than as an absence, and the amber light has to have something warm to sit in.
+GROUND          = "#0f141d"   # background — the frame itself
+GROUND_LIFT     = "#171f2b"   # a surface sitting ON the ground (panels, cards)
+INK             = "#fbf7ec"   # primary text — v1's paper, inverted into the role
+MUTED           = "#93a2b8"   # subs, captions, hairlines
+NAVY            = "#2c4670"   # accent, unchanged: it reads as itself on dark
+NAVY_DARK       = "#1a2d4a"   # the ground's parent; panel borders
+
+# The light. Content is the light source in this theme (Q17), so the amber family
+# stops being "emphasis fill" and becomes an emitter: GLOW is the core a filament
+# or chip is drawn in, GLOW_HOT is its hottest centre, GLOW_DEEP the same light
+# cooled — an ember tone, held in the palette; today only the smoke diagram
+# asset samples it (no renderer code does).
+GLOW            = "#f5d78e"
+GLOW_HOT        = "#fff8cc"
+GLOW_DEEP       = "#8a5a09"
+
+# Re-derived for dark: v1's #1e4528 / #b7472a are near-invisible on the ground.
+GREEN           = "#6fcf97"
+RED             = "#ff8a6a"
 WHITE           = "#ffffff"
 
-# Terminal scenes invert: a dark panel sitting on the paper frame.
-TERMINAL_BG = "#161d26"
-TERMINAL_FG = "#e6ecf2"
-TERMINAL_DIM = "#8fa2b4"
+# Glow treatment — layered copies behind a lit mobject, each wider and fainter.
+# Pure geometry, no shaders and no image filters, so it stays byte-deterministic.
+GLOW_LAYERS     = 4      # copies behind the core
+GLOW_SPREAD     = 3.2    # stroke width added per layer outward
+GLOW_OPACITY    = 0.22   # the innermost halo; each layer out gets half again
+GLOW_DIE_FRAC   = 0.42   # of an `end()`, spent killing the glow before the line
+
+# Terminal scenes no longer invert — everything is dark now. The panel earns its
+# separation from the ground by VALUE (lifted) plus a lit rim, not by contrast.
+TERMINAL_BG = "#141c28"
+TERMINAL_FG = "#e8eef6"
+TERMINAL_DIM = "#7f90a6"
+PANEL_RIM = NAVY          # the faint border that detaches a panel from the ground
+PANEL_RIM_WIDTH = 1.5
+
+# Code scenes: the panel the syntax sits on, and the highlight band. On dark the
+# v1 band (amber at 0.55) would swallow the glyphs, so the band is a translucent
+# wash under a lit edge instead — the text is never painted over.
+CODE_PANEL = GROUND_LIFT
+HIGHLIGHT_FILL_OPACITY = 0.15
+HIGHLIGHT_STROKE_OPACITY = 0.55
+
+# file_card: a document that holds light rather than a white sheet.
+CARD_FILL = GROUND_LIFT
+CARD_FILL_OPACITY = 1.0
 
 # Fonts are fetched, never committed (see setup.py). Georgia itself is a Windows
 # font and cannot be redistributed; Gelasio is its OFL metric-compatible twin.
@@ -102,7 +136,11 @@ CARD_SETTLE     = 0.18   # s — that relaxation
 WORD_GAP        = 0.22   # between kinetic_line word-groups
 KINETIC_DROP    = 0.35   # distance a landing word-group falls through
 
-PYGMENTS_STYLE = "friendly"   # light-background style; no LaTeX involved
+# Dark-background style, chosen for the theme rather than for taste: lightbulb's
+# ground (#1d2331) is the same navy family as GROUND, its text (#d4d2c8) is a
+# warm cream next to INK, its keywords (#FFAD66) are the amber the whole theme is
+# lit by, and its comments (#7e8aa1) land on MUTED. No LaTeX involved.
+PYGMENTS_STYLE = "lightbulb"
 
 
 def configure_fontconfig() -> None:
