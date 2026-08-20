@@ -54,23 +54,27 @@ line you have not verified resolves.
 1. Determine the current working directory (the project root). Do not search upwards; use the directory the session was started in.
 
 2. Check whether `CLAUDE.md` already exists in that directory.
-   - **If it exists:** read it. If it already contains an import line ending in `/operations/CLAUDE.md` (any root — a prior install may have used a different path), note "import already present" — **do not stop; continue to step 3** to ensure the local record scaffold exists (soul-init is idempotent: it backfills a missing record for an already-imported project). If it exists but does not contain that line, report the existing contents and ask the user whether to append the import line or leave it alone. Do not overwrite without explicit confirmation.
+   - **If it exists:** read it. If it already contains an import line ending in `/operations/CLAUDE.md` (any root — a prior install may have used a different path), note "import already present" — **do not stop; continue to steps 3–3c** to ensure the record scaffold, the git-tracking answer and the Mind import are all in place (soul-init is idempotent: it backfills a missing record for an already-imported project). If it exists but does not contain that line, report the existing contents and ask the user whether to append the import line or leave it alone. Do not overwrite without explicit confirmation.
    - **If it does not exist:** ask one question — "Response register: plain or
      fluent?" (default **plain** if the user has no preference) — then create it
-     containing the import line plus the Register line:
+     containing the import line, plus a Register line ONLY if the answer was
+     `fluent`:
+     ```
+     @<derived-root>/operations/CLAUDE.md
+     ```
      ```
      @<derived-root>/operations/CLAUDE.md
 
-     **Register: plain** — plain language: use a Soul or project term only when
-     it earns its place, gloss it on first use in a session, and introduce
-     vocabulary gradually. (Vocabulary only — response LENGTH is contract rule 9,
-     which applies under either register. Switch by editing this line; other
-     value: `fluent` — full Soul vocabulary.)
+     **Register: fluent** — full Soul vocabulary.
      ```
-     For `fluent`, write the line as `**Register: fluent** — full Soul vocabulary.`
-     For an EXISTING CLAUDE.md that lacks a Register line, offer to add one
-     (same default) — per the SOUL-I050 spec, the line lives in the project's
-     CLAUDE.md, never in the seed.
+     **Write nothing for `plain`.** Plain IS the contract's default, and the
+     contract arrives by import, so it stays current. A copied default does not:
+     every register block written into a project at init still carried wording the
+     contract had retired for being measurably ineffective. Only the OVERRIDE gets
+     written locally — one line, because it differs from the default and therefore
+     has to live where the difference is (SOUL-I050 kept; the duplication removed
+     in v2.1.1 after fresh-context review found the contract and init both
+     carrying the same default, always-on).
 
 3. **Ask the one question that cannot be defaulted: does the record go in git?**
 
@@ -140,14 +144,14 @@ line you have not verified resolves.
 
 4. After creating or confirming the file, report:
    - The absolute path of the `CLAUDE.md` you wrote or found.
-   - That the next Claude Code session opened in this directory will load the Soul Seed and the full philosophy.
+   - That the next Claude Code session opened in this directory will load the project contract (`operations/CLAUDE.md`) by import. The philosophy (`philosophy/the-soul.md`) is NOT imported — it is the human-facing book, read on demand (A021).
    - A one-line reminder: the philosophy will only take effect from the *next* session — the current one is already loaded.
    - **Mention the optional Mind layer**: once the project has accumulated enough record-evidence to warrant compression, run `/soul-distill` to create a project-scoped `mind.md`, then add a second import line after the contract import to load it always-on. Skip on day-1 — the Mind is earned, not seeded.
    - **If the project's `CLAUDE.md` is itself gitignored**, say so plainly: the wiring is machine-local, and a fresh clone of this repo loads no contract at all. That can be a deliberate choice — say it is a choice, not a gap, and let the Body confirm.
 
 ## What not to do
 
-- Do not copy any Soul System *doctrine* files into the project (the seed, philosophy, operations). The whole point is that the philosophy stays in one canonical location and is referenced by import. (Scaffolding the project's own empty record stores in step 3 is not copying — it is establishing *this* project's record.)
+- Do not copy any Soul System *doctrine* files into the project (the seed, philosophy, operations). The whole point is that the philosophy stays in one canonical location and is referenced by import. (Scaffolding the project's own empty record stores in step 3b is not copying — it is establishing *this* project's record.)
 - Beyond the import line and the empty record scaffold, do not write project content. If the user wants project-specific context, that belongs in a separate file or below the import line — `/soul-init` adds only the import + the empty record.
 - Do not modify the Soul System repo from this command. It is read-only as far as `/soul-init` is concerned.
 

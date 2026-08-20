@@ -6,9 +6,15 @@ goes deeper.
 
 ## Day one
 
-Run `/soul-init` in your project. It asks one question (plain or fluent language —
-plain is the default), writes one import line into your `CLAUDE.md`, and creates
-empty record files (`ideas.md`, `witness.md`, `findings/`).
+Run `/soul-init` in your project. It asks two short questions — plain or fluent
+language (plain is the default), and whether your record goes in version control
+(yes is the default) — then writes one import line into your `CLAUDE.md` and
+creates two empty record files, `.soul/ideas.md` and `.soul/witness.md`. If your
+project already keeps them at its root, they stay there; both layouts work.
+
+Findings and amendments are NOT created locally. Those are records of changes to
+the Soul System itself and live upstream; anything your project learns about the
+system is parked in your handoff cursor's `OWED UPSTREAM` field.
 
 That's the install. There is no new workflow to learn — start working.
 

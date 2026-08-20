@@ -13,7 +13,8 @@ across sessions; this reconciles it with reality and emits a tiered next-options
 ## What to do
 
 1. **Reconcile the tracker with reality.** Read the durable forward stores — `ideas.md`
-   (ripe ideas), `findings/open/` (open questions), the `witness.md` tail (recent state),
+   (ripe ideas), the `witness.md` tail (recent state), `findings/open/` (open
+   questions — Soul System repo only; domain projects have none),
    and `.soul/handoff.md` if present. Update or prune the harness task list so it reflects
    active work, not a stale snapshot.
 

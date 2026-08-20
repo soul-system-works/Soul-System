@@ -64,7 +64,7 @@ design (Rule 7).
 **The id rule — three lines, and they are the whole format:**
 
 - Form is `<PROJECTCODE>-I###`, where `<PROJECTCODE>` is the same code the
-  project's witness log uses (`SENSA-001` → `SENSA-I001`). If the project has no
+  project's witness log uses (`THERMAL-001` → `THERMAL-I001`). If the project has no
   code yet, ask for one — do not default to `SOUL-I`, which belongs to the Soul
   System's own ideas and collides the moment a project cites an upstream idea by
   number.
@@ -90,8 +90,13 @@ shows the draft before appending.
 
 1. Take the observation as typed (if none, ask one short question — do not interview
    field-by-field).
-2. Next ID: scan `witness.md` for the highest `^ID: +[CODE]-\d+`, increment (project code
-   from the log header, default `SOUL`).
+2. Next ID: scan `witness.md` for the highest `^ID: +[CODE]-\d+`, increment. `[CODE]` is
+   this project's own code, taken from the log header. **Do NOT default to `SOUL`** —
+   that prefix belongs to the Soul System's own witness log, and a project using it
+   collides the moment it cites an upstream entry by number (`SOUL-178`), which
+   projects routinely do. If the header names no code, ask for one. The same rule and
+   the same reason as the idea-id rule above; both were defaulting to the upstream
+   prefix, and only the idea half was fixed in v2.1.0.
 3. **I027 protocol — re-read-verify before write.** Right before appending, re-scan to
    confirm the ID is still free (`witness.md` is the highest-collision record). If taken,
    increment and retry; if three re-scans keep colliding, **stop and tell the Body** — never
@@ -102,7 +107,7 @@ shows the draft before appending.
 5. **Show the draft before appending.** Body says go / edit / cancel. On go, append (with
    the I027 re-verify) and report the ID. Do not reorder existing entries.
 
-## Mode `finding` — earned scaffolder (→ the Soul System's `findings/open/`)
+## Mode `finding` — earned scaffolder (→ upstream, or `findings/open/` at home)
 
 **Findings are a Soul System store, not a project store.** `findings/` records
 lessons about the *system* — its gates, instruments and doctrine — and is governed
@@ -113,9 +118,26 @@ cursor's `OWED UPSTREAM` field, where a later mining pass collects it; it lands 
 `findings/open/` only when the session is running in the Soul System repo itself.
 
 *What made this explicit:* six adopting projects held zero findings between them
-over three-plus months while the source repo accumulated 64, and three of them
+over three-plus months while the source repo accumulated 62, and three of them
 carried permanently empty `findings/open/` + `findings/closed/` directories that
 init had created. The store was never a project store; the scaffold said otherwise.
+
+### STEP 0 — WHICH REPO ARE YOU IN? Answer this before step 1.
+
+`findings/open/` exists **only** in the Soul System repo. Decide once, here:
+
+- **In the Soul System repo** (this repo's own `witness.md` uses `SOUL-###`, and
+  `findings/open/` exists on disk): run steps 1–8 as written.
+- **In any other project:** run steps 1–3 to draft the finding, then **STOP at step
+  3**. Do NOT scan for an id, do NOT assign one, do NOT create `findings/`. Write
+  the drafted text into the handoff cursor's `OWED UPSTREAM` field, tell the Body it
+  is parked there, and stop. Steps 4–8 do not apply and following them is a defect.
+
+Why this branch is spelled out rather than left to judgment: without it, a session
+in a domain project follows the numbered steps literally, finds no `findings/`
+directory to scan, concludes the highest existing id is none, assigns `SOUL-F001`
+— colliding with 63 real upstream ids — and recreates the directory this release
+deleted. Caught by fresh-context review of v2.1.0 before any project ran it.
 
 A finding is earned: the Body has decided this graduates. This mode does the **mechanical**
 part (ID, format, placement, upstream reminder) — it does NOT graduate on its own.
@@ -130,11 +152,14 @@ part (ID, format, placement, upstream reminder) — it does NOT graduate on its 
 3. Gather: **WHAT** (2–6 sentences, what is / what should be), **WITNESS IDS** (≥1),
    **WHY NOT YET AMENDMENT**, **RELATED** (`[[SOUL-F###]]`/`[[SOUL-I###]]`), **FILED BY**
    (role(s)).
-4. Next ID: scan **both** `findings/open/` AND `findings/closed/` for the highest
-   `SOUL-F###`, increment.
+4. *(Soul System repo only — see step 0.)* Next ID: scan **both** `findings/open/`
+   AND `findings/closed/` for the highest `SOUL-F###`, increment. An empty or absent
+   `findings/` directory means you are in the wrong repo, NOT that the id space is
+   free — stop and re-read step 0.
 5. **I027 re-read-verify before write** (live collision evidence: SOUL-064 on F030). Same
    stop-don't-clobber rule as witness mode.
-6. Write `findings/open/SOUL-F###-<kebab-slug>.md` with the standard fenced format:
+6. *(Soul System repo only — see step 0.)* Write
+   `findings/open/SOUL-F###-<kebab-slug>.md` with the standard fenced format:
    `FINDING ID / DATE / WITNESS IDS / WHAT / WHY NOT YET AMENDMENT / FILED BY / RELATED /
    STATUS: Open`.
 7. **Upstream reminder (I014):** if cwd is a reference project AND the finding is Soul-meta,

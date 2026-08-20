@@ -12,8 +12,13 @@ conventions a later session cannot re-derive — distinct from the records that
 store what happened and the contract that carries doctrine.
 
 **The verdict this is built on (SOUL-I026 Tier 2):** the Mind is a *lens layer*,
-not a replacement. It holds **doctrine** (rules that apply across contexts);
-**obligations** (specific commitments at specific times) stay in the records.
+not a replacement. It holds this PROJECT's generators — rules that produce its
+recurring decisions — while **obligations** (specific commitments at specific
+times) stay in the records. It does NOT hold *system* doctrine: rules that apply
+to any Soul project live in the contract and arrive by import, and restating them
+here pays the always-on cost twice (A021; step 3). The word "doctrine" used to
+appear here unqualified, which read as a licence to carry exactly what A021
+moved out.
 Tier 2 evidence: Mind-only reasoning was ~41% cheaper than full-record on
 doctrinal questions; arms disagreed on obligation-shaped questions exactly where
 the residual lives.
@@ -40,8 +45,9 @@ Then the signal is the first accumulation that would fill one (see /soul-init's
 2. **Read the project's record AND the existing Mind.** Pull from the project root:
    - `witness.md` (tail at minimum; full if recent distill is stale)
    - `ideas.md` (full)
-   - `findings/open/` + `findings/closed/`
-   - `amendments/accepted/`
+   - `findings/open/` + `findings/closed/` and `amendments/accepted/` — **Soul
+     System repo only.** Domain projects have neither (they are upstream stores);
+     there, the record is witness + ideas + the cursor's OWED UPSTREAM field.
    - `mind.md` (the previous distill, if present — used for the growth check)
    - The seed (`operations/CLAUDE.md`) — to apply the renamed-seed guard
 
@@ -90,9 +96,11 @@ Then the signal is the first accumulation that would fill one (see /soul-init's
 
 4. **Run the four shrinkage-invariant checks.** Before producing the draft:
 
-   - **Line budget.** Target ≤200 lines; hard cap 300. Anchored to the seed's
-     footprint — a second artifact of that size is the most the always-on
-     budget tolerates before SOUL-033 starts biting.
+   - **Line budget.** Target ≤80 lines; hard cap 120. Re-anchored 2026-08-20 to
+     what the slim form actually costs: the contract is ~75 lines and this repo's
+     own Mind is ~69. The old 200/300 cap was anchored to the pre-2.0 seed and let
+     a 239-line, 20 KB project Mind pass unflagged — the very artifact the slim
+     switch was made to prevent. Over target: cut, do not request an exception.
    - **Anchor requirement.** Every entry cites at least one anchor. Anchorless
      = description = prune.
    - **Unguessability test.** Every entry fails "could a fresh session reason
@@ -118,9 +126,11 @@ Then the signal is the first accumulation that would fill one (see /soul-init's
      from its own record). Different sources. If the draft overlaps heavily
      with the project's CLAUDE.md, refine to focus on the distilled-from-record
      rules.
-   - **Doctrine–obligation collapse.** Per candidate entry, ask "rule (across
-     contexts) or obligation (specific commitment at a specific time)?" Only
-     rules go in Mind. Obligations stay in amendments/findings/witness.
+   - **Doctrine–obligation collapse.** Per candidate entry, ask "generator
+     (produces decisions across contexts) or obligation (a specific commitment at
+     a specific time)?" Only generators go in the Mind; obligations stay in the
+     records. And per step 3, a generator that applies to ANY Soul project is
+     contract doctrine, not a Mind entry — cut it.
    - **Force-stripped anti-prior fact** (SOUL-A018 / F045). When a candidate
      rule rests on an unguessable fact that CONTRADICTS a strong model prior,
      do not compress away the fact's FORCE. Keep the incident and the explicit
@@ -239,7 +249,8 @@ Then the signal is the first accumulation that would fill one (see /soul-init's
 - A project that stabilizes its rules and stops needing redistills has *won*;
   its Mind goes static-and-good. A project where the Mind keeps drifting toward
   obligation-collapse retires the Mind cleanly (delete `mind.md`; remove
-  `@mind.md` from CLAUDE.md; witness entry naming the retirement reason).
+  the Mind's import line from CLAUDE.md — `@mind.md` or `@.soul/mind.md`,
+  whichever the project uses; witness entry naming the retirement reason).
 
 ## What not to do
 
@@ -248,7 +259,8 @@ Then the signal is the first accumulation that would fill one (see /soul-init's
   schedule or hook this — the proposal is conversational, the trigger is human.
 - **Do not auto-commit.** Draft for curation; the Body owns the commit.
 - **Do not let the Mind grow.** Default-deny growth (check 4 in step 4).
-- **Do not force-fit the residual to zero.** Honesty about what doesn't compress
+- **Do not manufacture entries to fill a shape.** The slim form has no buckets to
+  fill, so there is nothing to force-fit; honesty about what doesn't compress
   is part of the discipline (SOUL-I026 failure mode #2).
 - **Do not duplicate the seed or CLAUDE.md.** If the Mind reads as a rename of
   either, retire it.

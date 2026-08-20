@@ -33,7 +33,7 @@ happened to intersect it.
 **Instance 2 — a store only the Body may open.** Amendment A022 forbids a session
 from self-invoking `/soul-capture finding`: graduation is the Body's explicit,
 earned act. Correct as written — it is what stops findings inflating. But across
-six projects and three-plus months, **zero findings were produced**, against 64 in
+six projects and three-plus months, **zero findings were produced**, against 62 in
 this repo over the same period. Three of those projects carried scaffolded, empty
 `findings/open/` and `findings/closed/` directories the whole time. No session was
 wrong; each correctly declined to self-invoke. The gate was simply never opened,

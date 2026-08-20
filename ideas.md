@@ -1957,7 +1957,11 @@ IDEA:      Amend /soul-distill to match A021. Step 7 still prescribes the
            a slim Mind BY CONSTRUCTION — the slim form deliberately leaves
            doctrine in the contract, so the test asks the Mind to carry what
            A021 moved out.
-STATUS:    Raw
+STATUS:    CLOSED 2026-08-20 — both halves. /soul-distill switched to the slim
+           form (v2.1.0) and the reproduction-coherence self-test rewritten to
+           judge the contract+Mind pair rather than the Mind alone. The skill
+           cited this closure before the entry recorded it; fresh-context review
+           caught the mismatch (v2.1.1).
 WHY:       An instrument that instructs a shape its own doctrine replaced yields
            either a wrong-shaped Mind or a per-distill judgment call. The
            2026-08-07 distill spent real effort resolving it and would have
@@ -2029,8 +2033,9 @@ IDEA:      Ship a decision-record starter: the `docs/adr/` convention named in
            The Body named the folder and DEFERRED the checker on 2026-08-20
            ("name it and defer the citation-checker template").
 STATUS:    Raw
-WHY:       Six of six adopting projects built a decision store the system does
-           not ship, under two different names; one has 25 ADRs against 22
+WHY:       Five of six adopting projects built a decision store the system does
+           not ship, under two different names (the sixth, a three-day-old
+           extraction, had not needed one yet); one has 25 ADRs against 22
            witness entries and cites 20 of them by number from 368 places in
            source, guarded by a checker it wrote itself. Contract rule 1 asks
            for exactly this vehicle — "at the code site, with the reason, and as

@@ -90,18 +90,40 @@ def main():
         if not _mod._is_soul_project(alt):
             failures.append("MISS: a seed import in .claude/CLAUDE.md no longer scopes the gate")
 
-        # 9. Relocation must not widen the fence: a .soul/ dir alone is not a
-        # Soul project, and the bare-word trap must still fail inside one.
+        # 9. Relocation must not widen the fence: a bare .soul/ directory is not a
+        # Soul project. This one passes against the OLD predicate too — it guards a
+        # future `isdir('.soul')` shortcut, not this widening. Kept deliberately;
+        # do not cite it as a mutation-probe (fresh-context review, 2026-08-20).
         empty_soul = os.path.join(tmp, "emptysoul")
         os.makedirs(os.path.join(empty_soul, ".soul"))
         if _mod._is_soul_project(empty_soul):
             failures.append("LEAK: a bare .soul/ directory scoped the gate")
 
+        # 10. THE HOME-DIRECTORY TRAP. `.claude/CLAUDE.md` is a documented PROJECT
+        # instruction path, but at $HOME it IS the user's global memory file, which
+        # commonly mentions /soul-* commands. Scoping there arms the gate in every
+        # session started from the home directory. Demonstrated in review, so this
+        # asserts against the real path, not a fixture.
+        home = os.path.expanduser("~")
+        home_memory = os.path.join(home, ".claude", "CLAUDE.md")
+        if os.path.exists(home_memory) and not os.path.exists(os.path.join(home, "witness.md")):
+            if _mod._is_soul_project(home):
+                failures.append("LEAK: the home directory scoped the gate via ~/.claude/CLAUDE.md")
+
+        # 11. ...but a NON-home project with only .claude/CLAUDE.md must still scope,
+        # or the fix for 10 has silently undone case 8.
+        proj = os.path.join(tmp, "realproj")
+        os.makedirs(os.path.join(proj, ".claude"))
+        with open(os.path.join(proj, ".claude", "CLAUDE.md"), "w", encoding="utf-8") as fh:
+            fh.write("@~/.claude/plugins/marketplaces/soul-system/operations/CLAUDE.md\n")
+        if not _mod._is_soul_project(proj):
+            failures.append("MISS: a non-home .claude/CLAUDE.md project stopped scoping")
+
     if failures:
         for f in failures:
             print(f"FAIL  {f}")
         sys.exit(1)
-    print("PASS  9/9 — the scope fence holds, both store layouts scope")
+    print("PASS  11/11 — the scope fence holds, both store layouts scope, $HOME excluded")
 
 
 if __name__ == "__main__":

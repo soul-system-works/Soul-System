@@ -52,13 +52,29 @@ Optional argument: a short description of what the next session is for — let i
    SUGGESTED ROLES / SKILLS: [for the next session]
    ```
 
-   **The cursor is replaced, never accumulated.** One cursor, one file; the
-   previous one lives in git history if the record is tracked, and in the record
-   proper either way — anything worth keeping should already have been flushed to
-   `witness.md` in step 1. The rule is stated because its absence produced drift:
-   with nothing said, five of six projects replaced and one appended, reaching four
-   stacked generations, 472 lines and 31 KB — three times the size of that
-   project's own Mind (2026-08-20 retrospective).
+   **The cursor is replaced, never accumulated — which makes step 1 load-bearing.**
+   One cursor, one file. The previous cursor is **gone**: it is gitignored under
+   both `/soul-init` branches, so there is no copy in git history and no copy
+   anywhere else. Nothing in the cursor survives except what step 1 flushed into
+   `witness.md` / `ideas.md` first. Read that sentence as a hazard, not a
+   reassurance — an earlier draft of this rule claimed the old cursor "lives in git
+   history", which is false and would have licensed overwriting an unflushed
+   decision (caught by fresh-context review, 2026-08-20).
+
+   The rule is stated because its absence produced drift: with nothing said, five of
+   six projects replaced and one appended, reaching four stacked generations, 472
+   lines and 31 KB — three times the size of that project's own Mind.
+
+   **CARRY FORWARD anything still owed.** Before writing, read the OLD cursor and
+   move any unfinished obligation into the new one — an unsent `OWED UPSTREAM`
+   entry, an open gate, a `[inherited]` claim not yet expired. `OWED UPSTREAM`
+   especially: it is the ONLY route a project has for lessons about the system
+   itself, it is collected by a pass that runs on no fixed schedule, and it lives in
+   this replaced, untracked file. Writing `OWED UPSTREAM: none` when the previous
+   cursor carried an unsent entry destroys it permanently. If an entry has ridden
+   three cursors uncollected, say so in the field itself and tell the Body — a
+   parked lesson nobody collects is the failure this field was created to fix, not
+   a state to keep re-parking silently.
 
    **Size check before writing:** if the draft exceeds ~150 lines, it is carrying
    record, not cursor. Flush the excess to `witness.md` and point at it instead.
