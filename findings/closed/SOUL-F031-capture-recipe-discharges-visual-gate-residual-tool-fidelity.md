@@ -1,8 +1,8 @@
 ```
 FINDING ID:      SOUL-F031
 DATE:            2026-05-22
-WITNESS IDS:     REF-01 reference/dogfood project (Modelica/Dymola secondary-side balance-of-
-                 plant), branch devel_greenwood_new, commits 979486a..181a4e8; repeated
+WITNESS IDS:     REF-01 reference/dogfood project (Modelica/Dymola secondary-side
+                 balance-of-plant — the PLANT-BOP arm), commits 979486a..181a4e8; repeated
                  F012 completion-hook firings across the session (~12 turns).
 WHAT:            Closing Finding for the REF-01 reference project, and the first
                  POSITIVE-activation counterpart to SOUL-F030. F030 named that the visual
