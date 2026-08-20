@@ -24,6 +24,26 @@ that pattern, prefer the UNVERSIONED marketplace clone —
 the versioned path exists, use it but TELL the Body: "this import is pinned to
 plugin version <v>; re-run /soul-init after plugin updates."
 
+**Write the path home-relative when it sits under the home directory.** Verified
+against Claude Code's memory documentation (2026-08-20): CLAUDE.md `@` imports
+accept absolute and relative paths, resolve relative paths against the importing
+file, and support the `~/` form — they do **not** expand environment variables,
+so there is no `${CLAUDE_PLUGIN_ROOT}` option here. So after deriving and
+verifying the root, replace a literal home prefix with `~`:
+`/home/<user>/.claude/plugins/...` → `@~/.claude/plugins/...`. Same file, but the
+line no longer names one machine's user, which matters the moment the project is
+cloned, shared, or opened by anyone who is not the Soul System's author. Five of
+six adopting projects carry the hard-coded form (2026-08-20 retrospective); they
+work only on the machine that wrote them.
+
+**Warn about the external-import dialog.** An import that resolves outside the
+working directory is "external", and Claude Code shows a one-time approval dialog
+listing it. Per the documentation: *"If you decline, the imports stay disabled and
+the dialog doesn't appear again."* Tell the Body this in step 4 — a single
+mis-click permanently silences the contract in that project, and the failure looks
+exactly like a session that simply ignores doctrine. `/soul-resume`'s wiring check
+(step 0) is what catches it afterwards.
+
 VERIFY before writing: the chosen root must contain `operations/CLAUDE.md`
 (resolve symlinks to an absolute path first, e.g. `realpath`). If it does not,
 say so and ask the Body where the Soul System lives — never write an import
@@ -52,15 +72,52 @@ line you have not verified resolves.
      (same default) — per the SOUL-I050 spec, the line lives in the project's
      CLAUDE.md, never in the seed.
 
-3. **Scaffold the project's local record** at the project root (so `soul-capture` /
-   `soul-handoff` / `soul-distill` have an unambiguous *local* target — the record is THIS
-   project's, **never** the Soul System source repo). Create any that are absent; never
-   overwrite an existing one:
-   - `ideas.md` — a one-line header `# Ideas — <this project>` (the forward record).
-   - `witness.md` — a minimal header naming it this project's Witness log (append-only,
-     sequential IDs per the format in `operations/witness-log-format.md`).
-   - `findings/open/` and `findings/closed/` — each with a `.gitkeep`.
-   Skip `amendments/` — amendments are to the Soul itself and go upstream, not local.
+3. **Ask the one question that cannot be defaulted: does the record go in git?**
+
+   > "Keep this project's Soul record (witness, ideas, Mind) in version control? [Y/n]"
+
+   **Default yes**, and say why in one line when asking: a record outside git
+   exists in exactly one copy, on one disk, with no history — and if this repo is
+   ever cloned, submoduled, or worked on from a second machine, the lessons do
+   not travel with it. A `no` is a legitimate choice (private or client-sensitive
+   projects) but it must be a chosen one. Record the answer; step 3b writes it
+   into `.gitignore`.
+
+   *Evidence for asking rather than assuming:* two of six adopting projects had
+   their record gitignored, one deliberately and one apparently by drift, and the
+   drifted one is a plugin that gets submoduled — the case where the loss bites
+   hardest (2026-08-20 cross-repo retrospective).
+
+3b. **Scaffold the project's local record under `.soul/`** (so `soul-capture` /
+   `soul-handoff` / `soul-distill` have an unambiguous *local* target — the record
+   is THIS project's, **never** the Soul System source repo). Create any that are
+   absent; never overwrite an existing one:
+
+   - `.soul/ideas.md` — a one-line header `# Ideas — <this project>` (the forward record).
+   - `.soul/witness.md` — a minimal header naming it this project's Witness log
+     (append-only, sequential IDs per the format in `operations/witness-log-format.md`).
+
+   Then write the `.gitignore` lines to match the step-3 answer:
+
+   - **Yes, track it** — ignore only the volatile runtime state, never the record:
+     ```
+     # Soul System runtime state (cursor, event log) — never the record itself
+     .soul/handoff.md
+     .soul/events.jsonl
+     ```
+   - **No, keep it local** — ignore the whole directory: `.soul/`
+
+   **Existing projects keep their layout.** If `witness.md` or `ideas.md` already
+   exist at the project root, that IS the record — leave them where they are, do
+   not move or duplicate them, and write the gitignore lines against the root
+   paths instead. Both layouts are first-class; the completion gate scopes on
+   either (`hooks/test_scope.py` cases 5 and 7).
+
+   Skip `amendments/` **and `findings/`** — both are records of changes to *the
+   Soul*, governed by `operations/amendment-process.md`, and they go upstream, not
+   local. Scaffolding `findings/` locally produced 0 artifacts across 6 projects in
+   3+ months while leaving two permanently empty directories in each; init used to
+   create them and no longer does (2026-08-20).
 
 4. After creating or confirming the file, report:
    - The absolute path of the `CLAUDE.md` you wrote or found.

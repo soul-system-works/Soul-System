@@ -1,14 +1,15 @@
 ---
 name: soul-distill
-description: Refresh the project's Mind — compress the accumulated record (witness + findings + ideas + amendments) into mind.md as rules / tensions / invariants / contrast cases + named incompressible residual. Produces a draft for curation; never auto-commits. The Distiller's instrument. Use when the Body asks, OR propose it proactively when the record has grown materially since the Last-distilled stamp (~15+ new witness entries, or any finding closure / accepted amendment) — ask first, run on the Body's yes (A022).
+description: Refresh the project's Mind — compress the accumulated record (witness + findings + ideas + amendments) into mind.md as the slim form (A021) — this project's unguessables only, the things a later session cannot re-derive. Produces a draft for curation; never auto-commits. The Distiller's instrument. Use when the Body asks, OR propose it proactively when the record has grown materially since the Last-distilled stamp (~15+ new witness entries, or any finding closure / accepted amendment) — ask first, run on the Body's yes (A022).
 ---
 
 # /soul-distill — refresh the Mind
 
 The project's accumulated record (witness, findings, ideas, amendments) has been
 growing. This command compresses it into `mind.md` — a project-scoped, always-on
-artifact holding the **rules that would generate** the project's recurring
-decisions, distinct from the records that store them.
+artifact holding this project's **unguessables** — the facts, traps and
+conventions a later session cannot re-derive — distinct from the records that
+store what happened and the contract that carries doctrine.
 
 **The verdict this is built on (SOUL-I026 Tier 2):** the Mind is a *lens layer*,
 not a replacement. It holds **doctrine** (rules that apply across contexts);
@@ -44,36 +45,58 @@ Then the signal is the first accumulation that would fill one (see /soul-init's
    - `mind.md` (the previous distill, if present — used for the growth check)
    - The seed (`operations/CLAUDE.md`) — to apply the renamed-seed guard
 
-3. **Distill into the four buckets + the residual.** The schema is fixed; the
-   contents emerge from the record.
+3. **Distill into the slim form: the unguessables only.** One numbered list of
+   the things a later session *cannot re-derive* from the code, the record, or
+   its own reasoning. No fixed section headings — the shape follows the content.
 
-   - **Rules (generators).** Statements that *produce* decisions, not describe
-     them. Phrase-test: "do Y when Z" / "prefer Y over Z because…" = keep;
-     "X is true" = description, prune. Each rule cites at least one anchor
-     (witness ID, finding, amendment, source memory).
-   - **Tensions.** Where two rules pull against each other on a recurring
-     decision. Name the *pull*, not the resolution — the project decides
-     case-by-case.
-   - **Invariants.** Non-negotiables. Violating one breaks the project.
-   - **Contrast cases.** Disambiguating examples — the seed examples that
-     resolve where rules collide. Each cites concrete record anchors.
-   - **Incompressible residual.** Path-dependent knowledge that doesn't reduce
-     to rules without losing load-bearing information. Naming the residual is
-     part of the schema; **zero residual is suspicious** (likely force-fit).
-     A canonical residual kind: an **unguessable fact that contradicts a strong
-     model prior** (e.g. "this endpoint has NO idempotency support"; "these
-     tokens are SINGLE-USE"). Such a fact is *partly incompressible* — its
-     FORCE (the incident, the explicit negation), not merely its proposition, is
-     the load-bearing part (SOUL-A018 / F045).
+   **The bar for an entry (F044 triage):** ask "could a fresh session reason its
+   way back to this?" No → carry it. Yes → leave it out; the derivable
+   regenerates on its own and only inflates the always-on cost. Each entry cites
+   at least one anchor (witness ID, finding, amendment, commit).
+
+   What that usually leaves — as guidance, never as headings to fill:
+
+   - **Generators.** Rules that *produce* decisions, not describe them.
+     Phrase-test: "do Y when Z" / "prefer Y over Z because…" = keep; "X is
+     true" = description, prune.
+   - **The trap and its direction.** A calibration lean, a measurement that
+     returns a plausible wrong number, a tool that fails silently on this
+     platform. These are the highest-value entries in the form.
+   - **Path-dependent facts that contradict a strong model prior** — "this
+     endpoint has NO idempotency support"; "these tokens are SINGLE-USE".
+     Carry the FORCE (the incident, the explicit negation), not just the
+     proposition: the incident is the load-bearing part (SOUL-A018 / F045).
+   - **Conventions that live nowhere else** — a branch discipline, a name that
+     must stay redacted, a directory that must never be touched with a given
+     tool.
+
+   **Doctrine does NOT go here.** Rules that apply to any Soul project live in
+   the contract (`operations/CLAUDE.md`) and arrive by import; restating them in
+   `mind.md` pays the always-on cost twice. This is the A021 line: the always-on
+   layer is one plain contract plus this project's unguessables, and nothing else.
+
+   > **Why slim, and why this changed (2026-08-20).** A021 (2026-06-11) shrank
+   > the Soul System's own Mind to this form on measured evidence: doctrine prose
+   > above the core bought no quality difference across 62+20+27 scored
+   > increments while costing ~6k always-on tokens per session, and F055 makes
+   > unnecessary always-on text a *correctness* risk, not merely a cost. This
+   > skill kept prescribing the older four-bucket schema (Rules / Tensions /
+   > Invariants / Contrast cases / Residual), so five of five consumer projects
+   > distilled into a form the source repo had abandoned — one of them to 239
+   > lines and 20 KB of always-on text. The Body's call, 2026-08-20: slim is the
+   > path everywhere; no test arm required. **Existing four-bucket Minds are not
+   > migrated** — they convert naturally at their next distill, since a distill
+   > rewrites `mind.md` whole.
 
 4. **Run the four shrinkage-invariant checks.** Before producing the draft:
 
    - **Line budget.** Target ≤200 lines; hard cap 300. Anchored to the seed's
      footprint — a second artifact of that size is the most the always-on
      budget tolerates before SOUL-033 starts biting.
-   - **Anchor requirement.** Every entry in Rules / Tensions / Invariants /
-     Contrast cases cites at least one anchor. Anchorless = description = prune.
-   - **Generator test.** Each Rule must produce a decision (phrase-test above).
+   - **Anchor requirement.** Every entry cites at least one anchor. Anchorless
+     = description = prune.
+   - **Unguessability test.** Every entry fails "could a fresh session reason
+     its way back to this?" Anything that passes is derivable — cut it.
    - **Growth check.** If `mind.md` already exists, the new draft **must shrink
      or stay the same**. Growth means the Distiller failed its job; default-deny
      growth and surface to the Body for explicit sign-off ("I am consciously
@@ -82,10 +105,14 @@ Then the signal is the first accumulation that would fill one (see /soul-init's
 5. **Run the seven failure-mode guards.** Refuse to produce a draft that fails any:
 
    - **Drift into summary.** Caught by the growth check (4 above).
-   - **Force-fit residual.** Zero residual → must justify or admit force-fit.
-   - **Renamed seed.** Per-distill check: "what's in `mind.md` that's NOT in
-     `operations/CLAUDE.md`?" If trivial → Mind is redundant → **Steward
-     retires** (recommend deletion, do not deploy).
+   - **Force-fit entry.** An entry that reads like a heading being filled
+     rather than a trap being recorded. The slim form has no sections to fill;
+     if an entry exists to round out a shape, cut it.
+   - **Renamed contract.** Per-distill check: "what's in `mind.md` that's NOT
+     in `operations/CLAUDE.md`?" If trivial → Mind is redundant → **Steward
+     retires** (recommend deletion, do not deploy). Under the slim form this
+     guard bites harder than it used to: doctrine restated locally is the
+     single most common way a Mind grows.
    - **Renamed CLAUDE.md.** Boundary: CLAUDE.md is *authored* (what the project
      is, how agents work). Mind is *distilled* (rules the project discovered
      from its own record). Different sources. If the draft overlaps heavily
@@ -135,13 +162,18 @@ Then the signal is the first accumulation that would fill one (see /soul-init's
 
 6. **Run the three diagnostic self-test questions** on the draft:
 
-   1. **Load-bearing or renamed-seed?** Does this Mind generate decisions the
-      seed alone wouldn't?
-   2. **Reproduction-coherent?** A fresh agent reading ONLY this Mind (no
-      witness, no findings) — could they propose sensible next-work and predict
-      the project's likely response?
-   3. **Incompressible residual NAMED?** Did the four buckets force-fit content
-      that should have been residual?
+   1. **Load-bearing or renamed-contract?** Does this Mind generate decisions
+      the contract alone wouldn't?
+   2. **Unguessable-coherent?** A fresh agent reading the contract PLUS this
+      Mind (no witness, no findings) — is it kept off the traps this project
+      has already paid for? Ask about the traps, not about next-work: the slim
+      form deliberately leaves doctrine in the contract and obligations in the
+      records, so a Mind that could predict next-work on its own would be
+      carrying material A021 moved out. Judged against the contract+Mind pair,
+      never the Mind alone (SOUL-I055, closed 2026-08-20).
+   3. **Anything carried that a fresh session would re-derive?** Every entry
+      must fail the "could they reason back to this?" test. One that passes it
+      is inflation — cut it.
 
    Record honest answers in the draft's commit message or the witness entry
    that follows. A failed self-test is not a draft failure; it is a flag for
@@ -150,20 +182,25 @@ Then the signal is the first accumulation that would fill one (see /soul-init's
 7. **Format the deployed `mind.md`.** Use this shape:
 
    ```
-   # The Mind — <Project Name>
+   # Project notes — <Project Name>
 
-   [Header — one paragraph: what this is, project name, always-on note,
-   doctrine-vs-obligation pointer.]
+   [Header — two or three lines: the slim form (A021), only this project's
+   unguessables; doctrine lives in the contract, obligations in the records.]
 
-   ## Rules (generators) — N items
-   ## Tensions (rules that pull against each other) — N items
-   ## Invariants (cannot vary without breaking the project) — N items
-   ## Contrast cases (disambiguating examples) — N items
-   ## Incompressible residual (named, not forced) — N items
+   ## Carry these (project-specific, not re-derivable)
+
+   1. **<Short name for the trap or convention.>** The fact, its force, and
+      the anchor that earned it.
+   2. …
 
    ---
    **Last distilled:** YYYY-MM-DD against <witness tail / commit SHA>
+   [+ one line naming what was compressed away to pay for anything new]
    ```
+
+   Numbered items, not headings. If a project's Mind genuinely needs grouping,
+   group it — but do not restore fixed section names, because empty sections
+   invite force-fill, which is the failure the four-bucket form kept producing.
 
 8. **Present the draft for curation — delta-first, gap-only, never commit.**
    The Body curates and commits; do not auto-commit (the curation is the earning).
@@ -174,17 +211,15 @@ Then the signal is the first accumulation that would fill one (see /soul-init's
    do not recite passing checks"):
 
    - **Show the delta, not the whole Mind.** Diff the draft against the prior
-     `mind.md`. Present only **new (+)** and **changed (~)** entries across the
-     five buckets; collapse unchanged ones to a count (`N unchanged rules —
-     expand on request`). First distill (no prior Mind) = everything is new;
+     `mind.md`. Present only **new (+)** and **changed (~)** entries;
+     collapse unchanged ones to a count (`N unchanged items — expand on
+     request`). First distill (no prior Mind) = everything is new;
      present in full.
-   - **One load-bearing verdict per delta entry.** For each new/changed Rule,
-     Tension, Invariant, or Contrast case:
-     `what it generates · anchor · LOAD-BEARING? Y/N — would removing it change
-     a decision, and which one?` A "No" is a prune candidate — surface it for
-     the Body to cut, do not hide it. Residual deltas use a different test:
-     `does it genuinely resist compression, or is it force-fittable into a rule?`
-   - **Checks: run all, recite none.** Steps 4–6 (4 shrinkage checks, 6 guards,
+   - **One load-bearing verdict per delta entry.** For each new/changed item:
+     `what it prevents or generates · anchor · UNGUESSABLE? Y/N — could a fresh
+     session reason its way back to this?` A "Y, they could" is a prune
+     candidate — surface it for the Body to cut, do not hide it.
+   - **Checks: run all, recite none.** Steps 4–6 (4 shrinkage checks, the guards,
      3 diagnostics) still run in full — that honesty is non-negotiable. But
      present them as **one status line each, expanded only on a flag**, e.g.
      `Shrinkage: clean (169→169) · Guards: clean · Diagnostics: 1 flag →
@@ -237,8 +272,11 @@ direction — the disagreement is the evidence for the lens-layer architecture).
 **Reinforced by:** Kolmogorov complexity / MDL (rules > descriptions),
 constitutional-AI's rules-over-examples, SOUL-033 description budget,
 the system-level amendment process (this is its project-level analog).
-**Shapes:** the four-buckets-plus-residual schema, the doctrine-vs-obligation
+**Shapes:** the slim unguessables-only form (A021), the doctrine-vs-obligation
 boundary, the draft-for-curation discipline. **Adopted:** 2026-05-26.
+**Amended:** 2026-08-20 — schema switched from four-buckets-plus-residual to the
+slim form, closing SOUL-I055; the four-bucket prescription had outlived A021 by
+ten weeks and five of five consumer projects had followed it.
 **Status:** active — MVP; model-proposed on the growth signal since SOUL-A022
 (2026-06-12; the manual-fire-only deferral discharged by the Body's v2.0 review).
 `/soul-mind` viewer, cross-project synthesis, and reproduction-fidelity

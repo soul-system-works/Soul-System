@@ -37,22 +37,51 @@ caught it, SOUL-163/164) — under these limits:
 
 ## Where it writes (target — read this first)
 
-The record is **this project's**, at the **project root** — the directory of the session's
-`CLAUDE.md` (where the session started; do not search upward). Write the store *there*, and
-**create it if absent** — a freshly `soul-init`'d project may have no `ideas.md` / `witness.md`
-yet; create it at the project root, do not treat its absence as "write elsewhere." **Never
-write the record into the Soul System source repo** (where the imported seed/skill physically
-lives) — that is the bug this rule prevents. *Exception:* when the current project **is** the
-Soul System repo, that repo's own record is the target.
+The record is **this project's**, in the directory the session started in (do not
+search upward). Two layouts are valid and you must detect, never assume:
+
+1. **`.soul/witness.md` / `.soul/ideas.md`** — what `/soul-init` creates now.
+2. **`witness.md` / `ideas.md` at the project root** — the older layout, still
+   first-class. If these exist, they ARE the record: append there, and never
+   create a second copy under `.soul/`.
+
+If neither exists, create the `.soul/` form — a freshly `soul-init`'d or
+hand-wired project may have no store yet, and its absence never means "write
+elsewhere." **Never write the record into the Soul System source repo** (where the
+imported contract and skills physically live) — that is the bug this rule
+prevents. *Exception:* when the current project **is** the Soul System repo, that
+repo's own record is the target.
 
 ---
 
 ## Mode `idea` — frictionless, forward (→ `ideas.md`)
 
-Near-zero ceremony. Append the Body's forward-looking possibility to `ideas.md` with a
-fresh `SOUL-I###` (scan for the highest, increment). Minimal at capture; enrich later.
-Jot it, confirm the ID, done. No interview, no scaffolding beyond the ID + a one-line
-title. Ideas are cheap by design (Rule 7).
+Near-zero ceremony. Append the Body's forward-looking possibility to `ideas.md`
+with a fresh id. Minimal at capture; enrich later. Jot it, confirm the ID, done.
+No interview, no scaffolding beyond the ID + a one-line title. Ideas are cheap by
+design (Rule 7).
+
+**The id rule — three lines, and they are the whole format:**
+
+- Form is `<PROJECTCODE>-I###`, where `<PROJECTCODE>` is the same code the
+  project's witness log uses (`SENSA-001` → `SENSA-I001`). If the project has no
+  code yet, ask for one — do not default to `SOUL-I`, which belongs to the Soul
+  System's own ideas and collides the moment a project cites an upstream idea by
+  number.
+- Assigned **at capture**, never retrofitted. Scan for the highest existing id and
+  increment.
+- **Permanent handle**: a closed, resolved or struck-through entry keeps its id
+  forever, ids are never reused, and nothing is ever renumbered.
+
+Nothing else is specified. Heading-per-entry and bold-bullet-per-entry are both
+fine — match whatever the file already does.
+
+*Why only this much:* six adopting projects produced four id schemes and two
+layouts. The layout variation cost nothing measurable; the id variation cost one
+project a retrofit of 61 entries two months in, and left another reusing `SOUL-I`
+because this skill used to name that prefix literally (2026-08-20 retrospective).
+So the id gets a rule and the layout does not. Existing stores are grandfathered —
+renaming ids across six projects would break permanent handles for no gain.
 
 ## Mode `witness` — light scaffold, backward (→ `witness.md`)
 
@@ -73,7 +102,20 @@ shows the draft before appending.
 5. **Show the draft before appending.** Body says go / edit / cancel. On go, append (with
    the I027 re-verify) and report the ID. Do not reorder existing entries.
 
-## Mode `finding` — earned scaffolder (→ `findings/open/`)
+## Mode `finding` — earned scaffolder (→ the Soul System's `findings/open/`)
+
+**Findings are a Soul System store, not a project store.** `findings/` records
+lessons about the *system* — its gates, instruments and doctrine — and is governed
+by `operations/amendment-process.md` alongside `amendments/`, which `/soul-init`
+has always (correctly) declined to scaffold locally. From 2026-08-20 init does not
+scaffold `findings/` either. In a domain project, this mode's output goes to the
+cursor's `OWED UPSTREAM` field, where a later mining pass collects it; it lands in
+`findings/open/` only when the session is running in the Soul System repo itself.
+
+*What made this explicit:* six adopting projects held zero findings between them
+over three-plus months while the source repo accumulated 64, and three of them
+carried permanently empty `findings/open/` + `findings/closed/` directories that
+init had created. The store was never a project store; the scaffold said otherwise.
 
 A finding is earned: the Body has decided this graduates. This mode does the **mechanical**
 part (ID, format, placement, upstream reminder) — it does NOT graduate on its own.

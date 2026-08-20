@@ -11,6 +11,34 @@ source of truth; this loads them and continues.
 
 ## What to do
 
+0. **Wiring check — one line, before anything else.** The system's failure mode
+   for "you are not actually wired in" has been silence, so say it out loud:
+
+   - **Contract loaded?** Confirm the doctrine is in context — you should be able
+     to quote contract rule 10's name ("Land the verdict") without reading a file.
+     If you cannot, the `@import` did not resolve: it names a path that does not
+     exist on this machine, or the external-import approval dialog was declined
+     once and will not ask again, or this is a `claude -p` run where cross-project
+     imports fail silently and get confabulated (SOUL-F038). Say which, and do not
+     proceed as if doctrine were loaded.
+   - **Stores found?** Name where they are — project root or `.soul/`. Both are
+     valid; a project with neither has never been initialized.
+   - **Gate armed?** `.soul/events.jsonl` exists, or the project has a root
+     `witness.md` / `.soul/witness.md` / a marked `CLAUDE.md`. If none of those,
+     the completion hook does not scope this project and the verification gate is
+     off.
+
+   Report only what is BROKEN — one line, and the repair is `/soul-init`, which is
+   idempotent and backfills whatever is missing. All green: say "wiring ok" and
+   move on. Do not recite passing checks (the SOUL-055 gap-only discipline).
+
+   *Why this exists:* one adopting project relocated its record into `.soul/` and
+   dropped its `CLAUDE.md`, matching neither arm of the completion hook's scoping
+   predicate. It ran with the verification gate disabled for three months while
+   remaining the second-heaviest record user in the set, and nothing ever said so
+   (2026-08-20 cross-repo retrospective). The predicate is fixed; this check is
+   what makes the *next* wiring failure visible instead of silent.
+
 1. **Read `.soul/handoff.md`** (the cursor). If it does not exist, fall back: read the
    `witness.md` tail, `ideas.md`, open `findings/`, and the task tracker; report the
    state; and ask the Body for direction.
