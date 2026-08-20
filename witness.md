@@ -8078,3 +8078,76 @@ CONSEQUENCE:  Main stays the lean public plugin channel (Soul-Studio ledger
               making the fixture self-contained.
 STATUS:       Raw
 ```
+
+```
+ID:           SOUL-178
+WHEN:         2026-08-20 / after the six-project retrospective, during the
+              v2.1.0 release pass
+WHERE:        findings/closed/SOUL-F031 (the leaking line); the whole public
+              repo (rewrite + delete/recreate); local tags v1.1.0-pre-slim /
+              v2.0.0 / v2.0.1; mind.md item 5(b)/5(c)
+WHAT:         SOUL-175's redaction was verified as complete and was not. Three
+              separate gaps, found only because a name-scan of THIS session's
+              own output ran first:
+              (1) A closed finding committed to public main on 2026-05-22 named
+              the plant in parentheses immediately after the codename that
+              exists to replace it — "REF-01 reference/dogfood project
+              (Modelica/Dymola <plant> balance-of-plant)". Content AND the
+              introducing commit's message, the same double surface SOUL-175
+              named. Reachable from main in 165 revisions, so any clone could
+              grep it.
+              (2) SOUL-175 records "all three pre-rewrite SHAs no longer
+              fetchable by SHA from the remote." False at the time of checking:
+              the commit naming all three mined projects in one subject line
+              fetched successfully from GitHub by raw SHA and its message read
+              back intact. It was unreachable from all 7 refs — which is
+              exactly why a ref-scan called it clean.
+              (3) The local repo still reached that commit through three
+              pre-rewrite release tags. SOUL-175's "local re-adoption" step
+              had not taken for tags, so the un-redacted history sat on disk
+              one `git push --tags` away from being public again.
+TYPE:         Failure Mode — a verification that measured the wrong surface,
+              recorded as complete [+ Coherent Falsehood: the anchor existed
+              (a full ref-scan) and was flawed, so the record asserted a
+              cleanliness that did not hold for three months]
+CONSEQUENCE:  THE METHOD ERROR IS THE FINDING. A ref-scan answers "what can be
+              found", never "what is stored". Unreachable is not deleted, and
+              GitHub serves unreachable objects by SHA indefinitely — their own
+              doc says a force-push leaves commits accessible "directly via
+              their SHA-1 hashes in cached views" and that removing them
+              requires a Support request. So NO refs-only operation fixes this:
+              not force-push, not branch deletion, not an orphan-root history.
+              The Body proposed the orphan route and it was declined for that
+              reason — the proof was already in the repo, since the offending
+              commit was ALREADY in the orphan plan's end state and still
+              served.
+              Fix executed: filter-repo over content AND messages on an ext4
+              clone (0.69 s — mind.md 5(b) confirmed a second time), then
+              DELETE AND RECREATE the GitHub repository, which is what actually
+              empties the object store. Cost was near zero because the repo had
+              0 forks, 0 pull requests and 0 stars — all three of GitHub's
+              named persistence vectors were empty except the SHA cache.
+              Verified two ways, both required: a fresh public clone scanning 0
+              hits across every revision, message and tag object; AND a SHA
+              probe of three known-bad commits, all refused, with a
+              known-good control returning present.
+              THE PROBE ITSELF HAD TO BE FIXED FIRST. The first attempt piped
+              `git fetch` through `head`, so `&&` tested head's exit code and
+              reported the object as fetchable regardless. It gave the right
+              answer for the wrong reason and would have given a wrong answer
+              just as readily. Decide on OBJECT PRESENCE with a passing
+              control, never on a piped exit code — the experiment-harness
+              "exit codes lie" rule, now with a redaction-shaped instance.
+              Local side closed too: the three stale tags dropped and re-fetched
+              from the rewritten remote; the local repo now reaches 0 commits
+              naming the client, for the first time since May. The
+              archive/video-pipeline tag was rewritten and kept LOCAL-ONLY per
+              SOUL-177.
+              Residual, unfixable and named: any clone taken before 2026-08-20
+              holds the old history, and the pre-2.1.0 plugin cache is a copy
+              nobody rewrote. Git history holds no trace of any of this —
+              filter-repo prunes the redaction commit as empty — so this entry
+              is the only carrier, exactly as SOUL-175 said of itself.
+STATUS:       Resolved — published surfaces verified clean by clone-scan and
+              SHA-probe; the standing residual above is accepted, not closed.
+```
