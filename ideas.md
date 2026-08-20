@@ -1994,3 +1994,52 @@ IDEA:      Primitive-contract hardening before video 2 (deferred from the v2
            events can interleave with the draw; Lifeline.end(remove=True).
 STATUS:    Raw
 ```
+
+```
+ID:        SOUL-I058
+WHEN:      2026-08-20
+IDEA:      The upstream loop should PULL, not push — a periodic mining pass run
+           from this repo over the projects it can see, with the Body approving
+           what graduates. Project side needs only the cheap half: the cursor's
+           OWED UPSTREAM field (shipped in v2.1.0), which parks an observation
+           where a later pass finds it. Second half, the Body's own suggestion:
+           a `/soul-upstream` that formats a parked observation as a GitHub
+           issue, so a user who is NOT this repo's author has a route that does
+           not require a checkout they don't own.
+STATUS:    Raw
+WHY:       Push has been measured and it does not work: two upstream notes
+           received in four months across six adopting projects, while one
+           project sat on two correctly-identified observations it had nowhere
+           to send ("unsent — owner decides where"). Pull produced eleven
+           candidates in one afternoon. The asymmetry is structural, not
+           diligence: a project only pushes what it notices, and only notices
+           if a session remembers one sentence in the contract.
+NOTES:     Captured under /soul-handoff's flush step — the Body's invocation of
+           the instrument is the confirmation, stated out loud (A022; I055 and
+           SOUL-176 precedent). The mining method is the 2026-08-20
+           retrospective itself; its artifact is the worked example.
+```
+
+```
+ID:        SOUL-I059
+WHEN:      2026-08-20
+IDEA:      Ship a decision-record starter: the `docs/adr/` convention named in
+           contract rule 1 (v2.1.0) plus a citation-checker template — a test
+           that fails when code cites an ADR number with no file behind it.
+           The Body named the folder and DEFERRED the checker on 2026-08-20
+           ("name it and defer the citation-checker template").
+STATUS:    Raw
+WHY:       Six of six adopting projects built a decision store the system does
+           not ship, under two different names; one has 25 ADRs against 22
+           witness entries and cites 20 of them by number from 368 places in
+           source, guarded by a checker it wrote itself. Contract rule 1 asks
+           for exactly this vehicle — "at the code site, with the reason, and as
+           a test that fails if the decision is broken" — and shipped none.
+DEVELOP:   Artificer (the template + a worked example). Open question first,
+           unanswered by the retrospective: do ADRs DUPLICATE the witness log or
+           complement it? If they largely restate it, the witness log is losing
+           a competition in five of six projects and that is a bigger finding
+           than this idea. Answering it means comparing content, not counting
+           files.
+STATUS-NOTE: Captured under the same flush step and A022 statement as I058.
+```
