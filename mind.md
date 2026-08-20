@@ -42,6 +42,16 @@ book (`philosophy/the-soul.md`); everything else regenerates from the record.
    anonymized (PLANT-BOP / GAME-A / RESEARCH-N) and main is public. The message is
    the surface the SOUL-169 rewrite never covered; one leaked all three names for
    eight weeks (SOUL-175). Chosen over a mechanical guard: it holds only if read.
+   (d) **A ref-scan CANNOT verify a redaction.** Unreachable is not deleted:
+   GitHub serves unreachable objects by SHA indefinitely and says so, so no
+   refs-only move removes one — not force-push, not branch deletion, not an
+   orphan root. Only deleting the repository (or a Support gc request) empties
+   the object store. Verify BOTH ways or not at all: a fresh clone scanned across
+   every revision, message and tag object, AND a fetch-by-SHA probe of the
+   known-bad commits decided on OBJECT PRESENCE with a passing control — never a
+   piped exit code, which reported "fetchable" by testing `head`. SOUL-175
+   recorded three SHAs as unfetchable; all three still fetched three months
+   later, and its local tag re-adoption had not taken either (SOUL-178).
 
 6. **Transcript-measurement traps** (SOUL-173 — each returned a plausible WRONG
    number in one session). Count the TURN, not the text block: one turn emits
