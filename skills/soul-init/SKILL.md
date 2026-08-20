@@ -1,6 +1,6 @@
 ---
 name: soul-init
-description: Initialize the current project as a Soul System dogfood project — creates a CLAUDE.md with the seed import and scaffolds the project's local record (ideas.md, witness.md, findings/).
+description: Initialize the current project as a Soul System project — creates a CLAUDE.md with the contract import, wires an existing Mind if there is one, and scaffolds the project's local record (.soul/ideas.md, .soul/witness.md) after asking whether that record goes in version control.
 disable-model-invocation: true
 ---
 
@@ -108,10 +108,18 @@ line you have not verified resolves.
    - **No, keep it local** — ignore the whole directory: `.soul/`
 
    **Existing projects keep their layout.** If `witness.md` or `ideas.md` already
-   exist at the project root, that IS the record — leave them where they are, do
-   not move or duplicate them, and write the gitignore lines against the root
-   paths instead. Both layouts are first-class; the completion gate scopes on
-   either (`hooks/test_scope.py` cases 5 and 7).
+   exist — at the project root OR under `.soul/` — those files ARE the record.
+   Leave them exactly where they are, do not move or duplicate them, and write the
+   gitignore lines against whichever paths are real. Both layouts are first-class;
+   the completion gate scopes on either (`hooks/test_scope.py` cases 5 and 7).
+
+   **Tracking is a `.gitignore` edit, never a file move.** If a project's record is
+   currently untracked because a broad `.soul/` ignore rule swept it up, the fix is
+   to narrow that rule to `.soul/handoff.md` + `.soul/events.jsonl` and commit the
+   record where it sits. Do not offer relocation as the price of tracking — a live
+   run of this skill read the older wording as requiring a move to the project root
+   and proposed one (2026-08-20). Moving a record costs a rewrite of every path
+   that points at it and buys nothing.
 
    Skip `amendments/` **and `findings/`** — both are records of changes to *the
    Soul*, governed by `operations/amendment-process.md`, and they go upstream, not
@@ -119,11 +127,23 @@ line you have not verified resolves.
    3+ months while leaving two permanently empty directories in each; init used to
    create them and no longer does (2026-08-20).
 
+3c. **Wire an existing Mind.** Before reporting, check whether the project already
+   has a `mind.md` (at `.soul/mind.md` or the project root). If it does, add the
+   matching import line directly after the contract import — `@.soul/mind.md` or
+   `@mind.md`, whichever path is real — and say you did.
+
+   A Mind is always-on by design and does nothing whatsoever unless something
+   imports it. Nothing in this skill used to check, so a project could distill a
+   Mind and never load it: one adopting project has carried a 164-line Mind that
+   no file imports, and another project's own record names the failure exactly —
+   *"a deployed Mind that nothing loads is inert."* Checking costs one `ls`.
+
 4. After creating or confirming the file, report:
    - The absolute path of the `CLAUDE.md` you wrote or found.
    - That the next Claude Code session opened in this directory will load the Soul Seed and the full philosophy.
    - A one-line reminder: the philosophy will only take effect from the *next* session — the current one is already loaded.
-   - **Mention the optional Mind layer**: once the project has accumulated enough record-evidence to warrant compression, run `/soul-distill` to create a project-scoped `mind.md` at the project root, then add a second import line `@mind.md` after the seed import to load it always-on. Skip on day-1 — the Mind is earned, not seeded.
+   - **Mention the optional Mind layer**: once the project has accumulated enough record-evidence to warrant compression, run `/soul-distill` to create a project-scoped `mind.md`, then add a second import line after the contract import to load it always-on. Skip on day-1 — the Mind is earned, not seeded.
+   - **If the project's `CLAUDE.md` is itself gitignored**, say so plainly: the wiring is machine-local, and a fresh clone of this repo loads no contract at all. That can be a deliberate choice — say it is a choice, not a gap, and let the Body confirm.
 
 ## What not to do
 
