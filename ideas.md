@@ -2035,11 +2035,24 @@ WHY:       Six of six adopting projects built a decision store the system does
            source, guarded by a checker it wrote itself. Contract rule 1 asks
            for exactly this vehicle — "at the code site, with the reason, and as
            a test that fails if the decision is broken" — and shipped none.
-DEVELOP:   Artificer (the template + a worked example). Open question first,
-           unanswered by the retrospective: do ADRs DUPLICATE the witness log or
-           complement it? If they largely restate it, the witness log is losing
-           a competition in five of six projects and that is a bigger finding
-           than this idea. Answering it means comparing content, not counting
-           files.
+DEVELOP:   Artificer (the template + a worked example).
+ANSWERED:  2026-08-20 — the open question ("do ADRs DUPLICATE the witness log?")
+           was investigated against the one repo carrying both (25 ADRs, 22
+           witness entries). They COMPLEMENT, decisively, on three independent
+           checks. (1) Kind: every ADR title is a decision — "the thermal image
+           is built from layered axes", "frame pairing belongs in the readback
+           layer" — while every witness WHAT is a discovered fact that
+           contradicted expectation: load_level() returned truthy for a
+           nonexistent map; the Python Rotator initializer is (roll,pitch,yaw),
+           NOT the C++ order; a cursor's claim was simply FALSE. Decisions
+           forward, surprises backward. (2) They cite each other in BOTH
+           directions — 8 witness→ADR citations, and ADRs citing RSENS-005/007 —
+           which duplicative stores do not do. (3) Subject overlap between the
+           two sets peaks at 0.22 on a word-overlap test, and that single pair
+           is a decision about stage maps versus a discovered falsehood about a
+           map path: same topic, different content. So the witness log is NOT
+           losing a competition, and the ADR store is filling the vehicle
+           contract rule 1 asks for and never shipped. This strengthens the
+           idea rather than replacing it.
 STATUS-NOTE: Captured under the same flush step and A022 statement as I058.
 ```
