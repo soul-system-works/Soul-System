@@ -2061,3 +2061,36 @@ ANSWERED:  2026-08-20 — the open question ("do ADRs DUPLICATE the witness log?
            idea rather than replacing it.
 STATUS-NOTE: Captured under the same flush step and A022 statement as I058.
 ```
+
+```
+ID:        SOUL-I060
+WHEN:      2026-08-20
+IDEA:      A count is not a fact until its SCOPE is written beside it. Adopt a
+           convention: any number that will be cited — in a finding, a release
+           note, a report — carries the set it was measured over and the command
+           that produced it, inline: "5 of 6 — `find <root-A> <root-B> -maxdepth
+           3 -name adr`, run 2026-08-20" rather than a bare "six of six". The
+           roots are the load-bearing half; the number is not checkable without
+           them.
+STATUS:    Raw
+WHY:       Measured, twice, in one session, by two independent parties. The
+           v2.1.0 release note claimed "six of six built a decision store"
+           (five) and "64 findings" (62 — a file count including two closing
+           notes). The fresh-context reviewer that caught both then produced its
+           own wrong counts in the opposite direction, having swept two roots
+           and missed a third holding two of the six repos. Neither party was
+           careless; both stated a number without stating what it was counted
+           over, which makes the number uncheckable and therefore unfalsifiable
+           until someone re-derives the whole thing. This is the same family as
+           mind.md item 6 (transcript-measurement traps, SOUL-173) — plausible
+           WRONG numbers from an unexamined denominator — but it is about
+           CITATION discipline rather than measurement method, so it likely
+           belongs in the contract's anchor sentence (rule 3) rather than in a
+           project Mind.
+DEVELOP:   Steward (does this earn a place in rule 3, or is it a distill-time
+           check?). Note the cost side honestly: inline scope makes prose
+           heavier, and rule 9 exists because this system over-writes. The
+           cheap form may be scope-once-per-document rather than per-number.
+NOTES:     Captured under /soul-handoff's flush step — the Body's invocation of
+           the instrument is the confirmation, stated out loud (A022).
+```

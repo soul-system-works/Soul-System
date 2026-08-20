@@ -8151,3 +8151,70 @@ CONSEQUENCE:  THE METHOD ERROR IS THE FINDING. A ref-scan answers "what can be
 STATUS:       Resolved — published surfaces verified clean by clone-scan and
               SHA-probe; the standing residual above is accepted, not closed.
 ```
+
+```
+ID:           SOUL-179
+WHEN:         2026-08-20 / after v2.1.0 shipped, before any project ran it
+WHERE:        v2.1.0 -> v2.1.1 (skills/soul-{capture,handoff,resume,distill,
+              init,next}, hooks/, SYSTEM-VERSION.md); the six-project
+              retrospective's own numbers
+WHAT:         v2.1.0 was diagnosed and written by one session, shipped
+              UNEXERCISED on the Body's explicit waiver, and then reviewed by a
+              fresh-context agent over the APPLIED result. The review found four
+              defects that each CANCELLED a change the release advertised:
+              (1) /soul-capture's finding mode grew a header routing a project's
+              finding upstream while its numbered steps still said scan
+              findings/ and write findings/open/ — a project following the steps
+              would find no directory, conclude the id space was free, assign
+              SOUL-F001 against 63 live ids, and recreate the directory the
+              release had just deleted. The procedure beats the prose every
+              time; adding a rule above unchanged steps changes nothing.
+              (2) The release routed ALL project->system learning through one
+              cursor field, then in the same release made that cursor gitignored
+              AND replaced wholesale each session, with no carry-forward rule —
+              a silent, unrecoverable data-loss path for exactly the lessons the
+              change existed to collect, feeding a mining pass that does not
+              exist yet.
+              (3) The rule authorizing that replacement rested on a false
+              claim ("the previous one lives in git history if the record is
+              tracked") about a file the same release guarantees is never
+              tracked.
+              (4) The new wiring sentinel asked the session to prove the
+              contract had loaded by quoting a specific rule's NAME — and the
+              skill file containing the question also contained the answer. Under
+              the exact silent-import-failure case the check names (F038), a
+              confabulating session reads the answer off the instrument and
+              reports healthy.
+TYPE:         Failure Mode — self-review is structurally blind [+ Coherent
+              Falsehood x2: a sentinel that validates itself, and a safety claim
+              contradicted by the same release that made it]
+CONSEQUENCE:  THE CHAIN IS THE FINDING, and it is the closing note's
+              observation 2 firing on this repo three days after it arrived:
+              audit -> apply -> ADVERSARIAL RE-REVIEW OF THE APPLIED RESULT.
+              Neither the diagnosis nor the writing was careless; both were done
+              well by a session that then could not see its own output. Defects
+              1-3 are invisible from inside the frame that produced them
+              because each is a MISSING CONNECTION between two things the author
+              knew separately. Cost of the catch: one agent, ~17 min. Cost had
+              it shipped: an id-space collision and silent loss of upstream
+              lessons, both firing on first real use.
+              Second half, and the one worth carrying: THE REVIEWER MADE THE
+              SAME CLASS OF ERROR. It challenged four counts; two challenges
+              were right (the release claimed "six of six built a decision
+              store" — five of six; "64 findings" was a file count including two
+              closing notes — 62) and two were wrong, because it swept
+              /mnt/d/Projects and /home and never looked in another root holding
+              two of the six repos, reporting four Minds where five exist and a
+              7-file decision store where the real one has 25. Author and
+              reviewer, independently, produced CONFIDENT COUNTS FROM AN
+              UNSTATED SCOPE. A count is not a fact until its scope is written
+              down beside it (see SOUL-I060). This is why the reviewer's report
+              was checked rather than applied: an adversarial pass is a claim
+              too.
+              Standing residual: still no live /soul-init or /soul-resume run
+              against a real project. Two releases have now shipped on review
+              rather than execution, and review caught the breakage both times —
+              which is evidence FOR the review layer, not against the exercise.
+STATUS:       Resolved — v2.1.1 cut, tagged, pushed; tests 9 -> 11 including a
+              negative asserted against the real home directory.
+```
