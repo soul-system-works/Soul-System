@@ -24,7 +24,17 @@ Optional argument: a short description of what the next session is for — let i
      and the explicit negation, not just the rule — lives in a durable record at the site
      of future temptation. A rule handed off without its incident gets reinterpreted under
      pressure, and the drift documents itself (F053/A020).
-2. **Write `.soul/handoff.md`** (create `.soul/` if missing — it is gitignored runtime state):
+1b. **Park anything owed upstream.** Did this session learn something about the
+   Soul System *itself* — an instrument that misfired, a gate that helped or got
+   in the way, a doctrine sentence that did not survive contact? That is owed
+   upstream under the contract, and it dies here unless it is parked where a later
+   pass can find it. Put it in the cursor's `OWED UPSTREAM` field, in the project's
+   own words. Do **not** try to write it into the Soul System repo from here —
+   most projects cannot reach it, and a lesson parked locally is retrievable while
+   a lesson not written is gone.
+
+2. **Write `.soul/handoff.md` — REPLACING the previous cursor, not appending to it**
+   (create `.soul/` if missing):
    ```
    # Handoff cursor — [date]
    NEXT-SESSION FOCUS: [from the argument, if given]
@@ -33,14 +43,37 @@ Optional argument: a short description of what the next session is for — let i
                         can't vary; else "none open"]
    OPEN GATES:         [any gate mid-evaluation; else "none"]
    NEXT STEP:          [the immediate next action — the cursor]
+   OWED UPSTREAM:      [Soul-System-level observations, unsent; else "none"]
    POINTERS (reference, do not duplicate; mark provenance on every entry):
      - witness tail:   last entries in witness.md ([ids]) [read]
-     - open findings:  findings/open/ ([ids]) [read]
      - ideas:          ideas.md ([ripe ids]) [read]
      - tasks:          [open task ids / subjects] [read|inherited]
      - specs/ADRs:     [relevant paths] [read|inherited]
    SUGGESTED ROLES / SKILLS: [for the next session]
    ```
+
+   **The cursor is replaced, never accumulated.** One cursor, one file; the
+   previous one lives in git history if the record is tracked, and in the record
+   proper either way — anything worth keeping should already have been flushed to
+   `witness.md` in step 1. The rule is stated because its absence produced drift:
+   with nothing said, five of six projects replaced and one appended, reaching four
+   stacked generations, 472 lines and 31 KB — three times the size of that
+   project's own Mind (2026-08-20 retrospective).
+
+   **Size check before writing:** if the draft exceeds ~150 lines, it is carrying
+   record, not cursor. Flush the excess to `witness.md` and point at it instead.
+
+   **`[inherited]` expires.** A pointer or open gate carried `[inherited]` across
+   three consecutive cursors must be verified this session or dropped — say which.
+   The marking convention (A023) names unverified claims but nothing made them
+   expire, and the 472-line cursor carried fifteen of them, one explicitly
+   "carried as [inherited] for several cursors and STILL true."
+
+   `OWED UPSTREAM` is not decoration: the field was invented by hand in a project
+   that had a lesson and nowhere to send it, and adopting it verbatim is cheaper
+   than inventing a worse one. Two upstream notes arrived in four months across six
+   projects; the parking field is the cheap half of fixing that, and the periodic
+   mining pass run from the Soul System repo is the other half.
 3. **Mark pointer provenance (A023/F061):** every POINTERS entry carries `[read]` — this
    session actually opened it — or `[inherited]` — carried from a prior cursor or from
    memory, unverified. A cursor pointer is a claim, not a fact: an unmarked or

@@ -182,17 +182,25 @@ _SOUL_MARKERS = (
 
 
 def _is_soul_project(cwd: str) -> bool:
-    if os.path.exists(os.path.join(cwd, "witness.md")):
-        return True
-    claude_md = os.path.join(cwd, "CLAUDE.md")
-    if os.path.exists(claude_md):
-        try:
-            with open(claude_md, "r", encoding="utf-8", errors="ignore") as fh:
-                txt = fh.read().lower()
-            if any(marker in txt for marker in _SOUL_MARKERS):
-                return True
-        except Exception:
-            pass
+    # Both store layouts count. A project that relocated its record into .soul/
+    # AND dropped its CLAUDE.md matched neither arm of this predicate and ran
+    # with the gate silently disabled for three months — the failure mode was
+    # silence, because nothing anywhere reports "not scoped" (2026-08-20
+    # cross-repo retrospective). Adding the second path is the fix;
+    # /soul-resume's wiring check is the report.
+    for store in ("witness.md", os.path.join(".soul", "witness.md")):
+        if os.path.exists(os.path.join(cwd, store)):
+            return True
+    for name in ("CLAUDE.md", os.path.join(".claude", "CLAUDE.md")):
+        claude_md = os.path.join(cwd, name)
+        if os.path.exists(claude_md):
+            try:
+                with open(claude_md, "r", encoding="utf-8", errors="ignore") as fh:
+                    txt = fh.read().lower()
+                if any(marker in txt for marker in _SOUL_MARKERS):
+                    return True
+            except Exception:
+                pass
     return False
 
 

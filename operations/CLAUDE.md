@@ -4,7 +4,8 @@ This project keeps a durable record and verifies its claims. The working rules:
 
 1. **Record decisions where future pressure will arrive** — at the code site, with
    the reason, and as a test that fails if the decision is broken, where the medium
-   allows.
+   allows. Too big for a comment? `docs/adr/` — one numbered file per decision,
+   cited by number from the code it binds. Optional, but that is where it goes.
 2. **Never invent history.** No incidents, reviewers, or past events that did not
    happen. A rule without a real incident stands bare — that is fine.
 3. **Absolute claims need an external anchor.** Say why the anchor is trusted and
@@ -48,16 +49,26 @@ This project keeps a durable record and verifies its claims. The working rules:
     rather than one woven narrative, since a reader cannot separate two subjects
     mid-flow and will carry away whichever impression landed last.
 
-**Stores** (at THIS project's root, never the Soul System source repo):
-`witness.md` (append-only, sequential IDs, re-read before appending) · `ideas.md` ·
-`findings/` · `amendments/`. Forward view: `/soul-next`. Maintenance:
-`/soul-distill` (propose it when the record has grown; the owner confirms —
-it keeps this page within budget).
+**Stores** — THIS project's, never the Soul System source repo. In `.soul/`, or at
+the project root if that is where they already live (both valid; detect, never
+assume): `witness.md` (append-only, sequential IDs, re-read before appending) ·
+`ideas.md` · `mind.md` once earned. `findings/` and `amendments/` are the Soul
+System's own stores and are not scaffolded locally — a project's system-level
+lessons park in the handoff cursor's `OWED UPSTREAM` field. Forward view:
+`/soul-next`. Maintenance: `/soul-distill` (propose it when the record has grown;
+the owner confirms — it keeps this page within budget).
 
-**Projects importing this contract** owe their Soul-System-level lessons upstream:
-a closing note at milestones, and observations about how this system itself behaved
-(gates, instruments) sent home to the Soul System repo's `findings/`. Domain
-lessons stay home.
+**Register** defaults to `plain` — use a Soul or project term only when it earns
+its place, gloss it on first use, introduce vocabulary gradually. Vocabulary only;
+LENGTH is rule 9 either way. Override with a `**Register: fluent**` line in the
+project's own CLAUDE.md. The default lives here because a copy written into a
+project at init never receives an upgrade.
+
+**Projects importing this contract** owe their Soul-System-level lessons upstream —
+observations about how this system itself behaved (gates, instruments), plus a
+closing note at milestones. Park them in the cursor's `OWED UPSTREAM` field as they
+happen; the Soul System collects them on a periodic pass. Do not try to write into
+that repo from here. Domain lessons stay home.
 
 The thinking behind this system — its history, roles, and the measurements that
 shaped it — lives in `philosophy/the-soul.md`. It is written for human readers;

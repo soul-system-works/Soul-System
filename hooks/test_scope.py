@@ -71,11 +71,37 @@ def main():
         if _mod._is_soul_project(bare):
             failures.append("LEAK: empty project scoped the gate")
 
+        # 7. THE RELOCATED-STORE SHAPE — record moved into .soul/, no CLAUDE.md at
+        # all. This matched neither arm before 2026-08-20 and the gate ran
+        # disabled there for three months without ever saying so. If this test
+        # fails, a relocated-store project is silently ungated again.
+        relocated = os.path.join(tmp, "relocated")
+        os.makedirs(os.path.join(relocated, ".soul"))
+        open(os.path.join(relocated, ".soul", "witness.md"), "w").close()
+        if not _mod._is_soul_project(relocated):
+            failures.append("MISS: .soul/witness.md does not scope the gate (relocated-store regression)")
+
+        # 8. The .claude/CLAUDE.md location is equally valid per Claude Code's
+        # documented project-instruction paths; the seed import there must scope.
+        alt = os.path.join(tmp, "altclaude")
+        os.makedirs(os.path.join(alt, ".claude"))
+        with open(os.path.join(alt, ".claude", "CLAUDE.md"), "w", encoding="utf-8") as fh:
+            fh.write("@~/.claude/plugins/marketplaces/soul-system/operations/CLAUDE.md\n")
+        if not _mod._is_soul_project(alt):
+            failures.append("MISS: a seed import in .claude/CLAUDE.md no longer scopes the gate")
+
+        # 9. Relocation must not widen the fence: a .soul/ dir alone is not a
+        # Soul project, and the bare-word trap must still fail inside one.
+        empty_soul = os.path.join(tmp, "emptysoul")
+        os.makedirs(os.path.join(empty_soul, ".soul"))
+        if _mod._is_soul_project(empty_soul):
+            failures.append("LEAK: a bare .soul/ directory scoped the gate")
+
     if failures:
         for f in failures:
             print(f"FAIL  {f}")
         sys.exit(1)
-    print("PASS  6/6 — the scope fence holds (no bare-word 'soul' matching)")
+    print("PASS  9/9 — the scope fence holds, both store layouts scope")
 
 
 if __name__ == "__main__":
