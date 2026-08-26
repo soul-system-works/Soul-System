@@ -57,7 +57,7 @@ out yours does.
 
 **Declaring a stage.** When the project's situation changes — the first outside
 user, a v1.0, or the day you decide the prototype is now the real thing — run
-`/soul-stage <prototype|pre-release|released>`. One screen: pick the stage, name
+`/soul-stage` and pick a stage (or `/soul-stage <stage>` directly). One screen: pick the stage, name
 anything outside the project that relies on part of it, say what would move it to
 the next stage. It writes a short block into your `CLAUDE.md` saying what may be
 broken and what must be kept, and records the change as one entry. Undeclared
