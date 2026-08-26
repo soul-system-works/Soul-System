@@ -32,7 +32,8 @@ wants the lay of the land). Not a deep philosophy dump — point to depth, don't
    <idea|witness|finding>` (write to the record), `soul-handoff` / `soul-resume`
    (continuity across sessions), `soul-explain` (describe the present; `council`
    mode for a multi-lens read), `soul-next` (what to do next), `soul-distill`
-   (refresh the Mind).
+   (refresh the Mind), `soul-prompt` (rewrite a rough prompt into a project-informed
+   one).
 
 4. **Where the record lives:** `witness.md` (observations, append-only) · `findings/`
    (earned patterns) · `ideas.md` (forward possibilities) · `amendments/` (doctrine

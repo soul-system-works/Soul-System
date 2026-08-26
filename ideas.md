@@ -2110,9 +2110,10 @@ STATUS:    In build (v2.2.0) — design grilled and resolved in
            docs/specs/2026-08-26-development-stage.md
 WHY:       The owner supplied the same rule by hand in two projects on
            consecutive days (RSF CLAUDE.md 8d2b91c, 2026-08-25; a UE thermal-sensing
-           project's witness, 2026-08-24 — the latter surviving only in a narrative
-           no later session reloads), while a third project (that one's parent UE
-           codebase) needs the INVERSE rule and nothing declares that either. The model's default
+           project's Python client deliverable, in its own nested CLAUDE.md,
+           2026-08-24 — two hand-written copies in different words with no shared
+           source), while a third project (that one's parent UE codebase) needs
+           the INVERSE rule and nothing declares that either. The model's default
            is release-grade caution; nothing in the contract says which project
            it is in. Two carve-outs were learned by running under the
            hand-written rule (SENSA-061/062, SENSA-064) and are the unguessable

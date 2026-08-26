@@ -54,7 +54,7 @@ line you have not verified resolves.
 1. Determine the current working directory (the project root). Do not search upwards; use the directory the session was started in.
 
 2. Check whether `CLAUDE.md` already exists in that directory.
-   - **If it exists:** read it. If it already contains an import line ending in `/operations/CLAUDE.md` (any root — a prior install may have used a different path), note "import already present" — **do not stop; continue to steps 3–3c** to ensure the record scaffold, the git-tracking answer and the Mind import are all in place (soul-init is idempotent: it backfills a missing record for an already-imported project). If it exists but does not contain that line, report the existing contents and ask the user whether to append the import line or leave it alone. Do not overwrite without explicit confirmation.
+   - **If it exists:** read it. If it already contains an import line ending in `/operations/CLAUDE.md` (any root — a prior install may have used a different path), note "import already present" — **do not stop; continue to steps 2b–3c** to ensure the record scaffold, the git-tracking answer and the Mind import are all in place (soul-init is idempotent: it backfills a missing record for an already-imported project). If it exists but does not contain that line, report the existing contents and ask the user whether to append the import line or leave it alone. Do not overwrite without explicit confirmation.
    - **If it does not exist:** ask one question — "Response register: plain or
      fluent?" (default **plain** if the user has no preference) — then create it
      containing the import line, plus a Register line ONLY if the answer was
@@ -77,7 +77,7 @@ line you have not verified resolves.
      carrying the same default, always-on).
 
 2b. **Offer the development stage — once, skippable.** Whether `CLAUDE.md` was
-   just created or already existed, if it carries no `**Stage:**` line, ask:
+   just created or already existed, if no line in it starts `**Stage:`, ask:
 
    > "Development stage — prototype, pre-release, released — or skip?"
 
@@ -91,8 +91,8 @@ line you have not verified resolves.
 
    *Evidence for asking here:* two adopting projects had the owner state "no
    backwards compatibility — this is beta" by hand on consecutive days
-   (2026-08-24/25), one of them only inside a witness narrative that no later
-   session reloads.
+   (2026-08-24/25) — into two different always-on files, in two wordings, with no
+   shared source.
 
 3. **Ask the one question that cannot be defaulted: does the record go in git?**
 

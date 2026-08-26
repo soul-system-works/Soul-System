@@ -62,7 +62,7 @@ source of truth; this loads them and continues.
    Treat `[inherited]` pointers (and any unmarked ones from pre-A023 cursors) as claims
    to verify before repeating them to the Body — a cursor pointer is a claim, not a fact.
 3. **Restate, in 2–3 lines:** where we are · the live design frame (if any) · the
-   next step · and, if the project's CLAUDE.md carries a `**Stage:**` line, the
+   next step · and, if a line in the project's CLAUDE.md starts `**Stage:`, the
    stage in one phrase ("stage: pre-release since 2026-08-26"). Say nothing about
    stage when there is no line — absence is the default, not a gap. Under a
    `plain` register (the project CLAUDE.md's Register line), say "the current

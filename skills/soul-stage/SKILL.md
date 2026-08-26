@@ -49,14 +49,13 @@ what differs. Plain words — the owner may never have heard of the Soul.
 > "first outside user", "the v1.0 tag", "we start depending on it from project X".
 > *(optional)*
 >
-> **Anything to change or add?** *(optional — becomes the block's "Owner's
-> additions" line)*
+> **Anything to change or add?** *(optional — recorded as your additions)*
 
 *Why only this much:* the stage the owner picks already answers who uses the code,
 how settled the design is, and what a change ships with — the preset carries those.
-Question 1 is the one fact no preset can know: a published seam treated as a free
-rename doubled every sensor in a downstream viewer's panel until that viewer's own
-suite failed `4 == 2` (an adopting project, 2026-08-24). Question 2 is the exit
+Question 1 is the one fact no preset can know: a change on one side of a published
+seam, made as if it were single-repo, doubled every sensor in the downstream viewer's
+panel until that viewer's own suite failed `4 == 2` (an adopting project, 2026-08-24). Question 2 is the exit
 trigger: an owner-gated decision with no date sits forever (SOUL-F064). Everything
 else is customisation, and it gets one line.
 
@@ -113,8 +112,9 @@ under about fifteen lines; it is always-on text for every session in the project
 - Next stage when: a consumer beyond the viewer appears.
 - Owner's additions: none.
 - Propose `/soul-stage` if something outside this project starts relying on it,
-  a release is cut, or a rule above is about to be overridden — one sentence,
-  then wait; only the owner changes the stage.
+  a release is cut, a rule above is about to be overridden, or you find yourself
+  adding a deprecation path, alias or shim — one sentence, then wait; only the
+  owner changes the stage.
 The contract's rules and the completion gate apply unchanged.
 ```
 
@@ -124,14 +124,15 @@ is invisible to the model by design, so the always-on block has to carry them.
 
 ## What to do
 
-1. **Find the existing block.** Read `CLAUDE.md` in the current directory (do not
-   search upward). The block runs from a line starting `**Stage:` through the line
+1. **Find the existing block.** Read `CLAUDE.md` in the directory the session
+   started in (do not search upward). The block runs from a line starting `**Stage:` through the line
    `The contract's rules and the completion gate apply unchanged.` A line starting
    `**Phase:` from before this skill existed counts as the header of a hand-written
-   block: treat everything from it to the next `##` heading (or the paragraph that
-   names the published seams, whichever comes last) as the block to replace, in
-   place — show the owner exactly which lines you intend to replace before doing
-   it. If a block exists, show its stage, date, relied-on list, trigger and
+   block. What that block covers is only: the Phase paragraph itself, plus any later
+   paragraph that states a compatibility rule or names the published seams. Every
+   heading and every other paragraph — house rules, checklists — stays exactly where
+   it is, even when it sits between those paragraphs. Show the owner the exact line
+   ranges you intend to replace before doing it. If a block exists, show its stage, date, relied-on list, trigger and
    additions.
    - **No argument:** offer a refresh (rewrite from the current preset, keeping the
      owner's three answers) or stop. **Argument equal to the current stage:** same
@@ -143,7 +144,11 @@ is invisible to the model by design, so the always-on block has to carry them.
 3. **Compose the block** from the template and show it. Wait for go / edit / cancel.
 4. **Write it:** replace the existing block in place, or insert it directly under
    the `**Register:**` line, or — with no Register line — directly under the last
-   `@` import line. Touch nothing else in the file.
+   `@` import line. If `CLAUDE.md` is absent, or has neither (the import may live in
+   `.claude/CLAUDE.md`), put the block at the top of `CLAUDE.md`, creating the file
+   if needed, and say so. Touch nothing else in the file. A sub-deliverable's own
+   block is written by a session started in that directory; this skill never
+   searches upward or downward.
 5. **Record the transition** — one witness entry, following `/soul-capture
    witness`'s rules (this project's code from the log header, next id, re-read
    before appending, never `SOUL-` outside the Soul System repo):
@@ -151,9 +156,11 @@ is invisible to the model by design, so the always-on block has to carry them.
    - WHAT: `Stage <previous stage, or "undeclared"> → <new stage> (owner, <date>).
      Why: <the owner's words>. Changed: <what differs from the previous block —
      the relied-on list, the trigger, the additions — or "first declaration">`
-   - TYPE: `Decision — stage change` · CONSEQUENCE: the preset's headline rule now
-     applies (e.g. "no backwards compatibility beyond two named surfaces") ·
-     STATUS: `Resolved`
+   - TYPE: `Decision — stage change` — not in the format's original list; the logs
+     already carry free-form TYPEs ("Build record"), and this names what happened ·
+     CONSEQUENCE: the preset's headline rule now applies (e.g. "no backwards
+     compatibility beyond two named surfaces") · STATUS: `Resolved`. WHAT runs to
+     three sentences on purpose: the why is the unguessable part.
    A refresh that changes neither the stage nor an answer writes no entry. Show
    the draft; append on go.
 6. **Report:** the file and what changed; that the rules apply from the *next*

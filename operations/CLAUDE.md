@@ -67,7 +67,8 @@ project at init never receives an upgrade.
 **Stage** (optional): a project declares `prototype` / `pre-release` / `released`
 in its own CLAUDE.md via `/soul-stage`, and the block beneath says what may be
 broken and what must be kept; undeclared means released — protect what others
-may depend on, and ask before breaking it (rule 7).
+may depend on, ask before breaking it (rule 7), and offer `/soul-stage` to record
+the answer.
 
 **Projects importing this contract** owe their Soul-System-level lessons upstream —
 observations about how this system itself behaved (gates, instruments), plus a

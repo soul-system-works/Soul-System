@@ -7,10 +7,10 @@ goes deeper.
 ## Day one
 
 Run `/soul-init` in your project. It asks two short questions — plain or fluent
-language (plain is the default), and whether your record goes in version control
-(yes is the default) — offers a third you can skip (the project's development
-stage: prototype, pre-release or released; skipping means "treat it as released"),
-then writes one import line into your `CLAUDE.md` and
+language (plain is the default) and, after an optional one you can skip (the project's
+development stage: prototype, pre-release or released; skipping means "treat it as
+released"), whether your record goes in version control (yes is the default) — then
+writes one import line into your `CLAUDE.md` and
 creates two empty record files, `.soul/ideas.md` and `.soul/witness.md`. If your
 project already keeps them at its root, they stay there; both layouts work.
 

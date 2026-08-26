@@ -56,13 +56,16 @@ the Python Stop hook is untouched; git branch `v2.2.0` merged to `main` at relea
 
 **Where the idea came from (rule 2 — real history only):** RSF's cursor OWED UPSTREAM #11
 (2026-08-25) and its live `CLAUDE.md:52` block (commit `8d2b91c`); the two carve-outs are
-SENSA-061/062 (a published seam treated as a free rename doubled every sensor in the
-viewer's panel; its suite failed `4 == 2`) and SENSA-064 (a `.get` ordered deleted as a shim
+SENSA-061/062 (a change on one side of a published seam, made as if single-repo, doubled
+every sensor in the viewer's panel; its suite failed `4 == 2`) and SENSA-064 (a `.get` ordered deleted as a shim
 tracebacked on a real tree written before the key existed). A UE thermal-sensing project's
-witness (2026-08-24) records the owner stating the same beta rule by hand for its Python
-client deliverable; neither that project's `CLAUDE.md` nor the deliverable's own carries it.
-(Project identifiers deliberately omitted here and in SOUL-I061 — the private name map is
-the only place they live; see Task 8 step 4.)
+witness (2026-08-24) records the owner writing the same beta rule by hand into its Python
+client deliverable's own nested `CLAUDE.md` ("there are no external customers; backwards
+compatibility is not a constraint") — a second hand-written copy, in different words, with
+no shared source; the parent project's root `CLAUDE.md` carries nothing. (Project
+identifiers deliberately omitted here and in SOUL-I061 — the private name map is the only
+place they live; see Task 8 step 4. The first draft of this paragraph claimed the rule
+"survived only in a witness narrative"; fresh-context review found the nested file.)
 
 ---
 
@@ -77,7 +80,7 @@ the only place they live; see Task 8 step 4.)
 | `skills/soul-next/SKILL.md` | modify (step 1, step 3) | read the block; show the exit trigger and ask if met |
 | `skills/soul-help/SKILL.md` | modify (step 3, the hand-listed core) | add `soul-stage` |
 | `docs/using-the-soul.md` | modify (Day one; Over time; Going deeper table) | the lifecycle page carries the stage |
-| `README.md` | modify (lines 47–48; line 94) | init question sentence; "eight" → "nine" instruments |
+| `README.md` | modify (lines 47–48; line 94) | init question sentence; "eight" → "ten" instruments |
 | `SYSTEM-VERSION.md` | modify (Current; changelog row) | 2.2.0 |
 | `.claude-plugin/plugin.json` | modify (`version`) | 2.2.0 |
 | `ideas.md` | append | SOUL-I061 — the idea, pointing here |
@@ -124,9 +127,10 @@ STATUS:    In build (v2.2.0) — design grilled and resolved in
            docs/specs/2026-08-26-development-stage.md
 WHY:       The owner supplied the same rule by hand in two projects on
            consecutive days (RSF CLAUDE.md 8d2b91c, 2026-08-25; a UE thermal-sensing
-           project's witness, 2026-08-24 — the latter surviving only in a narrative
-           no later session reloads), while a third project (that one's parent UE
-           codebase) needs the INVERSE rule and nothing declares that either. The model's default
+           project's Python client deliverable, in its own nested CLAUDE.md,
+           2026-08-24 — two hand-written copies in different words with no shared
+           source), while a third project (that one's parent UE codebase) needs
+           the INVERSE rule and nothing declares that either. The model's default
            is release-grade caution; nothing in the contract says which project
            it is in. Two carve-outs were learned by running under the
            hand-written rule (SENSA-061/062, SENSA-064) and are the unguessable
@@ -384,7 +388,7 @@ may depend on, and ask before breaking it (rule 7).
 ```bash
 grep -n "^\*\*Stage\*\* (optional)" operations/CLAUDE.md; wc -l operations/CLAUDE.md
 ```
-Expected: the match at line `67`; `80 operations/CLAUDE.md` (75 + 4 lines + 1 blank). The contract is the always-on page for every project — five lines is the whole cost, and it stays under the ~80-line budget `/soul-distill` uses for a Mind.
+Expected: the match at line `67`; `81 operations/CLAUDE.md` (75 + 5 lines + 1 blank — five after review finding 15 added the `/soul-stage` offer). The contract is the always-on page for every project — five lines is the whole cost, and it stays under the ~80-line budget `/soul-distill` uses for a Mind.
 
 - [ ] **Step 3: Sentinel — the sentence must not answer `/soul-resume`'s own wiring check.** Step 0 of resume asks the session for "how many numbered rules the contract has, and what rule 3 requires"; the new paragraph mentions rule 7, not rule 3, and adds no numbered rule:
 
@@ -567,14 +571,14 @@ the default — offers an optional development stage (`/soul-stage`: what may be
 broken, what must be kept), and scaffolds the project's record files.
 ```
 
-- [ ] **Step 5: README line 94** — `The eight /soul-* instruments` → `The nine /soul-* instruments`
+- [ ] **Step 5: README line 94** — `The eight /soul-* instruments` → `The ten /soul-* instruments`
 
 - [ ] **Step 6: Consistency sweep (the F048 dangling-reference practice, run forward)** — every surface that enumerates the instruments names the new one, and no stale count survives:
 
 ```bash
 grep -l "soul-stage" README.md docs/using-the-soul.md skills/soul-help/SKILL.md skills/soul-init/SKILL.md skills/soul-next/SKILL.md operations/CLAUDE.md | wc -l; grep -n -i "eight /soul" README.md docs/*.md; ls skills | wc -l
 ```
-Expected: `6`; no output from the second grep; `10` (nine `soul-*` plus nothing else — if the count is not 10, list `skills/` and reconcile the README line).
+Expected: `6`; no output from the second grep; `10` — ten `soul-*` directories (`soul-prompt` has shipped since 2026-08-12 and was missing from every hand-written count; the first draft of this step said "nine" and passed on a 10). The README number must equal this count.
 
 - [ ] **Step 7: Commit**
 
@@ -673,9 +677,14 @@ WHAT:         A project can now declare prototype / pre-release / released once,
 TYPE:         Build record + override + locked prediction
 CONSEQUENCE:  LOCKED PREDICTION (mind item 1 — lean to carry, always write the
               miss direction): in RSF and RS Viewer, witness entries about
-              shim/deprecation/compatibility churn (13 of 14 in RS Viewer's log at
-              2026-08-25; 8 of 64 in RSF's) FALL as a share of new entries over the
-              next distill window. MISS DIRECTION: if it misses, the miss is
+              shim/deprecation/compatibility churn FALL per entry over the next
+              distill window. BASELINE WITH ITS METHOD (SOUL-I060): `grep -c -i -E
+              "backwards?[- ]compat|\bshim\b|deprecat|legacy path|\balias(es)?\b|
+              migration layer|preserv(e|ed|ing) (the )?old"` over each log on
+              2026-08-25 gave 13 matching LINES in RS Viewer's 14-entry log and 8 in
+              RSF's 64-entry log (line hits, not entries; a narrower keyword set
+              gives 3 and 7). The number is method-bound: the check re-runs THIS
+              regex and compares hits per entry. MISS DIRECTION: if it misses, the miss is
               over-deletion — a reader broken by a removed field, the SENSA-064
               class — not under-deletion. Check at the next /soul-distill of either
               project; record the result as a witness entry there and here.
@@ -758,6 +767,27 @@ Expected: exactly one `**Stage: pre-release**` line and no `**Phase:` line; `1`;
 - [ ] **Step 6: Commit RSF's side, in RSF, by the owner's call** (`CLAUDE.md`, `witness.md`; the cursor is gitignored). Suggested message: `docs(record): CLAUDE.md Phase: beta → Stage: pre-release via /soul-stage (SENSA-065)`.
 
 - [ ] **Step 7: Record the result upstream — SOUL-181** in the Soul System repo: what the run found, in the same shape as SOUL-179's "what the review found" paragraph. **If a defect:** fix it on a `v2.2.1` branch, merge, tag, push (the v2.1.1 pattern), and SOUL-181 names the defect and the patch. **If none:** SOUL-181 says so, and the "unexercised" residual closes for this surface (not for v2.1.1's init, which is still the cursor's other gate).
+
+---
+
+## Applied review findings (Task 7, 2026-08-26 — `diff-reviewer`, fresh context, 16 findings, all applied)
+
+1. **False record claim** (spec ×2, ideas.md, SYSTEM-VERSION, soul-init): "survived only in a witness narrative" — the sub-deliverable's own nested `CLAUDE.md` carries the rule (verified at the path the witness names). Reworded everywhere to the true fact: two hand-written always-on copies, two wordings, no shared source.
+2. **Legacy `Phase` range rule** would have swallowed RSF's house rules (heading + "fix the underlying issue" sit between the Phase line and the seams paragraph). Rewritten: only the Phase paragraph plus compatibility/seams paragraphs are the block; headings and other paragraphs stay; show line ranges.
+3. **Instrument count**: ten, not nine — `soul-prompt` shipped 2026-08-12 and every hand count missed it. README, spec Task 5, soul-help list fixed.
+4. **Step 2b bypass**: the "import already present" branch routed to steps 3–3c; now 2b–3c.
+5. **Pre-assigned id**: the changelog no longer names SOUL-181; "the next witness entry after SOUL-180".
+6. **`4 == 2` misdescribed** as a rename; it was a paired change made as if single-repo. Skill + spec.
+7. **Baseline counts** now carry their regex and are stated as line hits, not entries.
+8. **Trigger (i) in prototype**: the block's proposal line now names "adding a deprecation path, alias or shim" outright.
+9. **Witness format deviation** (TYPE, three-sentence WHAT) now stated with its reason.
+10. **Wrong anchor** in the name-scan note — fixed earlier on the replayed branch (registry is gitignored).
+11. "≤15-line" → "about fifteen lines".
+12. **Missing fallbacks**: absent `CLAUDE.md` / no anchor line / nested case — step 4 now says what to do.
+13. `**Stage:**` literal → "a line starting `**Stage:`" in init, resume, next.
+14. Screen text no longer says "block" before the owner has seen one.
+15. Contract paragraph now offers `/soul-stage` to record the rule-7 answer (trigger iv explicit).
+16. Lifecycle page's question order matches init's (register → stage → git).
 
 ---
 
