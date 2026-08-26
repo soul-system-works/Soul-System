@@ -54,7 +54,7 @@ line you have not verified resolves.
 1. Determine the current working directory (the project root). Do not search upwards; use the directory the session was started in.
 
 2. Check whether `CLAUDE.md` already exists in that directory.
-   - **If it exists:** read it. If it already contains an import line ending in `/operations/CLAUDE.md` (any root — a prior install may have used a different path), note "import already present" — **do not stop; continue to steps 2b–3c** to ensure the record scaffold, the git-tracking answer and the Mind import are all in place (soul-init is idempotent: it backfills a missing record for an already-imported project). If it exists but does not contain that line, report the existing contents and ask the user whether to append the import line or leave it alone. Do not overwrite without explicit confirmation.
+   - **If it exists:** read it. If it already contains an import line ending in `/operations/CLAUDE.md` (any root — a prior install may have used a different path), note "import already present" — **do not stop; continue to steps 3–3d** to ensure the record scaffold, the git-tracking answer and the Mind import are all in place (soul-init is idempotent: it backfills a missing record for an already-imported project). If it exists but does not contain that line, report the existing contents and ask the user whether to append the import line or leave it alone. Do not overwrite without explicit confirmation.
    - **If it does not exist:** ask one question — "Response register: plain or
      fluent?" (default **plain** if the user has no preference) — then create it
      containing the import line, plus a Register line ONLY if the answer was
@@ -75,27 +75,6 @@ line you have not verified resolves.
      has to live where the difference is (SOUL-I050 kept; the duplication removed
      in v2.1.1 after fresh-context review found the contract and init both
      carrying the same default, always-on).
-
-2b. **Offer the development stage — once, skippable.** Whether `CLAUDE.md` was
-   just created or already existed, if no line in it starts `**Stage:`, ask —
-   through the harness's question prompt when available, else in prose:
-
-   > "Development stage — prototype, pre-release, released — or skip for now?"
-
-   as four options, the first three carrying the one-line descriptions from
-   `<derived-root>/skills/soul-stage/SKILL.md`. A chosen stage is then that skill's
-   argument: read the file and follow its screen, block and witness steps (it will
-   not ask the stage again); do not copy its text here — a copy written at init
-   never receives an upgrade, the same reason the register default lives in the
-   contract. **Skip writes nothing**: no line
-   means released-grade caution, which is the contract's default. A chosen stage
-   writes the block directly under the Register line, or under the import when
-   there is no Register line, and records the declaration as one witness entry.
-
-   *Evidence for asking here:* two adopting projects had the owner state "no
-   backwards compatibility — this is beta" by hand on consecutive days
-   (2026-08-24/25) — into two different always-on files, in two wordings, with no
-   shared source.
 
 3. **Ask the one question that cannot be defaulted: does the record go in git?**
 
@@ -162,6 +141,29 @@ line you have not verified resolves.
    Mind and never load it: one adopting project has carried a 164-line Mind that
    no file imports, and another project's own record names the failure exactly —
    *"a deployed Mind that nothing loads is inert."* Checking costs one `ls`.
+
+3d. **Offer the development stage — once, skippable — after the record exists.**
+   Whether `CLAUDE.md` was just created or already existed, if no line in it starts
+   `**Stage:`, open the `soul-stage` skill's own selection: read
+   `<derived-root>/skills/soul-stage/SKILL.md` and follow its step 1 as a bare run —
+   it reports the current state ("no stage declared", or a hand-written `**Phase:`
+   block if one exists) and offers *Just looking* / prototype / pre-release /
+   released with their descriptions. *Just looking* is the skip: say so, and
+   continue to step 4. This step sits after 3b on purpose — a chosen stage ends in a
+   witness entry, and until 3b has run there is no witness log to append to (the
+   2.2.0–2.2.2 order had it before the scaffold; found by fresh-context review,
+   2026-08-26, before any init ran it). Do not copy the skill's text or its
+   question here — a copy written at init never receives an upgrade, the same reason
+   the register default lives in the contract. **Skip writes nothing**: no line
+   means released-grade caution, which is the contract's default. A chosen stage
+   continues in that skill — its screen, block and witness entry — and lands the
+   block directly under the Register line, or under the import when there is no
+   Register line.
+
+   *Evidence for asking here:* two adopting projects had the owner state "no
+   backwards compatibility — this is beta" by hand on consecutive days
+   (2026-08-24/25) — into two different always-on files, in two wordings, with no
+   shared source.
 
 4. After creating or confirming the file, report:
    - The absolute path of the `CLAUDE.md` you wrote or found.
