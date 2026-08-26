@@ -17,6 +17,8 @@ across sessions; this reconciles it with reality and emits a tiered next-options
    questions — Soul System repo only; domain projects have none),
    and `.soul/handoff.md` if present. Update or prune the harness task list so it reflects
    active work, not a stale snapshot.
+   Also read the project CLAUDE.md's `**Stage:**` block if there is one — its
+   "Next stage when" line is the exit trigger this view exists to re-read.
 
 2. **Mind distill-staleness check.** Compare `mind.md`'s last-distilled marker against the
    findings/amendments accumulated since (count entries newer than the marker). If the gap
@@ -29,6 +31,10 @@ across sessions; this reconciles it with reality and emits a tiered next-options
    - **Now** — in-flight or immediate.
    - **Next** — ripe; earns doing soon (the distill prompt lands here when due).
    - **Later** — parked, trigger-gated, or awaiting evidence.
+   **If a Stage block exists**, one line at the top of Next:
+   `Stage: <stage> since <date> · next stage when: <trigger> — met?` When the
+   records suggest it has been (an outside consumer appeared, a release was cut),
+   say so and point at `/soul-stage`; do not run it. No block, no line.
    Each item **points at its durable source** (idea ID, finding ID, spec) — do not copy the
    content in.
 
