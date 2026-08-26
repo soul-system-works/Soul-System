@@ -31,10 +31,11 @@ that directory and concatenates them with the root file.
 before breaking it. That is the contract's default and today's behaviour;
 declaring a stage is how a project opts out of it.
 
-## The screen — one choice, two facts, one free line
+## The screen — the stage first, then two facts and one free line
 
-Ask all of it at once; the preset supplies the defaults and the owner changes only
-what differs. Plain words — the owner may never have heard of the Soul.
+Three short asks: the stage (argument or the opening selection), the two facts in
+one prompt, the additions as one line. The preset supplies the defaults and the owner
+changes only what differs. Plain words — the owner may never have heard of the Soul.
 
 **How to ask it.** The stage comes first — as the argument, or from the opening
 selection a bare `/soul-stage` shows (`/soul-init` opens that same selection) — so
@@ -53,6 +54,9 @@ screen below only when the prompt is unavailable (a `claude -p` run). Never draf
 owner's answers for them beyond the preset's defaults — the first live run pre-filled
 question 1 with a paragraph of this repo's internals, the opposite of approachable (the
 Body's test, 2026-08-26, SOUL-181).
+
+The prose screen below is the `claude -p` fallback only; there the stage is already
+the argument — show the chosen one with its description, do not re-ask it.
 
 > **Which stage is this project in?**
 > - **prototype** — throwaway code to answer a question; nothing is promised to anyone
@@ -155,21 +159,28 @@ is invisible to the model by design, so the always-on block has to carry them.
    - **No argument: report, then offer the choice.** Report the stage, date, relied-on
      list, trigger and additions if a block exists — or "no stage declared; treated as
      released". Then one selection through the harness's question prompt, four
-     options: *Just looking* first (the safe default — it stops, and nothing is written
-     or drafted), then *prototype* (throwaway code to answer a question), *pre-release*
-     (building the real thing; free to rename, reorganise, delete), *released* (people
-     rely on it; changes are careful and announced). A chosen stage continues exactly
-     as if it had been the argument; the current stage is a refresh. Without the
-     prompt tool (`claude -p`), print the same four as a hint and stop. A look never
+     options with these exact descriptions: *Just looking* first (see the current stage
+     and change nothing — the safe default), then *prototype* (throwaway code to answer
+     a question; nothing is promised to anyone), *pre-release* (building the real
+     thing; still free to rename, reorganise and delete), *released* (people rely on
+     it; changes are careful and announced). With a block present, mark the current
+     stage's option "(current — refreshes the block)". *Just looking* stops; nothing is
+     written or drafted. Opened from `/soul-init`, *Just looking* is the skip and init
+     continues with its next step. A chosen stage continues exactly as if it had been
+     the argument. Anything typed under the prompt's "Other" (`beta`, `frozen`, a
+     sentence) is not a stage: name the three and ask again — the same for an unknown
+     argument. Without the prompt tool (`claude -p`), print the three commands as the
+     hint — `/soul-stage prototype` · `/soul-stage pre-release` · `/soul-stage released`,
+     each with its description; the current stage refreshes — and stop. A look never
      writes and never drafts: the first live run answered a look with the full screen
      and a drafted proposal (2026-08-26); the fix was to stop drafting, not to stop
-     asking — the 2.2.1 run that only printed a hint sent the Body back for a second
-     command (the Body's call, same day). **Argument equal to the current stage:
+     asking — the 2.2.1 run printed a hint and stopped, and the Body asked whether the
+     stage should be typed or picked (same day). **Argument equal to the current stage:
      refresh** — rewrite the block from the current preset keeping the owner's
      answers; ask nothing and write no witness entry unless the owner then asks to
      change an answer.
 2. **Ask the screen** (the prompt, or the prose fallback) for a new or changed stage:
-   the argument is the stage; an existing block's answers appear as *Keep:* options,
+   the stage is known (argument or selection); an existing block's answers appear as *Keep:* options,
    otherwise only the preset's defaults. Wait for the owner. Check: `released` needs
    a real list for question 1 — ask again rather than write an empty public contract.
 3. **Compose the block** from the template and show it. Wait for go / edit / cancel.
@@ -220,7 +231,7 @@ same rule by hand the day before. Design grilled with the Body:
 `docs/specs/2026-08-26-development-stage.md`. Idea: SOUL-I061. Prototype preset
 substance credited to mattpocock-skills `prototype`. **Adopted:** 2026-08-26
 (v2.2.0). **Amended:** 2026-08-26 (v2.2.1) — the screen is asked through the harness's
-question prompt, and a bare `/soul-stage` stops drafting; both from the first live run,
-the Body's test on this repo (SOUL-181). **Amended:** 2026-08-26 (v2.2.2) — a bare run
-offers the selection (*Just looking* first) and `/soul-init` reuses it; from the second
-test, same day. **Status:** active.
+question prompt, and a bare `/soul-stage` only looks; both from the first live run, the
+Body's test on this repo (SOUL-181). **Amended:** 2026-08-26 (v2.2.2) — reverses the
+look-only half: a bare run offers the selection (*Just looking* first) and `/soul-init`
+reuses it, after the record scaffold; from the second test, same day. **Status:** active.
