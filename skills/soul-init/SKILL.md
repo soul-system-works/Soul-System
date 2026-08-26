@@ -76,6 +76,24 @@ line you have not verified resolves.
      in v2.1.1 after fresh-context review found the contract and init both
      carrying the same default, always-on).
 
+2b. **Offer the development stage — once, skippable.** Whether `CLAUDE.md` was
+   just created or already existed, if it carries no `**Stage:**` line, ask:
+
+   > "Development stage — prototype, pre-release, released — or skip?"
+
+   with the three one-line descriptions from `<derived-root>/skills/soul-stage/SKILL.md`
+   (read that file and follow its screen, block and witness steps; do not copy its
+   text here — a copy written at init never receives an upgrade, the same reason
+   the register default lives in the contract). **Skip writes nothing**: no line
+   means released-grade caution, which is the contract's default. A chosen stage
+   writes the block directly under the Register line, or under the import when
+   there is no Register line, and records the declaration as one witness entry.
+
+   *Evidence for asking here:* two adopting projects had the owner state "no
+   backwards compatibility — this is beta" by hand on consecutive days
+   (2026-08-24/25), one of them only inside a witness narrative that no later
+   session reloads.
+
 3. **Ask the one question that cannot be defaulted: does the record go in git?**
 
    > "Keep this project's Soul record (witness, ideas, Mind) in version control? [Y/n]"
@@ -148,6 +166,9 @@ line you have not verified resolves.
    - A one-line reminder: the philosophy will only take effect from the *next* session — the current one is already loaded.
    - **Mention the optional Mind layer**: once the project has accumulated enough record-evidence to warrant compression, run `/soul-distill` to create a project-scoped `mind.md`, then add a second import line after the contract import to load it always-on. Skip on day-1 — the Mind is earned, not seeded.
    - **If the project's `CLAUDE.md` is itself gitignored**, say so plainly: the wiring is machine-local, and a fresh clone of this repo loads no contract at all. That can be a deliberate choice — say it is a choice, not a gap, and let the Body confirm.
+   - **If a stage was declared**, say which, and that its rules take effect from the
+     next session; if skipped, say that `/soul-stage` declares one later and that
+     until then the project is treated as released.
 
 ## What not to do
 
