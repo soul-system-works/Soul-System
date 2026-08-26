@@ -8263,3 +8263,31 @@ STATUS:       Resolved — v2.2.0 tagged and pushed; live run PENDING, recorded 
               other five adopting projects sit at the absent-means-released default
               until their owners run /soul-stage; none forced. Next id: SOUL-181.
 ```
+
+```
+ID:           SOUL-181
+WHEN:         2026-08-26 / first execution of /soul-stage — the Body's test on this repo
+WHERE:        skills/soul-stage/SKILL.md (loaded from the 2.2.0 cache) · this repo's
+              CLAUDE.md (read, not written)
+WHAT:         The Body ran a bare `/soul-stage` in the Soul System repo minutes after
+              the v2.2.0 plugin update, to see what it does. The skill loaded from the
+              2.2.0 cache (executor confirmed), found no block, stated the default
+              correctly — and then answered a look with the full screen plus a drafted
+              proposal: question 1 pre-filled with a paragraph of this repo's internals
+              (the hook predicate, the entry formats), the opposite of the
+              approachability the screen had been cut down for. The Body stopped it
+              ("I actually don't want to do anything yet") and asked which form the ask
+              should take — questionnaire, interactive prompt, or grill-me style.
+TYPE:         Live-run defect (ergonomic) + format decision
+CONSEQUENCE:  v2.2.1: a bare run looks only; the stage is always the argument (init
+              asks it once, as four options with descriptions); the two facts go
+              through the harness's question prompt, recommended option first, with
+              "Keep: <current>" on an existing block; additions as one plain line; no
+              drafted answers. Not a questionnaire (the owner is in the session), not
+              a grill (three fixed questions, no tree). Fresh-context review of the
+              patch found 12 more, all applied — the worst: a refresh through the
+              prompt would have silently wiped the relied-on list. The write path is
+              still unexercised; the RSF run is the next entry that reports it.
+STATUS:       Resolved — v2.2.1 cut on the Body's standing release-first call
+              (override per rule 8, stated in the changelog). Next id: SOUL-182.
+```
