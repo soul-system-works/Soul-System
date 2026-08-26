@@ -8291,3 +8291,32 @@ CONSEQUENCE:  v2.2.1: a bare run looks only; the stage is always the argument (i
 STATUS:       Resolved — v2.2.1 cut on the Body's standing release-first call
               (override per rule 8, stated in the changelog). Next id: SOUL-182.
 ```
+
+```
+ID:           SOUL-182
+WHEN:         2026-08-26 / third live test of /soul-stage — the 2.2.2 selection path
+WHERE:        skills/soul-stage/SKILL.md (loaded from the 2.2.2 cache) · this repo's
+              CLAUDE.md (read, not written)
+WHAT:         The Body ran a bare `/soul-stage` on this repo for the third time today,
+              each time on the version just released: 2.2.0 answered a look with the
+              full screen and a drafted proposal (SOUL-181); 2.2.1 printed the
+              three-keyword hint and stopped; 2.2.2 reported "no stage declared;
+              treated as released", opened one four-option prompt (Just looking /
+              prototype / pre-release / released, descriptions attached), and on
+              "Just looking" stopped — nothing written, nothing drafted. That is the
+              behaviour the 2.2.2 row promised, executed.
+TYPE:         Live-run result (partial pass) + a repeated process defect
+CONSEQUENCE:  The "unrun at cut" list in the 2.2.2 row shrinks by one: the opening
+              selection has run. Still unrun: picking a stage -> the two-fact prompt
+              -> the additions line -> the block shown -> the write and its witness
+              entry; reporting a hand-written Phase block; init's step 3d; the
+              claude -p hint; refresh. The RSF run exercises the first of those.
+              Process: the handoff cursor had pre-assigned "SOUL-182" to the RSF run
+              — the same id-reservation the 2.2.0 review removed from the changelog
+              and the 2.2.1 review removed again; this entry takes 182 because it is
+              the next event, and the cursor now says "the next entry" instead of a
+              number. Also durable now: a branch and a tag sharing a version name make
+              `git push origin main v2.2.1` fail as ambiguous — push tags by explicit
+              refspec (recorded in the spec's release step).
+STATUS:       Resolved — recorded; the remaining paths are the cursor's open gate.
+```
