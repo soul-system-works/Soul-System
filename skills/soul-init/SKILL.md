@@ -77,14 +77,17 @@ line you have not verified resolves.
      carrying the same default, always-on).
 
 2b. **Offer the development stage — once, skippable.** Whether `CLAUDE.md` was
-   just created or already existed, if no line in it starts `**Stage:`, ask:
+   just created or already existed, if no line in it starts `**Stage:`, ask —
+   through the harness's question prompt when available, else in prose:
 
-   > "Development stage — prototype, pre-release, released — or skip?"
+   > "Development stage — prototype, pre-release, released — or skip for now?"
 
-   with the three one-line descriptions from `<derived-root>/skills/soul-stage/SKILL.md`
-   (read that file and follow its screen, block and witness steps; do not copy its
-   text here — a copy written at init never receives an upgrade, the same reason
-   the register default lives in the contract). **Skip writes nothing**: no line
+   as four options, the first three carrying the one-line descriptions from
+   `<derived-root>/skills/soul-stage/SKILL.md`. A chosen stage is then that skill's
+   argument: read the file and follow its screen, block and witness steps (it will
+   not ask the stage again); do not copy its text here — a copy written at init
+   never receives an upgrade, the same reason the register default lives in the
+   contract. **Skip writes nothing**: no line
    means released-grade caution, which is the contract's default. A chosen stage
    writes the block directly under the Register line, or under the import when
    there is no Register line, and records the declaration as one witness entry.
