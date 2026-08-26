@@ -724,9 +724,9 @@ Expected: `DIFF hits: 0` and `MSGS hits: 0`. The scan reads the private map (`re
 - [ ] **Step 5: Merge, tag, push** — authorised by the Body's "go straight to release":
 
 ```bash
-git checkout main && git merge --no-ff v2.2.0 -m "merge: v2.2.0 — the development stage" && git tag v2.2.0 && git push origin main --tags
+git checkout main && git merge --no-ff v2.2.0 -m "merge: v2.2.0 — the development stage" && git tag v2.2.0 && git push origin main v2.2.0
 ```
-Expected: merge commit created, tag created, push accepted.
+Expected: merge commit created, tag created, push accepted. **Never `--tags`** — it pushes EVERY local tag: as first written this step used `--tags`, and on 2026-08-26 it also published `archive/video-pipeline`, a private archive of 10 unmerged video-pilot commits (0 private-map hits, but publishing it was never the owner's choice; a deleted ref does not delete the objects — mind 5(d)). Name the tag.
 
 - [ ] **Step 6: Bring the local plugin to the released version**
 
