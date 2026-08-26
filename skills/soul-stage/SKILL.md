@@ -1,13 +1,13 @@
 ---
 name: soul-stage
-description: Declare or change the project's development stage — prototype, pre-release, or released — and write the short block of rules that follows from it into the project's CLAUDE.md, beside the Register line. Owner-invoked only; each change is one witness entry. Run with no argument to see the current stage or refresh the block.
+description: Declare or change the project's development stage — prototype, pre-release, or released — and write the short block of rules that follows from it into the project's CLAUDE.md, beside the Register line. Owner-invoked only; each change is one witness entry. Run with no argument to see the current stage; re-run with the current stage to refresh the block.
 disable-model-invocation: true
 ---
 
 # /soul-stage — say what may be broken and what must be kept
 
-`/soul-stage` shows the current stage and offers a refresh.
-`/soul-stage <prototype|pre-release|released>` sets or changes it.
+`/soul-stage` shows the current stage — a look, nothing more.
+`/soul-stage <prototype|pre-release|released>` sets or changes it; the current stage refreshes it.
 
 **What this is.** The contract's rule 7 says: when the right choice depends on
 knowledge only the owner has, ask. Whether anyone relies on this code, and whether
@@ -35,6 +35,18 @@ declaring a stage is how a project opts out of it.
 
 Show all of it at once, pre-filled from the chosen preset; the owner edits only
 what differs. Plain words — the owner may never have heard of the Soul.
+
+**Ask it through the harness's question prompt** (`AskUserQuestion`) whenever that
+tool is available — one call, the items below as its questions: the stage as three
+selectable options carrying the one-line descriptions, the chosen preset first and
+marked recommended; question 1 as *Nothing* / *Let me list them* (the owner types the
+list); question 2 as *First outside user* / *A v1.0 tag* / *Not sure yet* (or their own
+line); the additions as *None* (or their own line). Skip question 1 for prototype; for
+released, *Nothing* is not an answer — ask again. Fall back to the prose screen below
+only when the prompt is unavailable (a `claude -p` run). Pre-fill from an existing
+block only; never draft the owner's answers for them beyond the preset's defaults — the
+first live run pre-filled question 1 with a paragraph of this repo's internals, the
+opposite of approachable (the Body's test, 2026-08-26).
 
 > **Which stage is this project in?**
 > - **prototype** — throwaway code to answer a question; nothing is promised to anyone
@@ -134,11 +146,16 @@ is invisible to the model by design, so the always-on block has to carry them.
    it is, even when it sits between those paragraphs. Show the owner the exact line
    ranges you intend to replace before doing it. If a block exists, show its stage, date, relied-on list, trigger and
    additions.
-   - **No argument:** offer a refresh (rewrite from the current preset, keeping the
-     owner's three answers) or stop. **Argument equal to the current stage:** same
-     as a refresh.
-2. **Show the screen**, pre-filled: preset from the argument; answers 1, 2 and the
-   additions from the existing block if there is one. Wait for the owner. Check:
+   - **No argument: look only.** Report the stage, date, relied-on list and trigger
+     if a block exists — or "no stage declared; treated as released" — and one hint:
+     `/soul-stage <prototype|pre-release|released>` to declare, `/soul-stage <the
+     current stage>` to refresh. Then stop. Do not open the screen: a look is not a
+     declaration, and the first live run answered a look with the full screen and a
+     drafted proposal (2026-08-26). **Argument equal to the current stage:** refresh —
+     rewrite from the current preset, keeping the owner's three answers.
+2. **Ask the screen** (the prompt, or the prose fallback): preset from the argument,
+   pre-selected; answers 1, 2 and the additions from the existing block if there is
+   one, otherwise the preset's defaults and nothing more. Wait for the owner. Check:
    `released` needs a non-empty answer to question 1 — ask again rather than write
    an empty public contract.
 3. **Compose the block** from the template and show it. Wait for go / edit / cancel.
@@ -188,4 +205,6 @@ hand-written beta block, 2026-08-24/25) and a second project's owner stating the
 same rule by hand the day before. Design grilled with the Body:
 `docs/specs/2026-08-26-development-stage.md`. Idea: SOUL-I061. Prototype preset
 substance credited to mattpocock-skills `prototype`. **Adopted:** 2026-08-26
-(v2.2.0). **Status:** active.
+(v2.2.0). **Amended:** 2026-08-26 (v2.2.1) — the screen is asked through the harness's
+question prompt, and a bare `/soul-stage` only looks; both from the first live run, the
+Body's test on this repo (SOUL-181). **Status:** active.
