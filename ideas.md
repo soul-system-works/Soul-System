@@ -2094,3 +2094,34 @@ DEVELOP:   Steward (does this earn a place in rule 3, or is it a distill-time
 NOTES:     Captured under /soul-handoff's flush step — the Body's invocation of
            the instrument is the confirmation, stated out loud (A022).
 ```
+
+```
+ID:        SOUL-I061
+WHEN:      2026-08-26
+IDEA:      A declared DEVELOPMENT STAGE per project — prototype / pre-release /
+           released — recorded once in the project's own CLAUDE.md as a standing
+           answer to contract rule 7, with the short block of rules that follows
+           from it (what may be broken, what must be kept). Set by a new
+           owner-invoked /soul-stage; offered at /soul-init with a skip; each
+           change is one witness entry; absent means released-grade caution
+           (today's behaviour). Not doctrine, not a workflow, no change to the
+           completion gate.
+STATUS:    In build (v2.2.0) — design grilled and resolved in
+           docs/specs/2026-08-26-development-stage.md
+WHY:       The owner supplied the same rule by hand in two projects on
+           consecutive days (RSF CLAUDE.md 8d2b91c, 2026-08-25; a UE thermal-sensing
+           project's witness, 2026-08-24 — the latter surviving only in a narrative
+           no later session reloads), while a third project (that one's parent UE
+           codebase) needs the INVERSE rule and nothing declares that either. The model's default
+           is release-grade caution; nothing in the contract says which project
+           it is in. Two carve-outs were learned by running under the
+           hand-written rule (SENSA-061/062, SENSA-064) and are the unguessable
+           content that justifies hosting the presets upstream. Origin: RSF
+           cursor OWED UPSTREAM #11.
+DEVELOP:   Steward — the one measured question is Q23's locked prediction
+           (shim/deprecation churn falls after declaration; a miss would be
+           over-deletion breaking a reader). Check at the next distill.
+NOTES:     Captured with the Body's go at the close of the grill (A022). The
+           seven-question draft was cut to one choice + two questions + a free
+           line at the Body's push-back: four questions were the stage restated.
+```
