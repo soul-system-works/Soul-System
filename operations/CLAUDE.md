@@ -64,6 +64,11 @@ LENGTH is rule 9 either way. Override with a `**Register: fluent**` line in the
 project's own CLAUDE.md. The default lives here because a copy written into a
 project at init never receives an upgrade.
 
+**Stage** (optional): a project declares `prototype` / `pre-release` / `released`
+in its own CLAUDE.md via `/soul-stage`, and the block beneath says what may be
+broken and what must be kept; undeclared means released — protect what others
+may depend on, and ask before breaking it (rule 7).
+
 **Projects importing this contract** owe their Soul-System-level lessons upstream —
 observations about how this system itself behaved (gates, instruments), plus a
 closing note at milestones. Park them in the cursor's `OWED UPSTREAM` field as they
