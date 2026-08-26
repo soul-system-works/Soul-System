@@ -54,7 +54,7 @@ line you have not verified resolves.
 1. Determine the current working directory (the project root). Do not search upwards; use the directory the session was started in.
 
 2. Check whether `CLAUDE.md` already exists in that directory.
-   - **If it exists:** read it. If it already contains an import line ending in `/operations/CLAUDE.md` (any root — a prior install may have used a different path), note "import already present" — **do not stop; continue to steps 3–3c** to ensure the record scaffold, the git-tracking answer and the Mind import are all in place (soul-init is idempotent: it backfills a missing record for an already-imported project). If it exists but does not contain that line, report the existing contents and ask the user whether to append the import line or leave it alone. Do not overwrite without explicit confirmation.
+   - **If it exists:** read it. If it already contains an import line ending in `/operations/CLAUDE.md` (any root — a prior install may have used a different path), note "import already present" — **do not stop; continue to steps 2b–3c** to ensure the record scaffold, the git-tracking answer and the Mind import are all in place (soul-init is idempotent: it backfills a missing record for an already-imported project). If it exists but does not contain that line, report the existing contents and ask the user whether to append the import line or leave it alone. Do not overwrite without explicit confirmation.
    - **If it does not exist:** ask one question — "Response register: plain or
      fluent?" (default **plain** if the user has no preference) — then create it
      containing the import line, plus a Register line ONLY if the answer was
@@ -75,6 +75,24 @@ line you have not verified resolves.
      has to live where the difference is (SOUL-I050 kept; the duplication removed
      in v2.1.1 after fresh-context review found the contract and init both
      carrying the same default, always-on).
+
+2b. **Offer the development stage — once, skippable.** Whether `CLAUDE.md` was
+   just created or already existed, if no line in it starts `**Stage:`, ask:
+
+   > "Development stage — prototype, pre-release, released — or skip?"
+
+   with the three one-line descriptions from `<derived-root>/skills/soul-stage/SKILL.md`
+   (read that file and follow its screen, block and witness steps; do not copy its
+   text here — a copy written at init never receives an upgrade, the same reason
+   the register default lives in the contract). **Skip writes nothing**: no line
+   means released-grade caution, which is the contract's default. A chosen stage
+   writes the block directly under the Register line, or under the import when
+   there is no Register line, and records the declaration as one witness entry.
+
+   *Evidence for asking here:* two adopting projects had the owner state "no
+   backwards compatibility — this is beta" by hand on consecutive days
+   (2026-08-24/25) — into two different always-on files, in two wordings, with no
+   shared source.
 
 3. **Ask the one question that cannot be defaulted: does the record go in git?**
 
@@ -148,6 +166,9 @@ line you have not verified resolves.
    - A one-line reminder: the philosophy will only take effect from the *next* session — the current one is already loaded.
    - **Mention the optional Mind layer**: once the project has accumulated enough record-evidence to warrant compression, run `/soul-distill` to create a project-scoped `mind.md`, then add a second import line after the contract import to load it always-on. Skip on day-1 — the Mind is earned, not seeded.
    - **If the project's `CLAUDE.md` is itself gitignored**, say so plainly: the wiring is machine-local, and a fresh clone of this repo loads no contract at all. That can be a deliberate choice — say it is a choice, not a gap, and let the Body confirm.
+   - **If a stage was declared**, say which, and that its rules take effect from the
+     next session; if skipped, say that `/soul-stage` declares one later and that
+     until then the project is treated as released.
 
 ## What not to do
 

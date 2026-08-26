@@ -7,8 +7,10 @@ goes deeper.
 ## Day one
 
 Run `/soul-init` in your project. It asks two short questions — plain or fluent
-language (plain is the default), and whether your record goes in version control
-(yes is the default) — then writes one import line into your `CLAUDE.md` and
+language (plain is the default) and, after an optional one you can skip (the project's
+development stage: prototype, pre-release or released; skipping means "treat it as
+released"), whether your record goes in version control (yes is the default) — then
+writes one import line into your `CLAUDE.md` and
 creates two empty record files, `.soul/ideas.md` and `.soul/witness.md`. If your
 project already keeps them at its root, they stay there; both layouts work.
 
@@ -53,11 +55,19 @@ an AI couldn't re-derive on its own. You review the draft; nothing is committed
 without you. Many projects never need one; the proposal arriving is how you find
 out yours does.
 
+**Declaring a stage.** When the project's situation changes — the first outside
+user, a v1.0, or the day you decide the prototype is now the real thing — run
+`/soul-stage <prototype|pre-release|released>`. One screen: pick the stage, name
+anything outside the project that relies on part of it, say what would move it to
+the next stage. It writes a short block into your `CLAUDE.md` saying what may be
+broken and what must be kept, and records the change as one entry. Undeclared
+projects are treated as released: nothing is broken without asking you.
+
 ## Going deeper
 
 | Want | Read |
 |---|---|
-| Any command in full | `skills/<name>/SKILL.md` (e.g. [`soul-capture`](../skills/soul-capture/SKILL.md), [`soul-distill`](../skills/soul-distill/SKILL.md), [`soul-init`](../skills/soul-init/SKILL.md)) |
+| Any command in full | `skills/<name>/SKILL.md` (e.g. [`soul-capture`](../skills/soul-capture/SKILL.md), [`soul-stage`](../skills/soul-stage/SKILL.md), [`soul-distill`](../skills/soul-distill/SKILL.md), [`soul-init`](../skills/soul-init/SKILL.md)) |
 | The page the AI actually reads | [`operations/CLAUDE.md`](../operations/CLAUDE.md) |
 | Why the system is shaped this way | [`philosophy/the-soul.md`](../philosophy/the-soul.md) |
 | What it will and won't do (measured) | [`docs/study/blog-release.md`](study/blog-release.md) |

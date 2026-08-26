@@ -8218,3 +8218,48 @@ CONSEQUENCE:  THE CHAIN IS THE FINDING, and it is the closing note's
 STATUS:       Resolved — v2.1.1 cut, tagged, pushed; tests 9 -> 11 including a
               negative asserted against the real home directory.
 ```
+
+```
+ID:           SOUL-180
+WHEN:         2026-08-26 / v2.2.0 — the development stage
+WHERE:        skills/soul-stage/SKILL.md · operations/CLAUDE.md (one paragraph) ·
+              skills/soul-init, soul-resume, soul-next, soul-help ·
+              docs/specs/2026-08-26-development-stage.md
+WHAT:         A project can now declare prototype / pre-release / released once, in
+              its own CLAUDE.md, as a standing answer to rule 7; undeclared means
+              released. SHIPPED UNEXERCISED, AS AN OVERRIDE STATED PER RULE 8: the
+              Body chose release-first so every adopting project receives it at
+              once, and declined serving the branch locally from the marketplace
+              clone; the live run on RSF follows the push (SOUL-181) and any defect
+              becomes v2.2.1. Fresh-context review of the applied result found
+              SIXTEEN findings, all applied before merge — the first a false record
+              claim of the author's own (a thermal project's beta rule "survived
+              only in a witness narrative"; its sub-deliverable's nested CLAUDE.md
+              carries it, at the path the witness itself named), the second a
+              legacy-block rule that would have deleted RSF's house rules on the one
+              file it was written for, the third a hand-counted instrument total off
+              by one for the second release running (soul-prompt, shipped
+              2026-08-12, missed by every hand count). Separately, the release's own
+              name scan — run against the PRIVATE map, printing REF ids only — caught
+              two real names the author had written into the spec and the idea entry
+              in local commits; the branch was replayed from main before anything
+              left this machine (mind 5(c), held by an instrument this time).
+TYPE:         Build record + override + locked prediction
+CONSEQUENCE:  LOCKED PREDICTION (mind item 1 — lean to carry, always write the
+              miss direction): in RSF and RS Viewer, witness entries about
+              shim/deprecation/compatibility churn FALL per entry over the next
+              distill window. BASELINE WITH ITS METHOD (SOUL-I060): `grep -c -i -E
+              "backwards?[- ]compat|\bshim\b|deprecat|legacy path|\balias(es)?\b|
+              migration layer|preserv(e|ed|ing) (the )?old"` over each log on
+              2026-08-25 gave 13 matching LINES in RS Viewer's 14-entry log and 8 in
+              RSF's 64-entry log (line hits, not entries; a narrower keyword set
+              gives 3 and 7). The number is method-bound: the check re-runs THIS
+              regex and compares hits per entry. MISS DIRECTION: if it misses, the
+              miss is over-deletion — a reader broken by a removed field, the
+              SENSA-064 class — not under-deletion. Check at the next /soul-distill
+              of either project; record the result as a witness entry there and here.
+STATUS:       Resolved — v2.2.0 tagged and pushed; live run PENDING, recorded at
+              SOUL-181 (the next entry this repo writes). Standing residual: the
+              other five adopting projects sit at the absent-means-released default
+              until their owners run /soul-stage; none forced. Next id: SOUL-181.
+```

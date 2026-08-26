@@ -45,7 +45,8 @@ page the AI reads, wired in by `/soul-init` as an `@import`), the **commands**
 (`/soul-*`, namespaced as e.g. `/soul-system:soul-capture`), and the
 **pre-completion verification hook** (the gate that blocks unverified "done").
 `/soul-init` also asks one register question — plain or fluent language; plain is
-the default — and scaffolds the project's record files.
+the default — offers an optional development stage (`/soul-stage`: what may be
+broken, what must be kept), and scaffolds the project's record files.
 
 **What happens after install — who does what, and when:**
 [`docs/using-the-soul.md`](docs/using-the-soul.md), one page.
@@ -91,7 +92,7 @@ If you found something worth sharing, see `CONTRIBUTING.md`.
 ```
 philosophy/     The Soul — the human-facing book (the AI does not read this)
 operations/     The contract page — imported by @ into your project's CLAUDE.md
-skills/         The eight /soul-* instruments, as Claude Code skills (invoked /soul-capture, …)
+skills/         The ten /soul-* instruments, as Claude Code skills (invoked /soul-capture, …)
 hooks/          Activation instruments — the pre-completion Stop hook + plugin hooks.json
 amendments/     Amendments to the Soul, by lifecycle state (accepted/proposed/returned)
 findings/       Findings, open/ and closed/
