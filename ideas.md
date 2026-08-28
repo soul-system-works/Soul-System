@@ -2010,7 +2010,13 @@ IDEA:      The upstream loop should PULL, not push — a periodic mining pass ru
            a `/soul-upstream` that formats a parked observation as a GitHub
            issue, so a user who is NOT this repo's author has a route that does
            not require a checkout they don't own.
-STATUS:    Raw
+STATUS:    Raw — but the project half changed under it (2026-08-28, v2.3.0): the
+           parking spot is `upstream.md`, not the cursor field, and the PULL half
+           now has its first piece, `tools/upstream-status.py` (counts unmined
+           entries across the registry; `--stamp` marks one collected). What is
+           still unbuilt is the pass itself and the `/soul-upstream` GitHub-issue
+           route for a user who does not own a checkout of this repo. See
+           SOUL-I062 / SOUL-183.
 WHY:       Push has been measured and it does not work: two upstream notes
            received in four months across six adopting projects, while one
            project sat on two correctly-identified observations it had nowhere
@@ -2125,4 +2131,45 @@ DEVELOP:   Steward — the one measured question is Q23's locked prediction
 NOTES:     Captured with the Body's go at the close of the grill (A022). The
            seven-question draft was cut to one choice + two questions + a free
            line at the Body's push-back: four questions were the stage restated.
+```
+
+```
+ID:        SOUL-I062
+WHEN:      2026-08-28
+RAW:       Give project→system lessons a durable file instead of a field in the
+           replaced, gitignored handoff cursor — and stop the session nagging
+           the owner about them.
+SHAPE:     `upstream.md` beside witness.md/ideas.md, append-only, created on
+           first append and NOT scaffolded at init. The cursor's OWED UPSTREAM
+           field is deleted, and the carry-forward clause and three-cursor
+           escalation go with it — both existed only to compensate for volatile
+           storage. Visibility becomes doctrine: at most one short clause on
+           append, never a count, never a reminder in a domain project. The
+           reporting moves to /soul-next run in the Soul System repo, which is
+           the only seat a mining pass can run from.
+STATUS:    In build (v2.3.0) — docs/specs/2026-08-28-upstream-store.md
+WHY:       The escalation added in v2.1.1 is a data-loss alarm wearing a
+           contribution-request costume: the cursor is gitignored and rewritten
+           wholesale each session, so a parked lesson is one `OWED UPSTREAM:
+           none` away from gone. It fires in the adopting project's session,
+           where the owner can do nothing about it, and reads as a request to
+           contribute. The Body asked for it to stop (2026-08-28). Silencing it
+           alone would be strictly worse — the hazard is real — so the storage
+           becomes durable and the alarm becomes unnecessary. Measured the same
+           day: 19 cursors on disk, 7 with non-empty blocks, ~230 lines never
+           collected; this repo's cursor knew about one of the seven.
+DEVELOP:   The predicted doctrine REDUCTION did not happen, measured twice:
+           after the edits /soul-handoff went 121 -> 122 and the contract
+           81 -> 81; after the fresh-context review's 15 fixes, 121 -> 140 and
+           81 -> 82 (5506 -> 5597 bytes), +90 lines over nine files. The
+           always-on cost went slightly UP. Saying "do not nag" costs about
+           what the nagging cost, and the review added an upgrade check, a
+           tracking rule and a stronger guard on top. The win is behavioural,
+           not textual. Watch whether silence turns into never-mined; the
+           honest limit is that nothing schedules the collector, and a durable
+           store makes an uncollected note stale rather than lost.
+NOTES:     The ordering constraint is migrate-then-ship: once the new skill
+           reaches those 7 projects, a session there writes a cursor with no
+           OWED UPSTREAM field and no carry-forward rule, and the only copy is
+           gone. Task 1's script is dry-run-first for that reason.
 ```

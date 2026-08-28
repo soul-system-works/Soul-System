@@ -27,6 +27,26 @@ across sessions; this reconciles it with reality and emits a tiered next-options
    Next-tier item. This is the trigger that keeps `mind.md` from silently going stale (the
    re-distill activation rides here, not on memory — Rule 6).
 
+2b. **Upstream backlog — Soul System repo ONLY.** The guard is `findings/open/`
+   **and** `operations/CLAUDE.md` **and** `SYSTEM-VERSION.md`, all at the repo root —
+   the same predicate `tools/upstream-migrate.py` uses. Do not weaken it to "the
+   witness log uses `SOUL-###`": seven adopting projects still carry an empty
+   `findings/open/`, and two of them cite upstream `SOUL-###` ids in their own
+   witness logs, so that pair reads TRUE outside this repo (measured 2026-08-28).
+   When the guard passes, run `python3 tools/upstream-status.py` **from the repo
+   root** (the path is relative). It counts entries in the
+   registered adopting projects' `upstream.md` files that carry no `**Mined:**`
+   line. If the total is non-zero, surface ONE Later-tier line: *"N unmined upstream
+   notes across M projects → mining pass."* Nothing more — no per-project breakdown
+   unless the Body asks.
+
+   **In any other project, this step does not exist.** Do not count, do not mention
+   `upstream.md`, do not report a backlog. That reporting fired in the adopting
+   project's session for eight days and it was the wrong seat: the owner there can
+   do nothing about it, and a mining pass can only be run from here (2026-08-28,
+   SOUL-I062). `registry/PROJECTS.txt` is gitignored — the paths are private and
+   never reach public main.
+
 3. **Present a TIERED next-options list:**
    - **Now** — in-flight or immediate.
    - **Next** — ripe; earns doing soon (the distill prompt lands here when due).
@@ -54,4 +74,6 @@ across sessions; this reconciles it with reality and emits a tiered next-options
 **Source:** Built by the Artificer for SOUL-I013 as `/soul-tasks`; renamed to `/soul-next`
 and given the Mind distill-staleness trigger at the Cut (→1.0, 2026-06-08). The forward
 guardrail paired with `/soul-explain`; operationalizes proactive-next-steps (SOUL-I010)
-while keeping the list a pointer to the durable records. **Status:** active.
+while keeping the list a pointer to the durable records. **Amended:** 2026-08-28
+(v2.3.0) — step 2b, the upstream backlog line, which exists here because this is the
+only seat a mining pass can run from (SOUL-I062). **Status:** active.

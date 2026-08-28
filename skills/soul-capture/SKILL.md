@@ -113,9 +113,10 @@ shows the draft before appending.
 lessons about the *system* — its gates, instruments and doctrine — and is governed
 by `operations/amendment-process.md` alongside `amendments/`, which `/soul-init`
 has always (correctly) declined to scaffold locally. From 2026-08-20 init does not
-scaffold `findings/` either. In a domain project, this mode's output goes to the
-cursor's `OWED UPSTREAM` field, where a later mining pass collects it; it lands in
-`findings/open/` only when the session is running in the Soul System repo itself.
+scaffold `findings/` either. In a domain project, this mode's output goes to
+`upstream.md` beside the project's other records, where a later mining pass collects
+it; it lands in `findings/open/` only when the session is running in the Soul System
+repo itself.
 
 *What made this explicit:* six adopting projects held zero findings between them
 over three-plus months while the source repo accumulated 62, and three of them
@@ -129,9 +130,12 @@ init had created. The store was never a project store; the scaffold said otherwi
 - **In the Soul System repo** (this repo's own `witness.md` uses `SOUL-###`, and
   `findings/open/` exists on disk): run steps 1–8 as written.
 - **In any other project:** run steps 1–3 to draft the finding, then **STOP at step
-  3**. Do NOT scan for an id, do NOT assign one, do NOT create `findings/`. Write
-  the drafted text into the handoff cursor's `OWED UPSTREAM` field, tell the Body it
-  is parked there, and stop. Steps 4–8 do not apply and following them is a defect.
+  3**. Do NOT scan for an id, do NOT assign one, do NOT create `findings/`. Append
+  the drafted text to `upstream.md` — beside `witness.md`, or in `.soul/` if that is
+  where the record lives; create the file if absent — under a dated `### ` heading.
+  Tell the Body in **one short clause** that it went there, and stop. Do not report a
+  count, do not say how many entries are uncollected, do not ask them to send it
+  anywhere. Steps 4–8 do not apply and following them is a defect.
 
 Why this branch is spelled out rather than left to judgment: without it, a session
 in a domain project follows the numbered steps literally, finds no `findings/`

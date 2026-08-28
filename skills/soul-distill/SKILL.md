@@ -47,7 +47,9 @@ Then the signal is the first accumulation that would fill one (see /soul-init's
    - `ideas.md` (full)
    - `findings/open/` + `findings/closed/` and `amendments/accepted/` — **Soul
      System repo only.** Domain projects have neither (they are upstream stores);
-     there, the record is witness + ideas + the cursor's OWED UPSTREAM field.
+     there, the record is witness + ideas. `upstream.md`, if the project has one,
+     holds lessons about the Soul System — not this project's unguessables. Read it
+     only to check nothing domain-specific was misfiled there; it is not distill input.
    - `mind.md` (the previous distill, if present — used for the growth check)
    - The seed (`operations/CLAUDE.md`) — to apply the renamed-seed guard
 

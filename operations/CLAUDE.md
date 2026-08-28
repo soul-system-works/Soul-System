@@ -52,9 +52,9 @@ This project keeps a durable record and verifies its claims. The working rules:
 **Stores** — THIS project's, never the Soul System source repo. In `.soul/`, or at
 the project root if that is where they already live (both valid; detect, never
 assume): `witness.md` (append-only, sequential IDs, re-read before appending) ·
-`ideas.md` · `mind.md` once earned. `findings/` and `amendments/` are the Soul
-System's own stores and are not scaffolded locally — a project's system-level
-lessons park in the handoff cursor's `OWED UPSTREAM` field. Forward view:
+`ideas.md` · `upstream.md` (append-only; system-level lessons, created when there is
+a first one) · `mind.md` once earned. `findings/` and `amendments/` are the Soul
+System's own stores and are not scaffolded locally. Forward view:
 `/soul-next`. Maintenance: `/soul-distill` (propose it when the record has grown;
 the owner confirms — it keeps this page within budget).
 
@@ -71,10 +71,11 @@ may depend on, ask before breaking it (rule 7), and offer `/soul-stage` to recor
 the answer.
 
 **Projects importing this contract** owe their Soul-System-level lessons upstream —
-observations about how this system itself behaved (gates, instruments), plus a
-closing note at milestones. Park them in the cursor's `OWED UPSTREAM` field as they
-happen; the Soul System collects them on a periodic pass. Do not try to write into
-that repo from here. Domain lessons stay home.
+how this system itself behaved (gates, instruments), plus a closing note at
+milestones. Append them to `upstream.md` as they happen; the Soul System collects
+them on a periodic pass. Never write into that repo from here; domain lessons stay
+home. Say ONE short clause when you append and nothing more — no counts, no
+reminders, no mention at all in a session that appended nothing.
 
 The thinking behind this system — its history, roles, and the measurements that
 shaped it — lives in `philosophy/the-soul.md`. It is written for human readers;
