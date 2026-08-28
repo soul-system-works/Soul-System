@@ -24,14 +24,20 @@ Optional argument: a short description of what the next session is for — let i
      and the explicit negation, not just the rule — lives in a durable record at the site
      of future temptation. A rule handed off without its incident gets reinterpreted under
      pressure, and the drift documents itself (F053/A020).
-1b. **Park anything owed upstream.** Did this session learn something about the
+1b. **Append anything owed upstream.** Did this session learn something about the
    Soul System *itself* — an instrument that misfired, a gate that helped or got
-   in the way, a doctrine sentence that did not survive contact? That is owed
-   upstream under the contract, and it dies here unless it is parked where a later
-   pass can find it. Put it in the cursor's `OWED UPSTREAM` field, in the project's
-   own words. Do **not** try to write it into the Soul System repo from here —
-   most projects cannot reach it, and a lesson parked locally is retrievable while
-   a lesson not written is gone.
+   in the way, a doctrine sentence that did not survive contact? Append it to
+   `upstream.md` (beside `witness.md`; create the file if it does not exist), in
+   the project's own words, under a dated `### ` heading. Do **not** write it into
+   the Soul System repo from here — most projects cannot reach it. Then say **one
+   short clause** and nothing more; see *What not to do*.
+
+   **Tracking follows the record.** `upstream.md` is tracked if `witness.md` is, and
+   gitignored if the record is — the same choice `/soul-init` already made. On the
+   run that CREATES the file, say which it will be in that one clause, and if the
+   notes name a client, a vendor or anything else the repo does not already publish,
+   gitignore it instead and say so. Unlike the cursor it replaced, this file can land
+   in a tracked repo root, so the choice has to be made once rather than by default.
 
 2. **Write `.soul/handoff.md` — REPLACING the previous cursor, not appending to it**
    (create `.soul/` if missing):
@@ -43,7 +49,6 @@ Optional argument: a short description of what the next session is for — let i
                         can't vary; else "none open"]
    OPEN GATES:         [any gate mid-evaluation; else "none"]
    NEXT STEP:          [the immediate next action — the cursor]
-   OWED UPSTREAM:      [Soul-System-level observations, unsent; else "none"]
    POINTERS (reference, do not duplicate; mark provenance on every entry):
      - witness tail:   last entries in witness.md ([ids]) [read]
      - ideas:          ideas.md ([ripe ids]) [read]
@@ -66,15 +71,22 @@ Optional argument: a short description of what the next session is for — let i
    lines and 31 KB — three times the size of that project's own Mind.
 
    **CARRY FORWARD anything still owed.** Before writing, read the OLD cursor and
-   move any unfinished obligation into the new one — an unsent `OWED UPSTREAM`
-   entry, an open gate, a `[inherited]` claim not yet expired. `OWED UPSTREAM`
-   especially: it is the ONLY route a project has for lessons about the system
-   itself, it is collected by a pass that runs on no fixed schedule, and it lives in
-   this replaced, untracked file. Writing `OWED UPSTREAM: none` when the previous
-   cursor carried an unsent entry destroys it permanently. If an entry has ridden
-   three cursors uncollected, say so in the field itself and tell the Body — a
-   parked lesson nobody collects is the failure this field was created to fix, not
-   a state to keep re-parking silently.
+   move any unfinished obligation into the new one — an open gate, a `[inherited]`
+   claim not yet expired, a Body call still unanswered.
+
+   **FIRST, the one-time upgrade check.** If the old cursor still carries an
+   `OWED UPSTREAM` field (any cursor written before v2.3.0), **move its contents
+   into `upstream.md` before writing the new one.** The new template has no such
+   field, so replacing the cursor without moving it destroys the only copy — the
+   cursor is gitignored, as this step says two paragraphs down. Once moved, the
+   field never comes back.
+
+   After that check, anything owed upstream is no longer in this file: it lives in
+   `upstream.md`, which is durable and append-only, so a cursor rewrite cannot
+   destroy it. That is the whole reason the field was removed (v2.3.0). The check
+   above exists because the sentence you just read is false for exactly one cursor
+   per project — the last one written under the old rule (fresh-context review,
+   2026-08-28).
 
    **Size check before writing:** if the draft exceeds ~150 lines, it is carrying
    record, not cursor. Flush the excess to `witness.md` and point at it instead.
@@ -85,11 +97,6 @@ Optional argument: a short description of what the next session is for — let i
    expire, and the 472-line cursor carried fifteen of them, one explicitly
    "carried as [inherited] for several cursors and STILL true."
 
-   `OWED UPSTREAM` is not decoration: the field was invented by hand in a project
-   that had a lesson and nowhere to send it, and adopting it verbatim is cheaper
-   than inventing a worse one. Two upstream notes arrived in four months across six
-   projects; the parking field is the cheap half of fixing that, and the periodic
-   mining pass run from the Soul System repo is the other half.
 3. **Mark pointer provenance (A023/F061):** every POINTERS entry carries `[read]` — this
    session actually opened it — or `[inherited]` — carried from a prior cursor or from
    memory, unverified. A cursor pointer is a claim, not a fact: an unmarked or
@@ -110,6 +117,15 @@ Optional argument: a short description of what the next session is for — let i
 - Do **not** reproduce the conversation transcript or reimplement summarization — that is `/compact`'s job.
 - Do **not** duplicate content that already lives in the durable records — point to it.
 - Do **not** write the cursor to a tracked path; `.soul/handoff.md` is gitignored runtime state.
+- Do **not** nag about `upstream.md`. One short clause when something is appended —
+  *"noted upstream: `git checkout --` is not a sabotage undo"* — and nothing else,
+  ever. No running count, no "these have not been collected", no reminder that the
+  project owes anything, no mention at all in a session that appended nothing. The
+  obligation is real; the pestering is not. Its predecessor was a field in this
+  cursor that escalated at three uncollected rides, and it fired in the one seat —
+  the adopting project's session — where the owner could do nothing about it
+  (2026-08-28, the Body's call; SOUL-I062). Reporting belongs to `/soul-next` run
+  in the Soul System repo, which is where a mining pass can actually be run.
 
 ---
 
@@ -118,4 +134,7 @@ Optional argument: a short description of what the next session is for — let i
 `/compact` + the durable records (SOUL-I007). Pocock's handoff skill informed the
 "reference, don't duplicate" principle. **Amended:** SOUL-A023 (2026-07-16) — pointer
 provenance marks, from F061 (a cursor pointer propagated a false claim into a Body
-decision). **Adopted:** 2026-05-21. **Status:** active.
+decision). **Amended:** 2026-08-28 (v2.3.0) — `OWED UPSTREAM` leaves the cursor for a
+durable `upstream.md`; the carry-forward clause, the three-cursor escalation and all
+other nagging go with it (SOUL-I062;
+`docs/specs/2026-08-28-upstream-store.md`). **Adopted:** 2026-05-21. **Status:** active.

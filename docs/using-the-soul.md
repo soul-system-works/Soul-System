@@ -15,7 +15,14 @@ project already keeps them at its root, they stay there; both layouts work.
 
 Findings and amendments are NOT created locally. Those are records of changes to
 the Soul System itself and live upstream; anything your project learns about the
-system is parked in your handoff cursor's `OWED UPSTREAM` field.
+system is appended to an `upstream.md` file beside your other records. That file is
+created the first time there is something to put in it — if your project never has
+one, you will never see it, and nothing will ask you about it.
+
+**Upgrading from before v2.3.0?** Earlier versions kept these notes in an `OWED
+UPSTREAM` field inside `.soul/handoff.md`. The first `/soul-handoff` after the upgrade
+moves that field's contents into `upstream.md` before replacing the cursor. If you want
+to check it by hand first, the field is in your current `.soul/handoff.md`.
 
 That's the install. There is no new workflow to learn — start working.
 

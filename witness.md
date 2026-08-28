@@ -8320,3 +8320,54 @@ CONSEQUENCE:  The "unrun at cut" list in the 2.2.2 row shrinks by one: the openi
               refspec (recorded in the spec's release step).
 STATUS:       Resolved — recorded; the remaining paths are the cursor's open gate.
 ```
+
+```
+ID:           SOUL-183
+WHEN:         2026-08-28 / the upstream store, v2.3.0 — built, reviewed and migrated
+              in one session at the Body's "continue until you are done"
+WHERE:        operations/CLAUDE.md · skills/soul-handoff · soul-capture · soul-distill ·
+              soul-next · tools/upstream-migrate.py · tools/upstream-status.py ·
+              docs/specs/2026-08-28-upstream-store.md · seven adopting projects
+WHAT:         The Body asked why sessions had started nagging about OWED UPSTREAM and
+              said to stop showing it: an adopter who never intends to contribute gets
+              nagged anyway. The diagnosis was that the escalation was a DATA-LOSS
+              ALARM wearing a contribution-request costume — the field lived in a
+              gitignored cursor rewritten wholesale each session, so v2.1.1 could not
+              make the storage durable and made the session shout instead. Silencing
+              it alone would have been strictly worse. So the storage became durable
+              (`upstream.md`, append-only, created on first append, never scaffolded)
+              and the alarm became unnecessary. Measured first: 25 cursors on disk at
+              depth <= 6, 7 with non-empty blocks, 216 payload lines never collected.
+              Migrated BEFORE shipping — 47 entries into 7 projects, 0 lines lost,
+              re-verified against the .pre-2.3.0 backups independently of the script's
+              own check.
+TYPE:         Release + a fresh-context review that changed the release materially
+CONSEQUENCE:  Six for six: the review found 15, two release-blocking, all applied.
+              (a) The replacement carry-forward paragraph asserted an ABSOLUTE safety
+              claim — "nothing here can destroy it" — that is false for exactly one
+              cursor per project, the last one written under the old rule. Shipping it
+              would have destroyed the blocks of every adopter who updated before
+              migrating. The generalisation: a change that makes a hazard impossible
+              GOING FORWARD writes its safety claim in the present tense, and the
+              transition case is where it is false. (b) The migration's boundary
+              pattern truncated a field at any column-0 `API:`-style label inside it,
+              and the losslessness check could not see it because it only inspected
+              lines inside the block it had already extracted — a verifier scoped to
+              its own output cannot catch a scoping bug in its input. Both reproduced
+              on synthetic cursors, before and after. Also: the dedent was defeated by
+              the field label, so 16 entries in the largest store shipped as Markdown
+              code blocks (caught only because the reviewer READ the produced artifact,
+              not the diff); nothing could write `**Mined:**`, so the new backlog line
+              would have been a permanent unclearable escalation in place of the one
+              just removed; the registry was a depth-2 sweep presented as machine-wide.
+              Two locked-in claims were falsified and kept visible rather than
+              rewritten: the predicted doctrine REDUCTION (real: +90 lines, and the
+              always-on contract grew 5506 -> 5597 bytes — saying "do not nag" costs
+              about what the nagging cost), and "nineteen projects on this machine"
+              (real: 25) — the same confident-count-from-an-unstated-scope defect the
+              2.1.1 row records, committed while writing the row that records it.
+STATUS:       Resolved — v2.3.0 cut on the Body's standing release-first call. UNRUN
+              and handed forward: no cursor on this machine still carries the old
+              field, so the one-time upgrade check cannot be exercised here; and a real
+              /soul-handoff under the new rules has not run. Next id: SOUL-184.
+```
