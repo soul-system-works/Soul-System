@@ -8454,3 +8454,21 @@ CONSEQUENCE:  52 entries stamped, 2 held — both inside a bundle the Body's sum
 STATUS:       Open — F070-F073 unresolved by design; the name rule is enforced from
               here. Next id: SOUL-186.
 ```
+
+```
+ID:           SOUL-186
+WHEN:         2026-08-28 / invoking /soul-handoff in the repo that had just released it
+WHERE:        plugin cache 2.2.2 vs this tree at 2.3.2 · skills/soul-handoff/SKILL.md
+WHAT:         The Body ran /soul-handoff and the harness loaded the CACHED v2.2.2 skill,
+              three releases stale, which instructed the session to write the OWED
+              UPSTREAM field that v2.3.0 deleted. The session followed this tree's
+              v2.3.2 text instead and said so.
+TYPE:         Instrument/version mismatch observed in use
+CONSEQUENCE:  A release that changes a skill does not reach the session that shipped it;
+              the cache holds 2.0.1 through 2.2.2 and no 2.3.x. Every /soul-* invocation
+              since the v2.3.0 push has run pre-release text. Inverse of the F065-adjacent
+              upgrade hazard: there the OLD store met the NEW skill, here the NEW store
+              met the OLD skill. Only a session working IN this repo can notice, because
+              only it can compare the two.
+STATUS:       Open — no restart yet; the cursor carries it. Next id: SOUL-187.
+```
