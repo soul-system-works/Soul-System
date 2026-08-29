@@ -8371,3 +8371,61 @@ STATUS:       Resolved — v2.3.0 cut on the Body's standing release-first call.
               field, so the one-time upgrade check cannot be exercised here; and a real
               /soul-handoff under the new rules has not run. Next id: SOUL-184.
 ```
+
+```
+ID:           SOUL-184
+WHEN:         2026-08-28 / the first upstream mining pass, run the same day the
+              store it reads was built -- and the pass's own write-up reviewed
+WHERE:        7 adopting projects' upstream.md (read) · findings/open/SOUL-F065
+              through SOUL-F069 · skills/soul-handoff · skills/soul-capture ·
+              operations/CLAUDE.md
+WHAT:         The pull half of the upstream loop had never run in four months
+              (SOUL-I058's premise). The Body asked for it. 47 entries read and
+              all 47 dispositioned: 17 collected into five findings, 12 returned
+              as project business, 9 confirmations or resolutions, 9 held for the
+              Body. The Body then pushed back on the shortlist -- "some of these
+              seem project specific instead of global" -- and that pushback is
+              this release: re-graded against ONE question, does a file in the
+              Soul System change, eleven clusters became five.
+TYPE:         Instrument first-run + a doctrine defect the run measured
+CONSEQUENCE:  The entry test was a CATEGORY question and a sharp general lesson
+              feels like a system lesson at session end. Replaced with a LOOKUP --
+              name the file that would change -- in all THREE places it lives,
+              including the contract, which is the always-on copy and the one a
+              first pass patched last. Where the rejects go is now stated, and
+              two of the three routes are propose-only: writing mind.md directly
+              is a silent-loss path (a distill rewrites it whole and prunes the
+              unanchored), and writing the project's CLAUDE.md is an unratified
+              edit to always-on doctrine made when the owner has gone.
+              The generalisable part: an entry test phrased as a CATEGORY admits
+              everything that FEELS like the category; phrased as a LOOKUP it
+              admits only what can be pointed at -- but it fails the other way
+              too, because the contract is a plausible answer to almost anything,
+              so the test says name what in it would change.
+              What the review cost, and it is the point: FOUR of its nineteen
+              findings were release-blocking, and three of those were errors in
+              this pass's own write-up rather than in the change. (1) The headline
+              number was produced by a STRICTER rule than the one being shipped --
+              three entries returned as project business plainly named a Soul
+              file, and one of them was an entry whose own text read "collect or
+              close; re-parking silently is the failure the field exists for", so
+              closing it on a wrong reading WAS a silent re-park. 18/47 (38%)
+              became 12/47 (26%). (2) "All three projects overrode the hold and
+              wrote an apology" was true of two; the third recorded only the
+              collision -- and that sentence was the strongest claim in the entry,
+              offered as the argument for the pull half existing at all. (3) Six
+              entries held on purpose were left unstamped, which the backlog tool
+              reads as uncollected -- recreating, one release later, the
+              permanent unclearable escalation v2.3.0's review had just removed
+              from the adopting project's seat. A HELD stamp now exists and is
+              counted separately. Also: the pushed commit at 40311b9 says 46/40/19
+              because it reported the BACKLOG count as the total (one entry had
+              been stamped the day before) -- the confident-count-from-an-unstated-
+              scope defect, committed in the same hour as a row describing it.
+STATUS:       Resolved -- v2.3.1. Nine entries held for the Body across six
+              clusters, not the two the first write-up claimed; three of the nine
+              carried their own "escalate if skipped again" clause, which this
+              pass triggered and which is now raised rather than re-parked. One
+              held heading bundles six observations the migration cannot split.
+              Next id: SOUL-185.
+```

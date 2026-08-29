@@ -56,6 +56,18 @@ combined bullets does not.
 3. Whether the budget itself is right for a trap-heavy Mind, or whether the cap
    should scale with how many entries genuinely need an incident attached.
 
+## A second budget, found while reviewing this finding
+
+`/soul-distill` states the budget **twice and inconsistently**: "Target ≤80 lines;
+hard cap 120" in its instructions, and "Do not silently exceed the line budget. ≤200
+target, ≤300 cap" in its *What not to do* list. The 200/300 pair is the retired
+pre-2.0 anchor that v2.1.1 re-anchored to 80/120 — in one place only.
+
+A session obeying the Do-not list passes a 200-line Mind: the exact artifact the slim
+switch (A021) was made to prevent. This finding analysed the 80/120 budget without
+noticing the file still offers a second one (fresh-context review, 2026-08-28). Fixing
+it is a one-line deletion and does not need this finding resolved first.
+
 ## Why it matters beyond one skill
 
 The Mind is always-on text. A budget that is met by the one method that disables the

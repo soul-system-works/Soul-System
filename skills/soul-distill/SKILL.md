@@ -268,8 +268,17 @@ Then the signal is the first accumulation that would fill one (see /soul-init's
   either, retire it.
 - **Do not capture obligations as rules.** Doctrine vs obligation is the
   load-bearing boundary (Tier 2 evidence).
-- **Do not silently exceed the line budget.** ≤200 target, ≤300 cap; if you
-  cannot fit, prune harder before deploying.
+- **Do not silently exceed the line budget.** ≤80 target, ≤120 cap — the same
+  numbers step 3 states. This line said ≤200/≤300 until 2026-08-28: v2.1.1
+  re-anchored the budget away from the retired pre-2.0 seed in one place and missed
+  this one, so the skill offered two budgets and a session obeying this list passed a
+  200-line Mind, the exact artifact A021's slim switch exists to prevent (found by
+  fresh-context review while reviewing SOUL-F066, which is about the same budget and
+  did not notice the second copy).
+- **Do not merge entries to make the budget.** Cut whole entries instead. Merging is
+  the folding SOUL-F055 measured at 5-of-5 → 1-of-5 activation, so the intuitive way
+  to save lines is the one move known to switch the Mind off. See SOUL-F066 (open)
+  for the unresolved half: which rule wins when force and budget genuinely conflict.
 - **Do not recite passing checks or re-show unchanged entries.** Present the
   delta + a load-bearing verdict per changed entry; surface only flagged
   checks — the SOUL-055 gap-only discipline applied to the Mind's review

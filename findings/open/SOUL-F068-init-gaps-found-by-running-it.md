@@ -1,4 +1,4 @@
-# SOUL-F068 — Three defects in `/soul-init`, each found by running it somewhere it half-worked
+# SOUL-F068 — Four defects in `/soul-init`, each found by running it somewhere it half-worked
 
 ```
 FINDING ID:      SOUL-F068

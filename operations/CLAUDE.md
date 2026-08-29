@@ -70,12 +70,15 @@ broken and what must be kept; undeclared means released — protect what others
 may depend on, ask before breaking it (rule 7), and offer `/soul-stage` to record
 the answer.
 
-**Projects importing this contract** owe their Soul-System-level lessons upstream —
-how this system itself behaved (gates, instruments), plus a closing note at
-milestones. Append them to `upstream.md` as they happen; the Soul System collects
-them on a periodic pass. Never write into that repo from here; domain lessons stay
-home. Say ONE short clause when you append and nothing more — no counts, no
-reminders, no mention at all in a session that appended nothing.
+**Projects importing this contract** owe their Soul-System-level lessons upstream,
+plus a closing note at milestones. The test is a lookup, not a judgement: **name the
+file in this system that would change** — the contract, one of the skills, the hook.
+Cannot name one? It is a domain lesson and it stays home (26% of the first mining
+pass's notes failed this having passed a vaguer "is it about the system?" test). If
+you can, append it to `upstream.md` as it happens; the Soul System collects on a
+periodic pass. Never write into that repo from here. Say ONE short clause when you
+append and nothing more — no counts, no reminders, no mention at all in a session
+that appended nothing.
 
 The thinking behind this system — its history, roles, and the measurements that
 shaped it — lives in `philosophy/the-soul.md`. It is written for human readers;

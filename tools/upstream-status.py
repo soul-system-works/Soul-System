@@ -23,10 +23,20 @@ REG = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
 
 
 def entries(path):
-    """Return (total, unmined) headings in one upstream.md."""
+    """Return (total, unmined, held) headings in one upstream.md.
+
+    HELD is a deliberate decision, not a backlog item: the pass read the entry and
+    the owner has not ruled. Counting it as unmined recreates the permanent,
+    unclearable escalation this system removed from the adopting project's seat in
+    v2.3.0 — the first mining pass did exactly that with six entries, and a
+    fresh-context review caught it before the count could go stale (2026-08-28).
+    """
     text = open(path, encoding="utf-8").read()
     blocks = re.split(r"^### ", text, flags=re.M)[1:]
-    return len(blocks), sum(1 for b in blocks if "**Mined:**" not in b)
+    unmined = sum(1 for b in blocks if "**Mined:**" not in b)
+    held = sum(1 for b in blocks if "HELD" in b.split("**Mined:**")[-1][:120]
+               and "**Mined:**" in b)
+    return len(blocks), unmined, held
 
 
 def stamp(project, index, ident):
@@ -70,14 +80,15 @@ def main():
         return 0
     paths = [l.strip() for l in open(REG, encoding="utf-8")
              if l.strip() and not l.startswith("#")]
-    rows, tot_un, tot_all = [], 0, 0
+    rows, tot_un, tot_all, tot_held = [], 0, 0, 0
     for p in paths:
         for cand in (os.path.join(p, "upstream.md"),
                      os.path.join(p, ".soul", "upstream.md")):
             if os.path.exists(cand):
-                n, un = entries(cand)
+                n, un, hl = entries(cand)
                 tot_all += n
                 tot_un += un
+                tot_held += hl
                 if un:
                     rows.append((os.path.basename(p.rstrip("/")), un, n))
                 break
@@ -94,6 +105,8 @@ def main():
                  len(rows), "" if len(rows) == 1 else "s"))
     else:
         print("\nNo unmined upstream notes (%d collected)." % tot_all)
+    if tot_held:
+        print("%d held for the owner's ruling — a decision, not a backlog." % tot_held)
     return 0
 
 

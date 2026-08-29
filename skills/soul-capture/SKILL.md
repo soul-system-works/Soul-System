@@ -129,13 +129,33 @@ init had created. The store was never a project store; the scaffold said otherwi
 
 - **In the Soul System repo** (this repo's own `witness.md` uses `SOUL-###`, and
   `findings/open/` exists on disk): run steps 1–8 as written.
-- **In any other project:** run steps 1–3 to draft the finding, then **STOP at step
-  3**. Do NOT scan for an id, do NOT assign one, do NOT create `findings/`. Append
-  the drafted text to `upstream.md` — beside `witness.md`, or in `.soul/` if that is
-  where the record lives; create the file if absent — under a dated `### ` heading.
-  Tell the Body in **one short clause** that it went there, and stop. Do not report a
-  count, do not say how many entries are uncollected, do not ask them to send it
-  anywhere. Steps 4–8 do not apply and following them is a defect.
+- **In any other project:** apply the entry test first — **name the file in the
+  Soul System that would change** (the contract `operations/CLAUDE.md`, one of the
+  ten `skills/*/SKILL.md`, or `hooks/pre-completion-verify.py`; your `CLAUDE.md`
+  imports from the installed plugin, so you can read them).
+
+  - **You can name one:** run steps 1–3 to draft the finding, then **STOP at step
+    3**. Do NOT scan for an id, do NOT assign one, do NOT create `findings/`.
+    Append the drafted text to `upstream.md` — beside `witness.md`, or in `.soul/`
+    if that is where the record lives; create the file if absent — under a dated
+    `### ` heading. Tell the Body in **one short clause** that it went there, and
+    stop. Do not report a count, do not say how many entries are uncollected, do
+    not ask them to send it anywhere. Steps 4–8 do not apply and following them is
+    a defect.
+  - **You cannot name one:** this is a project lesson, not a finding. **Say so and
+    stop — do not silently re-route it.** The Body typed `finding`, and A022 makes
+    that their call; a session that quietly downgrades it has taken a decision that
+    is not its own. Name the destination you would suggest — `witness.md` for an
+    incident (run **witness mode** for it, so the project-code id scan, the
+    re-read-verify and the show-the-draft step all apply — this branch must not
+    append to `witness.md` by itself), `mind.md` at the next `/soul-distill` for a
+    convention, a proposed line in the project's `CLAUDE.md` for a standing rule —
+    and let the Body choose.
+
+  *Scope of the measurement:* on the first mining pass, 12 of 47 parked notes (26%)
+  named no Soul file. All 47 arrived through `/soul-handoff`'s upstream field, not
+  through this skill — this branch inherits the test because it routes to the same
+  store, not because it was measured here.
 
 Why this branch is spelled out rather than left to judgment: without it, a session
 in a domain project follows the numbered steps literally, finds no `findings/`
@@ -190,4 +210,5 @@ part (ID, format, placement, upstream reminder) — it does NOT graduate on its 
 differential (Mind contrast case; I024) is preserved by mode, not by command count. Carries
 the I027 re-read-verify protocol. Model-proposable for idea/witness since
 SOUL-A022 (2026-06-12; the Body's v2.0 review — "not clear WHEN").
-**Adopted:** 2026-06-08. **Status:** active.
+**Amended:** 2026-08-28 (v2.3.1) — STEP 0 gains the name-the-file
+entry test and an explicit refusal to self-downgrade the Body's `finding` call. **Adopted:** 2026-06-08. **Status:** active.

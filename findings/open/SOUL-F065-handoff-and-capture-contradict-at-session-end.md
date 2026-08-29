@@ -13,8 +13,13 @@ REFERENCE PROJECT: Three independent projects, none able to see the others'
                      appending (W022, I023-I025) and reporting prominently,
                      because the cursor is destroyed on replacement and a held
                      draft would be lost. Wants a doctrine ruling." Second cursor.
-                 (3) A third project — same collision, fourth ride, same
-                     resolution.
+                 (3) A third project — same collision, fourth ride. Its note
+                     records ONLY the collision: no append, no override, no
+                     explanation. Do not read it as a third instance of the
+                     override (corrected 2026-08-28 by fresh-context review; the
+                     first draft of this finding and the commit message at
+                     40311b9 both said "same resolution", which the record does
+                     not support).
 WITNESS IDS:     SOUL-183 (the mining pass that surfaced all three).
 STATUS:          Open — graduated by the Body 2026-08-28 from the first upstream
                  mining pass. Fix not adopted; the ruling below is a candidate.
@@ -35,15 +40,18 @@ opposite things about the same paragraph.
 
 ## Why every instance resolved the same way, and why that is not a fix
 
-All three projects appended and then said so prominently. Their stated reason is
+**Two of the three** appended and then said so prominently. Their stated reason is
 identical and correct: **the cursor is replaced wholesale, so a held draft is
 destroyed rather than deferred.** Holding is not "wait for approval" at session end;
-it is "discard."
+it is "discard." The third project recorded the collision and nothing else — it is
+evidence that the conflict is noticed independently, not evidence of a third override.
 
-That is three sessions independently reasoning past a shipped instruction because
-following it would lose the work. A rule that every instance overrides is not
-governing; it is generating apologies. Each of the three wrote an explanation of the
-override into its own record — the drift documenting itself.
+Two sessions in different projects independently reasoned past a shipped instruction
+because following it would lose the work, and each wrote the justification into its
+own record. A rule that its instances override is not governing; it is generating
+apologies. Two of three is still the strongest signal in the pass, and stating it as
+three of three — which the first write-up did — would have made the entry's central
+claim unsupported by its own sources.
 
 ## What the ruling has to settle
 
@@ -61,6 +69,5 @@ predates that and was never re-examined after it.
 
 ## Cost of leaving it
 
-Three projects, five/four/two rides each, all resolving it by override. The record
-each of them keeps now contains a paragraph justifying a rule violation that the
-system asked for.
+Three projects, five/four/two rides each; two of the three resolved it by override. The records of those two now contain a paragraph justifying a rule
+violation the system asked for.
