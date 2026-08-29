@@ -25,7 +25,7 @@ DEFAULT_REGISTRY = os.path.join(
 FIELD_RE = re.compile(r"^OWED UPSTREAM\b", re.M)
 # Known cursor field labels. A generic "two or more capitals then ':'" pattern was
 # tried first and silently TRUNCATED the field at any column-0 `API:` / `NOTE:` /
-# `RSF:` line inside it — the remainder stayed in the cursor with its own label gone,
+# `TODO:` line inside it — the remainder stayed in the cursor with its own label gone,
 # so a re-run reported "no field" and the next handoff destroyed it. verify() could
 # not see this: it only checks lines INSIDE the block it extracted (fresh-context
 # review, 2026-08-28, reproduced). Anything else at column 0 is a REFUSAL, not a

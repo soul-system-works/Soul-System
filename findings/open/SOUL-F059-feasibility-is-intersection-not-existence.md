@@ -3,13 +3,13 @@
 ```
 FINDING ID:      SOUL-F059
 DATE:            2026-06-19
-WITNESS IDS:     VOY-039 (reference project: VOYAGER-OS — the first synergistic-fusion
+WITNESS IDS:     REF-02-039 (reference project: REF-02-OS — the first synergistic-fusion
                  worked example; the design passed every "does the data exist" check yet
                  the marquee predictor lane was structurally excluded from the test).
 WHAT:            A pre-build feasibility check that confirms each input EXISTS can still
                  green-light a dead measurement, because the test actually needs the inputs
-                 to OVERLAP in the dimension the method compares on. In VOYAGER the prior
-                 doctrine (VOY-007 / M18: "measure n before building" — don't design a
+                 to OVERLAP in the dimension the method compares on. In REF-02-OS the prior
+                 doctrine (REF-02-007 / M18: "measure n before building" — don't design a
                  backtest whose data isn't there) had matured to a real discipline: name
                  the >=2-lane question, then verify the predictor lanes exist before
                  designing. It passed: the predictor lane (ITAAC construction, 371 obs, the
@@ -39,7 +39,7 @@ WHY NOT YET AMENDMENT:  Single instance, single reference project. The correctiv
                  axis (e.g. two datasets that both exist but share no entity keys, or no
                  unit of analysis), to show the lesson is about intersection-in-general and
                  not a time-specific quirk of rolling-window feeds.
-FILED BY:        VOYAGER-OS adopter project, per the I014 upstreaming obligation (Soul-meta
+FILED BY:        REF-02 adopter project, per the I014 upstreaming obligation (Soul-meta
                  lesson owed at a milestone boundary; domain result stays home in
                  findings/2026-06-15-vogtle-phase-fusion-worked-example.md).
 RELATED:         [[SOUL-F047]] (asserted-vs-executed — a feasibility check that PASSES on

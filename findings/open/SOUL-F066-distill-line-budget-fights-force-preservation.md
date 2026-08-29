@@ -7,11 +7,11 @@ KIND:            Doctrine conflict with a measured wrong answer — two rules in
                  same skill, no precedence stated, and the intuitive resolution is
                  the exact move a prior finding measured as destroying the rules.
 REFERENCE PROJECT: Three independent projects:
-                 (1) RSF — "the 80-line TARGET pulls against F045 for a project
+                 (1) SENSOR-FORGE — "the 80-line TARGET pulls against F045 for a project
                      whose Mind is mostly anti-prior traps; the honest landing was
                      105 lines, every entry anchored. The skill could say which
                      wins on conflict instead of 'cut, do not request an exception'."
-                 (2) dvs-nav — the same conflict, reported on its fourth cursor.
+                 (2) NAV-TOOL — the same conflict, reported on its fourth cursor.
                  (3) A third project — reported it new, AND supplied the remedy
                      (below) after hitting it in a live distill.
 WITNESS IDS:     SOUL-183.
@@ -48,7 +48,7 @@ combined bullets does not.
 
 ## What needs deciding
 
-1. **Precedence.** When force and budget conflict, which governs? RSF's honest
+1. **Precedence.** When force and budget conflict, which governs? SENSOR-FORGE's honest
    landing was 105 lines with every entry anchored — is that a pass or a fail?
 2. **The anti-merge rule.** "Shrink" reads as "combine" unless told otherwise. One
    sentence in `/soul-distill` — *cut whole entries, never merge them, because

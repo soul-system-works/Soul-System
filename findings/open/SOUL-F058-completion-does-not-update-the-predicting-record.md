@@ -3,8 +3,8 @@
 ```
 FINDING ID:      SOUL-F058
 DATE:            2026-06-12
-WITNESS IDS:     DAINS-030 (reference project: dains — the /soul-next reconciliation that
-                 surfaced three phantom-open records), DAINS-031 (a fourth instance found
+WITNESS IDS:     REF-03-030 (reference project: REF-03 — the /soul-next reconciliation that
+                 surfaced three phantom-open records), REF-03-031 (a fourth instance found
                  the very next session: a "these two stages are confirmed un-baked" record
                  was stale — the artifacts on disk already agreed with spec).
 WHAT:            Forward-looking records (NEXT lists, "ready for X" markers, "pending Y"
@@ -33,7 +33,7 @@ WHY NOT YET AMENDMENT:  All instances are from one reference project, and the co
                  reconcile-at-read MISSED a phantom (showing write-time update is
                  necessary), or a cost argument that write-time updates are cheaper than
                  every future reader re-deriving.
-FILED BY:        Archaeologist/Emissary (dains reference project); graduated by the Body
+FILED BY:        Archaeologist/Emissary (REF-03 reference project); graduated by the Body
                  2026-06-12 per the I014 upstreaming obligation.
 RELATED:         [[SOUL-F047]] (asserted-vs-executed — the overstating twin),
                  [[SOUL-F054]] (capability amplifies confabulation absent record — stale

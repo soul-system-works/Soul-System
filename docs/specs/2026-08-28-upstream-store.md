@@ -14,7 +14,7 @@ careless `OWED UPSTREAM: none` away from being gone forever. v2.1.1 could not ma
 the storage durable, so it made the session **shout** instead: carry it forward, and
 if an entry has ridden three cursors, say so in the field and tell the Body.
 
-The shouting works — it is how the sixteen stranded RSF items became visible. But it
+The shouting works — it is how the sixteen stranded SENSOR-FORGE items became visible. But it
 fires in the adopting project's session, where the owner can do nothing about it, and
 it reads as a request to contribute upstream when it is actually a data-loss alarm.
 An adopter who never intends to contribute gets nagged anyway. **Body's call,
@@ -41,8 +41,10 @@ falsified size prediction below is kept.
 
 **Names deliberately omitted from this file:** every real filesystem path, and the
 client codebase among the seven. Public main anonymises reference projects (mind 5c).
-Project codes already public on main (`RSF`, `SENSA-###`) are used where they aid
-precision; the omission claim covers paths and the client project, not every string.
+Codenames from the private map (`SENSOR-FORGE`, `REF-14-###`) are used where they aid
+precision. Note 2026-08-28: an earlier version of this line said these were "already
+public on main" and therefore safe — true of the real abbreviations it was written
+about, false of the codenames that replaced them.
 
 ## Decisions this plan implements
 
@@ -88,7 +90,7 @@ precision; the omission claim covers paths and the client project, not every str
 ### 2026-08-24 · `git checkout --` is not a sabotage undo
 
 A file with uncommitted work loses it; the undo assumption came from the committed
-case and nothing said so.  → SENSA-056
+case and nothing said so.  → REF-14-056
 ```
 
 Absence of a status line means unmined — the common path costs nothing to write. The

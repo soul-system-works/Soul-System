@@ -1,4 +1,4 @@
-# SOUL-F060 — Closing note: RealisticSensors MRQ-consolidation milestone
+# SOUL-F060 — Closing note: SENSOR-SUITE MRQ-consolidation milestone
 
 ```
 FINDING ID:      SOUL-F060
@@ -8,9 +8,9 @@ KIND:            Closing Note — the milestone reflection an importing project 
                  (MRQ behavior, alpha propagation, frame counting) stay home in the project's
                  witness.md; this note carries only how the SYSTEM's gates and instruments
                  behaved.
-REFERENCE PROJECT: RealisticSensors (UE 5.7 plugin; imports the contract via CLAUDE.md
+REFERENCE PROJECT: SENSOR-SUITE (UE 5.7 plugin; imports the contract via CLAUDE.md
                  @-include; register: plain).
-WITNESS IDS:     RSENS-001..005 (project-local log; all five Resolved as of this note).
+WITNESS IDS:     REF-16-001..005 (project-local log; all five Resolved as of this note).
 COVERS:          The MRQ-consolidation arc across three sessions: an 8-task plan collapsing
                  two render paths to one behind a live parity gate; the sensor-alpha fix;
                  two follow-up fixes; all merged to the project's 5.7 branch 2026-07-06.

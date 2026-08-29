@@ -1814,7 +1814,7 @@ WHAT:      THE-SOUL.MD AND THE COUNCIL AS A HUMAN-FACING LAYER. Not AI doctrine,
            (always-on token budget) does not apply to a document only humans read.
            (2) Roles need NOT show up in the record at all. BUT if they do (e.g.,
            witness TYPE lines), they are structured data — and tools can MINE that
-           for visuals/analytics. Precedent: soul-visual-test (registry entry;
+           for visuals/analytics. Precedent: REF-09 (registry entry;
            27 witness entries, portfolio layer, golden tests — the early proof
            that record data can feed visual artifacts). A role-annotated record
            is an optional analytics substrate, not a ceremony obligation.
@@ -2057,7 +2057,7 @@ ANSWERED:  2026-08-20 — the open question ("do ADRs DUPLICATE the witness log?
            nonexistent map; the Python Rotator initializer is (roll,pitch,yaw),
            NOT the C++ order; a cursor's claim was simply FALSE. Decisions
            forward, surprises backward. (2) They cite each other in BOTH
-           directions — 8 witness→ADR citations, and ADRs citing RSENS-005/007 —
+           directions — 8 witness→ADR citations, and ADRs citing REF-16-005/007 —
            which duplicative stores do not do. (3) Subject overlap between the
            two sets peaks at 0.22 on a word-overlap test, and that single pair
            is a decision about stage maps versus a discovered falsehood about a
@@ -2115,15 +2115,15 @@ IDEA:      A declared DEVELOPMENT STAGE per project — prototype / pre-release 
 STATUS:    In build (v2.2.0) — design grilled and resolved in
            docs/specs/2026-08-26-development-stage.md
 WHY:       The owner supplied the same rule by hand in two projects on
-           consecutive days (RSF CLAUDE.md 8d2b91c, 2026-08-25; a UE thermal-sensing
+           consecutive days (SENSOR-FORGE CLAUDE.md 8d2b91c, 2026-08-25; a UE thermal-sensing
            project's Python client deliverable, in its own nested CLAUDE.md,
            2026-08-24 — two hand-written copies in different words with no shared
            source), while a third project (that one's parent UE codebase) needs
            the INVERSE rule and nothing declares that either. The model's default
            is release-grade caution; nothing in the contract says which project
            it is in. Two carve-outs were learned by running under the
-           hand-written rule (SENSA-061/062, SENSA-064) and are the unguessable
-           content that justifies hosting the presets upstream. Origin: RSF
+           hand-written rule (REF-14-061/062, REF-14-064) and are the unguessable
+           content that justifies hosting the presets upstream. Origin: SENSOR-FORGE
            cursor OWED UPSTREAM #11.
 DEVELOP:   Steward — the one measured question is Q23's locked prediction
            (shim/deprecation churn falls after declaration; a miss would be

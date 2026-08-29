@@ -7,9 +7,9 @@ KIND:            Doctrine contradiction — two shipped files, both in force at 
                  same moment, telling a session to do opposite things.
 REFERENCE PROJECT: Three independent projects, none able to see the others'
                  records, reported the same collision:
-                 (1) dvs-nav — "S71 appended #47 and #48 under the handoff's
+                 (1) NAV-TOOL — "S71 appended #47 and #48 under the handoff's
                      instruction and said so both times." Fifth cursor.
-                 (2) NeuroSiteWatch — "This session again resolved it by
+                 (2) SITE-WATCH — "This session again resolved it by
                      appending (W022, I023-I025) and reporting prominently,
                      because the cursor is destroyed on replacement and a held
                      draft would be lost. Wants a doctrine ruling." Second cursor.

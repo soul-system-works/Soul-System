@@ -2,8 +2,8 @@
 FINDING ID:      SOUL-F043
 DATE:            2026-05-28
 WITNESS IDS:     REF-02-OS reference/dogfood project (SNS operational-posture
-                 inference from public data; imports the seed). VOY-002
-                 (font-substitution false-defect near-miss); VOY-001 (capture
+                 inference from public data; imports the seed). REF-02-002
+                 (font-substitution false-defect near-miss); REF-02-001 (capture
                  tool absent → Body-Input skipped). Cross-project harvest —
                  these are REF-02 witness codes, not Soul-System SOUL-NNN.
 WHAT:            Closing Finding for the REF-02-OS reference project, and a
@@ -16,7 +16,7 @@ WHAT:            Closing Finding for the REF-02-OS reference project, and a
                  headless capture — i.e. capture can UNDER-report. This project
                  surfaces the INVERSE, more dangerous failure mode:
 
-                 (1) DESIGN-CAPTURE CAN ACTIVELY MISLEAD (VOY-002). Verifying a
+                 (1) DESIGN-CAPTURE CAN ACTIVELY MISLEAD (REF-02-002). Verifying a
                  sponsor .pptx after edits, the agent rasterized it via
                  libreoffice — the only headless renderer present. The deck
                  specifies Aptos (the MS Office default, not installed here);
@@ -46,7 +46,7 @@ WHAT:            Closing Finding for the REF-02-OS reference project, and a
                  — the overflow was the substitution artifact, not a real defect.)
 
                  (2) CAPTURE-TOOL ABSENT → BODY-INPUT, NOT SILENT DEGRADE
-                 (VOY-001). F030's landed recipe ("rasterize via the project's
+                 (REF-02-001). F030's landed recipe ("rasterize via the project's
                  OWN lib and Read it") PRESUMES the lib is present. The first
                  deck-render turn had NO headless renderer installed at all; the
                  agent named the gap as a residual and pushed through to commit

@@ -7,8 +7,8 @@ KIND:            Instrument calibration — measured production behavior of the
                  SOUL-F012 completion gate reference implementation
                  (hooks/pre-completion-verify.py).
 REFERENCE PROJECT: Cross-project — every Soul-governed project on the Body's
-                 machine (PLANT-BOP, RealisticSensors/NeuroSiteWatch,
-                 PageToPlate, dvs-nav, siggraph-2026-talk, Soul-System itself);
+                 machine (PLANT-BOP, SENSOR-SUITE/SITE-WATCH,
+                 RECIPE-APP, NAV-TOOL, TALK-2026, Soul-System itself);
                  measured from ~/.claude Claude Code transcripts, 2026-04 →
                  2026-07.
 WITNESS IDS:     SOUL-172 (the measurement); SOUL-026 (prior consecutive-turn
@@ -29,7 +29,7 @@ WHAT:            The gate's trigger (ship + claim) is designed to mark genuine
                  ~450-token checklist.
 
 MEASUREMENT:     225 firings across the window (avg 4.4/session in the PLANT-BOP
-                 cluster; 20× max in one RealisticSensors session, 3c74f6c3);
+                 cluster; 20× max in one SENSOR-SUITE session, 3c74f6c3);
                  ≈100–150M cache-read tokens of gate-induced extra turns ≈ 1–2%
                  of the machine's total volume. The dominant cost is flow —
                  10–20 interrupted stops per long session — more than tokens.

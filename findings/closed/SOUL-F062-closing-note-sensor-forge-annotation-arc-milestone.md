@@ -1,4 +1,4 @@
-# SOUL-F062 — Closing note: rsforge bbox-annotation arc (v2 + cross/strip milestones)
+# SOUL-F062 — Closing note: SENSOR-FORGE bbox-annotation arc (v2 + cross/strip milestones)
 
 ```
 FINDING ID:      SOUL-F062
@@ -8,12 +8,12 @@ KIND:            Closing Note — the milestone reflection an importing project 
                  (join keys, OBB math, tile layouts, capture quirks) stay home in the
                  project's witness.md and mind.md; this note carries only how the SYSTEM's
                  gates and instruments behaved.
-REFERENCE PROJECT: RealisticSensorsForge / rsforge (standalone Python analysis repo;
+REFERENCE PROJECT: SENSOR-FORGE (standalone Python analysis repo;
                  imports the contract via CLAUDE.md @-include; register: plain).
-WITNESS IDS:     SENSA-023..029 (project-local log; the annotation arc v1→v2→cross/strip,
+WITNESS IDS:     REF-14-023..029 (project-local log; the annotation arc v1→v2→cross/strip,
                  all shipped as of this note). Covers two owed milestones in one note:
-                 bbox-annotation v2 (SENSA-027, 2026-07-10) and cross/strip annotation on
-                 the first lane api surface (SENSA-029, 2026-07-10), plus the same-day
+                 bbox-annotation v2 (REF-14-027, 2026-07-10) and cross/strip annotation on
+                 the first lane api surface (REF-14-029, 2026-07-10), plus the same-day
                  Mind redistill.
 
 WHAT WORKED (kept-because-it-fired):
@@ -29,7 +29,7 @@ WHAT WORKED (kept-because-it-fired):
 
 (2) **Counter-default fence carriage held across a session boundary AND across agent
     boundaries (F053 lineage).** The piped-exit-code fence (incident: a commit rode "exit 0"
-    over two collection errors, SENSA-028) traveled in the cursor's COUNTER-DEFAULT FENCES
+    over two collection errors, REF-14-028) traveled in the cursor's COUNTER-DEFAULT FENCES
     with its incident attached, was restated in every executor prompt, and every executor
     reported printed pass-counts verbatim. Zero recurrence across four subagent tasks. The
     force (incident + explicit negation), not the bare rule, is what survived the two hops:

@@ -49,15 +49,15 @@ the Python Stop hook is untouched; git branch `v2.2.0` merged to `main` at relea
 | Q19 | Proposal triggers: (i) about to add a deprecation path/alias/shim in prototype or pre-release; (ii) evidence of an outside consumer; (iii) a release is cut; (iv) undeclared + first compatibility-relevant decision. **Placement changed by a fact found after the grill:** skills with `disable-model-invocation` are invisible to the model (verified this session — exactly the five flagged skills were absent from the model's list), so (i)–(iii) live in the block's own last line and (iv) is the contract sentence. |
 | Q20 | `/soul-stage` is `disable-model-invocation: true` — it writes `CLAUDE.md`, the same reason `/soul-init` is reserved. |
 | Q21 | Transition entry with a fixed WHAT; `/soul-next` shows the exit trigger and asks whether it is met. |
-| Q22 | First live run on RealisticSensorsForge (RSF), rewriting its hand-written `Phase: beta` block; other projects at their next visit, none forced. |
+| Q22 | First live run on SENSOR-FORGE, rewriting its hand-written `Phase: beta` block; other projects at their next visit, none forced. |
 | Q23 | One locked prediction with a miss direction, checked at the next distill (mind.md item 1). |
 | Q24 | Branch `v2.2.0`, merge to `main` at release (the repo convention, reaffirmed after a retracted "commit to main"). |
-| carried | `/soul-resume` restates the stage; `/soul-stage` with no argument shows/refreshes; backwards moves allowed; block under Register, else under the imports; RSF's cursor OWED #11 marked delivered by the live run; init reuses the skill's text, never a copy. |
+| carried | `/soul-resume` restates the stage; `/soul-stage` with no argument shows/refreshes; backwards moves allowed; block under Register, else under the imports; SENSOR-FORGE's cursor OWED #11 marked delivered by the live run; init reuses the skill's text, never a copy. |
 
-**Where the idea came from (rule 2 — real history only):** RSF's cursor OWED UPSTREAM #11
+**Where the idea came from (rule 2 — real history only):** SENSOR-FORGE's cursor OWED UPSTREAM #11
 (2026-08-25) and its live `CLAUDE.md:52` block (commit `8d2b91c`); the two carve-outs are
-SENSA-061/062 (a change on one side of a published seam, made as if single-repo, doubled
-every sensor in the viewer's panel; its suite failed `4 == 2`) and SENSA-064 (a `.get` ordered deleted as a shim
+REF-14-061/062 (a change on one side of a published seam, made as if single-repo, doubled
+every sensor in the viewer's panel; its suite failed `4 == 2`) and REF-14-064 (a `.get` ordered deleted as a shim
 tracebacked on a real tree written before the key existed). A UE thermal-sensing project's
 witness (2026-08-24) records the owner writing the same beta rule by hand into its Python
 client deliverable's own nested `CLAUDE.md` ("there are no external customers; backwards
@@ -86,7 +86,7 @@ place they live; see Task 8 step 4. The first draft of this paragraph claimed th
 | `ideas.md` | append | SOUL-I061 — the idea, pointing here |
 | `witness.md` | append (at release) | SOUL-180 — the release, the live run, the locked prediction |
 | `hooks/*` | **untouched** | regression-run only |
-| RSF `CLAUDE.md` (other repo) | live run | `Phase: beta` block → `Stage: pre-release` block |
+| SENSOR-FORGE `CLAUDE.md` (other repo) | live run | `Phase: beta` block → `Stage: pre-release` block |
 
 ---
 
@@ -126,15 +126,15 @@ IDEA:      A declared DEVELOPMENT STAGE per project — prototype / pre-release 
 STATUS:    In build (v2.2.0) — design grilled and resolved in
            docs/specs/2026-08-26-development-stage.md
 WHY:       The owner supplied the same rule by hand in two projects on
-           consecutive days (RSF CLAUDE.md 8d2b91c, 2026-08-25; a UE thermal-sensing
+           consecutive days (SENSOR-FORGE CLAUDE.md 8d2b91c, 2026-08-25; a UE thermal-sensing
            project's Python client deliverable, in its own nested CLAUDE.md,
            2026-08-24 — two hand-written copies in different words with no shared
            source), while a third project (that one's parent UE codebase) needs
            the INVERSE rule and nothing declares that either. The model's default
            is release-grade caution; nothing in the contract says which project
            it is in. Two carve-outs were learned by running under the
-           hand-written rule (SENSA-061/062, SENSA-064) and are the unguessable
-           content that justifies hosting the presets upstream. Origin: RSF
+           hand-written rule (REF-14-061/062, REF-14-064) and are the unguessable
+           content that justifies hosting the presets upstream. Origin: SENSOR-FORGE
            cursor OWED UPSTREAM #11.
 DEVELOP:   Steward — the one measured question is Q23's locked prediction
            (shim/deprecation churn falls after declaration; a miss would be
@@ -268,7 +268,7 @@ under about fifteen lines; it is always-on text for every session in the project
 ```
 **Stage: pre-release** (owner, 2026-08-26 · written by /soul-stage — re-run it to change or refresh)
 - Relied on from outside: common/sensor_discovery.py (SensorInstance,
-  discover_sensors) · src/rsviewer_provider.py — changing these is a
+  discover_sensors) · src/provider.py — changing these is a
   coordinated change.
 - Rules:
   - Build fast, with tests.
@@ -598,7 +598,7 @@ git commit -m "docs: the lifecycle page and README carry the development stage"
 - [ ] **Step 2: SYSTEM-VERSION.md** — `Current: **2.1.1**` → `Current: **2.2.0**`, and insert this row directly under the table header (newest first):
 
 ```markdown
-| 2.2.0 | 2026-08-26 | **The development stage — a declared answer to rule 7.** A project may now declare `prototype` / `pre-release` / `released` in its own CLAUDE.md through a new owner-invoked `/soul-stage`, which writes a ≤15-line block saying what may be broken and what must be kept; `/soul-init` offers it once with a skip; `/soul-resume` restates it; `/soul-next` re-reads its exit trigger. The contract gains one sentence: undeclared means released — protect what others may depend on and ask before breaking it. Nothing else changes: not the completion gate, not the hook, not the record's rules; each stage change is one witness entry and no other entry gains a field. **Why:** the owner supplied the same "no backwards compatibility, this is beta" rule by hand in two adopting projects on consecutive days (one surviving only in a witness narrative), while a third needs the inverse; the model's default is release-grade caution and the contract never said which project it was in (SOUL-I061; origin RSF cursor OWED UPSTREAM #11, with two carve-outs learned by running under the hand-written rule — SENSA-061/062, SENSA-064). **Designed by grill**, 24 questions; a seven-question screen was cut to one choice + two questions + a free line at the Body's push-back. **Placement of the model's proposal triggers moved after the grill** on a verified fact: `disable-model-invocation` skills are invisible to the model, so the triggers live in the block's last line, not the skill. **Unrun at cut — stated as an OVERRIDE per rule 8, not merely disclosed:** the Body chose release-first so every adopting project receives it at once; the live run on RSF follows the push (SOUL-181) and any defect becomes v2.2.1. SOUL-180 carries the override and the locked prediction. Spec: `docs/specs/2026-08-26-development-stage.md`. |
+| 2.2.0 | 2026-08-26 | **The development stage — a declared answer to rule 7.** A project may now declare `prototype` / `pre-release` / `released` in its own CLAUDE.md through a new owner-invoked `/soul-stage`, which writes a ≤15-line block saying what may be broken and what must be kept; `/soul-init` offers it once with a skip; `/soul-resume` restates it; `/soul-next` re-reads its exit trigger. The contract gains one sentence: undeclared means released — protect what others may depend on and ask before breaking it. Nothing else changes: not the completion gate, not the hook, not the record's rules; each stage change is one witness entry and no other entry gains a field. **Why:** the owner supplied the same "no backwards compatibility, this is beta" rule by hand in two adopting projects on consecutive days (one surviving only in a witness narrative), while a third needs the inverse; the model's default is release-grade caution and the contract never said which project it was in (SOUL-I061; origin SENSOR-FORGE cursor OWED UPSTREAM #11, with two carve-outs learned by running under the hand-written rule — REF-14-061/062, REF-14-064). **Designed by grill**, 24 questions; a seven-question screen was cut to one choice + two questions + a free line at the Body's push-back. **Placement of the model's proposal triggers moved after the grill** on a verified fact: `disable-model-invocation` skills are invisible to the model, so the triggers live in the block's last line, not the skill. **Unrun at cut — stated as an OVERRIDE per rule 8, not merely disclosed:** the Body chose release-first so every adopting project receives it at once; the live run on SENSOR-FORGE follows the push (SOUL-181) and any defect becomes v2.2.1. SOUL-180 carries the override and the locked prediction. Spec: `docs/specs/2026-08-26-development-stage.md`. |
 ```
 
 - [ ] **Step 3: Regression — the hook is untouched and must still hold**
@@ -623,7 +623,7 @@ git commit -m "release-prep: v2.2.0 — version, changelog row (unrun at cut —
 
 - [ ] **Step 1: Dispatch `diff-reviewer`** over `git diff main...v2.2.0`, with this brief — the claims are listed as "verify, do not trust":
 
-> Review the applied diff of the Soul System branch `v2.2.0` against the spec `docs/specs/2026-08-26-development-stage.md` (read its "Resolved in grilling" table first). Verify, do not trust, each of these claims: (1) the `soul-stage` block template and the three presets match the spec's Q12–Q17 text verbatim; (2) the contract gained exactly one paragraph and no numbered rule, and `/soul-resume`'s step-0 sentinel is still unanswerable from the contract's new text; (3) `/soul-init` step 2b follows the `soul-stage` file rather than copying its text; (4) every surface that enumerates the instruments names `soul-stage` and no stale "eight" survives; (5) the skill never instructs the model to run itself and never writes outside cwd's CLAUDE.md; (6) the witness entry it prescribes uses the project's own code, never `SOUL-` outside this repo; (7) the block's proposal line carries triggers (i)–(iii) and the contract sentence carries (iv); (8) no file invents an incident — every cited event (SENSA-061/062/064, 2026-08-24/25, SOUL-F064) exists in the named records. Report defects with file:line; do not edit.
+> Review the applied diff of the Soul System branch `v2.2.0` against the spec `docs/specs/2026-08-26-development-stage.md` (read its "Resolved in grilling" table first). Verify, do not trust, each of these claims: (1) the `soul-stage` block template and the three presets match the spec's Q12–Q17 text verbatim; (2) the contract gained exactly one paragraph and no numbered rule, and `/soul-resume`'s step-0 sentinel is still unanswerable from the contract's new text; (3) `/soul-init` step 2b follows the `soul-stage` file rather than copying its text; (4) every surface that enumerates the instruments names `soul-stage` and no stale "eight" survives; (5) the skill never instructs the model to run itself and never writes outside cwd's CLAUDE.md; (6) the witness entry it prescribes uses the project's own code, never `SOUL-` outside this repo; (7) the block's proposal line carries triggers (i)–(iii) and the contract sentence carries (iv); (8) no file invents an incident — every cited event (REF-14-061/062/064, 2026-08-24/25, SOUL-F064) exists in the named records. Report defects with file:line; do not edit.
 
 - [ ] **Step 2: Fix every confirmed finding in the files it names**, then re-run the checks from Tasks 1–6 that cover the touched file (Step 2/3 of Task 1, Step 2/3 of Task 2, Step 3 of Task 3, Step 5 of Task 4, Step 6 of Task 5, Step 3 of Task 6).
 
@@ -671,21 +671,21 @@ WHAT:         A project can now declare prototype / pre-release / released once,
               released. SHIPPED UNEXERCISED, AS AN OVERRIDE STATED PER RULE 8: the
               Body chose release-first so every adopting project receives it at
               once, and declined serving the branch locally from the marketplace
-              clone; the live run on RSF follows the push (SOUL-181) and any defect
+              clone; the live run on SENSOR-FORGE follows the push (SOUL-181) and any defect
               becomes v2.2.1. Fresh-context review of the applied result found
               [N findings — one line each, or "none"].
 TYPE:         Build record + override + locked prediction
 CONSEQUENCE:  LOCKED PREDICTION (mind item 1 — lean to carry, always write the
-              miss direction): in RSF and RS Viewer, witness entries about
+              miss direction): in SENSOR-FORGE and SENSOR-VIEW, witness entries about
               shim/deprecation/compatibility churn FALL per entry over the next
               distill window. BASELINE WITH ITS METHOD (SOUL-I060): `grep -c -i -E
               "backwards?[- ]compat|\bshim\b|deprecat|legacy path|\balias(es)?\b|
               migration layer|preserv(e|ed|ing) (the )?old"` over each log on
-              2026-08-25 gave 13 matching LINES in RS Viewer's 14-entry log and 8 in
-              RSF's 64-entry log (line hits, not entries; a narrower keyword set
+              2026-08-25 gave 13 matching LINES in SENSOR-VIEW's 14-entry log and 8 in
+              SENSOR-FORGE's 64-entry log (line hits, not entries; a narrower keyword set
               gives 3 and 7). The number is method-bound: the check re-runs THIS
               regex and compares hits per entry. MISS DIRECTION: if it misses, the miss is
-              over-deletion — a reader broken by a removed field, the SENSA-064
+              over-deletion — a reader broken by a removed field, the REF-14-064
               class — not under-deletion. Check at the next /soul-distill of either
               project; record the result as a witness entry there and here.
 STATUS:       Resolved — v2.2.0 tagged and pushed; live run PENDING, recorded at
@@ -719,7 +719,7 @@ for label,path in (('DIFF','/tmp/branch.diff'),('MSGS','/tmp/branch.msgs')):
     print(label,'hits:',len(hits),[f'line {i}: {ref}' for i,ref in hits[:20]])
 PY
 ```
-Expected: `DIFF hits: 0` and `MSGS hits: 0`. The scan reads the private map (`registry/` is gitignored) and prints only REF ids, so it can be run and its output quoted without ever writing a name. RSF and RS Viewer are the owner's own public project names and are not in the map. *This step is not ceremony:* on 2026-08-26 it caught two map names the author had written into the spec and the idea entry in local commits; the branch was replayed from `main` before anything was pushed.
+Expected: `DIFF hits: 0` and `MSGS hits: 0`. The scan reads the private map (`registry/` is gitignored) and prints only REF ids, so it can be run and its output quoted without ever writing a name. Both codenames used here (SENSOR-FORGE, SENSOR-VIEW) ARE map entries — REF-14 and REF-15 — added 2026-08-28; the map's second column carries the real strings the scan searches for, so the codenames themselves never appear in a hit. *This step is not ceremony:* on 2026-08-26 it caught two map names the author had written into the spec and the idea entry in local commits; the branch was replayed from `main` before anything was pushed.
 
 - [ ] **Step 5: Merge, tag, push** — authorised by the Body's "go straight to release":
 
@@ -735,36 +735,36 @@ claude plugin update soul-system@soul-system && ls ~/.claude/plugins/cache/soul-
 ```
 Expected: `2.2.0/` present, built from `origin/main`. The CLI says "restart required to apply" — the restart is Task 9 step 1.
 
-- [ ] **Step 7: `/soul-handoff`** — NEXT STEP is Task 9 (the RSF run) verbatim, with its watch-for list; NEXT-SESSION FOCUS names both unexercised surfaces: this release's `/soul-stage`, and v2.1.1's `/soul-init` on dvs-nav (independent; neither discharges the other). OPEN BODY CALLS carry forward unchanged (F064's tension; SOUL-I060; the five projects on v2.0-era wiring).
+- [ ] **Step 7: `/soul-handoff`** — NEXT STEP is Task 9 (the SENSOR-FORGE run) verbatim, with its watch-for list; NEXT-SESSION FOCUS names both unexercised surfaces: this release's `/soul-stage`, and v2.1.1's `/soul-init` on NAV-TOOL (independent; neither discharges the other). OPEN BODY CALLS carry forward unchanged (F064's tension; SOUL-I060; the five projects on v2.0-era wiring).
 
 ---
 
-### Task 9: The live run on RSF, after the release (A019 — the primary artifact gets its executor)
+### Task 9: The live run on SENSOR-FORGE, after the release (A019 — the primary artifact gets its executor)
 
-**Files:** RSF `CLAUDE.md` lines 52–76 (the `Phase: beta` line, the "Backwards compatibility is not required" paragraph and "The one carve-out" paragraph) · RSF `witness.md` (SENSA-065) · RSF `.soul/handoff.md` (OWED UPSTREAM #11) · Soul System `witness.md` (SOUL-181)
+**Files:** SENSOR-FORGE `CLAUDE.md` lines 52–76 (the `Phase: beta` line, the "Backwards compatibility is not required" paragraph and "The one carve-out" paragraph) · SENSOR-FORGE `witness.md` (REF-14-065) · SENSOR-FORGE `.soul/handoff.md` (OWED UPSTREAM #11) · Soul System `witness.md` (SOUL-181)
 
-- [ ] **Step 1: Restart Claude Code.** Open a session in `/mnt/d/Projects/RealisticSensorsForge`.
+- [ ] **Step 1: Restart Claude Code.** Open a session in `<SENSOR-FORGE>`.
 
 - [ ] **Step 2: Sentinel — verify the executor (A019 check 0).** Run `/soul-help`. Expected: the command list, generated from `skills/` on disk, names `soul-stage`. The 2.1.1 cache has no such skill, so its absence means the old version loaded — re-run Task 8 step 6 and restart rather than proceed.
 
 - [ ] **Step 3: Run `/soul-stage pre-release`** and answer the screen:
-  - 1 (relied on from outside): `common/sensor_discovery.py (SensorInstance, discover_sensors) · src/rsviewer_provider.py (ADR 0008)`
+  - 1 (relied on from outside): `common/sensor_discovery.py (SensorInstance, discover_sensors) · <the viewer provider module — literal filename in the private map, REF-14> (ADR 0008)`
   - 2 (next stage when): `a consumer beyond the viewer appears`
   - additions: `none — the "Bug Fixes & Code Structure" house rules below stay as they are`
 
-  Watch for, specifically: the skill identifies the `**Phase: beta**` line as the legacy header and proposes to replace lines 52–55 and 64–76 **in place** (the `## Bug Fixes & Code Structure` heading, "Prefer the fix...", "Keep scope honest" and the per-bug checklist are stage-independent house rules and must survive); it shows the block before writing; the block lands where the Phase line was, not under the import at line 1; the witness draft uses `SENSA-065`, WHAT begins `Stage undeclared → pre-release` (a hand-written Phase block is not a declaration this skill made), TYPE `Decision — stage change`; nothing is appended before the owner's go.
+  Watch for, specifically: the skill identifies the `**Phase: beta**` line as the legacy header and proposes to replace lines 52–55 and 64–76 **in place** (the `## Bug Fixes & Code Structure` heading, "Prefer the fix...", "Keep scope honest" and the per-bug checklist are stage-independent house rules and must survive); it shows the block before writing; the block lands where the Phase line was, not under the import at line 1; the witness draft uses `REF-14-065`, WHAT begins `Stage undeclared → pre-release` (a hand-written Phase block is not a declaration this skill made), TYPE `Decision — stage change`; nothing is appended before the owner's go.
 
 - [ ] **Step 4: Verify the write by execution, not by the skill's report**
 
 ```bash
-cd /mnt/d/Projects/RealisticSensorsForge
-grep -n -E "^\*\*(Stage|Phase):" CLAUDE.md; grep -c "The contract's rules and the completion gate apply unchanged." CLAUDE.md; grep -n "^## Bug Fixes" CLAUDE.md; grep -n "^ID: *SENSA-065" witness.md
+cd "$SENSOR_FORGE"   # export SENSOR_FORGE=<its path; see the private map, REF-14>
+grep -n -E "^\*\*(Stage|Phase):" CLAUDE.md; grep -c "The contract's rules and the completion gate apply unchanged." CLAUDE.md; grep -n "^## Bug Fixes" CLAUDE.md; grep -n "^ID: *REF-14-065" witness.md
 ```
-Expected: exactly one `**Stage: pre-release**` line and no `**Phase:` line; `1`; the house-rules heading still present; the SENSA-065 header present.
+Expected: exactly one `**Stage: pre-release**` line and no `**Phase:` line; `1`; the house-rules heading still present; the REF-14-065 header present.
 
-- [ ] **Step 5: Mark the upstream item delivered** — in RSF's `.soul/handoff.md`, OWED UPSTREAM #11, prepend `DELIVERED 2026-08-26 as Soul System v2.2.0 (/soul-stage) — ` to the item; leave the rest of the field untouched (thirteen other items still ride).
+- [ ] **Step 5: Mark the upstream item delivered** — in SENSOR-FORGE's `.soul/handoff.md`, OWED UPSTREAM #11, prepend `DELIVERED 2026-08-26 as Soul System v2.2.0 (/soul-stage) — ` to the item; leave the rest of the field untouched (thirteen other items still ride).
 
-- [ ] **Step 6: Commit RSF's side, in RSF, by the owner's call** (`CLAUDE.md`, `witness.md`; the cursor is gitignored). Suggested message: `docs(record): CLAUDE.md Phase: beta → Stage: pre-release via /soul-stage (SENSA-065)`.
+- [ ] **Step 6: Commit SENSOR-FORGE's side, in SENSOR-FORGE, by the owner's call** (`CLAUDE.md`, `witness.md`; the cursor is gitignored). Suggested message: `docs(record): CLAUDE.md Phase: beta → Stage: pre-release via /soul-stage (REF-14-065)`.
 
 - [ ] **Step 7: Record the result upstream — SOUL-181** in the Soul System repo: what the run found, in the same shape as SOUL-179's "what the review found" paragraph. **If a defect:** fix it on a `v2.2.1` branch, merge, tag, push (the v2.1.1 pattern), and SOUL-181 names the defect and the patch. **If none:** SOUL-181 says so, and the "unexercised" residual closes for this surface (not for v2.1.1's init, which is still the cursor's other gate).
 
@@ -773,7 +773,7 @@ Expected: exactly one `**Stage: pre-release**` line and no `**Phase:` line; `1`;
 ## Applied review findings (Task 7, 2026-08-26 — `diff-reviewer`, fresh context, 16 findings, all applied)
 
 1. **False record claim** (spec ×2, ideas.md, SYSTEM-VERSION, soul-init): "survived only in a witness narrative" — the sub-deliverable's own nested `CLAUDE.md` carries the rule (verified at the path the witness names). Reworded everywhere to the true fact: two hand-written always-on copies, two wordings, no shared source.
-2. **Legacy `Phase` range rule** would have swallowed RSF's house rules (heading + "fix the underlying issue" sit between the Phase line and the seams paragraph). Rewritten: only the Phase paragraph plus compatibility/seams paragraphs are the block; headings and other paragraphs stay; show line ranges.
+2. **Legacy `Phase` range rule** would have swallowed SENSOR-FORGE's house rules (heading + "fix the underlying issue" sit between the Phase line and the seams paragraph). Rewritten: only the Phase paragraph plus compatibility/seams paragraphs are the block; headings and other paragraphs stay; show line ranges.
 3. **Instrument count**: ten, not nine — `soul-prompt` shipped 2026-08-12 and every hand count missed it. README, spec Task 5, soul-help list fixed.
 4. **Step 2b bypass**: the "import already present" branch routed to steps 3–3c; now 2b–3c.
 5. **Pre-assigned id**: the changelog no longer names SOUL-181; "the next witness entry after SOUL-180".
@@ -796,14 +796,14 @@ Expected: exactly one `**Stage: pre-release**` line and no `**Phase:` line; `1`;
 | Claim | Verified by | Where |
 |---|---|---|
 | The skill text is what Claude Code loads | `/soul-help` lists `soul-stage` from disk (sentinel: 2.1.1 cannot) | Task 9 step 2 |
-| The block lands in the right place and the legacy Phase block is replaced in place | `grep` on RSF's `CLAUDE.md` after the run | Task 9 step 4 |
-| The transition entry is written with the project's own code | `grep "^ID: *SENSA-065"` | Task 9 step 4 |
+| The block lands in the right place and the legacy Phase block is replaced in place | `grep` on SENSOR-FORGE's `CLAUDE.md` after the run | Task 9 step 4 |
+| The transition entry is written with the project's own code | `grep "^ID: *REF-14-065"` | Task 9 step 4 |
 | The hook still scopes under the changed contract | `python3 hooks/test_scope.py` exit 0 | Task 6 step 3 |
 | The contract gained no numbered rule and the resume sentinel still works | `grep -c` of numbered rules = 10 | Task 2 step 3 |
 | Every enumerating surface names the new skill; no stale count | the consistency sweep | Task 5 step 6 |
 | Prose defects the author cannot see | `diff-reviewer`, fresh context, claims listed as "verify, do not trust" | Task 7 |
 | The behavioural claim (churn falls) | **NOT verifiable at release** — locked prediction with miss direction, checked at the next distill | SOUL-180 (override stated); run result at SOUL-181 |
-| `/soul-init` step 2b, `/soul-resume` step 3, `/soul-next` line | **UNRUN at release** — handed forward: the next `/soul-init` on dvs-nav (already the cursor's open gate) and the next resume in RSF exercise them | cursor |
+| `/soul-init` step 2b, `/soul-resume` step 3, `/soul-next` line | **UNRUN at release** — handed forward: the next `/soul-init` on NAV-TOOL (already the cursor's open gate) and the next resume in SENSOR-FORGE exercise them | cursor |
 
 ---
 
@@ -811,5 +811,5 @@ Expected: exactly one `**Stage: pre-release**` line and no `**Phase:` line; `1`;
 
 - Spec coverage: Q1–Q24 and every carried assumption map to a task (Q1/Q3/Q11/Q18/Q19-iv → Task 2; Q2/Q4/Q7/Q8/Q10/Q12–Q17/Q19-i–iii/Q20/Q21 → Task 1; Q5/Q21 → Task 1 step 5 + Task 4; Q6 → Task 6 step 3 (regression only); Q9 → Task 3; Q22 → Task 9; Q23 → Task 8 step 2; Q24 → Tasks 0/8; resume echo → Task 4; docs → Task 5).
 - Placeholders: the only bracketed text is in SOUL-180 and is explicitly "fill from what happened" — it cannot be pre-written without inventing history (rule 2).
-- Name consistency: the block's terminating line is identical in the skill template, step 1 of the skill, and Task 9 step 4's grep; the id `SOUL-I061`/`SOUL-180`/`SENSA-065` are each checked free before use; `2.2.0` appears in plugin.json, SYSTEM-VERSION, the tag, and the cache directory check.
+- Name consistency: the block's terminating line is identical in the skill template, step 1 of the skill, and Task 9 step 4's grep; the id `SOUL-I061`/`SOUL-180`/`REF-14-065` are each checked free before use; `2.2.0` appears in plugin.json, SYSTEM-VERSION, the tag, and the cache directory check.
 - Deliberately not done: no change to `philosophy/the-soul.md` (the human book; a stage paragraph is a follow-up if the Body wants one); no `frozen` preset; no per-entry witness field; no hook change; no migration of the other five projects.

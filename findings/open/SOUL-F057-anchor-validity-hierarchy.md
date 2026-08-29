@@ -3,9 +3,9 @@
 ```
 FINDING ID:      SOUL-F057
 DATE:            2026-06-12
-WITNESS IDS:     DAINS-028 (reference project: dains — the witness lives in that repo's
+WITNESS IDS:     REF-03-028 (reference project: REF-03 — the witness lives in that repo's
                  witness.md, not here; cited as the anchoring instance), with a same-class
-                 echo in DAINS-031 (a code comment about an engine call's GC behaviour
+                 echo in REF-03-031 (a code comment about an engine call's GC behaviour
                  believed for weeks until checked against engine source).
 WHAT:            Resolving how two subsystems compose, three "anchors" disagreed: a code
                  comment (prose near the code), an earned project doc (a resolved finding in
@@ -17,7 +17,7 @@ WHAT:            Resolving how two subsystems compose, three "anchors" disagreed
                  earned/resolved doc > prose near the code.** When two anchors disagree,
                  escalate UP the hierarchy instead of picking the one that supports the
                  current draft. A comment is not an anchor for a behavioural claim; it is a
-                 claim awaiting one. The second instance (DAINS-031) shows the failure is
+                 claim awaiting one. The second instance (REF-03-031) shows the failure is
                  not hypothetical: a comment asserting "forcing GC makes this deterministic"
                  sat AT the code site — the place rule 1 says decisions should live — and
                  was wrong; the engine source was the anchor that broke the tie. Recording
@@ -31,7 +31,7 @@ WHY NOT YET AMENDMENT:  Two instances from ONE reference project. To graduate it
                  legitimately suffice? Candidate trigger: whenever two anchors of different
                  ranks DISAGREE, the higher rank is mandatory; agreement leaves the cheap
                  anchor sufficient.
-FILED BY:        Emissary/Skeptic (dains reference project); graduated by the Body
+FILED BY:        Emissary/Skeptic (REF-03 reference project); graduated by the Body
                  2026-06-12 per the I014 upstreaming obligation.
 RELATED:         [[SOUL-F047]] (asserted-vs-executed verification — same shape one level
                  up: a *record of checking* is not a check; here, a *record near the code*

@@ -7,13 +7,13 @@ KIND:            Doctrine gap — a marking convention that covers one field of 
                  shipped format and not the rest, and that does not distinguish a
                  fact from a moving target.
 REFERENCE PROJECT: Three independent projects:
-                 (1) RSF — "Cursor fields beyond POINTERS carry no provenance or
+                 (1) SENSOR-FORGE — "Cursor fields beyond POINTERS carry no provenance or
                      expiry; WHERE WE ARE was stale on arrival three times
                      (08-24, 08-25 x2) and accurate on the first arrival after it
                      was verified at write time and re-verified at resume."
                      Plus a fourth staleness route found later: origin moved under
                      a live session because the owner pushed.
-                 (2) NeuroSiteWatch — "the 08-24 cursor's [read] pin pointer was
+                 (2) SITE-WATCH — "the 08-24 cursor's [read] pin pointer was
                      false on arrival because two later commits moved the pin.
                      [read] proves the session opened it, not that it is still
                      true; A023's marks do not distinguish anchors to immutable

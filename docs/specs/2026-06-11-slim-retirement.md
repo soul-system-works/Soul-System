@@ -85,7 +85,7 @@ perspectives that come into play naturally — and their remaining home may be t
 HUMAN-facing layer, not AI doctrine at all: a person picking up the repo uses the
 Council as an introspective lens. Roles need not appear in the record; where they
 do (witness TYPE lines), they are mineable structured data for visuals/analytics
-(precedent: soul-visual-test, registry). So C1 (always-on roster prose) and C4
+(precedent: REF-09, registry). So C1 (always-on roster prose) and C4
 (inspection instrument) may deserve different fates. See SOUL-I051.
 *Retire handle:* `philosophy/the-soul.md` §roster marked ARCHIVE; seed §Roles removed
 (R1); `/soul-explain council` retired (C4).

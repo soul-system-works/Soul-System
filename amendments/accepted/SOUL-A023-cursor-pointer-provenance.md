@@ -1,10 +1,10 @@
 AMENDMENT ID:    SOUL-A023
 DATE:            2026-07-16
-WITNESS IDS:     RSENS-012 (the anchoring instance, RealisticSensors project
+WITNESS IDS:     REF-16-012 (the anchoring instance, SENSOR-SUITE project
                  log — a session-7 cursor claimed an ADR "lives in the SEPARATE
-                 dains repo, not on disk"; false, cost to check one `ls`, and
+                 REF-03 repo, not on disk"; false, cost to check one `ls`, and
                  the claim rode into a Body decision before the completion gate
-                 caught it. RSENS-009 is a prior unrecognized instance of the
+                 caught it. REF-16-009 is a prior unrecognized instance of the
                  same shape.) Finding SOUL-F061 carries the full analysis. A
                  third live instance, same day as acceptance: the 2026-07-16
                  Soul-System resume found the cursor two sessions stale, caught
@@ -30,7 +30,7 @@ WHERE IN SOUL:   skills/soul-handoff/SKILL.md (POINTERS template + new step 3
                  + Source footer); skills/soul-resume/SKILL.md (step 2 rewrite
                  + Source footer); findings/open/SOUL-F061 → closed.
 QUESTION ONE:    Evidence — the anchoring instance is real and recorded
-                 (RSENS-012): a false cursor claim was repeated to the Body
+                 (REF-16-012): a false cursor claim was repeated to the Body
                  inside a next-step recommendation and shaped a deferral. The
                  failure is asymmetric — verifying a named path costs a
                  directory listing; propagating a false one costs a decision.
@@ -45,7 +45,7 @@ QUESTION TWO:    Necessity — /soul-handoff §3 ("self-contained for
                  which pointers were ever checked. The instrument that caught
                  the incident was the completion gate, NOT the resume — the
                  resume needed its own teeth. Two instances in one project
-                 (RSENS-009/012) plus a same-day staleness catch here make the
+                 (REF-16-009/012) plus a same-day staleness catch here make the
                  shape systemic, not incidental.
 QUESTION THREE:  Coherence — the cursor stays thin (A009 unchanged): a
                  two-token mark per pointer adds no duplication. Fail-open is

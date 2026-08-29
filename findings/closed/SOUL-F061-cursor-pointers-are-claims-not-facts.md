@@ -6,9 +6,9 @@ DATE:            2026-07-09
 KIND:            Instrument observation — how /soul-handoff and /soul-resume behaved in use
                  (operations/CLAUDE.md §Projects importing this contract: domain lessons stay
                  home; observations about the SYSTEM's gates and instruments come here).
-REFERENCE PROJECT: RealisticSensors (UE 5.7 plugin; imports the contract via CLAUDE.md
+REFERENCE PROJECT: SENSOR-SUITE (UE 5.7 plugin; imports the contract via CLAUDE.md
                  @-include; register: plain).
-WITNESS IDS:     RSENS-012 (project-local log; the anchoring instance. RSENS-009 is a prior
+WITNESS IDS:     REF-16-012 (project-local log; the anchoring instance. REF-16-009 is a prior
                  instance of the same shape not recognised as systemic at the time.)
 STATUS:          Closed 2026-07-16 — amendment SOUL-A023 accepted and applied
                  (provenance marks in /soul-handoff; resolve-and-report-misses
@@ -23,13 +23,13 @@ WHAT:            A cursor pointer that NAMES a location is treated by the resumi
                  without ever being resolved.
 
 ANCHORING INSTANCE:
-                 The session-7 cursor for RealisticSensors stated that ADR-0024's design "lives
-                 in the SEPARATE dains repo, not on disk in this tree." Session 8 resumed, read
+                 The session-7 cursor for SENSOR-SUITE stated that ADR-0024's design "lives
+                 in the SEPARATE REF-03 repo, not on disk in this tree." Session 8 resumed, read
                  the cursor, and repeated the claim to the Body inside a next-step
                  recommendation — annotating option B as "you'd be working from a site list,
                  not the real spec." The Body deferred that option.
 
-                 The claim was false. `dains` is a sibling git repo at /mnt/d/UnrealProjects/dains
+                 The claim was false. `REF-03` is a sibling git repo under a separate root
                  and the ADR was in it, fully written. Cost to check: one `ls`. It was found only
                  because a later completion-gate pass asked whether the cursor's own claims had
                  anchors — i.e. the instrument that caught it was the gate, NOT the resume.

@@ -8230,13 +8230,13 @@ WHAT:         A project can now declare prototype / pre-release / released once,
               released. SHIPPED UNEXERCISED, AS AN OVERRIDE STATED PER RULE 8: the
               Body chose release-first so every adopting project receives it at
               once, and declined serving the branch locally from the marketplace
-              clone; the live run on RSF follows the push (SOUL-181) and any defect
+              clone; the live run on SENSOR-FORGE follows the push (SOUL-181) and any defect
               becomes v2.2.1. Fresh-context review of the applied result found
               SIXTEEN findings, all applied before merge — the first a false record
               claim of the author's own (a thermal project's beta rule "survived
               only in a witness narrative"; its sub-deliverable's nested CLAUDE.md
               carries it, at the path the witness itself named), the second a
-              legacy-block rule that would have deleted RSF's house rules on the one
+              legacy-block rule that would have deleted SENSOR-FORGE's house rules on the one
               file it was written for, the third a hand-counted instrument total off
               by one for the second release running (soul-prompt, shipped
               2026-08-12, missed by every hand count). Separately, the release's own
@@ -8246,17 +8246,17 @@ WHAT:         A project can now declare prototype / pre-release / released once,
               left this machine (mind 5(c), held by an instrument this time).
 TYPE:         Build record + override + locked prediction
 CONSEQUENCE:  LOCKED PREDICTION (mind item 1 — lean to carry, always write the
-              miss direction): in RSF and RS Viewer, witness entries about
+              miss direction): in SENSOR-FORGE and SENSOR-VIEW, witness entries about
               shim/deprecation/compatibility churn FALL per entry over the next
               distill window. BASELINE WITH ITS METHOD (SOUL-I060): `grep -c -i -E
               "backwards?[- ]compat|\bshim\b|deprecat|legacy path|\balias(es)?\b|
               migration layer|preserv(e|ed|ing) (the )?old"` over each log on
-              2026-08-25 gave 13 matching LINES in RS Viewer's 14-entry log and 8 in
-              RSF's 64-entry log (line hits, not entries; a narrower keyword set
+              2026-08-25 gave 13 matching LINES in SENSOR-VIEW's 14-entry log and 8 in
+              SENSOR-FORGE's 64-entry log (line hits, not entries; a narrower keyword set
               gives 3 and 7). The number is method-bound: the check re-runs THIS
               regex and compares hits per entry. MISS DIRECTION: if it misses, the
               miss is over-deletion — a reader broken by a removed field, the
-              SENSA-064 class — not under-deletion. Check at the next /soul-distill
+              REF-14-064 class — not under-deletion. Check at the next /soul-distill
               of either project; record the result as a witness entry there and here.
 STATUS:       Resolved — v2.2.0 tagged and pushed; live run PENDING, recorded at
               SOUL-181 (the next entry this repo writes). Standing residual: the
@@ -8287,7 +8287,7 @@ CONSEQUENCE:  v2.2.1: a bare run looks only; the stage is always the argument (i
               a grill (three fixed questions, no tree). Fresh-context review of the
               patch found 12 more, all applied — the worst: a refresh through the
               prompt would have silently wiped the relied-on list. The write path is
-              still unexercised; the RSF run is the next entry that reports it.
+              still unexercised; the SENSOR-FORGE run is the next entry that reports it.
 STATUS:       Resolved — v2.2.1 cut on the Body's standing release-first call
               (override per rule 8, stated in the changelog). Next id: SOUL-182.
 ```
@@ -8310,8 +8310,8 @@ CONSEQUENCE:  The "unrun at cut" list in the 2.2.2 row shrinks by one: the openi
               selection has run. Still unrun: picking a stage -> the two-fact prompt
               -> the additions line -> the block shown -> the write and its witness
               entry; reporting a hand-written Phase block; init's step 3d; the
-              claude -p hint; refresh. The RSF run exercises the first of those.
-              Process: the handoff cursor had pre-assigned "SOUL-182" to the RSF run
+              claude -p hint; refresh. The SENSOR-FORGE run exercises the first of those.
+              Process: the handoff cursor had pre-assigned "SOUL-182" to the SENSOR-FORGE run
               — the same id-reservation the 2.2.0 review removed from the changelog
               and the 2.2.1 review removed again; this entry takes 182 because it is
               the next event, and the cursor now says "the next entry" instead of a
@@ -8428,4 +8428,29 @@ STATUS:       Resolved -- v2.3.1. Nine entries held for the Body across six
               pass triggered and which is now raised rather than re-parked. One
               held heading bundles six observations the migration cannot split.
               Next id: SOUL-185.
+```
+
+```
+ID:           SOUL-185
+WHEN:         2026-08-28 / the Body's ruling on the nine held notes and the name policy
+WHERE:        findings/open/SOUL-F070 through SOUL-F073 · registry/NAME-MAP.md ·
+              20 tracked files redacted (3 renamed) · 6 adopting projects' upstream.md
+WHAT:         The Body ruled on both items the mining pass left open: write up the
+              held notes, and the codenames-only invariant stands without a history
+              rewrite. Four findings written, every real project name removed from
+              tracked files, and one bundled note split into its six observations.
+TYPE:         Owner ruling + record capture
+CONSEQUENCE:  52 entries stamped, 2 held — both inside a bundle the Body's summary
+              treated as one item, so never put to them in their own words. Nine map
+              rows added (REF-14 to REF-22), covering ~14 real strings plus four
+              witness-id prefixes now tokenised as REF-NN-###. Names already pushed
+              stay reachable by object id (mind 5d): accepted, not fixed. Two of the
+              four findings rest on a single project each and say so.
+              Fresh-context review REJECTED the first attempt: the new map rows used
+              a two-token id column the mind-5(c) leak scan cannot parse, so the scan
+              silently loaded only REF-01..13 and would have passed a diff containing
+              any of the nine names it was added to catch. The redaction pass broke
+              the guard that verifies redactions, on the commit that made it matter.
+STATUS:       Open — F070-F073 unresolved by design; the name rule is enforced from
+              here. Next id: SOUL-186.
 ```

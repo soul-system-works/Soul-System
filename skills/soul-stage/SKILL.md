@@ -126,7 +126,7 @@ under about fifteen lines; it is always-on text for every session in the project
 ```
 **Stage: pre-release** (owner, 2026-08-26 · written by /soul-stage — re-run with a stage to change or refresh)
 - Relied on from outside: common/sensor_discovery.py (SensorInstance,
-  discover_sensors) · src/rsviewer_provider.py — changing these is a
+  discover_sensors) · src/provider.py — changing these is a
   coordinated change.
 - Rules:
   - Build fast, with tests.

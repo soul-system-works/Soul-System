@@ -1,7 +1,7 @@
-# Closing note — PageToPlate v1 build (2026-07-14 → 15)
+# Closing note — RECIPE-APP v1 build (2026-07-14 → 15)
 
 Upstream observations owed at milestone per the project contract. System-level
-lessons only; domain lessons stay home in PageToPlate's record.
+lessons only; domain lessons stay home in RECIPE-APP's record.
 
 **Context:** ~30-task app build executed subagent-per-task (orchestrator + 14
 agent dispatches), two owner demo checkpoints, per-task commits, TDD on all
@@ -16,7 +16,7 @@ logic. Shipped: 126 unit tests, Playwright E2E, deployed PWA.
    session end. No capture was lost, but the distillation step is a single point
    of failure if the orchestrating session dies before writing witness.md.
 
-2. **A flagged defect with no owner reached the Body** (PageToPlate P2P-004): an
+2. **A flagged defect with no owner reached the Body** (RECIPE-APP P2P-004): an
    agent's report explicitly flagged a missing dark-theme token at Milestone A;
    no task adopted the flag; the owner hit it at the first demo. Agent reports
    that flag issues need a mechanism that converts flags into scheduled work —
