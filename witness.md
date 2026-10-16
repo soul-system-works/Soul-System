@@ -8470,5 +8470,21 @@ CONSEQUENCE:  A release that changes a skill does not reach the session that shi
               upgrade hazard: there the OLD store met the NEW skill, here the NEW store
               met the OLD skill. Only a session working IN this repo can notice, because
               only it can compare the two.
-STATUS:       Open — no restart yet; the cursor carries it. Next id: SOUL-187.
+STATUS:       Resolved — restarted 2026-08-28; the cache now lists 2.3.2 and this
+              session's /soul-resume and /soul-handoff both loaded from it.
+              Next id: SOUL-187.
+```
+
+```
+ID:           SOUL-187
+WHEN:         2026-08-28 / first session running the released 2.3.2 skills from the cache
+WHERE:        skills/soul-handoff/SKILL.md step 1b · this repo has no upstream.md
+WHAT:         Step 1b instructs "append it to upstream.md (create the file if absent)"
+              with no branch for being in the Soul System's own repo, where a system
+              lesson goes to witness.md or findings/ and upstream.md is not a store.
+TYPE:         Failure Mode — instruction written from the adopting project's seat only
+CONSEQUENCE:  Not paid: the gap was named instead of the file created. /soul-capture
+              STEP 0 and /soul-next Task 5 both guard on repo identity by the same test;
+              /soul-handoff has no equivalent. Only a session in this repo can hit it.
+STATUS:       Open. Next id: SOUL-188.
 ```
