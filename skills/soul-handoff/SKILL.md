@@ -5,6 +5,10 @@ description: Write a thin Soul-native handoff cursor (.soul/handoff.md) so the n
 
 # /soul-handoff — hand off to the next session
 
+**Codex:** Read [the host integration](../../operations/codex.md) before
+following this workflow. Its Codex procedures replace Claude-specific loading,
+instruction-file, tool, and invocation mechanics; the shared workflow follows.
+
 Produce a thin handoff **cursor** so a fresh session resumes where this one left off —
 without re-deriving the abstraction layer, open gates, or witness state. The durable
 records (`witness.md`, `ideas.md`, `findings/`, specs/ADRs, the task tracker) remain the

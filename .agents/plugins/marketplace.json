@@ -1,0 +1,12 @@
+{
+  "name": "soul-system-codex",
+  "interface": {"displayName": "Soul System (Codex preview)"},
+  "plugins": [
+    {
+      "name": "soul-system",
+      "source": "./",
+      "policy": {"installation": "AVAILABLE", "authentication": "ON_INSTALL"},
+      "category": "Productivity"
+    }
+  ]
+}

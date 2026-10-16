@@ -6,6 +6,10 @@ disable-model-invocation: true
 
 # /soul-help — what the Soul System is
 
+**Codex:** Read [the host integration](../../operations/codex.md) before
+following this workflow. Its Codex procedures replace Claude-specific loading,
+instruction-file, tool, and invocation mechanics; the shared workflow follows.
+
 A short, plain-language intro for someone new to this project (or a returning Body who
 wants the lay of the land). Not a deep philosophy dump — point to depth, don't recite it.
 

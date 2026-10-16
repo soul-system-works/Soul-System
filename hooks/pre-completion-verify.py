@@ -9,7 +9,8 @@ verification checklist; the session must address gaps before ending.
 
 Scoping (so it is not noise):
 - Self-scopes to Soul-governed projects only: witness.md or .soul/witness.md, or
-  a soul marker in CLAUDE.md or .claude/CLAUDE.md ($HOME excluded — see
+  a specific marker in CLAUDE.md, AGENTS.md, AGENTS.override.md, or
+  .claude/CLAUDE.md (the global ~/.claude file is excluded — see
   _is_soul_project).
 - Fires only when the CURRENT turn (records after the last genuine user message)
   both SHIPPED an artifact (a Write/Edit tool use) and CLAIMED completion
@@ -193,7 +194,9 @@ def _is_soul_project(cwd: str) -> bool:
     for store in ("witness.md", os.path.join(".soul", "witness.md")):
         if os.path.exists(os.path.join(cwd, store)):
             return True
-    names = ["CLAUDE.md"]
+    # Codex reads AGENTS.md (or its override), not Claude's @import mechanism.
+    # Keep the same specific-marker fence: ordinary English "soul" must not scope.
+    names = ["CLAUDE.md", "AGENTS.md", "AGENTS.override.md"]
     # `.claude/CLAUDE.md` is a documented PROJECT instruction path — but when cwd is
     # the home directory it resolves to ~/.claude/CLAUDE.md, the USER's global memory
     # file, which is not a project and often mentions /soul-* commands. Scoping on it

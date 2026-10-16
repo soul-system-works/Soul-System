@@ -68,6 +68,32 @@ compose: adopt the contract alone, the plugin alone, or both.
 
 `AGENTS.md` at the repo root is a cross-vendor convention (Cursor, Aider, OpenAI Codex, Gemini CLI, Jules, Zed, others) that points any agent tool at the right entry points. Soul-following projects are legible to any tool that reads `AGENTS.md`.
 
+### Codex preview (unreleased)
+
+This branch also packages the shared skills for local Codex use. From a stable
+clone of **this branch**, with a Codex client supporting plugin commands:
+
+```bash
+codex plugin marketplace add /absolute/path/to/Soul-System
+codex plugin add soul-system@soul-system-codex
+```
+
+Restart Codex, open the adopting project, and invoke `$soul-system:soul-init`. This adds a
+managed live-contract reference to `AGENTS.md` (or `AGENTS.override.md`) and uses
+the same project records as Claude. Existing instructions are preserved. Review
+and trust the plugin hooks in the host before relying on automatic verification;
+installation alone does not arm them. Python 3 is required; Git enables shell-edit
+detection. Run `$soul-system:soul-resume` after upgrades to check for stale contract paths.
+
+The install command was exercised with `codex-cli 0.163.0`. Automated adapter
+checks are separate from a live model/session demonstration. This is a local
+preview, not a claim of desktop/IDE/cloud parity or public-directory eligibility.
+See the [implementation and review report](docs/specs/codex-plugin-investigation.md)
+for evidence and remaining checks, and [Codex host integration](operations/codex.md)
+for skill behavior and detector limits. Current OpenAI guidance excludes hooks
+from public-directory submissions; manual desktop installation is the documented
+hook distribution route.
+
 ---
 
 ## Start
@@ -101,6 +127,8 @@ ideas.md        The idea inbox (what might, forward) — graduates into findings
 mind.md         Optional project layer — project notes distilled from the record (unguessables only)
 docs/           Live design specs + study/ (the measurements behind 1.0 and 2.0); historical provenance under docs/archive/
 .claude-plugin/ Plugin + marketplace manifests (install the /soul-* skills + hook)
+.codex-plugin/ Codex preview manifest (shares skills; uses hooks/codex.json)
+.agents/plugins/ Codex preview marketplace catalog
 AGENTS.md       Cross-vendor entry point for any agent tool
 ```
 
