@@ -36,7 +36,7 @@ Optional argument: a short description of what the next session is for — let i
    **The test is a lookup, not a judgement: name the file that would change.**
    The surface is small and you can read it — your `CLAUDE.md` imports the contract
    from the installed plugin, and the rest of it sits beside that path: the contract
-   `operations/CLAUDE.md`, the ten `skills/*/SKILL.md`, and
+   `operations/CLAUDE.md`, every `skills/*/SKILL.md`, and
    `hooks/pre-completion-verify.py`. Name one of those, or it is not upstream,
    however sharp the lesson.
 

@@ -31,13 +31,14 @@ wants the lay of the land). Not a deep philosophy dump — point to depth, don't
 3. **The commands.** Read `skills/` at runtime and list each `soul-*/SKILL.md` with a one-line
    "when it fires" (the first sentence of its `description:`, ~100 char cap) — so this can't
    drift from what's on disk. (The `/soul-*` instruments are Claude Code **skills**; invoked
-   the same way — `/soul-capture`, etc.) As of 2.2 the core is: `soul-init` (set up a project), `soul-stage` (declare the
+   the same way — `/soul-capture`, etc.) The core is: `soul-init` (set up a project), `soul-stage` (declare the
    development stage — what may be broken, what must be kept), `soul-capture
    <idea|witness|finding>` (write to the record), `soul-handoff` / `soul-resume`
    (continuity across sessions), `soul-explain` (describe the present; `council`
    mode for a multi-lens read), `soul-next` (what to do next), `soul-distill`
    (refresh the Mind), `soul-prompt` (rewrite a rough prompt into a project-informed
-   one).
+   one), and opt-in `soul-delegate` (hand plan steps to other models; the main
+   session re-runs each check and records it).
 
 4. **Where the record lives:** `witness.md` (observations, append-only) · `findings/`
    (earned patterns) · `ideas.md` (forward possibilities) · `amendments/` (doctrine
