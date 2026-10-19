@@ -61,14 +61,16 @@ from datetime import datetime, timezone
 
 OUT_DEFAULT = ".ai/migrate-out"
 CRED = re.compile(r"(?i)^(\.env(\..*)?|.*\.env|\.envrc|\.netrc|\.npmrc|\.pypirc|\.pgpass|\.htpasswd"
-                  r"|\.mcp\.json|\.ssh|auth\.json|service-account.*\.json"
+                  r"|\.mcp\.json|\.ssh|auth\.json|service-account.*\.json|.*firebase-adminsdk-.*\.json"
+                  r"|\.authinfo|\.my\.cnf|\.yarnrc\.yml|rclone\.conf|\.s3cfg|\.renviron|kubeconfig"
                   r"|id_(rsa|dsa|ecdsa|ed25519)(\.pub)?|id_\w+_sk(\.pub)?"
                   r"|.*\.(pem|key|p12|pfx|keystore|jks|kdbx|tfvars|ppk|p8)|.*\.tfstate.*"
                   r"|.*(credential|secret|password|api[_-]?key).*"
                   r"|(.*[._-])?tokens?([._-].*)?)$")
 # Names that are only credential-like with their folder; settings.local.json may hold
 # tokens inside permission allow rules.
-CRED_PATH = re.compile(r"(?i)(^|/)(\.kube/config|\.docker/config\.json|\.claude/settings\.local\.json)$")
+CRED_PATH = re.compile(r"(?i)(^|/)(\.kube/config|\.docker/config\.json|\.claude/settings\.local\.json"
+                       r"|\.config/gh/hosts\.yml)$")
 # Folder name -> how it comes back: "npm"/"venv" from the lock or requirements file,
 # "build" by the project's own build, None regenerates on use, else the command itself.
 REBUILD = {"node_modules": "npm", ".venv": "venv", "venv": "venv", "__pycache__": None,
@@ -345,9 +347,11 @@ def git_state(project):
     head = git(project, "rev-parse", "--verify", "-q", "HEAD", check=False).strip()
     if not head:
         raise Stop("the repository has no commits; commit first")
-    fmt = "--format=%(refname:short)%00%(upstream:remotename)%00%(upstream:remoteref)" \
-          "%00%(upstream:track)"
-    branches = [dict(zip(("name", "remote", "merge", "track"), (x or None for x in row.split("\0"))))
+    # lstrip, not short: a branch named like a tag shortens to "heads/<name>".
+    fmt = "--format=%(refname:lstrip=2)%00%(upstream:remotename)%00%(upstream:remoteref)" \
+          "%00%(upstream:track)%00%(upstream)"
+    branches = [dict(zip(("name", "remote", "merge", "track", "upstream"),
+                         (x or None for x in row.split("\0"))))
                 for row in git(project, "for-each-ref", "refs/heads", fmt).splitlines()]
     for b in branches:
         ahead = re.search(r"ahead (\d+)", b["track"] or "")
@@ -358,19 +362,28 @@ def git_state(project):
         if row:
             key, value = row.split("\n", 1)
             name, kind = key[len("remote."):].rsplit(".", 1)
-            found[kind].setdefault(name, value)
+            if kind == "pushurl":  # a remote may push to several URLs: keep every one
+                found[kind].setdefault(name, []).append(value)
+            else:
+                found[kind].setdefault(name, value)
     leaked, odd = [], []
     for kind in ("url", "pushurl"):
-        for name, url in found[kind].items():
-            found[kind][name], had = strip_userinfo(url)
-            leaked += [name] if had else []
-            odd += [name] if had is None else []
+        for name, urls in found[kind].items():
+            got = [strip_userinfo(u) for u in (urls if kind == "pushurl" else [urls])]
+            found[kind][name] = [u for u, _ in got] if kind == "pushurl" else got[0][0]
+            leaked += [name] if any(had for _, had in got) else []
+            odd += [name] if any(had is None for _, had in got) else []
     attrs = os.path.join(project, ".gitattributes")
     lfs = os.path.isfile(attrs) and "filter=lfs" in open(attrs, errors="replace").read()
     lfs = lfs or bool(shutil.which("git-lfs") and git(project, "lfs", "ls-files", "-n",
                                                        check=False).strip())
     wts = [ln[9:] for ln in git(project, "worktree", "list", "--porcelain").splitlines()
            if ln.startswith("worktree ")]
+    try:  # exits 128 on a gitlink with no .gitmodules mapping: the gitlinks below name it
+        subs = [ln.strip() for ln in git(project, "submodule", "status").splitlines()]
+    except Stop:
+        subs = None
+    head_ref = git(project, "symbolic-ref", "-q", "HEAD", check=False).strip()
     return {"head": head, "branches": branches, "remotes": found["url"],
             "pushurls": found["pushurl"], "partial": sorted(n for n, v in found["promisor"].items()
                                          if v.lower() in ("true", "yes", "on", "1")),
@@ -379,12 +392,37 @@ def git_state(project):
                 x for op in OPS for x in ("--git-path", op))).splitlines())
                 if os.path.lexists(os.path.join(project, p))], "lfs": lfs, "commits": int(git(project, "rev-list", "--all", "--count").strip()),
             "shallow": git(project, "rev-parse", "--is-shallow-repository").strip() == "true",
-            "branch": git(project, "symbolic-ref", "-q", "--short", "HEAD", check=False).strip()
-            or None, "no_upstream": [b["name"] for b in branches if not b["remote"]],
+            "branch": head_ref[len("refs/heads/"):] if head_ref.startswith("refs/heads/") else None,
+            "no_upstream": [b["name"] for b in branches if not b["remote"]],
             "stashes": len(git(project, "stash", "list").splitlines()),
             "worktrees": [w for w in wts if os.path.realpath(w) != os.path.realpath(project)],
-            "submodules": [ln.strip() for ln in
-                           git(project, "submodule", "status", check=False).splitlines()]}
+            "submodules": subs or [], "submodules_unknown": subs is None,
+            "gitlinks": [row.split("\t", 1)[1] for row in git(project, "ls-files", "-s", "-z").split("\0")
+                         if row.startswith("160000 ")]}
+
+
+def git_names(project, cmd, *args):
+    return [n for n in git(project, cmd, "-z", *args, check=False).split("\0") if n]
+
+
+def stash_files(project):
+    """Paths the newest stash holds: its untracked part (stash -u) and its changes."""
+    if not git(project, "rev-parse", "-q", "--verify", "refs/stash", check=False).strip():
+        return []
+    untracked = git_names(project, "ls-tree", "-r", "--name-only", "refs/stash^3") if git(
+        project, "rev-parse", "-q", "--verify", "refs/stash^3", check=False).strip() else []
+    return untracked + git_names(project, "diff", "--name-only", "--no-renames", "refs/stash^1",
+                                 "refs/stash")
+
+
+SCAN_CAP = 1000  # commits per branch: a long unpushed history is named only in part
+
+
+def branch_files(project, b):
+    """Paths touched by a branch's commits no remote has (all of them when there is none)."""
+    rng = ["refs/heads/" + b["name"], "--not", "--remotes"]
+    return git_names(project, "log", "--name-only", "--format=", "--no-renames",
+                     "--max-count={}".format(SCAN_CAP), *rng, "--")
 
 
 def inside(rel, dirs):
@@ -445,17 +483,32 @@ def inventory(project):
                for row in git(project, "ls-files", "-v", "-z").split("\0")
                if row[:1] and (row[0] == "S" or row[0].islower())
                and os.path.lexists(os.path.join(project, row[2:]))]
-    dirty = [ln[3:] for ln in git(project, "status", "--porcelain=v1",
-                                  "--untracked-files=no").splitlines()]
+    dirty, rows = [], iter(git(project, "status", "--porcelain=v1", "-z",
+                               "--untracked-files=no").split("\0"))
+    for row in (r for r in rows if r):  # -z: names unquoted; a rename or copy adds its source
+        dirty += [row[3:]] + ([next(rows)] if set(row[:2]) & set("RC") else [])
     creds += [f["path"] for f in flagged if is_credential(f["path"])] + [
         d + "  (tracked file with uncommitted changes — the change travels in the patch)"
         for d in dirty if is_credential(d)]
+    creds += sorted(set(c + "  (in the stash — travels in the bundle)" for c in stash_files(project)
+                        if is_credential(c)))
+    for b in g["branches"]:
+        if not b["remote"] or b["ahead"] or "gone" in (b["track"] or ""):
+            creds += sorted(set(
+                c + "  (committed on unpushed branch {} — travels in the bundle)".format(b["name"])
+                for c in branch_files(project, b) if is_credential(c)))
+    mems = find_memory(project)
+    for m in mems:
+        creds += ["memory/" + r for r in walk_files(os.path.join(m["path"], "memory"))
+                  if is_credential(r) and "memory/" + r not in creds]
     return {"project": project, "name": os.path.basename(project), "git": g,
+            "unmerged": sorted(set(row.split("\t", 1)[1] for row in git(
+                project, "ls-files", "-u", "-z").split("\0") if "\t" in row)),
             "soul_project": any(os.path.isfile(os.path.join(project, s))
                                 for s in ("witness.md", ".soul/witness.md")),
             "dirty": dirty, "flagged": flagged, "unreadable": unreadable,
             "groups": [groups[k] for k in sorted(groups)],
-            "credentials": sorted(creds), "memory": find_memory(project),
+            "credentials": sorted(creds), "memory": mems,
             "nested_repos": sorted(n for n in nested
                                    if os.path.realpath(os.path.join(project, n)) not in worktrees),
             "rebuildable": [{"path": k, "bytes": b, "rebuild": rebuild_cmd(project, k)}
@@ -472,6 +525,10 @@ def upstream(b):
 
 
 NESTED = "nested repo {} — its history is not carried; migrate it separately"
+GITLINK = "nested repo {} (a gitlink) — its history and working files are not carried — " \
+          "migrate it separately"
+SUBS_UNKNOWN = "submodule list unknown (`git submodule status` failed); the gitlinks are named"
+UNMERGED = "resolve or abort the conflict first: "
 LINKED = "linked worktree {} (its history is in the bundle; its uncommitted files are not carried)"
 LFS = "LFS objects are not packed; after arrival run `git lfs pull` — objects never pushed " \
       "to the LFS server are unrecoverable"
@@ -498,9 +555,12 @@ def print_inventory(inv):
         if g["shallow"] else []
     rows += [("warning", "partial clone (remote.{}.promisor is set)".format(n)) for n in g["partial"]]
     rows += [("warning", INPROGRESS.format(op)) for op in g["in_progress"]]
+    rows += [("warning", UNMERGED + ", ".join(inv["unmerged"]))] if inv["unmerged"] else []
+    rows += [("warning", SUBS_UNKNOWN)] if g["submodules_unknown"] else []
     rows += [("branch", b["name"] + upstream(b)) for b in g["branches"]]
     rows += [("remote", "{}  {}".format(n, u)) for n, u in g["remotes"].items()]
-    rows += [("remote", "{}  {}  (push)".format(n, u)) for n, u in g["pushurls"].items()]
+    rows += [("remote", "{}  {}  (push)".format(n, u)) for n, us in g["pushurls"].items()
+             for u in us]
     rows += [("stashes", str(g["stashes"]) + ("  (a bundle carries only the newest)"
                                               if g["stashes"] > 1 else ""))]
     rows += [("worktree", LINKED.format(w)) for w in g["worktrees"]]
@@ -519,6 +579,7 @@ def print_inventory(inv):
     rows += [("skipped", "{}  ({}; never packed)".format(r, why))
              for r, why in sorted(inv["unreadable"].items())]
     rows += [("warning", NESTED.format(n)) for n in inv["nested_repos"]]
+    rows += [("warning", GITLINK.format(n)) for n in g["gitlinks"]]
     rows += [("memory", m["key"] + ("  memory/ present" if m["has_memory"] else "  no memory/")
               + (UNCONFIRMED if m["matched_by"] == "name" else ""))
              for m in inv["memory"]] or [("memory", "(no folder found)")]
@@ -563,6 +624,8 @@ def select_files(project, selection, out, rebuildable):
         if not rel_ok(rel):
             raise Usage("unsafe selection path: " + item)
         path, skipped = os.path.join(project, rel), {}
+        if under(rel, "memory") and not os.path.lexists(path):
+            continue  # a memory-folder file, approved for the memory loop in pack
         if not os.path.lexists(path):
             raise Stop("selected path not found: " + item)
         found = [os.path.join(rel, f) for f in walk_files(path, skipped)] \
@@ -583,13 +646,15 @@ def left_out(chosen):
 
 _strs = lambda v: isinstance(v, list) and all(isinstance(x, str) for x in v)  # noqa: E731
 SELECTION = {"untracked": _strs, "include_rebuildable": lambda v: isinstance(v, bool),
-             "include_credential_like": _strs,
+             "include_credential_like": _strs, "exclude_flagged": _strs,
              "memory_key": lambda v: isinstance(v, str) or v is False,
              "smoke": lambda v: isinstance(v, str), "notes": lambda v: isinstance(v, str)}
 SELECTION_HELP = """selection file: a JSON object, every field optional
   untracked                list of paths or top-level groups to carry
   include_rebuildable      true: also carry the rebuildable folders inventory reported
   include_credential_like  list of credential-like paths the owner approved; each is carried
+                           (memory/<path> names one in the memory folder)
+  exclude_flagged          list of skip-worktree/assume-unchanged files to leave out
   memory_key               string: the memory folder to pack; false: pack no memory
   smoke                    string: the smoke-check command written into RECEIVE.md
   notes                    string: notes written into RECEIVE.md"""
@@ -645,14 +710,17 @@ def bullets(items):
     return "\n".join("- " + i for i in items) or "- none"
 
 
-def receive_md(inv, sel, chosen, meta, zipname, mem):
+def receive_md(inv, sel, chosen, meta, zipname, mem, clashes):
     g = inv["git"]
     missing = (["{} stashes; only the newest is in the bundle".format(g["stashes"])]
                if g["stashes"] > 1 else []) \
+        + [INPROGRESS.format(op) for op in g["in_progress"]] \
         + [LINKED.format(w) for w in g["worktrees"]] \
         + ["submodule {} (clone it separately)".format(s) for s in g["submodules"]] \
+        + ([SUBS_UNKNOWN] if g["submodules_unknown"] else []) \
+        + [GITLINK.format(n) for n in g["gitlinks"]] \
         + ([LFS] if g["lfs"] else []) + [NESTED.format(n) for n in inv["nested_repos"]] \
-        + NOT_CARRIED + left_out(chosen)
+        + [CASE.format(c) for c in clashes] + NOT_CARRIED + left_out(chosen)
     rebuild = [] if sel.get("include_rebuildable") else \
         ["{} - `{}`".format(r["path"], r["rebuild"]) for r in inv["rebuildable"]]
     return RECEIVE.format(
@@ -679,25 +747,54 @@ def clone_bundle(zpath, tmp, dest, *opts):
     return {n: os.path.join(tmp, n) for n in have}
 
 
+def tracked_after_patches(zpath, tmp, man):
+    """The tracked paths place's clone will hold: the bundle cloned without a checkout,
+    both patches applied to its index, so no working tree is written."""
+    clone = os.path.join(tmp, "clone")
+    got = clone_bundle(zpath, tmp, clone, "--no-checkout")
+    git(clone, "bundle", "verify", "-q", got["repo.bundle"])
+    git(clone, "read-tree", man["project"]["head"])
+    for name in (n for n in PATCHES if n in got):
+        git(clone, "apply", "--cached", "--whitespace=nowarn", got[name])
+    return set(git(clone, "ls-files", "-z").split("\0")) - {""}
+
+
+CASE = "{} — on a case-insensitive disk place refuses it"
+
+
+def case_clashes(rels, tracked):
+    """Carried paths that differ only in case from a tracked path or folder at some level:
+    a case-insensitive disk would land them on it, and place refuses them there."""
+    known = {}
+    for t in tracked:
+        parts = t.split("/")
+        for i in range(1, len(parts) + 1):
+            known.setdefault("/".join(parts[:i]).casefold(), "/".join(parts[:i]))
+    out = []
+    for rel in rels:
+        parts = rel.split("/")
+        for p in ("/".join(parts[:i]) for i in range(1, len(parts) + 1)):
+            if known.get(p.casefold(), p) != p:
+                out.append("{} differs only in case from tracked {}".format(
+                    rel, known[p.casefold()]))
+                break
+    return out
+
+
 def self_check(zpath):
     """What place will rely on, checked on the finished zip: every member hashes to the
     manifest, the bundle verifies and clones, both patches apply, and place's planning
-    accepts files/ and memory/ against the tracked tree the patches leave. The patches go
-    to the clone's index, so no second working tree is written. Case collisions are left
-    to place: they matter only on a case-insensitive destination."""
+    accepts files/ and memory/ against the tracked tree the patches leave. Case clashes
+    with the tracked tree matter only on a case-insensitive destination: returned as
+    warnings."""
     man = verified(zpath)
     with tempfile.TemporaryDirectory(prefix="soul-migrate-") as tmp:
-        clone, root = os.path.join(tmp, "clone"), os.path.join(tmp, "dest")
-        got = clone_bundle(zpath, tmp, clone, "--no-checkout")
-        git(clone, "bundle", "verify", "-q", got["repo.bundle"])
-        git(clone, "read-tree", man["project"]["head"])
-        for name in (n for n in PATCHES if n in got):
-            git(clone, "apply", "--cached", "--whitespace=nowarn", got[name])
-        tracked = set(git(clone, "ls-files", "-z").split("\0"))
+        root = os.path.join(tmp, "dest")
+        tracked = tracked_after_patches(zpath, tmp, man)
         dirs = {"/".join(t.split("/")[:i]) for t in tracked for i in range(1, t.count("/") + 1)}
         plan_targets(zpath, root, man, "memory/", fold=False)
-        problems = []
-        for target, m in plan_targets(zpath, root, man, "files/", fold=False):
+        problems, plan = [], plan_targets(zpath, root, man, "files/", fold=False)
+        for target, m in plan:
             rel = os.path.relpath(target, root)
             parts = rel.split("/")
             if m.get("flag") in FLAGS:
@@ -706,6 +803,12 @@ def self_check(zpath):
                     "/".join(parts[:i]) in tracked for i in range(1, len(parts))):
                 problems.append("a tracked path is already there: " + rel)
         refuse(problems)
+        return case_clashes(carried(root, plan), tracked)
+
+
+def carried(root, plan):
+    """The files/ paths place writes beside the clone (a flagged file replaces its own)."""
+    return [os.path.relpath(t, root) for t, m in plan if m.get("flag") not in FLAGS]
 
 
 def pack(a):
@@ -726,11 +829,18 @@ def pack(a):
     if inv["git"]["shallow"]:
         raise Stop("a shallow clone: its history is incomplete, so the bundle would be too; "
                    "run `git fetch --unshallow` first")
+    if inv["unmerged"]:  # the patches would drop the conflicted entries without a word
+        raise Stop(UNMERGED + ", ".join(inv["unmerged"]))
     mem = pick_memory(inv["memory"], sel)
     rebuildable = [r["path"] for r in inv["rebuildable"]]
     chosen = select_files(project, sel, a.out, rebuildable)
     flags = {f["path"]: f["flag"] for f in inv["flagged"]}
-    chosen.update((rel, why_out(project, rel, sel, a.out, rebuildable)) for rel in flags)
+    unflag = {os.path.normpath(x) for x in sel.get("exclude_flagged") or []}
+    chosen.update((rel, "local override left out by the selection" if rel in unflag
+                   else why_out(project, rel, sel, a.out, rebuildable)) for rel in flags)
+    tracked = set(git(project, "ls-files", "-z").split("\0")) - {""}
+    clashes = case_clashes(sorted(r for r, why in chosen.items() if why is None and r not in flags),
+                           tracked)  # estimated from the index; self_check re-checks the clone
     created = datetime.now(timezone.utc)
     os.makedirs(a.out, exist_ok=True)
     zpath = os.path.join(os.path.abspath(a.out), "{}-{}.zip".format(
@@ -782,18 +892,20 @@ def pack(a):
                 root, skipped = os.path.join(mem["path"], "memory"), {}
                 for rel in walk_files(root, skipped):
                     path = os.path.join(root, rel)
-                    why = unpackable(path, rel) or leaves(root, path)
+                    why = ("credential-like" if is_credential(rel) and not any(
+                        under("memory/" + rel, x) for x in forced) else None) \
+                        or unpackable(path, rel) or leaves(root, path)
                     if why:
                         chosen["memory/" + rel] = why
                     else:
                         add("memory/" + rel, path)
                 chosen.update(("memory/" + r, why) for r, why in skipped.items())
             add("RECEIVE.md", data=receive_md(inv, sel, chosen, meta, os.path.basename(zpath),
-                                              mem).encode(errors="replace"))  # odd names
+                                              mem, clashes).encode(errors="replace"))  # odd names
             zf.writestr("manifest.json", json.dumps(
                 {"schema": 1, "project": meta, "members": members}, indent=2))
         os.replace(zpath + ".part", zpath)
-        self_check(zpath)
+        clashes = self_check(zpath)
     except Exception:
         if os.path.lexists(zpath):
             os.remove(zpath)  # a zip that failed its own check must not look carryable
@@ -805,6 +917,8 @@ def pack(a):
     print("packed {} members{}".format(len(members), "; left out: " + ", ".join(skipped)
                                        if skipped else ""))
     print("checked members hash, bundle clones, patches apply, place's planning accepts it")
+    for c in clashes:
+        print("warning " + CASE.format(c))
     print("zip     " + zpath)
     print("sha256  " + file_sha(zpath))
     return 0
@@ -938,16 +1052,20 @@ def place(a):
     for target, m in plan:
         print("  file   " + target + ("  (replaces the clone's copy; {})".format(m["flag"])
                                       if m.get("flag") in FLAGS else ""))
+    if fold:  # checked before cloning, so --apply never clones and then refuses
+        with tempfile.TemporaryDirectory(prefix="soul-migrate-") as tmp:
+            refuse(case_clashes(carried(dest, plan), tracked_after_patches(a.zip, tmp, man)),
+                   "placement refused (case-insensitive destination)")
     if not a.apply:
         print("preview only; conflicts with the cloned tree are checked before any file is written")
         return 0
     with tempfile.TemporaryDirectory(prefix="soul-migrate-") as tmp:
         got = clone_bundle(a.zip, tmp, dest)
         bundle = got["repo.bundle"]
-        have = set(git(dest, "for-each-ref", "--format=%(refname:short)", "refs/heads").split())
+        have = set(git(dest, "for-each-ref", "--format=%(refname:lstrip=2)", "refs/heads").split())
         for b in meta["branches"]:
             if b["name"] not in have:
-                git(dest, "branch", "-q", "--no-track", b["name"], "origin/" + b["name"])
+                git(dest, "branch", "-q", "--no-track", b["name"], "refs/remotes/origin/" + b["name"])
         git(dest, "checkout", "-q", *([meta["branch"]] if meta["branch"]
                                       else ["--detach", meta["head"]]))
         if "refs/stash" in git(dest, "bundle", "list-heads", bundle):  # clone skips the stash
@@ -955,10 +1073,16 @@ def place(a):
             git(dest, "stash", "store", "-m", "migrated stash",
                 git(dest, "rev-parse", "FETCH_HEAD").strip())
         git(dest, "remote", "remove", "origin")  # the bundle path; the recorded URLs replace it
-        for n, u in meta["remotes"].items():
-            git(dest, "remote", "add", n, u)
-        for n, u in meta.get("pushurls", {}).items():
-            git(dest, "config", "remote.{}.pushurl".format(n), u)
+        for n, u in meta["remotes"].items():  # config: `remote add` rejects names config allows
+            git(dest, "config", "remote.{}.url".format(n), u)
+            try:  # the fetch refspec `remote add` writes, where the name makes valid refs
+                git(dest, "check-ref-format", "refs/remotes/{}/HEAD".format(n))
+            except Stop:
+                continue
+            git(dest, "config", "remote.{}.fetch".format(n), "+refs/heads/*:refs/remotes/{}/*".format(n))
+        for n, urls in meta.get("pushurls", {}).items():
+            for u in urls:
+                git(dest, "config", "--add", "remote.{}.pushurl".format(n), u)
         for b in meta["branches"]:
             if b["remote"] in meta["remotes"]:  # config, not --set-upstream-to: nothing fetched yet
                 git(dest, "config", "branch.{}.remote".format(b["name"]), b["remote"])

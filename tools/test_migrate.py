@@ -351,10 +351,14 @@ class Units(unittest.TestCase):
                     "terraform.tfstate", "terraform.tfstate.backup", "prod.tfvars", "putty.ppk",
                     "AuthKey.p8", "id_ed25519_sk", "home/.ssh/known_hosts", "home/.kube/config",
                     ".docker/config.json", "service-account-prod.json", "auth.json",
-                    "db_password.txt", "apikey.txt", "my_api_key", ".claude/settings.local.json"):
+                    "db_password.txt", "apikey.txt", "my_api_key", ".claude/settings.local.json",
+                    ".authinfo", ".my.cnf", "home/.config/gh/hosts.yml",
+                    "proj-firebase-adminsdk-x1.json", ".yarnrc.yml", "rclone.conf", ".s3cfg",
+                    ".Renviron", "kubeconfig"):
             self.assertTrue(_mod.is_credential(rel), rel)
         for rel in ("tokenizer.py", "README.md", "src/env.py", "notes/keys.md", "config",
-                    "docs/config.json", ".claude/settings.json", "src/environment.py"):
+                    "docs/config.json", ".claude/settings.json", "src/environment.py",
+                    "hosts.yml", ".yarnrc"):
             self.assertFalse(_mod.is_credential(rel), rel)
 
     def test_rebuildable(self):
@@ -795,13 +799,141 @@ class Edges(unittest.TestCase):
         _write(os.path.join(self.src, "prod.env"), "A=1\n")
         self.commit()
         _write(os.path.join(self.src, "prod.env"), "A=2\n")
-        self.assertEqual(self.inventory()["credentials"], [
-            "prod.env  (tracked file with uncommitted changes — the change travels in the patch)"])
+        self.assertIn("prod.env  (tracked file with uncommitted changes — the change travels in "
+                      "the patch)", self.inventory()["credentials"])  # also named as committed: no remote
 
     def test_operation_in_progress_warned(self):
         _write(os.path.join(self.src, ".git", "MERGE_HEAD"), self.git("rev-parse", "HEAD"))
         self.assertIn("MERGE_HEAD present: operation in progress",
                       self.run_tool("inventory", self.src).stdout)
+        r, zpath = self.pack()
+        self.assertEqual(r.returncode, 0, r.stderr)
+        self.assertIn("- MERGE_HEAD present: operation in progress",
+                      self.receive(zpath).split("## Not carried")[1].split("##")[0])
+
+    def test_unmerged_entries_stop_pack(self):
+        self.git("checkout", "-q", "-b", "other")
+        _write(os.path.join(self.src, "a.txt"), "theirs\n")
+        self.commit()
+        self.git("checkout", "-q", "main")
+        _write(os.path.join(self.src, "a.txt"), "ours\n")
+        self.commit()
+        subprocess.run(["git", "-C", self.src, "merge", "-q", "other"], env=self.env,
+                       capture_output=True)  # conflicts: exit 1
+        self.assertEqual(self.inventory()["unmerged"], ["a.txt"])
+        r, zpath = self.pack()
+        self.assertEqual(r.returncode, 1, r.stdout)
+        self.assertIn("resolve or abort the conflict first: a.txt", r.stderr)
+        self.assertFalse(os.path.exists(os.path.join(self.tmp, "out")))  # stopped before writing
+
+    def test_unmapped_gitlink_named(self):
+        head = self.git("rev-parse", "HEAD").strip()
+        self.git("update-index", "--add", "--cacheinfo", "160000," + head + ",lib/sub")
+        self.git("commit", "-q", "-m", "gitlink, no .gitmodules")
+        human = self.run_tool("inventory", self.src).stdout
+        self.assertIn("nested repo lib/sub (a gitlink) — its history and working files are not "
+                      "carried", human)
+        self.assertIn("submodule list unknown", human)
+        r, zpath = self.pack()
+        self.assertEqual(r.returncode, 0, r.stderr)
+        missing = self.receive(zpath).split("## Not carried")[1].split("##")[0]
+        self.assertIn("- nested repo lib/sub (a gitlink)", missing)
+        self.assertIn("- submodule list unknown", missing)
+
+    def test_dirty_credential_with_quoted_or_renamed_name_listed(self):
+        for name in ("my prod.env", "id_rsa"):
+            _write(os.path.join(self.src, name), "A=1\n")
+        self.commit()
+        _write(os.path.join(self.src, "my prod.env"), "A=2\n")  # porcelain quotes this name
+        self.git("mv", "id_rsa", "moved.txt")  # only the rename's source is credential-like
+        suffix = "  (tracked file with uncommitted changes — the change travels in the patch)"
+        self.assertEqual([c for c in self.inventory()["credentials"] if c.endswith(suffix)],
+                         ["id_rsa" + suffix, "my prod.env" + suffix])
+
+    def test_credentials_in_stash_and_unpushed_branch_named(self):
+        _write(os.path.join(self.src, "deploy.pem"), "k\n")
+        self.git("stash", "-q", "-u")
+        self.git("checkout", "-q", "-b", "wip")
+        _write(os.path.join(self.src, "prod.env"), "A=1\n")
+        self.commit()
+        self.git("checkout", "-q", "main")
+        creds = self.inventory()["credentials"]
+        self.assertIn("deploy.pem  (in the stash — travels in the bundle)", creds)
+        self.assertIn("prod.env  (committed on unpushed branch wip — travels in the bundle)", creds)
+
+    def test_memory_credential_dropped_unless_named(self):
+        folder = os.path.join(self.env["CLAUDE_PROJECTS_DIR"], "-k")
+        _write(os.path.join(folder, "s.jsonl"), json.dumps({"cwd": self.src}) + "\n")
+        _write(os.path.join(folder, "memory", "MEMORY.md"), "- m\n")
+        _write(os.path.join(folder, "memory", "github_token.md"), "ghp_x\n")
+        self.assertIn("memory/github_token.md", self.inventory()["credentials"])
+        r, zpath = self.pack(out="default")
+        self.assertEqual(r.returncode, 0, r.stderr)
+        self.assertNotIn("memory/github_token.md", self.names(zpath))
+        self.assertIn("memory/github_token.md (credential-like)", r.stdout)
+        r, zpath = self.pack({"include_credential_like": ["memory/github_token.md"]}, out="forced")
+        self.assertEqual(r.returncode, 0, r.stderr)
+        self.assertIn("memory/github_token.md", self.names(zpath))
+
+    def test_flagged_file_left_out_by_selection(self):
+        _write(os.path.join(self.src, "conf.txt"), "base\n")
+        self.commit()
+        self.git("update-index", "--skip-worktree", "conf.txt")
+        _write(os.path.join(self.src, "conf.txt"), "mine\n")
+        r, zpath = self.pack({"exclude_flagged": ["conf.txt"]})
+        self.assertEqual(r.returncode, 0, r.stderr)
+        self.assertNotIn("files/conf.txt", self.names(zpath))
+        self.assertIn("conf.txt (local override left out by the selection)", self.receive(zpath))
+        with open(os.path.join(self.place(zpath), "conf.txt")) as f:
+            self.assertEqual(f.read(), "base\n")
+
+    def test_case_clash_with_tracked_warned_and_refused_before_clone(self):
+        if _mod.case_insensitive(self.tmp):
+            self.skipTest("temp folder is on a case-insensitive disk")
+        _write(os.path.join(self.src, "Docs", "a.md"), "tracked\n")
+        self.commit()
+        _write(os.path.join(self.src, "docs", "new.md"), "untracked\n")
+        r, zpath = self.pack({"untracked": ["docs/"]})
+        self.assertEqual(r.returncode, 0, r.stderr)
+        warn = "docs/new.md differs only in case from tracked Docs"
+        self.assertIn(warn, r.stdout)
+        self.assertIn(warn, self.receive(zpath))
+        dest = os.path.join(self.tmp, "dest")
+        with unittest.mock.patch.dict(os.environ, self.env), \
+                unittest.mock.patch.object(_mod, "case_insensitive", return_value=True), \
+                contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()) as err:
+            rc = _mod.main(["place", zpath, dest, "--apply"])
+        self.assertEqual(rc, 1)
+        self.assertIn(warn, err.getvalue())
+        self.assertFalse(os.path.exists(dest))  # refused before the clone
+
+    def test_remote_name_remote_add_rejects_restored(self):
+        self.git("config", "remote.a b.url", "https://example.invalid/x.git")
+        r, zpath = self.pack()
+        self.assertEqual(r.returncode, 0, r.stderr)
+        self.assertEqual(self.git("config", "remote.a b.url", cwd=self.place(zpath)).strip(),
+                         "https://example.invalid/x.git")
+
+    def test_branch_named_like_a_tag_stays_checked_out(self):
+        self.git("tag", "v1")
+        self.git("checkout", "-q", "-b", "v1")
+        self.assertEqual(self.inventory()["git"]["branch"], "v1")
+        r, zpath = self.pack()
+        self.assertEqual(r.returncode, 0, r.stderr)
+        dest = self.place(zpath)
+        self.assertEqual(self.git("symbolic-ref", "HEAD", cwd=dest).strip(), "refs/heads/v1")
+        self.assertEqual(set(self.git("for-each-ref", "--format=%(refname)", "refs/heads",
+                                      cwd=dest).split()), {"refs/heads/main", "refs/heads/v1"})
+
+    def test_every_pushurl_kept(self):
+        self.git("remote", "add", "origin", "https://example.invalid/x.git")
+        for u in ("https://example.invalid/a.git", "https://example.invalid/b.git"):
+            self.git("config", "--add", "remote.origin.pushurl", u)
+        r, zpath = self.pack()
+        self.assertEqual(r.returncode, 0, r.stderr)
+        self.assertEqual(self.git("config", "--get-all", "remote.origin.pushurl",
+                                  cwd=self.place(zpath)).split(),
+                         ["https://example.invalid/a.git", "https://example.invalid/b.git"])
 
     def test_place_ignores_the_receivers_default_remote_name(self):
         r, zpath = self.pack()

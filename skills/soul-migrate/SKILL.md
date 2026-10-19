@@ -80,6 +80,7 @@ this skill's directory. It is POSIX-only (Linux, macOS, WSL). Design:
    ┌─ soul-migrate · <project> · Fast ──────────────────────────┐
    │ git bundle      <n> commits, <b> branches (<u> unpushed)   │
    │ uncommitted     <files>                     → commit|patch │
+   │ local overrides <skip-worktree files> → carried | left out │
    │ untracked       <groups>                         <size>    │
    │ left out        <rebuildable>              → <rebuild cmd> │
    │ never packed    <credential-like names, or "none found">   │
@@ -98,7 +99,8 @@ this skill's directory. It is POSIX-only (Linux, macOS, WSL). Design:
    before packing so it travels.
 6. **Pack.** Write the approved choices to a selection file in the output folder —
    a JSON object with `untracked` (paths or group roots), `include_rebuildable`,
-   `include_credential_like`, `memory_key` (a folder name, or `false` for no memory),
+   `include_credential_like`, `exclude_flagged` (local-override files to leave out),
+   `memory_key` (a folder name, or `false` for no memory),
    `smoke` and `notes`; `migrate.py pack --help` lists them — and run
    `migrate.py pack <project> --out <dir> --selection <file>`. Pack checks its own zip
    (hashes, a test clone, the patches, the placement plan) and deletes it if any check
