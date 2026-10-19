@@ -2294,7 +2294,10 @@ SHAPE:     Raw. Packet present 2026-10-19 (START-HERE, manifest, capabilities,
            validation, review-spec, pilot-lessons, review-findings, handoff,
            standalone-prompt, project-migration/). Local path via the REF-18
            name-map row. Authorization: inspect + propose only.
-STATUS:    Raw — Body-captured.
+STATUS:    Built — v2.7.0 (experimental), 2026-10-19. The Body approved
+           integration in a grilling session the same day (design:
+           docs/specs/2026-10-19-soul-migrate.md); trial project chosen by the Body.
+           Unrun: a receive on another computer.
 ```
 
 ```

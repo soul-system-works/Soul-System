@@ -155,4 +155,4 @@ by hand), rewriting paths inside files (handle each case on arrival), native Win
 
 **Source:** SOUL-I067 (2026-10-19) — the Body's grilling session settled the design;
 an adopting project's pilot (NAV-TOOL) supplied the lessons and the placement checks.
-**Adopted:** pending review. **Status:** draft (branch `soul-migrate`).
+**Adopted:** 2026-10-19 (v2.7.0). **Status:** active — experimental.
