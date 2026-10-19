@@ -10,8 +10,8 @@ verification checklist; the session must address gaps before ending.
 Scoping (so it is not noise):
 - Self-scopes to Soul-governed projects only: witness.md or .soul/witness.md, or
   a specific marker in CLAUDE.md, AGENTS.md, AGENTS.override.md, or
-  .claude/CLAUDE.md (the global ~/.claude file is excluded — see
-  _is_soul_project).
+  .claude/CLAUDE.md (AGENTS files use a stricter set; the global ~/.claude file
+  is excluded — see _is_soul_project).
 - Fires only when the CURRENT turn (records after the last genuine user message)
   both SHIPPED an artifact (a Write/Edit tool use) and CLAIMED completion
   (completion language in assistant text). Turn-scoped, not a flat tail — see _scan.
@@ -251,6 +251,17 @@ _SOUL_MARKERS = (
     "soul-resume",
     "witness.md",               # the record store, named by doctrine
 )
+# AGENTS.md / AGENTS.override.md are ordinary project instructions in non-Soul
+# projects too, so they scope only on markers that appear when Soul is actually
+# WIRED (the contract path, the seed, the philosophy pointer, the commands) —
+# never "witness.md", which there is plain English. Shared markers gave a
+# non-Soul project whose AGENTS.md said "Keep a witness.md of test runs." an
+# armed gate and a new .soul/events.jsonl (fresh-context review of the Codex
+# branch, 2026-10-19 — demonstrated, not theorized). tools/codex-project.py's
+# block carries the contract path and $soul-system:soul-* names, so it still
+# scopes. Fence: hooks/test_scope.py cases 12-14.
+_AGENTS_MARKERS = tuple(m for m in _SOUL_MARKERS if m != "witness.md")
+_AGENTS_FILES = ("AGENTS.md", "AGENTS.override.md")
 
 
 def _is_soul_project(cwd: str) -> bool:
@@ -264,8 +275,8 @@ def _is_soul_project(cwd: str) -> bool:
         if os.path.exists(os.path.join(cwd, store)):
             return True
     # Codex reads AGENTS.md (or its override), not Claude's @import mechanism.
-    # Keep the same specific-marker fence: ordinary English "soul" must not scope.
-    names = ["CLAUDE.md", "AGENTS.md", "AGENTS.override.md"]
+    # Those two files use the stricter _AGENTS_MARKERS (see its comment).
+    names = ["CLAUDE.md", *_AGENTS_FILES]
     # `.claude/CLAUDE.md` is a documented PROJECT instruction path — but when cwd is
     # the home directory it resolves to ~/.claude/CLAUDE.md, the USER's global memory
     # file, which is not a project and often mentions /soul-* commands. Scoping on it
@@ -283,7 +294,8 @@ def _is_soul_project(cwd: str) -> bool:
             try:
                 with open(claude_md, "r", encoding="utf-8", errors="ignore") as fh:
                     txt = fh.read().lower()
-                if any(marker in txt for marker in _SOUL_MARKERS):
+                markers = _AGENTS_MARKERS if name in _AGENTS_FILES else _SOUL_MARKERS
+                if any(marker in txt for marker in markers):
                     return True
             except Exception:
                 pass
