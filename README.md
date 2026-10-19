@@ -85,10 +85,11 @@ and trust the plugin hooks in the host before relying on automatic verification;
 installation alone does not arm them. Python 3 is required; Git enables shell-edit
 detection. Run `$soul-system:soul-resume` after upgrades to check for stale contract paths.
 
-The install command was exercised with `codex-cli 0.163.0`. **The Codex hooks have
-not yet run in a live Codex session:** their tests call the adapter directly, and
-no real Codex conversation has shown startup delivery or the completion gate
-firing, so treat Codex projects as manual-verification until one has. This is a local
+Exercised with `codex-cli 0.163.0`: in one live `codex exec` session (2026-10-19)
+the SessionStart hook delivered the contract, and the completion gate blocked once,
+the model then ran the code, and the hook recorded its flagged and verdict events.
+**One live run, one client:** the interactive hook-trust prompt was bypassed for
+that run, and other clients (desktop, IDE, cloud) are untested. This is a local
 preview, not a claim of desktop/IDE/cloud parity or public-directory eligibility.
 See the [implementation and review report](docs/specs/codex-plugin-investigation.md)
 for evidence and remaining checks, and [Codex host integration](operations/codex.md)

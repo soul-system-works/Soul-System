@@ -146,7 +146,7 @@ wired-Soul markers, never a bare `witness.md` mention), completion-language
 pattern, checklist, event emitter, reply classifier, and project cooldown. They
 read different inputs: Claude scans the current turn's transcript, while Codex
 matches the claim and the Verify reply against the Stop payload's
-`last_assistant_message` only (not yet observed in a live Codex session), so a
+`last_assistant_message` only (observed in one live `codex exec` run, 2026-10-19), so a
 claim or Verify line in an earlier message of the turn is missed. Codex emits the
 verdict event only after its own block, once per turn, and none when the Stop
 payload carries no reply. Codex tracks direct edit-tool events per session/turn and

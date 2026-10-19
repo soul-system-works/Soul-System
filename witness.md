@@ -8616,3 +8616,18 @@ CONSEQUENCE:  Fixed (9462f32): ask in text, end the turn; a `show` preview befor
               action. UNRUN: the gate firing in a live Codex session (steps 6–7).
               Merged as v2.5.0, experimental. Closes SOUL-194. Next id: SOUL-196.
 ```
+
+```
+ID:           SOUL-196
+WHEN:         2026-10-19 / live `codex exec`, codex-cli 0.163.0, v2.5.0 plugin, this machine
+WHERE:        hooks/codex.py · hooks/codex.json
+WHAT:         Installed from this repo, project wired by `show` then `wire`, hook trust
+              bypassed for the one invocation. SessionStart delivered the contract;
+              the edit + "The fix is done." reply was blocked once; the model then
+              ran hi.py and closed "— Verified: …"; events.jsonl got flagged then
+              verdict=verified. config.toml restored byte-identical afterwards.
+TYPE:         Observation — the Codex gate path works end to end in one live run
+CONSEQUENCE:  Closes SOUL-195's unrun item. Still unrun: the interactive hook-trust
+              prompt, and clients other than the CLI.
+STATUS:       Closed. Next id: SOUL-197.
+```
