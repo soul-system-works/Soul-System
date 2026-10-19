@@ -8598,3 +8598,21 @@ CONSEQUENCE:  Fixed on the branch (b2ac2e1): AGENTS.md uses a stricter set witho
               path, a no-op source guard. Not merged: live Codex run outstanding.
 STATUS:       Open — closes at merge. Next id: SOUL-195.
 ```
+
+```
+ID:           SOUL-195
+WHEN:         2026-10-19 / the owner's two live Codex runs of the branch, another machine
+WHERE:        operations/codex.md · tools/codex-project.py (branch)
+WHAT:         Run 1: init listed each question's options and went on, choosing the
+              recommended answers itself — the git-tracking choice included; wrote
+              AGENTS.md before consent, then deleted it to ask. resume reported
+              "Wiring ok". A follow-up edit request was refused ("this session ended
+              after the resume check") — cause unknown. Run 2, after the fixes:
+              questions came in the message text and it waited; resume worked.
+TYPE:         Failure Mode — a non-blocking question tool read as permission to
+              proceed
+CONSEQUENCE:  Fixed (9462f32): ask in text, end the turn; a `show` preview before
+              `wire`. Codex's own picker still flashes while it works — its UI, no
+              action. UNRUN: the gate firing in a live Codex session (steps 6–7).
+              Merged as v2.5.0, experimental. Closes SOUL-194. Next id: SOUL-196.
+```
