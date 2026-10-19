@@ -42,6 +42,19 @@ claude plugin eval . --scaffold --allow-tools Bash Edit Write --model sonnet --r
 - `--case <name>` runs one case; `--keep-temp` keeps the scaffolded workspaces for
   inspection.
 
+## Machine prerequisites (each one blocks every Bash-granting run)
+
+Found one at a time on a WSL machine, 2026-10-19; each failure costs $0 and
+reports `turns 0` with the reason in the run's `error` field.
+- **Every PATH entry must be readable.** An unreadable `/mnt/c/...WindowsApps`
+  entry refuses the run (EACCES). Run with the unreadable entries filtered out.
+- **`~/.docker` must hold no symlinks** — not just `contexts` and
+  `features.json` (WSL Docker Desktop links them into `/mnt/c`), but any link,
+  renamed or not. Moving them to a sibling folder for the run, and back after,
+  works; `DOCKER_CONFIG` does not help, since `~/.docker` is checked too.
+- **The Bash sandbox backend must be installed**: `sudo apt install bubblewrap
+  socat` on Linux/WSL. Without it the run is refused rather than run unconfined.
+
 ## Unknown until the first live run
 
 Whether the eval trace includes the Stop hook's feedback record is not known. If
