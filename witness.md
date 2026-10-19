@@ -8659,3 +8659,17 @@ CONSEQUENCE:  Self-tests: load-bearing Y (both new items generate decisions the
               counts item sits near contract rule 3, kept as this repo's direction.
 STATUS:       Closed. Next id: SOUL-199.
 ```
+
+```
+ID:           SOUL-199
+WHEN:         2026-10-19 / minutes after SOUL-198
+WHERE:        mind.md · witness SOUL-198
+WHAT:         SOUL-198 says the Mind went 69 → 76 lines. After spacing and rewrap
+              fixes it is 80 — the line target, not under it. The count was written
+              before the formatting pass and not re-checked: the very lean the new
+              Mind item 2 describes, in the entry that added it.
+TYPE:         Correction
+CONSEQUENCE:  The Mind is 80 lines (target 80, cap 120); content unchanged since
+              the Body's sign-off.
+STATUS:       Closed. Next id: SOUL-200.
+```
