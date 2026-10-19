@@ -69,6 +69,14 @@ would move it to the next stage. It writes a short block into your `CLAUDE.md` s
 broken and what must be kept, and records the change as one entry. Undeclared
 projects are treated as released: nothing is broken without asking you.
 
+**Where AI working files go.** Plans, drafts, review output, eval results and
+scratch go in `.ai/` at the project root — created when first needed and safe to
+delete or archive at a milestone. `.soul/` holds the small permanent record; your
+code, tests and docs stay where they are. Moving a working file into your docs is
+your decision. If an older project has plans or review dumps scattered in the root
+or `docs/`, re-running `/soul-init` lists them and offers to move each group —
+declining changes nothing and it won't ask again.
+
 ## Going deeper
 
 | Want | Read |
