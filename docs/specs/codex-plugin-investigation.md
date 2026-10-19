@@ -50,8 +50,10 @@ is not justified by the inspected workflows.
 
 ## What the repository does
 
-The current Claude manifest identifies version `2.3.2`
-([manifest](../../.claude-plugin/plugin.json)). The practical system combines:
+At investigation time the Claude manifest identified version `2.3.2`
+([manifest](../../.claude-plugin/plugin.json)); the Codex manifest now carries the
+same version as the Claude manifest, and `tools/check_codex_plugin.py` fails when
+they differ. The practical system combines:
 
 - A working contract: [operations/CLAUDE.md](../../operations/CLAUDE.md).
 - Skills for project setup, capture, distillation, handoff/resume, next actions,
@@ -156,8 +158,8 @@ without exercising each claimed surface.
 
 The user authorized an implementation attempt after the investigation. The work
 is on `codex-plugin-investigation`, with owner authorization to commit it for
-review. There is no release/version bump, merge, push, global installation, or
-persisted hook-trust change. No subagent or independent agent review was run;
+review. There is no separate release (the Codex manifest only tracks the Claude
+version), merge, push, global installation, or persisted hook-trust change. No subagent or independent agent review was run;
 the implementing agent performed the checks below. Claude review is outstanding.
 
 Review these entry points:
@@ -247,9 +249,10 @@ configuration does not replace the user's normal configuration.
   during a real conversation. Do not label the gate armed from the current tests.
 - Exercise a Claude session after installing this branch to check the shared skill
   changes in use. Existing scope tests passed; Claude model behavior was not run.
-- Exercise restart and upgrade with an existing installation. The package stays
-  at `2.3.2` during review; edits in this checkout do not imply an installed cache
-  was refreshed. Use a fresh temporary install for repeatable code checks, and
+- Exercise restart and upgrade with an existing installation. The Codex package
+  version tracks the Claude manifest (Codex caches installs by version directory,
+  so drift would leave a stale install); edits in this checkout do not imply an
+  installed cache was refreshed. Use a fresh temporary install for repeatable code checks, and
   inspect/reinstall the preview deliberately for live testing.
 - Check instruction size limits and any custom fallback filenames/nested overrides
   in the adopting project. The helper targets the default files in the specified

@@ -18,7 +18,24 @@ ROOT = Path(__file__).resolve().parents[1]
 PLUGIN = "soul-system@soul-system-codex"
 
 
+def check_versions(root=ROOT):
+    """The Codex and Claude manifests must carry one version.
+
+    Codex installs into a per-version cache directory, so a Codex manifest left
+    behind at an older version keeps serving a stale install after an update.
+    """
+    claude = json.loads((root / ".claude-plugin/plugin.json").read_text())["version"]
+    codex = json.loads((root / ".codex-plugin/plugin.json").read_text())["version"]
+    if claude != codex:
+        raise RuntimeError(
+            f"Version drift: .codex-plugin/plugin.json is {codex}, "
+            f".claude-plugin/plugin.json is {claude}; set them equal"
+        )
+    return codex
+
+
 def check():
+    version = check_versions()
     with tempfile.TemporaryDirectory(prefix="soul-codex-check-") as temporary:
         base = Path(temporary)
         task_codex_home = base / "config"
@@ -42,6 +59,8 @@ def check():
         installed = cli("plugin", "add", PLUGIN, "--json")
         installed_root = Path(installed["installedPath"])
         manifest = json.loads((installed_root / ".codex-plugin/plugin.json").read_text())
+        if manifest.get("version") != version:
+            raise RuntimeError(f"Installed manifest is {manifest.get('version')}, source is {version}")
         if manifest["hooks"] != "./hooks/codex.json":
             raise RuntimeError("Codex manifest must select the Codex hook adapter")
         for relative in ("hooks/codex.json", "hooks/codex.py", "operations/CLAUDE.md",
@@ -111,6 +130,7 @@ def check():
                     raise RuntimeError("Codex discovered the wrong hook configuration")
                 print(json.dumps({
                     "result": "PASS", "client": initialized["userAgent"],
+                    "version": version,
                     "marketplace": "discovered", "installation": "passed",
                     "skills_loaded": sorted(skills), "skill_errors": errors,
                     "hook_events_discovered": sorted(events),
