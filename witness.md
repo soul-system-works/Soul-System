@@ -8762,5 +8762,5 @@ CONSEQUENCE:  (1) is mind item 2 again — a count about our own work, wrong. (2
               nothing in the upstream path commits what it appends. (3) is a
               defect to fix in skills/soul-capture/SKILL.md (make the example use
               the scanned string). This entry uses the scanned form.
-STATUS:       Open — unconfirmed — owner to ratify.
+STATUS:       Open.
 ```
