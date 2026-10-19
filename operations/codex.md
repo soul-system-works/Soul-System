@@ -138,6 +138,11 @@ shared rule that an inherited pointer is a claim to verify.
   started from a Claude shell inherits it), so its records carry no session id —
   view them with `delegation-check.py list` without `--session`. The verdict event's
   `delegation` counts are Claude-only for now: `hooks/codex.py` does not add them.
+- **soul-migrate:** the memory step is Claude-only — it moves Claude Code's
+  per-project memory folder. Whether Codex keeps per-project memory is not known
+  (on the 2026-10 machine it has a memory database under `~/.codex`, not opened);
+  skip the step and say so. `AGENTS.md` / `.codex/` count as project instructions
+  in the wiring check and the dependency list.
 - **soul-help:** describe Codex invocation and actual hook readiness; do not repeat
   the Claude guide's automatic-gate claim when hooks are untrusted or unexercised.
 - **soul-handoff:** preserve the shared cursor and provenance. When running in the
