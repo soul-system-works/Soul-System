@@ -63,8 +63,11 @@ the gate's claim regex does not match. As written, the suite measures the
 contract, which both arms receive, not the plugin. Harder cases, or an arm
 without the contract, are what would separate them.
 
-## Still unknown
+## Answered by `gate-fires` (2026-10-19, SOUL-193)
 
-Whether the eval trace includes the Stop hook's feedback record is not known. If
-`soul-gate-fired` misses in every with-plugin run, check a run's transcript before
-concluding the gate did not fire — the trace may simply not carry hook feedback.
+The eval trace DOES carry the Stop hook's feedback. `gate-fires` asks for a reply
+the claim regex matches; in both plugin-arm runs the gate blocked once, the agent
+then ran the code before ending, and the hook wrote both its flagged and its
+verdict event. This case is the regression check that the gate fires at all — the
+other three cases cannot show it, because on current models their replies never
+match the claim regex (SOUL-189, SOUL-192).
