@@ -2312,3 +2312,14 @@ SHAPE:     Deferred by the Body. For the 2026-10 machine move each project recor
            hand move proves heavy or error-prone — record the effort as evidence.
 STATUS:    Deferred — Body-captured.
 ```
+
+```
+ID:        SOUL-I069
+WHEN:      2026-10-19
+RAW:       A context summary (compaction) dropped the handoff cursor's standing facts
+           and a rule they held was then broken (SITE-WATCH, upstream note
+           2026-10-14). Candidate: one rule-6 sentence — after a context summary,
+           re-read .soul/handoff.md before acting.
+SHAPE:     Raw. From mining pass 2 (SOUL-202), disposition IDEA.
+STATUS:    Raw.
+```

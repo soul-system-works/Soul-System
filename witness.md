@@ -8726,3 +8726,19 @@ CONSEQUENCE:  The rulings are applied on branch mining-2026-10; entries are stam
               once the changes they cite exist.
 STATUS:       Open.
 ```
+
+```
+ID:           SOUL-203
+WHEN:         2026-10-19 / after SOUL-202
+WHERE:        witness SOUL-202 · amendments SOUL-A027, SOUL-A028
+WHAT:         Correcting SOUL-202 forward: of the 9 FINDING-CANDIDATE rows, 6 are in
+              the rule-4 cluster (its other 2 instances were FIX rows); and the Body's
+              words on the budget were that the limit "forces review" — not "act only
+              well above it". A fresh-context review caught both, and that A027/A028
+              claimed approval of contract wording the Body had not seen. The Body then
+              approved the exact wording, kept distill growth sign-off-free below the
+              120 cap, and made inherited next steps checked-or-dropped.
+TYPE:         correction
+CONSEQUENCE:  A027/A028 accepted on the shown wording; released as v2.8.0.
+STATUS:       Closed.
+```
