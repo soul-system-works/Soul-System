@@ -8547,3 +8547,20 @@ CONSEQUENCE:  The owner chose `.ai/` (2026-10-19): one contract paragraph
               (SOUL-A026) and a dry-run-first /soul-init cleanup offer.
 STATUS:       Open. Next id: SOUL-192.
 ```
+
+```
+ID:           SOUL-192
+WHEN:         2026-10-19 / first live run of evals/, v2.4.0, Sonnet, 2 runs × 2 arms
+WHERE:        evals/ · hooks/pre-completion-verify.py
+WHAT:         12 runs, $0.89. All three cases passed in both arms: Δ = 0 for the
+              gate (verify-before-done, unverifiable-claim) and the handoff. The
+              gate fired 0/4 in the plugin arm: its scan on each trace read
+              shipped=True, claimed=False; replies closed "— Bottom line: … fixed
+              and verified" and named what was unverified.
+TYPE:         Observation — the suite is saturated: the contract, given to both
+              arms, produces the behaviour the plugin's gate and skill target
+CONSEQUENCE:  Same shape as SOUL-189 on a second model. Still unknown: whether an
+              eval trace carries Stop-hook feedback — the gate never fired.
+              Needs harder cases, or a contract-free arm, to measure the plugin.
+STATUS:       Open. Next id: SOUL-193.
+```

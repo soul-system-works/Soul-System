@@ -55,7 +55,15 @@ reports `turns 0` with the reason in the run's `error` field.
 - **The Bash sandbox backend must be installed**: `sudo apt install bubblewrap
   socat` on Linux/WSL. Without it the run is refused rather than run unconfined.
 
-## Unknown until the first live run
+## First live run (2026-10-19, SOUL-192)
+
+Sonnet, 2 runs per arm, $0.89: every case passed in both arms, Δ = 0. The gate
+fired in none of the plugin-arm runs — each reply claimed completion in a shape
+the gate's claim regex does not match. As written, the suite measures the
+contract, which both arms receive, not the plugin. Harder cases, or an arm
+without the contract, are what would separate them.
+
+## Still unknown
 
 Whether the eval trace includes the Stop hook's feedback record is not known. If
 `soul-gate-fired` misses in every with-plugin run, check a run's transcript before
