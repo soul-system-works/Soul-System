@@ -19,6 +19,7 @@ book (`philosophy/the-soul.md`); everything else regenerates from the record.
    reaching the owner (two) — and fresh-context review, not the author, caught each.
    Before writing a count or "verified" about work just done, name its scope and
    re-check it at the source; then have a fresh-context reviewer read it.
+
 3. **Measurement under `claude -p`** (SOUL-F038, SOUL-190): `@`-imports from outside
    the project do not reliably load, and a session confabulates the missing content
    (~43% cross-project). Even the home-relative import `/soul-init` writes answered
@@ -27,6 +28,7 @@ book (`philosophy/the-soul.md`); everything else regenerates from the record.
    `evals/sync-contract.py`) and sentinel-test that it loaded. Harness doctrine:
    `operations/experiment-harness.md` — exit codes lie (SOUL-160/161); **arm repos
    must be git-isolated**, reads above the repo root denied (SOUL-164).
+
 4. **The fabrication axis** (SOUL-164): given bare rules, a doctrine-free session
    INVENTED incident history for its records ("a reviewer conflated the two" —
    no reviewer existed); doctrine-bearing sessions declined and marked unknowns.
@@ -39,10 +41,11 @@ book (`philosophy/the-soul.md`); everything else regenerates from the record.
    "— Bottom line: … verified". Do NOT broaden the regex to make it fire: the
    word-presence version fired on every turn (F063) and a bare-word scope match
    voided an endpoint (SOUL-160). `evals/gate-fires` is the proof it fires (SOUL-193).
+
 6. **Repo conventions that live nowhere else.** (a) Branch-per-release: main is
    the plugin DISTRIBUTION CHANNEL — record captures (witness/ideas/findings/
-   amendments) commit to main; new WORK ships on a branch until release. (b) NEVER run `git filter-repo` on the drvfs
-   mount (/mnt/d) — it silently stalls; the identical rewrite took 0.6 s on ext4,
+   amendments) commit to main; new WORK ships on a branch until release.
+   (b) NEVER run `git filter-repo` on the drvfs mount (/mnt/d) — it silently stalls; the identical rewrite took 0.6 s on ext4,
    and the stall caused the SOUL-169 public exposure window (~2 h). Clone to ext4
    for any history surgery. (c) Before EVERY push, scan the diff AND every commit
    message, case-insensitively, against column 2 of the gitignored
