@@ -2296,3 +2296,16 @@ SHAPE:     Raw. Packet present 2026-10-19 (START-HERE, manifest, capabilities,
            name-map row. Authorization: inspect + propose only.
 STATUS:    Raw — Body-captured.
 ```
+
+```
+ID:        SOUL-I068
+WHEN:      2026-10-19
+RAW:       A "machine mode" for /soul-migrate: move the state that belongs to no
+           project (~/.claude settings, agents, skills, plugin list, ~/.codex,
+           local models, cron) in one run.
+SHAPE:     Deferred by the Body. For the 2026-10 machine move each project records
+           what it depends on BY NAME and the arrival check confirms those exist;
+           global state moves by hand from a checklist. Build this only if that
+           hand move proves heavy or error-prone — record the effort as evidence.
+STATUS:    Deferred — Body-captured.
+```
