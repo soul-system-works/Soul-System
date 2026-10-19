@@ -2207,3 +2207,16 @@ WHY:       The Soul System is a harness layer, so a harness optimizer fits it in
            principle. Research by an adopting project (2026-10-19) judged
            Harness² "borrow ideas", not a component to adopt.
 ```
+
+```
+ID:        SOUL-I065
+WHEN:      2026-10-19
+RAW:       Extend the project stage so the agent helps make better long-term
+           decisions: suggest revising or dropping standing rules, and don't leave
+           it to the person to remind the agent to stop duplicating code — have it
+           periodically prompt for a code review, or point out where the structure
+           could improve maintainability, extensibility or capability.
+SHAPE:     Raw. Nearest existing seats: the /soul-stage block (its exit trigger is
+           re-read by /soul-next) and /soul-next's tiered options.
+STATUS:    Raw — Body-captured.
+```
