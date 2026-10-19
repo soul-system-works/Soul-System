@@ -21,8 +21,8 @@ REFERENCE PROJECT: Three independent projects, none able to see the others'
                      40311b9 both said "same resolution", which the record does
                      not support).
 WITNESS IDS:     SOUL-183 (the mining pass that surfaced all three).
-STATUS:          Open — graduated by the Body 2026-08-28 from the first upstream
-                 mining pass. Fix not adopted; the ruling below is a candidate.
+STATUS:          Closed 2026-10-19 — ruled by the Body (SOUL-202); amendment
+                 SOUL-A028 accepted and applied in v2.8.0.
 RELATED:         SOUL-A022 (capture is the Body's call), SOUL-I062 / v2.3.0
                  (the store these three notes were parked in).
 ```
@@ -71,3 +71,22 @@ predates that and was never re-examined after it.
 
 Three projects, five/four/two rides each; two of the three resolved it by override. The records of those two now contain a paragraph justifying a rule
 violation the system asked for.
+
+## Ruled 2026-10-19 (SOUL-202)
+
+**Ruling (the Body, "yes to all" on the mining-pass-2 recommendations).** When the
+Body is away, a capture **appends**. The entry is marked `unconfirmed — owner to
+ratify` and listed in the cursor, so the Body sees what was appended without them.
+This answers questions 1 and 2 above. Question 3 (where a held draft lives) falls
+away, because nothing is held. Reason: the record is append-only and corrected
+forward, so a wrong entry costs little, and a held draft lost with the cursor cannot
+be recovered.
+
+**New reports of the collision (mining pass 2):** SENSOR-VIEW (2026-09-01): "hold for
+confirmation" has no branch for an autonomous run the Body authorized. SUB-K
+(2026-09-03): "hold" has nowhere durable to hold. That
+entry's further claim, that the cursor has no copy in git history, is false in at
+least one project, GAME-THERMAL, which tracks its cursor.
+
+**Where the fix lands:** A022's block in `skills/soul-capture/SKILL.md` and step 1 of
+`skills/soul-handoff/SKILL.md`. Those changes are made separately from this record.

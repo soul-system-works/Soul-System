@@ -14,7 +14,9 @@ WITNESS IDS:     SOUL-183.
 STATUS:          Open — graduated by the Body 2026-08-28. Each fix is small enough
                  to apply directly once the Body says which.
 RELATED:         SOUL-F038 (silent import failure under `claude -p`), v2.1.0's
-                 init rework, v2.1.1's wiring-check sentinel.
+                 init rework, v2.1.1's wiring-check sentinel. Extended by
+                 SOUL-A028 (init: docs/ store detection, public-repo check, Mind
+                 import path; 2026-10-19).
 ```
 
 ## Defect 1 — a project with no record has nowhere to put a lesson, and nothing says so

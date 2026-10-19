@@ -6,11 +6,12 @@ DATE:            2026-08-28
 KIND:            Doctrine gap — a rule whose scope is narrower in practice than
                  its text, in the one direction that matters most now that
                  sessions routinely delegate.
-REFERENCE PROJECT: Seven instances across five projects. Five came from the first
+REFERENCE PROJECT: Nine instances across six projects. Five came from the first
                  upstream mining pass; (5) and (6) were separated out by hand
-                 afterwards, from a store whose six observations shared one heading.
+                 afterwards, from a store whose six observations shared one heading;
+                 (8) and (9) came from the second pass (claim type C, below).
                  Instance (1) is itself two occurrences, so the occurrence count is
-                 eight:
+                 ten:
                  (1) SENSOR-FORGE — an agent-produced artifact stated stale repo
                      facts with confidence; two instances, one claiming "all line
                      references from the working tree" while four of nine items
@@ -31,7 +32,11 @@ REFERENCE PROJECT: Seven instances across five projects. Five came from the firs
                      application held an export licence; the instrument that
                      measures it was one command away and showed the session's own
                      processes holding it.
-WITNESS IDS:     SOUL-184 (the mining pass).
+                 (8) MODEL-TEST — a correction is a new claim (2026-09-04).
+                 (9) MODEL-TEST — a reviewer's suggested fix carries the finding's
+                     authority, not its verification (2026-09-04).
+WITNESS IDS:     SOUL-184 (the mining pass); SOUL-202 (mining pass 2 — claim
+                 type C, instances (8) and (9)).
 STATUS:          Open — graduated by the Body 2026-08-28.
 RELATED:         Contract rule 3 (absolute claims need an external anchor), rule 4
                  (nothing is done until verified by execution), SOUL-F047
@@ -93,3 +98,28 @@ caught is not evidence the rule covered them, only that something else did.
 owner. Two do. The overstatement is the same class of defect as the one a
 fresh-context review caught in SOUL-F065 the same day — and it happened here, in the
 finding whose subject is passing on claims the session did not verify.
+
+## Claim type C — a correction, or a reviewer's suggested fix (added 2026-10-19, SOUL-202)
+
+The second upstream mining pass found two more claims that arrived already formed,
+both from MODEL-TEST, both dated 2026-09-04. The Body
+ruled that they join this finding rather than open a new one (SOUL-202):
+
+- **(8) A correction is a new claim.** A correction overturns an earlier statement
+  and is then trusted because it is a correction. It needs its own anchor under rule
+  3, and a batch of corrections sent for review is labelled as such.
+- **(9) A reviewer's suggested fix carries the finding's authority, not its
+  verification.** A remedy proposed alongside a verified finding is a separate,
+  unverified claim. It is checked by testing the property it should establish, not by
+  the review that found the defect.
+
+Both are the mechanism above. The source here is a corrector or a reviewer rather
+than a tool or the session's own inference, and the claim passes on the credit of
+what came with it. Type A, "someone else verified it", is the near neighbour. The
+difference is that here the verification was real, but of something else: the defect,
+not the fix. The count is now nine instances across six projects (ten occurrences,
+counting instance (1) as two).
+
+Candidate wording, if rule 3's scope clause is ever adopted: add *a correction, and a
+fix someone suggested*. Not adopted. The ruling placed the instances; it did not
+change the contract.

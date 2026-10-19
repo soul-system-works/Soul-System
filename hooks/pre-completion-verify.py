@@ -475,7 +475,8 @@ def _checklist() -> str:
     # recitation is itself the F022 theater; the doctrine wants specifics, not
     # checkmarks, and "run in the open" is satisfied by a compact, anchored line.
     return (
-        "[Soul gate · SOUL-F012] Shipped + claimed complete this turn — fires once.\n"
+        "[Soul gate · SOUL-F012] Shipped + claimed complete this turn — fires at most "
+        f"once per {COOLDOWN_SECONDS // 60} min in this project.\n"
         "Run ALL of these honestly before ending:\n"
         "0. Verify the verifier: does the executor for each execution-based check EXIST "
         "and RUN? (asserted-but-never-run gates — SOUL-156/A019)\n"
@@ -483,7 +484,9 @@ def _checklist() -> str:
         "2. Absolute claims have a VALID external anchor — trusted why / wrong if?\n"
         "   (anchor that merely EXISTS but is flawed = Coherent Falsehood — F028)\n"
         "3. Outward reach done (field/standard/user)? (else Universe Collapse)\n"
-        "4. Visual artifact captured & inspected — RASTERIZE via the project's own lib + Read it (or screenshot via run/verify); 'not eyeballed' is NON-PASS. Split: (a) design-capture (headless) vs (b) target-tool render (may need Body) — name the residual (SOUL-F030/F031).\n"
+        "4. Visual artifact captured & inspected — RASTERIZE via the project's own lib + Read it (or screenshot via run/verify); 'not eyeballed' is NON-PASS. Split: (a) design-capture (headless) vs (b) target-tool render (may need Body) — name the residual (SOUL-F030/F031). "
+        "Rendered ≠ true: if the image backs a content claim, check it against its source "
+        "(the depicted system, a data channel, or a feature-toggled A/B) or name the gap (SOUL-F074).\n"
         "5. Unfinished business marked (TODO/FIXME/DEBT/HACK)?\n"
         "REPLY (Body-facing): lead with the ask / next step; place the gate LAST as ONE "
         "compact line — `— Verify: clean (<anchor>)` or `— Verify: GAP → <specific>` "

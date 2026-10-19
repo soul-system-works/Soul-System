@@ -42,6 +42,13 @@ source of truth; this loads them and continues.
      gate fired at some point in the past, NOT that it still scopes — a project that
      later deleted its `CLAUDE.md` keeps a stale event log and would report armed
      while running ungated, which is the exact failure this check exists to end.
+   - **Mind loaded?** Only if a `mind.md` exists (`.soul/` or root): state one of
+     its items from context alone, WITHOUT opening it. Cannot → it is not loaded:
+     nothing imports it, or the import path is wrong. An `@` path resolves against
+     the file that holds it, so `@.soul/mind.md` written into `.claude/CLAUDE.md`
+     points at `.claude/.soul/mind.md` — MODEL-TEST's Mind sat unloaded
+     that way, invisible to the checks above (mining pass 2, SOUL-202). Same
+     confabulation caution as the contract sentinel. No `mind.md`: say nothing.
 
    Report only what is BROKEN — one line, and the repair is `/soul-init`, which is
    idempotent and backfills whatever is missing. All green: say "wiring ok" and
@@ -64,14 +71,31 @@ source of truth; this loads them and continues.
    cursor. When a named path or artifact **cannot be found, report the miss explicitly**
    ("cursor names X; X not found") — a miss is a signal worth surfacing, never a silent
    skip. The pointer most in need of resolution is exactly the one that doesn't resolve.
-   Treat `[inherited]` pointers (and any unmarked ones from pre-A023 cursors) as claims
-   to verify before repeating them to the Body — a cursor pointer is a claim, not a fact.
+   Treat `[inherited]` pointers, OPEN GATES and NEXT STEP items (and any unmarked ones
+   from older cursors) as claims to verify before repeating them to the Body — a cursor
+   entry is a claim, not a fact (F067).
+
+   **Then list what landed after the cursor** — `git log --since=<cursor date>
+   --oneline`, plus record entries (witness, ideas) newer than the cursor's witness
+   tail — and say "the cursor does not know about X" for each that bears on its
+   claims. A date-only `--since` also lists that day's earlier commits; over-listing
+   is the safe direction. Resolving pointers proves they exist, not that nothing
+   moved since: the owner pushing in between is a recorded staleness route (F067),
+   and SENSOR-VIEW found a resume blind to what landed after its cursor (mining
+   pass 2, SOUL-202).
 3. **Restate, in 2–3 lines:** where we are · the live design frame (if any) · the
    next step · and, if a line in the project's CLAUDE.md starts `**Stage:`, the
    stage in one phrase ("stage: pre-release since 2026-08-26"). Say nothing about
    stage when there is no line — absence is the default, not a gap. Under a
    `plain` register (the project CLAUDE.md's Register line), say "the current
    design frame" rather than "the LIVE AL"; plain language throughout.
+
+   **Then name every `UNCONFIRMED` id the cursor lists** — entries appended while
+   the Body was away (F065) — and ask the Body to ratify each. Yes → remove the
+   `unconfirmed — owner to ratify` mark. No → the entry stays and says so,
+   corrected forward: a witness entry's `STATUS` records the no; an idea gets
+   `— declined by the Body <date>` appended (`/soul-capture`, *Who fires this*).
+   No answer → leave the mark; the next `/soul-handoff` lists it again.
 4. **Continue from the NEXT STEP** — but if it is a non-trivial build or a decision the
    Body should make, confirm first rather than diving in (explore before execute).
 
@@ -89,4 +113,7 @@ source of truth; this loads them and continues.
 (docs/specs/2026-05-21-soul-handoff-design.md); the resume half of the context-limit
 handoff (SOUL-I007). **Amended:** SOUL-A023 (2026-07-16) — resolve-and-report-misses,
 from F061 (the unresolvable pointer is the one most in need of resolution).
-**Adopted:** 2026-05-21. **Status:** active.
+**Amended:** 2026-10-19 (mining pass 2, SOUL-202) — step 0 gains the Mind-loaded
+check; step 2 treats inherited gates/next steps as claims (F067) and lists what
+landed after the cursor; step 3 puts the cursor's `UNCONFIRMED` ids to the Body
+(F065). **Adopted:** 2026-05-21. **Status:** active.

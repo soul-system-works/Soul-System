@@ -102,23 +102,54 @@ Then the signal is the first accumulation that would fill one (see /soul-init's
 
 4. **Run the four shrinkage-invariant checks.** Before producing the draft:
 
-   - **Line budget.** Target ≤80 lines; hard cap 120. Re-anchored 2026-08-20 to
-     what the slim form actually costs: the contract is ~75 lines and this repo's
-     own Mind is ~69. The old 200/300 cap was anchored to the pre-2.0 seed and let
-     a 239-line, 20 KB project Mind pass unflagged — the very artifact the slim
-     switch was made to prevent. Over target: cut, do not request an exception.
+   - **Line budget — a target, not a gate** (SOUL-F066). Three bands, proposed by
+     the session and accepted by the Body (SOUL-202, 2026-10-19):
+     - **≈80 lines is the target, and reaching it is a review trigger:** re-justify
+       every entry against the anchor and unguessability tests below — throw out
+       or correct old rules, keep the most important.
+     - **80–120 is acceptable.** Do not shave lines and do not merge entries; cut
+       only whole entries that fail the tests, and report the count.
+     - **Over 120:** present the weakest whole-entry cuts to the Body, who takes
+       them or raises the cap out loud. When force and budget conflict, force
+       wins; the cap is the Body's to move, not the session's.
+
+     Why a target at all: the contract is ~75 lines and this repo's own Mind is
+     ~69 (re-anchored 2026-08-20); the old pre-2.0 200/300 cap let a 239-line,
+     20 KB project Mind pass unflagged; and unnecessary always-on text is a
+     *correctness* cost, not merely a token cost (F055, step 5b). Why not a gate:
+     the old "cut, do not request an exception" left the precedence unstated, and
+     in PLANT-BOP the Body relaxed it on seeing the cut list. The Body's view, in
+     paraphrase: the target is worth keeping because it forces a review — throw out
+     or correct old rules, keep the most important — but the Body should not have to
+     babysit it or talk a session out of saving three lines, and a hard limit the
+     Body manages belongs only well past 80–100 lines.
    - **Anchor requirement.** Every entry cites at least one anchor. Anchorless
-     = description = prune.
+     = description = prune. An anchor that exists is not enough (mining pass 2,
+     SOUL-202):
+     - **Executable facts are re-checked.** An entry that names a command, a
+       path, a flag or a selector is checked against the repo at distill time —
+       one grep or one run. False → fix it or cut it (MODEL-TEST).
+     - **A prohibition carries its falsifier.** An entry that FORBIDS re-trying
+       something ("dead end", "never X") states what would overturn it: what was
+       tried, and whether the cause was shown or inferred. Missing → flag it for
+       the Body or prune it; in PLANT-BOP a distilled prohibition outlived its
+       evidence. This is contract rule 3 applied to the Mind. The falsifier is
+       evidence for the next distill, not an "unless" clause in the directive —
+       the force-stripped guard (step 5) still applies.
    - **Unguessability test.** Every entry fails "could a fresh session reason
      its way back to this?" Anything that passes is derivable — cut it.
-   - **Growth check.** If `mind.md` already exists, the new draft **must shrink
-     or stay the same**. Growth means the Distiller failed its job; default-deny
-     growth and surface to the Body for explicit sign-off ("I am consciously
-     expanding because…").
+   - **Growth check — in both units.** If `mind.md` already exists, always report
+     `lines a→b · items c→d`: in GAME-THERMAL lines shrank while items grew, so
+     one unit hides the other. Growth in lines or items needs no sign-off when
+     every new entry passes the anchor and unguessability tests; say what each new
+     entry earns. Above the 120 cap the Body decides (the budget, above). This
+     replaced default-deny growth (SOUL-202): with the budget a target, the tests
+     decide, not the count.
 
 5. **Run the seven failure-mode guards.** Refuse to produce a draft that fails any:
 
-   - **Drift into summary.** Caught by the growth check (4 above).
+   - **Drift into summary.** Caught in step 4: the growth check makes growth
+     visible in both units, and the unguessability test cuts the summary entries.
    - **Force-fit entry.** An entry that reads like a heading being filled
      rather than a trap being recorded. The slim form has no sections to fill;
      if an entry exists to round out a shape, cut it.
@@ -218,8 +249,24 @@ Then the signal is the first accumulation that would fill one (see /soul-init's
    group it — but do not restore fixed section names, because empty sections
    invite force-fill, which is the failure the four-bucket form kept producing.
 
+   **Keep the numbers stable.** The Mind's items are cited by number from
+   outside it — code, registry docs, other records. On 2026-10-19 this repo's
+   distill added two items (2 and 5) and cut one — 6 → 7 items, 69 → 76 lines
+   (commit 9d1aa6d) — and a live registry doc's "mind 5(c)" silently pointed at
+   the wrong item (SOUL-202); PLANT-BOP and NAV-TOOL reported the same defect.
+   Prefer appending new items and keeping existing numbers over renumbering. If a
+   cut or reorder does renumber, search for citations of the old numbers ("mind
+   N", "Mind #N", "item N", "rule N") with a plain `grep -rn` over the working
+   tree — not `git grep`, which skips gitignored files, and the motivating hit was
+   in a gitignored registry file. List each hit, with what it should now point at,
+   in the draft's notes for the Body — never in the Mind text itself.
+
 8. **Present the draft for curation — delta-first, gap-only, never commit.**
    The Body curates and commits; do not auto-commit (the curation is the earning).
+   **Write the draft to `.ai/`, never in place** — e.g.
+   `.ai/distill/mind-draft-<date>.md`. `mind.md` is imported, so a draft written
+   into it is live next session whether or not anyone commits (NAV-TOOL,
+   SOUL-202); it replaces `mind.md` only on the Body's yes.
    The review surface must make the *load-bearing question per entry* cheap to
    judge — the Body cannot weigh a draft buried in passing-check prose (the
    I037 pain). Apply the compact, gap-only discipline the completion gate
@@ -238,7 +285,7 @@ Then the signal is the first accumulation that would fill one (see /soul-init's
    - **Checks: run all, recite none.** Steps 4–6 (4 shrinkage checks, the guards,
      3 diagnostics) still run in full — that honesty is non-negotiable. But
      present them as **one status line each, expanded only on a flag**, e.g.
-     `Shrinkage: clean (169→169) · Guards: clean · Diagnostics: 1 flag →
+     `Shrinkage: clean (lines 69→76 · items 6→7) · Guards: clean · Diagnostics: 1 flag →
      <flagged question + honest answer>`. A passing check is not recited.
    - This governs the *review* only; the deployed `mind.md` format (step 7) is
      unchanged.
@@ -264,7 +311,8 @@ Then the signal is the first accumulation that would fill one (see /soul-init's
   encouraged (A022); running before the Body answers is forbidden. Never
   schedule or hook this — the proposal is conversational, the trigger is human.
 - **Do not auto-commit.** Draft for curation; the Body owns the commit.
-- **Do not let the Mind grow.** Default-deny growth (check 4 in step 4).
+- **Do not let the Mind grow unexamined.** Growth is allowed when every new entry
+  passes the tests; report it in lines and items (the growth check, step 4).
 - **Do not manufacture entries to fill a shape.** The slim form has no buckets to
   fill, so there is nothing to force-fit; honesty about what doesn't compress
   is part of the discipline (SOUL-I026 failure mode #2).
@@ -272,8 +320,9 @@ Then the signal is the first accumulation that would fill one (see /soul-init's
   either, retire it.
 - **Do not capture obligations as rules.** Doctrine vs obligation is the
   load-bearing boundary (Tier 2 evidence).
-- **Do not silently exceed the line budget.** ≤80 target, ≤120 cap — the same
-  numbers step 3 states. This line said ≤200/≤300 until 2026-08-28: v2.1.1
+- **Do not chase lines, and do not silently pass the cap.** ≈80 target (a review
+  trigger), 80–120 acceptable with whole-entry cuts only, over 120 the Body's call
+  — the same numbers step 4 states. This line said ≤200/≤300 until 2026-08-28: v2.1.1
   re-anchored the budget away from the retired pre-2.0 seed in one place and missed
   this one, so the skill offered two budgets and a session obeying this list passed a
   200-line Mind, the exact artifact A021's slim switch exists to prevent (found by
@@ -281,8 +330,9 @@ Then the signal is the first accumulation that would fill one (see /soul-init's
   did not notice the second copy).
 - **Do not merge entries to make the budget.** Cut whole entries instead. Merging is
   the folding SOUL-F055 measured at 5-of-5 → 1-of-5 activation, so the intuitive way
-  to save lines is the one move known to switch the Mind off. See SOUL-F066 (open)
-  for the unresolved half: which rule wins when force and budget genuinely conflict.
+  to save lines is the one move known to switch the Mind off. SOUL-F066's other half,
+  accepted by the Body 2026-10-19 (SOUL-202): when force and budget conflict, force
+  wins — cut whole entries that fail the tests, or the Body raises the cap out loud.
 - **Do not recite passing checks or re-show unchanged entries.** Present the
   delta + a load-bearing verdict per changed entry; surface only flagged
   checks — the SOUL-055 gap-only discipline applied to the Mind's review
@@ -304,6 +354,9 @@ boundary, the draft-for-curation discipline. **Adopted:** 2026-05-26.
 **Amended:** 2026-08-20 — schema switched from four-buckets-plus-residual to the
 slim form, closing SOUL-I055; the four-bucket prescription had outlived A021 by
 ten weeks and five of five consumer projects had followed it.
+**Amended:** 2026-10-19 (mining pass 2, SOUL-202) — the budget becomes a target with
+a Body-owned cap (F066); growth reported in lines and items; executable anchors
+re-checked; renumbering and draft location.
 **Status:** active — MVP; model-proposed on the growth signal since SOUL-A022
 (2026-06-12; the manual-fire-only deferral discharged by the Body's v2.0 review).
 `/soul-mind` viewer, cross-project synthesis, and reproduction-fidelity

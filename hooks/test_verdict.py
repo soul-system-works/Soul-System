@@ -40,7 +40,8 @@ def _say(text):
 
 
 FEEDBACK = _user("Stop hook feedback: [python3 hook]: " + _mod._GATE_MARK
-                 + " Shipped + claimed complete this turn — fires once.", isMeta=True)
+                 + " Shipped + claimed complete this turn — fires at most once per 45 min in this project.",
+                 isMeta=True)
 OTHER_HOOK = _user("Stop hook feedback: [codex review gate]: please review", isMeta=True)
 START = [_user("fix calc.py"), _say("The fix is done.")]
 

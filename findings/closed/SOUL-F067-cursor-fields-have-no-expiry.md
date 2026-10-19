@@ -22,8 +22,8 @@ REFERENCE PROJECT: Three independent projects:
                      loaded was two sessions stale because a /soul-init session
                      wrote no handoff."
 WITNESS IDS:     SOUL-183.
-STATUS:          Open — graduated by the Body 2026-08-28. Extending A023 is the
-                 obvious shape; not adopted.
+STATUS:          Closed 2026-10-19 — ruled by the Body (SOUL-202); amendment
+                 SOUL-A028 accepted and applied in v2.8.0.
 RELATED:         SOUL-A023 / SOUL-F061 (pointer provenance marks), SOUL-F057
                  (anchor validity hierarchy).
 ```
@@ -64,3 +64,27 @@ claim, which is the same shape as F061 (the incident that created the convention
 The cursor is how every session learns where it is. Its one field with a truth
 convention is the one field that is already a link to something checkable. The fields
 carrying the actual claims have none.
+
+## Ruled 2026-10-19 (SOUL-202)
+
+**Ruling (the Body): adopt the fix.** Three parts:
+1. **Marks extend to carried obligations.** An inherited `NEXT STEP` or `OPEN GATES`
+   obligation is checked in the session that inherits it, or dropped. Checked, it
+   carries `[read]`. It is not carried `[inherited]` for up to three cursors the way a
+   pointer may be (confirmed by the Body, 2026-10-19).
+2. **Counts become commands.** A count that goes stale ("N commits unpushed") is not
+   written into the cursor. The command that produces it (`git status -sb`) is
+   written instead.
+3. **Resume lists what landed after the cursor.** It lists commits since the
+   cursor's date and record entries newer than it, and says "the cursor does not know
+   about X".
+
+**New instances (mining pass 2, three projects):** MODEL-TEST (2026-09-03): an
+unmarked carried obligation in `NEXT STEP` was false twice, before the three-cursor
+`[inherited]` expiry could act. NOTE-VAULT (2026-08-31): a stale
+count rode in `WHERE WE ARE`, by the same "owner pushed in between" route as instance
+(1). SENSOR-VIEW (2026-09-28): resume checks that pointers resolve, not what landed
+after the cursor.
+
+**Where the fix lands:** `skills/soul-handoff/SKILL.md` (steps 2 and 3) and
+`skills/soul-resume/SKILL.md` (step 2), made separately from this record.

@@ -28,7 +28,10 @@ WHEN:         [timestamp or project phase] e.g. 2026-05-15 / Session 3 / Impleme
 WHERE:        [location in the work — file, method, module, library, document section,
                conversation phase. As specific as context allows.]
               e.g. HeatTransfer.cpp > computeRadiation() > Stefan-Boltzmann constant
-WHAT:         [factual description. Two sentences maximum. No interpretation.]
+WHAT:         [factual description. Two sentences maximum. No interpretation.
+               A fact about a system outside this repo is an as-of statement, not
+               present fact: dated by WHEN, or by its own date if observed earlier.
+               Re-check it before restating it as current.]
 TYPE:         [one of the following]
                 - Failure Mode        [name the specific failure mode if known]
                 - Obligation Skipped  [name which obligation]
@@ -175,6 +178,8 @@ This does not license "ask the Body to look." When a capture tool exists — a h
 The active witness log lives at the project root as `witness.md`. One file,
 append-only, chronological. Entries are added, never modified (except `STATUS`
 updates).
+A history rewrite that changes commit SHAs the log cites gets one appended map
+entry (old → new SHA); earlier citations resolve through it and are never edited.
 
 The log moves through three phases. Cadence is project-dependent — never time-fixed.
 
