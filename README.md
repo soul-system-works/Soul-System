@@ -46,7 +46,10 @@ page the AI reads, wired in by `/soul-init` as an `@import`), the **commands**
 **pre-completion verification hook** (the gate that blocks unverified "done").
 `/soul-init` also asks one register question — plain or fluent language; plain is
 the default — offers an optional development stage (`/soul-stage`: what may be
-broken, what must be kept), and scaffolds the project's record files.
+broken, what must be kept), and scaffolds the project's record files. Optional,
+any time: `/soul-delegate` lets a plan's routine steps go to another model (a
+local model, Codex, a smaller Claude) while the AI re-runs every step's check
+itself.
 
 **What happens after install — who does what, and when:**
 [`docs/using-the-soul.md`](docs/using-the-soul.md), one page.

@@ -82,6 +82,14 @@ your decision. If an older project has plans or review dumps scattered in the ro
 or `docs/`, re-running `/soul-init` lists them and offers to move each group —
 declining changes nothing and it won't ask again.
 
+**Handing work to other models (optional).** When a plan has routine steps that a
+command can check — tests, a build — type `/soul-delegate`. Each step then carries
+`Tier:` (who does it) and `Done when:` (the command that proves it). The AI can hand
+routine steps to a local model, Codex or a smaller Claude, and it **runs every check
+itself** and records the result, so a step is never marked done on the other model's
+word. `/soul-delegate off` stops it; `/soul-delegate tiers` changes who does what.
+Skip it for design work or anything you can only judge by reading.
+
 ## Going deeper
 
 | Want | Read |

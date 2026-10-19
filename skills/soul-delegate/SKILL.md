@@ -13,6 +13,34 @@ instruction-file, tool, and invocation mechanics; the shared workflow follows.
 `/soul-delegate` turns it on for this session · `/soul-delegate off` turns it off ·
 `/soul-delegate tiers` shows the tier table and edits it on request.
 
+## In short — when and how to use it
+
+**Use it when** you have a plan whose steps are routine and can each be checked by a
+command (the tests pass, the build succeeds), and you want another model to do some
+of them — a local model, Codex, or a smaller Claude — to save limits or get a second
+model family's eyes on the work.
+
+**Skip it** for one-off edits, design work, or anything you can only judge by reading.
+
+**How:**
+
+1. Type `/soul-delegate`. It turns this on for the session and says which model
+   does which kind of work.
+2. Make or bring a plan. Each step gets two lines — who does it, and the command that
+   proves it is done:
+   ```
+   3. Add input validation to parse_config()
+      Tier: routine
+      Done when: python3 -m pytest -q tests/test_config.py
+   ```
+3. The AI hands `routine` steps out, then **runs each step's check itself** and
+   records pass or fail. A failed step is fixed or sent back — never reported done
+   on the worker's word.
+4. `/soul-delegate off` when you are finished. `/soul-delegate tiers` changes which
+   model does what.
+
+Everything below is the detail the AI follows.
+
 **What this is — and is not.** Not a router. The main model is whatever the session
 was launched with (Anthropic, Claude Code pointed at Ollama, a `/model` switch); this
 skill cannot change it. What it changes is how a plan's steps are handed off: routing
@@ -150,5 +178,5 @@ naming the tool and model (e.g. `routine | ollama: qwen3.8:27b`).
 
 **Source:** SOUL-I066 (2026-10-19) — explored with the Body: routing lives in plan
 steps; the Soul System adds the step convention and the observed-check record.
-Dispatch evidence: SOUL-200, SOUL-201. **Adopted:** pending review. **Status:**
-draft (branch `i066-delegation`).
+Dispatch evidence: SOUL-200, SOUL-201. **Adopted:** 2026-10-19 (v2.6.0).
+**Status:** active — experimental.
