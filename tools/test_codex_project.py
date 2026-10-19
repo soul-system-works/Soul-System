@@ -153,20 +153,24 @@ class ProjectWiring(unittest.TestCase):
         self.assertEqual(reference, source / "operations" / "CLAUDE.md")
         self.assertEqual(err, "")
 
-    def test_git_marketplace_clone_is_preferred(self):
+    def test_git_marketplace_tmp_clone_is_not_used(self):
+        # Unversioned but under .tmp with undocumented permanence: a reference that
+        # could vanish silently is worse than a pinned one that warns (SOUL-F038).
         home, root = self.cache_install()
         clone = home / ".tmp" / "marketplaces" / "mkt"
         (clone / "operations").mkdir(parents=True)
         (clone / "operations" / "CLAUDE.md").write_text("contract\n")
         reference, err = self.wire_from(root)
-        self.assertEqual(reference, clone / "operations" / "CLAUDE.md")
-        self.assertEqual(err, "")
+        self.assertEqual(reference, root / "operations" / "CLAUDE.md")
+        self.assertIn("pinned to plugin version 9.9.9", err)
 
     def test_different_unversioned_contract_falls_back_to_pinned(self):
         home, root = self.cache_install()
-        clone = home / ".tmp" / "marketplaces" / "mkt"
-        (clone / "operations").mkdir(parents=True)
-        (clone / "operations" / "CLAUDE.md").write_text("newer contract\n")
+        source = self.project / "checkout"
+        (source / "operations").mkdir(parents=True)
+        (source / "operations" / "CLAUDE.md").write_text("newer contract\n")
+        (home / "config.toml").write_text(
+            f'[marketplaces.mkt]\nsource_type = "local"\nsource = "{source}"\n')
         reference, err = self.wire_from(root)
         self.assertEqual(reference, root / "operations" / "CLAUDE.md")
         self.assertIn("pinned to plugin version 9.9.9", err)

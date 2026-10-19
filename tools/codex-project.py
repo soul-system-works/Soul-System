@@ -53,13 +53,15 @@ def contract_location(root=None):
     Mirrors /soul-init's version-pin guard. Codex installs a plugin copy at
     <codex-home>/plugins/cache/<marketplace>/<plugin>/<version>/ (observed with
     codex-cli 0.163.0), and that directory is replaced by a new one at the next
-    update, so a reference into it dies. Unversioned places observed on disk:
-    a local marketplace's source directory (config.toml `[marketplaces.<name>]`,
-    source_type "local"), and a git marketplace's clone at
-    <codex-home>/.tmp/marketplaces/<name>/ — under `.tmp`, so its permanence is
-    not documented. Either is used only when its contract is byte-identical to
-    the installed one, so the reference never names different doctrine than the
-    SessionStart hook delivers. Otherwise the versioned path is returned pinned.
+    update, so a reference into it dies. The one unversioned place used is a
+    local marketplace's source directory (config.toml `[marketplaces.<name>]`,
+    source_type "local"), and only when its contract is byte-identical to the
+    installed one, so the reference never names different doctrine than the
+    SessionStart hook delivers. Otherwise the versioned path is returned pinned,
+    with a warning. NOT the git marketplace clone at
+    <codex-home>/.tmp/marketplaces/<name>/: it is unversioned, but it sits under
+    `.tmp` and its permanence is undocumented, and a reference that vanishes fails
+    silently (SOUL-F038) where a pinned one fails loudly at the next update.
     """
     root = Path(root or ROOT)
     contract = root / "operations" / "CLAUDE.md"
@@ -75,7 +77,6 @@ def contract_location(root=None):
             candidates.append(Path(entry["source"]).expanduser())
     except Exception:  # unreadable/absent config or no tomllib: skip this candidate
         pass
-    candidates.append(codex_home / ".tmp" / "marketplaces" / marketplace)
     installed = contract.read_bytes()
     for candidate in candidates:
         unversioned = candidate / "operations" / "CLAUDE.md"
