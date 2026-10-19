@@ -119,11 +119,76 @@ def main():
         if not _mod._is_soul_project(proj):
             failures.append("MISS: a non-home .claude/CLAUDE.md project stopped scoping")
 
+        # 12. THE AGENTS.md WIDENING. Codex reads AGENTS.md / AGENTS.override.md, and
+        # those files are ordinary project instructions in non-Soul projects too.
+        # "witness.md" is a fine marker inside CLAUDE.md, but in an AGENTS.md it is
+        # plain English: a fresh-context review (2026-10-19) demonstrated a non-Soul
+        # project whose AGENTS.md said "Keep a witness.md of test runs." arming the
+        # gate and creating .soul/events.jsonl. If this fails, that leak is back.
+        for name in ("AGENTS.md", "AGENTS.override.md"):
+            d = os.path.join(tmp, f"agents-witness-{name}")
+            os.makedirs(d)
+            with open(os.path.join(d, name), "w", encoding="utf-8") as fh:
+                fh.write("# Build notes\nKeep a witness.md of test runs.\n")
+            if _mod._is_soul_project(d):
+                failures.append(f"LEAK: a {name} naming only witness.md scoped the gate")
+
+        # 13. The SOUL-160 incident sentence must not scope from the Codex files
+        # either. Passes against the pre-fix predicate too (bare "soul" was never
+        # a marker); it guards a future bare-word widening, not this fix.
+        for name in ("AGENTS.md", "AGENTS.override.md"):
+            d = os.path.join(tmp, f"agents-chainj-{name}")
+            os.makedirs(d)
+            with open(os.path.join(d, name), "w", encoding="utf-8") as fh:
+                fh.write("# Game project\nTuning values — spawn rates, hitbox sizes — are "
+                         "the soul of an action game. Keep them in one file.\n")
+            if _mod._is_soul_project(d):
+                failures.append(f"LEAK: bare-word 'soul' in {name} scoped the gate")
+
+        # 14. ...but the block tools/codex-project.py actually writes must scope,
+        # in either file, or the stricter AGENTS.md marker set has disabled the gate
+        # for every Codex-wired project. Uses the real writer, not a copy of its text.
+        _wspec = importlib.util.spec_from_file_location(
+            "codex_project", os.path.join(_HERE, "..", "tools", "codex-project.py"))
+        _wiring = importlib.util.module_from_spec(_wspec)
+        _wspec.loader.exec_module(_wiring)
+        from pathlib import Path
+        for name in ("AGENTS.md", "AGENTS.override.md"):
+            d = os.path.join(tmp, f"agents-wired-{name}")
+            os.makedirs(d)
+            if name == "AGENTS.override.md":
+                with open(os.path.join(d, name), "w", encoding="utf-8") as fh:
+                    fh.write("Active rules.\n")  # non-empty, so the writer targets it
+            try:
+                target = _wiring.wire(Path(d))
+            except ValueError as exc:  # wiring refused (e.g. the source repo)
+                failures.append(f"MISS: could not build the Codex block fixture: {exc}")
+                continue
+            if os.path.basename(str(target)) != name:
+                failures.append(f"MISS: the Codex writer targeted {target}, not {name}")
+            elif not _mod._is_soul_project(d):
+                failures.append(f"MISS: the codex-project.py block in {name} does not scope the gate")
+
+        # 15. The Codex analog of case 10. The user's GLOBAL Codex file is
+        # ~/.codex/AGENTS.md, which the predicate never reads (it reads only
+        # <cwd>/AGENTS.md and <cwd>/AGENTS.override.md). At $HOME, ~/AGENTS.md is
+        # what Codex itself treats as that directory's project file, so the $HOME
+        # exclusion does not apply to it. Passes against the pre-fix predicate too:
+        # it guards a future `.codex/AGENTS.md` widening, which at $HOME would arm
+        # the gate in every session from the user's global file.
+        cglobal = os.path.join(tmp, "codexglobal")
+        os.makedirs(os.path.join(cglobal, ".codex"))
+        with open(os.path.join(cglobal, ".codex", "AGENTS.md"), "w", encoding="utf-8") as fh:
+            fh.write("Run $soul-system:soul-resume at start; contract at operations/CLAUDE.md.\n")
+        if _mod._is_soul_project(cglobal):
+            failures.append("LEAK: a .codex/AGENTS.md (the global Codex file at $HOME) scoped the gate")
+
     if failures:
         for f in failures:
             print(f"FAIL  {f}")
         sys.exit(1)
-    print("PASS  11/11 — the scope fence holds, both store layouts scope, $HOME excluded")
+    print("PASS  15/15 — the scope fence holds, both store layouts scope, $HOME excluded, "
+          "AGENTS.md scopes only on wired-Soul markers")
 
 
 if __name__ == "__main__":

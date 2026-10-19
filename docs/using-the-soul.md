@@ -4,6 +4,11 @@ You work the way you already work. The system is one page of rules the AI reads,
 plus a notebook your project keeps. This page is the whole lifecycle; every link
 goes deeper.
 
+The walkthrough below describes Claude Code. For the experimental Codex path,
+see [the Codex preview](../README.md#codex-preview-experimental) and
+[host integration](../operations/codex.md); use `$soul-system:soul-*` invocation there, and
+verify hook trust and operation before relying on automatic completion reminders.
+
 ## Day one
 
 Run `/soul-init` in your project. It asks two short questions — plain or fluent

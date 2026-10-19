@@ -6,6 +6,10 @@ disable-model-invocation: true
 
 # /soul-explain — describe, don't decide
 
+**Codex:** Read [the host integration](../../operations/codex.md) before
+following this workflow. Its Codex procedures replace Claude-specific loading,
+instruction-file, tool, and invocation mechanics; the shared workflow follows.
+
 You have been asked to EXPLAIN, not to act. Produce a clear description of the
 target — the thing just shared, the current state, or a named item — as a
 read-only lens. This is the deliberate, invokable form of "just tell me what's

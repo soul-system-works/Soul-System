@@ -6,6 +6,10 @@ disable-model-invocation: true
 
 # /soul-prompt — rough prompt in, project-informed prompt out
 
+**Codex:** Read [the host integration](../../operations/codex.md) before
+following this workflow. Its Codex procedures replace Claude-specific loading,
+instruction-file, tool, and invocation mechanics; the shared workflow follows.
+
 `/soul-prompt [--handoff] <rough text>`
 
 The Body writes terse prompts. A terse prompt is usually fine, but it under-names

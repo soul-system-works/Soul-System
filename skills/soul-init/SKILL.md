@@ -1,10 +1,14 @@
 ---
 name: soul-init
-description: Initialize the current project as a Soul System project — creates a CLAUDE.md with the contract import, wires an existing Mind if there is one, and scaffolds the project's local record (.soul/ideas.md, .soul/witness.md) after asking whether that record goes in version control.
+description: Initialize the current project as a Soul System project — wires a live contract reference into the host's project instructions, loads an existing Mind if there is one, and scaffolds the project's local record after asking whether that record goes in version control.
 disable-model-invocation: true
 ---
 
 # /soul-init — load the Soul System into the current project
+
+**Codex:** Read [the host integration](../../operations/codex.md) before
+following this workflow. Its Codex procedures replace Claude-specific loading,
+instruction-file, tool, and invocation mechanics; the shared workflow follows.
 
 **Derive the Soul System root from this skill's own location (A022).** The harness
 states this skill's base directory when it loads; the root is two levels up

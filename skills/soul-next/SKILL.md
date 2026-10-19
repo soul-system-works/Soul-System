@@ -5,6 +5,10 @@ description: Refresh the task tracker against the durable records, then present 
 
 # /soul-next — refresh the tracker, show what's next
 
+**Codex:** Read [the host integration](../../operations/codex.md) before
+following this workflow. Its Codex procedures replace Claude-specific loading,
+instruction-file, tool, and invocation mechanics; the shared workflow follows.
+
 The forward guardrail (pairs with `/soul-explain` as present↔next): surface where to go
 next, grounded in the durable records, so the agent doesn't invent direction and the Body
 doesn't have to ask (SOUL-I010 / proactive-next-steps). The harness task list goes stale

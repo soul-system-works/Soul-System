@@ -1,0 +1,9 @@
+{
+  "description": "Soul System Codex adapter; review and trust these hooks before use.",
+  "hooks": {
+    "SessionStart": [{"hooks": [{"type": "command", "command": "python3 \"${PLUGIN_ROOT}/hooks/codex.py\"", "timeout": 15}]}],
+    "PreToolUse": [{"matcher": "^Bash$", "hooks": [{"type": "command", "command": "python3 \"${PLUGIN_ROOT}/hooks/codex.py\"", "timeout": 15}]}],
+    "PostToolUse": [{"matcher": "^(Bash|apply_patch|Edit|Write|MultiEdit|NotebookEdit)$", "hooks": [{"type": "command", "command": "python3 \"${PLUGIN_ROOT}/hooks/codex.py\"", "timeout": 15}]}],
+    "Stop": [{"hooks": [{"type": "command", "command": "python3 \"${PLUGIN_ROOT}/hooks/codex.py\"", "timeout": 15}]}]
+  }
+}

@@ -5,6 +5,10 @@ description: Refresh the project's Mind — compress the accumulated record (wit
 
 # /soul-distill — refresh the Mind
 
+**Codex:** Read [the host integration](../../operations/codex.md) before
+following this workflow. Its Codex procedures replace Claude-specific loading,
+instruction-file, tool, and invocation mechanics; the shared workflow follows.
+
 The project's accumulated record (witness, findings, ideas, amendments) has been
 growing. This command compresses it into `mind.md` — a project-scoped, always-on
 artifact holding this project's **unguessables** — the facts, traps and
