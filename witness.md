@@ -8689,3 +8689,18 @@ CONSEQUENCE:  The I066 dispatch line must allow the Done-when command (--allowed
               one easy task proves the plumbing only, not open-model quality.
 STATUS:       Open.
 ```
+
+```
+ID:           SOUL-201
+WHEN:         2026-10-19
+WHERE:        I066 test · same scratch repo and brief as SOUL-200
+WHAT:         Rerun with the line now in skills/soul-delegate: MAX_THINKING_TOKENS=4000
+              CLAUDE_CODE_MAX_OUTPUT_TOKENS=8000, --allowedTools "Bash(python3 -m pytest *)".
+              The worker ran pytest itself and reported "3 passed"; 33 s, 5 turns (model
+              already loaded). tools/delegation-check.py re-ran the check: PASS, recorded
+              as observed with this session's id.
+TYPE:         observation
+CONSEQUENCE:  The prefix-form --allowedTools fixes SOUL-200's blocked check; still one
+              easy task — plumbing, not quality.
+STATUS:       Open.
+```

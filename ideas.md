@@ -2240,7 +2240,7 @@ SHAPE (2026-10-19, explored with the Body): NOT a router. Routing lives in
            <a check the main session can run>. A step without a check stays
            with the main model. (2) Dispatch by existing commands, no script:
            routine → `ollama launch claude -- -p "<brief>"`, review → `codex
-           exec` / the Codex plugin, deep → a subagent; a short tier table
+           exec` / the Codex plugin, deep → the main session; a short tier table
            (user-level, optional per-project override, Claude-only default)
            names the command per tier. Main model = whatever was launched.
            (3) A review record: who did the work, who/what checked it, the
@@ -2252,8 +2252,9 @@ SHAPE (2026-10-19, explored with the Body): NOT a router. Routing lives in
            optimizer, not a router; per-agent provider (#38698) still open.
            Left out on purpose: session toggle across providers, adapting to
            the launched main model — routing jobs, not Soul jobs.
-STATUS:    Shaped — the Body chose the lightweight version 2026-10-19. Next:
-           test the `ollama launch` one-liner headless, then draft (1)+(3).
+STATUS:    Built — v2.6.0 (`/soul-delegate`, `tools/delegation-check.py`),
+           2026-10-19. Dispatch evidence SOUL-200/201. Unrun: the installed skill
+           (incl. surviving compaction), the codex exec lines.
 ```
 
 ```
