@@ -8643,3 +8643,19 @@ TYPE:         Correction — an unrun item that had already run elsewhere
 CONSEQUENCE:  Remaining Codex unrun item: clients other than the CLI.
 STATUS:       Closed. Next id: SOUL-198.
 ```
+
+```
+ID:           SOUL-198
+WHEN:         2026-10-19 / /soul-distill, Body-invoked, applied on the Body's "apply all"
+WHERE:        mind.md
+WHAT:         Mind 69 → 76 lines, growth signed off by the Body. New: "counts come
+              out generous" (release rows 2.1.1–2.3.2) and "zero gate fires is not a
+              broken gate" (SOUL-189/192/193); the -p item gains SOUL-190; the name
+              rule names the NAME-MAP scan. Cut: the dual-use clause. Not carried:
+              "never push --tags" — 0 local-only tags remain (checked), hazard gone.
+TYPE:         Distill
+CONSEQUENCE:  Self-tests: load-bearing Y (both new items generate decisions the
+              contract does not); trap-coverage Y; re-derivable — one flag, the
+              counts item sits near contract rule 3, kept as this repo's direction.
+STATUS:       Closed. Next id: SOUL-199.
+```
