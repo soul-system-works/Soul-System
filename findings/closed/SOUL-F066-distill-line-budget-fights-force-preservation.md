@@ -15,8 +15,8 @@ REFERENCE PROJECT: Three independent projects:
                  (3) A third project — reported it new, AND supplied the remedy
                      (below) after hitting it in a live distill.
 WITNESS IDS:     SOUL-183.
-STATUS:          Open — graduated by the Body 2026-08-28. The remedy in
-                 "What the third project found" is a candidate, not adopted.
+STATUS:          Closed 2026-10-19 — ruled by the Body (SOUL-202); amendment
+                 SOUL-A028 accepted and applied in v2.8.0.
 RELATED:         SOUL-F045 (carry the incident's force), SOUL-F055 (folding
                  measured at 5/5 -> 1/5 activation), SOUL-A021 (the slim Mind).
 ```
@@ -73,3 +73,23 @@ it is a one-line deletion and does not need this finding resolved first.
 The Mind is always-on text. A budget that is met by the one method that disables the
 content is worse than no budget: it produces a Mind that passes its own size check and
 stops changing behaviour, with nothing reporting the loss.
+
+## Ruled 2026-10-19 (SOUL-202)
+
+**Ruling (the Body).** The line budget is a **target, not a gate**. 80 lines is a
+review trigger — reaching it means re-justifying every entry — but no line-shaving below the 120 cap.
+Above 120 the cap is the Body's call, raised out loud. When the budget and an entry's
+force conflict, **force wins**. Cut whole entries and never merge them (the F055
+folding measurement). Show the weakest cuts to the Body as its call, and let the Body
+keep one by raising the cap. This answers question 1 above.
+
+**New instances (mining pass 2):** PLANT-BOP (2026-09-02): "cut, do not request an
+exception", and the owner relaxed it on seeing the cut list, which is the ruling
+above in practice. GAME-THERMAL (2026-09-02): distill's growth check names no unit;
+lines shrank while items grew. The fix that ships with the ruling: always report both
+units (`lines a→b · items c→d`). Growth in lines or items needs no sign-off when every
+new entry passes the anchor and unguessability tests; above the 120 cap the Body
+decides (confirmed by the Body, 2026-10-19).
+
+**Where the fix lands:** `skills/soul-distill/SKILL.md` (step 4's budget and growth
+check, step 8's status line), made separately from this record.

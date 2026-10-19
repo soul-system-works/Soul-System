@@ -21,7 +21,7 @@ STATUS:          Open — graduated by the Body 2026-08-28. Note the evidence ba
                  is TWO instances, one of them this repo's own; thinner than
                  F070's seven and recorded as such rather than inflated.
 RELATED:         Contract rule 4, SOUL-F047 (asserted vs executed verification),
-                 SOUL-F064.
+                 SOUL-F064. Partly absorbed by SOUL-A027 (2026-10-19).
 ```
 
 ## The gap

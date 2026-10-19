@@ -73,3 +73,19 @@ FILED BY:        Claude (Fable 5), Body-commissioned during the 2026-07-16
                  setup-diagnosis session; graduation to Finding explicitly
                  directed by the Body.
 ```
+
+## Positive evidence: the gate pays off when it fires (added 2026-10-19, SOUL-202)
+
+This finding measures the cost of firing too often. The other side, what a fire buys,
+now has a report from outside this repo. An adopting project's public blog sent its
+owed closing note (upstream entry dated 2026-06-12). The blog is public and listed
+as intentionally unredacted in the registry; it is cited without its name here all
+the same. It recorded that the gate's
+fires produced real residual-naming passes: a fire made the session name what it had
+not verified, which is the gate's purpose. It agrees with the v2.4.0 replay of five
+real fires in one project, where four replies closed on a verified line (self-reported;
+SYSTEM-VERSION 2.4.0). The Body ruled it a confirmation, to be stamped rather than
+filed as its own finding (SOUL-202).
+
+It does not bear on the rate question above. It says a fire is worth having, not how
+many fires a session should get. The cost side remains one Body's usage pattern.

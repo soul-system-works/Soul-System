@@ -1,6 +1,6 @@
 ---
 name: soul-capture
-description: "Capture to the record in one of three modes — idea (frictionless, forward), witness (light scaffold, backward), finding (earned scaffolder). The mode token is the first arg and selects friction + target store + format. Use when the Body asks to capture, OR proactively when you spot an UNGUESSABLE mid-session — a fact, decision, or convention a later session could not re-derive (F044 triage) — in idea/witness mode only: draft the entry and hold for the Body's confirmation before appending. Never self-invoke finding mode; graduation is the Body's explicit call (A022)."
+description: "Capture to the record in one of three modes — idea (frictionless, forward), witness (light scaffold, backward), finding (earned scaffolder). The mode token is the first arg and selects friction + target store + format. Use when the Body asks to capture, OR proactively when you spot an UNGUESSABLE mid-session — a fact, decision, or convention a later session could not re-derive (F044 triage) — in idea/witness mode only: hold drafts for the Body's yes (Body away: append marked unconfirmed). Never self-invoke finding mode; graduation is the Body's explicit call (A022)."
 ---
 
 # /soul-capture — capture to the record
@@ -34,9 +34,29 @@ caught it, SOUL-163/164) — under these limits:
   is the Body's explicit, earned act (Rule 7 / I024).
 - **The F044 triage rule is the trigger.** Propose only for the unguessable; do
   not propose for what a fresh session would re-derive.
-- **Always hold for confirmation.** Model-initiated captures draft the entry and
-  show it; nothing is appended until the Body says go. (Body-initiated `idea`
-  keeps its near-zero ceremony; model-initiated `idea` shows the one-liner first.)
+- **Hold for confirmation when the Body is there to give it.** Model-initiated
+  captures draft the entry and show it; nothing is appended until the Body says
+  go. (Body-initiated `idea` keeps its near-zero ceremony; model-initiated `idea`
+  shows the one-liner first.)
+- **When the Body is not there — session end, an unattended run — append, do not
+  hold.** Mark the entry `unconfirmed — owner to ratify`, and the next
+  `/soul-handoff` lists it: its step 1 scans the stores for the mark and writes
+  every marked id into the cursor's `UNCONFIRMED` field, so this skill never writes
+  the cursor by hand (rule 6). A held draft has nowhere durable to wait: the cursor
+  is replaced wholesale, so at session end "hold" means "discard" (F065).
+  - **Witness entry:** the mark goes in its `STATUS`, e.g. `Open — unconfirmed,
+    owner to ratify`. On the Body's yes the mark comes off (`STATUS` is the one
+    field an entry may change); on a no the entry stays and its `STATUS` says so.
+  - **Idea:** ideas have no `STATUS`, so the mark goes at the end of the idea's
+    line (or of its entry, in a heading-per-entry file), and on a yes it comes off
+    the same way. On a no, the entry stays and `— declined by the Body <date>` is
+    appended after it.
+
+  Either way the record stays append-only, corrected forward. A wrong entry
+  costs a correction; a lost one cannot be recovered. Four sessions in four
+  projects had already appended rather than held, and said so, before the ruling
+  (SOUL-202). Finding mode is never covered by this — unattended or not,
+  graduation waits for the Body.
 - The Body's "no" is final and costs nothing — proposals are cheap, vetoes cheaper.
 
 ## Where it writes (target — read this first)
@@ -109,7 +129,8 @@ shows the draft before appending.
    `ID / WHEN / WHERE / WHAT / TYPE / CONSEQUENCE / STATUS`. Preserve the Body's voice in
    WHAT; do not add interpretation or the word "should"; mark TYPE with `?` if uncertain.
 5. **Show the draft before appending.** Body says go / edit / cancel. On go, append (with
-   the I027 re-verify) and report the ID. Do not reorder existing entries.
+   the I027 re-verify) and report the ID. Do not reorder existing entries. (Body not
+   there to answer: append it marked unconfirmed — see *Who fires this*.)
 
 ## Mode `finding` — earned scaffolder (→ upstream, or `findings/open/` at home)
 
@@ -135,7 +156,8 @@ init had created. The store was never a project store; the scaffold said otherwi
   `findings/open/` exists on disk): run steps 1–8 as written.
 - **In any other project:** apply the entry test first — **name the file in the
   Soul System that would change** (the contract `operations/CLAUDE.md`, one of the
-  `skills/*/SKILL.md`, or `hooks/pre-completion-verify.py`; your `CLAUDE.md`
+  `skills/*/SKILL.md`, a doc in `operations/` or `docs/`, a `tools/*` helper, or
+  the hook `hooks/pre-completion-verify.py`; your `CLAUDE.md`
   imports from the installed plugin, so you can read them).
 
   - **You can name one:** run steps 1–3 to draft the finding, then **STOP at step
@@ -215,4 +237,7 @@ differential (Mind contrast case; I024) is preserved by mode, not by command cou
 the I027 re-read-verify protocol. Model-proposable for idea/witness since
 SOUL-A022 (2026-06-12; the Body's v2.0 review — "not clear WHEN").
 **Amended:** 2026-08-28 (v2.3.1) — STEP 0 gains the name-the-file
-entry test and an explicit refusal to self-downgrade the Body's `finding` call. **Adopted:** 2026-06-08. **Status:** active.
+entry test and an explicit refusal to self-downgrade the Body's `finding` call.
+**Amended:** 2026-10-19 (mining pass 2, SOUL-202) — F065 ruled: with the Body
+away, an idea/witness capture is appended marked `unconfirmed — owner to ratify`
+instead of held, and the next `/soul-handoff` lists it in the cursor. **Adopted:** 2026-06-08. **Status:** active.

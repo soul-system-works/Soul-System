@@ -34,7 +34,11 @@ Each must change what happens or be skipped honestly.
    is a question for the Body*, not an endpoint.
 4. **Visual artifact captured & inspected.** Rasterize via the project's own lib and Read
    it (or screenshot via run/verify). "Not eyeballed" is NON-PASS. Name the residual: design
-   capture (headless) vs target-tool render (may need the Body) — F030/F031.
+   capture (headless) vs target-tool render (may need the Body) — F030/F031. **Rendered is
+   not true:** an image that renders proves it exists, not that what it shows is right. When
+   it is evidence for a content claim (a schematic's topology, "feature X is present"), check
+   it against the source — the system it depicts, a data channel, or an A/B with the feature
+   toggled — or name the gap (F074, A027).
 5. **Unfinished business marked** (`TODO`/`FIXME`/`DEBT`/`HACK`)?
 
 ---

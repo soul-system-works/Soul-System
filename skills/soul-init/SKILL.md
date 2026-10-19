@@ -87,10 +87,20 @@ line you have not verified resolves.
 
 3. **Ask the one question that cannot be defaulted: does the record go in git?**
 
+   **First, is the repo public?** Check before asking — `gh repo view --json
+   visibility` when a remote exists and `gh` is available; otherwise ask the Body.
+   If it is public, say so in the question: **a tracked record in a public repo is
+   public** — every witness entry, idea and Mind line, readable by anyone — and ask
+   with no default. The question used to argue only for tracking and never asked
+   (MODEL-TEST's upstream note, mining pass 2, SOUL-202).
+
    > "Keep this project's Soul record (witness, ideas, Mind) in version control? [Y/n]"
 
-   **Default yes**, and say why in one line when asking: a record outside git
-   exists in exactly one copy, on one disk, with no history — and if this repo is
+   For a public repo, the same question with no default shown — `[y/n]` — and the
+   public consequence stated in it.
+
+   **Default yes** for a private repo, and say why in one line when asking: a
+   record outside git exists in exactly one copy, on one disk, with no history — and if this repo is
    ever cloned, submoduled, or worked on from a second machine, the lessons do
    not travel with it. A `no` is a legitimate choice (private or client-sensitive
    projects) but it must be a chosen one. Record the answer; step 3b writes it
@@ -104,7 +114,14 @@ line you have not verified resolves.
 3b. **Scaffold the project's local record under `.soul/`** (so `soul-capture` /
    `soul-handoff` / `soul-distill` have an unambiguous *local* target — the record
    is THIS project's, **never** the Soul System source repo). Create any that are
-   absent; never overwrite an existing one:
+   absent; never overwrite an existing one. **Look for an existing store first, not
+   only at the root and in `.soul/`** — `git ls-files '*ideas*.md' '*witness*.md'`
+   (or a `find` for untracked files) also finds one under `docs/` (e.g.
+   `docs/ideas.md`). If one exists, do not
+   scaffold a second: ask the Body whether it is the record, and if so write the
+   `.soul/` file as a one-line pointer to it (`Ideas live in docs/ideas.md —
+   append there.`) instead of an empty store. MODEL-TEST's `docs/ideas.md` was
+   missed and a second store scaffolded (mining pass 2, SOUL-202).
 
    - `.soul/ideas.md` — a one-line header `# Ideas — <this project>` (the forward record).
    - `.soul/witness.md` — a minimal header naming it this project's Witness log
@@ -121,7 +138,8 @@ line you have not verified resolves.
    - **No, keep it local** — ignore the whole directory: `.soul/`
 
    **Existing projects keep their layout.** If `witness.md` or `ideas.md` already
-   exist — at the project root OR under `.soul/` — those files ARE the record.
+   exist — at the project root, under `.soul/`, or wherever the search above found
+   them — those files ARE the record.
    Leave them exactly where they are, do not move or duplicate them, and write the
    gitignore lines against whichever paths are real. Both layouts are first-class;
    the completion gate scopes on either (`hooks/test_scope.py` cases 5 and 7).
@@ -142,8 +160,13 @@ line you have not verified resolves.
 
 3c. **Wire an existing Mind.** Before reporting, check whether the project already
    has a `mind.md` (at `.soul/mind.md` or the project root). If it does, add the
-   matching import line directly after the contract import — `@.soul/mind.md` or
-   `@mind.md`, whichever path is real — and say you did.
+   matching import line directly after the contract import, and say you did. **Write
+   the path relative to the file the line goes into**, since `@` paths resolve
+   against the importing file (verified above): from a root `CLAUDE.md`,
+   `@.soul/mind.md` or `@mind.md`; from `.claude/CLAUDE.md`, `@../.soul/mind.md` or
+   `@../mind.md`. This step used to write `@.soul/mind.md` regardless, which points
+   at `.claude/.soul/mind.md` when the contract import lives in `.claude/` —
+   MODEL-TEST's Mind went unloaded that way (mining pass 2, SOUL-202).
 
    A Mind is always-on by design and does nothing whatsoever unless something
    imports it. Nothing in this skill used to check, so a project could distill a
@@ -197,7 +220,7 @@ line you have not verified resolves.
    - The absolute path of the `CLAUDE.md` you wrote or found.
    - That the next Claude Code session opened in this directory will load the project contract (`operations/CLAUDE.md`) by import. The philosophy (`philosophy/the-soul.md`) is NOT imported — it is the human-facing book, read on demand (A021).
    - A one-line reminder: the philosophy will only take effect from the *next* session — the current one is already loaded.
-   - **Mention the optional Mind layer**: once the project has accumulated enough record-evidence to warrant compression, run `/soul-distill` to create a project-scoped `mind.md`, then add a second import line after the contract import to load it always-on. Skip on day-1 — the Mind is earned, not seeded.
+   - **Mention the optional Mind layer**: once the project has accumulated enough record-evidence to warrant compression, run `/soul-distill` to create a project-scoped `mind.md`, then add a second import line after the contract import to load it always-on (path relative to that file, as in 3c). Skip on day-1 — the Mind is earned, not seeded.
    - **If the project's `CLAUDE.md` is itself gitignored**, say so plainly: the wiring is machine-local, and a fresh clone of this repo loads no contract at all. That can be a deliberate choice — say it is a choice, not a gap, and let the Body confirm.
    - **If a stage was declared**, say which, and that its rules take effect from the
      next session; if skipped, say that `/soul-stage` declares one later and that
@@ -214,3 +237,4 @@ line you have not verified resolves.
 
 **Source:** Built by the Artificer as the Soul System's bootstrap command (the `@import` installer). Brought into the repo and put on the symlink (live-reference) distribution model under [[SOUL-F029]] — it previously lived only in `~/.claude/commands/`, the source-of-truth gap that finding names. **Adopted:** 2026-05-19 (repo-canonical 2026-05-22). **Status:** active.
 **NOTE:** the former machine-local root path (the F029 portability wrinkle) was retired by SOUL-A022 — the root now derives from the skill's own location, which also makes the plugin a complete install path.
+**Amended:** 2026-10-19 (mining pass 2, SOUL-202) — step 3 checks repo visibility before the tracking question; 3b finds an existing store outside root/`.soul/` (e.g. `docs/`) before scaffolding; 3c writes the Mind import relative to the importing file (extends F068).
