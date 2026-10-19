@@ -121,7 +121,7 @@ If you found something worth sharing, see `CONTRIBUTING.md`.
 ```
 philosophy/     The Soul — the human-facing book (the AI does not read this)
 operations/     The contract page — imported by @ into your project's CLAUDE.md
-skills/         The ten /soul-* instruments, as Claude Code skills (invoked /soul-capture, …)
+skills/         The /soul-* instruments, as Claude Code skills (invoked /soul-capture, …)
 hooks/          Activation instruments — the pre-completion Stop hook + plugin hooks.json
 amendments/     Amendments to the Soul, by lifecycle state (accepted/proposed/returned)
 findings/       Findings, open/ and closed/

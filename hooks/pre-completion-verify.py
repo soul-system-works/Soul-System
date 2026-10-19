@@ -168,10 +168,54 @@ def _emit_verdict(cwd: str, data: dict) -> None:
     try:
         verdict = _read_verdict(data.get("transcript_path") or "")
         if verdict:
-            _emit_event(cwd, data, "soul.gate.completion.verdict",
-                        {"verdict": verdict, "self_reported": True})
+            payload = {"verdict": verdict, "self_reported": True}
+            delegation = _delegation_counts(cwd, data.get("session_id"))
+            if delegation:
+                payload["delegation"] = delegation
+            _emit_event(cwd, data, "soul.gate.completion.verdict", payload)
     except Exception:
         pass
+
+
+def _delegation_counts(cwd: str, session_id):
+    """{"checked": N, "failed": M} over this session's soul.delegation.checked records.
+
+    Those records are the main session's OBSERVED re-runs of delegated steps' checks
+    (tools/delegation-check.py, SOUL-I066), so the verdict can say how many delegated
+    steps were checked and how many failed. None when there is no session id, no such
+    record, or any error — the summary is optional and never touches the emission.
+    A record not marked observed: true is not counted.
+    One streamed pass over the sink; malformed lines are skipped. Only a regular file
+    is read — a FIFO or /dev/stderr as $SOUL_EVENT_LOG would block the open or the
+    read, and a hang here holds the stop. Fence: hooks/test_verdict.py.
+    """
+    if not session_id:
+        return None
+    try:
+        sink = os.environ.get("SOUL_EVENT_LOG") or os.path.join(cwd, ".soul", "events.jsonl")
+        if not os.path.isfile(sink):
+            return None
+        checked = failed = 0
+        with open(sink, "r", encoding="utf-8", errors="ignore") as fh:
+            for ln in fh:
+                if "soul.delegation.checked" not in ln:
+                    continue  # the sink is mostly other events: skip before parsing
+                try:
+                    ev = json.loads(ln)
+                    if (ev.get("type") != "soul.delegation.checked"
+                            or ev.get("genaisessionid") != session_id):
+                        continue
+                    check = ev["data"]["check"]
+                    if check.get("observed") is not True:
+                        continue  # only the recorder's own observed re-runs count
+                    passed = check["passed"] is True
+                except Exception:
+                    continue  # malformed line or record: skip it, keep the rest
+                checked += 1
+                failed += not passed
+        return {"checked": checked, "failed": failed} if checked else None
+    except Exception:
+        return None
 
 
 def _read_verdict(transcript_path: str):

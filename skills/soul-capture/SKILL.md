@@ -135,7 +135,7 @@ init had created. The store was never a project store; the scaffold said otherwi
   `findings/open/` exists on disk): run steps 1–8 as written.
 - **In any other project:** apply the entry test first — **name the file in the
   Soul System that would change** (the contract `operations/CLAUDE.md`, one of the
-  ten `skills/*/SKILL.md`, or `hooks/pre-completion-verify.py`; your `CLAUDE.md`
+  `skills/*/SKILL.md`, or `hooks/pre-completion-verify.py`; your `CLAUDE.md`
   imports from the installed plugin, so you can read them).
 
   - **You can name one:** run steps 1–3 to draft the finding, then **STOP at step
