@@ -44,8 +44,10 @@ caught it, SOUL-163/164) — under these limits:
   every marked id into the cursor's `UNCONFIRMED` field, so this skill never writes
   the cursor by hand (rule 6). A held draft has nowhere durable to wait: the cursor
   is replaced wholesale, so at session end "hold" means "discard" (F065).
-  - **Witness entry:** the mark goes in its `STATUS`, e.g. `Open — unconfirmed,
-    owner to ratify`. On the Body's yes the mark comes off (`STATUS` is the one
+  - **Witness entry:** the mark goes in its `STATUS`, e.g. `Open — unconfirmed —
+    owner to ratify` — the exact string `/soul-handoff` scans for; v2.8.0's example
+    had a comma there, which the scan missed (SOUL-204;
+    `tools/test_unconfirmed_mark.py`). On the Body's yes the mark comes off (`STATUS` is the one
     field an entry may change); on a no the entry stays and its `STATUS` says so.
   - **Idea:** ideas have no `STATUS`, so the mark goes at the end of the idea's
     line (or of its entry, in a heading-per-entry file), and on a yes it comes off
