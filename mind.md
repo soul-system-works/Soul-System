@@ -45,9 +45,9 @@ book (`philosophy/the-soul.md`); everything else regenerates from the record.
 6. **Repo conventions that live nowhere else.** (a) Branch-per-release: main is
    the plugin DISTRIBUTION CHANNEL — record captures (witness/ideas/findings/
    amendments) commit to main; new WORK ships on a branch until release.
-   (b) NEVER run `git filter-repo` on the drvfs mount (/mnt/d) — it silently stalls; the identical rewrite took 0.6 s on ext4,
-   and the stall caused the SOUL-169 public exposure window (~2 h). Clone to ext4
-   for any history surgery. (c) Before EVERY push, scan the diff AND every commit
+   (b) NEVER run `git filter-repo` on the drvfs mount (/mnt/d) — it silently
+   stalls; the identical rewrite took 0.6 s on ext4, and the stall caused the
+   SOUL-169 public exposure window (~2 h). Clone to ext4 for any history surgery. (c) Before EVERY push, scan the diff AND every commit
    message, case-insensitively, against column 2 of the gitignored
    `registry/NAME-MAP.md`; main is public and adopting projects appear only as
    codenames (PLANT-BOP, ROUTER-LAB). The message is the surface the SOUL-169
