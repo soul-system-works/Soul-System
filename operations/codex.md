@@ -11,8 +11,12 @@ that workflow; they do not change the contract's obligations.
 - Invoke skills as `$soul-system:soul-init`, `$soul-system:soul-capture witness`, etc. References to
   `/soul-*` in shared prose name those same skills. A loaded skill's directory is
   in the installed plugin; project records always belong to the working project.
-- Read files with the available filesystem tools. Use the available question tool
-  only if it supports the current mode; otherwise ask in conversation and wait.
+- Read files with the available filesystem tools. **Ask in plain conversation
+  text, one question at a time, then END YOUR TURN and wait for the reply.** Never
+  choose an option yourself — not the recommended one, not a default — and never
+  continue past a question in the same turn. In the first live run (2026-10-19)
+  Codex listed the options and carried on, picking the recommended answers itself,
+  including the git-tracking choice that `/soul-init` says cannot be defaulted.
   `AskUserQuestion` is a Claude tool name, not a requirement to call it in Codex.
 - For **local Register and Stage policy**, read existing project `CLAUDE.md` if
   present. This keeps one policy when Claude and Codex share a project. Otherwise
@@ -53,8 +57,10 @@ It still references doctrine live; it never copies doctrine into the project.
    Claude procedure does. Preserve all content outside the block. Reuse an
    existing Register; otherwise ask plain/fluent once, writing only a fluent
    override to the project policy file on the owner's choice.
-3. Run `python3 <plugin-root>/tools/codex-project.py wire --project <project-root>`.
-   Quote paths as shell arguments. It appends or refreshes a marked live-reference
+3. Run `python3 <plugin-root>/tools/codex-project.py show --project <project-root>`
+   FIRST: it prints the exact block, the chosen contract path and why, and writes
+   nothing. Show that output, ask for consent (end your turn), and only then run
+   `... wire --project <project-root>`. Quote paths as shell arguments. It appends or refreshes a marked live-reference
    block; it does not scaffold or move records, edit ignores, or configure trust.
 4. Follow shared init steps **3–3b** for the record-tracking choice, scaffolding,
    and ignore rules. Keep the record at its existing location and ignore only
@@ -76,7 +82,8 @@ It still references doctrine live; it never copies doctrine into the project.
 7. Explain that the path is local to this installation. As with a Claude import,
    another machine or a removed cache version may need init again. The helper
    prefers an unversioned copy of the same contract (a local marketplace's source
-   directory, or a git marketplace's clone) over the versioned cache directory; if
+   directory; not the `.tmp` git clone, whose permanence is undocumented) over the
+   versioned cache directory; if
    it prints that the reference is pinned to a plugin version, relay that: init
    must be re-run after plugin updates. Prefer a stable clone for portable
    development setups. After upgrades, resume checks for stale

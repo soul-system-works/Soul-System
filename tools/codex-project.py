@@ -88,7 +88,10 @@ def contract_location(root=None):
     return contract, version
 
 
-def wire(project):
+def wire(project, dry_run=False):
+    """Write (or with dry_run, only print) the managed block. dry_run exists so the
+    owner sees the exact block BEFORE anything is written: without it, the first
+    live Codex init (2026-10-19) wrote AGENTS.md, then deleted it to ask consent."""
     contract = ROOT / "operations" / "CLAUDE.md"
     contract.read_text(encoding="utf-8")
     if is_source_repo(project):
@@ -132,7 +135,19 @@ project scoping alone does not prove the gate is armed.
         updated = text[:start] + block + text[end:]
     else:
         updated = text + (newline * 2 if text and not text.endswith(newline * 2) else "") + block + newline
+    if pinned:
+        why = f"the installed copy, pinned to plugin version {pinned}"
+    elif contract != ROOT / "operations" / "CLAUDE.md":
+        why = ("the local marketplace source, byte-identical to the installed contract "
+               "(unversioned, so it survives plugin updates)")
+    else:
+        why = "this checkout of the Soul System"
+    if dry_run:
+        print(f"Would {'refresh' if START in text else 'add'} this block in {target}.\n"
+              f"Contract path: {path} — {why}.\n\n{block}")
+        return target
     target.write_bytes(updated.encode("utf-8"))
+    print(f"Contract path: {path} — {why}.", file=sys.stderr)
     if pinned:
         print(f"Soul Codex wiring: this reference is pinned to plugin version {pinned}; "
               "re-run $soul-system:soul-init after plugin updates.", file=sys.stderr)
@@ -161,14 +176,16 @@ def status(project):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("action", choices=("wire", "status"))
+    parser.add_argument("action", choices=("show", "wire", "status"))
     parser.add_argument("--project", required=True, type=Path)
     args = parser.parse_args()
     try:
         project = args.project.expanduser().resolve(strict=True)
         if not project.is_dir():
             parser.error("--project must name an existing directory")
-        if args.action == "wire":
+        if args.action == "show":
+            wire(project, dry_run=True)
+        elif args.action == "wire":
             print(wire(project))
         else:
             print(json.dumps(status(project), indent=2))

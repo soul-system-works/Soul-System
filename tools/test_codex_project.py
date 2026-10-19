@@ -3,7 +3,7 @@
 Run: python3 -B -m unittest discover -s tools -p 'test_codex_project.py' -v
 """
 
-from contextlib import redirect_stderr
+from contextlib import redirect_stderr, redirect_stdout
 import importlib.util
 import io
 from pathlib import Path
@@ -135,6 +135,21 @@ class ProjectWiring(unittest.TestCase):
             wiring.wire(target)
         return wiring.contract_reference((target / "AGENTS.md").read_text()), err.getvalue()
 
+    def test_show_prints_the_exact_block_and_writes_nothing(self):
+        home, root = self.cache_install()
+        target = self.project / "adopter"
+        target.mkdir()
+        out, err = io.StringIO(), io.StringIO()
+        with patch.object(wiring, "ROOT", root), redirect_stdout(out), redirect_stderr(err):
+            wiring.wire(target, dry_run=True)
+        self.assertFalse((target / "AGENTS.md").exists())
+        self.assertIn("pinned to plugin version 9.9.9", out.getvalue())
+        with patch.object(wiring, "ROOT", root), redirect_stderr(io.StringIO()):
+            wiring.wire(target)
+        written = (target / "AGENTS.md").read_text()
+        block = written[written.index(wiring.START):written.index(wiring.END) + len(wiring.END)]
+        self.assertIn(block, out.getvalue())
+
     def test_versioned_cache_only_is_pinned_with_warning(self):
         home, root = self.cache_install()
         reference, err = self.wire_from(root)
@@ -151,7 +166,8 @@ class ProjectWiring(unittest.TestCase):
             f'[marketplaces.mkt]\nsource_type = "local"\nsource = "{source}"\n')
         reference, err = self.wire_from(root)
         self.assertEqual(reference, source / "operations" / "CLAUDE.md")
-        self.assertEqual(err, "")
+        self.assertNotIn("pinned", err)
+        self.assertIn("local marketplace source", err)  # the agent is told why
 
     def test_git_marketplace_tmp_clone_is_not_used(self):
         # Unversioned but under .tmp with undocumented permanence: a reference that
