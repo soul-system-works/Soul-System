@@ -8742,3 +8742,25 @@ TYPE:         correction
 CONSEQUENCE:  A027/A028 accepted on the shown wording; released as v2.8.0.
 STATUS:       Closed.
 ```
+
+```
+ID:           SOUL-204
+WHEN:         2026-10-19 / after SOUL-203
+WHERE:        /soul-resume and /soul-handoff (first live run of the v2.8.0 text) ·
+              the previous cursor · the adopting projects' upstream.md
+WHAT:         Three things the resume and close-out turned up. (1) The previous
+              cursor said 9 projects had an uncommitted upstream.md stamp; git showed
+              5 tracked-and-dirty (committed this session) and 5 gitignored, which
+              only a project's zip carries. (2) One of the five (SUB-K, REF-25) held a
+              whole 2026-09-08 note its own session appended and never committed — six weeks on one disk, and that
+              repo has no git remote at all. (3) v2.8.0's skills disagree on the
+              unconfirmed mark: /soul-handoff scans for `unconfirmed — owner to
+              ratify`, while /soul-capture's witness example writes `unconfirmed,
+              owner to ratify` (comma), which that scan would miss.
+TYPE:         observation
+CONSEQUENCE:  (1) is mind item 2 again — a count about our own work, wrong. (2):
+              nothing in the upstream path commits what it appends. (3) is a
+              defect to fix in skills/soul-capture/SKILL.md (make the example use
+              the scanned string). This entry uses the scanned form.
+STATUS:       Open — unconfirmed — owner to ratify.
+```
