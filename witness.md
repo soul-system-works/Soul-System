@@ -8564,3 +8564,19 @@ CONSEQUENCE:  Same shape as SOUL-189 on a second model. Still unknown: whether a
               Needs harder cases, or a contract-free arm, to measure the plugin.
 STATUS:       Open. Next id: SOUL-193.
 ```
+
+```
+ID:           SOUL-193
+WHEN:         2026-10-19 / evals/gate-fires, v2.4.0 hook, Sonnet, 2 runs × 2 arms, $0.27
+WHERE:        evals/gate-fires · hooks/pre-completion-verify.py
+WHAT:         With a closing sentence the claim regex matches, the gate blocked in
+              2/2 plugin runs; both agents then ran the file before ending and
+              closed "— Verified: ran greeting.py …". The hook wrote its flagged and
+              verdict events both times, and the eval trace carried the feedback.
+TYPE:         Observation — the gate works inside an eval; what never fires is the
+              claim regex on natural replies (SOUL-189, SOUL-192)
+CONSEQUENCE:  Answers the open trace question. gate-fires becomes the suite's
+              regression check that the gate fires; the other cases measure the
+              contract both arms receive.
+STATUS:       Closed. Next id: SOUL-194.
+```
