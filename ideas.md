@@ -2220,3 +2220,18 @@ SHAPE:     Raw. Nearest existing seats: the /soul-stage block (its exit trigger 
            re-read by /soul-next) and /soul-next's tiered options.
 STATUS:    Raw — Body-captured.
 ```
+
+```
+ID:        SOUL-I066
+WHEN:      2026-10-19
+RAW:       Evaluate independently — overriding ROUTER-LAB's "compose, don't merge"
+           call — whether multi-model routing belongs in the Soul System as a skill,
+           and what it would look like: something a user can turn on or off in a
+           session and edit (which model or provider does deep work, review,
+           routine work).
+SHAPE:     Raw. Inputs: ROUTER-LAB's tier design and measurements (its handoff
+           pack, local path in the REF-23 name-map row); this session's practice of
+           using Codex as the review tier. Open: skill vs hook vs config; per-session
+           toggle; what stays out of the contract's size budget.
+STATUS:    Raw — Body-captured; for a new session.
+```
