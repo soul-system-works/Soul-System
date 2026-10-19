@@ -33,8 +33,8 @@ QUESTION THREE:  Coherence — it separates class 3 (disposable) from class 2 (t
                  that reason. No conflict with rule 1: decisions still go to the
                  code site or `docs/adr/`, which are project content. The
                  harness-neutral name matches the Codex direction (SOUL-I063).
-STATUS:          Proposed — moves to accepted/ when the owner accepts the
-                 intake-2026-10-19 branch.
+STATUS:          Accepted 2026-10-19 — the owner approved the release of the
+                 intake-2026-10-19 branch (v2.4.0).
 
 ---
 
