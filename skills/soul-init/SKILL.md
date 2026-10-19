@@ -42,7 +42,12 @@ listing it. Per the documentation: *"If you decline, the imports stay disabled a
 the dialog doesn't appear again."* Tell the Body this in step 4 — a single
 mis-click permanently silences the contract in that project, and the failure looks
 exactly like a session that simply ignores doctrine. `/soul-resume`'s wiring check
-(step 0) is what catches it afterwards.
+(step 0) is what catches it afterwards. **Headless runs never get the dialog**:
+under `claude -p` this home-relative import did not load in 3 of 3 sentinel runs
+while an in-project copy did (2026-10-19, Claude Code 2.1.303). So tell the Body
+too: automated runs need the contract passed explicitly —
+`--append-system-prompt-file <root>/operations/CLAUDE.md` (the SOUL-F038 fix).
+Do not vendor a copy into the project; a copy never receives contract upgrades.
 
 VERIFY before writing: the chosen root must contain `operations/CLAUDE.md`
 (resolve symlinks to an absolute path first, e.g. `realpath`). If it does not,
@@ -54,7 +59,7 @@ line you have not verified resolves.
 1. Determine the current working directory (the project root). Do not search upwards; use the directory the session was started in.
 
 2. Check whether `CLAUDE.md` already exists in that directory.
-   - **If it exists:** read it. If it already contains an import line ending in `/operations/CLAUDE.md` (any root — a prior install may have used a different path), note "import already present" — **do not stop; continue to steps 3–3d** to ensure the record scaffold, the git-tracking answer and the Mind import are all in place (soul-init is idempotent: it backfills a missing record for an already-imported project). If it exists but does not contain that line, report the existing contents and ask the user whether to append the import line or leave it alone. Do not overwrite without explicit confirmation.
+   - **If it exists:** read it. If it already contains an import line ending in `/operations/CLAUDE.md` (any root — a prior install may have used a different path), note "import already present" — **do not stop; continue to steps 3–3e** to ensure the record scaffold, the git-tracking answer and the Mind import are all in place (soul-init is idempotent: it backfills a missing record for an already-imported project). If it exists but does not contain that line, report the existing contents and ask the user whether to append the import line or leave it alone. Do not overwrite without explicit confirmation.
    - **If it does not exist:** ask one question — "Response register: plain or
      fluent?" (default **plain** if the user has no preference) — then create it
      containing the import line, plus a Register line ONLY if the answer was
@@ -149,7 +154,7 @@ line you have not verified resolves.
    it reports the current state ("no stage declared", or a hand-written `**Phase:`
    block if one exists) and offers *Just looking* / prototype / pre-release /
    released with their descriptions. *Just looking* is the skip: say so, and
-   continue to step 4. This step sits after 3b on purpose — a chosen stage ends in a
+   continue to step 3e (which itself applies only to an already-initialized project). This step sits after 3b on purpose — a chosen stage ends in a
    witness entry, and until 3b has run there is no witness log to append to (the
    2.2.0–2.2.2 order had it before the scaffold; found by fresh-context review,
    2026-08-26, before any init ran it). Do not copy the skill's text or its
@@ -165,6 +170,25 @@ line you have not verified resolves.
    (2026-08-24/25) — into two different always-on files, in two wordings, with no
    shared source.
 
+3e. **Already initialized only: offer to move AI working files into `.ai/`.** Skip
+   this step entirely for a fresh project. On the "import already present" path, run
+   `python3 <derived-root>/tools/layout-cleanup.py scan <project>`. It flags only text
+   files whose name or folder marks them as working material (plans, handoffs,
+   reviews, scratch, stray `.soul/` files) — never code, tests, user docs or ADRs. No
+   candidates: say nothing. Otherwise show its grouped dry run and ask per group with
+   AskUserQuestion: *move to `.ai/`* / *leave* / *it is project content* / *decline
+   all*. Decline all runs `decline <project>`, which changes nothing but the
+   remembered list in `.soul/layout.json`. Otherwise write the answers to a plan file
+   outside the project (`{"<path>": "move|leave|content"}`, paths from `scan --json`)
+   and run `apply <project> --plan <file> --dry-run` first. A file it says project
+   content links to is usually project content: put that file to the owner on its
+   own before applying, since project content must never link into `.ai/`. Then run
+   `apply` without `--dry-run`; any "project content now links into .ai/" line it
+   still prints is an open gap — report it as one: drop the link or promote the
+   file, the owner's call. Never add a path the scan did not flag. *Why:* project content, the
+   durable record (`.soul/`) and AI working files (`.ai/`, safe to delete) each have
+   one home.
+
 4. After creating or confirming the file, report:
    - The absolute path of the `CLAUDE.md` you wrote or found.
    - That the next Claude Code session opened in this directory will load the project contract (`operations/CLAUDE.md`) by import. The philosophy (`philosophy/the-soul.md`) is NOT imported — it is the human-facing book, read on demand (A021).
@@ -178,7 +202,8 @@ line you have not verified resolves.
 ## What not to do
 
 - Do not copy any Soul System *doctrine* files into the project (the seed, philosophy, operations). The whole point is that the philosophy stays in one canonical location and is referenced by import. (Scaffolding the project's own empty record stores in step 3b is not copying — it is establishing *this* project's record.)
-- Beyond the import line and the empty record scaffold, do not write project content. If the user wants project-specific context, that belongs in a separate file or below the import line — `/soul-init` adds only the import + the empty record.
+- Beyond the import line and the empty record scaffold, do not write project content. (The one exception: step 3e's link repointing, after the owner chose the moves.) If the user wants project-specific context, that belongs in a separate file or below the import line — `/soul-init` adds only the import + the empty record.
+- Do not classify files yourself in step 3e: move only what the layout scan flagged and the owner chose to move, and never delete one.
 - Do not modify the Soul System repo from this command. It is read-only as far as `/soul-init` is concerned.
 
 ---

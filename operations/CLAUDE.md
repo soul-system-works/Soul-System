@@ -58,6 +58,11 @@ System's own stores and are not scaffolded locally. Forward view:
 `/soul-next`. Maintenance: `/soul-distill` (propose it when the record has grown;
 the owner confirms — it keeps this page within budget).
 
+**Working files** — plans, drafts, review output, eval results, scratch — go in
+`.ai/` (created on first use, safe to delete), never in `docs/`, the root or source
+folders. Promoting one to project content is the owner's call; project content
+never links into `.ai/`.
+
 **Register** defaults to `plain` — use a Soul or project term only when it earns
 its place, gloss it on first use, introduce vocabulary gradually. Vocabulary only;
 LENGTH is rule 9 either way. Override with a `**Register: fluent**` line in the
