@@ -8631,3 +8631,15 @@ CONSEQUENCE:  Closes SOUL-195's unrun item. Still unrun: the interactive hook-tr
               prompt, and clients other than the CLI.
 STATUS:       Closed. Next id: SOUL-197.
 ```
+
+```
+ID:           SOUL-197
+WHEN:         2026-10-19 / the owner, on SOUL-195's runs
+WHERE:        Codex hook trust (host behaviour)
+WHAT:         The owner reports Codex showed the trust-hooks prompt in their live
+              runs on the other machine. SOUL-196 had listed it as unrun because
+              that run bypassed trust; it was in fact exercised in SOUL-195.
+TYPE:         Correction — an unrun item that had already run elsewhere
+CONSEQUENCE:  Remaining Codex unrun item: clients other than the CLI.
+STATUS:       Closed. Next id: SOUL-198.
+```

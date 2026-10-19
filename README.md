@@ -88,8 +88,8 @@ detection. Run `$soul-system:soul-resume` after upgrades to check for stale cont
 Exercised with `codex-cli 0.163.0`: in one live `codex exec` session (2026-10-19)
 the SessionStart hook delivered the contract, and the completion gate blocked once,
 the model then ran the code, and the hook recorded its flagged and verdict events.
-**One live run, one client:** the interactive hook-trust prompt was bypassed for
-that run, and other clients (desktop, IDE, cloud) are untested. This is a local
+The trust-hooks prompt appeared in the owner's interactive runs. **CLI only:**
+other clients (desktop, IDE, cloud) are untested. This is a local
 preview, not a claim of desktop/IDE/cloud parity or public-directory eligibility.
 See the [implementation and review report](docs/specs/codex-plugin-investigation.md)
 for evidence and remaining checks, and [Codex host integration](operations/codex.md)
