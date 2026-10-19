@@ -109,6 +109,27 @@ def _context(event, text):
     print(json.dumps({"hookSpecificOutput": {"hookEventName": event, "additionalContext": text}}))
 
 
+def _emit_verdict(cwd, data, turn):
+    """Emit soul.gate.completion.verdict from the reply to this turn's checklist.
+
+    Parity with the Claude hook's stop_hook_active path, read from Codex's
+    last_assistant_message instead of a transcript. Emits only when THIS adapter
+    blocked the turn (another hook's block is not ours to read), at most once per
+    turn, and nothing when the payload carries no reply string: unknown is not
+    "unreported". Codex supplies the last message only, so a Verify line in an
+    earlier message of the same reply is missed. Fail-open: never blocks, never raises.
+    """
+    try:
+        message = data.get("last_assistant_message")
+        if not (turn / "blocked").exists() or (turn / "verdict").exists() or not isinstance(message, str):
+            return
+        _write(turn / "verdict", "1")
+        gate._emit_event(cwd, data, "soul.gate.completion.verdict",
+                         {"verdict": gate._classify_reply(message), "self_reported": True})
+    except Exception:
+        pass  # the verdict is a record, never a reason to block
+
+
 def handle(data):
     cwd = data.get("cwd")
     if not isinstance(cwd, str) or not Path(cwd).is_dir() or not gate._is_soul_project(cwd):
@@ -129,7 +150,10 @@ def handle(data):
         return 0
     turn = _state(data)
     if event == "Stop":
-        if data.get("stop_hook_active") or not (turn / "edited").exists():
+        if data.get("stop_hook_active"):
+            _emit_verdict(cwd, data, turn)
+            return 0
+        if not (turn / "edited").exists():
             return 0
         message = data.get("last_assistant_message")
         if not isinstance(message, str) or not gate._CLAIM_RE.search(message):

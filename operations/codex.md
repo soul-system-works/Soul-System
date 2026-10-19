@@ -129,9 +129,16 @@ shared rule that an inherited pointer is a claim to verify.
 
 ## Detector boundaries
 
-Codex uses `hooks/codex.json`; Claude continues using `hooks/hooks.json`. Both use
-the same scope predicate, completion-language heuristic, checklist, event emitter,
-and project cooldown. Codex tracks direct edit-tool events per session/turn and
+Codex uses `hooks/codex.json`; Claude continues using `hooks/hooks.json`. Both call
+the same scope predicate (whose `AGENTS.md`/`AGENTS.override.md` arm accepts only
+wired-Soul markers, never a bare `witness.md` mention), completion-language
+pattern, checklist, event emitter, reply classifier, and project cooldown. They
+read different inputs: Claude scans the current turn's transcript, while Codex
+matches the claim and the Verify reply against the Stop payload's
+`last_assistant_message` only (not yet observed in a live Codex session), so a
+claim or Verify line in an earlier message of the turn is missed. Codex emits the
+verdict event only after its own block, once per turn, and none when the Stop
+payload carries no reply. Codex tracks direct edit-tool events per session/turn and
 fingerprints Git-visible content around Bash calls. Read-only shell commands do
 not count merely because they ran, and editing an already dirty file still counts.
 

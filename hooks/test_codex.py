@@ -123,6 +123,57 @@ class CodexEvents(unittest.TestCase):
         self.assertEqual(self.stop()[0], 2)
         self.assertEqual(self.stop()[0], 0)
 
+    def events(self):
+        sink = self.project / ".soul/events.jsonl"
+        return [json.loads(line) for line in sink.read_text().splitlines()] if sink.exists() else []
+
+    def test_reply_to_checklist_emits_verdict_once(self):
+        self.edit()
+        self.assertEqual(self.stop()[0], 2)
+        reply = "Next: merge.\n— Verify: clean (pytest 12/12)"
+        self.assertEqual(self.event("Stop", stop_hook_active=True, last_assistant_message=reply), (0, "", ""))
+        self.assertEqual(self.event("Stop", stop_hook_active=True, last_assistant_message=reply)[0], 0)
+        verdicts = [e for e in self.events() if e["type"] == "soul.gate.completion.verdict"]
+        self.assertEqual(len(verdicts), 1)
+        self.assertEqual(verdicts[0]["data"]["verdict"], "verified")
+        self.assertIs(verdicts[0]["data"]["self_reported"], True)
+        self.assertEqual(verdicts[0]["genaisessionid"], "session-a")
+
+    def test_verdict_classification_matches_claude_hook(self):
+        for reply, want in (
+            ("— Verify: GAP → never ran the CLI", "gap"),
+            ("— Verified: unit tests\n— Not verified: the deploy", "gap"),
+            ("Okay, all good.", "unreported"),
+            ("Format:\n```\n— Verified: pytest\n```\nok", "unreported"),
+            ("> — Not verified: <missing>\n— Verified: pytest 4/4", "verified"),
+        ):
+            with self.subTest(reply=reply):
+                self.data["turn_id"] = "turn-" + str(abs(hash(reply)))
+                (self.root / "cooldown").unlink(missing_ok=True)
+                self.edit()
+                self.assertEqual(self.stop()[0], 2)
+                self.event("Stop", stop_hook_active=True, last_assistant_message=reply)
+                self.assertEqual(self.events()[-1]["data"]["verdict"], want)
+
+    def test_no_verdict_without_our_block_or_reply(self):
+        self.edit()
+        # Another hook's block: this adapter never blocked the turn.
+        self.event("Stop", stop_hook_active=True, last_assistant_message="— Verified: x")
+        self.assertEqual(self.events(), [])
+        self.assertEqual(self.stop()[0], 2)
+        # No reply string in the payload: unknown, not "unreported".
+        self.assertEqual(self.event("Stop", stop_hook_active=True)[0], 0)
+        self.assertEqual([e["type"] for e in self.events()], ["soul.gate.completion.flagged"])
+
+    def test_verdict_failure_fails_open(self):
+        self.edit()
+        self.assertEqual(self.stop()[0], 2)
+        with patch.object(adapter.gate, "_emit_event", side_effect=RuntimeError("sink")):
+            self.assertEqual(
+                self.event("Stop", stop_hook_active=True, last_assistant_message="— Verified: x"),
+                (0, "", ""),
+            )
+
     def test_project_cooldown_is_shared_across_turns(self):
         self.edit()
         self.assertEqual(self.stop()[0], 2)

@@ -193,6 +193,16 @@ def _read_verdict(transcript_path: str):
         if (r.get("message") or {}).get("role") == "assistant"
         for b in _content(r) if isinstance(b, dict) and b.get("type") == "text"
     )
+    return _classify_reply(reply)
+
+
+def _classify_reply(reply: str) -> str:
+    """verified | gap | unreported for one reply text to the checklist.
+
+    Shared with the Codex adapter (hooks/codex.py), which has the reply as a
+    string rather than a transcript. Fences and `>` quotes are stripped first, the
+    dash is required, and any gap line wins. Fence: hooks/test_verdict.py.
+    """
     reply = _QUOTE_RE.sub("", _FENCE_RE.sub("", reply))
     hits = list(_VERDICT_RE.finditer(reply))
     if not hits:
