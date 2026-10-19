@@ -74,8 +74,12 @@ It still references doctrine live; it never copies doctrine into the project.
    Read the files now to start following the contract;
    restart to exercise startup delivery.
 7. Explain that the path is local to this installation. As with a Claude import,
-   another machine or a removed cache version may need init again. Prefer a stable
-   clone for portable development setups. After upgrades, resume checks for stale
+   another machine or a removed cache version may need init again. The helper
+   prefers an unversioned copy of the same contract (a local marketplace's source
+   directory, or a git marketplace's clone) over the versioned cache directory; if
+   it prints that the reference is pinned to a plugin version, relay that: init
+   must be re-run after plugin updates. Prefer a stable clone for portable
+   development setups. After upgrades, resume checks for stale
    paths/content. A trusted SessionStart hook supplies the installed contract
    independently, but does not repair stale project instructions on its own.
 8. Hook trust must be reviewed in the host. Without a demonstrated working gate,
