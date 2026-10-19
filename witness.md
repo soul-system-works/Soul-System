@@ -8704,3 +8704,25 @@ CONSEQUENCE:  The prefix-form --allowedTools fixes SOUL-200's blocked check; sti
               easy task — plumbing, not quality.
 STATUS:       Open.
 ```
+
+```
+ID:           SOUL-202
+WHEN:         2026-10-19
+WHERE:        upstream mining pass 2 · 9 adopting projects' upstream.md · .ai/mining/2026-10-19-triage.md
+WHAT:         A read-only triage agent sorted 37 entries (35 unmined, 2 held): FIX 21,
+              FINDING-CANDIDATE 9 (8 of them one cluster: a check that runs but cannot
+              fail — 5 projects), HELD 5, IDEA 1, ALREADY-DONE 1. Three projects had no
+              name-map codename. While checking, it found this repo's own registry
+              citing "mind 5(c)/5(d)" after today's distill renumbered the Mind to item 6
+              — the renumbering defect two projects reported (fixed in the gitignored
+              file the same hour). The Body ruled "yes to all" on the eight questions:
+              F065 append-and-mark-unconfirmed; F066 budget a target, not a gate (the
+              Body added: 80 is a review trigger, act only well above it, stop chasing
+              lines); graduate one finding for the rule-4 cluster; corrections join
+              F070; adopt F067's fix; close the two SENSOR-VIEW holds as staying home;
+              add three codenames; stamp the two closing notes.
+TYPE:         observation
+CONSEQUENCE:  The rulings are applied on branch mining-2026-10; entries are stamped
+              once the changes they cite exist.
+STATUS:       Open.
+```
