@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: handoff
+description: End-of-session handoff with uncommitted half-finished work — does .soul/handoff.md carry the change and a next step?
+tags: [handoff, record]
+context:
+  scaffold_script: fixture.sh
