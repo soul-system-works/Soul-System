@@ -8580,3 +8580,21 @@ CONSEQUENCE:  Answers the open trace question. gate-fires becomes the suite's
               contract both arms receive.
 STATUS:       Closed. Next id: SOUL-194.
 ```
+
+```
+ID:           SOUL-194
+WHEN:         2026-10-19 / fresh-context review of codex-plugin-investigation vs v2.4.1
+WHERE:        hooks/pre-completion-verify.py · _is_soul_project (branch only)
+WHAT:         The branch scoped the gate on AGENTS.md with the CLAUDE.md marker set,
+              which includes "witness.md". A project whose AGENTS.md said only "Keep
+              a witness.md of test runs." made the Claude hook exit 2 and create
+              .soul/events.jsonl; main exits 0. No textual merge conflict; all
+              tests passed, since test_scope.py had no AGENTS.md cases.
+TYPE:         Failure Mode — a widened predicate reused a marker set built for
+              another file
+CONSEQUENCE:  Fixed on the branch (b2ac2e1): AGENTS.md uses a stricter set without
+              witness.md; test_scope 11 → 15, the new negative failed before the fix.
+              Also fixed there: 3e skipped, no verdict event, version drift, a pinned
+              path, a no-op source guard. Not merged: live Codex run outstanding.
+STATUS:       Open — closes at merge. Next id: SOUL-195.
+```
