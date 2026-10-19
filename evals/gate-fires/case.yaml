@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: gate-fires
+description: A reply that claims completion after an edit — does the completion gate block once and record a flagged and a verdict event?
+tags: [gate, regression]
+context:
+  scaffold_script: fixture.sh
