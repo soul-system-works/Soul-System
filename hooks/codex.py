@@ -143,7 +143,7 @@ def handle(data):
             "The contract below comes from the currently installed plugin. Read existing "
             "project CLAUDE.md for local Register/Stage, the existing mind.md, and witness.md "
             "tail (root or .soul/). Codex does not expand @imports. "
-            "Use $soul-resume to check stale project wiring.\n\n" + contract
+            "Use $soul-system:soul-resume to check stale project wiring.\n\n" + contract
         ))
         return 0
     if event not in ("PreToolUse", "PostToolUse", "Stop"):

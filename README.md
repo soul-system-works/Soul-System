@@ -68,10 +68,10 @@ compose: adopt the contract alone, the plugin alone, or both.
 
 `AGENTS.md` at the repo root is a cross-vendor convention (Cursor, Aider, OpenAI Codex, Gemini CLI, Jules, Zed, others) that points any agent tool at the right entry points. Soul-following projects are legible to any tool that reads `AGENTS.md`.
 
-### Codex preview (unreleased)
+### Codex preview (experimental)
 
-This branch also packages the shared skills for local Codex use. From a stable
-clone of **this branch**, with a Codex client supporting plugin commands:
+The repository also packages the shared skills for local Codex use. From a
+stable clone of this repository, with a Codex client supporting plugin commands:
 
 ```bash
 codex plugin marketplace add /absolute/path/to/Soul-System
@@ -85,8 +85,10 @@ and trust the plugin hooks in the host before relying on automatic verification;
 installation alone does not arm them. Python 3 is required; Git enables shell-edit
 detection. Run `$soul-system:soul-resume` after upgrades to check for stale contract paths.
 
-The install command was exercised with `codex-cli 0.163.0`. Automated adapter
-checks are separate from a live model/session demonstration. This is a local
+The install command was exercised with `codex-cli 0.163.0`. **The Codex hooks have
+not yet run in a live Codex session:** their tests call the adapter directly, and
+no real Codex conversation has shown startup delivery or the completion gate
+firing, so treat Codex projects as manual-verification until one has. This is a local
 preview, not a claim of desktop/IDE/cloud parity or public-directory eligibility.
 See the [implementation and review report](docs/specs/codex-plugin-investigation.md)
 for evidence and remaining checks, and [Codex host integration](operations/codex.md)

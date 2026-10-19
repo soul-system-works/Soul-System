@@ -1,6 +1,6 @@
 ---
 name: soul-stage
-description: Declare or change the project's development stage — prototype, pre-release, or released — and write its rules into the project's policy file, beside the Register line. Owner-invoked only; each change is one witness entry. Run with no argument to see the current stage and pick one from a selection; the current stage refreshes the block.
+description: Declare or change the project's development stage — prototype, pre-release, or released — and write its rules into the project's CLAUDE.md (in a Codex-only project, its AGENTS.md), beside the Register line. Owner-invoked only; each change is one witness entry. Run with no argument to see the current stage and pick one from a selection; the current stage refreshes the block.
 disable-model-invocation: true
 ---
 

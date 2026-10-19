@@ -122,6 +122,12 @@ and the completion-gate hook are **Claude Code instruments**, shipped as a plugi
 manually, or wire equivalents via that tool's command / MCP-prompt / hook mechanism. The
 commands are conveniences; **the doctrine and the record are the system.**
 
+**Experimental Codex instruments.** The same skills also ship as a local Codex plugin
+(`.codex-plugin/`, invoked as `$soul-system:soul-*`), with a Codex hook adapter
+(`hooks/codex.json` → `hooks/codex.py`) and an `AGENTS.md` wiring helper
+(`tools/codex-project.py`). The adapter has not yet run in a live Codex session; see
+`operations/codex.md` for what differs from the Claude Code instruments.
+
 ---
 
 **Source:** AGENTS.md cross-vendor convention, https://agents.md/ · **Adopted:** 2026-05-19
