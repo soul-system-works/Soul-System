@@ -90,6 +90,14 @@ itself** and records the result, so a step is never marked done on the other mod
 word. `/soul-delegate off` stops it; `/soul-delegate tiers` changes who does what.
 Skip it for design work or anything you can only judge by reading.
 
+**Moving to another computer.** In each project, run `/soul-init` (it tidies the
+layout), then `/soul-migrate`. One round of questions and one summary box later you
+have a zip holding what git does not carry — gitignored records, `.ai/`, untracked
+files, unpushed branches, uncommitted work, the project's Claude memory. On the new
+computer, run `/soul-migrate receive <zip>`: it checks every file, restores the
+project without overwriting anything, rebuilds, and runs one check. Settings that
+belong to no project (`~/.claude`, `~/.codex`) move by hand.
+
 ## Going deeper
 
 | Want | Read |

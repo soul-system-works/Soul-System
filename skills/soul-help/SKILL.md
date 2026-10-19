@@ -37,8 +37,9 @@ wants the lay of the land). Not a deep philosophy dump — point to depth, don't
    (continuity across sessions), `soul-explain` (describe the present; `council`
    mode for a multi-lens read), `soul-next` (what to do next), `soul-distill`
    (refresh the Mind), `soul-prompt` (rewrite a rough prompt into a project-informed
-   one), and opt-in `soul-delegate` (hand plan steps to other models; the main
-   session re-runs each check and records it).
+   one), opt-in `soul-delegate` (hand plan steps to other models; the main
+   session re-runs each check and records it), and `soul-migrate` (move a project
+   to another computer — what git does not carry, in one zip).
 
 4. **Where the record lives:** `witness.md` (observations, append-only) · `findings/`
    (earned patterns) · `ideas.md` (forward possibilities) · `amendments/` (doctrine
