@@ -2173,3 +2173,50 @@ NOTES:     The ordering constraint is migrate-then-ship: once the new skill
            OWED UPSTREAM field and no carry-forward rule, and the only copy is
            gone. Task 1's script is dry-run-first for that reason.
 ```
+
+```
+ID:        SOUL-I063
+WHEN:      2026-10-19
+RAW:       Review the `codex-plugin-investigation` branch (79ce0ef, 2026-10-16)
+           and decide whether Codex support merges.
+SHAPE:     The branch adds a Codex manifest (.codex-plugin/), a Codex hook
+           adapter (hooks/codex.py + test), per-skill agents/openai.yaml,
+           operations/codex.md and a 287-line spec. Its own status line:
+           "implementation preview awaiting Claude review; not a release" —
+           packaging checked, live model behaviour and host hook execution not.
+STATUS:    Open — owner asked for it on the list (2026-10-19).
+WHY:       One record and one set of rules across agent tools. It also widens
+           the gate's scoping to AGENTS.md, which overlaps the AGENTS.md-route
+           question raised the same day (intake item 9) — review them together.
+NOTES:     It edits hooks/pre-completion-verify.py, as does the 2026-10-19
+           turn-slicing fix; expect a small merge in _is_soul_project's
+           neighbourhood, not a conflict in _is_real_user_turn.
+```
+
+```
+ID:        SOUL-I064
+WHEN:      2026-10-19
+RAW:       Use a probe-and-propose loop (Google's Harness², arXiv 2610.14224)
+           to improve the Soul System itself: run probe tasks, compare arms,
+           propose contrastive edits to the contract/skills/hook.
+SHAPE:     Parked. The prerequisite is a probe set — a `claude plugin eval`
+           suite with honest WITH / WITHOUT deltas. No loop until that suite
+           exists and its deltas are non-zero somewhere.
+STATUS:    Parked.
+WHY:       The Soul System is a harness layer, so a harness optimizer fits it in
+           principle. Research by an adopting project (2026-10-19) judged
+           Harness² "borrow ideas", not a component to adopt.
+```
+
+```
+ID:        SOUL-I065
+WHEN:      2026-10-19
+RAW:       Extend the project stage so the agent helps make better long-term
+           decisions: suggest revising or dropping standing rules, and don't leave
+           it to the person to remind the agent to stop duplicating code — have it
+           periodically prompt for a code review, or point out where the structure
+           could improve maintainability, extensibility or capability.
+SHAPE:     Raw. Nearest existing seats: the /soul-stage block (its exit trigger is
+           re-read by /soul-next) and /soul-next's tiered options.
+STATUS:    Raw — Body-captured.
+```

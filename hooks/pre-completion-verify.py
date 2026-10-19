@@ -78,11 +78,21 @@ def main() -> None:
     except Exception:
         sys.exit(0)  # cannot parse input -> do nothing
 
-    # Loop guard: never block twice in one stop cycle.
+    cwd = data.get("cwd")
+    if not isinstance(cwd, str) or not cwd:
+        cwd = os.getcwd()
+
+    # Loop guard: never block twice in one stop cycle. This is the stop AFTER a
+    # block, so it is also the one place the reply to the checklist can be read:
+    # record its Verify line as a verdict event, then always let the stop through.
     if data.get("stop_hook_active"):
+        try:
+            if _is_soul_project(cwd):
+                _emit_verdict(cwd, data)
+        except Exception:
+            pass  # fail-open: the verdict is a record, never a reason to block
         sys.exit(0)
 
-    cwd = data.get("cwd") or os.getcwd()
     if not _is_soul_project(cwd):
         sys.exit(0)
 
@@ -132,7 +142,68 @@ def _mark_fire(path: str) -> None:
         pass
 
 
-def _emit_event(cwd: str, data: dict) -> None:
+# The checklist asks the reply to close with ONE line in either register:
+# `— Verify: clean (...)` / `— Verify: GAP → ...` or `— Verified: ...` /
+# `— Not verified: ...`. Any gap line wins: a reply that lists both is a gap.
+# The leading dash is required, and fenced blocks and `>` quotes are stripped
+# first, so a reply that merely mentions or quotes the format is not a verdict.
+_VERDICT_RE = re.compile(
+    r"^[ \t]*[—–-]{1,2}[ \t]*(?:verify:\s*(?P<clean>clean)|verify:\s*(?P<gap>gap)|(?P<not>not\s+verified)\s*:|(?P<ok>verified)\s*:)",
+    re.IGNORECASE | re.MULTILINE,
+)
+_GATE_MARK = "[Soul gate · SOUL-F012]"
+_FENCE_RE = re.compile(r"^[ \t]*(```|~~~).*?^[ \t]*\1[^\n]*$", re.MULTILINE | re.DOTALL)
+_QUOTE_RE = re.compile(r"^[ \t]*>.*$", re.MULTILINE)
+
+
+def _emit_verdict(cwd: str, data: dict) -> None:
+    """On the stop after a block, emit soul.gate.completion.verdict from the reply.
+
+    The verdict is the MODEL'S OWN Verify line — self-reported, never observed by the
+    hook — so the event says so (self_reported: true). `unreported` means the gate
+    fired and the reply carried no Verify line. Emits nothing when the block that set
+    stop_hook_active was another hook's, i.e. our checklist is not the latest
+    feedback in the turn. Fail-safe like _emit_event. Fence: hooks/test_verdict.py.
+    """
+    try:
+        verdict = _read_verdict(data.get("transcript_path") or "")
+        if verdict:
+            _emit_event(cwd, data, "soul.gate.completion.verdict",
+                        {"verdict": verdict, "self_reported": True})
+    except Exception:
+        pass
+
+
+def _read_verdict(transcript_path: str):
+    records = _tail_records(transcript_path) or []
+    mark = None
+    for i in range(len(records) - 1, -1, -1):
+        text = " ".join(b.get("text", "") for b in _content(records[i])
+                        if isinstance(b, dict) and b.get("type") == "text")
+        if (_GATE_MARK in text and records[i].get("isMeta")
+                and (records[i].get("message") or {}).get("role") == "user"):
+            mark = i
+            break
+        if _is_real_user_turn(records[i]):
+            return None  # a newer user turn: the checklist is not what this stop answers
+    if mark is None:
+        return None
+    reply = " \n".join(
+        b.get("text", "") for r in records[mark + 1:]
+        if (r.get("message") or {}).get("role") == "assistant"
+        for b in _content(r) if isinstance(b, dict) and b.get("type") == "text"
+    )
+    reply = _QUOTE_RE.sub("", _FENCE_RE.sub("", reply))
+    hits = list(_VERDICT_RE.finditer(reply))
+    if not hits:
+        return "unreported"
+    if any(m.group("gap") or m.group("not") for m in hits):
+        return "gap"
+    return "verified"
+
+
+def _emit_event(cwd: str, data: dict, etype: str = "soul.gate.completion.flagged",
+                payload: dict = None) -> None:
     """Emit one Soul event-standard record for this gate firing (reference adapter).
 
     Writes a CloudEvents v1.0 line (the soul.gate.completion.flagged profile,
@@ -147,16 +218,14 @@ def _emit_event(cwd: str, data: dict) -> None:
             "specversion": "1.0",
             "id": str(uuid.uuid4()),
             "source": f"urn:soul:project:{os.path.basename(os.path.abspath(cwd)) or 'unknown'}",
-            "type": "soul.gate.completion.flagged",
+            "type": etype,
             "time": datetime.now(timezone.utc).isoformat(),
             "datacontenttype": "application/json",
-            "data": {
-                "gate": "completion",
-                "finding": "SOUL-F012",
+            "data": {"gate": "completion", "finding": "SOUL-F012", **(payload or {
                 "shipped": True,
                 "claimed": True,
                 "outcome": "checklist_injected",
-            },
+            })},
         }
         session_id = data.get("session_id")
         if session_id:
@@ -230,21 +299,9 @@ def _scan(transcript_path: str):
     SOUL-027, and a pure-recommendation turn in this session). Turn-scoping is the
     precision fix for SOUL-F012's blast radius.
     """
-    try:
-        with open(transcript_path, "r", encoding="utf-8", errors="ignore") as fh:
-            lines = fh.readlines()
-    except Exception:
+    records = _tail_records(transcript_path)
+    if records is None:
         return (False, False)
-
-    records = []
-    for ln in lines[-_SCAN_TAIL:]:
-        ln = ln.strip()
-        if not ln:
-            continue
-        try:
-            records.append(json.loads(ln))
-        except Exception:
-            continue
 
     # Slice to the current turn: everything after the last genuine user message.
     # Tool results also arrive as role "user", so a genuine turn is a user message
@@ -271,10 +328,53 @@ def _scan(transcript_path: str):
     return (shipped, claimed)
 
 
+def _tail_records(transcript_path: str):
+    """The last _SCAN_TAIL parseable records, or None if the file cannot be read."""
+    try:
+        with open(transcript_path, "r", encoding="utf-8", errors="ignore") as fh:
+            lines = fh.readlines()
+    except Exception:
+        return None
+    records = []
+    for ln in lines[-_SCAN_TAIL:]:
+        ln = ln.strip()
+        if not ln:
+            continue
+        try:
+            records.append(json.loads(ln))
+        except Exception:
+            continue
+    return records
+
+
+# A background subagent/task finishing is delivered as a user-role
+# <task-notification> text message. Treating it as a new turn dropped the turn's
+# edits from the scan (shipped=False), so the gate went blind in any session that
+# used a background subagent (observed 2026-09-29, Claude Code 2.1.284, in an
+# adopting project). Keyed on turnOrigin with a text-prefix fallback for records
+# that lack it — NOT on promptSource == "system", which also marks peer-session
+# messages ("Another Claude session sent a message"): those are a new request
+# and must still start a turn. Fence: hooks/test_turn.py.
+_NOTIFICATION_PREFIX = "<task-notification>"
+
+
+def _is_task_notification(record, msg) -> bool:
+    if record.get("turnOrigin") == "task_notification":
+        return True
+    content = msg.get("content")
+    texts = [content] if isinstance(content, str) else [
+        b.get("text", "") for b in (content or []) if isinstance(b, dict) and b.get("type") == "text"
+    ]
+    return any(t.lstrip().startswith(_NOTIFICATION_PREFIX) for t in texts if t)
+
+
 def _is_real_user_turn(record) -> bool:
-    """A genuine user turn — a user message with actual text, not just tool_result."""
+    """A genuine user turn — a user message with actual text, not just tool_result,
+    and not a background-task notification (see _is_task_notification)."""
     msg = record.get("message", record)
     if not isinstance(msg, dict) or msg.get("role") != "user":
+        return False
+    if _is_task_notification(record, msg):
         return False
     content = msg.get("content")
     if isinstance(content, str):

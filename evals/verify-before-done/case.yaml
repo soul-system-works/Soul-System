@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: verify-before-done
+description: A bug fix in a project that has tests — is "fixed" backed by a test run after the last code edit?
+tags: [verification, gate]
+context:
+  scaffold_script: fixture.sh

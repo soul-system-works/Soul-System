@@ -102,6 +102,9 @@ re-reasonable knowledge regenerates on its own.
   session's `CLAUDE.md`, not where the imported seed lives). Write *here*, creating a store on
   first use — **never** into the Soul System source repo. (Exception: when this project *is*
   that repo.)
+- **Working files** (plans, drafts, review output, eval results, scratch) go in `.ai/` —
+  created on first use, safe to delete — never in `docs/`, the root or source folders.
+  Promotion to project content is the Body's call; project content never links into `.ai/`.
 - **Capture** is three-tiered by friction: *idea* (frictionless, forward) · *witness*
   (light scaffold, backward) · *finding* (**earned** — the Body decides the graduation;
   never auto-promote).

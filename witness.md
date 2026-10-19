@@ -8488,3 +8488,95 @@ CONSEQUENCE:  Not paid: the gap was named instead of the file created. /soul-cap
               /soul-handoff has no equivalent. Only a session in this repo can hit it.
 STATUS:       Open. Next id: SOUL-188.
 ```
+
+```
+ID:           SOUL-188
+WHEN:         2026-10-19 / intake of ROUTER-LAB's (REF-23) three-week test of 2.3.2
+WHERE:        hooks/pre-completion-verify.py · _is_real_user_turn
+WHAT:         A background task finishing is recorded as a user-role
+              <task-notification> text message; the gate took it for a new turn,
+              dropped the turn's edits (shipped=False) and could not fire after any
+              background subagent. ROUTER-LAB caught it 2026-09-29 (CC 2.1.284).
+TYPE:         Failure Mode — a harness-injected record read as the person
+CONSEQUENCE:  Fixed on branch intake-2026-10-19, keyed on turnOrigin + text prefix.
+              Not on promptSource=="system": 918 peer-session messages on this
+              machine carry it and are real requests. hooks/test_turn.py 1/3 → 4/4.
+STATUS:       Fixed, unreleased. Next id: SOUL-189.
+```
+
+```
+ID:           SOUL-189
+WHEN:         2026-10-19 / ROUTER-LAB baseline, 10 headless Opus 5.5 tasks, Soul on
+WHERE:        hooks/pre-completion-verify.py · _CLAIM_RE
+WHAT:         Gate armed 10/10, saw edits 10/10, fired 0/10: no reply matched the
+              claim regex (closings like "— Bottom line: the fix is in…"). All 10
+              replies already named what was not run. Here, 5 real fires in one UE
+              project: 4 replies closed `— Verified:`, 1 had no verify line.
+TYPE:         Observation — the contract produced the behaviour the gate enforces
+CONSEQUENCE:  Regex NOT broadened (SOUL-160's false fires); the gate is a backstop
+              that rarely fires on current models. A verdict event now records the
+              reply's own Verify line when it does fire (self-reported).
+STATUS:       Open — watch the verdict events. Next id: SOUL-190.
+```
+
+```
+ID:           SOUL-190
+WHEN:         2026-10-19 / sentinel runs, Claude Code 2.1.303, claude -p, haiku
+WHERE:        skills/soul-init/SKILL.md · the home-relative contract import
+WHAT:         A project whose CLAUDE.md holds only the import /soul-init writes
+              (`@~/.claude/plugins/marketplaces/soul-system/operations/CLAUDE.md`)
+              answered NO-CONTRACT 3/3 under -p; an in-project copy quoted rule 9
+              exactly; a no-import control answered NO-CONTRACT. No confabulation.
+TYPE:         Failure Mode — external imports need a dialog headless runs never show
+CONSEQUENCE:  /soul-init now tells the Body automated runs need
+              --append-system-prompt-file (the F038 fix). Unrun: whether an
+              interactive approval carries over to later -p runs.
+STATUS:       Open. Next id: SOUL-191.
+```
+
+```
+ID:           SOUL-191
+WHEN:         2026-10-19 / layout scan of this repo + ROUTER-LAB's .ai/ convention
+WHERE:        operations/CLAUDE.md (Stores) · tools/layout-cleanup.py
+WHAT:         ROUTER-LAB kept AI working files (plans, reviews, eval runs, handoff
+              packs) in one deletable `.ai/` from 2026-09-28. Scanning this repo
+              found four non-record files in .soul/ (experiments/, vault/, a review,
+              a graph) — the record store doubling as a working folder.
+TYPE:         Observation — no rule said where working files go
+CONSEQUENCE:  The owner chose `.ai/` (2026-10-19): one contract paragraph
+              (SOUL-A026) and a dry-run-first /soul-init cleanup offer.
+STATUS:       Open. Next id: SOUL-192.
+```
+
+```
+ID:           SOUL-192
+WHEN:         2026-10-19 / first live run of evals/, v2.4.0, Sonnet, 2 runs × 2 arms
+WHERE:        evals/ · hooks/pre-completion-verify.py
+WHAT:         12 runs, $0.89. All three cases passed in both arms: Δ = 0 for the
+              gate (verify-before-done, unverifiable-claim) and the handoff. The
+              gate fired 0/4 in the plugin arm: its scan on each trace read
+              shipped=True, claimed=False; replies closed "— Bottom line: … fixed
+              and verified" and named what was unverified.
+TYPE:         Observation — the suite is saturated: the contract, given to both
+              arms, produces the behaviour the plugin's gate and skill target
+CONSEQUENCE:  Same shape as SOUL-189 on a second model. Still unknown: whether an
+              eval trace carries Stop-hook feedback — the gate never fired.
+              Needs harder cases, or a contract-free arm, to measure the plugin.
+STATUS:       Open. Next id: SOUL-193.
+```
+
+```
+ID:           SOUL-193
+WHEN:         2026-10-19 / evals/gate-fires, v2.4.0 hook, Sonnet, 2 runs × 2 arms, $0.27
+WHERE:        evals/gate-fires · hooks/pre-completion-verify.py
+WHAT:         With a closing sentence the claim regex matches, the gate blocked in
+              2/2 plugin runs; both agents then ran the file before ending and
+              closed "— Verified: ran greeting.py …". The hook wrote its flagged and
+              verdict events both times, and the eval trace carried the feedback.
+TYPE:         Observation — the gate works inside an eval; what never fires is the
+              claim regex on natural replies (SOUL-189, SOUL-192)
+CONSEQUENCE:  Answers the open trace question. gate-fires becomes the suite's
+              regression check that the gate fires; the other cases measure the
+              contract both arms receive.
+STATUS:       Closed. Next id: SOUL-194.
+```
