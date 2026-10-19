@@ -8673,3 +8673,19 @@ CONSEQUENCE:  The Mind is 80 lines (target 80, cap 120); content unchanged since
               the Body's sign-off.
 STATUS:       Closed. Next id: SOUL-200.
 ```
+
+```
+ID:           SOUL-200
+WHEN:         2026-10-19
+WHERE:        I066 test · scratch git repo · ollama 0.34.4, Claude Code 2.1.303, qwen3.8:27b
+WHAT:         `ollama launch claude --model qwen3.8:27b -- -p "<brief>" --permission-mode
+              acceptEdits --output-format json` ran headless in 227 s; the model fixed
+              median() (calc.py only) and the main session's own pytest run passed 3/3.
+              The worker's pytest call was blocked: acceptEdits does not allow Bash. It
+              reported that and did not claim done. Cost field ($0.65) is a default-price
+              artefact (unrecognized_model), not a charge.
+TYPE:         observation
+CONSEQUENCE:  The I066 dispatch line must allow the Done-when command (--allowedTools);
+              one easy task proves the plumbing only, not open-model quality.
+STATUS:       Open.
+```

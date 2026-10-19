@@ -2233,5 +2233,65 @@ SHAPE:     Raw. Inputs: ROUTER-LAB's tier design and measurements (its handoff
            pack, local path in the REF-23 name-map row); this session's practice of
            using Codex as the review tier. Open: skill vs hook vs config; per-session
            toggle; what stays out of the contract's size budget.
-STATUS:    Raw — Body-captured; for a new session.
+SHAPE (2026-10-19, explored with the Body): NOT a router. Routing lives in
+           plan steps; the Soul System adds only the verification-shaped pieces.
+           (1) Plan-step convention, suggested not enforced, planner-agnostic:
+           each step carries `Tier:` (deep / routine / review) + `Done when:`
+           <a check the main session can run>. A step without a check stays
+           with the main model. (2) Dispatch by existing commands, no script:
+           routine → `ollama launch claude -- -p "<brief>"`, review → `codex
+           exec` / the Codex plugin, deep → a subagent; a short tier table
+           (user-level, optional per-project override, Claude-only default)
+           names the command per tier. Main model = whatever was launched.
+           (3) A review record: who did the work, who/what checked it, the
+           command, the result — written after the MAIN session runs the check
+           (never the worker's word), readable by the completion gate.
+           Prior-art check (`.ai/plans/i066-prior-art-2026-10-19.md`): routing
+           is mostly built elsewhere — claude-council (consult/review, not
+           work), the Codex plugin, delegate-router; Harness² is a harness
+           optimizer, not a router; per-agent provider (#38698) still open.
+           Left out on purpose: session toggle across providers, adapting to
+           the launched main model — routing jobs, not Soul jobs.
+STATUS:    Shaped — the Body chose the lightweight version 2026-10-19. Next:
+           test the `ollama launch` one-liner headless, then draft (1)+(3).
+```
+
+```
+ID:        SOUL-I067
+WHEN:      2026-10-19
+RAW:       Project migration/packaging as a Soul skill (`soul-migrate`). Temporary
+           idea; NAV-TOOL (REF-18) already piloted a version. The Body's prompt
+           for the evaluation, kept as given (project name → codename):
+
+           "Evaluate the migration skill we developed through the NAV-TOOL pilot
+           for possible integration into Soul-System as soul-migrate. The review
+           packet is already extracted on this computer:
+           <NAV-TOOL>/migration/handoff/soul-migrate-review-20261019T152441Z
+           Read START-HERE.md, verify manifest.json, then read:
+           soul-migrate-v1-review-spec.md, soul-migrate-pilot-lessons.md,
+           soul-system-migration-handoff.md. Follow this repository's
+           instructions and inspect its existing skill conventions. Evaluate the
+           supplied project-migration skill, standalone prompt and helpers.
+           The approved design has Fast, Standard and Thorough modes. Transport,
+           encryption, histories and shared-tool preservation are separate
+           choices. Git publication requires explicit, scoped approval. The next
+           intended trial is a Fast migration of another project that I will
+           select. Return one concrete proposal explaining: 1. Where this belongs
+           in Soul-System and how users invoke it. 2. What to reuse, simplify or
+           change. 3. Which capabilities exist and which still require
+           implementation. 4. How to evaluate the first Fast migration without
+           repeating the pilot's lengthy back-and-forth. 5. Any remaining
+           decisions you need from me, with recommendations. The graded workflow
+           is currently implemented as instructions and templates. The existing
+           transfer helpers are unchanged; a new-project Fast migration has not
+           yet been demonstrated. This request authorizes inspection and an
+           integration proposal. Wait for my review before implementation,
+           installation, policy changes or publication. The review packet
+           contains everything needed for this assessment; do not import the
+           pilot's private data, histories or settings."
+SHAPE:     Raw. Packet present 2026-10-19 (START-HERE, manifest, capabilities,
+           validation, review-spec, pilot-lessons, review-findings, handoff,
+           standalone-prompt, project-migration/). Local path via the REF-18
+           name-map row. Authorization: inspect + propose only.
+STATUS:    Raw — Body-captured.
 ```
