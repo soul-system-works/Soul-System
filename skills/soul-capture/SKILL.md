@@ -44,9 +44,13 @@ caught it, SOUL-163/164) — under these limits:
   every marked id into the cursor's `UNCONFIRMED` field, so this skill never writes
   the cursor by hand (rule 6). A held draft has nowhere durable to wait: the cursor
   is replaced wholesale, so at session end "hold" means "discard" (F065).
-  - **Witness entry:** the mark goes in its `STATUS`, e.g. `Open — unconfirmed,
-    owner to ratify`. On the Body's yes the mark comes off (`STATUS` is the one
-    field an entry may change); on a no the entry stays and its `STATUS` says so.
+  - **Witness entry:** the mark goes in its `STATUS`, e.g.
+    `Open — unconfirmed — owner to ratify`, whose mark is exactly
+    `unconfirmed — owner to ratify`, the string `/soul-handoff` scans for. v2.8.0's
+    example had a comma there, which that scan would miss (SOUL-204;
+    `tools/test_unconfirmed_mark.py`). On the Body's yes the mark comes off
+    (`STATUS` is the one field an entry may change); on a no the entry stays and its
+    `STATUS` says so.
   - **Idea:** ideas have no `STATUS`, so the mark goes at the end of the idea's
     line (or of its entry, in a heading-per-entry file), and on a yes it comes off
     the same way. On a no, the entry stays and `— declined by the Body <date>` is
@@ -240,4 +244,6 @@ SOUL-A022 (2026-06-12; the Body's v2.0 review — "not clear WHEN").
 entry test and an explicit refusal to self-downgrade the Body's `finding` call.
 **Amended:** 2026-10-19 (mining pass 2, SOUL-202) — F065 ruled: with the Body
 away, an idea/witness capture is appended marked `unconfirmed — owner to ratify`
-instead of held, and the next `/soul-handoff` lists it in the cursor. **Adopted:** 2026-06-08. **Status:** active.
+instead of held, and the next `/soul-handoff` lists it in the cursor.
+**Amended:** 2026-10-19 (v2.8.1, SOUL-204) — the witness example writes the mark
+with the dash `/soul-handoff` scans for, not a comma. **Adopted:** 2026-06-08. **Status:** active.
