@@ -1,10 +1,11 @@
-"""Consistency test: the unconfirmed mark /soul-capture writes is the one /soul-handoff scans for.
+"""Consistency test: every skill that writes or removes the unconfirmed mark uses the string /soul-handoff scans for.
 
 FENCE: /soul-handoff step 1 finds unratified entries by scanning the stores for an
-exact string. Any example of the mark in /soul-capture that differs from it writes
-entries the scan never finds — they fall out of the cursor's UNCONFIRMED field and
-are never put to the Body. v2.8.0 shipped one such example (a comma for the second
-dash), caught on the first live /soul-handoff run (SOUL-204).
+exact string. Any example of the mark that differs from it writes entries the scan
+never finds — they fall out of the cursor's UNCONFIRMED field and are never put to
+the Body. v2.8.0 shipped one such example in /soul-capture (a comma for the second
+dash), caught on the first live /soul-handoff run (SOUL-204). The writers are
+/soul-capture and /soul-handoff; the removers are /soul-handoff and /soul-resume.
 
 Run: python3 tools/test_unconfirmed_mark.py  (exit 0 = PASS)
 """
@@ -14,11 +15,17 @@ import re
 import sys
 
 _ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+_SKILLS = ("soul-capture", "soul-handoff", "soul-resume")
 
 
 def _read(rel):
     with open(os.path.join(_ROOT, rel), encoding="utf-8") as f:
         return f.read()
+
+
+def _collapse(s):
+    # Spans and the scan string may wrap across lines; compare them as rendered.
+    return re.sub(r"\s+", " ", s)
 
 
 def main():
@@ -27,22 +34,27 @@ def main():
     if not m:
         print("FAIL: scan string not found in skills/soul-handoff/SKILL.md")
         return 1
-    mark = m.group(1)
+    mark = _collapse(m.group(1))
 
-    capture = _read("skills/soul-capture/SKILL.md")
-    # Every backticked span that shows the mark must carry the scanned string whole;
-    # spans may wrap across lines, so collapse whitespace before comparing.
-    spans = [re.sub(r"\s+", " ", s) for s in re.findall(r"`([^`]*)`", capture)]
-    shown = [s for s in spans if "unconfirmed" in s and "ratify" in s]
-    bad = [s for s in shown if mark not in s]
+    shown, bad = 0, []
+    for skill in _SKILLS:
+        text = _read(f"skills/{skill}/SKILL.md")
+        spans = [_collapse(s) for s in re.findall(r"`([^`]*)`", text)]
+        # A mark example: lowercase "unconfirmed" (the cursor's `UNCONFIRMED` field
+        # name is not one) alongside the owner wording, whatever its last word.
+        for s in spans:
+            if "unconfirmed" in s and ("owner" in s or "ratify" in s):
+                shown += 1
+                if mark not in s:
+                    bad.append((skill, s))
     if not shown:
-        print("FAIL: no example of the mark found in skills/soul-capture/SKILL.md")
+        print("FAIL: no example of the mark found in " + ", ".join(_SKILLS))
         return 1
     if bad:
-        for s in bad:
-            print(f"FAIL: capture example `{s}` does not contain the scanned mark `{mark}`")
+        for skill, s in bad:
+            print(f"FAIL: {skill} example `{s}` does not contain the scanned mark `{mark}`")
         return 1
-    print(f"PASS: {len(shown)} mark example(s) in soul-capture match `{mark}`")
+    print(f"PASS: {shown} mark example(s) across {', '.join(_SKILLS)} match `{mark}`")
     return 0
 
 
