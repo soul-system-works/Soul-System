@@ -21,6 +21,7 @@ This project keeps a durable record and verifies its claims. The working rules:
    site and the handoff document ARE the record.
 6. **Resume from `.soul/handoff.md`; leave an updated cursor behind** — resume
    with `/soul-resume`; write the cursor with `/soul-handoff`, not by hand.
+   After a context summary, re-read `.soul/handoff.md` before acting (SOUL-I069).
 7. **When the right choice depends on knowledge only the owner has** — intent,
    preference, private context — **ask**; do not push harder on available evidence
    as a substitute.
