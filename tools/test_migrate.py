@@ -354,11 +354,20 @@ class Units(unittest.TestCase):
                     "db_password.txt", "apikey.txt", "my_api_key", ".claude/settings.local.json",
                     ".authinfo", ".my.cnf", "home/.config/gh/hosts.yml",
                     "proj-firebase-adminsdk-x1.json", ".yarnrc.yml", "rclone.conf", ".s3cfg",
-                    ".Renviron", "kubeconfig"):
+                    ".Renviron", "kubeconfig",
+                    # Android/Flutter signing configs hold keystore passwords; the first
+                    # live pack missed android/keystore.properties (SOUL-206).
+                    "android/keystore.properties", "android/key.properties",
+                    "app/signing.properties", "release-keystore.properties",
+                    "keystore-release.properties", "keystore_release.properties",
+                    "signing-config.properties", "signingConfig.properties",
+                    "key.properties.bak"):
             self.assertTrue(_mod.is_credential(rel), rel)
         for rel in ("tokenizer.py", "README.md", "src/env.py", "notes/keys.md", "config",
                     "docs/config.json", ".claude/settings.json", "src/environment.py",
-                    "hosts.yml", ".yarnrc"):
+                    "hosts.yml", ".yarnrc", "android/local.properties", "gradle.properties",
+                    "src/main/resources/application.properties", "monkey.properties",
+                    "keyboard.properties", "hotkey.properties", "keys.md.properties"):
             self.assertFalse(_mod.is_credential(rel), rel)
 
     def test_rebuildable(self):

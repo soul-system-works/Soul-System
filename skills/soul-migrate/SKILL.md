@@ -74,24 +74,58 @@ this skill's directory. It is POSIX-only (Linux, macOS, WSL). Design:
    - An operation in progress (merge, rebase, cherry-pick) → finish or abort it
      first; its state does not travel.
 4. **Approval box.** Show one plain box of exactly what will happen, then wait for
-   *approve* / *change* / *cancel*:
+   *approve* / *change* / *cancel*. Sort every row under **GOES IN THE ZIP** or
+   **STAYS OUT**, and give every STAYS OUT row its way to the new computer
+   (rebuilt, by hand, or not moved). Category names alone ("untracked", "left
+   out", "never packed", "not carried") were not immediately clear to the owner on
+   the first live pack (SOUL-206).
 
    ```
-   ┌─ soul-migrate · <project> · Fast ──────────────────────────┐
-   │ git bundle      <n> commits, <b> branches (<u> unpushed)   │
-   │ uncommitted     <files>                     → commit|patch │
-   │ local overrides <skip-worktree files> → carried | left out │
-   │ untracked       <groups>                         <size>    │
-   │ left out        <rebuildable>              → <rebuild cmd> │
-   │ never packed    <credential-like names, or "none found">   │
-   │ memory folder   <found | found by name — unconfirmed | none> │
-   │ not carried     <nested repos, submodules, LFS objects, …>  │
-   │ depends on      <plugins / skills / tools by name>         │
-   │ smoke check     <command>                                  │
-   │ output          <path>.zip                                 │
-   └──────────────────────────────── approve / change / cancel ─┘
+   ┌─ soul-migrate · <project> · Fast ────────────────────┐
+   │ GOES IN THE ZIP                                      │
+   │  git history    <n> commits, <b> branches            │
+   │                 (<u> unpushed)                       │
+   │  your changes   <uncommitted files> as a patch       │
+   │                 (+ this move's witness entry)        │
+   │  extra files    <picked untracked/ignored>  <size>   │
+   │  Claude memory  <found | by name — unconfirmed>      │
+   │  secrets inside <credential-like files that travel>  │
+   │ STAYS OUT                                            │
+   │  rebuilt there  <rebuildable>  → <rebuild cmd>       │
+   │  secrets        <credential-like names> → by hand    │
+   │  left behind    <not picked, or your choice>         │
+   │                 → not moved                          │
+   │  not in project <keys and files outside the folder>  │
+   │                 → by hand                            │
+   │  can't carry    <nested repos, submodules, LFS, …>   │
+   │ ON ARRIVAL                                           │
+   │  needs          <plugins / global skills / tools>    │
+   │  smoke check    <command>                            │
+   │ output          <folder>/                            │
+   │                 <name>.zip                           │
+   └────────────────────────── approve / change / cancel ─┘
    ```
 
+   Rules for filling it:
+   - **Width.** Keep the box under 60 columns. Wrap a long list onto an indented
+     continuation line, and break a long path after a `/` the same way.
+   - **Empty rows.** Say "none" in an empty GOES IN row. Omit an empty STAYS OUT
+     row — except `secrets`, which always shows: "none flagged (a name list, not a
+     content scan)", so a forgotten row and a clean scan look different.
+   - **Secrets inside the zip.** A credential the inventory says travels — a dirty
+     tracked file ("the change travels in the patch"), one in the stash or on an
+     unpushed branch ("travels in the bundle"), a remote URL it could not parse —
+     goes under GOES IN as `secrets inside`, never under STAYS OUT. So does a
+     credential-like file the owner force-included, marked "(force-included)".
+   - **Secrets you found yourself.** A secret the inventory did not flag goes under
+     STAYS OUT `secrets`, marked "(not flagged by the tool)".
+   - **Left behind.** Untracked groups the owner did not pick, a memory folder they
+     chose to leave, local overrides (skip-worktree files) left out, and anything
+     you exclude on your own judgment (say why in a word, e.g. "machine path").
+     Local overrides that are carried go under `your changes`.
+   - **Global skills and agents** appear once, under `needs`; `not in project` is
+     for files the project points at outside its folder (a signing key, a data
+     drive).
    Nothing is written before *approve*. Sizes come from the inventory; the zip's own
    size is known only after packing.
 5. **Witness entry** (Soul projects only), through `/soul-capture witness`'s format:
@@ -155,4 +189,7 @@ by hand), rewriting paths inside files (handle each case on arrival), native Win
 
 **Source:** SOUL-I067 (2026-10-19) — the Body's grilling session settled the design;
 an adopting project's pilot (NAV-TOOL) supplied the lessons and the placement checks.
+**Amended:** 2026-10-20 (v2.9.1, SOUL-206) — the approval box sorts every row into
+GOES IN THE ZIP / STAYS OUT (secrets that travel are shown as inside) and fits 60
+columns; Android/Flutter signing configs join the credential-like names.
 **Adopted:** 2026-10-19 (v2.7.0). **Status:** active — experimental.
