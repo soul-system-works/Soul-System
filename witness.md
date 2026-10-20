@@ -8764,3 +8764,18 @@ CONSEQUENCE:  (1) is mind item 2 again — a count about our own work, wrong. (2
               the scanned string). This entry uses the scanned form.
 STATUS:       Open.
 ```
+
+```
+ID:           SOUL-205
+WHEN:         2026-10-19 / after SOUL-204
+WHERE:        this session · operations/CLAUDE.md rule 6 · SOUL-A029
+WHAT:         The session showed the Body one draft sentence for rule 6, from SOUL-I069:
+              "After a context summary, re-read `.soul/handoff.md` before acting." The
+              Body replied "Add the note commit and push". The sentence went in with
+              its words unchanged and a citation, `(SOUL-I069).`, placed before the
+              full stop. Fresh-context review asked for this entry: the amendment had
+              quoted an approval no record held, the SOUL-203 failure.
+TYPE:         decision
+CONSEQUENCE:  SOUL-A029 accepted on the shown wording; released as v2.9.0.
+STATUS:       Closed.
+```

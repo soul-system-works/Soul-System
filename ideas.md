@@ -2321,5 +2321,5 @@ RAW:       A context summary (compaction) dropped the handoff cursor's standing 
            2026-10-14). Candidate: one rule-6 sentence — after a context summary,
            re-read .soul/handoff.md before acting.
 SHAPE:     Raw. From mining pass 2 (SOUL-202), disposition IDEA.
-STATUS:    Raw.
+STATUS:    Built — v2.9.0 (rule 6, SOUL-A029), 2026-10-19.
 ```
