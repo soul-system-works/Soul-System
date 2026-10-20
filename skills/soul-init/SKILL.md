@@ -152,6 +152,61 @@ line you have not verified resolves.
    and proposed one (2026-08-20). Moving a record costs a rewrite of every path
    that points at it and buys nothing.
 
+   **Secret guard** (`operations/secret-guard.md`, SOUL-I070) — **experimental**. In
+   Claude Code the plugin already checks the AI's commits and pushes — git runs the
+   check through its own hooks for every git the session runs (credentials block,
+   private names warn). Set up its inputs and the commits it cannot see, using step 3's
+   public/private answer:
+
+   - **Private names — ask once.** "Any names that must not appear in this repo —
+     clients, employers, people, a work email? One per line; `Name => TOKEN` suggests
+     a replacement." For a public repo say it firmly: a name committed here is public.
+     Write the answers to `.soul/private-names.txt` and add that path to `.gitignore`
+     (already covered if `.soul/` is ignored whole). None: write nothing. Names that cut
+     across projects go in `~/.claude/soul-private-names.txt` instead — say so.
+   - **Hand commits — offer, not default.** Commits and pushes made outside an AI
+     session run the repo's own hooks only. On yes, install three hooks — `pre-commit`,
+     `commit-msg`, `pre-push` — in the directory printed by
+     `python3 <derived-root>/hooks/secret-guard.py --own-hooks-dir` (it follows
+     worktrees, submodules and a repo or global `core.hooksPath`; do NOT use
+     `git rev-parse --git-path hooks`, which inside a session answers the plugin's own
+     wrapper directory). For each, if a file is already there, do not overwrite it — it
+     belongs to the owner or another tool (git-lfs, carried by five adopting projects,
+     installs `pre-push`); say which hook was skipped and that hand commits/pushes are
+     not checked at that step. Otherwise write it executable, with `<derived-root>`
+     chosen by the version-pin guard above and `<hook>` replaced by the hook's name in
+     all three places. It fails open, loudly, when the plugin path is gone (an update or
+     a machine move), and stays quiet when a session's wrapper has already run the
+     check for the same commit (it chains to this hook):
+     ```sh
+     #!/bin/sh
+     # Soul System secret check (<hook>), installed by /soul-init (operations/secret-guard.md).
+     guard="<derived-root>/hooks/secret-guard.py"
+     if [ ! -f "$guard" ] || ! command -v python3 >/dev/null 2>&1; then
+       echo "Soul secret check NOT running — plugin path missing; re-run /soul-init to repair the hook" >&2
+       exit 0
+     fi
+     python3 "$guard" --hand-hook <hook> "$@"
+     rc=$?
+     [ "$rc" -eq 3 ] && exit 1
+     [ "$rc" -ne 0 ] && echo "Soul secret guard failed (exit $rc) — this git <hook> was NOT checked" >&2
+     exit 0
+     ```
+   - **Codex in use?** Say in one line that the guard is an opt-in there: the
+     `shell_environment_policy` lines in `operations/secret-guard.md` (Codex's
+     SessionStart context prints them with this machine's folder).
+   - **History sweep — offer once.** `gitleaks git --redact --no-banner`, results to the
+     owner. Rewrite nothing: a found credential is rotated first, and any rewrite is the
+     owner's separate call (it runs on a native Linux filesystem, not a `/mnt` drive, and
+     a rewritten-away commit stays fetchable by SHA on GitHub).
+   - **gitleaks missing** (`command -v gitleaks`): say the credential check is not
+     running until it is installed.
+   - **Public repo: push protection.** Tell the owner whether it is on —
+     `gh api repos/<owner>/<repo> --jq .security_and_analysis.secret_scanning_push_protection.status`
+     (no value: say unknown). GitHub turns it on by default only for personal public repos
+     created since 2024-03; user-level push protection is on by default for pushes to
+     public repos.
+
    Skip `amendments/` **and `findings/`** — both are records of changes to *the
    Soul*, governed by `operations/amendment-process.md`, and they go upstream, not
    local. Scaffolding `findings/` locally produced 0 artifacts across 6 projects in
@@ -238,3 +293,4 @@ line you have not verified resolves.
 **Source:** Built by the Artificer as the Soul System's bootstrap command (the `@import` installer). Brought into the repo and put on the symlink (live-reference) distribution model under [[SOUL-F029]] — it previously lived only in `~/.claude/commands/`, the source-of-truth gap that finding names. **Adopted:** 2026-05-19 (repo-canonical 2026-05-22). **Status:** active.
 **NOTE:** the former machine-local root path (the F029 portability wrinkle) was retired by SOUL-A022 — the root now derives from the skill's own location, which also makes the plugin a complete install path.
 **Amended:** 2026-10-19 (mining pass 2, SOUL-202) — step 3 checks repo visibility before the tracking question; 3b finds an existing store outside root/`.soul/` (e.g. `docs/`) before scaffolding; 3c writes the Mind import relative to the importing file (extends F068).
+**Amended:** 2026-10-20 (v2.10.0, SOUL-I070) — step 3b sets up the experimental secret guard: the project's private-name list (gitignored); optional hand-commit hooks (`pre-commit`, `commit-msg`, `pre-push`) placed in the repo's own hooks directory (`--own-hooks-dir`, since a session points `core.hooksPath` at the plugin's wrappers), never overwriting an existing hook, failing open loudly when the plugin path is gone, and not re-running a check the session's wrapper already ran; a one-line Codex opt-in pointer; a history-sweep offer; and push-protection status for public repos.

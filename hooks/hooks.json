@@ -1,6 +1,29 @@
 {
-  "description": "Soul System — the pre-completion verification gate (SOUL-F012). Fires on Stop; self-scopes to Soul-governed projects and injects the completion checklist before a session ends after shipping.",
+  "description": "Soul System — the pre-completion verification gate (SOUL-F012). Fires on Stop; self-scopes to Soul-governed projects and injects the completion checklist before a session ends after shipping. SessionStart arms the EXPERIMENTAL secret guard (SOUL-I070): it points git's core.hooksPath at the plugin's read-only hook wrappers for every git the session runs, so git itself checks each commit and push (credentials block, private names warn) and then runs the repo's own hooks; it verifies the arming and says NOT armed when it fails. PreToolUse on Bash re-verifies the wrapper folder (reinstalling it if missing or modified) and notices commands that bypass git hooks or run hook installers.",
   "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/secret-guard.py\" --session-start",
+            "timeout": 15
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/secret-guard.py\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
     "Stop": [
       {
         "hooks": [
