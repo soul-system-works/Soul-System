@@ -8805,3 +8805,46 @@ CONSEQUENCE:  v2.9.1: Android/Flutter signing configs join the credential names 
               the receive on the new computer.
 STATUS:       Open.
 ```
+
+```
+ID:           SOUL-207
+WHEN:         2026-10-20 / after SOUL-206
+WHERE:        this session · hooks/secret-guard.py, hooks/codex.py, hooks/hooks.json,
+              operations/secret-guard.md, docs/specs/2026-10-20-secret-guard.md,
+              skills/soul-init/SKILL.md · SOUL-I070
+WHAT:         The Body asked whether the system should warn about secrets reaching
+              public repos, and grilled it (Q1–Q15, every recommendation taken). The
+              first build predicted what git would commit by parsing the AI's Bash
+              command; two fresh-context reviews found 25+ ways it passed silently.
+              The Body approved moving the check into git's own hooks. The third
+              review rejected that build: hook installers overwrote the shared
+              wrappers, the Codex command rewrite broke Codex's own permission rules,
+              and two extra wrappers slowed rebase and tag fetch on /mnt/d. The Body
+              chose: Codex an opt-in, three hooks only, ship as experimental. Seven
+              more review rounds followed (six fresh-context, one a re-check by the
+              same reviewer); each found something, rarer each time. Owner decisions among them: scan credentials in commit and tag
+              messages (none were scanned); keep the block on a first push to a new
+              remote (the session extended it to URL, pushurl and multi-url pushes and
+              said so; the Body did not object). Tags pointing at a raw file or folder
+              defeated a printed hand-check and then an in-guard scan, each failing
+              review; at the Body's "Go" they are reported NOT checked instead.
+              During the fourth review a probe's `cd` failed and it ran in this repo:
+              it committed a file `y` (ed5d305, never pushed) and wrote a
+              `.git/hooks/pre-commit` that failed every commit. The reviewer's own
+              undo was refused by the permission check; the Body ran it. Later briefs
+              required guarded `cd`s and a check of HEAD and .git/hooks.
+              Near the end the Body said: "what I thought was kind of fairly simple
+              task is now continued for quite some time" — the session had treated
+              every review finding as must-fix, with no line between what matters in
+              normal use and the theoretical.
+TYPE:         decision
+CONSEQUENCE:  v2.10.0, experimental. Credentials block and names warn, by git's own
+              hooks, in Soul projects; Codex by opt-in. Final suite 190 checks; each
+              review-round fix has a test that fails without it. Not covered and not
+              run are listed in operations/secret-guard.md — above all, no real
+              Claude Code or Codex session has run it, and an AI that builds the
+              variable name in pieces can disarm it unseen (GitHub push protection is
+              the backstop for public repos). Further edge cases are recorded as
+              known limits, not chased.
+STATUS:       Open.
+```

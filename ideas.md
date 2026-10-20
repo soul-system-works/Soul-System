@@ -2323,3 +2323,21 @@ RAW:       A context summary (compaction) dropped the handoff cursor's standing 
 SHAPE:     Raw. From mining pass 2 (SOUL-202), disposition IDEA.
 STATUS:    Built — v2.9.0 (rule 6, SOUL-A029), 2026-10-19.
 ```
+
+```
+ID:        SOUL-I070
+WHEN:      2026-10-20
+RAW:       Should the Soul System verify or warn about sensitive information
+           (API keys, personal information, passwords) being committed, so less
+           reaches public repos — and if so, where?
+SHAPE:     Grilled with the Body 2026-10-20 (Q1–Q15, all recommendations taken):
+           wire in gitleaks rather than build a scanner; own only what it misses —
+           AI-written commit text and the owner's private-name lists. Fires on the
+           AI's `git commit` / `git push` (Claude and Codex). Credentials block in
+           every repo (override = owner-approved `.gitleaksignore`); names and author
+           email warn, public repos only (the SOUL-175 ruling stands for names).
+           No contract line. Design: docs/specs/2026-10-20-secret-guard.md.
+STATUS:    Built — v2.10.0, experimental, 2026-10-20 (SOUL-207). The mechanism
+           changed in build: git's own hooks run the check, Soul projects only,
+           Codex by opt-in; see the spec's "Mechanism changed" sections.
+```
