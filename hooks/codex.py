@@ -23,6 +23,11 @@ _spec = importlib.util.spec_from_file_location(
 )
 gate = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(gate)
+_guard_spec = importlib.util.spec_from_file_location(
+    "soul_secret_guard", ROOT / "hooks" / "secret-guard.py"
+)
+guard = importlib.util.module_from_spec(_guard_spec)
+_guard_spec.loader.exec_module(guard)
 
 
 def _key(*parts):
@@ -130,7 +135,58 @@ def _emit_verdict(cwd, data, turn):
         pass  # the verdict is a record, never a reason to block
 
 
+def _guard_data_dir():
+    # Codex sets PLUGIN_DATA (and CLAUDE_PLUGIN_DATA for compatibility) for plugin hooks.
+    return os.environ.get("PLUGIN_DATA") or os.environ.get("CLAUDE_PLUGIN_DATA")
+
+
 def handle(data):
+    """Secret guard notices first, then the gate's own handling (SOUL-I070).
+
+    Codex is an OPT-IN for the secret guard: Codex has no env file, and the command
+    rewrite that once stood in for one was dropped (owner decision D1, 2026-10-20 —
+    Codex's exec policy judged the rewritten script as one command, so the user's
+    own prefix rules stopped matching; see the FENCE in hooks/secret-guard.py).
+    SessionStart installs the hook folder and says whether the owner's
+    shell_environment_policy opt-in is present; PreToolUse on Bash re-verifies the
+    folder and gives the bypass / hook-installer notices. Nothing here rewrites,
+    allows or blocks a command.
+
+    One JSON object per hook run: the guard's notice, with the adapter's skip message
+    folded in if the fingerprint step fails after it.
+    """
+    event = data.get("hook_event_name")
+    if event == "PreToolUse" and data.get("tool_name") == "Bash":
+        try:
+            out = guard.pre_tool_use(data, _guard_data_dir())
+            out = {"systemMessage": out["systemMessage"]} if out else None
+        except Exception as exc:
+            out = {"systemMessage": f"Soul secret guard skipped ({type(exc).__name__}) — NOT checked."}
+        try:
+            code = _handle(data)
+        except Exception as exc:
+            if not out:
+                raise
+            out = {"systemMessage": f"{out['systemMessage']}\n{_skipped(exc)}"}
+            code = 0
+        if out:
+            print(json.dumps(out))
+        return code
+    return _handle(data)
+
+
+def _guard_session_note(cwd):
+    """Install the hook folder (so the opt-in has something to point at) and say
+    whether Codex is armed. Never raises: the contract context must still go out."""
+    try:
+        if not guard.soul_scoped(cwd, gate):
+            return ""
+        return guard.codex_armed_note(cwd, guard.install(_guard_data_dir()))
+    except Exception as exc:
+        return f"Soul secret guard NOT armed under Codex ({type(exc).__name__})."
+
+
+def _handle(data):
     cwd = data.get("cwd")
     if not isinstance(cwd, str) or not Path(cwd).is_dir() or not gate._is_soul_project(cwd):
         return 0
@@ -144,6 +200,7 @@ def handle(data):
             "project CLAUDE.md for local Register/Stage, the existing mind.md, and witness.md "
             "tail (root or .soul/). Codex does not expand @imports. "
             "Use $soul-system:soul-resume to check stale project wiring.\n\n" + contract
+            + (f"\n\n{note}" if (note := _guard_session_note(cwd)) else "")
         ))
         return 0
     if event not in ("PreToolUse", "PostToolUse", "Stop"):
@@ -196,11 +253,13 @@ def main():
         return handle(data)
     except Exception as exc:
         # Fail open with a visible diagnostic; silence must not imply armed.
-        print(json.dumps({"systemMessage": (
-            f"Soul Codex hook skipped ({type(exc).__name__}); automatic verification "
-            "is not guaranteed. Apply the completion checklist manually."
-        )}))
+        print(json.dumps({"systemMessage": _skipped(exc)}))
         return 0
+
+
+def _skipped(exc):
+    return (f"Soul Codex hook skipped ({type(exc).__name__}); automatic verification "
+            "is not guaranteed. Apply the completion checklist manually.")
 
 
 if __name__ == "__main__":
