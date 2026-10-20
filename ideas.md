@@ -2112,7 +2112,7 @@ IDEA:      A declared DEVELOPMENT STAGE per project — prototype / pre-release 
            change is one witness entry; absent means released-grade caution
            (today's behaviour). Not doctrine, not a workflow, no change to the
            completion gate.
-STATUS:    In build (v2.2.0) — design grilled and resolved in
+STATUS:    Built — v2.2.0 (`/soul-stage`); design in
            docs/specs/2026-08-26-development-stage.md
 WHY:       The owner supplied the same rule by hand in two projects on
            consecutive days (SENSOR-FORGE CLAUDE.md 8d2b91c, 2026-08-25; a UE thermal-sensing
@@ -2147,7 +2147,7 @@ SHAPE:     `upstream.md` beside witness.md/ideas.md, append-only, created on
            append, never a count, never a reminder in a domain project. The
            reporting moves to /soul-next run in the Soul System repo, which is
            the only seat a mining pass can run from.
-STATUS:    In build (v2.3.0) — docs/specs/2026-08-28-upstream-store.md
+STATUS:    Built — v2.3.0; docs/specs/2026-08-28-upstream-store.md
 WHY:       The escalation added in v2.1.1 is a data-loss alarm wearing a
            contribution-request costume: the cursor is gitignored and rewritten
            wholesale each session, so a parked lesson is one `OWED UPSTREAM:
@@ -2184,7 +2184,7 @@ SHAPE:     The branch adds a Codex manifest (.codex-plugin/), a Codex hook
            operations/codex.md and a 287-line spec. Its own status line:
            "implementation preview awaiting Claude review; not a release" —
            packaging checked, live model behaviour and host hook execution not.
-STATUS:    Open — owner asked for it on the list (2026-10-19).
+STATUS:    Built — v2.5.0 (experimental Codex support), 2026-10-19.
 WHY:       One record and one set of rules across agent tools. It also widens
            the gate's scoping to AGENTS.md, which overlaps the AGENTS.md-route
            question raised the same day (intake item 9) — review them together.
