@@ -74,24 +74,40 @@ this skill's directory. It is POSIX-only (Linux, macOS, WSL). Design:
    - An operation in progress (merge, rebase, cherry-pick) → finish or abort it
      first; its state does not travel.
 4. **Approval box.** Show one plain box of exactly what will happen, then wait for
-   *approve* / *change* / *cancel*:
+   *approve* / *change* / *cancel*. Sort every row under **GOES IN THE ZIP** or
+   **STAYS OUT**, and give every STAYS OUT row its way to the new computer
+   (rebuilt, by hand, or not at all). Category names alone ("untracked", "left
+   out", "never packed", "not carried") did not tell the owner what was in the zip
+   on the first live pack (SOUL-206).
 
    ```
-   ┌─ soul-migrate · <project> · Fast ──────────────────────────┐
-   │ git bundle      <n> commits, <b> branches (<u> unpushed)   │
-   │ uncommitted     <files>                     → commit|patch │
-   │ local overrides <skip-worktree files> → carried | left out │
-   │ untracked       <groups>                         <size>    │
-   │ left out        <rebuildable>              → <rebuild cmd> │
-   │ never packed    <credential-like names, or "none found">   │
-   │ memory folder   <found | found by name — unconfirmed | none> │
-   │ not carried     <nested repos, submodules, LFS objects, …>  │
-   │ depends on      <plugins / skills / tools by name>         │
-   │ smoke check     <command>                                  │
-   │ output          <path>.zip                                 │
-   └──────────────────────────────── approve / change / cancel ─┘
+   ┌─ soul-migrate · <project> · Fast ────────────────────┐
+   │ GOES IN THE ZIP                                      │
+   │  git history    <n> commits, <b> branches            │
+   │                 (<u> unpushed)                       │
+   │  your changes   <uncommitted files> as a patch       │
+   │                 (or "none" / "committed first")      │
+   │  extra files    <untracked/ignored groups>  <size>   │
+   │  Claude memory  <found | by name — unconfirmed>      │
+   │ STAYS OUT                                            │
+   │  rebuilt there  <rebuildable>  → <rebuild cmd>       │
+   │  secrets        <credential-like names> → by hand    │
+   │  outside project <keys, global skills/agents, …>     │
+   │                 → by hand                            │
+   │  can't carry    <nested repos, submodules, LFS, …>   │
+   │ ON ARRIVAL                                           │
+   │  needs          <plugins / skills / tools by name>   │
+   │  smoke check    <command>                            │
+   │ output          <path>.zip                           │
+   └────────────────────────── approve / change / cancel ─┘
    ```
 
+   Keep the box under 60 columns: wrap a long list onto an indented continuation
+   line rather than letting the terminal cut it. Omit an empty STAYS OUT row; say
+   "none" in an empty GOES IN row. Local overrides (skip-worktree files) go under
+   whichever heading the owner chose; a force-included credential-like file goes
+   under GOES IN with "(force-included)". A secret you spotted that the inventory
+   did not flag goes under secrets, marked "(not flagged by the tool)".
    Nothing is written before *approve*. Sizes come from the inventory; the zip's own
    size is known only after packing.
 5. **Witness entry** (Soul projects only), through `/soul-capture witness`'s format:
@@ -155,4 +171,7 @@ by hand), rewriting paths inside files (handle each case on arrival), native Win
 
 **Source:** SOUL-I067 (2026-10-19) — the Body's grilling session settled the design;
 an adopting project's pilot (NAV-TOOL) supplied the lessons and the placement checks.
+**Amended:** 2026-10-20 (v2.9.1, SOUL-206) — the approval box sorts every row into
+GOES IN THE ZIP / STAYS OUT and fits 60 columns; Android signing configs join the
+credential-like names.
 **Adopted:** 2026-10-19 (v2.7.0). **Status:** active — experimental.

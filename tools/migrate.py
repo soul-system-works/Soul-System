@@ -66,6 +66,7 @@ CRED = re.compile(r"(?i)^(\.env(\..*)?|.*\.env|\.envrc|\.netrc|\.npmrc|\.pypirc|
                   r"|id_(rsa|dsa|ecdsa|ed25519)(\.pub)?|id_\w+_sk(\.pub)?"
                   r"|.*\.(pem|key|p12|pfx|keystore|jks|kdbx|tfvars|ppk|p8)|.*\.tfstate.*"
                   r"|.*(credential|secret|password|api[_-]?key).*"
+                  r"|(.*[._-])?(keystore|key|signing)\.properties"  # Android signing passwords
                   r"|(.*[._-])?tokens?([._-].*)?)$")
 # Names that are only credential-like with their folder; settings.local.json may hold
 # tokens inside permission allow rules.
