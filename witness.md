@@ -8779,3 +8779,29 @@ TYPE:         decision
 CONSEQUENCE:  SOUL-A029 accepted on the shown wording; released as v2.9.0.
 STATUS:       Closed.
 ```
+
+```
+ID:           SOUL-206
+WHEN:         2026-10-20
+WHERE:        first live /soul-migrate pack · ROSTER-APP (REF-26) · tools/migrate.py,
+              skills/soul-migrate/SKILL.md
+WHAT:         The owner ran /soul-init (on 2.8.0) then /soul-migrate (on v2.9.0) in
+              ROSTER-APP and produced a 13.9 MB, 32-entry zip. Read back from the zip:
+              the project's new witness entry in the patch, the memory folder (3
+              files), no signing files; that the bundle holds both branches is pack's
+              own report — the branch heads were not listed, and the zip had left
+              Downloads by the time review asked. But the inventory did not flag
+              android/keystore.properties (keystore passwords): CRED matched names
+              ENDING in .keystore, not that name. The session left it out by its own
+              reading and its witness entry says the tool missed it. The owner said the
+              approval box "wasn't immediately clear … what was going in the zip or
+              not": four of its rows were category names, three of them meaning "out",
+              each for a different reason. The pasted box was also cut off mid-word,
+              as was the prose around it; cause unknown.
+TYPE:         observation
+CONSEQUENCE:  v2.9.1: Android/Flutter signing configs join the credential names (test
+              red before, green after); the box sorts rows into GOES IN THE ZIP / STAYS
+              OUT with the way each "out" item travels, within 60 columns. Still unrun:
+              the receive on the new computer.
+STATUS:       Open.
+```

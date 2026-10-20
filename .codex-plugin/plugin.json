@@ -1,6 +1,6 @@
 {
   "name": "soul-system",
-  "version": "2.9.0",
+  "version": "2.9.1",
   "description": "Project memory, handoff workflows, and a verification reminder for human–AI collaboration. Codex support is an experimental local integration; run $soul-system:soul-init to wire project instructions.",
   "skills": "./skills/",
   "hooks": "./hooks/codex.json",
