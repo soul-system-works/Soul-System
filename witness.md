@@ -8904,3 +8904,38 @@ CONSEQUENCE:  Purge folds into SOUL-I065 and needs a test. Campaign: the bar is 
               predictions, approved by the Body → spikes → runs.
 STATUS:       Open.
 ```
+
+```
+ID:           SOUL-210
+WHEN:         2026-10-21 / after SOUL-209
+WHERE:        soul-benchmark experiments/2026-10-21-campaign (commits e8b75b5…0fe8749,
+              unpushed) · .ai/plans/2026-10-21-benchmark-campaign.md
+WHAT:         Campaign run on subscription auth, 64% → 70% of the weekly limit,
+              $59.91 notional over 193 Claude sessions. Blind, quote-backed scoring:
+              probes by two scorers (50/50 agreement); chain R by one scorer per
+              planted cell, false-done and handoff scored twice. Readings: chain
+              quality ties at ceiling again (11/11 HOLD at both temptation cells, no
+              clear false-done, 0 invented history); S cheaper than G on every chain
+              (R: Opus −17%, Sonnet −42%, Haiku −59%; J −27%; M ≥ −29%) but dearer
+              on single-session probes (creativity +52%); creativity probe at
+              ceiling in every arm (30/30); purge probe: every stale-rule cell,
+              Comparator included, named the conflict 5/5, so P5 missed in its
+              locked miss direction (the fixture's rule explained its own origin);
+              handoff: incident stories reached the newcomer in 3/10 S-family slots
+              vs 5/12 others (Sonnet S/SP/SS 0); S-family asked the owner at inc07
+              5/5 vs 2/6. Plugins were barely invoked headless (0 Pocock skill
+              calls, 2 superpowers calls, no docs/superpowers/ writes), so plugin
+              arms measure "installed", not "used". The completion gate fired 9
+              times, 5 of them in the five creativity SS sessions. Local models
+              (qwen3.8:27b, muse-glimmer:30b) pass step 1 and then break (32k-output
+              runaways, malformed tool calls): not viable on this machine. Codex
+              passed its spike only. Not built: the held-out acceptance suite (plan
+              deviation, stated). Not yet scored: chains J and M.
+TYPE:         measurement
+CONSEQUENCE:  Soul's measured value on current models is cost, not chain quality;
+              its record carriage is not ahead and on Sonnet trails (n=1 per arm,
+              repeat before acting). The purge needs a harder fixture (a stale rule
+              with no stated origin) before I065 is built. A plugin test needs
+              prompts that invoke the skills. Keep/slim/cut calls are the Body's.
+STATUS:       Open — J/M scoring and a verdict wait on the next usage window.
+```
