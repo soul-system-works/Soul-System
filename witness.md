@@ -8848,3 +8848,59 @@ CONSEQUENCE:  v2.10.0, experimental. Credentials block and names warn, by git's 
               known limits, not chased.
 STATUS:       Open.
 ```
+
+```
+ID:           SOUL-208
+WHEN:         2026-10-21 / after SOUL-207
+WHERE:        this session · /soul-resume, then a grill of the cursor's ten carried
+              Body calls · .soul/handoff.md OPEN BODY CALLS
+WHAT:         The Body asked for the ten carried calls, then for a grill with each
+              checked against files and git first. Checking changed three premises:
+              call 2 was already ruled (SOUL-202 closed both SENSOR-VIEW holds as
+              staying home); the archive/video-pipeline tag has been public since
+              2026-08-26 (cebc03e; SOUL-198 knew) — SOUL-178's "kept LOCAL-ONLY" is
+              stale and is corrected here; the five-line witness budget dates from
+              the first commit (operations/witness-log-format.md), not SOUL-185. Two
+              recommendations reversed on the facts (calls 4 and 10).
+TYPE:         Owner ruling + correction forward
+CONSEQUENCE:  Rulings: SOUL-187 ratified, its step-1b gap to be fixed; inflation
+              instances go to SOUL-I060, no new idea; F067 not appended (the stale
+              gate was caught by F067's own fix); REF-NN-### tokens kept; the tag
+              stays public (deleting the ref removes no object, mind 6d); this list
+              added to F064 as instance 3; /soul-capture step 7 deleted, old entries
+              untouched; the three 2026-09-04 soul-benchmark pre-registrations
+              retired unrun; the gate stays blind to worker-only turns, reason
+              written at the code site; the upstream path does not auto-commit.
+              The OPEN BODY CALLS list is empty.
+STATUS:       Open — skill fixes (soul-handoff 1b, soul-capture 7, gate comment)
+              ship on a release branch.
+```
+
+```
+ID:           SOUL-209
+WHEN:         2026-10-21 / after SOUL-208
+WHERE:        this session · SOUL-I065 · CONTEXT.md · soul-benchmark
+WHAT:         The Body raised a purge — as a project evolves, Soul rules may steer
+              the agent too rigidly and cost creativity (impressions, no specific
+              incident) — and a new benchmark across Claude, Ollama and Codex, and
+              alongside superpowers and Matt Pocock's skills, on quality, tests,
+              cost and time. Facts found first: the last behavioural benchmark was
+              v1.1 (2026-06-10/11), where a minimal floor CLAUDE.md matched Soul and
+              cost least; the plugin eval suite is saturated (SOUL-192); superpowers
+              is not installed — three loose copies (Apr 17) write to
+              docs/superpowers/, against the .ai/ rule; /soul-distill prunes only
+              the Mind; creativity is unmeasured (F014, F017). Grilled Q11–Q26, every
+              recommendation taken.
+TYPE:         decision
+CONSEQUENCE:  Purge folds into SOUL-I065 and needs a test. Campaign: the bar is the
+              Comparator (CONTEXT.md), floor as reference, no bare arm; arms floor ·
+              Comparator · Soul · each plugin with Comparator and with Soul; all arms
+              on Sonnet 5.5, Soul vs Comparator on Opus 5.5 and Haiku 5.5; June tasks
+              plus a creativity probe and a purge probe; measures quality, tests,
+              cost, time; Ollama and Codex spike first; cap ~$150. Superpowers goes
+              in only for the benchmark; the loose copies are removed. Everything
+              runs on this machine; larger Ollama models on the A6000 machine are
+              optional later. Order: record → release-branch fixes → plan and locked
+              predictions, approved by the Body → spikes → runs.
+STATUS:       Open.
+```

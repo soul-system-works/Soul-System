@@ -2099,6 +2099,13 @@ DEVELOP:   Steward (does this earn a place in rule 3, or is it a distill-time
            cheap form may be scope-once-per-document rather than per-number.
 NOTES:     Captured under /soul-handoff's flush step — the Body's invocation of
            the instrument is the confirmation, stated out loud (A022).
+INSTANCES (2026-10-21, SOUL-208 — the Body ruled the self-report
+           inflation claim lives here, not as a new idea): own-work counts wrong
+           in the flattering direction — v2.1.0 (above); release rows 2.1.1–2.3.2
+           (mind item 2); SOUL-199 (Mind 76 lines, was 80); SOUL-203 (9 candidate
+           rows, 6 in the cluster); SOUL-204 item 1 (9 projects; a 2026-10-21
+           find over /mnt/d/Projects and /mnt/d/Modelica, maxdepth 4, found 8
+           upstream files, not 10 — the other 2 unknown).
 ```
 
 ```
@@ -2218,6 +2225,18 @@ RAW:       Extend the project stage so the agent helps make better long-term
            could improve maintainability, extensibility or capability.
 SHAPE:     Raw. Nearest existing seats: the /soul-stage block (its exit trigger is
            re-read by /soul-next) and /soul-next's tiered options.
+SHAPE (2026-10-21, grilled with the Body, SOUL-209): the PURGE. As a project
+           evolves, its standing rules can outlive their reason and steer the
+           agent too rigidly (the Body's impression; no incident recorded). Scope:
+           what /soul-distill does not reach — CLAUDE.md rules, ADRs, why-comments
+           at code sites, stage blocks; never the contract (that changes by
+           release, as A021). It proposes, the Body decides; check before cutting
+           (F040: 2 of 3 retire hunches reversed on a grep); cut whole items and
+           keep the incident behind any kept rule (F066). Trigger: a stage change
+           OR a review-due point like /soul-distill's band. Near: SOUL-I034
+           (retirement tool), SOUL-I040 (validate/prune pass), F014/F017 (small,
+           unambitious sessions). OPEN: needs a test before any build — the purge
+           probe in the SOUL-209 benchmark campaign.
 STATUS:    Raw — Body-captured.
 ```
 

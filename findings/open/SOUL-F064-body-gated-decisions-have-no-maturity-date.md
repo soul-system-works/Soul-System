@@ -84,6 +84,20 @@ failure mode is defined by the absence of activity.
    reasons. A mechanism that fires rarely and is read rarelier may cost more than
    the failure.
 
+## Later instance (2026-10-21, SOUL-208)
+
+**Instance 3 — calls the cursor carried but nobody closed.** The handoff cursor's
+OPEN BODY CALLS list held ten owner decisions across several cursors. When the
+Body finally grilled them, with each claim checked against files and git first,
+one was already ruled (SOUL-202), one rested on a stale record line (the
+archive tag, public since 2026-08-26), and one on a wrong premise (the witness
+budget's origin). This instance partly meets the first falsifier below: an
+existing instrument — the cursor — *did* resurface every call, each session. What
+it lacked was not resurfacing but a form the Body could close: bare one-line
+questions with no checked facts and no recommendation sat open; the same calls
+with checked facts and a recommendation each closed in one sitting. So the gap
+may be narrower than "no maturity date" — it may be "no resolvable form".
+
 ## What would make this finding wrong
 
 If a third instance is found where the deferral *was* resurfaced by an existing

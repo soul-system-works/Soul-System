@@ -81,3 +81,11 @@ is ceremony plus the generic benefit of having any good doctrine, and the
 drift-class failures it provably prevents are too rare in the Body's real projects
 to justify the premium. The base-rate component exists precisely because benchmark
 wins alone cannot rule this out.
+
+## Purge
+Proposing the removal of a project's standing rules — its CLAUDE.md rules, decision
+records, why-comments at code sites, stage blocks — that no longer fit what the
+project has become. Distinct from **distill** (the Mind only) and from retiring a
+**contract** rule (a Soul System release-time change, as A021). A purge proposes; the
+Body decides; whole items go, and the incident behind a kept rule stays (F040, F066).
+Resolved 2026-10-21 (SOUL-209); unbuilt and untested (SOUL-I065).
