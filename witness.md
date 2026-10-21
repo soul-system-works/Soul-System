@@ -9007,5 +9007,5 @@ CONSEQUENCE:  Soul's distinctive measured behaviour is real against no
               saying it was vs a bare note — a Body call to amend. Next test named
               in the report: the stale-rule probe with the Comparator as opponent.
               Mind item 2 (generous counts, caught by a fresh reader) fired again.
-STATUS:       Open — Mind item 8 amendment awaits the Body.
+STATUS:       Open — Mind item 8 amendment awaits the Body. unconfirmed — owner to ratify
 ```
