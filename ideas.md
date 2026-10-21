@@ -2384,3 +2384,72 @@ STATUS:    Built — v2.10.0, experimental, 2026-10-20 (SOUL-207). The mechanism
            changed in build: git's own hooks run the check, Soul projects only,
            Codex by opt-in; see the spec's "Mechanism changed" sections.
 ```
+
+```
+ID:        SOUL-I071
+WHEN:      2026-10-21
+RAW:       Keep the "why" in handoff notes: when work is passed on, carry the
+           original story behind each rule, not just the rule.
+SHAPE:     Raw. From the 2026-10-21 campaign (SOUL-213, REPORT §6): incident stories
+           reached the handoff from Soul arms 3/10 vs 5/12 others; Sonnet Soul arms
+           0/6, citing their own in-chain events instead. n=1 per arm — repeat first.
+           Near: /soul-handoff, contract rule 1, F053/A020 (force carriage).
+STATUS:    Raw — Body-captured.
+```
+
+```
+ID:        SOUL-I072
+WHEN:      2026-10-21
+RAW:       Make Soul lighter on one-off jobs: skip the record-keeping when a task
+           has no next session, so short jobs stop costing more.
+SHAPE:     Raw. Campaign one-shot probes: Soul +12% to +52% vs a bare note on 4 of 5
+           (−12% on the fifth); multi-session chains −17% to −59% vs the Comparator.
+           The "record-keeping is what costs" reading is unmeasured (REPORT §3).
+STATUS:    Raw — Body-captured.
+```
+
+```
+ID:        SOUL-I073
+WHEN:      2026-10-21
+RAW:       Try a shorter Soul: the five-minute CLAUDE.md kept up, so test whether a
+           trimmed contract does as well for less.
+SHAPE:     Raw. Campaign chain R: the floor (31 lines) tied every quality endpoint and
+           cost $1.59 vs Soul's $1.90 on Sonnet — June's open "floor discriminator".
+           Test shape: a slim-contract arm against S and F on a chain.
+STATUS:    Raw — Body-captured.
+```
+
+```
+ID:        SOUL-I074
+WHEN:      2026-10-21
+RAW:       Run the fair test: repeat the out-of-date-rule probe with the Comparator
+           (the good CLAUDE.md) as the opponent, not the bare note.
+SHAPE:     Raw. The 5/5 vs 0/5 "hands the owner the call" result was against a
+           25-word note (SOUL-213); against the Comparator it is shown only at chain R
+           inc07, and only on Sonnet (3/3 vs 0/4). The headline claim needs this.
+STATUS:    Raw — Body-captured.
+```
+
+```
+ID:        SOUL-I075
+WHEN:      2026-10-21
+RAW:       Find out why Soul runs skip measuring before speeding code up, and fix it
+           if a rule is causing it.
+SHAPE:     Raw. Campaign chain R inc06: profiled first 1/5 Soul arms vs 4/6 others.
+           Cause unknown — n=1 per arm; check the transcripts before guessing.
+STATUS:    Raw — Body-captured.
+```
+
+```
+ID:        SOUL-I076
+WHEN:      2026-10-21
+RAW:       Ask before acting, not after: when a choice is the owner's, stop and ask
+           first, the way a careful instruction sheet's sessions did.
+SHAPE:     Raw. Slim-soul test (SOUL-214): on the stale-rule quiz the careful sheet
+           stopped and asked before writing code 5/5; every Soul session (v2 and v3)
+           built the rule-following version first and raised the question after, 2/5
+           counted as handing it over. Near: rule 7; the careful sheet's own lines
+           ("Don't add a runtime dependency without the owner's explicit approval.
+           Ask…"). Tension: stopping costs a round trip when the owner is away.
+STATUS:    Raw — Body-captured.
+```

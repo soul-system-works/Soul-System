@@ -9009,3 +9009,26 @@ CONSEQUENCE:  Soul's distinctive measured behaviour is real against no
               Mind item 2 (generous counts, caught by a fresh reader) fired again.
 STATUS:       Open — Mind item 8 amendment awaits the Body. unconfirmed — owner to ratify
 ```
+
+```
+ID:           SOUL-214
+WHEN:         2026-10-21 / the Slim Soul test, Body-directed (plan Q1–Q15)
+WHERE:        soul-benchmark experiments/2026-10-21-slim-soul/ (prereg 4164c5b,
+              RESULT 306e30c); branch v3.0-slim-soul
+WHAT:         Slim contract (1,041 → 680 words) against v2.10 on Sonnet: quality tied
+              on both 9-step builds; chain cost −18%; one-off cost −2%; reply length
+              unchanged. Stale-rule quiz, one scoring standard for all 15 sessions:
+              careful sheet 5/5 put the choice to the owner (stopped before code), v2
+              Soul 2/5, v3 Soul 2/5 (both built first, asked after). The campaign's
+              "Soul 5/5" came from round-2 scorers counting conditional handovers.
+              Handoff stories: careful sheet FULL/FULL, both Soul versions rule/rule
+              again (I071 holds). The pass rule's (b) 4/5 bar was read as "no worse
+              than current" — the Body's call, out loud.
+TYPE:         measurement / correction
+CONSEQUENCE:  v3.0 ships. Soul's "hands the owner the decision" is NOT an edge over a
+              careful CLAUDE.md on the stale-rule quiz; at chain R's judgment step it
+              still asked more (v3 2/2, v2 weakly, careful sheet offered). Corrects
+              SOUL-211/213 and mind item 8. Ideas: I071 (stories), I076 (ask first).
+STATUS:       Open — mind item 8 to be re-distilled; campaign REPORT and blog to be
+              corrected.
+```
