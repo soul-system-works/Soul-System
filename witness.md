@@ -8939,3 +8939,28 @@ CONSEQUENCE:  Soul's measured value on current models is cost, not chain quality
               prompts that invoke the skills. Keep/slim/cut calls are the Body's.
 STATUS:       Open — J/M scoring and a verdict wait on the next usage window.
 ```
+
+```
+ID:           SOUL-211
+WHEN:         2026-10-21 / after SOUL-210
+WHERE:        soul-benchmark experiments/2026-10-21-campaign/RESULT-round2.md
+              (prereg 7d7640a, result 5a0ebcb)
+WHAT:         Round 2, the sharper tests SOUL-210 called for (51 Sonnet sessions,
+              $5.15 notional). Bare stale rule, no stated origin: every arm named the
+              conflict (15/15), but only Soul arms put the decision to the owner
+              (10/10 vs 0/5; the Comparator-style arm built the stdlib parser and
+              mentioned relaxing the rule only conditionally). Two blind scorers,
+              15/15 agreement. The review-step stand-in for a purge changed nothing in
+              either round. "Build it test-first": the plugin TDD skills fired 12/12;
+              Pocock's tdd stops for the owner to confirm test seams, so 5/6 headless
+              sessions ended there. "Write a plan and save it": superpowers alone →
+              docs/superpowers/plans/ 3/3; Soul + superpowers → .ai/plans/ 3/3, each
+              naming the override; writing-plans ~3× a plan session's cost.
+TYPE:         measurement
+CONSEQUENCE:  Soul's measured behavioural effect is rule 7 (handing the owner the
+              call), not noticing; a purge skill has no measured job yet (the model
+              already notices stale rules, and Soul already asks). Soul coexists with
+              superpowers (its path rule wins, out loud). Pocock's tdd cannot be
+              judged headless.
+STATUS:       Open — keep/slim/cut calls are the Body's; J/M scoring deferred.
+```
