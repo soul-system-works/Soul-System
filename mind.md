@@ -27,7 +27,12 @@ book (`philosophy/the-soul.md`); everything else regenerates from the record.
    `claude plugin eval`, `append_system_prompt`, kept current by
    `evals/sync-contract.py`) and sentinel-test that it loaded. Harness doctrine:
    `operations/experiment-harness.md` — exit codes lie (SOUL-160/161); **arm repos
-   must be git-isolated**, reads above the repo root denied (SOUL-164).
+   must be git-isolated**, reads above the repo root denied (SOUL-164). Under
+   subscription auth `--bare` is unavailable, and `--setting-sources project` STILL
+   loads `~/.claude/CLAUDE.md` and per-arm auto-memory: pass `--settings` with
+   `claudeMdExcludes` and `"autoMemoryEnabled": false`, and prove it with a leak
+   sentinel (two global-only lines asked verbatim) — both controls leaked without
+   it (soul-benchmark 2026-10-21 RESULT-phase0-isolation, SOUL-210).
 
 4. **The fabrication axis** (SOUL-164): given bare rules, a doctrine-free session
    INVENTED incident history for its records ("a reviewer conflated the two" —
@@ -73,8 +78,26 @@ book (`philosophy/the-soul.md`); everything else regenerates from the record.
    `cwd`, NEVER the directory name — hyphenated names silently misfile (it put
    Soul-System in its own control arm). Method: `tools/gate-cost-measure.py`.
 
+8. **What Soul measurably does on current models — design tests on that.** Chain
+   quality ties at ceiling (June; again 2026-10-21, 11/11 at every planted cell).
+   The measured differences are cost (S cheaper on every multi-step chain, dearer on
+   single sessions) and handing the owner the call (a stale rule: 10/10 vs 0/5;
+   chain R inc07: 5/5 vs 2/6) — not noticing, which every arm did (SOUL-210/211).
+   Any grade that favours an arm gets a second blind scorer before it is reported:
+   both 2026-10-21 false-done flags dissolved on the second read. Headless plugin
+   arms measure "installed", not "used", unless the prompt names the practice; then
+   the skills fired 12/12, and Pocock's `tdd` stops for the owner (SOUL-211).
+
+9. **A probe that runs git here can damage this repo.** During the secret-guard
+   reviews a probe's `cd` failed and it ran in Soul-System: it committed a file `y`
+   (ed5d305, never pushed) and wrote a `.git/hooks/pre-commit` that failed every
+   commit; the reviewer's own undo was refused and the Body ran it (SOUL-207). Any
+   brief that runs git or hook probes requires `cd <dir> || exit 1` on every `cd`
+   and ends by checking that HEAD and `.git/hooks` here are unchanged.
+
 ---
-**Last distilled:** 2026-10-19 against SOUL-197 / A026 / F073 (delta window
-SOUL-176→197, F064–F073, A026, I055–I066; prior form at commit ed46727). New: items
-2 and 5; item 3 gains SOUL-190. Cut to pay: the dual-use clause (SOUL-155/159) — it
-described instances and generated no decision. Rules 9–10 still NOT carried (doctrine).
+**Last distilled:** 2026-10-21 against SOUL-211 / A029 / F074 (delta window
+SOUL-198→211, F074, A027–A029, I067–I070; prior form at commit 6a5cdf9). New: items
+8 and 9; item 3 gains the subscription-isolation trap. Nothing cut: A027–A029 are
+contract doctrine and arrive by import; the review-loop stopping line is already
+always-on in the Body's user memory. Rules 9–10 still NOT carried (doctrine).

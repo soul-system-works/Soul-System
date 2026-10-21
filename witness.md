@@ -8964,3 +8964,21 @@ CONSEQUENCE:  Soul's measured behavioural effect is rule 7 (handing the owner th
               judged headless.
 STATUS:       Open — keep/slim/cut calls are the Body's; J/M scoring deferred.
 ```
+
+```
+ID:           SOUL-212
+WHEN:         2026-10-21 / /soul-distill, Body-invoked, applied on the Body's "commit"
+WHERE:        mind.md
+WHAT:         Mind 80 → 103 lines, 7 → 9 items, numbers stable. New: item 8 (what
+              Soul measurably does on current models — cost and handing the owner
+              the call, not chain quality; second blind scorer on any grade that
+              favours an arm; plugin arms measure "installed" unless the prompt
+              names the practice) and item 9 (a git probe whose cd failed damaged
+              this repo — guard every cd, check HEAD and .git/hooks after). Item 3
+              gains the subscription-isolation trap. Nothing cut.
+TYPE:         Distill
+CONSEQUENCE:  Self-tests: load-bearing Y; trap coverage Y; two flags — item 9 is
+              partly what a careful session would do anyway, kept for the real
+              damage; item 8 is an as-of reading that ages with the models.
+STATUS:       Closed.
+```
