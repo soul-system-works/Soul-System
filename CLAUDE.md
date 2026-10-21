@@ -1,8 +1,7 @@
 @operations/CLAUDE.md
 @mind.md
 
-**Register: plain** — plain language: use a Soul or project term only when it
-earns its place, gloss it on first use in a session, and introduce vocabulary
-gradually. (Vocabulary only — response LENGTH is contract rule 9, which applies
-under either register. Switch by editing this line; other value: `fluent` — full
-Soul vocabulary.)
+**Register: plain** — write for a smart reader who is new to the project: everyday
+words, short sentences, any project term explained the first time it appears.
+(Wording only — length is contract rule 9. Other value: `fluent` — full Soul
+vocabulary.)
