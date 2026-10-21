@@ -385,6 +385,15 @@ def _scan(transcript_path: str):
         for block in _content(rec):
             if not isinstance(block, dict):
                 continue
+            # Worker-only turns are deliberately NOT counted (Body ruling,
+            # SOUL-208): edits a delegated worker makes (`claude -p` via Bash, or
+            # a subagent) never appear here as an edit tool, so such a turn can
+            # claim done ungated. Counting Bash/Agent calls would mark nearly
+            # every turn shipped, so the gate would fire on most completion
+            # claims (the over-firing class F063 recorded); /soul-delegate re-runs
+            # each worker's check in the main session instead. Claude Code only:
+            # the Codex adapter (hooks/codex.py) sees Git-visible Bash edits.
+            # Fence: test_turn.py.
             if block.get("type") == "tool_use" and block.get("name") in _EDIT_TOOLS:
                 shipped = True
             elif block.get("type") == "text":

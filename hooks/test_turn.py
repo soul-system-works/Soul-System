@@ -8,6 +8,9 @@ The notification reset the scanned turn, so _scan returned shipped=False and
 the gate never fired. A genuine new user prompt must still reset the turn
 (the SOUL-027 precision fix).
 
+FENCE: a turn whose only tool uses are a delegated worker (Agent) and Bash is not
+"shipped" — the Body's ruling that worker-only turns stay ungated (SOUL-208).
+
 Run: python3 hooks/test_turn.py  (exit 0 = fence holds)
 """
 
@@ -76,6 +79,13 @@ CASES = [
       _user("Another Claude session sent a message: review the plan",
             promptSource="system", turnOrigin="peer", isMeta=True),
       _assistant(DONE)],
+     (False, True)),
+    # Worker-only turns stay ungated by design (SOUL-208): a turn whose only
+    # tool uses are a delegated worker (Agent) and Bash is not "shipped".
+    ("a worker-only turn does not count as shipped (SOUL-208)",
+     [_user("run the plan step"), _assistant(AGENT), _tool_result(),
+      _assistant({"type": "tool_use", "name": "Bash", "input": {"command": "claude -p step"}}),
+      _tool_result(), _assistant(DONE)],
      (False, True)),
 ]
 

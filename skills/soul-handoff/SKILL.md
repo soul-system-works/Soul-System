@@ -59,6 +59,14 @@ SOUL-202).
    session reading top-down appended and then met the gate (fresh-context review,
    2026-08-28).
 
+   **First: are you in the Soul System repo itself?** Test it as `/soul-next` 2b
+   does — `findings/open/` **and** `operations/CLAUDE.md` **and**
+   `SYSTEM-VERSION.md`, all at the repo root; never "the witness log uses
+   `SOUL-###`", which reads true in adopting projects too. If so there is no
+   upstream: a system lesson goes in through `/soul-capture witness`, marked as in
+   step 1 (or `/soul-capture finding` if the Body graduates it). Skip the rest of
+   1b, and never create an `upstream.md` here (SOUL-187).
+
    **The test is a lookup, not a judgement: name the file that would change.**
    The surface is small and you can read it — your `CLAUDE.md` imports the contract
    from the installed plugin, and the rest of it sits beside that path: the contract
@@ -251,4 +259,6 @@ marked entry into the new `UNCONFIRMED` field; cursor first, then show); F067's 
 (an inherited OPEN GATES / NEXT STEP obligation is checked or dropped, pending the
 Body's confirmation; commands, not counts, in WHERE WE ARE); flush before a long unattended run;
 `git check-ignore` instead of asserting the cursor is ignored; 1b's surface gains
-`operations/*.md` and `tools/*`. **Adopted:** 2026-05-21. **Status:** active.
+`operations/*.md` and `tools/*`. **Amended:** 2026-10-21 (v2.10.1, SOUL-208) — 1b
+first checks for the Soul System repo itself, where there is no upstream (SOUL-187).
+**Adopted:** 2026-05-21. **Status:** active.

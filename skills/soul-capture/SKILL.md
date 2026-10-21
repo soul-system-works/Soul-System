@@ -157,7 +157,7 @@ init had created. The store was never a project store; the scaffold said otherwi
 `findings/open/` exists **only** in the Soul System repo. Decide once, here:
 
 - **In the Soul System repo** (this repo's own `witness.md` uses `SOUL-###`, and
-  `findings/open/` exists on disk): run steps 1–8 as written.
+  `findings/open/` exists on disk): run steps 1–7 as written.
 - **In any other project:** apply the entry test first — **name the file in the
   Soul System that would change** (the contract `operations/CLAUDE.md`, one of the
   `skills/*/SKILL.md`, a doc in `operations/` or `docs/`, a `tools/*` helper, or
@@ -170,7 +170,7 @@ init had created. The store was never a project store; the scaffold said otherwi
     if that is where the record lives; create the file if absent — under a dated
     `### ` heading. Tell the Body in **one short clause** that it went there, and
     stop. Do not report a count, do not say how many entries are uncollected, do
-    not ask them to send it anywhere. Steps 4–8 do not apply and following them is
+    not ask them to send it anywhere. Steps 4–7 do not apply and following them is
     a defect.
   - **You cannot name one:** this is a project lesson, not a finding. **Say so and
     stop — do not silently re-route it.** The Body typed `finding`, and A022 makes
@@ -194,7 +194,7 @@ directory to scan, concludes the highest existing id is none, assigns `SOUL-F001
 deleted. Caught by fresh-context review of v2.1.0 before any project ran it.
 
 A finding is earned: the Body has decided this graduates. This mode does the **mechanical**
-part (ID, format, placement, upstream reminder) — it does NOT graduate on its own.
+part (ID, format, placement) — it does NOT graduate on its own.
 
 1. **Confirm the graduation is the Body's call.** If the Body hasn't explicitly said "this
    is a finding," stop and ask. A finding without explicit graduation is the inflation
@@ -216,10 +216,7 @@ part (ID, format, placement, upstream reminder) — it does NOT graduate on its 
    `findings/open/SOUL-F###-<kebab-slug>.md` with the standard fenced format:
    `FINDING ID / DATE / WITNESS IDS / WHAT / WHY NOT YET AMENDMENT / FILED BY / RELATED /
    STATUS: Open`.
-7. **Upstream reminder (I014):** if cwd is a reference project AND the finding is Soul-meta,
-   remind the Body the closing-Finding obligation may require harvesting it upstream into the
-   Soul System repo's `findings/`. Flag — don't auto-upstream.
-8. Report the path + ID + (if applicable) the upstream reminder. **Do not commit.**
+7. Report the path + ID. **Do not commit.**
 
 ---
 
@@ -246,4 +243,7 @@ entry test and an explicit refusal to self-downgrade the Body's `finding` call.
 away, an idea/witness capture is appended marked `unconfirmed — owner to ratify`
 instead of held, and the next `/soul-handoff` lists it in the cursor.
 **Amended:** 2026-10-19 (v2.8.1, SOUL-204) — the witness example writes the mark
-with the dash `/soul-handoff` scans for, not a comma. **Adopted:** 2026-06-08. **Status:** active.
+with the dash `/soul-handoff` scans for, not a comma.
+**Amended:** 2026-10-21 (v2.10.1, SOUL-208) — finding mode's step 7, the upstream
+reminder, deleted: its condition (a reference project) is never true where STEP 0
+lets it run. **Adopted:** 2026-06-08. **Status:** active.
