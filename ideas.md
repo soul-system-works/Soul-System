@@ -2250,6 +2250,17 @@ TESTED:    2026-10-21 (SOUL-210/211). The probes tested only the IN-TASK
            probe as a test of it. Next test: a rule set with several stale and
            several live rules — does a purge pass propose the stale ones and keep
            the live ones (no false cuts)? Over a chain, do owner asks drop after it?
+LIVE CASE: (mined 2026-10-21 from GAME-THERMAL's upstream.md, entry 11) That
+           project's owner agreed that the SENSOR-* family's move to public repos
+           with fresh history serves as the purge's first live test: a per-file
+           prune with the owner deciding — superseded ADRs folded into their
+           successors, plans/reviews/specs left in the archive, internal-name
+           comments reworded, ADR numbers kept with their gaps (the code cites
+           them 968 times). Its session asked to check first what Soul has built
+           or measured for the purge. Answer as of this entry: nothing built; the
+           only measurement is the in-task probe in TESTED above, which did not
+           test the purge. What that prune decides and cuts is the evidence the
+           next test needs — collect it from that project's record.
 STATUS:    Raw — Body-captured; the Body keeps it (2026-10-21).
 ```
 
