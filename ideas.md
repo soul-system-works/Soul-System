@@ -2237,7 +2237,20 @@ SHAPE (2026-10-21, grilled with the Body, SOUL-209): the PURGE. As a project
            (retirement tool), SOUL-I040 (validate/prune pass), F014/F017 (small,
            unambitious sessions). OPEN: needs a test before any build — the purge
            probe in the SOUL-209 benchmark campaign.
-STATUS:    Raw — Body-captured.
+TESTED:    2026-10-21 (SOUL-210/211). The probes tested only the IN-TASK
+           moment: one stale rule colliding with one task, plus a prompt-level
+           "review the rules first" line. Every arm noticed the conflict, with or
+           without the rule's origin stated; the review line added nothing; Soul
+           arms handed the owner the call 10/10, while the Comparator-style arm
+           kept the stale rule and hand-built a parser 5/5. So the in-task stand-in
+           has no job, but the purge itself was NOT tested: a stale rule still bends
+           work, costs an owner ask on every task that touches it, and rules that
+           never collide with a task are never reviewed at all. The Body keeps the
+           purge (2026-10-21), overruling a "shelve" recommendation that read the
+           probe as a test of it. Next test: a rule set with several stale and
+           several live rules — does a purge pass propose the stale ones and keep
+           the live ones (no false cuts)? Over a chain, do owner asks drop after it?
+STATUS:    Raw — Body-captured; the Body keeps it (2026-10-21).
 ```
 
 ```
