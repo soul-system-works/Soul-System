@@ -2453,3 +2453,16 @@ SHAPE:     Raw. Slim-soul test (SOUL-214): on the stale-rule quiz the careful sh
            Ask…"). Tension: stopping costs a round trip when the owner is away.
 STATUS:    Raw — Body-captured.
 ```
+
+```
+ID:        SOUL-I077
+WHEN:      2026-10-21
+RAW:       Measure v3.0's "Report briefly" where replies actually run long: owner-facing
+           conversation turns, not headless task reports.
+SHAPE:     Raw. The slim-soul test found reply length unchanged, but its probes were
+           one-shot task reports already at the model's baseline (Soul ≈ bare note
+           ≈ 1,050 chars). The long replies are interactive turns (SOUL-I054: median
+           2,537 chars per turn). Method exists: tools/gate-cost-measure.py over a few
+           days of v3.0 sessions vs that baseline (mind item 7's traps apply).
+STATUS:    Raw — unconfirmed — owner to ratify
+```
