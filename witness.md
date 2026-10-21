@@ -8982,3 +8982,30 @@ CONSEQUENCE:  Self-tests: load-bearing Y; trap coverage Y; two flags — item 9 
               damage; item 8 is an as-of reading that ages with the models.
 STATUS:       Closed.
 ```
+
+```
+ID:           SOUL-213
+WHEN:         2026-10-21 / the campaign's one-page report, Body-asked
+WHERE:        soul-benchmark experiments/2026-10-21-campaign/REPORT.md (c638130);
+              blog draft (unpublished) in the blog repo
+WHAT:         Writing the campaign report, the first draft overstated Soul, and a
+              fresh-context review caught it at the source (run-probe.sh): every
+              probe's non-Soul cell carried only the probe's 25–43-word project
+              note, never the Comparator. So round 2's "Soul asks 10/10 vs 0/5"
+              (SOUL-211 calls that cell "Comparator-style") is Soul vs a bare note,
+              and pools the review-step cell; the clean contrast is 5/5 vs 0/5. A
+              second scorer for chain R inc07's asked-owner reading (added at
+              scoring, one scorer) agreed 11/11, but could tell Soul replies by
+              their formatting, and it separates only on Sonnet (3/3 vs 0/4); on
+              Opus and Haiku the Comparator asked too. Also corrected: the floor
+              tied on quality and was cheaper than Soul (+19% Soul) — June's open
+              floor question; qwen3.8:27b failed at inc01, not later.
+TYPE:         correction / measurement
+CONSEQUENCE:  Soul's distinctive measured behaviour is real against no
+              instructions and on Sonnet, not yet shown against a good CLAUDE.md
+              on every model. Mind item 8 carries the pooled 10/10 vs 0/5 without
+              saying it was vs a bare note — a Body call to amend. Next test named
+              in the report: the stale-rule probe with the Comparator as opponent.
+              Mind item 2 (generous counts, caught by a fresh reader) fired again.
+STATUS:       Open — Mind item 8 amendment awaits the Body.
+```
