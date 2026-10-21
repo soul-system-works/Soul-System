@@ -82,6 +82,15 @@ your decision. If an older project has plans or review dumps scattered in the ro
 or `docs/`, re-running `/soul-init` lists them and offers to move each group —
 declining changes nothing and it won't ask again.
 
+**Alongside other plugins.** Soul runs alongside skill plugins such as superpowers.
+Where the two disagree on a path — superpowers saves plans to
+`docs/superpowers/plans/` — Soul's `.ai/` rule wins, and the AI says it is
+overriding the other skill's default rather than doing it silently. Measured once,
+on Sonnet, with three sessions per setup: a plan saved with superpowers alone went
+to `docs/superpowers/plans/` every time; with Soul added, every plan went to `.ai/plans/`
+and named the override (witness SOUL-211). Not yet run: other models, other
+plugins, or a path conflict other than plans.
+
 **Handing work to other models (optional).** When a plan has routine steps that a
 command can check — tests, a build — type `/soul-delegate`. Each step then carries
 `Tier:` (who does it) and `Done when:` (the command that proves it). The AI can hand
