@@ -2480,7 +2480,37 @@ RAW:       A new skill, /soul-discuss (or a better name): for when the Body want
 SHAPE:     Raw — Body-captured. Near: /soul-explain (read-only description, its
            `council` lens mode), Pocock's grilling skill, anthropic deep-research,
            the explore-before-execute and plain-description memories.
-STATUS:    Raw — Body-captured.
+DISCUSSED: (2026-10-22, with the Body) The gap: grilling looks inward (clarifies
+           what the Body means); /soul-explain council describes but by design never
+           recommends or researches; nothing looks outward and then weighs. Shape so
+           far, in order:
+           0. Clarify option first — a thin idea gets an offered clarify round
+              (grilling, or short questions incl. why the Body thinks it valuable)
+              before weighing; iterating clarify↔discuss is a recommendation the
+              Body decides. (The Body's point after the I079 trial: the trial
+              weighed the Body's aims without first asking why they matter.)
+           1. Rivals first — incl. do-nothing and rule-instead-of-skill.
+           2. Strongest objection before the pros.
+           3. State a lean and what would change it; under pushback, move only for a
+              new fact or argument, and name it (measurable: flip rate under bare
+              pushback).
+           4. A short cited scan ending "deeper research: worth it / not, because";
+              deep research is a follow-up the Body chooses.
+           5. Closing block (options, objection, sources, lean, deeper-research
+              verdict, next steps) — on the Body's yes, written into the idea's
+              entry so it develops in situ, STATUS Raw → Maturing. General topics
+              with no entry just get the block.
+           Form: a skill, not a contract rule (slim contract; SOUL-214 — wording
+           alone buys little; structure makes agreement visible). /soul-capture
+           stays a pure recorder (the Body: capture records, it does not flesh
+           out). Reminder: /soul-next flags Raw ideas "not discussed yet — discuss
+           first?", reusing the template's Maturing status — used 0 times in ~70
+           entries, so tools set and read it rather than anyone remembering.
+           Open: catching "let's build Ixx" without /soul-next (needs model
+           invocation); overlap with superpowers' brainstorming (not installed
+           here — unknown). Hand trial on I079 the same day — the Body: "pretty
+           good as a first pass".
+STATUS:    Maturing — Body-captured; discussed 2026-10-22, not yet built.
 ```
 
 ```
@@ -2502,7 +2532,27 @@ SHAPE:     Raw — Body-captured. Near: this repo's own `.soul/vault/` +
            cross-project channel); /soul-migrate (the current portability answer);
            the secret guard (leakage); I078 (/soul-discuss — the way to hold this
            discussion).
-STATUS:    Raw — Body-captured.
+DISCUSSED: (2026-10-22, first pass — the I078 hand trial) Core judged apart from
+           the brief's add-ons (transcripts, YAML/wikilinks, orchestrator = I080,
+           benchmark history). Aims vs what exists: portable — /soul-migrate covers
+           one-time moves; clutter — `.git/info/exclude` or a global ignore already
+           hides `.soul/`; kept, leakage, mining — real. Rivals: A do nothing +
+           exclude; B vault + a `.soul` link in each project (git-shed does this,
+           keyed by git remote); C pure vault via `$SOUL_VAULT` (the brief's);
+           D backup-only copy to a private repo. Strongest objection: Soul assumes
+           records inside the project — the gate scopes on witness.md in cwd, the
+           Mind loads by @import — so C meets the recorded failures (the
+           three-month silent gate; out-of-project imports that fail silently and
+           get confabulated, SOUL-F038; decline-once import approval). Unknown: do
+           Windows-side tools (Codex) follow a WSL link; does Claude Code treat an
+           import through a link as external. Caution: Claude Code's own memory is
+           a central store keyed by folder path, which breaks on rename — a vault
+           needs a stable key. Lean: B as a third /soul-init answer; D if links
+           fail. Deeper research: not needed — a one-hour link test answers it.
+           NOT ready to develop — the Body: "i'm not sure my concerns/ideas are
+           fully covered as to why i think it would be valuable". Next: a clarify
+           round on why each aim matters, then the link test.
+STATUS:    Maturing — Body-captured; first discussion 2026-10-22, clarify round next.
 ```
 
 ```
