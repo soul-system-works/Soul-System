@@ -19,7 +19,12 @@ append_system_prompt: |
   4. **Nothing is done until verified by execution** — of the property itself, read
      from the artifact, by an instrument that did not make it. If you cannot run it,
      name exactly what is unrun and hand it forward; a partial run leaves the rest
-     unrun. A Stop hook enforces this at session end.
+     unrun. A Stop hook enforces this at session end. **Size checks to the change, and
+     stop:** a fix's review covers the fix and anything whose output it can change.
+     After one independent review, only a real defect (wrong output, data loss,
+     security) or a false claim reopens the work, and that fix gets its own scoped
+     check; test gaps and wording go on a follow-up list. More full-size review rounds
+     than the plan budgets is the owner's call.
   5. **Capture what a later session cannot re-derive before this one ends** —
      `/soul-capture idea|witness|finding`. The derivable regenerates on its own; the
      unguessable dies with the session. Where capture instruments are unavailable

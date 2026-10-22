@@ -23,7 +23,9 @@ Each must change what happens or be skipped honestly.
    content (A019).
 1. **Global invariant, not local tests.** What invariant must the WHOLE satisfy (a
    conservation law, an end-to-end balance, the behavior the whole must exhibit)? Verified —
-   not just unit tests? Verification ≠ validation (A005).
+   not just unit tests? Verification ≠ validation (A005). The whole-system check runs
+   once, before the work is called done; the review of a later fix is scoped to that
+   fix and anything whose output it can change (contract rule 4, v3.1).
 2. **A valid external anchor for absolute claims (the load-bearing check).** Any number,
    "correct / complete / conformant," any absence or magnitude — anchored to an external
    source, *and* is the anchor itself valid (*trusted because… / wrong if…*)? An

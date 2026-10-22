@@ -31,6 +31,26 @@ Soul's edge: a careful CLAUDE.md did it 5/5, both Soul versions 2/5 (SOUL-214).
   project" — the Body asked for clearer, less jargony replies without wording that
   talks down to the reader (2026-10-21).
 
+**Rule 4's stopping clause (v3.1, 2026-10-22).** Rule 4 said how to verify but never
+when verifying is enough, and every rule that touches review pushed one way. An adopting
+project (MODEL-TEST, upstream note 2026-10-22) measured it: a cleanup PR planned as "one
+implementer, one review" ran 1 build, 4 fix batches and full-size fresh-context reviews
+(4 complete, a 5th still running when the note was written; 0.5–1.9 h each). Round 1
+found the defects the plan targeted; rounds 2 and 3 each found one user-visible defect,
+both introduced by the previous round's fixes; the remaining findings were planted bugs
+no test caught, or wording — each treated as blocking, so each round opened the next.
+This repo's 2.7.0 also ran three rounds, though its rounds found data-loss and secret
+defects that the clause would still reopen for. The owner reports the
+slowdown across all projects since about 2026-10-19 (A027's rule-4 wording); the model
+changed in the same window, so the cause is not isolated. Reviewing corrections stays
+right — rounds 2–3 show fixes do carry defects — what was missing is proportion and a
+stop. The review of the first draft widened two words: "user-visible defect" became "real
+defect (wrong output, data loss, security)", since a latent wrong result nobody has seen
+yet is still a defect; and "what it touches" became "anything whose output it can
+change", since MODEL-TEST's defects surfaced downstream of the fixed lines. **What would
+make it wrong:** within a few PRs under it, a real defect ships that a full-size
+correction review would have caught and the scoped one did not.
+
 ## The v2 wording, kept whole
 
 (Where the text below says "sessions need only this page", it means the contract,
