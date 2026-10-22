@@ -113,7 +113,8 @@ belong to no project (`~/.claude`, `~/.codex`) move by hand.
 
 **Keeping every record in one private place.** A Soul vault is one private git repo
 that holds the record of every project, each in its own folder; the project keeps a
-`.soul` link into it, so nothing else changes. Make the repo (private) and clone it
+`.soul` link into it, so the commands work as before (the next session asks once
+to load files from outside the project — approve it). Make the repo (private) and clone it
 — on WSL, onto a Windows drive — then run
 `python3 <soul-system>/tools/vault.py init <clone> --register` once per machine.
 From then on `/soul-init` offers "in the vault" beside "in git" and "local". A

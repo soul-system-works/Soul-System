@@ -243,6 +243,9 @@ def main():
           "---\nkey: notes\nlabel: private\ncontributes: [research]\n---\n")
     write(os.path.join(vault, "projects", "secret", "project.md"),
           "---\nkey: secret\nlabel: restricted\n---\n")
+    write(os.path.join(vault, "projects", "secret2", "project.md"),
+          "---\nkey: secret2\nlabel: \"Restricted\"\n---\n")
+    write(os.path.join(vault, "projects", "nolabel", "project.md"), "---\nkey: nolabel\n---\n")
     write(os.path.join(target, "witness.md"), "# W\nID:           SOUL-7\nWHEN:         2026-10-22 / x\n")
     r = run(env, "index")
     idx = read(os.path.join(vault, "index.md"))
@@ -251,8 +254,8 @@ def main():
           and "[beta]" in idx and "[delta]" in idx, idx)
     check("index lists a hand-added project with no record",
           "| [notes](projects/notes/project.md) | private | research | no | — |" in idx, idx)
-    check("index never lists a restricted project", "secret" not in idx and "1 restricted left out"
-          in r.stdout, r.stdout)
+    check("index never lists a restricted or unlabelled project", "secret" not in idx
+          and "nolabel" not in idx and "casey" not in idx and "4 left out" in r.stdout, r.stdout)
 
     # 6 — broken link: loud in check and at session start; silent where nothing is linked
     os.rename(target, target + ".gone")

@@ -1,6 +1,7 @@
 # ADR 0001 — The Soul vault: records in one private repo, reached by a `.soul` link
 
-**Status:** accepted 2026-10-22 (the Body), built in v3.4.0. **Source:** SOUL-I079 —
+**Status:** built in v3.4.0 on the Body's go-ahead (2026-10-22: "go ahead with
+steps 1-4", then 5–7); the pilot on one project is pending. **Source:** SOUL-I079 —
 its DISCUSSED, CLARIFIED, ROUND 2–5, LINK TEST and SIMPLIFIED fields hold the full
 discussion; this file holds only the decision and what binds the code.
 
@@ -10,7 +11,7 @@ A Soul record (witness, ideas, Mind, handoff) has lived inside each project, eit
 tracked in git or kept local. The Body works across many projects of different
 sensitivity. They wanted one private, consistent home for every record: kept safe
 through machine changes, out of public repos, and in one place for cross-project
-work. In the Body's words: "capture, portability, and management are all part of
+work. In the Body's words: "capture, protability, and management are all part of
 the issue".
 
 ## Decision
@@ -44,8 +45,9 @@ the issue".
 - **A broken link is reported out loud** (`vault.py check`, the SessionStart line,
   `/soul-resume` step 0). The test confirmed that a broken link hides every store
   while git says nothing.
-- **Copy, compare, link, compare again; only then delete.** Nothing is removed
-  before both hash compares pass.
+- **Copy, compare, link, compare again; only then delete** (from the ROUND 3 plan
+  sketch, not the link test: "copy, verify, then link; never delete first").
+  Nothing is removed before both hash compares pass.
 
 ## Rejected
 
@@ -56,9 +58,18 @@ the issue".
   (SOUL-F038).
 - **Do nothing and hide `.soul/` with an exclude.** That answers clutter, but not
   the Body's main aim: one consistent home.
-- **A backup-only copy.** Two copies, with one always stale.
+- **A backup-only copy.** It kept the record in the project, so it did not give
+  the one home the Body asked for (CLARIFIED); it had been the fallback "if links
+  fail", and the links passed.
 - **Vault levels and read-down access (Bell–LaPadula).** Drafted in ROUND 5, cut
   by SIMPLIFIED. Revisit only if two vaults ever share one machine.
+
+## Private-name lists
+
+Each project's `private-names.txt` travels with its record and is committed to the
+vault (the Body's call, 2026-10-22): it arms the secret guard on the next machine.
+The guard does not flag those lists in a vault. A list can hold names no record
+mentions, such as a work email; those enter the vault's history.
 
 ## Known hazard, kept and reported
 
