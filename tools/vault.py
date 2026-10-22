@@ -10,11 +10,13 @@ this helper; the helper does the mechanical parts.
 
   init <dir> [--name N] [--register]     scaffold a vault (never overwrites); --register
                                          names it in this machine's vault file
-  where                                  the vault this machine's file names
+  where                                  the vault this machine's file names (exit 1:
+                                         none named; 3: named but not there yet)
   link <project> --key K --label L       move the record into the vault and link it,
        [--contributes a,b] [--vault DIR]  or re-link a record the vault already holds
        [--dry-run]                        (a new machine after cloning the vault)
-  check <project> [--json]               linked / broken / not linked; exit 1 if broken
+  check <project> [--json]               linked / broken / two copies / not linked;
+                                         exit 1 if broken or two copies
   session-start                          SessionStart hook: one short line, or nothing
 
 One vault per machine: the machine file ($XDG_CONFIG_HOME or ~/.config, then
@@ -46,7 +48,8 @@ import sys
 LABELS = ("public", "private", "confidential", "restricted")
 ROOT_STORES = ("witness.md", "ideas.md", "mind.md", "upstream.md")
 # Files that may import the Mind; a root-layout move rewrites `@mind.md` in them.
-IMPORTERS = ("CLAUDE.md", os.path.join(".claude", "CLAUDE.md"), "AGENTS.md")
+IMPORTERS = ("CLAUDE.md", os.path.join(".claude", "CLAUDE.md"), "AGENTS.md",
+             "AGENTS.override.md")
 KEY_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*$")
 
 
@@ -90,6 +93,10 @@ The vault counts as kept only once it is pushed.
 GITIGNORE = """# Obsidian per-machine state
 .obsidian/workspace*
 .obsidian/cache
+# Never pushed with the vault: each project's private-name list (it may hold an
+# employer's or client's names) and the runtime event log
+projects/*/soul/private-names.txt
+projects/*/soul/events.jsonl
 """
 
 INDEX_MD = """# Projects
@@ -147,7 +154,7 @@ def _norm_remote(url):
 def _frontmatter(path):
     try:
         text = open(path, encoding="utf-8").read()
-    except OSError:
+    except (OSError, UnicodeError):
         return {}
     m = re.match(r"^---\n(.*?)\n---", text, re.S)
     out = {}
@@ -159,19 +166,36 @@ def _frontmatter(path):
 
 
 def vault_match(project, vault):
-    """The key of the vault project whose remote (else key) matches this project."""
+    """The key of the vault project that is this project: the same remote, or — only
+    when one side has no remote — the same folder name. Two different remotes never
+    match, so a same-named project is never linked to another's record."""
     projects = os.path.join(vault, "projects")
     if not os.path.isdir(projects):
         return None
     remote = _norm_remote(_remote(project))
-    by_key = None
+    by_name = None
     for key in sorted(os.listdir(projects)):
-        fm = _frontmatter(os.path.join(projects, key, "project.md"))
-        if remote and _norm_remote(fm.get("remote")) == remote:
-            return key
-        if key == os.path.basename(project):
-            by_key = key
-    return by_key
+        theirs = _norm_remote(_frontmatter(os.path.join(projects, key, "project.md")).get("remote"))
+        if remote and theirs:
+            if theirs == remote:
+                return key
+        elif key == os.path.basename(project):
+            by_name = key
+    return by_name
+
+
+def _remote_clash(project, home):
+    """The vault project's remote when it is a different repo from this one, else None."""
+    mine = _norm_remote(_remote(project))
+    theirs = _norm_remote(_frontmatter(os.path.join(home, "project.md")).get("remote"))
+    return theirs if mine and theirs and mine != theirs else None
+
+
+def _has_local(project):
+    """A record held in the project itself: a real .soul/ folder or a root store."""
+    soul = os.path.join(project, ".soul")
+    return (os.path.isdir(soul) and not os.path.islink(soul)) or any(
+        os.path.isfile(os.path.join(project, n)) for n in ROOT_STORES)
 
 
 def _tree_hashes(root):
@@ -242,21 +266,29 @@ def _add_exclude(project, line):
     return True
 
 
-def _allow_dir(project, vault):
-    """Merge the vault into .claude/settings.local.json additionalDirectories."""
+def _read_settings(project):
+    """The project's .claude/settings.local.json, or {}; raises on invalid JSON."""
     path = os.path.join(project, ".claude", "settings.local.json")
-    data = {}
-    if os.path.exists(path):
-        try:
-            data = json.load(open(path, encoding="utf-8"))
-        except ValueError as exc:
-            raise VaultError("{} is not valid JSON ({}) — fix it by hand; not overwritten"
-                             .format(path, exc))
-    perms = data.setdefault("permissions", {})
-    dirs = perms.setdefault("additionalDirectories", [])
+    if not os.path.exists(path):
+        return {}
+    try:
+        data = json.load(open(path, encoding="utf-8"))
+    except ValueError as exc:
+        raise VaultError("{} is not valid JSON ({}) — fix it by hand first; nothing "
+                         "changed".format(path, exc))
+    if not isinstance(data, dict):
+        raise VaultError("{} is not a JSON object — fix it by hand first; nothing "
+                         "changed".format(path))
+    return data
+
+
+def _allow_dir(project, vault, data):
+    """Merge the vault into .claude/settings.local.json additionalDirectories."""
+    dirs = data.setdefault("permissions", {}).setdefault("additionalDirectories", [])
     if vault in dirs:
         return False
     dirs.append(vault)
+    path = os.path.join(project, ".claude", "settings.local.json")
     os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=2)
@@ -264,31 +296,38 @@ def _allow_dir(project, vault):
     return True
 
 
+# `@mind.md`, `@./mind.md`, `@../mind.md`, `- @mind.md`, with or without a trailing note.
+MIND_IMPORT = re.compile(r"(?m)^([ \t]*(?:-[ \t]+)?)@((?:\.{1,2}/)*)mind\.md(?=\s|$)")
+
+
 def _move_root_stores(project, soul, dry_run):
-    """Root layout → .soul/: move the stores and repoint `@mind.md` imports."""
+    """Root layout → .soul/: move the stores and repoint `@mind.md` imports.
+    Returns (moved, rewritten files, files that still name mind.md — check by hand)."""
     moved = [n for n in ROOT_STORES if os.path.isfile(os.path.join(project, n))]
     clash = [n for n in moved if os.path.lexists(os.path.join(soul, n))]
     if clash:
         raise VaultError("both {0} and .soul/{0} exist — which is the record is the "
                          "owner's call; nothing moved".format(clash[0]))
-    rewrites = []
+    rewrites, unsure = [], []
     for rel in (IMPORTERS if "mind.md" in moved else ()):
         p = os.path.join(project, rel)
         if not os.path.isfile(p):
             continue
-        text = open(p, encoding="utf-8").read()
-        new = re.sub(r"(?m)^@((?:\.\./)?)mind\.md[ \t]*$", r"@\1.soul/mind.md", text)
+        with open(p, encoding="utf-8", newline="") as f:  # keep CRLF files CRLF
+            text = f.read()
+        new = MIND_IMPORT.sub(r"\1@\2.soul/mind.md", text)
         if new != text:
             rewrites.append((p, new))
-    if dry_run:
-        return moved, [p for p, _ in rewrites]
-    os.makedirs(soul, exist_ok=True)
-    for n in moved:
-        os.rename(os.path.join(project, n), os.path.join(soul, n))
-    for p, new in rewrites:
-        with open(p, "w", encoding="utf-8") as f:
-            f.write(new)
-    return moved, [p for p, _ in rewrites]
+        if re.search(r"(?<!\.soul/)\bmind\.md", new):
+            unsure.append(p)
+    if not dry_run:
+        os.makedirs(soul, exist_ok=True)
+        for n in moved:
+            os.rename(os.path.join(project, n), os.path.join(soul, n))
+        for p, new in rewrites:
+            with open(p, "w", encoding="utf-8", newline="") as f:
+                f.write(new)
+    return moved, [p for p, _ in rewrites], unsure
 
 
 # ---------------------------------------------------------------- link
@@ -311,13 +350,23 @@ def link(project, key, label, contributes=(), vault=None, dry_run=False):
         raise VaultError("{} is not a vault (no vault.md) — clone it or run init".format(vault))
 
     soul = os.path.join(project, ".soul")
+    parked = soul + ".vault-moving"
     home = os.path.join(vault, "projects", key)
     target = os.path.join(home, "soul")
     kind = link_kind(project, vault)
     say = (lambda *a: print("would " + a[0].format(*a[1:]))) if dry_run else \
           (lambda *a: print(a[0].format(*a[1:])))
-    steps = []
 
+    # Every check runs before anything changes, dry run included.
+    settings = _read_settings(project)
+    if os.path.lexists(parked):
+        raise VaultError("{} is left from an interrupted run and holds a copy of the record "
+                         "— compare it with {} and remove one by hand; nothing "
+                         "changed".format(parked, target))
+    clash = _remote_clash(project, home) if os.path.isdir(home) else None
+    if clash:
+        raise VaultError("vault project {!r} belongs to another repo ({}) — choose another "
+                         "key; nothing changed".format(key, clash))
     if os.path.islink(soul):
         current = os.readlink(soul)
         if os.path.realpath(soul) == os.path.realpath(target) and os.path.isdir(target):
@@ -325,15 +374,16 @@ def link(project, key, label, contributes=(), vault=None, dry_run=False):
             mode = "linked"
         elif os.path.exists(soul):
             raise VaultError(".soul already links elsewhere ({}) — not changed".format(current))
+        elif os.path.basename(os.path.dirname(current.rstrip("/"))) != key:
+            raise VaultError(".soul is a broken link to {} — that names a different key than "
+                             "{!r}; nothing changed".format(current, key))
         elif os.path.isdir(target):
             mode = "relink-broken"
         else:
             raise VaultError(".soul is a broken link to {} and the vault has no record for "
                              "{!r} — clone the vault there, or name the right key".format(current, key))
     elif os.path.isdir(target):
-        has_local = os.path.isdir(soul) or any(
-            os.path.isfile(os.path.join(project, n)) for n in ROOT_STORES)
-        if has_local:
+        if _has_local(project):
             raise VaultError("the vault already holds a record for {!r} and this project has "
                              "its own — merging two records is the owner's call; nothing "
                              "changed".format(key))
@@ -342,42 +392,58 @@ def link(project, key, label, contributes=(), vault=None, dry_run=False):
         if os.path.lexists(home) and os.listdir(home) and not os.path.isfile(
                 os.path.join(home, "project.md")):
             raise VaultError("{} exists and is not a vault project folder".format(home))
+        if not _has_local(project):
+            raise VaultError("no record to move (no .soul/ and no root witness.md or "
+                             "ideas.md) — scaffold it first")
         mode = "move"
 
     if mode == "move":
-        if not (os.path.isdir(soul) or any(
-                os.path.isfile(os.path.join(project, n)) for n in ROOT_STORES)):
-            raise VaultError("no record to move (no .soul/ and no root witness.md or "
-                             "ideas.md) — scaffold it first")
-        moved, rewrites = _move_root_stores(project, soul, dry_run)
+        moved, rewrites, unsure = _move_root_stores(project, soul, dry_run)
         for n in moved:
             say("move {} → .soul/{}", n, n)
         for p in rewrites:
             say("repoint the Mind import in {} to .soul/mind.md", os.path.relpath(p, project))
+        for p in unsure:
+            print("CHECK BY HAND: {} still names mind.md in a form not repointed — the Mind "
+                  "will not load until it reads .soul/mind.md".format(os.path.relpath(p, project)))
         say("copy .soul/ → {} and compare every file", target)
         say("replace .soul/ with a {} to it, and compare again through the link", kind)
         if not dry_run:
+            # Before the swap: the parked copy must never be committable.
+            _add_exclude(project, os.path.basename(parked))
             before = _tree_hashes(soul)
-            os.makedirs(home, exist_ok=True)
-            shutil.copytree(soul, target, symlinks=True)
-            if _tree_hashes(target) != before:
-                shutil.rmtree(target)
-                raise VaultError("the copy in the vault did not match — removed it; "
-                                 ".soul/ untouched")
-            parked = soul + ".vault-moving"
-            os.rename(soul, parked)
+            made_home = not os.path.exists(home)
+            try:
+                os.makedirs(home, exist_ok=True)
+                shutil.copytree(soul, target, symlinks=True)
+                if _tree_hashes(target) != before:
+                    raise VaultError("the copy in the vault did not match — removed it; "
+                                     ".soul/ untouched")
+                os.rename(soul, parked)
+            except BaseException:
+                shutil.rmtree(target, ignore_errors=True)
+                if made_home:
+                    shutil.rmtree(home, ignore_errors=True)
+                raise
             try:
                 _make_link(kind, soul, target)
                 if _tree_hashes(soul) != before:
-                    raise VaultError("the record read through the link did not match")
-            except Exception:
+                    raise VaultError("the record read through the link did not match — "
+                                     "rolled back; .soul/ untouched")
+            except BaseException:
                 if os.path.islink(soul):
                     os.unlink(soul)
                 os.rename(parked, soul)
-                shutil.rmtree(target)
+                shutil.rmtree(target, ignore_errors=True)
+                if made_home:
+                    shutil.rmtree(home, ignore_errors=True)
                 raise
-            shutil.rmtree(parked)
-            steps.append("moved {} files".format(len(before)))
+            try:
+                shutil.rmtree(parked)
+            except OSError as exc:
+                print("record MOVED and linked, but the old copy at {} could not be removed "
+                      "({}) — delete it by hand; git ignores it meanwhile".format(parked, exc))
+            print("moved {} files; both compares passed".format(len(before)))
     elif mode in ("relink", "relink-broken"):
         if mode == "relink-broken":
             say("remove the broken .soul link")
@@ -391,11 +457,10 @@ def link(project, key, label, contributes=(), vault=None, dry_run=False):
     if not os.path.exists(pm):
         say("write {}", pm)
         if not dry_run:
-            os.makedirs(home, exist_ok=True)
+            remote = re.sub(r"^([a-z+]+://)[^@/]+@", r"\1", _remote(project) or "")
             with open(pm, "w", encoding="utf-8") as f:
                 f.write("---\nkey: {}\nlabel: {}\ncontributes: [{}]\nremote: {}\nsoul: true\n"
-                        "---\n\n# {}\n".format(key, label, ", ".join(contributes),
-                                               _remote(project) or "", key))
+                        "---\n\n# {}\n".format(key, label, ", ".join(contributes), remote, key))
     elif _frontmatter(pm).get("label") not in (None, label):
         print("note: {} says label {} — kept; edit it there to change it"
               .format(pm, _frontmatter(pm).get("label")))
@@ -407,14 +472,16 @@ def link(project, key, label, contributes=(), vault=None, dry_run=False):
         if _add_exclude(project, ".soul"):
             if _git(project, "check-ignore", "-q", ".claude/settings.local.json") is None:
                 _add_exclude(project, ".claude/settings.local.json")
-        if _allow_dir(project, vault):
+        if _allow_dir(project, vault, settings):
             print("allowed the vault in .claude/settings.local.json (writes through the "
                   "link are refused without it)")
 
     tracked = _git(project, "ls-files", "--", ".soul", *ROOT_STORES)
     if tracked:
-        print("still tracked in git (the owner may `git rm --cached`; history keeps the old "
-              "copies either way):")
+        print("STILL TRACKED in git — until a `git rm --cached` of these is committed, a git "
+              "reset, stash, restore or checkout can put the old committed copy back in place "
+              "of the link, and writes then go to that stale copy (check reports TWO COPIES). "
+              "History keeps the old copies either way:")
         for t in tracked.splitlines():
             print("  " + t)
     print("{}: .soul → {}".format("dry run" if dry_run else "done", target))
@@ -424,30 +491,40 @@ def link(project, key, label, contributes=(), vault=None, dry_run=False):
 # ---------------------------------------------------------------- check / hook
 
 def check(project):
-    """{'state': 'linked'|'broken'|'not-linked', 'target': ..., 'vault_has': key|None}"""
+    """{'state': 'linked'|'broken'|'two-copies'|'not-linked', 'target', 'vault_has'}"""
     project = os.path.realpath(project)
     soul = os.path.join(project, ".soul")
     if os.path.islink(soul):
         target = os.readlink(soul)
         if not os.path.isabs(target):
             target = os.path.normpath(os.path.join(project, target))
-        return {"state": "linked" if os.path.isdir(soul) else "broken", "target": target,
-                "vault_has": None}
+        state = "linked" if os.path.isdir(soul) else "broken"
+        if state == "linked" and any(os.path.isfile(os.path.join(project, n))
+                                     for n in ROOT_STORES):
+            state = "two-copies"  # a reset brought a tracked root-layout record back
+        return {"state": state, "target": target, "vault_has": None}
     out = {"state": "not-linked", "target": None, "vault_has": None}
-    has_local = os.path.isdir(soul) or os.path.isfile(os.path.join(project, "witness.md"))
     vault = registered_vault()
-    if not has_local and vault and is_vault(vault):
+    if vault and is_vault(vault):
         key = vault_match(project, vault)
         if key and os.path.isdir(os.path.join(vault, "projects", key, "soul")):
             out["vault_has"] = key
+            out["target"] = os.path.join(vault, "projects", key, "soul")
+            if _has_local(project):
+                out["state"] = "two-copies"
     return out
 
 
 def check_line(state):
     if state["state"] == "broken":
         return ("Soul vault link BROKEN: .soul → {} is missing, so this project's record "
-                "and completion gate are OFF. Fix: clone the vault there, or re-run "
-                "/soul-init.".format(state["target"]))
+                "(witness, ideas, Mind, handoff) cannot be read or written. Fix: clone the "
+                "vault there, or re-run /soul-init.".format(state["target"]))
+    if state["state"] == "two-copies":
+        return ("Soul record has TWO COPIES: this project holds its own (a .soul/ folder or "
+                "root witness.md/ideas.md) and the vault holds one for it ({}). A git reset, stash or checkout of a still-tracked record "
+                "can replace the link this way. Compare them before writing; which is current "
+                "is the owner's call.".format(state["target"]))
     if state["state"] == "linked":
         return "Soul record lives in the vault: .soul → {}.".format(state["target"])
     if state["vault_has"]:
@@ -508,10 +585,10 @@ def main():
             if not v:
                 print("no vault named ({})".format(machine_file()), file=sys.stderr)
                 return 1
-            if not is_vault(v):
-                print("{} is named in {} but holds no vault.md".format(v, machine_file()),
-                      file=sys.stderr)
-                return 1
+            if not is_vault(v):  # exit 3, not 1: "clone it first", never "no vault"
+                print("{} is named in {} but holds no vault.md — clone the vault there "
+                      "first".format(v, machine_file()), file=sys.stderr)
+                return 3
             print(v)
             return 0
         if args.cmd == "link":
@@ -519,7 +596,7 @@ def main():
             return link(args.project, args.key, args.label, tags, args.vault, args.dry_run)
         st = check(args.project)
         print(json.dumps(st) if args.json else (check_line(st) or "not linked"))
-        return 1 if st["state"] == "broken" else 0
+        return 1 if st["state"] in ("broken", "two-copies") else 0
     except VaultError as exc:
         print("vault: " + str(exc), file=sys.stderr)
         return 2

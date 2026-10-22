@@ -89,16 +89,32 @@ line you have not verified resolves.
 
    **First, does this machine name a Soul vault?** Run
    `python3 <derived-root>/tools/vault.py where`. A vault is one private git repo
-   holding every project's record, each reached by a `.soul` link (SOUL-I079). No
-   vault named (exit 1): skip this paragraph — everything below runs exactly as it
-   did before vaults. A vault named: run `python3 <derived-root>/tools/vault.py
-   check .`. If it says the vault already holds this project's record (a fresh clone
-   or a new machine), offer to re-link it before anything else — `vault.py link .
-   --key <its key> --label <the label in its project.md>` — so step 3b finds the
-   record instead of scaffolding an empty second one. Otherwise the question below
-   gets a third answer: **in the vault** (`<vault path>`) — private, kept in one place
-   with every other project's record, and invisible to this repo's git. It is carried
-   out in step 3f.
+   holding every project's record, each reached by a `.soul` link (SOUL-I079).
+   - **Exit 1, none named:** skip the rest of this paragraph — everything below
+     runs exactly as it did before vaults. (If the owner asks for one: they create
+     the private repo and clone it — on WSL, onto a Windows drive — then run
+     `vault.py init <clone> --register`.)
+   - **Exit 3, named but not there:** stop and tell the owner to clone the vault to
+     that path first. Do not scaffold — on a new machine that makes a second record
+     the vault then refuses.
+   - **A vault named:** run `python3 <derived-root>/tools/vault.py check .` and
+     branch on its line:
+     - *lives in the vault* — skip the tracking question and 3b's `.gitignore`
+       lines; continue at 3b's secret-guard setup.
+     - *BROKEN* — never scaffold, never remove the link. If the vault holds the key
+       the link names, re-link: `vault.py link . --key <that key> --label <the
+       label in its project.md>`. Otherwise tell the owner to clone the vault so
+       the link's target exists.
+     - *TWO COPIES* — stop. Show both; which is current is the owner's call. Do not
+       scaffold or link until they decide.
+     - *the vault holds a record … nothing links to it* (a fresh clone, a new
+       machine) — offer that re-link before anything else, so step 3b finds the
+       record instead of scaffolding an empty second one.
+     - *not linked* — the question below gets a third answer: **in the vault**
+       (`<vault path>`) — private, kept with every other project's record, and
+       invisible to this repo's git. If chosen, ask the **label** at once (the list
+       in step 3f): a *restricted* project never goes in the vault, so say so and
+       ask the two-answer question instead. The move itself is step 3f.
 
    **Is the repo public?** Check before asking — `gh repo view --json
    visibility` when a remote exists and `gh` is available; otherwise ask the Body.
@@ -287,13 +303,15 @@ line you have not verified resolves.
    one home.
 
 3f. **Vault answer only: move the record into the vault.** Last, so the steps
-   above have written everything into the record first. Ask:
+   above have written everything into the record first. The label was asked in
+   step 3, from this list:
    - **Label** — *public* (anyone may read it), *private* (yours), *confidential*
      (someone else's material, e.g. an employer's or client's — before an
      employer-hosted project moves, the owner decides whether a personal vault may
-     hold it), *restricted* (closed or controlled). **Restricted never goes in the
-     vault:** say so, and fall back to step 3's other two answers. The tool refuses
-     it too.
+     hold it), *restricted* (closed or controlled; never in the vault, and the tool
+     refuses it too).
+
+   Ask the rest:
    - **What it contributes to** — free-form tags (e.g. `research, tools`); may be
      empty.
    - **Key** — the project's folder name in the vault; default the repo's name. The
@@ -310,9 +328,21 @@ line you have not verified resolves.
    WSL-made symlink, so the vault must be on a Windows drive too. It adds `.soul` to
    `.git/info/exclude` and the vault to `.claude/settings.local.json`
    `permissions.additionalDirectories`, without which Claude Code refuses writes
-   through the link. All three came from the I079 link test (2026-10-22). If it
-   lists files still tracked in git, offer `git rm --cached` for them and say the
-   old copies stay in history: moving a record is not redaction (mind item 6d).
+   through the link. All three came from the I079 link test (2026-10-22).
+
+   **If it prints STILL TRACKED, recommend `git rm --cached` of those files and a
+   commit, now.** Until then, a git reset, stash, restore or checkout puts the old
+   committed copy back in place of the link, writes go to that stale copy, and the
+   vault falls behind — `check` reports it as TWO COPIES. Say too that the old copies
+   stay in history: moving a record is not redaction (mind item 6d).
+   The vault's own `.gitignore` keeps `private-names.txt` and `events.jsonl` out of
+   the vault repo, so the private-name list does not travel to another machine —
+   say so; the owner re-enters it there.
+
+   **If `link` refuses or fails, the record stayed in the project.** Write 3b's
+   `.gitignore` lines for whichever of step 3's two other answers the owner now
+   picks — a record must never be left neither tracked nor ignored, where one
+   `git add -A` commits it.
 
 4. After creating or confirming the file, report:
    - The absolute path of the `CLAUDE.md` you wrote or found.

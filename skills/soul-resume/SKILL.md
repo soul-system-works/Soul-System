@@ -32,14 +32,17 @@ source of truth; this loads them and continues.
      proceed as if doctrine were loaded. Confabulation is the expected failure —
      a plausible answer that is wrong reads exactly like a correct one, so if you
      are not certain the text is in context, treat that as a NO.
-   - **Vault link?** Only if `.soul` is a link (`test -L .soul`): run
+   - **Vault link?** Only if a vault is in play — `.soul` is a link (`test -L .soul`),
+     or this machine names one (`vault.py where` exits 0): run
      `python3 <root>/tools/vault.py check .` (`<root>` is two levels above this
-     skill's base directory). Exit 1 means the link is broken — say "vault link
-     broken: <target>"; the fix is to clone the vault to that place, or re-run
-     `/soul-init`. A broken link hides every store, so the gate is off and git
-     stays quiet: the I079 link test confirmed both (2026-10-22). Also run it when
-     there is no record at all — it says when the machine's vault already holds
-     this project's record and only the link is missing (a fresh clone).
+     skill's base directory). Exit 1 means a problem — report its one line: BROKEN
+     (the vault folder is missing; fix: clone the vault there, or re-run
+     `/soul-init`) or TWO COPIES (the project and the vault each hold a record — the
+     owner picks which is current). A broken link hides every store and git stays
+     quiet, and the completion gate stays on only if `CLAUDE.md` carries the Soul
+     import (the I079 link test, 2026-10-22). With no record here, it also says when
+     the vault already holds this project's record and only the link is missing (a
+     fresh clone).
    - **Stores found?** Name where they are — project root or `.soul/`. Both are
      valid; a project with neither has never been initialized.
    - **Gate armed?** Check exactly what the hook checks — `_is_soul_project()` in

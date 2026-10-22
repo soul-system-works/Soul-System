@@ -5,13 +5,14 @@ readable through the link with the same bytes; a `restricted` project and a seco
 record for a key the vault already holds are refused with nothing changed; a broken
 link is reported, never silent (it turns the completion gate off and git stays quiet).
 Junctions are not exercised here (the fixtures live on the Linux filesystem); the
-live junction check is the throwaway run under /mnt/d named in SYSTEM-VERSION 3.4.0.
+live junction check is a throwaway run under /mnt/d (recorded with the 3.4.0 release).
 
 Run: python3 tools/test_vault.py  (exit 0 = PASS)
 """
 
 import json
 import os
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -125,7 +126,7 @@ def main():
           and not os.path.exists(os.path.join(b, "witness.md")))
     check("Mind import repointed", "@.soul/mind.md" in read(os.path.join(b, "CLAUDE.md"))
           and "\n@mind.md" not in read(os.path.join(b, "CLAUDE.md")))
-    check("still-tracked record named for the owner", "still tracked" in r.stdout
+    check("still-tracked record named for the owner", "STILL TRACKED" in r.stdout
           and "witness.md" in r.stdout, r.stdout)
 
     # 4 — refusals change nothing
@@ -140,10 +141,43 @@ def main():
           r.stderr)
     write(os.path.join(c, ".claude", "settings.local.json"), "{ not json")
     r = run(env, "link", c, "--key", "gamma", "--label", "private")
-    check("invalid local settings are not overwritten", r.returncode == 2
-          and read(os.path.join(c, ".claude", "settings.local.json")) == "{ not json", r.stderr)
+    check("invalid local settings: refused before anything moves", r.returncode == 2
+          and read(os.path.join(c, ".claude", "settings.local.json")) == "{ not json"
+          and not os.path.islink(os.path.join(c, ".soul"))
+          and not os.path.exists(os.path.join(vault, "projects", "gamma")), r.stderr)
+    os.remove(os.path.join(c, ".claude", "settings.local.json"))
+    os.makedirs(os.path.join(c, ".soul.vault-moving"))
+    r = run(env, "link", c, "--key", "gamma", "--label", "private")
+    check("a leftover parked copy refuses the run", r.returncode == 2
+          and not os.path.islink(os.path.join(c, ".soul")), r.stderr)
+    os.rmdir(os.path.join(c, ".soul.vault-moving"))
     r = run(env, "link", c, "--key", "../x", "--label", "private")
     check("a key with a path in it refused", r.returncode == 2, r.stderr)
+
+    # 4b — a same-named project from another repo is never matched or linked
+    d = project(os.path.join(tmp, "elsewhere"), "alpha", {"README.md": "x\n"},
+                remote="git@example.com:someone/else.git")
+    r = run(env, "check", d, "--json")
+    check("different remote, same name: no match", json.loads(r.stdout)["vault_has"] is None,
+          r.stdout)
+    r = run(env, "link", d, "--key", "alpha", "--label", "private")
+    check("different remote: link refused", r.returncode == 2
+          and not os.path.lexists(os.path.join(d, ".soul")), r.stderr)
+
+    # 4c — root-layout edge cases: CRLF kept, list-form import repointed, odd forms flagged,
+    #      a credential in the remote never reaches the vault
+    e = project(tmp, "delta", {"witness.md": "# W\n", "mind.md": "# M\n",
+                               "AGENTS.md": "x\r\n- @mind.md\r\n",
+                               "CLAUDE.md": "see mind.md for notes\n"},
+                remote="https://me:ghp_SECRET@example.com/me/delta.git")
+    r = run(env, "link", e, "--key", "delta", "--label", "private")
+    agents = open(os.path.join(e, "AGENTS.md"), "rb").read()
+    check("CRLF kept and the list-form import repointed",
+          agents == b"x\r\n- @.soul/mind.md\r\n", repr(agents))
+    check("a mind.md mention not repointed is flagged", "CHECK BY HAND: CLAUDE.md" in r.stdout,
+          r.stdout)
+    check("no credential in project.md",
+          "ghp_SECRET" not in read(os.path.join(vault, "projects", "delta", "project.md")))
 
     # 5 — a new machine: the clone has no record, the vault holds it → found and re-linked
     a2 = project(tmp, "alpha-clone", {"README.md": "x\n"}, remote="https://example.com/me/alpha")
@@ -153,6 +187,36 @@ def main():
     r = run(env, "link", a2, "--key", "alpha", "--label", "private")
     check("relink on a new machine", r.returncode == 0 and "SOUL-2" in read(
           os.path.join(a2, ".soul", "witness.md")), r.stderr + r.stdout)
+
+    # 5b — a git reset of a still-tracked record splits it: check says TWO COPIES
+    git(b, "reset", "-q", "--hard")
+    r = run(env, "check", b)
+    check("reset of a tracked record: TWO COPIES reported", r.returncode == 1
+          and "TWO COPIES" in r.stdout, r.stdout + r.stderr)
+    out = json.loads(run(env, "session-start", stdin=json.dumps({"cwd": b})).stdout or "{}")
+    check("two copies is loud at session start", "TWO COPIES" in out.get("systemMessage", ""))
+
+    g = project(tmp, "epsilon", {".soul/witness.md": "# W\n", "README.md": "x\n"}, commit=True)
+    run(env, "link", g, "--key", "epsilon", "--label", "private")
+    git(g, "reset", "-q", "--hard")
+    r = run(env, "check", g)
+    check("reset of a tracked .soul/: link replaced, TWO COPIES reported", r.returncode == 1
+          and "TWO COPIES" in r.stdout and not os.path.islink(os.path.join(g, ".soul")),
+          r.stdout + r.stderr)
+
+    # 5c — a broken link only re-links to the key its target named
+    f = project(tmp, "one", {"README.md": "x\n"})
+    os.symlink(os.path.join(vault, "projects", "one", "soul"), os.path.join(f, ".soul"))
+    r = run(env, "link", f, "--key", "alpha", "--label", "private")
+    check("broken link re-linked only to its own key", r.returncode == 2
+          and not os.path.exists(os.path.join(f, ".soul")), r.stderr)
+
+    # 5d — a vault named but not cloned is not "no vault"
+    env2 = dict(env, XDG_CONFIG_HOME=os.path.join(tmp, "config2"))
+    write(os.path.join(tmp, "config2", "soul", "vault"), os.path.join(tmp, "not-cloned") + "\n")
+    check("where: named but missing exits 3", run(env2, "where").returncode == 3)
+    check("where: none named exits 1",
+          run(dict(env, XDG_CONFIG_HOME=os.path.join(tmp, "config3")), "where").returncode == 1)
 
     # 6 — broken link: loud in check and at session start; silent where nothing is linked
     os.rename(target, target + ".gone")
@@ -174,6 +238,7 @@ def main():
     r = run(env, "session-start", stdin=json.dumps({"cwd": plain}))
     check("session start silent for a project with no link", r.stdout.strip() == "", r.stdout)
 
+    shutil.rmtree(tmp, ignore_errors=True)
     print("\n{} failure(s)".format(len(FAILS)) if FAILS else "\nALL PASS")
     return 1 if FAILS else 0
 
