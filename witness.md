@@ -9084,5 +9084,5 @@ CONSEQUENCE:  Mind item 2 fired again, this time on a cited benchmark rather tha
               told the Body the same session. v3.3.0 follow-ups: whether the skill
               commits what it writes; wording gaps from review. Unrun: the skill in
               an interactive session, a pushback benchmark, Codex.
-STATUS:       Open — unconfirmed — owner to ratify.
+STATUS:       Open — ratified by the Body 2026-10-22.
 ```
