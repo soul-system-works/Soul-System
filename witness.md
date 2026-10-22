@@ -9086,3 +9086,34 @@ CONSEQUENCE:  Mind item 2 fired again, this time on a cited benchmark rather tha
               an interactive session, a pushback benchmark, Codex.
 STATUS:       Open — ratified by the Body 2026-10-22.
 ```
+
+```
+ID:           SOUL-217
+WHEN:         2026-10-22 / the Body's Claude Code session (Opus 5.5) on WSL,
+              Soul-System repo, plugin 3.3.0 installed, v3.4.0 on its branch
+WHERE:        tools/vault.py, hooks/secret-guard.py, skills/soul-init and
+              soul-resume, docs/adr/0001-soul-vault.md (branch v3.4.0); the
+              Body's private vault repo on a Windows drive; pilot ROSTER-APP
+WHAT:         (1) The Soul vault (I079) built as steps 1–7. One fresh-context
+              review found 13 problems, two scoped checks found 6 more; all fixed
+              with tests. Worst: a git reset of a still-tracked record silently
+              swaps the link for the old committed copy (now reported as TWO
+              COPIES); a bad settings file left a record moved but half-wired; a
+              same-named project could link to another's record; the guard would
+              have told the owner to un-commit the name list the vault keeps.
+              (2) Pilot: ROSTER-APP's record (2 files, tracked in a public repo,
+              with 15 uncommitted witness lines) moved into the vault; both hash
+              compares passed, Windows read it through the junction, the old
+              copies were untracked, gitleaks found nothing, the vault was pushed.
+              A live interactive session in ROSTER-APP captured an idea that
+              landed in the vault and not in the project's git (test entry
+              reverted after).
+              (3) The Body's calls: each project's private-name list is kept in
+              the vault; name warnings on vault commits stay on.
+TYPE:         witness (build + review + pilot)
+CONSEQUENCE:  The vault works end to end on WSL for one real project. Unrun: the
+              3.4.0 SessionStart line and guard vault scope in a live session
+              (not released — the installed plugin is 3.3.0); a new machine
+              re-linking from a clone; Codex through a junction; macOS.
+STATUS:       Open — release of v3.4.0 pending the Body's go.
+```
