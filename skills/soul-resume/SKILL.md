@@ -32,6 +32,14 @@ source of truth; this loads them and continues.
      proceed as if doctrine were loaded. Confabulation is the expected failure —
      a plausible answer that is wrong reads exactly like a correct one, so if you
      are not certain the text is in context, treat that as a NO.
+   - **Vault link?** Only if `.soul` is a link (`test -L .soul`): run
+     `python3 <root>/tools/vault.py check .` (`<root>` is two levels above this
+     skill's base directory). Exit 1 means the link is broken — say "vault link
+     broken: <target>"; the fix is to clone the vault to that place, or re-run
+     `/soul-init`. A broken link hides every store, so the gate is off and git
+     stays quiet: the I079 link test confirmed both (2026-10-22). Also run it when
+     there is no record at all — it says when the machine's vault already holds
+     this project's record and only the link is missing (a fresh clone).
    - **Stores found?** Name where they are — project root or `.soul/`. Both are
      valid; a project with neither has never been initialized.
    - **Gate armed?** Check exactly what the hook checks — `_is_soul_project()` in
@@ -116,4 +124,5 @@ from F061 (the unresolvable pointer is the one most in need of resolution).
 **Amended:** 2026-10-19 (mining pass 2, SOUL-202) — step 0 gains the Mind-loaded
 check; step 2 treats inherited gates/next steps as claims (F067) and lists what
 landed after the cursor; step 3 puts the cursor's `UNCONFIRMED` ids to the Body
-(F065). **Adopted:** 2026-05-21. **Status:** active.
+(F065). **Amended:** 2026-10-22 (v3.4.0, SOUL-I079) — step 0 gains the vault-link
+check. **Adopted:** 2026-05-21. **Status:** active.
