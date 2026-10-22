@@ -2578,7 +2578,28 @@ CLARIFIED: (2026-10-22, the Body's answers to the clarify round — their words 
            cross-project summaries, mining, research notes. Rivals A and D no longer
            fit; B/C remain only as the storage layer. Open: does the /note
            skill's Obsidian vault exist (NOTE_VAULT unset on this machine).
-STATUS:    Maturing — Body-captured; discussed and clarified 2026-10-22; reframed discussion next.
+ROUND 2:   (2026-10-22, the reframed idea) Scan: "one Obsidian vault for all
+           projects, git-synced, Claude Code reads it" is a common community pattern
+           (weardo/brain + Obsidian Git; SuperBrain auto-captures every session;
+           Basic Memory, an MCP knowledge base over markdown, AGPL); Karpathy's LLM
+           wiki (Apr 2026 gist: raw sources → AI-kept wiki pages) fits the research
+           job — one long-run user reports it needs regular upkeep and breaks down
+           when too big for the AI's context. None scanned labels projects by
+           sensitivity — that, and Soul's records (gate, Mind, mining), are what a
+           Soul vault would add. Strongest objection: young, crowded space with an
+           upkeep cost; and one vault holding every project's private material is
+           the highest-value leak target (private repo + secret guard on it).
+           Lean: a thin Soul layer on a plain git-backed Obsidian vault, not a new
+           system — one folder per project under a stable key, a sensitivity label
+           property, Soul records reached by links (rival B) so gate and Mind keep
+           working, and a generated index of all projects (cf. `.soul/vault-gen.py`).
+           Research and daily summaries parked as follow-ups (borrow the LLM-wiki
+           pattern then). Would change it: links fail the test (→ C, risks
+           handled); automatic session capture becomes the main want (→ evaluate
+           SuperBrain). Deeper research: not now. Side: the /note skill's vault
+           (pre-Soul prototype, unused) — the Body wants it deleted; may hold
+           something worth keeping.
+STATUS:    Maturing — Body-captured; discussed, clarified, round 2 done 2026-10-22; Body's verdict next.
 ```
 
 ```
