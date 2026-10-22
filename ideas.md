@@ -2510,7 +2510,23 @@ DISCUSSED: (2026-10-22, with the Body) The gap: grilling looks inward (clarifies
            invocation); overlap with superpowers' brainstorming (not installed
            here — unknown). Hand trial on I079 the same day — the Body: "pretty
            good as a first pass".
-STATUS:    Maturing — Body-captured; discussed 2026-10-22, not yet built.
+TRIAL:     (2026-10-22, I079 by hand, five rounds) What the trial added to the shape:
+           - It is a loop, not one pass: clarify → weigh → the Body corrects →
+             weigh again. Each round goes into the entry as its own field (ROUND
+             n) so the idea develops in situ.
+           - After a clarify round, state the reframe — marked as the AI's reading
+             — when the answers change the question (I079 went from "where do
+             Soul records live" to "one private home for knowledge"); earlier
+             rivals may fall away.
+           - When the Body asks "describe by example", give the concrete picture
+             (a folder tree, a sample file, a day in use) — an abstract lean was
+             not enough to judge.
+           - A "what are we missing?" pass belongs before any build plan.
+           - Held lean, observed: the AI moved twice, each time for a named new
+             argument (capture's job; one vault per security boundary).
+           - Facts first: look up what can be looked up (project layouts, the
+             /note vault) before asking.
+STATUS:    Maturing — Body-captured; discussed and hand-trialled 2026-10-22, not yet built.
 ```
 
 ```
@@ -2617,7 +2633,37 @@ ROUND 3:   (2026-10-22) The Body confirmed the thin-layer picture (vault =
            label set. Plan sketch: link test → labels → /soul-init vault option
            (copy, verify, then link; never delete first) → one low-stakes project
            → the rest, dry run first.
-STATUS:    Maturing — Body-captured; three rounds 2026-10-22; link test next.
+ROUND 4:   (2026-10-22) Memory folder: not touched — the Body's lean, agreed
+           (harness-owned, Claude-only, path-keyed; /soul-migrate carries it; what
+           matters belongs in the record). Labels (from TLP 2.0 and Purview's
+           example set, plain names, each tied to a rule): public / private /
+           confidential (someone else's — mining takes nothing automatically) /
+           restricted. The Body's refinement: one vault per security boundary, not
+           "restricted stays out of the vault" — a closed or isolated system gets
+           its own vault; each vault declares the labels it accepts and /soul-init
+           offers only a vault that fits; mining stays inside each boundary;
+           public projects default to the vault too, "in the repo" is the opt-out
+           (Soul-System). Restricted projects never appear in the personal vault's
+           index — the Body: "if i ever point an ai to them it would be me manually
+           doing something, overwriting rules." Clean-up of AI-era files → I081.
+LINK TEST: (2026-10-22, throwaway projects under /mnt/d, Claude Code 2.1.308,
+           removed after) Gate scoping through a link: works (WSL symlink and
+           Windows junction). Broken link: gate silently off and git silent too —
+           confirmed; the wiring check must name it. `.git/info/exclude` hides the
+           link: works. Windows tools (cmd, PowerShell) cannot follow a
+           WSL-made symlink, absolute or relative ("The file cannot be accessed by
+           the system"); a Windows junction (`mklink /J`) works from both sides —
+           so the vault must sit on an NTFS drive (an ext4 vault is unreachable
+           from Windows) and the link must be a junction. Mind @import through
+           the link: NOT loaded headless (control project loaded it) — Claude
+           Code treats it as an outside import; loaded once the project's
+           outside-imports approval was set. Writes through the link: refused
+           ("outside the allowed working directories") until the vault was listed
+           in `.claude/settings.local.json` `permissions.additionalDirectories`;
+           that alone does not load the Mind. So /soul-init needs: junction, allowed
+           dir, and the import approval (or load the Mind by a SessionStart hook
+           instead — untested). Unrun: Codex itself; macOS.
+STATUS:    Maturing — Body-captured; four rounds + link test 2026-10-22; design choices next.
 ```
 
 ```
@@ -2638,5 +2684,23 @@ SOURCE:    (2026-10-22) The discussion is published as the Body's guide
            runtime: repositories and interfaces, proposed workflow experience,
            handoff and design decisions; ~3,600 words; untested proposals by the
            guide's own statement). The context reminder above is resolved.
+STATUS:    Raw — Body-captured.
+```
+
+```
+ID:        SOUL-I081
+WHEN:      2026-10-22
+RAW:       An optional clean-up step in /soul-init: many projects carry AI-era
+           development history (plans, briefs, handoffs, scratch, old specs) mixed
+           in with what normally belongs with code (git history, code docs, README,
+           standard project files). The Body likely wants help moving the first kind
+           out "to help clean up these projects from their development history vs
+           what is actually needed along with the code".
+SHAPE:     Raw — Body-captured (from the I079 discussion). Sketch: group candidate
+           files; suggest a home per group — stays / vault (`projects/<key>/dev/`) /
+           delete; the Body confirms each group; copy and verify before removing.
+           Limits: ADRs and docs that explain the code stay with it (contract rule
+           1); git history keeps the old copies (mind 6d — moving is not
+           redaction). Depends on I079's vault; buildable separately.
 STATUS:    Raw — Body-captured.
 ```
