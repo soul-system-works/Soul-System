@@ -61,9 +61,10 @@ across sessions; this reconciles it with reality and emits a tiered next-options
    say so and point at `/soul-stage`; do not run it. No block, no line.
    Each item **points at its durable source** (idea ID, finding ID, spec) — do not copy the
    content in.
-   An idea listed under Now or Next whose `STATUS` is still `Raw` gets
-   ` — not discussed yet; /soul-discuss first?` appended. Raw means no one has
-   contested it; Maturing means it has been discussed (SOUL-I078).
+   An idea listed under Now or Next whose `STATUS` is `Raw`, or that has no
+   `STATUS:` line (ideas captured by `/soul-capture` have none), gets
+   ` — not discussed yet; /soul-discuss first?` appended. `/soul-discuss` sets
+   `STATUS: Maturing` when a discussion is kept (SOUL-I078).
 
 4. **Tag by value/effort** where it helps. Keep it skimmable.
 

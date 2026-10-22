@@ -1,6 +1,6 @@
 ---
 name: soul-discuss
-description: Explore an idea or topic with the Body as a knowledgeable coworker, not a yes-man — offer a clarify round when the idea is thin, set rivals beside it, give the strongest objection before the pros, scan a few cited sources, hold a stated lean unless a new fact or argument arrives, and close each round with a block the idea's entry can keep. Use when the Body wants to explore, weigh or develop an idea (an ideas.md entry or a general topic); propose it, and run it on the Body's yes, when the Body moves to build an idea still marked Raw.
+description: Explore an idea or topic with the Body as a knowledgeable coworker, not a yes-man — offer a clarify round when the idea is thin, set rivals beside it, give the strongest objection before the pros, scan a few cited sources, hold a stated lean unless a new fact or argument arrives, and close each round with a block the idea's entry can keep. Run it when the Body asks for it, on an idea entry or a general topic. Otherwise only propose it, and run it on the Body's yes: when the Body brings a new idea to explore, or moves to build an idea that has not been discussed.
 ---
 
 # /soul-discuss — contest the idea so it can mature
@@ -15,13 +15,15 @@ validated. The nearby tools leave that gap: grilling looks inward (what does the
 Body mean?), `/soul-explain council` describes from several angles but never
 recommends or researches. This looks outward, then weighs (SOUL-I078).
 
-Telling a model "don't be a sycophant" is the weakest lever: a careful file matched
-Soul on asking first (SOUL-214), so wording alone buys little. The steps below are
-structure that makes agreement visible and costly instead.
+The skill does not rely on being told to be honest. Its steps make agreement
+visible and costly instead: rivals on the table, the objection first, a lean that
+must name its reason to move.
 
 ## What to do
 
-1. **Find the target.** An idea ID → read its entry, including any earlier
+1. **Find the target.** An idea ID → read its entry in **this project's** ideas
+   store (`.soul/ideas.md` or `ideas.md` at the root — detect, never assume; never
+   the copy shipped inside the Soul plugin, as `/soul-capture` warns), including any earlier
    `DISCUSSED:` / `ROUND n:` fields, so this round builds on the last. A general
    topic → no entry needed. Look up every fact you can (the record, the code, files,
    what is installed) before asking the Body anything.
@@ -30,7 +32,7 @@ structure that makes agreement visible and costly instead.
    or what it would change are unstated. A few numbered questions, each with your
    guess so "yes" is cheap; always ask why the Body thinks it is valuable. The Body
    may skip it. An idea that needs a full design-tree interview → suggest grilling
-   instead. (Hand trial, 2026-10-22: the first round weighed the Body's aims before
+   instead (e.g. Pocock's `grilling` skill, if installed). (Hand trial, 2026-10-22: the first round weighed the Body's aims before
    asking why they mattered, and the Body caught it.)
 
 3. **Reframe out loud when the answers change the question.** Say it is your
@@ -60,11 +62,14 @@ structure that makes agreement visible and costly instead.
    undone.
 
 8. **Close each round with a block:** options weighed · strongest objection ·
-   sources · lean · deeper research (worth it / not) · next step. On the Body's yes,
-   write it into the idea's entry — `DISCUSSED:` the first time, `ROUND n:` after —
-   and move `STATUS` from Raw to Maturing (Maturing means being developed, not
-   ready to build). A topic with no entry gets the block only; offer
-   `/soul-capture idea` if it should be kept.
+   sources · lean · deeper research (worth it / not) · next step — plus, after a
+   clarify round, the Body's answers in their own words. The reply still ends with
+   the contract's bottom line; the block sits above it. On the Body's yes, write
+   the block into the idea's entry — `DISCUSSED:` for round 1, `ROUND 2:`,
+   `ROUND 3:` … after — and set `STATUS: Maturing` (being developed, not ready to
+   build); add the `STATUS:` line if the entry has none. An entry with no
+   `STATUS:` line, or `Raw`, has not been discussed. A topic with no entry gets
+   the block only; offer `/soul-capture idea` if it should be kept.
 
 The loop is clarify → weigh → the Body corrects → weigh again. Recommend another
 round when it would help; whether to take it is the Body's call.

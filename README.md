@@ -50,8 +50,8 @@ broken, what must be kept), and scaffolds the project's record files. Optional,
 any time: `/soul-delegate` lets a plan's routine steps go to another model (a
 local model, Codex, a smaller Claude) while the AI re-runs every step's check
 itself. Exploring an idea before building it: `/soul-discuss` contests it — rivals,
-the strongest objection, a short cited scan. Moving computers: `/soul-migrate` packs what git does not carry into one
-zip, and `/soul-migrate receive` restores and checks it on the other side.
+the strongest objection, a short cited scan. Moving computers: `/soul-migrate`
+packs what git does not carry into one zip, and `/soul-migrate receive` restores and checks it on the other side.
 
 **What happens after install — who does what, and when:**
 [`docs/using-the-soul.md`](docs/using-the-soul.md), one page.

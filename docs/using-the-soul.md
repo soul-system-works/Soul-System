@@ -51,8 +51,8 @@ That's the install. There is no new workflow to learn — start working.
   end one with `/soul-handoff` (leaves the cursor for the next). Ask "what's
   next?" with `/soul-next`.
 - Explore an idea before building it: `/soul-discuss` — the AI sets rivals beside
-  it, gives the strongest objection first, scans a few sources, and keeps the
-  result in the idea's entry. `/soul-next` reminds you when an idea is still
+  it, gives the strongest objection first, scans a few sources, and, on your
+  yes, keeps the result in the idea's entry. `/soul-next` reminds you when an idea is still
   undiscussed.
 - Capture directly when you want to: `/soul-capture idea` (a forward thought,
   near-zero ceremony) · `/soul-capture witness` (something that happened) ·
