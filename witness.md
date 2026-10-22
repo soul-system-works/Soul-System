@@ -9055,3 +9055,34 @@ CONSEQUENCE:  The guard's names check works end to end on Linux in a live sessio
               an update works. Still unrun: macOS, Git for Windows, Codex.
 STATUS:       Closed.
 ```
+
+```
+ID:           SOUL-216
+WHEN:         2026-10-22 / the Body's Claude Code session (Opus 5.5) on WSL,
+              Soul-System repo, plugin 3.1.0 installed, v3.3.0 built and pushed
+WHERE:        skills/soul-discuss/SKILL.md (new, v3.3.0); ideas.md I078, I079, I081
+WHAT:         (1) I078 was shaped by discussion, then trialled by hand on I079 over
+              several rounds before any skill was written; the Body judged the steps
+              "pretty good as a first pass" and added the clarify-first step after
+              the trial weighed their aims without asking why they mattered.
+              (2) A false count about Soul's own results travelled three surfaces:
+              the session told the Body "a careful file matched Soul on asking
+              first" (SOUL-214 records careful 5/5, Soul 2/5), wrote it into I078,
+              and into the skill; fresh-context review of v3.3.0 caught it; corrected
+              in the skill and in I078 before release. The same review caught a
+              status write that would have overwritten Built/Graduated pointers.
+              (3) Harness facts measured for I079 (details in its LINK TEST field):
+              Windows cannot follow WSL-made symlinks, a junction works; an @import
+              through a link is treated as an outside import; writes through it need
+              the vault as an allowed folder; SessionStart hook output reaches the
+              session only as a ~2KB preview.
+              (4) `git push origin v3.3.0` failed — a branch and a tag share the
+              name; pushed as refs/tags/v3.3.0.
+TYPE:         witness (release + calibration instance + harness measurement)
+CONSEQUENCE:  Mind item 2 fired again, this time on a cited benchmark rather than a
+              count, and it reached the Body in chat before review — a correction
+              told the Body the same session. v3.3.0 follow-ups: whether the skill
+              commits what it writes; wording gaps from review. Unrun: the skill in
+              an interactive session, a pushback benchmark, Codex.
+STATUS:       Open — unconfirmed — owner to ratify.
+```
