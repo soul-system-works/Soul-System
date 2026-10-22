@@ -9032,3 +9032,26 @@ CONSEQUENCE:  v3.0 ships. Soul's "hands the owner the decision" is NOT an edge o
 STATUS:       Open — mind item 8 to be re-distilled; campaign REPORT and blog to be
               corrected.
 ```
+
+```
+ID:           SOUL-215
+WHEN:         2026-10-22 / the Body's own Claude Code session on Linux (WSL), plugin
+              3.1.0, Soul-System repo
+WHERE:        hooks/secret-guard.py (v2.10.0) — first sightings outside a test
+WHAT:         Two firings in real use. (1) Just after the plugin update 3.0.0 →
+              3.1.0, a PreToolUse event reported "its git hook folder was missing —
+              reinstalled (…/plugins/data/soul-system-soul-system/soul-guard-hooks-
+              05df00be). Do not edit it; run hook installers outside an AI session."
+              Why the folder was missing is not established. (2) On `git commit` of
+              ideas I078–I080, a warning, not a block: "private names in what this
+              git commit sends from Soul-System, a PUBLIC repo: NAME-MAP REF-19 entry
+              in file ideas.md → suggest its token REF-19 or codename". The name was
+              real (I079 named the Body's notes tool); the commit was amended to the
+              codename before push, and the pushed history carries no instance.
+TYPE:         witness (instrument fired in vivo)
+CONSEQUENCE:  The guard's names check works end to end on Linux in a live session,
+              and it caught a leak this session's own pre-push scan would also have
+              caught — but it caught it at commit time, earlier. Self-reinstall after
+              an update works. Still unrun: macOS, Git for Windows, Codex.
+STATUS:       Closed.
+```
