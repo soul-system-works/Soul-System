@@ -2663,6 +2663,13 @@ LINK TEST: (2026-10-22, throwaway projects under /mnt/d, Claude Code 2.1.308,
            that alone does not load the Mind. So /soul-init needs: junction, allowed
            dir, and the import approval (or load the Mind by a SessionStart hook
            instead — untested). Unrun: Codex itself; macOS.
+           Hook follow-up (same day): a SessionStart hook's output reaches the
+           session only as a ~2KB preview (plain stdout and the JSON
+           additionalContext alike; the rest is saved to a file) — the 8KB Mind
+           does not fit, so the hook cannot carry the Mind. Lean moved to: keep
+           the @import, the Body approves outside imports once per project (the
+           first-session dialog), /soul-resume's Mind check catches a decline, and
+           a short hook line (under the cap) says the records live in the vault.
 STATUS:    Maturing — Body-captured; four rounds + link test 2026-10-22; design choices next.
 ```
 
