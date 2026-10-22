@@ -66,8 +66,9 @@ must name its reason to move.
    clarify round, the Body's answers in their own words. The reply still ends with
    the contract's bottom line; the block sits above it. On the Body's yes, write
    the block into the idea's entry — `DISCUSSED:` for round 1, `ROUND 2:`,
-   `ROUND 3:` … after — and set `STATUS: Maturing` (being developed, not ready to
-   build); add the `STATUS:` line if the entry has none. An entry with no
+   `ROUND 3:` … after. If its `STATUS` is `Raw` or missing, set `STATUS: Maturing`
+   (being developed, not ready to build); any other `STATUS` (Built, Graduated,
+   Parked …) stays as it is. An entry with no
    `STATUS:` line, or `Raw`, has not been discussed. A topic with no entry gets
    the block only; offer `/soul-capture idea` if it should be kept.
 
