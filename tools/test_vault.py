@@ -145,6 +145,10 @@ def main():
           and read(os.path.join(c, ".claude", "settings.local.json")) == "{ not json"
           and not os.path.islink(os.path.join(c, ".soul"))
           and not os.path.exists(os.path.join(vault, "projects", "gamma")), r.stderr)
+    write(os.path.join(c, ".claude", "settings.local.json"), '{"permissions": []}')
+    r = run(env, "link", c, "--key", "gamma", "--label", "private")
+    check("misshaped local settings: refused before anything moves", r.returncode == 2
+          and not os.path.islink(os.path.join(c, ".soul")), r.stderr)
     os.remove(os.path.join(c, ".claude", "settings.local.json"))
     os.makedirs(os.path.join(c, ".soul.vault-moving"))
     r = run(env, "link", c, "--key", "gamma", "--label", "private")
@@ -163,6 +167,21 @@ def main():
     r = run(env, "link", d, "--key", "alpha", "--label", "private")
     check("different remote: link refused", r.returncode == 2
           and not os.path.lexists(os.path.join(d, ".soul")), r.stderr)
+
+    h = project(os.path.join(tmp, "nr1"), "site", {".soul/witness.md": "# A\n"})
+    run(env, "link", h, "--key", "site", "--label", "private")
+    h2 = project(os.path.join(tmp, "nr2"), "site", {".soul/witness.md": "# B\n"},
+                 remote="git@github.com:me/site.git")
+    r = run(env, "check", h2)
+    check("no remote in the vault, a remote here: no TWO COPIES alarm", r.returncode == 0
+          and "TWO COPIES" not in r.stdout, r.stdout)
+    h3 = project(tmp, "alpha-case", {"README.md": "x\n"}, remote="git@github.com:Me/Alpha.git")
+    write(os.path.join(vault, "projects", "casey", "project.md"),
+          "---\nkey: casey\nremote: https://github.com/me/alpha\n---\n")
+    os.makedirs(os.path.join(vault, "projects", "casey", "soul"))
+    r = run(env, "check", h3, "--json")
+    check("github remotes match regardless of letter case",
+          json.loads(r.stdout)["vault_has"] == "casey", r.stdout)
 
     # 4c — root-layout edge cases: CRLF kept, list-form import repointed, odd forms flagged,
     #      a credential in the remote never reaches the vault

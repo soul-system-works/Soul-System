@@ -50,6 +50,7 @@ ROOT_STORES = ("witness.md", "ideas.md", "mind.md", "upstream.md")
 # Files that may import the Mind; a root-layout move rewrites `@mind.md` in them.
 IMPORTERS = ("CLAUDE.md", os.path.join(".claude", "CLAUDE.md"), "AGENTS.md",
              "AGENTS.override.md")
+CASELESS_HOSTS = ("github.com", "gitlab.com", "bitbucket.org")
 KEY_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*$")
 
 
@@ -148,7 +149,12 @@ def _norm_remote(url):
     url = (url or "").strip().rstrip("/")
     url = url[:-4] if url.endswith(".git") else url
     m = re.match(r"^(?:[a-z+]+://)?(?:[^@/]+@)?([^/:]+)[:/](.+)$", url)
-    return (m.group(1).lower() + "/" + m.group(2)) if m else url
+    if not m:
+        return url
+    host, path = m.group(1).lower(), m.group(2)
+    if host in CASELESS_HOSTS:  # Me/Alpha and me/alpha are one repo there
+        path = path.lower()
+    return host + "/" + path
 
 
 def _frontmatter(path):
@@ -167,8 +173,8 @@ def _frontmatter(path):
 
 def vault_match(project, vault):
     """The key of the vault project that is this project: the same remote, or — only
-    when one side has no remote — the same folder name. Two different remotes never
-    match, so a same-named project is never linked to another's record."""
+    when NEITHER side has a remote — the same folder name. A remote on one side only
+    never matches, so a same-named project never reads as another's record."""
     projects = os.path.join(vault, "projects")
     if not os.path.isdir(projects):
         return None
@@ -176,7 +182,7 @@ def vault_match(project, vault):
     by_name = None
     for key in sorted(os.listdir(projects)):
         theirs = _norm_remote(_frontmatter(os.path.join(projects, key, "project.md")).get("remote"))
-        if remote and theirs:
+        if remote or theirs:
             if theirs == remote:
                 return key
         elif key == os.path.basename(project):
@@ -276,9 +282,12 @@ def _read_settings(project):
     except ValueError as exc:
         raise VaultError("{} is not valid JSON ({}) — fix it by hand first; nothing "
                          "changed".format(path, exc))
-    if not isinstance(data, dict):
-        raise VaultError("{} is not a JSON object — fix it by hand first; nothing "
-                         "changed".format(path))
+    perms = data.get("permissions", {}) if isinstance(data, dict) else None
+    if not isinstance(perms, dict) or not isinstance(
+            perms.get("additionalDirectories", []), list):
+        raise VaultError("{} is not shaped as Claude Code settings (an object, with "
+                         "permissions an object and additionalDirectories a list) — fix it "
+                         "by hand first; nothing changed".format(path))
     return data
 
 

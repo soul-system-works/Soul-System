@@ -339,7 +339,9 @@ line you have not verified resolves.
    the vault repo, so the private-name list does not travel to another machine —
    say so; the owner re-enters it there.
 
-   **If `link` refuses or fails, the record stayed in the project.** Write 3b's
+   **If `link` refuses (exit 2, "nothing changed"), the record stayed in the
+   project.** (Any other failure: run `vault.py check .` and report what it says
+   before going on.) Write 3b's
    `.gitignore` lines for whichever of step 3's two other answers the owner now
    picks — a record must never be left neither tracked nor ignored, where one
    `git add -A` commits it.
