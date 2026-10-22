@@ -2670,7 +2670,22 @@ LINK TEST: (2026-10-22, throwaway projects under /mnt/d, Claude Code 2.1.308,
            the @import, the Body approves outside imports once per project (the
            first-session dialog), /soul-resume's Mind check catches a decline, and
            a short hook line (under the cap) says the records live in the vault.
-STATUS:    Maturing — Body-captured; four rounds + link test 2026-10-22; design choices next.
+ROUND 5:   (2026-10-22) Plan written (`.ai/plans/2026-10-22-soul-vault-v1.md`):
+           machine file listing vaults; the Body creates the vault repo — on
+           GitLab for now; pilot = a small public personal project, then a clone
+           on the new computer. The Body's question: should sensitivity be
+           separate vaults where "the more secure ones can have access to the
+           more open ones potentially but not the other way around"? This is the
+           Bell–LaPadula multilevel-security model (1973): no read up, no write
+           down. Fit: labels become an ordered scale; a vault accepts every label
+           at or below its level; a session may read vaults below its own level
+           but never write into them (leaks run downward); lessons move down only
+           by the Body's hand. Caveat: personal vs employer material is a
+           different owner, not just a higher level (the model's "categories").
+           Lean: record the level in `vault.md` now; enforce no-link-below and
+           no-write-down in v1; read-down access later (Claude Code: allowed
+           folder + deny-edit rules — untested).
+STATUS:    Maturing — Body-captured; five rounds + link test 2026-10-22; plan drafted.
 ```
 
 ```
