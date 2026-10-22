@@ -1,6 +1,6 @@
 {
   "name": "soul-system",
-  "version": "3.1.0",
+  "version": "3.2.0",
   "description": "The Soul System — a living philosophy and operational framework for principled human–AI collaborative work. Ships the /soul-* commands, the pre-completion verification hook, and an experimental secret guard on git commit/push (credentials block, private names warn; needs gitleaks and git 2.31+); run /soul-init to wire the project contract (operations/CLAUDE.md) into your project via @import.",
   "author": {
     "name": "Scott Greenwood"
