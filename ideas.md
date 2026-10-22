@@ -2599,7 +2599,25 @@ ROUND 2:   (2026-10-22, the reframed idea) Scan: "one Obsidian vault for all
            SuperBrain). Deeper research: not now. Side: the /note skill's vault
            (pre-Soul prototype, unused) — the Body wants it deleted; may hold
            something worth keeping.
-STATUS:    Maturing — Body-captured; discussed, clarified, round 2 done 2026-10-22; Body's verdict next.
+ROUND 3:   (2026-10-22) The Body confirmed the thin-layer picture (vault =
+           private git repo of Obsidian folders, one per project with a labelled
+           project.md; the project's `.soul` becomes a link into it, hidden by
+           `.git/info/exclude`; generated index.md) and plans to move all projects
+           to it, keeping the local/in-git options. Handoff goes with `.soul/`;
+           `.ai/` stays local. Concerns raised: (1) a missing or broken link
+           silently turns the gate off — /soul-resume's wiring check must name it;
+           (2) two machines can mint the same sequential ID and conflict on merge —
+           pull before work; (3) the sandbox/permissions may block writes that
+           resolve outside the project — part of the link test; (4) 14 of 15
+           projects found (top level of /mnt/d/Projects) track their record in
+           git, 9 in the root layout — moving out does not erase history; (5)
+           Soul-System's own record is part of the public product and likely
+           stays; (6) Claude's per-project memory folder — vault or not, open;
+           (7) the vault must be pushed to count as kept; (8) the name map and
+           label set. Plan sketch: link test → labels → /soul-init vault option
+           (copy, verify, then link; never delete first) → one low-stakes project
+           → the rest, dry run first.
+STATUS:    Maturing — Body-captured; three rounds 2026-10-22; link test next.
 ```
 
 ```
