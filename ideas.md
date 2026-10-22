@@ -2696,9 +2696,9 @@ SIMPLIFIED: (2026-10-22) The Body: "i don't want an overengineered system". v1 =
            lists and read-down access: later, only if two vaults ever share a
            machine. Kept: everything the link test proved necessary. Release
            order: /soul-discuss 3.3.0, vault 3.4.0.
-STATUS:    Maturing — Body-captured; five rounds + link test 2026-10-22; built on branch
-           v3.4.0 (steps 1–7, docs/adr/0001-soul-vault.md) on the Body's go-ahead; the
-           Body kept private-name lists in the vault and name warnings on. Pilot pending.
+STATUS:    Built — v3.4.0 (2026-10-22; docs/adr/0001-soul-vault.md); piloted on one
+           project (SOUL-217). The Body kept private-name lists in the vault and name
+           warnings on. Next: a new machine re-linking from a clone; more projects.
 ```
 
 ```
