@@ -18,7 +18,9 @@ book (`philosophy/the-soul.md`); everything else regenerates from the record.
    projects" (one depth-2 sweep), 18/47 misfiled (12/47), F070's four instances
    reaching the owner (two) — and fresh-context review, not the author, caught each.
    Before writing a count or "verified" about work just done, name its scope and
-   re-check it at the source; then have a fresh-context reviewer read it.
+   re-check it at the source; then have a fresh-context reviewer read it. It fired
+   three more times on 2026-10-21 alone — probe arms named "Comparator", the asking
+   standard, "31 sessions" for 66 — each caught at the source (SOUL-213/214).
 
 3. **Measurement under `claude -p`** (SOUL-F038, SOUL-190): `@`-imports from outside
    the project do not reliably load, and a session confabulates the missing content
@@ -79,14 +81,18 @@ book (`philosophy/the-soul.md`); everything else regenerates from the record.
    Soul-System in its own control arm). Method: `tools/gate-cost-measure.py`.
 
 8. **What Soul measurably does on current models — design tests on that.** Chain
-   quality ties at ceiling (June; again 2026-10-21, 11/11 at every planted cell).
-   The measured differences are cost (S cheaper on every multi-step chain, dearer on
-   single sessions) and handing the owner the call (a stale rule: 10/10 vs 0/5;
-   chain R inc07: 5/5 vs 2/6) — not noticing, which every arm did (SOUL-210/211).
-   Any grade that favours an arm gets a second blind scorer before it is reported:
-   both 2026-10-21 false-done flags dissolved on the second read. Headless plugin
-   arms measure "installed", not "used", unless the prompt names the practice; then
-   the skills fired 12/12, and Pocock's `tdd` stops for the owner (SOUL-211).
+   quality ties at ceiling, the five-minute floor file included (June; 2026-10-21,
+   11/11 at every planted cell; v3 2/2). Measured differences: cost — Soul is cheaper
+   than the long Comparator on every multi-step chain, but the floor is cheaper than
+   Soul, and Soul is dearer on single sessions (SOUL-213/214); and handing the owner
+   the call only at chain R's judgment step on Sonnet (3/3 vs 0/4). On the stale-rule
+   quiz, scored to one standard, a careful CLAUDE.md asked first 5/5 and Soul 2/5 (v2
+   and v3) — this is NOT Soul's edge; the earlier "10/10 vs 0/5" was looser scoring
+   against a bare note (SOUL-214). Any grade that favours an arm gets a second blind
+   scorer before it is reported: both 2026-10-21 false-done flags dissolved on the
+   second read. Headless plugin arms measure "installed", not "used", unless the
+   prompt names the practice; then the skills fired 12/12, and Pocock's `tdd` stops
+   for the owner (SOUL-211).
 
 9. **A probe that runs git here can damage this repo.** During the secret-guard
    reviews a probe's `cd` failed and it ran in Soul-System: it committed a file `y`
@@ -95,9 +101,16 @@ book (`philosophy/the-soul.md`); everything else regenerates from the record.
    brief that runs git or hook probes requires `cd <dir> || exit 1` on every `cd`
    and ends by checking that HEAD and `.git/hooks` here are unchanged.
 
+10. **Read what each arm actually received; score every arm to one standard.** Two
+    plausible wrong headlines in one day (SOUL-213/214): the campaign's probe
+    "Comparator" cells carried only a 25–43-word project note (`run-probe.sh` copies
+    the note alone), and "Soul asks 5/5" came from round-2 scorers counting
+    conditional handovers that a second pair, grading all arms to one standard,
+    scored 2/5. Before naming an arm in prose, read the runner script; before
+    comparing two arms' grades, have the same scorers grade both in one pass.
+
 ---
-**Last distilled:** 2026-10-21 against SOUL-211 / A029 / F074 (delta window
-SOUL-198→211, F074, A027–A029, I067–I070; prior form at commit 6a5cdf9). New: items
-8 and 9; item 3 gains the subscription-isolation trap. Nothing cut: A027–A029 are
-contract doctrine and arrive by import; the review-loop stopping line is already
-always-on in the Body's user memory. Rules 9–10 still NOT carried (doctrine).
+**Last distilled:** 2026-10-22 against SOUL-214 / A029 / F074 / v3.1.0 (delta window
+SOUL-212→214, I071–I080, v3.0–v3.1; prior form at commit 77a70a1). Changed: item 8
+(the asking claim withdrawn, the floor's tie and cost added) and item 2 (three new
+instances). New: item 10. Nothing cut. Rules 9–10 still NOT carried (doctrine).
