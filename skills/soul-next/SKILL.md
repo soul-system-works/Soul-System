@@ -61,6 +61,9 @@ across sessions; this reconciles it with reality and emits a tiered next-options
    say so and point at `/soul-stage`; do not run it. No block, no line.
    Each item **points at its durable source** (idea ID, finding ID, spec) — do not copy the
    content in.
+   An idea listed under Now or Next whose `STATUS` is still `Raw` gets
+   ` — not discussed yet; /soul-discuss first?` appended. Raw means no one has
+   contested it; Maturing means it has been discussed (SOUL-I078).
 
 4. **Tag by value/effort** where it helps. Keep it skimmable.
 
@@ -80,4 +83,5 @@ and given the Mind distill-staleness trigger at the Cut (→1.0, 2026-06-08). Th
 guardrail paired with `/soul-explain`; operationalizes proactive-next-steps (SOUL-I010)
 while keeping the list a pointer to the durable records. **Amended:** 2026-08-28
 (v2.3.0) — step 2b, the upstream backlog line, which exists here because this is the
-only seat a mining pass can run from (SOUL-I062). **Status:** active.
+only seat a mining pass can run from (SOUL-I062). **Amended:** 2026-10-22 (v3.3.0) —
+step 3 flags Raw ideas as not yet discussed (SOUL-I078). **Status:** active.

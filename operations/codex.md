@@ -143,6 +143,9 @@ shared rule that an inherited pointer is a claim to verify.
   (on the 2026-10 machine it has a memory database under `~/.codex`, not opened);
   skip the step and say so. `AGENTS.md` / `.codex/` count as project instructions
   in the wiring check and the dependency list.
+- **soul-discuss:** the source scan needs web search; where the host has none,
+  say the scan is unrun and list what to look up, rather than citing from memory
+  as if searched.
 - **soul-help:** describe Codex invocation and actual hook readiness; do not repeat
   the Claude guide's automatic-gate claim when hooks are untrusted or unexercised.
 - **soul-handoff:** preserve the shared cursor and provenance. When running in the

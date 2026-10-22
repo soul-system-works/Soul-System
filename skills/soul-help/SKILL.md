@@ -35,7 +35,9 @@ wants the lay of the land). Not a deep philosophy dump — point to depth, don't
    development stage — what may be broken, what must be kept), `soul-capture
    <idea|witness|finding>` (write to the record), `soul-handoff` / `soul-resume`
    (continuity across sessions), `soul-explain` (describe the present; `council`
-   mode for a multi-lens read), `soul-next` (what to do next), `soul-distill`
+   mode for a multi-lens read), `soul-discuss` (contest an idea so it can mature —
+   rivals, the strongest objection, a short cited scan, a held lean), `soul-next`
+   (what to do next), `soul-distill`
    (refresh the Mind), `soul-prompt` (rewrite a rough prompt into a project-informed
    one), opt-in `soul-delegate` (hand plan steps to other models; the main
    session re-runs each check and records it), and `soul-migrate` (move a project
