@@ -2464,5 +2464,5 @@ SHAPE:     Raw. The slim-soul test found reply length unchanged, but its probes 
            ≈ 1,050 chars). The long replies are interactive turns (SOUL-I054: median
            2,537 chars per turn). Method exists: tools/gate-cost-measure.py over a few
            days of v3.0 sessions vs that baseline (mind item 7's traps apply).
-STATUS:    Raw — unconfirmed — owner to ratify
+STATUS:    Raw — Body-captured.
 ```
