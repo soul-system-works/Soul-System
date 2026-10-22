@@ -2517,5 +2517,11 @@ SHAPE:     Raw — Body-captured. Near: /soul-delegate (tiers + Done-when checks
            never run as an installed skill on another machine), I079 (central vault,
            its Flow 2 orchestrator hook), the Codex and local-model arms
            (SOUL-210/211).
-STATUS:    Raw — Body-captured; waiting on the Body's context from the other computer.
+SOURCE:    (2026-10-22) The discussion is published as the Body's guide
+           "Learning to coordinate AI agents" — blog repo
+           `src/content/guides/coordinating-ai-agents/`, chapters 6–8 (Soul System
+           runtime: repositories and interfaces, proposed workflow experience,
+           handoff and design decisions; ~3,600 words; untested proposals by the
+           guide's own statement). The context reminder above is resolved.
+STATUS:    Raw — Body-captured.
 ```
