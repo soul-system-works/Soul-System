@@ -51,7 +51,7 @@ any time: `/soul-delegate` lets a plan's routine steps go to another model (a
 local model, Codex, a smaller Claude) while the AI re-runs every step's check
 itself. Exploring an idea before building it: `/soul-discuss` contests it — rivals,
 the strongest objection, a short cited scan. Moving computers: `/soul-migrate`
-packs what git does not carry into one zip, and `/soul-migrate receive` restores and checks it on the other side.
+packs what git does not carry into one zip, and `/soul-migrate receive` restores and checks it on the other side. One private home for every project's record: a Soul vault, offered by `/soul-init` once a machine names one ([ADR 0001](docs/adr/0001-soul-vault.md)).
 
 **What happens after install — who does what, and when:**
 [`docs/using-the-soul.md`](docs/using-the-soul.md), one page.

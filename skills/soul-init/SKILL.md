@@ -328,7 +328,9 @@ line you have not verified resolves.
    WSL-made symlink, so the vault must be on a Windows drive too. It adds `.soul` to
    `.git/info/exclude` and the vault to `.claude/settings.local.json`
    `permissions.additionalDirectories`, without which Claude Code refuses writes
-   through the link. All three came from the I079 link test (2026-10-22).
+   through the link. All three came from the I079 link test (2026-10-22); the
+   decision and what would make it wrong: `docs/adr/0001-soul-vault.md`. Last, it
+   rewrites the vault's `index.md`; the owner commits and pushes the vault.
 
    **If it prints STILL TRACKED, recommend `git rm --cached` of those files and a
    commit, now.** Until then, a git reset, stash, restore or checkout puts the old

@@ -250,10 +250,21 @@ def soul_scoped(start, gate, top=None):
         d = parent
 
 
+def is_soul_vault(root):
+    """A Soul vault (tools/vault.py init): every vaulted project's record lives in it,
+    so a session commits there from a project folder outside it (SOUL-I079)."""
+    try:
+        with open(os.path.join(root, "vault.md"), encoding="utf-8") as fh:
+            return fh.readline().startswith("# Soul vault")
+    except (OSError, UnicodeError):
+        return False
+
+
 def repo_in_scope(root, gate):
-    """A repository is checked when its top is a Soul project, or when the session's
-    own folder (SOUL_GUARD_CWD, from the env file) lies inside it and is one."""
-    if gate._is_soul_project(root):
+    """A repository is checked when its top is a Soul project or a Soul vault, or when
+    the session's own folder (SOUL_GUARD_CWD, from the env file) lies inside it and is
+    one."""
+    if gate._is_soul_project(root) or is_soul_vault(root):
         return True
     c = os.environ.get("SOUL_GUARD_CWD")
     return bool(c) and os.path.isdir(c) and _inside(c, root) and soul_scoped(c, gate, root)

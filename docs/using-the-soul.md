@@ -111,6 +111,16 @@ computer, run `/soul-migrate receive <zip>`: it checks every file, restores the
 project without overwriting anything, rebuilds, and runs one check. Settings that
 belong to no project (`~/.claude`, `~/.codex`) move by hand.
 
+**Keeping every record in one private place.** A Soul vault is one private git repo
+that holds the record of every project, each in its own folder; the project keeps a
+`.soul` link into it, so nothing else changes. Make the repo (private) and clone it
+— on WSL, onto a Windows drive — then run
+`python3 <soul-system>/tools/vault.py init <clone> --register` once per machine.
+From then on `/soul-init` offers "in the vault" beside "in git" and "local". A
+`restricted` project never goes in. A new computer: clone the vault to the same
+place, then `/soul-init` in each project re-links its record. Why and how:
+[ADR 0001](adr/0001-soul-vault.md).
+
 ## Going deeper
 
 | Want | Read |

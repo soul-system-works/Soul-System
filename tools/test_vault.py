@@ -237,6 +237,23 @@ def main():
     check("where: none named exits 1",
           run(dict(env, XDG_CONFIG_HOME=os.path.join(tmp, "config3")), "where").returncode == 1)
 
+    # 5e — the index: one row per project, latest witness, hand-added non-Soul projects
+    #      listed, restricted never
+    write(os.path.join(vault, "projects", "notes", "project.md"),
+          "---\nkey: notes\nlabel: private\ncontributes: [research]\n---\n")
+    write(os.path.join(vault, "projects", "secret", "project.md"),
+          "---\nkey: secret\nlabel: restricted\n---\n")
+    write(os.path.join(target, "witness.md"), "# W\nID:           SOUL-7\nWHEN:         2026-10-22 / x\n")
+    r = run(env, "index")
+    idx = read(os.path.join(vault, "index.md"))
+    check("index lists vaulted projects with their latest witness",
+          "| [alpha](projects/alpha/project.md) | private | soul, tools | yes | SOUL-7 (2026-10-22) |" in idx
+          and "[beta]" in idx and "[delta]" in idx, idx)
+    check("index lists a hand-added project with no record",
+          "| [notes](projects/notes/project.md) | private | research | no | — |" in idx, idx)
+    check("index never lists a restricted project", "secret" not in idx and "1 restricted left out"
+          in r.stdout, r.stdout)
+
     # 6 — broken link: loud in check and at session start; silent where nothing is linked
     os.rename(target, target + ".gone")
     r = run(env, "check", a)
