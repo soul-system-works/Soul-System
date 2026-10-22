@@ -2466,3 +2466,56 @@ SHAPE:     Raw. The slim-soul test found reply length unchanged, but its probes 
            days of v3.0 sessions vs that baseline (mind item 7's traps apply).
 STATUS:    Raw — Body-captured.
 ```
+
+```
+ID:        SOUL-I078
+WHEN:      2026-10-22
+RAW:       A new skill, /soul-discuss (or a better name): for when the Body wants to
+           discuss a topic to explore an idea — weigh its value and usefulness, do
+           external research (standards, best practices, reputable sources, popular
+           GitHub repos) — with the AI acting like a knowledgeable coworker rather
+           than a sycophant, so the Body does not have to fight it to get honest
+           pushback while they explore and ruminate on what the idea would look like.
+           Explore what a lightweight skill for that would be.
+SHAPE:     Raw — Body-captured. Near: /soul-explain (read-only description, its
+           `council` lens mode), Pocock's grilling skill, anthropic deep-research,
+           the explore-before-execute and plain-description memories.
+STATUS:    Raw — Body-captured.
+```
+
+```
+ID:        SOUL-I079
+WHEN:      2026-10-22
+RAW:       A central "Soul vault": keep every Soul project's records in one private
+           git repo instead of inside each project — a third answer to soul-init's
+           "local or in git?" question. Aims (the Body's words): portable, no
+           clutter of untracked files in project repos, more confidence the data is
+           kept, less data leakage, easier for the Soul System to mine lessons and
+           skills. Rough brief, written with Gemini and possibly overdeveloped or
+           wrong: `.ai/briefs/2026-10-22-central-vault-brief.md` (copied from
+           Downloads) — also floats NOTE-VAULT (session recordings → transcripts) feeding
+           the vault, YAML-frontmatter/wikilink formats, an orchestrator skill, and
+           soul-benchmark reading vault history. Discuss fully, then judge if and how.
+SHAPE:     Raw — Body-captured. Near: this repo's own `.soul/vault/` +
+           `.soul/vault-gen.py` (a derived, read-only Obsidian view of this repo's
+           record, prototype 2026-07-02, SOUL-171) and `record-graph.html`; the upstream.md + mining pass (the current
+           cross-project channel); /soul-migrate (the current portability answer);
+           the secret guard (leakage); I078 (/soul-discuss — the way to hold this
+           discussion).
+STATUS:    Raw — Body-captured.
+```
+
+```
+ID:        SOUL-I080
+WHEN:      2026-10-22
+RAW:       A "soul-orchestrator" (the orchestrator skill floated in I079's brief) —
+           likely a revamp or extension of /soul-delegate, with deepagents and
+           similar frameworks. The Body developed it in a discussion on the new
+           computer. **Reminder: the Body is to supply that discussion's prompt and
+           context** — this entry is a placeholder until then.
+SHAPE:     Raw — Body-captured. Near: /soul-delegate (tiers + Done-when checks,
+           never run as an installed skill on another machine), I079 (central vault,
+           its Flow 2 orchestrator hook), the Codex and local-model arms
+           (SOUL-210/211).
+STATUS:    Raw — Body-captured; waiting on the Body's context from the other computer.
+```
