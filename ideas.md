@@ -2500,8 +2500,11 @@ DISCUSSED: (2026-10-22, with the Body) The gap: grilling looks inward (clarifies
               verdict, next steps) — on the Body's yes, written into the idea's
               entry so it develops in situ, STATUS Raw → Maturing. General topics
               with no entry just get the block.
-           Form: a skill, not a contract rule (slim contract; SOUL-214 — wording
-           alone buys little; structure makes agreement visible). /soul-capture
+           Form: a skill, not a contract rule (slim contract; structure makes
+           agreement visible). [Corrected 2026-10-22: this line first cited
+           SOUL-214 as "wording alone buys little" — false; SOUL-214 records a
+           careful CLAUDE.md at 5/5 against Soul's 2/5 on asking first, so
+           wording did win there. Caught by fresh-context review of v3.3.0.] /soul-capture
            stays a pure recorder (the Body: capture records, it does not flesh
            out). Reminder: /soul-next flags Raw ideas "not discussed yet — discuss
            first?", reusing the template's Maturing status — used 0 times in ~70
@@ -2526,7 +2529,7 @@ TRIAL:     (2026-10-22, I079 by hand, five rounds) What the trial added to the s
              argument (capture's job; one vault per security boundary).
            - Facts first: look up what can be looked up (project layouts, the
              /note vault) before asking.
-STATUS:    Maturing — Body-captured; discussed and hand-trialled 2026-10-22, not yet built.
+STATUS:    Built — v3.3.0, experimental, 2026-10-22 (/soul-discuss; /soul-next flags undiscussed ideas; not benchmarked).
 ```
 
 ```
