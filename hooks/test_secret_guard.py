@@ -728,6 +728,23 @@ def main():
         rc, out, _ = sh(E, r23, f"export SOUL_GUARD_CWD='{r1}'\ngit commit -qm out")
         check(rc == 0 and "Soul secret" not in out, "SCOPE: a session folder outside the repo put it in scope")
 
+        # 23b. A Soul vault is in scope from a session in another folder: a credential is
+        # blocked and a listed name warned, as in any repo of unknown visibility (I079).
+        rv = make_repo(tmp, "rv", soul=False)
+        write(rv, "vault.md", "\ufeff# My renamed vault\n")  # scoped on structure, not title
+        write(rv, "projects/p/soul/w.md", f"met {NAME}\n")
+        write(rv, "projects/p/soul/private-names.txt", "Somebody\n")
+        plain_git(rv, "add", "-A")
+        rc, out, _ = sh(E, rv, f"export SOUL_GUARD_CWD='{r1}'\ngit commit -qm name")
+        check(rc == 0 and f'"{NAME}"' in out, f"VAULT: a private name in a Soul vault was not warned: rc={rc} {out[-300:]!r}")
+        check("private-name list is staged" not in out and "projects/p/soul/private-names.txt" not in out,
+              f"VAULT: a project's name list kept in the vault was flagged: {out[-300:]!r}")
+        write(rv, "projects/p/soul/cfg.md", KEYLINE + "\n")
+        plain_git(rv, "add", "-A")
+        rc, out, _ = sh(E, rv, f"export SOUL_GUARD_CWD='{r1}'\ngit commit -qm cred")
+        check(rc != 0 and "BLOCKED" in out, f"VAULT: a credential committed to a Soul vault was not blocked: {out[-200:]!r}")
+        plain_git(rv, "reset", "-q", "--hard")
+
         # 24. --own-hooks-dir resolves a relative core.hooksPath against the worktree top (M2).
         os.makedirs(os.path.join(r8, "a", "b"))
         rc, own, _ = sh(E, os.path.join(r8, "a", "b"), f"python3 '{HOOK}' --own-hooks-dir")

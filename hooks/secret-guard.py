@@ -250,10 +250,20 @@ def soul_scoped(start, gate, top=None):
         d = parent
 
 
+def is_soul_vault(root):
+    """A Soul vault (tools/vault.py init): every vaulted project's record lives in it,
+    so a session commits there from a project folder outside it (SOUL-I079). Scoped on
+    structure, not wording, so a retitled vault.md does not drop it out of scope;
+    over-scoping a look-alike repo only adds checks."""
+    return (os.path.isfile(os.path.join(root, "vault.md"))
+            and os.path.isdir(os.path.join(root, "projects")))
+
+
 def repo_in_scope(root, gate):
-    """A repository is checked when its top is a Soul project, or when the session's
-    own folder (SOUL_GUARD_CWD, from the env file) lies inside it and is one."""
-    if gate._is_soul_project(root):
+    """A repository is checked when its top is a Soul project or a Soul vault, or when
+    the session's own folder (SOUL_GUARD_CWD, from the env file) lies inside it and is
+    one."""
+    if gate._is_soul_project(root) or is_soul_vault(root):
         return True
     c = os.environ.get("SOUL_GUARD_CWD")
     return bool(c) and os.path.isdir(c) and _inside(c, root) and soul_scoped(c, gate, root)
@@ -741,7 +751,11 @@ def check_pre_commit(rep, root, names):
     _scan_leaks(rep, root)
     out = _git_out(root, "diff", "--cached", "--name-only", "-z", "--diff-filter=d") or ""
     paths = [p for p in out.split("\0") if p]
-    rep.files = [p for p in paths if _name_list_file(p)]
+    # A vault keeps each project's list on purpose (ADR 0001): it arms the guard on
+    # the next machine. Lists anywhere else in it are still flagged.
+    vault = is_soul_vault(root)
+    rep.files = [p for p in paths if _name_list_file(p) and not (
+        vault and re.match(r"^projects/[^/]+/soul/private-names\.txt$", p))]
     if not names or not is_public(root, _remote_url(root, _default_remote(root)), rep):
         return
     for p in paths:

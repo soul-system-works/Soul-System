@@ -1,6 +1,6 @@
 ---
 name: soul-init
-description: Initialize the current project as a Soul System project — wires a live contract reference into the host's project instructions, loads an existing Mind if there is one, and scaffolds the project's local record after asking whether that record goes in version control.
+description: Initialize the current project as a Soul System project — wires a live contract reference into the host's project instructions, loads an existing Mind if there is one, and scaffolds the project's local record after asking whether that record goes in version control, stays local, or (when this machine names a Soul vault) lives in the vault behind a `.soul` link.
 disable-model-invocation: true
 ---
 
@@ -87,7 +87,36 @@ line you have not verified resolves.
 
 3. **Ask the one question that cannot be defaulted: does the record go in git?**
 
-   **First, is the repo public?** Check before asking — `gh repo view --json
+   **First, does this machine name a Soul vault?** Run
+   `python3 <derived-root>/tools/vault.py where`. A vault is one private git repo
+   holding every project's record, each reached by a `.soul` link (SOUL-I079).
+   - **Exit 1, none named:** skip the rest of this paragraph — everything below
+     runs exactly as it did before vaults. (If the owner asks for one: they create
+     the private repo and clone it — on WSL, onto a Windows drive — then run
+     `vault.py init <clone> --register`.)
+   - **Exit 3, named but not there:** stop and tell the owner to clone the vault to
+     that path first. Do not scaffold — on a new machine that makes a second record
+     the vault then refuses.
+   - **A vault named:** run `python3 <derived-root>/tools/vault.py check .` and
+     branch on its line:
+     - *lives in the vault* — skip the tracking question and 3b's `.gitignore`
+       lines; continue at 3b's secret-guard setup.
+     - *BROKEN* — never scaffold, never remove the link. If the vault holds the key
+       the link names, re-link: `vault.py link . --key <that key> --label <the
+       label in its project.md>`. Otherwise tell the owner to clone the vault so
+       the link's target exists.
+     - *TWO COPIES* — stop. Show both; which is current is the owner's call. Do not
+       scaffold or link until they decide.
+     - *the vault holds a record … nothing links to it* (a fresh clone, a new
+       machine) — offer that re-link before anything else, so step 3b finds the
+       record instead of scaffolding an empty second one.
+     - *not linked* — the question below gets a third answer: **in the vault**
+       (`<vault path>`) — private, kept with every other project's record, and
+       invisible to this repo's git. If chosen, ask the **label** at once (the list
+       in step 3f): a *restricted* project never goes in the vault, so say so and
+       ask the two-answer question instead. The move itself is step 3f.
+
+   **Is the repo public?** Check before asking — `gh repo view --json
    visibility` when a remote exists and `gh` is available; otherwise ask the Body.
    If it is public, say so in the question: **a tracked record in a public repo is
    public** — every witness entry, idea and Mind line, readable by anyone — and ask
@@ -136,6 +165,8 @@ line you have not verified resolves.
      .soul/events.jsonl
      ```
    - **No, keep it local** — ignore the whole directory: `.soul/`
+   - **In the vault** — write no `.gitignore` lines; step 3f hides the link in
+     `.git/info/exclude`, which never leaves this machine.
 
    **Existing projects keep their layout.** If `witness.md` or `ideas.md` already
    exist — at the project root, under `.soul/`, or wherever the search above found
@@ -271,6 +302,51 @@ line you have not verified resolves.
    durable record (`.soul/`) and AI working files (`.ai/`, safe to delete) each have
    one home.
 
+3f. **Vault answer only: move the record into the vault.** Last, so the steps
+   above have written everything into the record first. The label was asked in
+   step 3, from this list:
+   - **Label** — *public* (anyone may read it), *private* (yours), *confidential*
+     (someone else's material, e.g. an employer's or client's — before an
+     employer-hosted project moves, the owner decides whether a personal vault may
+     hold it), *restricted* (closed or controlled; never in the vault, and the tool
+     refuses it too).
+
+   Ask the rest:
+   - **What it contributes to** — free-form tags (e.g. `research, tools`); may be
+     empty.
+   - **Key** — the project's folder name in the vault; default the repo's name. The
+     key, not the path, names the folder, so it survives the project moving.
+
+   Run `python3 <derived-root>/tools/vault.py link . --key <key> --label <label>
+   --contributes <tags> --dry-run`, show its lines, and on the owner's yes run it
+   without `--dry-run`. What it does, so you can explain it: a root-layout record
+   (`witness.md` at the root) moves into `.soul/` first and a `@mind.md` import is
+   repointed to `@.soul/mind.md`; `.soul/` is copied into
+   `<vault>/projects/<key>/soul/` and every file's hash compared; `.soul/` is
+   replaced by a link, and compared again through it. On WSL with the project on a
+   Windows drive the link is a Windows junction: Windows tools cannot follow a
+   WSL-made symlink, so the vault must be on a Windows drive too. It adds `.soul` to
+   `.git/info/exclude` and the vault to `.claude/settings.local.json`
+   `permissions.additionalDirectories`, without which Claude Code refuses writes
+   through the link. All three came from the I079 link test (2026-10-22); the
+   decision and what would make it wrong: `docs/adr/0001-soul-vault.md`. Last, it
+   rewrites the vault's `index.md`; the owner commits and pushes the vault.
+
+   **If it prints STILL TRACKED, recommend `git rm --cached` of those files and a
+   commit, now.** Until then, a git reset, stash, restore or checkout puts the old
+   committed copy back in place of the link, writes go to that stale copy, and the
+   vault falls behind — `check` reports it as TWO COPIES. Say too that the old copies
+   stay in history: moving a record is not redaction (mind item 6d).
+   The vault repo keeps the project's `private-names.txt` (it travels to the next
+   machine with the record) and leaves out only `events.jsonl`.
+
+   **If `link` refuses (exit 2, "nothing changed"), the record stayed in the
+   project.** (Any other failure: run `vault.py check .` and report what it says
+   before going on.) Write 3b's
+   `.gitignore` lines for whichever of step 3's two other answers the owner now
+   picks — a record must never be left neither tracked nor ignored, where one
+   `git add -A` commits it.
+
 4. After creating or confirming the file, report:
    - The absolute path of the `CLAUDE.md` you wrote or found.
    - That the next Claude Code session opened in this directory will load the project contract (`operations/CLAUDE.md`) by import. The philosophy (`philosophy/the-soul.md`) is NOT imported — it is the human-facing book, read on demand (A021).
@@ -280,6 +356,12 @@ line you have not verified resolves.
    - **If a stage was declared**, say which, and that its rules take effect from the
      next session; if skipped, say that `/soul-stage` declares one later and that
      until then the project is treated as released.
+   - **If the record moved into the vault**: the next session will ask, once, to
+     load files from outside the project. Approve it — that is what loads the Mind
+     through the link; declining disables it with no second dialog, and
+     `/soul-resume`'s Mind check is what notices (the link test: a SessionStart hook
+     cannot carry the Mind instead, its output is cut to ~2KB). And the vault counts
+     as kept only once it is committed and pushed.
 
 ## What not to do
 
@@ -294,3 +376,4 @@ line you have not verified resolves.
 **NOTE:** the former machine-local root path (the F029 portability wrinkle) was retired by SOUL-A022 — the root now derives from the skill's own location, which also makes the plugin a complete install path.
 **Amended:** 2026-10-19 (mining pass 2, SOUL-202) — step 3 checks repo visibility before the tracking question; 3b finds an existing store outside root/`.soul/` (e.g. `docs/`) before scaffolding; 3c writes the Mind import relative to the importing file (extends F068).
 **Amended:** 2026-10-20 (v2.10.0, SOUL-I070) — step 3b sets up the experimental secret guard: the project's private-name list (gitignored); optional hand-commit hooks (`pre-commit`, `commit-msg`, `pre-push`) placed in the repo's own hooks directory (`--own-hooks-dir`, since a session points `core.hooksPath` at the plugin's wrappers), never overwriting an existing hook, failing open loudly when the plugin path is gone, and not re-running a check the session's wrapper already ran; a one-line Codex opt-in pointer; a history-sweep offer; and push-protection status for public repos.
+**Amended:** 2026-10-22 (v3.4.0, SOUL-I079) — the vault: step 3 checks for a vault named on this machine, re-links a record the vault already holds, and offers "in the vault" as a third answer; step 3f moves the record and links it (`tools/vault.py`); step 4 tells the owner to approve the one-time outside-files dialog and to push the vault.

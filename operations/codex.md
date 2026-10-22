@@ -143,6 +143,10 @@ shared rule that an inherited pointer is a claim to verify.
   (on the 2026-10 machine it has a memory database under `~/.codex`, not opened);
   skip the step and say so. `AGENTS.md` / `.codex/` count as project instructions
   in the wiring check and the dependency list.
+- **soul-init (vault):** on WSL the `.soul` link is a Windows junction so that
+  Windows-side tools can follow it, but Codex itself was not tested through one,
+  and `hooks/codex.py` adds no vault line at session start — run
+  `tools/vault.py check .` by hand there (unverified, ADR 0001).
 - **soul-discuss:** the source scan needs web search; where the host has none,
   say the scan is unrun and list what to look up, rather than citing from memory
   as if searched.
