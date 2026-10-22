@@ -51,7 +51,7 @@ caught it, SOUL-163/164) — under these limits:
     `tools/test_unconfirmed_mark.py`). On the Body's yes the mark comes off
     (`STATUS` is the one field an entry may change); on a no the entry stays and its
     `STATUS` says so.
-  - **Idea:** ideas have no `STATUS`, so the mark goes at the end of the idea's
+  - **Idea:** a captured idea has no `STATUS` (`/soul-discuss` may add one later), so the mark goes at the end of the idea's
     line (or of its entry, in a heading-per-entry file), and on a yes it comes off
     the same way. On a no, the entry stays and `— declined by the Body <date>` is
     appended after it.
