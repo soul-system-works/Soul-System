@@ -69,7 +69,12 @@ the issue".
 Each project's `private-names.txt` travels with its record and is committed to the
 vault (the Body's call, 2026-10-22): it arms the secret guard on the next machine.
 The guard does not flag those lists in a vault. A list can hold names no record
-mentions, such as a work email; those enter the vault's history.
+mentions, such as a work email; those enter the vault's history — the Body kept
+the lists with that known (2026-10-22).
+
+Private names in a vault commit still warn. The guard cannot confirm a GitLab
+repo is private, and it never assumes a repo is private (the Body's call,
+2026-10-22): the warnings are expected noise, never a block.
 
 ## Known hazard, kept and reported
 
