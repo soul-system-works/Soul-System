@@ -2552,7 +2552,33 @@ DISCUSSED: (2026-10-22, first pass — the I078 hand trial) Core judged apart fr
            NOT ready to develop — the Body: "i'm not sure my concerns/ideas are
            fully covered as to why i think it would be valuable". Next: a clarify
            round on why each aim matters, then the link test.
-STATUS:    Maturing — Body-captured; first discussion 2026-10-22, clarify round next.
+CLARIFIED: (2026-10-22, the Body's answers to the clarify round — their words where
+           quoted) Origin: soul-init's wording does not tell the user which choice
+           to make, but "it really started with me feeling torn behind what i should
+           and shouldn't put on a public repo AND keeping track of all my different
+           projects, sharing/improving skills, and concerns i'm not taking
+           advantage of ... cross project learning." Kept/portable: machine changes
+           and failures; "with project only repos i loose track of all my projects,
+           i'm not sure if i saved important information, i jump between projects";
+           projects of different sensitivities make the right storage unclear —
+           "if i had a way to have it in a single place it would be consistent";
+           also easier daily updates/summaries across projects ("capture,
+           protability, and management are all part of the issue"). Projects should
+           be categorized by what they contribute to and their sensitivity (Public,
+           Private, ... — the right set unknown). Leakage: less of a concern than
+           early on, but documentation is likelier to leak than code. Mining: yes —
+           and it shows which projects joined Soul; non-Soul projects could be added
+           by hand (useful for RAG). Main aim: one private, consistent home; the
+           others come with it. New: discussion/research work (papers, webpages)
+           that should not live in any project but matters — the vault may be its
+           natural home.
+           Reframe (the AI's read, for the next discussion): no longer "where do
+           Soul records live" but one private home for knowledge across all
+           projects — storage rule by sensitivity label, project inventory,
+           cross-project summaries, mining, research notes. Rivals A and D no longer
+           fit; B/C remain only as the storage layer. Open: does the /note
+           skill's Obsidian vault exist (NOTE_VAULT unset on this machine).
+STATUS:    Maturing — Body-captured; discussed and clarified 2026-10-22; reframed discussion next.
 ```
 
 ```
