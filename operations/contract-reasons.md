@@ -51,6 +51,31 @@ change", since MODEL-TEST's defects surfaced downstream of the fixed lines. **Wh
 make it wrong:** within a few PRs under it, a real defect ships that a full-size
 correction review would have caught and the scoped one did not.
 
+**Rule 1's incident clause and rule 7's ask-first clause (v3.2, 2026-10-22).** Both
+come from the slim-soul test (soul-benchmark `experiments/2026-10-21-slim-soul/`,
+SOUL-214). *Rule 7:* on the stale-rule quiz a careful CLAUDE.md's sessions stopped and
+asked before writing code, 5/5; every Soul session (v2 and v3) built the
+rule-following version first and raised the question after, and only 2/5 clearly
+handed the decision over (SOUL-I076). That careful sheet's own text told its sessions
+to ask before adding a dependency or a new format — this exact case (the test's
+PLAN.md). The second half answers the tension I076 names (stopping costs a round trip
+when the owner is away), but only when the session has been told no one can answer;
+otherwise a headless session could call itself unattended and build first as before.
+"A choice you can settle by reading or running is not the owner's" keeps the clause
+from turning technical choices into questions. *Rule 1:* in both chain R rounds the
+incident stories behind kept rules reached the newcomer handoff less often from Soul
+arms (3 of 10 incident slots in round 1, 0 of 6 in round 2) than from the other arms, whose careful file in chain R is the June Comparator, not
+the quiz's sheet
+(5 of 12, then 2 of 4 — the careful file 2 of 2, the floor 0 of 2); a Soul session's handoff said "No
+past incidents are recorded anywhere, so I have listed none." The owner had told the
+stories at inc02 and inc04, the sessions that heard them did not record them, and
+later sessions could not rebuild them without inventing them, which rule 2 forbids
+(SOUL-I071). Neither
+clause has been benchmarked. **What would make them wrong:** rule 7 — a re-run of the
+stale-rule quiz where Soul still builds before asking, or sessions that stop on
+choices that were not the owner's; rule 1 — a re-run of chain R where Soul handoffs
+still lose the incidents, or where records fill with stories the owner never told.
+
 ## The v2 wording, kept whole
 
 (Where the text below says "sessions need only this page", it means the contract,
