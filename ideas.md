@@ -2685,7 +2685,15 @@ ROUND 5:   (2026-10-22) Plan written (`.ai/plans/2026-10-22-soul-vault-v1.md`):
            Lean: record the level in `vault.md` now; enforce no-link-below and
            no-write-down in v1; read-down access later (Claude Code: allowed
            folder + deny-edit rules — untested).
-STATUS:    Maturing — Body-captured; five rounds + link test 2026-10-22; plan drafted.
+SIMPLIFIED: (2026-10-22) The Body: "i don't want an overengineered system". v1 =
+           one vault per machine (a one-line file names it); label is a
+           project.md field; only rule enforced: /soul-init refuses `restricted`.
+           The boundary is where the vault lives — a closed system's vault stays on
+           that system, so no read-up/write-down code is needed. Levels, accepts
+           lists and read-down access: later, only if two vaults ever share a
+           machine. Kept: everything the link test proved necessary. Release
+           order: /soul-discuss 3.3.0, vault 3.4.0.
+STATUS:    Maturing — Body-captured; five rounds + link test 2026-10-22; simplified plan drafted.
 ```
 
 ```
