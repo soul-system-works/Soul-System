@@ -2394,7 +2394,7 @@ SHAPE:     Raw. From the 2026-10-21 campaign (SOUL-213, REPORT §6): incident st
            reached the handoff from Soul arms 3/10 vs 5/12 others; Sonnet Soul arms
            0/6, citing their own in-chain events instead. n=1 per arm — repeat first.
            Near: /soul-handoff, contract rule 1, F053/A020 (force carriage).
-STATUS:    Raw — Body-captured.
+STATUS:    Built — v3.2.0, experimental, 2026-10-22 (rule 1 incident clause / rule 7 ask-first clause; not benchmarked).
 ```
 
 ```
@@ -2451,7 +2451,7 @@ SHAPE:     Raw. Slim-soul test (SOUL-214): on the stale-rule quiz the careful sh
            counted as handing it over. Near: rule 7; the careful sheet's own lines
            ("Don't add a runtime dependency without the owner's explicit approval.
            Ask…"). Tension: stopping costs a round trip when the owner is away.
-STATUS:    Raw — Body-captured.
+STATUS:    Built — v3.2.0, experimental, 2026-10-22 (rule 1 incident clause / rule 7 ask-first clause; not benchmarked).
 ```
 
 ```
