@@ -94,9 +94,9 @@ The vault counts as kept only once it is pushed.
 GITIGNORE = """# Obsidian per-machine state
 .obsidian/workspace*
 .obsidian/cache
-# Never pushed with the vault: each project's private-name list (it may hold an
-# employer's or client's names) and the runtime event log
-projects/*/soul/private-names.txt
+# Never pushed with the vault: the runtime event log. Each project's
+# private-names.txt IS kept: the vault already holds the records those names
+# appear in, and the list is what arms the secret guard on the next machine.
 projects/*/soul/events.jsonl
 """
 

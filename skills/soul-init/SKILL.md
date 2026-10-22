@@ -335,9 +335,8 @@ line you have not verified resolves.
    committed copy back in place of the link, writes go to that stale copy, and the
    vault falls behind — `check` reports it as TWO COPIES. Say too that the old copies
    stay in history: moving a record is not redaction (mind item 6d).
-   The vault's own `.gitignore` keeps `private-names.txt` and `events.jsonl` out of
-   the vault repo, so the private-name list does not travel to another machine —
-   say so; the owner re-enters it there.
+   The vault repo keeps the project's `private-names.txt` (it travels to the next
+   machine with the record) and leaves out only `events.jsonl`.
 
    **If `link` refuses (exit 2, "nothing changed"), the record stayed in the
    project.** (Any other failure: run `vault.py check .` and report what it says
