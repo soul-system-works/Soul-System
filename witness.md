@@ -9115,5 +9115,7 @@ CONSEQUENCE:  The vault works end to end on WSL for one real project. Unrun: the
               3.4.0 SessionStart line and guard vault scope in a live session
               (not released — the installed plugin is 3.3.0); a new machine
               re-linking from a clone; Codex through a junction; macOS.
-STATUS:       Closed — v3.4.0 released and pushed 2026-10-22 on the Body's go.
+STATUS:       Closed — v3.4.0 released and pushed 2026-10-22 on the Body's go. After
+              the plugin update, a new ROSTER-APP session quoted the SessionStart
+              vault line verbatim — the hook works live (Claude Code; not Codex).
 ```
