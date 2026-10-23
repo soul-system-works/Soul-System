@@ -9119,3 +9119,28 @@ STATUS:       Closed — v3.4.0 released and pushed 2026-10-22 on the Body's go.
               the plugin update, a new ROSTER-APP session quoted the SessionStart
               vault line verbatim — the hook works live (Claude Code; not Codex).
 ```
+
+```
+ID:           SOUL-218
+WHEN:         2026-10-23 / the Body's NAV-TOOL session (plugin 3.4.0), reviewed
+              from the Soul-System session via its exported log
+WHERE:        NAV-TOOL moved into the vault by /soul-init; tools/vault.py index;
+              skills/soul-init step 4
+WHAT:         Second vault project: label confidential (employer repo), record
+              linked and untracked, both repos pushed, link checks out. Three
+              gaps: (1) the session never told the Body about the one-time
+              outside-files dialog, though step 4 says to and the project loads
+              its Mind by @.soul/mind.md; (2) the vault index shows "—" for its
+              latest witness — it writes `## date — title` headings and the index
+              reads only `ID:` lines; (3) at the Body's request 102 retired files
+              (plans, archive, notes, a paper draft, HANDOFF.md) went by hand into
+              .soul/attic/ in the vault — I081's job, done with no tool support.
+              The new-computer prompt was left in /tmp; copied to the Body's
+              Downloads.
+TYPE:         witness (adoption data point)
+CONSEQUENCE:  Fix the index to read `## YYYY-MM-DD` headings; make init's step-4
+              dialog warning harder to skip; use the attic move as I081's worked
+              example. Unrun: the Mind loading through the link in NAV-TOOL; the
+              new machine; NAV-TOOL's last ~17% of tests.
+STATUS:       Open — unconfirmed — owner to ratify
+```
