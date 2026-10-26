@@ -9192,3 +9192,30 @@ TYPE:         witness (adoption data point; Body decision)
 CONSEQUENCE:  The Body chose to drop it (2026-10-26). SOUL-A030; applied in v3.6.0.
 STATUS:       Closed
 ```
+
+```
+ID:           SOUL-221
+WHEN:         2026-10-26 / two live /soul-init trials by the Body, reviewed here from
+              exported logs (branch v3.6.0-init-answers via `claude --plugin-dir`)
+WHERE:        tools/init-status.py; skills/soul-init; skills/soul-stage
+WHAT:         Trial 1 (a fresh project; one set up the old way; re-runs): the flow
+              ran in order. The trial session itself found two defects — a recorded
+              `import: add` was asked again until the line was written, and the empty
+              witness log named no ID code, so the stage step asked for one. The
+              Body's observations: "it wasn't clear to me what is actually changing
+              ... we should provide some sort of information of what happens with
+              each of the options ... along with a recommendation for each question,
+              if applicable"; and "logs are still pretty verbose and i'm not sure as
+              a user i wound understand what most of it means." The re-runs used the
+              installed 3.5.0 (no --plugin-dir), so the new re-run was not seen.
+              Trial 2, after fixes (each option says what it changes; one
+              recommendation where one makes sense; quiet run; short report; stage
+              written without follow-ups): fresh — four short rounds, a short
+              report; set-up — visibility, names, safety checks; both re-runs in a
+              new session: "All set — nothing changed." Left: the push-protection
+              note appeared with no remote (fixed); hooks and import pointed at two
+              copies (an artifact of --plugin-dir).
+TYPE:         witness (live trial)
+CONSEQUENCE:  v3.6.0 released with these fixes. Unrun: Codex; the vault paths live.
+STATUS:       Closed
+```

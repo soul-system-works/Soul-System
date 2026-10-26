@@ -2763,5 +2763,5 @@ DISCUSSED: (2026-10-26) Options: do nothing · stored answers · doctor-style
            recorded "no" is not re-asked (/soul-init revisit reopens); fixed
            wording; tools/init-status.py works out the state. Deeper research:
            not worth it. The Body took the five proposed calls (2026-10-26).
-STATUS:    Maturing — target v3.6.0.
+STATUS:    Built — v3.6.0 (2026-10-26; live trials SOUL-221).
 ```
