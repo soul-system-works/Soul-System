@@ -9173,3 +9173,22 @@ CONSEQUENCE:  v3.5.0: tools/eol.py (check/fix) and /soul-init step 3g offer the
               on a repo the Body actually uses; macOS-only and Linux-only use.
 STATUS:       Open
 ```
+
+```
+ID:           SOUL-220
+WHEN:         2026-10-26 / Soul-System session, the I082 discussion
+WHERE:        operations/CLAUDE.md (Register paragraph); skills/soul-init step 2;
+              operations/codex.md; every adopting project's CLAUDE.md
+WHAT:         The Body: "is there really any value ever to fluent? i've never
+              used it?" A sweep of /mnt/d/Projects for a `Register: fluent` line
+              found none in any adopting project (the only hits were Soul-System's
+              own doctrine, evals and one benchmark copy of the contract); this
+              repo itself ran `plain`. Fluent was the pre-I050 behaviour kept as
+              the switch back when plain became the default (docs/specs/
+              2026-06-10-register-flag.md). It cost one question at every fresh
+              /soul-init and a sentence in the always-on contract. Not swept: a
+              Codex trial folder in the home directory.
+TYPE:         witness (adoption data point; Body decision)
+CONSEQUENCE:  The Body chose to drop it (2026-10-26). SOUL-A030; applied in v3.6.0.
+STATUS:       Closed
+```
