@@ -298,6 +298,21 @@ def main():
     check("record writes through the link", r.returncode == 0
           and os.path.islink(os.path.join(p8, ".soul"))
           and "names:" in read(os.path.join(vt, "init.md")), r.stderr)
+    # 8a — a sidecar link (vault.py link --sidecar): only .soul/ is in the vault, the record
+    #      stays tracked at the root, so record is read from the root stores: git, not vault
+    psc = repo(tmp, "sidecar", {"CLAUDE.md": IMPORT, "witness.md": "# W\n", "ideas.md": "# I\n"})
+    write(os.path.join(psc, ".soul", "handoff.md"), "# H\n")
+    r = subprocess.run([sys.executable, os.path.join(_HERE, "vault.py"), "link", psc, "--key",
+                        "sidecar", "--label", "private", "--sidecar", "--vault",
+                        os.path.join(tmp, "vault")], capture_output=True, text=True, env=env)
+    st, by = status(env, psc)
+    check("sidecar link: record inferred git from the tracked root stores",
+          r.returncode == 0 and os.path.islink(os.path.join(psc, ".soul"))
+          and by["record"]["value"] == "git" and by["record"]["source"] == "inferred",
+          (r.stderr, by.get("record")))
+    check("sidecar link: vault-link still linked", by.get("vault-link", {}).get("value")
+          == "linked", by.get("vault-link"))
+
     p8b = repo(tmp, "brokenlink", {"README.md": "x\n"})
     os.symlink(os.path.join(tmp, "nowhere"), os.path.join(p8b, ".soul"))
     r = run(env, "record", p8b, "names", "none")

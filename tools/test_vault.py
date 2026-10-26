@@ -370,6 +370,117 @@ def main():
     r = run(env, "session-start", stdin=json.dumps({"cwd": plain}))
     check("session start silent for a project with no link", r.stdout.strip() == "", r.stdout)
 
+    # 7 — sidecar: the record stays tracked at the project root (a public product, SOUL-223);
+    #     only the private .soul/ moves to the vault
+    roots = {"witness.md": "# W\nSOUL-1\n", "ideas.md": "# I\n", "mind.md": "# M\n"}
+    z = project(tmp, "zeta", roots, remote="git@example.com:me/zeta.git", commit=True)
+    write(os.path.join(z, ".soul", "handoff.md"), "# Handoff\n")
+    r = run(env, "link", z, "--key", "zeta", "--label", "private", "--sidecar")
+    zt = os.path.join(vault, "projects", "zeta", "soul")
+    check("sidecar link succeeds", r.returncode == 0, r.stderr + r.stdout)
+    check("sidecar: root stores stay put, unchanged",
+          all(read(os.path.join(z, n)) == t for n, t in roots.items()))
+    check("sidecar: .soul is a link into the vault", os.path.islink(os.path.join(z, ".soul"))
+          and os.path.realpath(os.path.join(z, ".soul")) == os.path.realpath(zt))
+    check("sidecar: the vault holds handoff.md, not the record",
+          os.path.isfile(os.path.join(zt, "handoff.md"))
+          and read(os.path.join(zt, "handoff.md")) == "# Handoff\n"
+          and not os.path.exists(os.path.join(zt, "witness.md")),
+          str(os.listdir(zt) if os.path.isdir(zt) else "no " + zt))
+    check("sidecar: no STILL TRACKED warning for the root record", "STILL TRACKED" not in r.stdout,
+          r.stdout)
+    zpm = read(os.path.join(vault, "projects", "zeta", "project.md"))
+    check("sidecar: project.md records `sidecar: true` in its frontmatter",
+          "\nsidecar: true\n" in zpm.split("\n---", 1)[0] + "\n", zpm)
+    r = run(env, "check", z, "--json")
+    st = json.loads(r.stdout or "{}")
+    check("sidecar: check says linked, sidecar", r.returncode == 0 and st.get("state") == "linked"
+          and st.get("sidecar") is True, r.stdout)
+    r = run(env, "check", z)
+    check("sidecar: no TWO COPIES, says the record stays", r.returncode == 0
+          and "TWO COPIES" not in r.stdout and "stays in the project" in r.stdout, r.stdout)
+
+    y = project(tmp, "eta", dict(roots))
+    r = run(env, "link", y, "--key", "eta", "--label", "private", "--sidecar")
+    check("sidecar with no .soul/: refused, nothing changed", r.returncode == 2
+          and "there is none" in r.stderr and not os.path.lexists(os.path.join(y, ".soul"))
+          and not os.path.exists(os.path.join(vault, "projects", "eta"))
+          and all(read(os.path.join(y, n)) == t for n, t in roots.items()), r.stderr + r.stdout)
+
+    th = project(tmp, "theta", {".soul/witness.md": "# W\n"})
+    run(env, "link", th, "--key", "theta", "--label", "private")
+    write(os.path.join(th, "witness.md"), "# W back\n")
+    st = json.loads(run(env, "check", th, "--json").stdout or "{}")
+    check("not sidecar: a root witness.md beside the link is still TWO COPIES",
+          st.get("state") == "two-copies" and st.get("sidecar") is False, json.dumps(st))
+
+    # F3 — --sidecar keeps the record at the root; a .soul/ that holds a record store is
+    #      refused before anything changes (which copy is the record is the owner's call)
+    io = project(tmp, "iota", {".soul/witness.md": "# W in soul\n", ".soul/handoff.md": "# H\n",
+                               "ideas.md": "# I root\n"})
+    r = run(env, "link", io, "--key", "iota", "--label", "private", "--sidecar")
+    check("sidecar, .soul/ holds witness.md: refused, nothing changed", r.returncode == 2
+          and "owner's call" in r.stderr and "witness.md" in r.stderr
+          and os.path.isdir(os.path.join(io, ".soul"))
+          and not os.path.islink(os.path.join(io, ".soul"))
+          and read(os.path.join(io, ".soul", "witness.md")) == "# W in soul\n"
+          and read(os.path.join(io, "ideas.md")) == "# I root\n"
+          and not os.path.exists(os.path.join(vault, "projects", "iota")), r.stderr + r.stdout)
+
+    # Not a sidecar: a root-layout record linked normally, then its vault copy's stores
+    # go missing and a reset brings a root witness.md back — still TWO COPIES (sidecar is
+    # recorded in project.md, never inferred from what the vault folder holds)
+    ka = project(tmp, "kappa", {"witness.md": "# W\n", "ideas.md": "# I\n"})
+    r = run(env, "link", ka, "--key", "kappa", "--label", "private")
+    kt = os.path.join(vault, "projects", "kappa", "soul")
+    for n in ("witness.md", "ideas.md"):
+        os.remove(os.path.join(kt, n))
+    write(os.path.join(ka, "witness.md"), "# W back\n")
+    r = run(env, "check", ka, "--json")
+    st = json.loads(r.stdout or "{}")
+    check("not sidecar, vault stores gone, root witness.md back: still TWO COPIES",
+          r.returncode == 1 and st.get("state") == "two-copies" and st.get("sidecar") is False,
+          r.stdout + r.stderr)
+
+    # A hand-added vault project (project.md, no soul/ yet): --sidecar adds the line
+    # inside its frontmatter and keeps the rest
+    lam = project(tmp, "lambda", {"witness.md": "# W\n", ".soul/handoff.md": "# H\n"})
+    lpm = os.path.join(vault, "projects", "lambda", "project.md")
+    write(lpm, "---\nkey: lambda\nlabel: private\nremote: \n---\n\n# lambda notes\n")
+    r = run(env, "link", lam, "--key", "lambda", "--label", "private", "--sidecar")
+    lt = read(lpm)
+    check("sidecar into an existing project.md: `sidecar: true` added inside the frontmatter",
+          r.returncode == 0 and lt.startswith("---\nkey: lambda\n")
+          and "\nsidecar: true\n---\n" in lt and lt.endswith("\n# lambda notes\n"),
+          r.stderr + r.stdout + lt)
+
+    z2 = project(tmp, "zeta-clone", dict(roots), remote="https://example.com/me/zeta", commit=True)
+    st = json.loads(run(env, "check", z2, "--json").stdout or "{}")
+    check("sidecar clone: check is not-linked with the vault's record named",
+          st.get("state") == "not-linked" and st.get("vault_has") == "zeta", json.dumps(st))
+    r = run(env, "link", z2, "--key", "zeta", "--label", "private")
+    check("sidecar clone: re-links without --sidecar", r.returncode == 0
+          and os.path.islink(os.path.join(z2, ".soul"))
+          and os.path.isfile(os.path.join(z2, ".soul", "handoff.md"))
+          and os.path.isfile(os.path.join(z2, "witness.md"))
+          and read(os.path.join(z2, ".soul", "handoff.md")) == "# Handoff\n"
+          and read(os.path.join(z2, "witness.md")) == roots["witness.md"], r.stderr + r.stdout)
+    check("sidecar clone: no STILL TRACKED warning for the root record",
+          "STILL TRACKED" not in r.stdout, r.stdout)
+    st = json.loads(run(env, "check", z2, "--json").stdout or "{}")
+    check("sidecar clone: re-linked with no flag, check says linked, sidecar",
+          st.get("state") == "linked" and st.get("sidecar") is True, json.dumps(st))
+
+    a3 = project(tmp, "alpha-clone2", {"witness.md": "# W other\n"},
+                 remote="https://example.com/me/alpha")
+    r = run(env, "check", a3, "--json")
+    st = json.loads(r.stdout or "{}")
+    check("clone with a root witness.md, vault holds the record: TWO COPIES",
+          r.returncode == 1 and st.get("state") == "two-copies", r.stdout)
+    r = run(env, "link", a3, "--key", "alpha", "--label", "private")
+    check("clone with a root witness.md, vault holds the record: link refused",
+          r.returncode == 2 and not os.path.lexists(os.path.join(a3, ".soul")), r.stderr)
+
     shutil.rmtree(tmp, ignore_errors=True)
     print("\n{} failure(s)".format(len(FAILS)) if FAILS else "\nALL PASS")
     return 1 if FAILS else 0
