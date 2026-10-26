@@ -9142,5 +9142,5 @@ CONSEQUENCE:  Fix the index to read `## YYYY-MM-DD` headings; make init's step-4
               dialog warning harder to skip; use the attic move as I081's worked
               example. Unrun: the Mind loading through the link in NAV-TOOL; the
               new machine; NAV-TOOL's last ~17% of tests.
-STATUS:       Open — unconfirmed — owner to ratify
+STATUS:       Open (ratified by the Body 2026-10-26)
 ```
