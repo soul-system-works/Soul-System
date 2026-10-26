@@ -42,7 +42,8 @@ one prompt, the additions as one line. The preset supplies the defaults and the 
 changes only what differs. Plain words — the owner may never have heard of the Soul.
 
 **How to ask it.** The stage comes first — as the argument, or from the opening
-selection a bare `/soul-stage` shows (`/soul-init` opens that same selection) — so
+selection a bare `/soul-stage` shows (`/soul-init` asks the same choice with the same
+descriptions, from `tools/init-status.py`, and hands a chosen stage here) — so
 the screen asks the two facts through the harness's question prompt (`AskUserQuestion`)
 whenever that tool is available — one call, two questions, the recommended option
 first: question 1 as *Nothing* / *Not sure yet* (the list itself comes through the
@@ -169,9 +170,8 @@ is invisible to the model by design, so the always-on block has to carry them.
      thing; still free to rename, reorganise and delete), *released* (people rely on
      it; changes are careful and announced). With a block present, mark the current
      stage's option "(current — refreshes the block)". *Just looking* stops; nothing is
-     written or drafted. Opened from `/soul-init`, *Just looking* is the skip and init
-     continues with its next step. A chosen stage continues exactly as if it had been
-     the argument. Anything typed under the prompt's "Other" (`beta`, `frozen`, a
+     written or drafted. A chosen stage continues exactly as if it had been the
+     argument; `/soul-init` hands its chosen stage over the same way. Anything typed under the prompt's "Other" (`beta`, `frozen`, a
      sentence) is not a stage: name the three and ask again — the same for an unknown
      argument. Without the prompt tool (`claude -p`), print the three commands as the
      hint — `/soul-stage prototype` · `/soul-stage pre-release` · `/soul-stage released`,
@@ -238,4 +238,7 @@ substance credited to mattpocock-skills `prototype`. **Adopted:** 2026-08-26
 question prompt, and a bare `/soul-stage` only looks; both from the first live run, the
 Body's test on this repo (SOUL-181). **Amended:** 2026-08-26 (v2.2.2) — reverses the
 look-only half: a bare run offers the selection (*Just looking* first) and `/soul-init`
-reuses it, after the record scaffold; from the second test, same day. **Status:** active.
+reuses it, after the record scaffold; from the second test, same day. **Amended:**
+2026-10-26 (v3.6.0, SOUL-I082) — `/soul-init` asks its own stage question (fixed
+wording, the same descriptions, "Not now" as the skip, remembered) and hands a chosen
+stage here as the argument. **Status:** active.

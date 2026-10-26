@@ -57,8 +57,8 @@ IMPORTERS = ("CLAUDE.md", os.path.join(".claude", "CLAUDE.md"), "AGENTS.md")
 STORES = ("witness.md", "ideas.md")
 HOOKS = ("pre-commit", "commit-msg", "pre-push")
 HOOK_MARK = "Soul System secret check"
-# Soul's own files that layout-cleanup.py does not yet know as record files: left out of
-# the layout count so a set-up project is not asked to move them into .ai/.
+# Soul's own files, never working material. layout-cleanup.py's STORE_FILES lists them
+# too (v3.6.0); kept here so an older plugin copy's scan cannot flag them.
 LAYOUT_SKIP = (".soul/init.md", ".soul/private-names.txt")
 EXTRAS = ("hand-hooks", "history-scan", "line-endings")
 MAIN = ("record", "stage", "names")
@@ -89,12 +89,13 @@ QUESTIONS = {
         "group": "main", "multi": False,
         "text": "How settled is this project?",
         "options": [
+            # The same descriptions as skills/soul-stage — one wording, not two.
             {"value": "prototype", "label": "Prototype",
-             "description": "anything may change or break"},
+             "description": "throwaway code to answer a question; nothing is promised to anyone"},
             {"value": "pre-release", "label": "Pre-release",
-             "description": "keep what others already use"},
+             "description": "building the real thing; still free to rename, reorganise and delete"},
             {"value": "released", "label": "Released",
-             "description": "ask before breaking anything"},
+             "description": "people rely on it; changes are careful and announced"},
             {"value": "not-now", "label": "Not now",
              "description": "treated as released until you choose"},
         ],
@@ -409,11 +410,11 @@ def check_record(c, vault_item, public):
                              "this machine names no vault.")
             return _recorded("record", rec, "repair", (
                 "Recorded vault, but the record is not in it yet — " +
-                ("scaffold it (skill step 3b), then " if not c["stores"] else "") +
-                "move it into the vault (skill step 3f)."))
+                ("scaffold it (skill: the scaffold), then " if not c["stores"] else "") +
+                "move it into the vault (skill: the vault move)."))
         if not c["stores"] and not linked:
             return _recorded("record", rec, "repair", "Recorded {}, but no record stores "
-                             "exist yet — scaffold them (skill step 3b).".format(v))
+                             "exist yet — scaffold them (skill: the scaffold).".format(v))
         note = "" if val in (None, v) else " (the files now look like {})".format(val)
         return _recorded("record", rec, detail="Recorded {}.{}".format(v, note))
     if val:
@@ -489,7 +490,7 @@ def check_hand_hooks(c):
         src = ("recorded", rec[1]) if rec else ("inferred", None)
         if free:
             return _item("hand-hooks", "repair", "yes", src[1], src[0], "Install the missing "
-                         "Soul hook(s) {} in {} (skill step 3b).".format(", ".join(free), d)
+                         "Soul hook(s) {} in {} (skill: hand-hooks).".format(", ".join(free), d)
                          + held)
         return _item("hand-hooks", "none", "yes", src[1], src[0],
                      "Soul hooks in {}: {}.".format(d, ", ".join(soul) or "none") + held)
@@ -573,7 +574,7 @@ def check_layout(c):
     if not n:
         return _item("layout", "none", "clean", None, "inferred", "No working files flagged.")
     it = _item("layout", "ask", detail="{} files flagged — run the layout-cleanup flow (skill "
-               "step 3e).".format(n))
+               "`layout`).".format(n))
     it["count"] = n
     return it
 
@@ -614,7 +615,7 @@ def check_mind(c):
     f = c["importer"] or "CLAUDE.md"
     rel = os.path.relpath(os.path.join(p, minds[0]), os.path.dirname(os.path.join(p, f)))
     return _item("mind", "repair", minds[0], None, "inferred", "{} exists but nothing imports "
-                 "it — add `@{}` after the contract import in {} (skill step 3c)."
+                 "it — add `@{}` after the contract import in {} (skill: mind)."
                  .format(minds[0], rel.replace(os.sep, "/"), f))
 
 
@@ -643,7 +644,7 @@ def render_question(key, public=None, vault=None, path=None, n=None, members=())
     text, rec = q["text"], 0
     if key == "stage":  # how settled a project is only the owner knows
         rec = None
-    if key == "extras":  # each is an offer, none a default (skill step 3b)
+    if key == "extras":  # each is an offer, none a default (skill: hand-hooks)
         opts, rec = [dict(q["members"][k]) for k in members], None
     else:
         opts = [dict(o) for o in q["options"]]
