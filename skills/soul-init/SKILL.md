@@ -347,6 +347,37 @@ line you have not verified resolves.
    picks — a record must never be left neither tracked nor ignored, where one
    `git add -A` commits it.
 
+3g. **Line endings — check, and offer the fix once.** Git repos only. Run
+   `python3 <derived-root>/tools/eol.py check .` — and, if the record lives in a
+   vault, `check <vault>` too. Exit 0: say nothing. Exit 2: report its line and
+   move on. Exit 1: report its summary line in plain words and its list of files
+   committed with CRLF — some may need CRLF on purpose (test fixtures such as
+   `.eml`, `.ics`), and the fix stores them LF — then offer the fix as its own
+   commit. The problem it prevents:
+   a Windows git or Sourcetree with `core.autocrlf=true` checks files out with
+   Windows line endings; WSL git sees every one of them as modified, `git add -A`
+   commits them, and tools that write Unix endings (this plugin's, the AI's edits)
+   leave files with both. The fix makes the repo decide, not each machine: a
+   `.gitattributes` catch-all `* text=auto eol=lf`, with `.bat`, `.cmd` and `.sln`
+   kept CRLF and existing rules (e.g. Git LFS) left after it so they still win.
+   On the owner's yes run `eol.py fix .`, show what it printed, and commit with
+   the line it suggests. If `fix` refuses (exit 2 before changing anything:
+   staged work, real edits it would sweep into the commit, an untracked or edited
+   `.gitattributes`, files hidden by assume-unchanged or skip-worktree), say why
+   and leave it — the owner commits their work first. If it stops partway (exit 2
+   after changing something), relay its list of what changed and its undo lines
+   word for word. Exit 1 after a fix means the re-check is still not ok (a later
+   rule overriding the block, or files still CRLF) — show what it printed, do not
+   commit, and the owner chooses: fix what it names, or undo with
+   `git restore --staged .`. For the vault, commit step 3f's `index.md` change first, then run
+   `fix <vault>` and commit there. Once the rule is committed, other machines'
+   CRLF copies stop showing as changed; `fix` there only rewrites the bytes on
+   disk to LF. *Why:* the owner's words (2026-10-26): "i have seen this on
+   every soul project we have worked on (and non soul). the ai typically
+   identifies it eventually that it is just eol issues after it checks and then
+   fixes it. so i am trying to preempt it." Observed in full on a second machine
+   (SOUL-219): about 114 vault files and 2 project files rewritten by hand.
+
 4. After creating or confirming the file, report:
    - The absolute path of the `CLAUDE.md` you wrote or found.
    - That the next Claude Code session opened in this directory will load the project contract (`operations/CLAUDE.md`) by import. The philosophy (`philosophy/the-soul.md`) is NOT imported — it is the human-facing book, read on demand (A021).
@@ -362,11 +393,16 @@ line you have not verified resolves.
      `/soul-resume`'s Mind check is what notices (the link test: a SessionStart hook
      cannot carry the Mind instead, its output is cut to ~2KB). And the vault counts
      as kept only once it is committed and pushed.
+   - **The outside-files dialog goes in the bottom line, every time an import or
+     the record resolves outside the project** — as its own 🙋 item ("approve the
+     outside-files dialog the next session shows; declining turns it off for good"),
+     not only in the body above. A session once never told the owner about it at
+     all (SOUL-218); a required bottom-line item is harder to drop than a bullet.
 
 ## What not to do
 
 - Do not copy any Soul System *doctrine* files into the project (the seed, philosophy, operations). The whole point is that the philosophy stays in one canonical location and is referenced by import. (Scaffolding the project's own empty record stores in step 3b is not copying — it is establishing *this* project's record.)
-- Beyond the import line and the empty record scaffold, do not write project content. (The one exception: step 3e's link repointing, after the owner chose the moves.) If the user wants project-specific context, that belongs in a separate file or below the import line — `/soul-init` adds only the import + the empty record.
+- Beyond the import line and the empty record scaffold, do not write project content. (The exceptions: step 3e's link repointing, after the owner chose the moves, and step 3g's `.gitattributes` and renormalize commit, on the owner's yes.) If the user wants project-specific context, that belongs in a separate file or below the import line — `/soul-init` adds only the import + the empty record.
 - Do not classify files yourself in step 3e: move only what the layout scan flagged and the owner chose to move, and never delete one.
 - Do not modify the Soul System repo from this command. It is read-only as far as `/soul-init` is concerned.
 
@@ -377,3 +413,4 @@ line you have not verified resolves.
 **Amended:** 2026-10-19 (mining pass 2, SOUL-202) — step 3 checks repo visibility before the tracking question; 3b finds an existing store outside root/`.soul/` (e.g. `docs/`) before scaffolding; 3c writes the Mind import relative to the importing file (extends F068).
 **Amended:** 2026-10-20 (v2.10.0, SOUL-I070) — step 3b sets up the experimental secret guard: the project's private-name list (gitignored); optional hand-commit hooks (`pre-commit`, `commit-msg`, `pre-push`) placed in the repo's own hooks directory (`--own-hooks-dir`, since a session points `core.hooksPath` at the plugin's wrappers), never overwriting an existing hook, failing open loudly when the plugin path is gone, and not re-running a check the session's wrapper already ran; a one-line Codex opt-in pointer; a history-sweep offer; and push-protection status for public repos.
 **Amended:** 2026-10-22 (v3.4.0, SOUL-I079) — the vault: step 3 checks for a vault named on this machine, re-links a record the vault already holds, and offers "in the vault" as a third answer; step 3f moves the record and links it (`tools/vault.py`); step 4 tells the owner to approve the one-time outside-files dialog and to push the vault.
+**Amended:** 2026-10-26 (v3.5.0, SOUL-218/219) — step 3g checks line endings (`tools/eol.py`) in the project and the vault and offers a `.gitattributes` fix as its own commit; step 4 puts the outside-files dialog in the bottom line as its own item.

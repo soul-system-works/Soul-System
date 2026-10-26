@@ -69,7 +69,9 @@ It still references doctrine live; it never copies doctrine into the project.
    step **3e** (offer to move AI working files into `.ai/` with
    `tools/layout-cleanup.py`) on an already-initialized project — one whose
    instruction file already held the managed block, the Codex form of the shared
-   "import already present" path; skip it for a fresh project.
+   "import already present" path; skip it for a fresh project. Follow step **3g**
+   (line endings, `tools/eol.py check`, the fix offered as its own commit) in any
+   git repo.
 5. Read an existing Mind explicitly and check that the managed block asks future
    sessions to read it. Do not add `@` imports to `AGENTS.md`.
 6. Run the helper's `status --project <project-root>` command. Report a missing or
