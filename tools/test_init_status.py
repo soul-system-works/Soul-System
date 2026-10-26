@@ -143,8 +143,10 @@ def main():
           all(by[k]["question"] is None and by[k]["group"] == "extras"
               for k in ("hand-hooks", "line-endings")))
     check("fresh: rounds end with extras", st["rounds"][-1] == ["extras"], st["rounds"])
-    check("extras: every check is an offer, none recommended",
-          by["extras"]["question"]["recommended"] is None, by["extras"]["question"])
+    q = by["extras"]["question"]
+    check("extras: only the line-endings fix is recommended (hooks, scan are offers)",
+          q["recommended"] is not None
+          and q["options"][q["recommended"]]["key"] == "line-endings", q)
     q = by["record"]["question"]
     check("record question: fixed wording, no vault option without a vault",
           q["text"] == "Where should this project's record (its decision log and ideas) live?"
@@ -367,7 +369,8 @@ def main():
     spec.loader.exec_module(mod)
     q = mod.render_question("record", public="yes", vault=None)
     check("public repo: record warns, nothing recommended",
-          q["options"][0]["description"] == "public: anyone can read it"
+          q["options"][0]["description"] == mod.QUESTIONS["record"]["public_description"]
+          and "public, anyone can read it" in q["options"][0]["description"]
           and q["recommended"] is None, q)
     q = mod.render_question("names", public="yes")
     check("public repo: names question says so",
@@ -413,10 +416,10 @@ def main():
     st, by = status(envl, p2)
     q = by["extras"]["question"]
     check("one extras member: single-choice yes/no, members kept",
-          q["text"] == "Set this up? Scan git history for leaked secrets now (reports only, "
-                       "changes nothing)"
+          q["text"].startswith("Set this up? Scan git history for leaked secrets now (")
           and [o["value"] for o in q["options"]] == ["yes", "no"]
-          and q["options"][0]["description"] == "reports only, changes nothing"
+          and q["options"][0]["description"]
+          == mod.QUESTIONS["extras"]["members"]["history-scan"]["description"]
           and q["options"][1]["description"] == "not asked again; /soul-init revisit to change"
           and q["multi"] is False and q["recommended"] is None
           and by["extras"]["members"] == ["history-scan"], q)
@@ -428,9 +431,11 @@ def main():
           pub["action"] == "ask" and ["public"] in st["rounds"]
           and st["rounds"].index(["public"]) < st["rounds"].index(["record", "stage", "names"])
           and pub["question"]["text"] == "Is this repo public, or will it be?"
-          and [(o["value"], o["label"], o["description"]) for o in pub["question"]["options"]]
-          == [("yes", "Yes", "anyone can read what is committed"),
-              ("no", "No", "private to you or your team")]
+          and pub["question"]["options"] == mod.QUESTIONS["public"]["options"]
+          and [(o["value"], o["label"]) for o in pub["question"]["options"]]
+          == [("yes", "Yes"), ("no", "No")]
+          and all(o["description"].startswith("nothing is written")
+                  for o in pub["question"]["options"])
           and pub["question"]["recommended"] is None, (pub, st["rounds"]))
     p19 = repo(tmp, "pubrec", {"README.md": "x\n"})
     run(env, "record", p19, "public", "no")
@@ -587,6 +592,15 @@ def main():
     check("--ask record with unknown visibility: public asked first",
           by.get("public", {}).get("action") == "ask" and ["public"] in st["rounds"],
           (by.get("public"), st.get("rounds")))
+
+    # 29 — found in the live trial: an answer recorded this run, not yet carried out,
+    #      is a repair (step 4 does it), never the same question again
+    p29 = repo(tmp, "addlater", {"CLAUDE.md": "# notes\n", "README.md": "x\n"})
+    run(env, "record", p29, "import", "add")
+    st, by = status(env, p29)
+    check("recorded import add, line not written: repair, not asked again",
+          by["import"]["action"] == "repair" and ["import"] not in st["rounds"],
+          (by["import"], st["rounds"]))
 
     shutil.rmtree(tmp, ignore_errors=True)
     print("\n{} failure(s)".format(len(FAILS)) if FAILS else "\nALL PASS")

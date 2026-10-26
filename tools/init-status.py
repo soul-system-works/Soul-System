@@ -90,17 +90,22 @@ QUESTIONS = {
         "text": "Where should this project's record (its decision log and ideas) live?",
         "options": [
             {"value": "git", "label": "In this repo's git",
-             "description": "backed up, travels with the repo"},
+             "description": "creates .soul/ here and commits it: backed up, travels with "
+                            "the repo"},
             {"value": "vault", "label": "In your Soul vault",
-             "description": "private, kept with your other projects"},
+             "description": "moves .soul/ into your private vault and leaves a link here; "
+                            "nothing of it is committed to this repo"},
             {"value": "local", "label": "Only on this machine",
-             "description": "no backup, no history"},
+             "description": "creates .soul/ and git ignores it: one copy on this disk, "
+                            "no history"},
         ],
-        "public_description": "public: anyone can read it",
+        "public_description": "creates .soul/ here and commits it: public, anyone can "
+                              "read it",
     },
     "stage": {
         "group": "main", "multi": False,
-        "text": "How settled is this project?",
+        "text": "How settled is this project? A choice writes a short rules block into "
+                "CLAUDE.md.",
         "options": [
             # The same descriptions as skills/soul-stage — one wording, not two.
             {"value": "prototype", "label": "Prototype",
@@ -110,7 +115,7 @@ QUESTIONS = {
             {"value": "released", "label": "Released",
              "description": "people rely on it; changes are careful and announced"},
             {"value": "not-now", "label": "Not now",
-             "description": "treated as released until you choose"},
+             "description": "writes nothing; treated as released until you choose"},
         ],
     },
     "names": {
@@ -119,9 +124,10 @@ QUESTIONS = {
                 "a work email?",
         "options": [
             {"value": "none", "label": "None beyond my global list",
-             "description": "~/.claude/soul-private-names.txt still applies"},
+             "description": "writes nothing; ~/.claude/soul-private-names.txt still applies"},
             {"value": "listed", "label": "Type them",
-             "description": "one per line; Name => TOKEN suggests a replacement"},
+             "description": "saved to .soul/private-names.txt, never committed; a commit "
+                            "containing one gets a warning"},
         ],
         "public_note": " This repo is public — a name committed here is public.",
     },
@@ -130,13 +136,17 @@ QUESTIONS = {
         "text": "Which safety checks should I set up? (tick any)",
         "members": {
             "hand-hooks": {"key": "hand-hooks", "label": "Check commits I make by hand",
-                           "description": "installs git hooks that run outside Claude"},
+                           "description": "adds three scripts to .git/hooks that check for "
+                                          "secrets when you commit outside Claude; nothing "
+                                          "is committed"},
             "history-scan": {"key": "history-scan",
                              "label": "Scan git history for leaked secrets now",
-                             "description": "reports only, changes nothing"},
+                             "description": "runs gitleaks over past commits and shows what "
+                                            "it finds; changes nothing"},
             "line-endings": {"key": "line-endings",
                              "label": "Make line endings the same on Windows and WSL",
-                             "description": "one commit adding .gitattributes"},
+                             "description": "adds .gitattributes and converts files to Unix "
+                                            "line endings, as one commit"},
         },
         # AskUserQuestion needs 2–4 options, so one member is asked as yes / no.
         "one_text": "Set this up? {label} ({description})",
@@ -150,8 +160,12 @@ QUESTIONS = {
         "group": "single", "multi": False,
         "text": "Is this repo public, or will it be?",
         "options": [
-            {"value": "yes", "label": "Yes", "description": "anyone can read what is committed"},
-            {"value": "no", "label": "No", "description": "private to you or your team"},
+            {"value": "yes", "label": "Yes",
+             "description": "nothing is written; the next questions warn that anyone can "
+                            "read what is committed"},
+            {"value": "no", "label": "No",
+             "description": "nothing is written; the next questions assume only you or your "
+                            "team can read it"},
         ],
     },
     "import": {
@@ -159,9 +173,10 @@ QUESTIONS = {
         "text": "Add the Soul line to your existing CLAUDE.md?",
         "options": [
             {"value": "add", "label": "Add it",
-             "description": "one import line at the top; nothing else changes"},
+             "description": "one line at the top loads the Soul's rules; your notes stay as "
+                            "they are"},
             {"value": "leave", "label": "Leave it",
-             "description": "Soul stays off in this project"},
+             "description": "nothing changes; the Soul stays off in this project"},
         ],
     },
     "vault-link": {
@@ -169,8 +184,11 @@ QUESTIONS = {
         "text": "Your vault already holds this project's record. Link it here?",
         "options": [
             {"value": "link", "label": "Link it",
-             "description": "this checkout uses the vault copy"},
-            {"value": "not-now", "label": "Not now", "description": "nothing changes"},
+             "description": "makes .soul here a link to the vault's copy; nothing is "
+                            "committed"},
+            {"value": "not-now", "label": "Not now",
+             "description": "nothing changes, and nothing else can be set up here until "
+                            "it is linked"},
         ],
     },
     "existing-store": {
@@ -178,15 +196,18 @@ QUESTIONS = {
         "text": "{path} looks like this project's record. Use it?",
         "options": [
             {"value": "use", "label": "Use it",
-             "description": "Soul writes there; no second copy"},
-            {"value": "no", "label": "No", "description": "start a new record in .soul/"},
+             "description": "writes a one-line pointer in .soul/; the Soul adds to that "
+                            "file, no second copy"},
+            {"value": "no", "label": "No",
+             "description": "starts a new, empty record in .soul/"},
         ],
     },
     "layout": {
         "group": "single", "multi": False,
         "text": "{n} working files could move into .ai/ (safe to delete). Review them?",
         "options": [
-            {"value": "review", "label": "Review", "description": "go group by group"},
+            {"value": "review", "label": "Review",
+             "description": "shows them group by group; nothing moves without your yes"},
             {"value": "leave", "label": "Leave them",
              "description": "remembered; only newly flagged files are asked about"},
         ],
@@ -403,6 +424,9 @@ def check_import(c):
     if rec and rec[0] == "leave":
         return _recorded("import", rec, detail="You chose to leave {} without the Soul line."
                          .format(claude[0]))
+    if rec and rec[0] == "add":  # answered this run; the line is written in step 4
+        return _recorded("import", rec, "repair", "Recorded add; the import line is not "
+                         "written in {} yet (skill: import).".format(claude[0]))
     return _item("import", "ask", detail="{} exists without the Soul import line."
                  .format(claude[0]))
 
@@ -825,6 +849,9 @@ def check_existing_store(c):
     if rec and rec[0] == "no":
         return _recorded("existing-store", rec, detail="You said {} is not the record."
                          .format(found[0]))
+    if rec and rec[0] == "use":  # answered; the pointer is written in step 4
+        return _recorded("existing-store", rec, "repair", "Recorded use; write the .soul/ "
+                         "pointer to {} (skill: existing-store).".format(found[0]))
     it = _item("existing-store", "ask", detail="Found outside the root and .soul/: {}."
                .format(", ".join(found)))
     it["path"] = found[0]
@@ -841,14 +868,19 @@ def render_question(key, public=None, vault=None, path=None, n=None, members=())
     multi = q["multi"]
     if key == "public":  # only the owner knows what the repo is, or will be
         rec = None
-    if key == "extras":  # each is an offer, none a default (skill: hand-hooks)
-        opts, rec = [dict(q["members"][k]) for k in members], None
+    if key == "extras":
+        # Hooks and the scan are offers, not defaults (skill: hand-hooks). Line endings
+        # is recommended: it is offered only when the repo has the problem, and the
+        # owner saw it on every project (SOUL-219).
+        opts = [dict(q["members"][k]) for k in members]
+        rec = members.index("line-endings") if "line-endings" in members else None
         if len(opts) == 1:  # AskUserQuestion needs 2–4 options: one member is yes / no
             m = opts[0]
             text = q["one_text"].format(label=m["label"], description=m["description"])
             opts = [dict(o) for o in q["one_options"]]
             opts[0]["description"] = m["description"]
             multi = False
+            rec = 0 if rec == 0 else None
     else:
         opts = [dict(o) for o in q["options"]]
     if key == "record":

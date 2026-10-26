@@ -183,6 +183,14 @@ is invisible to the model by design, so the always-on block has to carry them.
      refresh** — rewrite the block from the current preset keeping the owner's
      answers; ask nothing and write no witness entry unless the owner then asks to
      change an answer.
+   **Handed a stage by `/soul-init`** (prototype or pre-release, a project with no
+   block): skip steps 2 and 3. The block takes the preset's defaults — relied on from
+   outside: prototype `nothing — nothing is promised`, pre-release `not known yet —
+   confirm before changing any public surface`; next stage when: `not known yet`;
+   owner's additions: none — then steps 4 and 5 as usual. `/soul-init` asks its
+   questions in one or two rounds and a fresh project should not get three more here
+   (the v3.6.0 live trial, 2026-10-26). *Released* always gets the screen: its list
+   of what outsiders rely on has no default.
 2. **Ask the screen** (the prompt, or the prose fallback) for a new or changed stage:
    the stage is known (argument or selection); an existing block's answers appear as *Keep:* options,
    otherwise only the preset's defaults. Wait for the owner. Check: `released` needs

@@ -66,7 +66,10 @@ vendor a copy into the project; a copy never receives contract upgrades.
 
 ## What to do
 
-Work from the directory the session started in; do not search upwards.
+Work from the directory the session started in; do not search upwards. **Run
+quietly:** between questions, say nothing about the steps you are taking ("Round 4",
+"recording the answers") — speak to ask, to put a tracked-file change to the owner,
+or to report a problem. The tool calls already show the work.
 
 0. **`/soul-init revisit [key ...]`** — run `python3 <root>/tools/init-status.py
    revisit . [key ...]` first (no key: every answer), say what it forgot, and in
@@ -128,28 +131,29 @@ Work from the directory the session started in; do not search upwards.
 5. **Check.** Run `status` again. Nothing should be left to repair or ask; if
    something is, say what and why.
 
-6. **Report**, briefly: what changed (files written, hooks installed, commits made),
-   then only the notes that apply —
-   - the `CLAUDE.md` path, and that the contract loads from the *next* session;
-   - the version-pin warning, if the import is pinned;
-   - automated `claude -p` runs: pass the contract with `--append-system-prompt-file`;
-   - `CLAUDE.md` itself gitignored: the wiring is machine-local and a fresh clone
-     loads no contract — a choice, not a gap; let the Body confirm;
+6. **Report — short.** "Done." and one line per change (a file written, hooks
+   installed, a commit with its hash). Nothing changed: "All set — nothing changed."
+   and stop; do not list the checks that passed (the gap-only rule, SOUL-055). Then
+   only the notes that ask something of the owner, one line each:
+   - the import is pinned to a plugin version (the version-pin guard);
+   - `CLAUDE.md` itself is gitignored: a fresh clone loads no contract — a choice,
+     not a gap; let the owner confirm;
    - gitleaks missing: the credential check is not running until it is installed;
-   - public repo: whether GitHub push protection is on —
-     `gh api repos/<owner>/<repo> --jq .security_and_analysis.secret_scanning_push_protection.status`
-     (no value: unknown);
-   - Codex in use: the secret guard is an opt-in there (the
-     `shell_environment_policy` lines in `operations/secret-guard.md`);
-   - record moved into the vault: the vault counts as kept only once it is
-     committed and pushed;
-   - once the record has grown, `/soul-distill` builds a Mind (earned, not seeded).
+   - a public repo on GitHub: whether push protection is on —
+     `gh api repos/<owner>/<repo> --jq .security_and_analysis.secret_scanning_push_protection.status`;
+   - the record moved into the vault: commit and push the vault.
 
-   **The outside-files dialog goes in the bottom line, every time an import or the
-   record resolves outside the project** — as its own 🙋 item ("approve the
+   **The outside-files dialog goes in the bottom line on the run that wrote the
+   import or moved the record into the vault** — as its own 🙋 item ("approve the
    outside-files dialog the next session shows; declining turns it off for good"),
    not only in the body. A session once never told the owner about it at all
-   (SOUL-218); a required bottom-line item is harder to drop than a bullet.
+   (SOUL-218); a required bottom-line item is harder to drop than a bullet. On a
+   re-run that wrote neither, leave it out: the dialog has already been shown.
+
+   *Why short:* the owner, on the v3.6.0 live trial (2026-10-26): "is soul-init,
+   logs are still pretty verbose and i'm not sure as a user i wound understand what
+   most of it means." The `claude -p` note, the Codex opt-in and the Mind layer live in
+   `docs/using-the-soul.md`, not in every report.
 
 ## How each answer is carried out
 
@@ -194,7 +198,9 @@ that points at it and buys nothing.
 local target (the record is THIS project's, **never** the Soul System repo's).
 Create what is absent; never overwrite. `.soul/ideas.md` — a header `# Ideas —
 <this project>`; `.soul/witness.md` — a header naming it this project's Witness log
-(format: `operations/witness-log-format.md`). **Existing projects keep their
+and its ID code, the folder name in capitals (`# Witness log — <project> · IDs
+<CODE>-001, <CODE>-002, …`; format: `operations/witness-log-format.md`), so the
+first entry does not have to ask for one (found in the v3.6.0 live trial). **Existing projects keep their
 layout**: stores at the root or under `.soul/` ARE the record — leave them where
 they are; the gate scopes on either (`hooks/test_scope.py` cases 5 and 7). Skip
 `amendments/` and `findings/`: those record changes to the Soul and go upstream;
@@ -285,9 +291,14 @@ rotated first, and any rewrite is the owner's separate call (on a native Linux
 filesystem, not a `/mnt` drive; a rewritten-away commit stays fetchable by SHA on
 GitHub).
 
-**`stage`** — a chosen stage continues in `<root>/skills/soul-stage/SKILL.md` as
-if it had been the argument (its screen, block and witness entry; the block lands
-under the import). *Not now* writes nothing but the answer: no stage line means
+**`stage`** — *Prototype* or *Pre-release*: write that preset's block with its
+defaults and its witness entry, with no further questions, as
+`<root>/skills/soul-stage/SKILL.md` describes for a stage handed over by
+`/soul-init`; say in one line that `/soul-stage <stage>` refines it. *Released*
+continues in that skill as if it had been the argument (its screen, block and
+witness entry): what outsiders rely on has no default. The block lands under the
+import. The live trial asked three follow-up questions here (the next-stage
+trigger, additions, a confirm) on a fresh project (2026-10-26). *Not now* writes nothing but the answer: no stage line means
 released-grade caution, the contract's default. Carried out after the record
 exists, because a chosen stage ends in a witness entry (the 2.2.0–2.2.2 order had it
 before the scaffold; found by fresh-context review, 2026-08-26). If the tool's
