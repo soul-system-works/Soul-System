@@ -97,9 +97,8 @@ source of truth; this loads them and continues.
 3. **Restate, in 2–3 lines:** where we are · the live design frame (if any) · the
    next step · and, if a line in the project's CLAUDE.md starts `**Stage:`, the
    stage in one phrase ("stage: pre-release since 2026-08-26"). Say nothing about
-   stage when there is no line — absence is the default, not a gap. Under a
-   `plain` register (the project CLAUDE.md's Register line), say "the current
-   design frame" rather than "the LIVE AL"; plain language throughout.
+   stage when there is no line — absence is the default, not a gap. Say "the
+   current design frame" rather than "the LIVE AL"; plain language throughout.
 
    **Then name every `UNCONFIRMED` id the cursor lists** — entries appended while
    the Body was away (F065) — and ask the Body to ratify each. Yes → remove the

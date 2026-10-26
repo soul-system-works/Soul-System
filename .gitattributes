@@ -1,0 +1,5 @@
+# Line endings: the repo decides, not each machine's core.autocrlf (Soul tools/eol.py).
+* text=auto eol=lf
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.sln text eol=crlf

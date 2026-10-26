@@ -1,416 +1,381 @@
 ---
 name: soul-init
-description: Initialize the current project as a Soul System project — wires a live contract reference into the host's project instructions, loads an existing Mind if there is one, and scaffolds the project's local record after asking whether that record goes in version control, stays local, or (when this machine names a Soul vault) lives in the vault behind a `.soul` link.
+description: Bring the current project under the Soul System, or check one that already is — wires a live contract reference into the host's project instructions, keeps the project's record (in git, local, or a Soul vault behind a `.soul` link), repairs what broke on this machine, and asks only the decisions never answered, remembering every answer in `.soul/init.md`.
 disable-model-invocation: true
 ---
 
-# /soul-init — load the Soul System into the current project
+# /soul-init — bring a project under the Soul, or check one that is
 
 **Codex:** Read [the host integration](../../operations/codex.md) before
 following this workflow. Its Codex procedures replace Claude-specific loading,
 instruction-file, tool, and invocation mechanics; the shared workflow follows.
 
-**Derive the Soul System root from this skill's own location (A022).** The harness
-states this skill's base directory when it loads; the root is two levels up
-(`<base>/../..` — this file lives at `<root>/skills/soul-init/`). That resolves
-correctly for every distribution model: a symlinked skill resolves through the
-symlink to the cloned repo (the SOUL-F029 model); a plugin-installed skill
-resolves to the plugin's installed copy, which ships the whole repo — making
-**plugin install + `/soul-init` a complete setup with no clone**.
+Every run is the same three moves: **status** (what is set), **questions** (only
+decisions never answered), then **carrying out** the answers and the repairs (what
+broke on this machine, fixed from answers already given). A fresh project gets a few short rounds; a
+project already set up usually gets none. `tools/init-status.py` works out the
+state and holds the question wording; this skill carries out the answers.
+
+*Why this shape* (SOUL-I082, the owner, 2026-10-26): "it does the work correctly,
+but the options that the user has to specify are not clear. Sometimes they seem kind
+of strange, or if I've already initialized a project, it's unclear if I needed to
+answer those certain questions again." Three exported runs showed it: re-runs
+re-asked private names, hooks and the history scan, because "ask once" kept no
+record; and each session worded its questions its own way.
+
+## The Soul System root
+
+**Derive it from this skill's own location (A022).** The harness states this
+skill's base directory when it loads; the root is two levels up (`<base>/../..`).
+That resolves for every distribution model: a symlinked skill resolves through the
+symlink to the cloned repo (SOUL-F029); a plugin-installed skill resolves to the
+plugin's installed copy, which ships the whole repo — so **plugin install +
+`/soul-init` is a complete setup with no clone**. Below, `<root>` is that path.
 
 **Version-pin guard (measured on the first live install):** a plugin-cache root
-looks like `~/.claude/plugins/cache/<marketplace>/<plugin>/<version>/` — that
-path DIES at the next plugin update (new version directory), and a dead
-`@import` fails silently (the F038 failure mode). When the derived root matches
-that pattern, prefer the UNVERSIONED marketplace clone —
+looks like `~/.claude/plugins/cache/<marketplace>/<plugin>/<version>/` — that path
+DIES at the next plugin update, and a dead `@import` fails silently (F038). When the
+root matches that pattern, prefer the UNVERSIONED marketplace clone —
 `~/.claude/plugins/marketplaces/<marketplace>/` — if it contains
-`operations/CLAUDE.md`; it is updated in place and survives updates. If only
-the versioned path exists, use it but TELL the Body: "this import is pinned to
-plugin version <v>; re-run /soul-init after plugin updates."
+`operations/CLAUDE.md`; it is updated in place. If only the versioned path exists,
+use it but TELL the Body: "this import is pinned to plugin version <v>; re-run
+/soul-init after plugin updates." Wherever a path is written into the project (the
+import line, the hook script), `<root>` means the root this guard chose.
 
-**Write the path home-relative when it sits under the home directory.** Verified
-against Claude Code's memory documentation (2026-08-20): CLAUDE.md `@` imports
-accept absolute and relative paths, resolve relative paths against the importing
-file, and support the `~/` form — they do **not** expand environment variables,
-so there is no `${CLAUDE_PLUGIN_ROOT}` option here. So after deriving and
-verifying the root, replace a literal home prefix with `~`:
-`/home/<user>/.claude/plugins/...` → `@~/.claude/plugins/...`. Same file, but the
-line no longer names one machine's user, which matters the moment the project is
-cloned, shared, or opened by anyone who is not the Soul System's author. Five of
-six adopting projects carry the hard-coded form (2026-08-20 retrospective); they
-work only on the machine that wrote them.
+**Write the import path home-relative.** CLAUDE.md `@` imports accept absolute and
+relative paths, resolve relative ones against the importing file, and support `~/`;
+they do **not** expand environment variables, so there is no `${CLAUDE_PLUGIN_ROOT}`
+option (Claude Code's memory documentation, verified 2026-08-20). So replace a
+literal home prefix with `~`: `/home/<user>/.claude/plugins/...` →
+`@~/.claude/plugins/...`. Five of six adopting projects carried the hard-coded form
+and worked only on the machine that wrote them (2026-08-20 retrospective).
 
-**Warn about the external-import dialog.** An import that resolves outside the
-working directory is "external", and Claude Code shows a one-time approval dialog
-listing it. Per the documentation: *"If you decline, the imports stay disabled and
-the dialog doesn't appear again."* Tell the Body this in step 4 — a single
-mis-click permanently silences the contract in that project, and the failure looks
-exactly like a session that simply ignores doctrine. `/soul-resume`'s wiring check
-(step 0) is what catches it afterwards. **Headless runs never get the dialog**:
-under `claude -p` this home-relative import did not load in 3 of 3 sentinel runs
-while an in-project copy did (2026-10-19, Claude Code 2.1.303). So tell the Body
-too: automated runs need the contract passed explicitly —
-`--append-system-prompt-file <root>/operations/CLAUDE.md` (the SOUL-F038 fix).
-Do not vendor a copy into the project; a copy never receives contract upgrades.
+**VERIFY before writing:** the chosen root must contain `operations/CLAUDE.md`
+(resolve symlinks first, e.g. `realpath`). If it does not, say so and ask the Body
+where the Soul System lives — never write an import line you have not verified.
 
-VERIFY before writing: the chosen root must contain `operations/CLAUDE.md`
-(resolve symlinks to an absolute path first, e.g. `realpath`). If it does not,
-say so and ask the Body where the Soul System lives — never write an import
-line you have not verified resolves.
+**The external-import dialog.** An import that resolves outside the project is
+"external", and Claude Code shows a one-time approval dialog. Per the
+documentation: *"If you decline, the imports stay disabled and the dialog doesn't
+appear again."* One mis-click silences the contract for good, and it looks exactly
+like a session that ignores doctrine (`/soul-resume` step 0 catches it). **Headless
+runs never get the dialog**: under `claude -p` this import did not load in 3 of 3
+sentinel runs (2026-10-19, Claude Code 2.1.303); automated runs need
+`--append-system-prompt-file <root>/operations/CLAUDE.md` (SOUL-F038). Do not
+vendor a copy into the project; a copy never receives contract upgrades.
 
 ## What to do
 
-1. Determine the current working directory (the project root). Do not search upwards; use the directory the session was started in.
+Work from the directory the session started in; do not search upwards. **Run
+quietly:** between questions, say nothing about the steps you are taking ("Round 4",
+"recording the answers") — speak to ask, to put a tracked-file change to the owner,
+or to report a problem. The tool calls already show the work.
 
-2. Check whether `CLAUDE.md` already exists in that directory.
-   - **If it exists:** read it. If it already contains an import line ending in `/operations/CLAUDE.md` (any root — a prior install may have used a different path), note "import already present" — **do not stop; continue to steps 3–3e** to ensure the record scaffold, the git-tracking answer and the Mind import are all in place (soul-init is idempotent: it backfills a missing record for an already-imported project). If it exists but does not contain that line, report the existing contents and ask the user whether to append the import line or leave it alone. Do not overwrite without explicit confirmation.
-   - **If it does not exist:** ask one question — "Response register: plain or
-     fluent?" (default **plain** if the user has no preference) — then create it
-     containing the import line, plus a Register line ONLY if the answer was
-     `fluent`:
-     ```
-     @<derived-root>/operations/CLAUDE.md
-     ```
-     ```
-     @<derived-root>/operations/CLAUDE.md
+0. **`/soul-init revisit [key ...]`** — run `python3 <root>/tools/init-status.py
+   revisit . [key ...]` first (no key: every answer), say what it forgot, and in
+   step 1 add `--ask <key>` for each named key: an answer read from the files (a
+   tracked record, a Stage line) stays set otherwise, and `--ask` is the way back
+   (e.g. moving a git record into the vault).
 
-     **Register: fluent** — full Soul vocabulary.
-     ```
-     **Write nothing for `plain`.** Plain IS the contract's default, and the
-     contract arrives by import, so it stays current. A copied default does not:
-     every register block written into a project at init still carried wording the
-     contract had retired for being measurably ineffective. Only the OVERRIDE gets
-     written locally — one line, because it differs from the default and therefore
-     has to live where the difference is (SOUL-I050 kept; the duplication removed
-     in v2.1.1 after fresh-context review found the contract and init both
-     carrying the same default, always-on).
+1. **Status.** Run `python3 <root>/tools/init-status.py status . --json`. Its
+   `items` (each with an `action`: none · repair · ask · stop) and `rounds` ARE the
+   plan. Do not work the state out yourself, and ask nothing that is not in its list.
 
-3. **Ask the one question that cannot be defaulted: does the record go in git?**
+2. **Stop items first.** Show each one's `detail` and end the run there: TWO COPIES
+   (which record is current is the owner's call — do not scaffold or link until they
+   decide); a vault named on this machine but not cloned, or a `.soul` link pointing
+   at a missing folder (clone the vault there first — scaffolding would make a second
+   record the vault then refuses).
 
-   **First, does this machine name a Soul vault?** Run
-   `python3 <derived-root>/tools/vault.py where`. A vault is one private git repo
-   holding every project's record, each reached by a `.soul` link (SOUL-I079).
-   - **Exit 1, none named:** skip the rest of this paragraph — everything below
-     runs exactly as it did before vaults. (If the owner asks for one: they create
-     the private repo and clone it — on WSL, onto a Windows drive — then run
-     `vault.py init <clone> --register`.)
-   - **Exit 3, named but not there:** stop and tell the owner to clone the vault to
-     that path first. Do not scaffold — on a new machine that makes a second record
-     the vault then refuses.
-   - **A vault named:** run `python3 <derived-root>/tools/vault.py check .` and
-     branch on its line:
-     - *lives in the vault* — skip the tracking question and 3b's `.gitignore`
-       lines; continue at 3b's secret-guard setup.
-     - *BROKEN* — never scaffold, never remove the link. If the vault holds the key
-       the link names, re-link: `vault.py link . --key <that key> --label <the
-       label in its project.md>`. Otherwise tell the owner to clone the vault so
-       the link's target exists.
-     - *TWO COPIES* — stop. Show both; which is current is the owner's call. Do not
-       scaffold or link until they decide.
-     - *the vault holds a record … nothing links to it* (a fresh clone, a new
-       machine) — offer that re-link before anything else, so step 3b finds the
-       record instead of scaffolding an empty second one.
-     - *not linked* — the question below gets a third answer: **in the vault**
-       (`<vault path>`) — private, kept with every other project's record, and
-       invisible to this repo's git. If chosen, ask the **label** at once (the list
-       in step 3f): a *restricted* project never goes in the vault, so say so and
-       ask the two-answer question instead. The move itself is step 3f.
+3. **Questions, round by round**, in `rounds` order — one `AskUserQuestion` call per
+   round (up to four questions). Show each question's `text`, and each option's
+   `label` and `description`, **word for word**; add "(Recommended)" only to the
+   option at index `recommended` (null: none); `multi: true` allows several. Never
+   reword, add or drop an option (one exception: `vault-link` below). After a
+   single-question round (`vault-link`, `import`, `existing-store`, `public`), record
+   the answer and run `status` again before the next round — those answers change the
+   later questions (a public repo changes the record and names wording). *Link it* is
+   carried out at once (link, then record `link`), and the new status may list
+   repairs from answers the vault already holds; they join step 4. **`vault-link`
+   *Not now* ends the run**: the vault holds this project's record, so until it is
+   linked nothing else can be set up here (the tool lists no other round and `record`
+   refuses; a local record would be a second copy). Say so; the next run asks again.
+   Without the prompt tool (`claude -p`), list the questions and stop — never guess
+   an answer.
 
-   **Is the repo public?** Check before asking — `gh repo view --json
-   visibility` when a remote exists and `gh` is available; otherwise ask the Body.
-   If it is public, say so in the question: **a tracked record in a public repo is
-   public** — every witness entry, idea and Mind line, readable by anyone — and ask
-   with no default. The question used to argue only for tracking and never asked
-   (MODEL-TEST's upstream note, mining pass 2, SOUL-202).
+4. **Carry out the repairs and answers, in this order**, recording each answer with
+   `python3 <root>/tools/init-status.py record . <key> <value>` (the option's
+   `value`; an extras member ticked is `yes`, unticked `no`; the history scan is
+   recorded as `clean <sha12>`, `findings <sha12>` or `declined`). A `no` is final
+   until `revisit`; `layout` keeps its own list. Mechanics are in the next section.
+   1. **Line endings first** (a yes, or a repair), while nothing else has touched
+      tracked files: `eol.py fix` refuses when tracked files have other edits.
+   2. **The files:** `import` (create `CLAUDE.md`; add the line; or rewrite an import
+      whose path no longer exists — e.g. a plugin version folder an update removed —
+      to `<root>`), `existing-store`, `record` (the scaffold and `.gitignore` lines,
+      or the fix a disagreeing record's detail names), `mind`, `hand-hooks` (install
+      the missing ones; rewrite a Soul hook whose plugin path is gone), the `names`
+      file.
+   3. **`stage`**, after the record exists (it ends in a witness entry).
+   4. **The vault move**, if that was the answer, so the stage entry and the names
+      file move with the record.
+   5. **One commit**, when the record is in git: what this run wrote — the record
+      files, `.gitignore`, the `CLAUDE.md` lines, the stage block — named in the
+      report (the owner chose git; a record neither committed nor ignored is one
+      `git add -A` from an accidental commit).
+   6. **The history scan last**, so it covers every commit this run made.
 
-   > "Keep this project's Soul record (witness, ideas, Mind) in version control? [Y/n]"
+   A repair that changes tracked files the owner did not choose (untracking a
+   record) is put to the owner first, in one line, with the detail as the reason.
 
-   For a public repo, the same question with no default shown — `[y/n]` — and the
-   public consequence stated in it.
+5. **Check.** Run `status` again. Nothing should be left to repair or ask; if
+   something is, say what and why.
 
-   **Default yes** for a private repo, and say why in one line when asking: a
-   record outside git exists in exactly one copy, on one disk, with no history — and if this repo is
-   ever cloned, submoduled, or worked on from a second machine, the lessons do
-   not travel with it. A `no` is a legitimate choice (private or client-sensitive
-   projects) but it must be a chosen one. Record the answer; step 3b writes it
-   into `.gitignore`.
+6. **Report — short.** "Done." and one line per change (a file written, hooks
+   installed, a commit with its hash). Nothing changed: "All set — nothing changed."
+   and stop; do not list the checks that passed (the gap-only rule, SOUL-055). Then
+   only the notes that ask something of the owner, one line each:
+   - the import is pinned to a plugin version (the version-pin guard);
+   - `CLAUDE.md` itself is gitignored: a fresh clone loads no contract — a choice,
+     not a gap; let the owner confirm;
+   - gitleaks missing: the credential check is not running until it is installed;
+   - a public repo with a GitHub remote (no remote: say nothing): whether push
+     protection is on —
+     `gh api repos/<owner>/<repo> --jq .security_and_analysis.secret_scanning_push_protection.status`;
+   - the record moved into the vault: commit and push the vault.
 
-   *Evidence for asking rather than assuming:* two of six adopting projects had
-   their record gitignored, one deliberately and one apparently by drift, and the
-   drifted one is a plugin that gets submoduled — the case where the loss bites
-   hardest (2026-08-20 cross-repo retrospective).
+   **The outside-files dialog goes in the bottom line on the run that wrote the
+   import or moved the record into the vault** — as its own 🙋 item ("approve the
+   outside-files dialog the next session shows; declining turns it off for good"),
+   not only in the body. A session once never told the owner about it at all
+   (SOUL-218); a required bottom-line item is harder to drop than a bullet. On a
+   re-run that wrote neither, leave it out: the dialog has already been shown.
 
-3b. **Scaffold the project's local record under `.soul/`** (so `soul-capture` /
-   `soul-handoff` / `soul-distill` have an unambiguous *local* target — the record
-   is THIS project's, **never** the Soul System source repo). Create any that are
-   absent; never overwrite an existing one. **Look for an existing store first, not
-   only at the root and in `.soul/`** — `git ls-files '*ideas*.md' '*witness*.md'`
-   (or a `find` for untracked files) also finds one under `docs/` (e.g.
-   `docs/ideas.md`). If one exists, do not
-   scaffold a second: ask the Body whether it is the record, and if so write the
-   `.soul/` file as a one-line pointer to it (`Ideas live in docs/ideas.md —
-   append there.`) instead of an empty store. MODEL-TEST's `docs/ideas.md` was
-   missed and a second store scaffolded (mining pass 2, SOUL-202).
+   *Why short:* the owner, on the v3.6.0 live trial (2026-10-26): "is soul-init,
+   logs are still pretty verbose and i'm not sure as a user i wound understand what
+   most of it means." The `claude -p` note, the Codex opt-in and the Mind layer live in
+   `docs/using-the-soul.md`, not in every report.
 
-   - `.soul/ideas.md` — a one-line header `# Ideas — <this project>` (the forward record).
-   - `.soul/witness.md` — a minimal header naming it this project's Witness log
-     (append-only, sequential IDs per the format in `operations/witness-log-format.md`).
+## How each answer is carried out
 
-   Then write the `.gitignore` lines to match the step-3 answer:
+**`import`** — the contract import. No `CLAUDE.md`: create it holding only the
+import line, `@<root>/operations/CLAUDE.md` (home-relative). An existing `CLAUDE.md`
+without it is the owner's file: on *Add it*, put the line at the top and change
+nothing else; *Leave it* writes nothing. The wording is plain by default and the
+contract carries that default, so nothing else is written (the `fluent` register
+was dropped in v3.6.0, SOUL-A030).
 
-   - **Yes, track it** — ignore only the volatile runtime state, never the record:
-     ```
-     # Soul System runtime state (cursor, event log) — never the record itself
-     .soul/handoff.md
-     .soul/events.jsonl
-     ```
-   - **No, keep it local** — ignore the whole directory: `.soul/`
-   - **In the vault** — write no `.gitignore` lines; step 3f hides the link in
-     `.git/info/exclude`, which never leaves this machine.
+**`record`** — where the record lives; `.gitignore` lines to match:
+- *git*: ignore only the volatile runtime state, never the record —
+  ```
+  # Soul System runtime state (cursor, event log) — never the record itself
+  .soul/handoff.md
+  .soul/events.jsonl
+  ```
+  then commit the record files and `.gitignore` (the owner chose git; a record that
+  is neither committed nor ignored is one `git add -A` from an accidental commit).
+- *local*: ignore the whole directory, `.soul/`.
+- *vault*: no `.gitignore` lines; the vault move (below) hides the link in
+  `.git/info/exclude`, which never leaves this machine.
 
-   **Existing projects keep their layout.** If `witness.md` or `ideas.md` already
-   exist — at the project root, under `.soul/`, or wherever the search above found
-   them — those files ARE the record.
-   Leave them exactly where they are, do not move or duplicate them, and write the
-   gitignore lines against whichever paths are real. Both layouts are first-class;
-   the completion gate scopes on either (`hooks/test_scope.py` cases 5 and 7).
+**`public`** — asked only when `gh` cannot tell (no remote, not GitHub) and the
+record or names question needs it; it changes their wording. The old step said
+"otherwise ask the Body" (SOUL-202).
 
-   **Tracking is a `.gitignore` edit, never a file move.** If a project's record is
-   currently untracked because a broad `.soul/` ignore rule swept it up, the fix is
-   to narrow that rule to `.soul/handoff.md` + `.soul/events.jsonl` and commit the
-   record where it sits. Do not offer relocation as the price of tracking — a live
-   run of this skill read the older wording as requiring a move to the project root
-   and proposed one (2026-08-20). Moving a record costs a rewrite of every path
-   that points at it and buys nothing.
+Why the record question is asked, never assumed: a record outside git exists in one copy, on one
+disk, with no history, and does not travel when the repo is cloned or used from a
+second machine; two of six adopting projects had their record gitignored, one by
+drift, in a plugin that gets submoduled (2026-08-20 retrospective). In a public
+repo the question says a tracked record is public and recommends nothing — the
+question once argued only for tracking (MODEL-TEST's note, SOUL-202).
 
-   **Secret guard** (`operations/secret-guard.md`, SOUL-I070) — **experimental**. In
-   Claude Code the plugin already checks the AI's commits and pushes — git runs the
-   check through its own hooks for every git the session runs (credentials block,
-   private names warn). Set up its inputs and the commits it cannot see, using step 3's
-   public/private answer:
+**Tracking is a `.gitignore` edit, never a file move.** A record untracked because
+a broad `.soul/` rule swept it up is fixed by narrowing that rule and committing the
+record where it sits. A live run once read older wording as requiring a move to the
+root and proposed one (2026-08-20); moving a record costs a rewrite of every path
+that points at it and buys nothing.
 
-   - **Private names — ask once.** "Any names that must not appear in this repo —
-     clients, employers, people, a work email? One per line; `Name => TOKEN` suggests
-     a replacement." For a public repo say it firmly: a name committed here is public.
-     Write the answers to `.soul/private-names.txt` and add that path to `.gitignore`
-     (already covered if `.soul/` is ignored whole). None: write nothing. Names that cut
-     across projects go in `~/.claude/soul-private-names.txt` instead — say so.
-   - **Hand commits — offer, not default.** Commits and pushes made outside an AI
-     session run the repo's own hooks only. On yes, install three hooks — `pre-commit`,
-     `commit-msg`, `pre-push` — in the directory printed by
-     `python3 <derived-root>/hooks/secret-guard.py --own-hooks-dir` (it follows
-     worktrees, submodules and a repo or global `core.hooksPath`; do NOT use
-     `git rev-parse --git-path hooks`, which inside a session answers the plugin's own
-     wrapper directory). For each, if a file is already there, do not overwrite it — it
-     belongs to the owner or another tool (git-lfs, carried by five adopting projects,
-     installs `pre-push`); say which hook was skipped and that hand commits/pushes are
-     not checked at that step. Otherwise write it executable, with `<derived-root>`
-     chosen by the version-pin guard above and `<hook>` replaced by the hook's name in
-     all three places. It fails open, loudly, when the plugin path is gone (an update or
-     a machine move), and stays quiet when a session's wrapper has already run the
-     check for the same commit (it chains to this hook):
-     ```sh
-     #!/bin/sh
-     # Soul System secret check (<hook>), installed by /soul-init (operations/secret-guard.md).
-     guard="<derived-root>/hooks/secret-guard.py"
-     if [ ! -f "$guard" ] || ! command -v python3 >/dev/null 2>&1; then
-       echo "Soul secret check NOT running — plugin path missing; re-run /soul-init to repair the hook" >&2
-       exit 0
-     fi
-     python3 "$guard" --hand-hook <hook> "$@"
-     rc=$?
-     [ "$rc" -eq 3 ] && exit 1
-     [ "$rc" -ne 0 ] && echo "Soul secret guard failed (exit $rc) — this git <hook> was NOT checked" >&2
-     exit 0
-     ```
-   - **Codex in use?** Say in one line that the guard is an opt-in there: the
-     `shell_environment_policy` lines in `operations/secret-guard.md` (Codex's
-     SessionStart context prints them with this machine's folder).
-   - **History sweep — offer once.** `gitleaks git --redact --no-banner`, results to the
-     owner. Rewrite nothing: a found credential is rotated first, and any rewrite is the
-     owner's separate call (it runs on a native Linux filesystem, not a `/mnt` drive, and
-     a rewritten-away commit stays fetchable by SHA on GitHub).
-   - **gitleaks missing** (`command -v gitleaks`): say the credential check is not
-     running until it is installed.
-   - **Public repo: push protection.** Tell the owner whether it is on —
-     `gh api repos/<owner>/<repo> --jq .security_and_analysis.secret_scanning_push_protection.status`
-     (no value: say unknown). GitHub turns it on by default only for personal public repos
-     created since 2024-03; user-level push protection is on by default for pushes to
-     public repos.
+**The scaffold** (a fresh record) — under `.soul/`, so the other commands have a
+local target (the record is THIS project's, **never** the Soul System repo's).
+Create what is absent; never overwrite. `.soul/ideas.md` — a header `# Ideas —
+<this project>`; `.soul/witness.md` — a header naming it this project's Witness log
+and its ID code, the folder name in capitals (`# Witness log — <project> · IDs
+<CODE>-001, <CODE>-002, …`; format: `operations/witness-log-format.md`), so the
+first entry does not have to ask for one (found in the v3.6.0 live trial). **Existing projects keep their
+layout**: stores at the root or under `.soul/` ARE the record — leave them where
+they are; the gate scopes on either (`hooks/test_scope.py` cases 5 and 7). Skip
+`amendments/` and `findings/`: those record changes to the Soul and go upstream;
+scaffolding them produced 0 artifacts across 6 projects in 3+ months (2026-08-20).
 
-   Skip `amendments/` **and `findings/`** — both are records of changes to *the
-   Soul*, governed by `operations/amendment-process.md`, and they go upstream, not
-   local. Scaffolding `findings/` locally produced 0 artifacts across 6 projects in
-   3+ months while leaving two permanently empty directories in each; init used to
-   create them and no longer does (2026-08-20).
+**`existing-store`** — a store outside root and `.soul/` (e.g. `docs/ideas.md`). On
+*Use it*, write the `.soul/` file as a one-line pointer (`Ideas live in
+docs/ideas.md — append there.`) instead of an empty store. MODEL-TEST's
+`docs/ideas.md` was missed once and a second store scaffolded (SOUL-202).
 
-3c. **Wire an existing Mind.** Before reporting, check whether the project already
-   has a `mind.md` (at `.soul/mind.md` or the project root). If it does, add the
-   matching import line directly after the contract import, and say you did. **Write
-   the path relative to the file the line goes into**, since `@` paths resolve
-   against the importing file (verified above): from a root `CLAUDE.md`,
-   `@.soul/mind.md` or `@mind.md`; from `.claude/CLAUDE.md`, `@../.soul/mind.md` or
-   `@../mind.md`. This step used to write `@.soul/mind.md` regardless, which points
-   at `.claude/.soul/mind.md` when the contract import lives in `.claude/` —
-   MODEL-TEST's Mind went unloaded that way (mining pass 2, SOUL-202).
+**`vault-link`** and the vault move. A vault is one private git repo holding every
+project's record, each reached by a `.soul` link (SOUL-I079, [ADR
+0001](../../docs/adr/0001-soul-vault.md)). Re-link (*Link it*, or a BROKEN repair):
+`python3 <root>/tools/vault.py link . --key <key> --label <the label in its
+project.md>`. The move (*In your Soul vault*) is carried out late in step 4 —
+after the stage entry and the names file are written into the local record, so they
+move with it — but its questions come first:
+- **Label**, asked straight after the vault answer, before anything else is done —
+  *public* (anyone may read it), *private* (yours), *confidential* (someone else's
+  material, e.g. an employer's or client's — the owner decides whether a personal
+  vault may hold it), *restricted* (never in the vault; the tool refuses it). On
+  *restricted*, say so and ask the record question again with the vault option left
+  out — the one change to a question this skill allows.
+- **What it contributes to** — free-form tags, may be empty.
+- **Key** — the project's folder in the vault; default the repo's name. The key,
+  not the path, names the folder, so it survives the project moving.
 
-   A Mind is always-on by design and does nothing whatsoever unless something
-   imports it. Nothing in this skill used to check, so a project could distill a
-   Mind and never load it: one adopting project has carried a 164-line Mind that
-   no file imports, and another project's own record names the failure exactly —
-   *"a deployed Mind that nothing loads is inert."* Checking costs one `ls`.
+Run `vault.py link . --key <key> --label <label> --contributes <tags> --dry-run`,
+show its lines, and on the owner's yes run it without `--dry-run`. It moves a
+root-layout record into `.soul/` first and repoints a `@mind.md` import; copies
+`.soul/` into `<vault>/projects/<key>/soul/` and compares every hash; replaces
+`.soul/` with a link and compares again. On WSL with the project on a Windows drive
+the link is a Windows junction (Windows tools cannot follow a WSL symlink), so the
+vault must be on a Windows drive too. It adds `.soul` to `.git/info/exclude` and the
+vault to `.claude/settings.local.json` `permissions.additionalDirectories` (without
+it Claude Code refuses writes through the link), then rewrites the vault's
+`index.md`. All from the I079 link test (2026-10-22). **STILL TRACKED** printed:
+recommend `git rm --cached` of those files and a commit, now — until then a reset,
+stash or checkout puts the old copy back in place of the link and `check` reports
+TWO COPIES; the old copies stay in history (moving is not redaction, mind 6d).
+The vault repo keeps the project's `private-names.txt` (it travels to the next machine
+with the record) and leaves out only `events.jsonl`. Any other `link` failure: run
+`vault.py check .` and report its line before going on. After a move, run
+`eol.py check <vault>`: a vault made before v3.5.0 may lack the line-ending rule —
+if line endings were a yes, fix and commit there too.
+**`link` refuses** (exit 2, nothing changed): the record stayed — ask the record
+question again without the vault; a record must never be left neither tracked nor
+ignored, where one `git add -A` commits it.
 
-3d. **Offer the development stage — once, skippable — after the record exists.**
-   Whether `CLAUDE.md` was just created or already existed, if no line in it starts
-   `**Stage:`, open the `soul-stage` skill's own selection: read
-   `<derived-root>/skills/soul-stage/SKILL.md` and follow its step 1 as a bare run —
-   it reports the current state ("no stage declared", or a hand-written `**Phase:`
-   block if one exists) and offers *Just looking* / prototype / pre-release /
-   released with their descriptions. *Just looking* is the skip: say so, and
-   continue to step 3e (which itself applies only to an already-initialized project). This step sits after 3b on purpose — a chosen stage ends in a
-   witness entry, and until 3b has run there is no witness log to append to (the
-   2.2.0–2.2.2 order had it before the scaffold; found by fresh-context review,
-   2026-08-26, before any init ran it). Do not copy the skill's text or its
-   question here — a copy written at init never receives an upgrade, the same reason
-   the register default lives in the contract. **Skip writes nothing**: no line
-   means released-grade caution, which is the contract's default. A chosen stage
-   continues in that skill — its screen, block and witness entry — and lands the
-   block directly under the Register line, or under the import when there is no
-   Register line.
+**`names`** — *Type them*: write the names, one per line (`Name => TOKEN` suggests
+a replacement), to `.soul/private-names.txt`; it is gitignored with the rest of
+`.soul/` or by its own line — add one if the record is tracked. Names that cut
+across projects belong in `~/.claude/soul-private-names.txt`; say so. The secret
+guard (`operations/secret-guard.md`, SOUL-I070, **experimental**) already checks
+the AI's commits in Claude Code: credentials block, private names warn.
 
-   *Evidence for asking here:* two adopting projects had the owner state "no
-   backwards compatibility — this is beta" by hand on consecutive days
-   (2026-08-24/25) — into two different always-on files, in two wordings, with no
-   shared source.
+**`hand-hooks`** — commits and pushes made outside an AI session run only the
+repo's own hooks. Install `pre-commit`, `commit-msg` and `pre-push` in the directory
+printed by `python3 <root>/hooks/secret-guard.py --own-hooks-dir` (it follows
+worktrees, submodules and `core.hooksPath`; do NOT use `git rev-parse --git-path
+hooks`, which inside a session answers the plugin's own wrapper directory). Never
+overwrite an existing hook — it belongs to the owner or another tool (git-lfs,
+carried by five adopting projects, installs `pre-push`); say which was skipped and
+that hand commits or pushes are not checked at that step. The exception is a hook
+carrying the Soul marker line below whose plugin path no longer exists: it is
+Soul's own, so rewrite it with the current `<root>`. Otherwise write it
+executable, `<hook>` replaced in all three places. It fails open, loudly, when the
+plugin path is gone, and stays quiet when a session's wrapper already ran the check:
+```sh
+#!/bin/sh
+# Soul System secret check (<hook>), installed by /soul-init (operations/secret-guard.md).
+guard="<root>/hooks/secret-guard.py"
+if [ ! -f "$guard" ] || ! command -v python3 >/dev/null 2>&1; then
+  echo "Soul secret check NOT running — plugin path missing; re-run /soul-init to repair the hook" >&2
+  exit 0
+fi
+python3 "$guard" --hand-hook <hook> "$@"
+rc=$?
+[ "$rc" -eq 3 ] && exit 1
+[ "$rc" -ne 0 ] && echo "Soul secret guard failed (exit $rc) — this git <hook> was NOT checked" >&2
+exit 0
+```
 
-3e. **Already initialized only: offer to move AI working files into `.ai/`.** Skip
-   this step entirely for a fresh project. On the "import already present" path, run
-   `python3 <derived-root>/tools/layout-cleanup.py scan <project>`. It flags only text
-   files whose name or folder marks them as working material (plans, handoffs,
-   reviews, scratch, stray `.soul/` files) — never code, tests, user docs or ADRs. No
-   candidates: say nothing. Otherwise show its grouped dry run and ask per group with
-   AskUserQuestion: *move to `.ai/`* / *leave* / *it is project content* / *decline
-   all*. Decline all runs `decline <project>`, which changes nothing but the
-   remembered list in `.soul/layout.json`. Otherwise write the answers to a plan file
-   outside the project (`{"<path>": "move|leave|content"}`, paths from `scan --json`)
-   and run `apply <project> --plan <file> --dry-run` first. A file it says project
-   content links to is usually project content: put that file to the owner on its
-   own before applying, since project content must never link into `.ai/`. Then run
-   `apply` without `--dry-run`; any "project content now links into .ai/" line it
-   still prints is an open gap — report it as one: drop the link or promote the
-   file, the owner's call. Never add a path the scan did not flag. *Why:* project content, the
-   durable record (`.soul/`) and AI working files (`.ai/`, safe to delete) each have
-   one home.
+**`history-scan`** — `gitleaks git --redact --no-banner`, results to the owner,
+then record `clean <sha12>` or `findings <sha12>` (HEAD's first 12 characters); the
+tool offers it again only after new commits. Rewrite nothing: a found credential is
+rotated first, and any rewrite is the owner's separate call (on a native Linux
+filesystem, not a `/mnt` drive; a rewritten-away commit stays fetchable by SHA on
+GitHub).
 
-3f. **Vault answer only: move the record into the vault.** Last, so the steps
-   above have written everything into the record first. The label was asked in
-   step 3, from this list:
-   - **Label** — *public* (anyone may read it), *private* (yours), *confidential*
-     (someone else's material, e.g. an employer's or client's — before an
-     employer-hosted project moves, the owner decides whether a personal vault may
-     hold it), *restricted* (closed or controlled; never in the vault, and the tool
-     refuses it too).
+**`stage`** — *Prototype* or *Pre-release*: write that preset's block with its
+defaults and its witness entry, with no further questions, as
+`<root>/skills/soul-stage/SKILL.md` describes for a stage handed over by
+`/soul-init`; say in one line that `/soul-stage <stage>` refines it. *Released*
+continues in that skill as if it had been the argument (its screen, block and
+witness entry): what outsiders rely on has no default. The block lands under the
+import. The live trial asked three follow-up questions here (the next-stage
+trigger, additions, a confirm) on a fresh project (2026-10-26). *Not now* writes nothing but the answer: no stage line means
+released-grade caution, the contract's default. Carried out after the record
+exists, because a chosen stage ends in a witness entry (the 2.2.0–2.2.2 order had it
+before the scaffold; found by fresh-context review, 2026-08-26). If the tool's
+detail says a hand-written `**Phase:` block exists, show it before asking. *Why ask at all:* two adopting
+projects had the owner write "no backwards compatibility — this is beta" by hand on
+consecutive days (2026-08-24/25), into two files, in two wordings.
 
-   Ask the rest:
-   - **What it contributes to** — free-form tags (e.g. `research, tools`); may be
-     empty.
-   - **Key** — the project's folder name in the vault; default the repo's name. The
-     key, not the path, names the folder, so it survives the project moving.
+**`layout`** (projects already set up) — `python3 <root>/tools/layout-cleanup.py
+scan <project>` flags only text files whose name or folder marks them as working
+material (plans, handoffs, reviews, scratch, stray `.soul/` files), never code,
+tests, user docs or ADRs. On *Review*, show its grouped dry run and ask per group:
+*move to `.ai/`* / *leave* / *it is project content*. Write the answers to a plan
+file outside the project (`{"<path>": "move|leave|content"}`, paths from `scan
+--json`), run `apply <project> --plan <file> --dry-run`, then `apply`. A file that
+project content links to is usually project content — put it to the owner on its own
+first, since project content must never link into `.ai/`. Any "project content now
+links into .ai/" line `apply` still prints is an open gap — report it: drop the link
+or promote the file, the owner's call. *Leave them* runs `decline <project>`, which
+remembers the list in `.soul/layout.json`.
 
-   Run `python3 <derived-root>/tools/vault.py link . --key <key> --label <label>
-   --contributes <tags> --dry-run`, show its lines, and on the owner's yes run it
-   without `--dry-run`. What it does, so you can explain it: a root-layout record
-   (`witness.md` at the root) moves into `.soul/` first and a `@mind.md` import is
-   repointed to `@.soul/mind.md`; `.soul/` is copied into
-   `<vault>/projects/<key>/soul/` and every file's hash compared; `.soul/` is
-   replaced by a link, and compared again through it. On WSL with the project on a
-   Windows drive the link is a Windows junction: Windows tools cannot follow a
-   WSL-made symlink, so the vault must be on a Windows drive too. It adds `.soul` to
-   `.git/info/exclude` and the vault to `.claude/settings.local.json`
-   `permissions.additionalDirectories`, without which Claude Code refuses writes
-   through the link. All three came from the I079 link test (2026-10-22); the
-   decision and what would make it wrong: `docs/adr/0001-soul-vault.md`. Last, it
-   rewrites the vault's `index.md`; the owner commits and pushes the vault.
+**`line-endings`** — the problem: a Windows git or Sourcetree with
+`core.autocrlf=true` checks files out with Windows line endings; WSL git sees every
+one as modified, `git add -A` commits them, and tools that write Unix endings leave
+files with both. Before asking, show `eol.py check .`'s list of files committed with
+CRLF — some may need CRLF on purpose (`.eml`, `.ics` fixtures), and the fix stores
+them LF. On yes, run `python3 <root>/tools/eol.py fix <repo>` for each repo the
+tool's detail names (`Needs it: project`, `vault` or `both`), show its output and
+commit in that repo with the line it suggests (in the vault, commit its `index.md`
+change first). With no vault the detail has no `Needs it:` line: fix the project. It refuses (exit 2, nothing changed) on staged work,
+real edits it would sweep in, an untracked or edited `.gitattributes`, or files
+hidden by assume-unchanged or skip-worktree: say why and leave it. Stopped partway
+(exit 2 after changing something): relay its list and undo lines word for word.
+Exit 1: the re-check is still not ok — show it, do not commit; the owner fixes what
+it names or undoes with `git restore --staged .`.
+*Why:* the owner (2026-10-26): "i have seen this on every soul project we have
+worked on (and non soul). the ai typically identifies it eventually that it is just
+eol issues after it checks and then fixes it. so i am trying to preempt it."
+(SOUL-219: about 114 vault files and 2 project files rewritten by hand.)
 
-   **If it prints STILL TRACKED, recommend `git rm --cached` of those files and a
-   commit, now.** Until then, a git reset, stash, restore or checkout puts the old
-   committed copy back in place of the link, writes go to that stale copy, and the
-   vault falls behind — `check` reports it as TWO COPIES. Say too that the old copies
-   stay in history: moving a record is not redaction (mind item 6d).
-   The vault repo keeps the project's `private-names.txt` (it travels to the next
-   machine with the record) and leaves out only `events.jsonl`.
-
-   **If `link` refuses (exit 2, "nothing changed"), the record stayed in the
-   project.** (Any other failure: run `vault.py check .` and report what it says
-   before going on.) Write 3b's
-   `.gitignore` lines for whichever of step 3's two other answers the owner now
-   picks — a record must never be left neither tracked nor ignored, where one
-   `git add -A` commits it.
-
-3g. **Line endings — check, and offer the fix once.** Git repos only. Run
-   `python3 <derived-root>/tools/eol.py check .` — and, if the record lives in a
-   vault, `check <vault>` too. Exit 0: say nothing. Exit 2: report its line and
-   move on. Exit 1: report its summary line in plain words and its list of files
-   committed with CRLF — some may need CRLF on purpose (test fixtures such as
-   `.eml`, `.ics`), and the fix stores them LF — then offer the fix as its own
-   commit. The problem it prevents:
-   a Windows git or Sourcetree with `core.autocrlf=true` checks files out with
-   Windows line endings; WSL git sees every one of them as modified, `git add -A`
-   commits them, and tools that write Unix endings (this plugin's, the AI's edits)
-   leave files with both. The fix makes the repo decide, not each machine: a
-   `.gitattributes` catch-all `* text=auto eol=lf`, with `.bat`, `.cmd` and `.sln`
-   kept CRLF and existing rules (e.g. Git LFS) left after it so they still win.
-   On the owner's yes run `eol.py fix .`, show what it printed, and commit with
-   the line it suggests. If `fix` refuses (exit 2 before changing anything:
-   staged work, real edits it would sweep into the commit, an untracked or edited
-   `.gitattributes`, files hidden by assume-unchanged or skip-worktree), say why
-   and leave it — the owner commits their work first. If it stops partway (exit 2
-   after changing something), relay its list of what changed and its undo lines
-   word for word. Exit 1 after a fix means the re-check is still not ok (a later
-   rule overriding the block, or files still CRLF) — show what it printed, do not
-   commit, and the owner chooses: fix what it names, or undo with
-   `git restore --staged .`. For the vault, commit step 3f's `index.md` change first, then run
-   `fix <vault>` and commit there. Once the rule is committed, other machines'
-   CRLF copies stop showing as changed; `fix` there only rewrites the bytes on
-   disk to LF. *Why:* the owner's words (2026-10-26): "i have seen this on
-   every soul project we have worked on (and non soul). the ai typically
-   identifies it eventually that it is just eol issues after it checks and then
-   fixes it. so i am trying to preempt it." Observed in full on a second machine
-   (SOUL-219): about 114 vault files and 2 project files rewritten by hand.
-
-4. After creating or confirming the file, report:
-   - The absolute path of the `CLAUDE.md` you wrote or found.
-   - That the next Claude Code session opened in this directory will load the project contract (`operations/CLAUDE.md`) by import. The philosophy (`philosophy/the-soul.md`) is NOT imported — it is the human-facing book, read on demand (A021).
-   - A one-line reminder: the philosophy will only take effect from the *next* session — the current one is already loaded.
-   - **Mention the optional Mind layer**: once the project has accumulated enough record-evidence to warrant compression, run `/soul-distill` to create a project-scoped `mind.md`, then add a second import line after the contract import to load it always-on (path relative to that file, as in 3c). Skip on day-1 — the Mind is earned, not seeded.
-   - **If the project's `CLAUDE.md` is itself gitignored**, say so plainly: the wiring is machine-local, and a fresh clone of this repo loads no contract at all. That can be a deliberate choice — say it is a choice, not a gap, and let the Body confirm.
-   - **If a stage was declared**, say which, and that its rules take effect from the
-     next session; if skipped, say that `/soul-stage` declares one later and that
-     until then the project is treated as released.
-   - **If the record moved into the vault**: the next session will ask, once, to
-     load files from outside the project. Approve it — that is what loads the Mind
-     through the link; declining disables it with no second dialog, and
-     `/soul-resume`'s Mind check is what notices (the link test: a SessionStart hook
-     cannot carry the Mind instead, its output is cut to ~2KB). And the vault counts
-     as kept only once it is committed and pushed.
-   - **The outside-files dialog goes in the bottom line, every time an import or
-     the record resolves outside the project** — as its own 🙋 item ("approve the
-     outside-files dialog the next session shows; declining turns it off for good"),
-     not only in the body above. A session once never told the owner about it at
-     all (SOUL-218); a required bottom-line item is harder to drop than a bullet.
+**`mind`** (repair) — a `mind.md` that nothing imports does nothing (one adopting
+project carried a 164-line Mind no file imported). Add the import directly after the
+contract import, **relative to the file the line goes into**: from a root
+`CLAUDE.md`, `@.soul/mind.md` or `@mind.md`; from `.claude/CLAUDE.md`,
+`@../.soul/mind.md` or `@../mind.md`. A fixed `@.soul/mind.md` once pointed at
+`.claude/.soul/mind.md` and MODEL-TEST's Mind went unloaded (SOUL-202).
 
 ## What not to do
 
-- Do not copy any Soul System *doctrine* files into the project (the seed, philosophy, operations). The whole point is that the philosophy stays in one canonical location and is referenced by import. (Scaffolding the project's own empty record stores in step 3b is not copying — it is establishing *this* project's record.)
-- Beyond the import line and the empty record scaffold, do not write project content. (The exceptions: step 3e's link repointing, after the owner chose the moves, and step 3g's `.gitattributes` and renormalize commit, on the owner's yes.) If the user wants project-specific context, that belongs in a separate file or below the import line — `/soul-init` adds only the import + the empty record.
-- Do not classify files yourself in step 3e: move only what the layout scan flagged and the owner chose to move, and never delete one.
-- Do not modify the Soul System repo from this command. It is read-only as far as `/soul-init` is concerned.
+- Do not ask a setup decision the tool did not list, reword one, or answer one for
+  the owner. The follow-ups this skill names are not new decisions: the vault's
+  label, tags and key, the layout groups, and putting a tracked-file repair to the
+  owner. Do not re-ask a recorded answer — `revisit` is the owner's way back.
+- Do not copy Soul doctrine (the contract, the philosophy) into the project; it is
+  referenced by import so it stays current. The empty record scaffold is not a copy.
+- Beyond the import line and the record, write project content only where an answer
+  says to: step `layout`'s moves, `line-endings`' commit, `existing-store`'s pointer.
+- Do not classify layout files yourself: move only what the scan flagged and the
+  owner chose, and never delete one.
+- Do not modify the Soul System repo from this command.
 
 ---
 
-**Source:** Built by the Artificer as the Soul System's bootstrap command (the `@import` installer). Brought into the repo and put on the symlink (live-reference) distribution model under [[SOUL-F029]] — it previously lived only in `~/.claude/commands/`, the source-of-truth gap that finding names. **Adopted:** 2026-05-19 (repo-canonical 2026-05-22). **Status:** active.
-**NOTE:** the former machine-local root path (the F029 portability wrinkle) was retired by SOUL-A022 — the root now derives from the skill's own location, which also makes the plugin a complete install path.
-**Amended:** 2026-10-19 (mining pass 2, SOUL-202) — step 3 checks repo visibility before the tracking question; 3b finds an existing store outside root/`.soul/` (e.g. `docs/`) before scaffolding; 3c writes the Mind import relative to the importing file (extends F068).
-**Amended:** 2026-10-20 (v2.10.0, SOUL-I070) — step 3b sets up the experimental secret guard: the project's private-name list (gitignored); optional hand-commit hooks (`pre-commit`, `commit-msg`, `pre-push`) placed in the repo's own hooks directory (`--own-hooks-dir`, since a session points `core.hooksPath` at the plugin's wrappers), never overwriting an existing hook, failing open loudly when the plugin path is gone, and not re-running a check the session's wrapper already ran; a one-line Codex opt-in pointer; a history-sweep offer; and push-protection status for public repos.
-**Amended:** 2026-10-22 (v3.4.0, SOUL-I079) — the vault: step 3 checks for a vault named on this machine, re-links a record the vault already holds, and offers "in the vault" as a third answer; step 3f moves the record and links it (`tools/vault.py`); step 4 tells the owner to approve the one-time outside-files dialog and to push the vault.
-**Amended:** 2026-10-26 (v3.5.0, SOUL-218/219) — step 3g checks line endings (`tools/eol.py`) in the project and the vault and offers a `.gitattributes` fix as its own commit; step 4 puts the outside-files dialog in the bottom line as its own item.
+**Source:** Built by the Artificer as the Soul System's bootstrap command (the
+`@import` installer). Brought into the repo under [[SOUL-F029]]; the root derives
+from the skill's own location since SOUL-A022. **Adopted:** 2026-05-19
+(repo-canonical 2026-05-22). **Status:** active.
+**Amended:** 2026-10-19 (mining pass 2, SOUL-202) — repo visibility before the
+tracking question; an existing store outside root/`.soul/`; the Mind import relative
+to the importing file (F068).
+**Amended:** 2026-10-20 (v2.10.0, SOUL-I070) — the experimental secret guard:
+private names, optional hand-commit hooks (own hooks directory, never overwriting,
+failing open loudly), the history sweep, push-protection status.
+**Amended:** 2026-10-22 (v3.4.0, SOUL-I079) — the vault: check, re-link, the third
+record answer, the move.
+**Amended:** 2026-10-26 (v3.5.0, SOUL-218/219) — line endings (`tools/eol.py`); the
+outside-files dialog in the bottom line.
+**Amended:** 2026-10-26 (v3.6.0, SOUL-I082, SOUL-A030) — rebuilt as status →
+questions → carrying out over `tools/init-status.py`: fixed wording, answers remembered
+in `.soul/init.md`, a `no` final until `revisit`; the register question dropped.

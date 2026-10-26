@@ -94,4 +94,4 @@ there.
 - macOS was not tested. There the link is a plain symlink, and the allowed-folder
   and import-approval steps are assumed to carry over — that is unverified.
 
-Cited from: `tools/vault.py`, `skills/soul-init/SKILL.md` step 3f.
+Cited from: `tools/vault.py`, `skills/soul-init/SKILL.md` (`vault-link` and the vault move).

@@ -65,10 +65,9 @@ the project root (detect, never assume). Forward view: `/soul-next`. Upkeep:
 delete), never in `docs/`, the root or source folders. Promoting one to project content
 is the owner's call; project content never links into `.ai/`.
 
-**Register** — `plain` by default: write for a smart reader who is new to the
-project — everyday words, short sentences, any project term explained the first time
-it appears. A `**Register: fluent**` line in the project's CLAUDE.md switches to full
-Soul vocabulary. Register is wording; length is rule 9.
+**Register** — plain: write for a smart reader who is new to the project — everyday
+words, short sentences, any project term explained the first time it appears.
+Register is wording; length is rule 9.
 
 **Stage** (optional, `/soul-stage`) — `prototype` / `pre-release` / `released`, with
 a block saying what may break and what must be kept. Undeclared means released: ask

@@ -54,24 +54,18 @@ It still references doctrine live; it never copies doctrine into the project.
 2. Read the active project instruction file (`AGENTS.override.md` if non-empty,
    otherwise `AGENTS.md`) and the project policy file. Show the proposed managed
    block or its delta before adding it to an existing file; obtain consent as the
-   Claude procedure does. Preserve all content outside the block. Reuse an
-   existing Register; otherwise ask plain/fluent once, writing only a fluent
-   override to the project policy file on the owner's choice.
+   Claude procedure does. Preserve all content outside the block.
 3. Run `python3 <plugin-root>/tools/codex-project.py show --project <project-root>`
    FIRST: it prints the exact block, the chosen contract path and why, and writes
    nothing. Show that output, ask for consent (end your turn), and only then run
    `... wire --project <project-root>`. Quote paths as shell arguments. It appends or refreshes a marked live-reference
    block; it does not scaffold or move records, edit ignores, or configure trust.
-4. Follow shared init steps **3–3b** for the record-tracking choice, scaffolding,
-   and ignore rules. Keep the record at its existing location and ignore only
-   runtime state if tracking was chosen. Follow step **3d** for the optional stage,
-   using the project policy file in place of the project's `CLAUDE.md`. Follow
-   step **3e** (offer to move AI working files into `.ai/` with
-   `tools/layout-cleanup.py`) on an already-initialized project — one whose
-   instruction file already held the managed block, the Codex form of the shared
-   "import already present" path; skip it for a fresh project. Follow step **3g**
-   (line endings, `tools/eol.py check`, the fix offered as its own commit) in any
-   git repo.
+4. Follow the shared steps 0–6 (`tools/init-status.py`: status → questions →
+   carrying out, answers kept in `.soul/init.md`, so a project set up from Claude Code
+   is not asked again here). Two items differ: **skip `import`** (the managed block
+   from step 3 is Codex's import; the helper's `status` checks it) and **skip
+   `mind`** (step 5 below). A chosen stage is written to the project policy file in
+   place of the project's `CLAUDE.md`. Keep the record at its existing location.
 5. Read an existing Mind explicitly and check that the managed block asks future
    sessions to read it. Do not add `@` imports to `AGENTS.md`.
 6. Run the helper's `status --project <project-root>` command. Report a missing or

@@ -11,12 +11,16 @@ verify hook trust and operation before relying on automatic completion reminders
 
 ## Day one
 
-Run `/soul-init` in your project. It asks two short questions — plain or fluent
-language (plain is the default), and whether your record goes in version control
-(yes is the default) — then offers a development stage (prototype, pre-release or
-released; *Just looking* means "treat it as released") — and writes one import line into your `CLAUDE.md` and
-creates two empty record files, `.soul/ideas.md` and `.soul/witness.md`. If your
-project already keeps them at its root, they stay there; both layouts work.
+Run `/soul-init` in your project. The first time, it asks where the record lives
+(in git is the default), how settled the project is (prototype, pre-release,
+released, or *Not now*, which means "treat it as released") and whether any names
+must stay out of the repo, then offers a few safety checks in one list. It writes
+one import line into your `CLAUDE.md`, creates two empty record files,
+`.soul/ideas.md` and `.soul/witness.md`, and keeps your answers in `.soul/init.md`.
+Running it again asks only what is new. To change an answer, name it:
+`/soul-init revisit record` (or `stage`, `names`, …) asks that question again. If your project already keeps its record at its root, it stays there; both
+layouts work. Automated runs (`claude -p`) do not load the rules by import: pass them
+with `--append-system-prompt-file <soul-system>/operations/CLAUDE.md`.
 
 Findings and amendments are NOT created locally. Those are records of changes to
 the Soul System itself and live upstream; anything your project learns about the
