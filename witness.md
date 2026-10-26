@@ -9144,3 +9144,32 @@ CONSEQUENCE:  Fix the index to read `## YYYY-MM-DD` headings; make init's step-4
               new machine; NAV-TOOL's last ~17% of tests.
 STATUS:       Open (ratified by the Body 2026-10-26)
 ```
+
+```
+ID:           SOUL-219
+WHEN:         2026-10-26 / Soul-System session, reviewing two exported logs from
+              the Body's new computer (plugin 3.4.0, Claude Code 2.1.309)
+WHERE:        NAV-TOOL and the vault brought up on the second machine; the skills
+              repo's /soul-init; tools/vault.py index; skills/soul-init
+WHAT:         The machine move worked: vault cloned and registered, NAV-TOOL's
+              record re-linked, both repos pushed. Line endings were the main
+              cost. Windows git there has core.autocrlf=true (the old machine's
+              is false), so the vault checked out CRLF; WSL git saw about 96
+              files modified; 19 vault files were committed CRLF. The session
+              added `* text=auto eol=lf` to both repos' .gitattributes,
+              renormalized, and rewrote about 114 vault files and 2 project files
+              on disk by hand. vault.py's index rewrite wrote LF into the CRLF
+              index.md. The Body's words: "i have seen this on every soul project
+              we have worked on (and non soul). the ai typically identifies it
+              eventually that it is just eol issues after it checks and then fixes
+              it. so i am trying to preempt it." Also: NAV-TOOL's suite ended 4
+              failed / 2486 passed / 25 skipped (3 arccos-precision tests, 1
+              old-machine absolute path) — NAV-TOOL's own record (its witness #65)
+              holds those; the background job reported exit 0 while pytest
+              exited 1 (Claude Code's wrapper, caught by the session).
+TYPE:         witness (adoption data point)
+CONSEQUENCE:  v3.5.0: tools/eol.py (check/fix) and /soul-init step 3g offer the
+              fix as its own commit; vault init writes the rule. Unrun: the fix
+              on a repo the Body actually uses; macOS-only and Linux-only use.
+STATUS:       Open
+```
