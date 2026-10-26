@@ -9267,7 +9267,7 @@ CONSEQUENCE:  Receive milestones still to come: transferred · restored · workf
               checked · owner accepted. Follow-up task on the new computer: the
               private files into the vault (vault.py link does not handle this
               repo's layout as is).
-STATUS:       Open
+STATUS:       Closed — the follow-up done as SOUL-225 (2026-10-26)
 ```
 
 ```
@@ -9308,5 +9308,34 @@ CONSEQUENCE:  The smoke command recorded at pack time could not pass on this
               and a mutated copy of test_turn.py fails both under pytest and
               as a script. Still open: the SOUL-223 follow-up (private files into
               the vault).
+STATUS:       Closed
+```
+
+```
+ID:           SOUL-225
+WHEN:         2026-10-26 / Soul-System session on the new computer (plugin 3.6.1
+              installed; v3.6.2 built here)
+WHERE:        tools/vault.py link --sidecar; the vault at /mnt/d/soul-vault
+              (remote on code.ornl.gov); ~/.claude/soul-private-names.txt
+WHAT:         The SOUL-223 follow-up. The Body allowed the name map on
+              code.ornl.gov. vault.py link would have moved witness, ideas and
+              Mind into the vault — this repo's public product — so three ways
+              were put to the Body (fix check and link both folders; link
+              registry/ only; copy without linking); the Body took the first.
+              v3.6.2 adds `link --sidecar`, which moves only .soul/ and records
+              `sidecar: true` in project.md. Moved with hash compares before and
+              after the link: .soul/ (1,652 files) by vault.py, registry/ (11)
+              by hand with the same steps, both now junctions and excluded in
+              .git/info/exclude. At the Body's yes, the machine-wide name list
+              is a symlink into the vault's machine/ folder; it held only its
+              header — no names. The secret guard and the pre-push name scan
+              both read the map through the link. The vault push was rejected
+              once (another project's commit had landed); rebased, index.md
+              regenerated, pushed: 1,663 files under projects/soul-system/.
+TYPE:         witness (Body decision; build; private files moved)
+CONSEQUENCE:  v3.6.2. Until the installed plugin is updated past 3.6.1, its
+              session-start check reads this repo as TWO COPIES. Follow-ups in
+              the 3.6.2 row's known limits. The derived Obsidian view
+              (.soul/vault/) now sits inside the Obsidian vault.
 STATUS:       Closed
 ```
