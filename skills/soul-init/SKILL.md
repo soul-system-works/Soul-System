@@ -139,7 +139,8 @@ or to report a problem. The tool calls already show the work.
    - `CLAUDE.md` itself is gitignored: a fresh clone loads no contract — a choice,
      not a gap; let the owner confirm;
    - gitleaks missing: the credential check is not running until it is installed;
-   - a public repo on GitHub: whether push protection is on —
+   - a public repo with a GitHub remote (no remote: say nothing): whether push
+     protection is on —
      `gh api repos/<owner>/<repo> --jq .security_and_analysis.secret_scanning_push_protection.status`;
    - the record moved into the vault: commit and push the vault.
 
