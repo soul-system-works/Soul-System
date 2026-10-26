@@ -121,11 +121,12 @@ the owner confirms — it keeps this page within budget).
 folders. Promoting one to project content is the owner's call; project content
 never links into `.ai/`.
 
-**Register** defaults to `plain` — use a Soul or project term only when it earns
-its place, gloss it on first use, introduce vocabulary gradually. Vocabulary only;
-LENGTH is rule 9 either way. Override with a `**Register: fluent**` line in the
-project's own CLAUDE.md. The default lives here because a copy written into a
-project at init never receives an upgrade.
+**Register** is `plain` — use a Soul or project term only when it earns its
+place, gloss it on first use, introduce vocabulary gradually. Vocabulary only;
+LENGTH is rule 9 either way. It lives here because a copy written into a project at
+init never receives an upgrade. A `fluent` override (full Soul vocabulary) shipped
+from SOUL-I050 to v3.5; no adopting project ever set it, the owner never used it,
+and it cost a question at every init, so v3.6.0 dropped it (SOUL-220, SOUL-A030).
 
 **Stage** (optional): a project declares `prototype` / `pre-release` / `released`
 in its own CLAUDE.md via `/soul-stage`, and the block beneath says what may be

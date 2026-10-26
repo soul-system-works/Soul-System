@@ -1,149 +1,120 @@
 # Soul System
 
-A living philosophy and operational framework for human-AI collaborative work
-in research, science, engineering, and coding.
+A project memory and a "done" check for AI coding sessions, in Claude Code
+(and Codex, as a preview).
 
-Not a prompt collection. Not a workflow template. A measured system: **one plain
-page the AI reads** (about ten rules), **four instruments with teeth** (a capture
-command, a completion gate, a handoff, a distiller), and **a book for humans**
-(the philosophy that produced them). 2.0 is the shape the measurements left
-standing — a program of pre-registered twin-chain experiments showed the frontier
-model has absorbed this system's reasoning core; what it still cannot do is keep
-its project history honest or carry what it learned across sessions. So that is
-what the system does: a conscience and a notebook.
+Every new AI session starts without the decisions made before it, the reasons
+behind them, or what was half-finished, and a session will say "done" without
+having run anything. The Soul keeps a short record in your project and checks a
+"done" claim before it reaches you.
 
 <p align="center">
-  <img src="architecture.svg" alt="Soul System role model (the full philosophy, consulted on demand): the Universe wraps the Body, which inhabits the Soul, Witness, Council, Judge, and Hands. The Council is a chamber of symbolic voices in tiers; the Hands sit beneath the Judge; the Panel of Experts sits parallel to the Witness, summoned when needed." width="100%">
+  <img src="docs/media/handoff-resume.gif" alt="Animation: a session ends before the work does; /soul-handoff writes .soul/handoff.md (where we are, next step, pointers); the next session runs /soul-resume and continues with nothing re-derived." width="100%">
 </p>
 
-*The role model above is the **human-facing** layer since 2.0: names for perspectives
-that arise naturally in careful work, kept as a reading lens and a record vocabulary.
-The AI reads one page (`operations/CLAUDE.md`); people read `philosophy/the-soul.md`.*
-*The Body — the human — inhabits all of it and bears responsibility for the whole.*
+## Install
 
-**Composes, does not replace.** The Soul System layers above how you already work — BMAD, TDD, Cursor Rules, your own conventions. Adopt what helps. Ignore what does not.
-
----
-
-## Quick Start
-
-Two commands in Claude Code, in any project:
+In Claude Code:
 
 ```
 /plugin marketplace add soul-system-works/Soul-System
 /plugin install soul-system@soul-system
 ```
 
-Then, in the project you want to bring under the Soul:
+Then, in your project:
 
 ```
 /soul-init
 ```
 
-That's the whole install. The plugin ships everything: the **contract** (the one
-page the AI reads, wired in by `/soul-init` as an `@import`), the **commands**
-(`/soul-*`, namespaced as e.g. `/soul-system:soul-capture`), and the
-**pre-completion verification hook** (the gate that blocks unverified "done").
-`/soul-init` also asks one register question — plain or fluent language; plain is
-the default — offers an optional development stage (`/soul-stage`: what may be
-broken, what must be kept), and scaffolds the project's record files. Optional,
-any time: `/soul-delegate` lets a plan's routine steps go to another model (a
-local model, Codex, a smaller Claude) while the AI re-runs every step's check
-itself. Exploring an idea before building it: `/soul-discuss` contests it — rivals,
-the strongest objection, a short cited scan. Moving computers: `/soul-migrate`
-packs what git does not carry into one zip, and `/soul-migrate receive` restores and checks it on the other side. One private home for every project's record: a Soul vault, offered by `/soul-init` once a machine names one ([ADR 0001](docs/adr/0001-soul-vault.md)).
+The first run asks a few questions (where the record lives, how settled the
+project is) and remembers the answers in `.soul/init.md`. Run it again any time:
+it says what is set, repairs what broke, and asks only what is new.
 
-**What happens after install — who does what, and when:**
-[`docs/using-the-soul.md`](docs/using-the-soul.md), one page.
+## What you get
 
----
+- **One page of rules the AI reads**: ten rules, such as "nothing is done until
+  it ran" and "never invent history". `/soul-init` links the page into your
+  project, so it updates with the plugin.
+- **A record in your project**: `.soul/witness.md` (what happened, and why),
+  `.soul/ideas.md` (what might), and later `mind.md` (the few facts a new session
+  cannot work out for itself).
+- **A completion gate**: a hook that stops a session from ending on an unverified
+  "done".
+- **A secret guard** (experimental): checks the AI's commits for credentials and
+  for names you list as private.
 
-## For developers (clone)
+| Command | When |
+|---|---|
+| `/soul-init` | Once per project; again any time to check and repair |
+| `/soul-resume` | Starting a session: pick up where the last one stopped |
+| `/soul-handoff` | Ending a session: leave the next one a note |
+| `/soul-capture` | Keep an idea, or a record of what happened |
+| `/soul-next` | What to do next, from the record |
+| `/soul-discuss` | Test an idea against rivals and objections before building it |
+| `/soul-explain` | Explain where things stand, without deciding anything |
+| `/soul-distill` | Compress a grown record into `mind.md` |
+| `/soul-stage` | Declare prototype, pre-release or released |
+| `/soul-prompt` | Turn a rough prompt into a clear one |
+| `/soul-delegate` | Send routine plan steps to another model; checks still run here |
+| `/soul-migrate` | Move a project to another computer |
+| `/soul-help` | A short tour |
 
-If you want to read, edit, or contribute to the system itself — or pin the
-contract to a path you control — clone the repo to a stable location and let
-`/soul-init` write the import against your clone instead (it derives the root
-from wherever its skill is installed). Contract edits in a clone propagate
-immediately to every project that imports it. The seed and the instruments
-compose: adopt the contract alone, the plugin alone, or both.
+In Claude Code the commands carry the plugin's name: `/soul-system:soul-capture`.
+Keeping every project's record in one private repo: the
+[Soul vault](docs/adr/0001-soul-vault.md). Day to day, who does what:
+[`docs/using-the-soul.md`](docs/using-the-soul.md).
 
----
+## Does it help?
 
-## Other Agent Tools
+We measured it. On current models it does not make the work itself better:
+quality tied whether a session had the Soul, a careful `CLAUDE.md`, or a
+five-minute one. What changes is what carries between sessions.
+A decision written in the record stopped a later session from undoing it (5 of 5
+sessions without the record drifted, 0 of 5 with it), and the strongest model
+drifted too when the record was missing. Method, results and what is still open:
+[`docs/study/`](docs/study/06-bounds-and-open-questions.md).
 
-`AGENTS.md` at the repo root is a cross-vendor convention (Cursor, Aider, OpenAI Codex, Gemini CLI, Jules, Zed, others) that points any agent tool at the right entry points. Soul-following projects are legible to any tool that reads `AGENTS.md`.
+## Codex (preview)
 
-### Codex preview (experimental)
-
-The repository also packages the shared skills for local Codex use. From a
-stable clone of this repository, with a Codex client supporting plugin commands:
+From a clone of this repo:
 
 ```bash
 codex plugin marketplace add /absolute/path/to/Soul-System
 codex plugin add soul-system@soul-system-codex
 ```
 
-Restart Codex, open the adopting project, and invoke `$soul-system:soul-init`. This adds a
-managed live-contract reference to `AGENTS.md` (or `AGENTS.override.md`) and uses
-the same project records as Claude. Existing instructions are preserved. Review
-and trust the plugin hooks in the host before relying on automatic verification;
-installation alone does not arm them. Python 3 is required; Git enables shell-edit
-detection. Run `$soul-system:soul-resume` after upgrades to check for stale contract paths.
+Restart Codex, open your project and run `$soul-system:soul-init`. It adds a
+managed block to `AGENTS.md` and uses the same record as Claude Code. Trust the
+plugin's hooks in Codex before relying on the gate; installing alone does not
+turn them on. Tested on the Codex CLI only. Details and limits:
+[`operations/codex.md`](operations/codex.md).
 
-Exercised with `codex-cli 0.163.0`: in one live `codex exec` session (2026-10-19)
-the SessionStart hook delivered the contract, and the completion gate blocked once,
-the model then ran the code, and the hook recorded its flagged and verdict events.
-The trust-hooks prompt appeared in the owner's interactive runs. **CLI only:**
-other clients (desktop, IDE, cloud) are untested. This is a local
-preview, not a claim of desktop/IDE/cloud parity or public-directory eligibility.
-See the [implementation and review report](docs/specs/codex-plugin-investigation.md)
-for evidence and remaining checks, and [Codex host integration](operations/codex.md)
-for skill behavior and detector limits. Current OpenAI guidance excludes hooks
-from public-directory submissions; manual desktop installation is the documented
-hook distribution route.
+## The philosophy
 
----
+The rules came out of a longer book for people, `philosophy/the-soul.md`, with
+names for the perspectives careful work takes (the Witness, the Council, the
+Judge). The AI never reads it; it is there when you want the why.
 
-## Start
+<p align="center">
+  <img src="architecture.svg" alt="The Soul System role model: the Universe wraps the Body (the human), who inhabits the Soul, Witness, Council, Judge and Hands." width="80%">
+</p>
 
-1. Open a session in your project — the contract page is all the AI needs.
-2. When you want to understand *why* the system is shaped this way, read
-   `philosophy/the-soul.md` — it is written for you, not the model.
-3. The release post — what this does for you, what it won't, each claim
-   anchored to a measured result — is in `docs/study/blog-release.md`.
+## Contributing
 
----
-
-## After Your Run
-
-Read the Witness log. Not the output — the log.
-If you found something worth sharing, see `CONTRIBUTING.md`.
-
----
-
-## Structure
+Clone the repo to a stable place and run `/soul-init` from your clone; projects
+then import the rules from it, so your edits reach them at once.
 
 ```
-philosophy/     The Soul — the human-facing book (the AI does not read this)
-operations/     The contract page — imported by @ into your project's CLAUDE.md
-skills/         The /soul-* instruments, as Claude Code skills (invoked /soul-capture, …)
-hooks/          Activation instruments — the pre-completion Stop hook + plugin hooks.json
-amendments/     Amendments to the Soul, by lifecycle state (accepted/proposed/returned)
-findings/       Findings, open/ and closed/
-witness.md      The repo's own Witness log (what happened, backward)
-ideas.md        The idea inbox (what might, forward) — graduates into findings/
-mind.md         Optional project layer — project notes distilled from the record (unguessables only)
-docs/           Live design specs + study/ (the measurements behind 1.0 and 2.0); historical provenance under docs/archive/
-.claude-plugin/ Plugin + marketplace manifests (install the /soul-* skills + hook)
-.codex-plugin/ Codex preview manifest (shares skills; uses hooks/codex.json)
-.agents/plugins/ Codex preview marketplace catalog
-AGENTS.md       Cross-vendor entry point for any agent tool
+operations/   The page of rules the AI reads (operations/CLAUDE.md)
+skills/       The /soul-* commands
+hooks/        The completion gate, the secret guard, plugin hooks
+tools/        Scripts the commands run (vault, line endings, layout, migrate)
+philosophy/   The book for people
+docs/         Specs, decisions (adr/), the study
+witness.md, ideas.md, mind.md   This repo's own record
+amendments/, findings/          Changes to the Soul and the evidence for them
 ```
 
----
-
-## Governance · Contributing · License
-
-See `GOVERNANCE.md`, `CONTRIBUTING.md`, and `LICENSE` (MIT).
-
-*The philosophy evolves. That is the point.*
+`AGENTS.md` points other agent tools (Cursor, Aider, Gemini CLI, Zed) at the
+same entry points. See `CONTRIBUTING.md`, `GOVERNANCE.md` and `LICENSE` (MIT).

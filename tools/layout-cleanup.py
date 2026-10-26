@@ -36,7 +36,7 @@ from urllib.parse import unquote
 
 # Class 2 — never offered, wherever they sit. layout.json is this script's own memory.
 STORE_FILES = {"witness.md", "ideas.md", "upstream.md", "mind.md", "handoff.md",
-               "events.jsonl", "layout.json"}
+               "events.jsonl", "layout.json", "init.md", "private-names.txt"}
 TEXT_EXT = {".md", ".txt", ".patch", ".diff", ".log", ".html"}
 PROTECTED_NAME_RE = re.compile(
     r"^(readme|changelog|license|licence|contributing|governance)\b|^(agents|claude)\.md$",

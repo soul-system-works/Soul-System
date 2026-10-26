@@ -54,9 +54,7 @@ It still references doctrine live; it never copies doctrine into the project.
 2. Read the active project instruction file (`AGENTS.override.md` if non-empty,
    otherwise `AGENTS.md`) and the project policy file. Show the proposed managed
    block or its delta before adding it to an existing file; obtain consent as the
-   Claude procedure does. Preserve all content outside the block. Reuse an
-   existing Register; otherwise ask plain/fluent once, writing only a fluent
-   override to the project policy file on the owner's choice.
+   Claude procedure does. Preserve all content outside the block.
 3. Run `python3 <plugin-root>/tools/codex-project.py show --project <project-root>`
    FIRST: it prints the exact block, the chosen contract path and why, and writes
    nothing. Show that output, ask for consent (end your turn), and only then run
