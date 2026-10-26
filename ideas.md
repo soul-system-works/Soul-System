@@ -2739,3 +2739,29 @@ SHAPE:     Raw — Body-captured (from the I079 discussion). Sketch: group candi
            redaction). Depends on I079's vault; buildable separately.
 STATUS:    Raw — Body-captured.
 ```
+
+```
+ID:        SOUL-I082
+WHEN:      2026-10-26
+RAW:       The Body: "make sure we fully understand and have the right interface
+           step through when a project does [soul-init] or when an existing project
+           does [soul-init]. ... it does the work correctly, but the options that
+           the user has to specify are not clear. Sometimes they seem kind of
+           strange, or if I've already initialized a project, it's unclear if I
+           needed to answer those certain questions again." Also: "entertaining
+           dropping the option for plain or fluent ... i've never used it."
+SHAPE:     Maturing — review page (artifact D8RkoaZUQ9Y9PWnwSrTiyd, private):
+           13 decisions; a re-run can ask up to 8; only the .ai/ move records a
+           "no". Three real runs (a fresh Codex project, NAV-TOOL, the skills
+           repo) re-asked private names, hooks and the history scan.
+DISCUSSED: (2026-10-26) Options: do nothing · stored answers · doctor-style
+           re-run · a tool that fixes the wording. Objection: a prose skill
+           drifts however good the spec; only structure (an answers file, a status
+           tool) holds it. Sources: skills/soul-init/SKILL.md, the three logs;
+           doctor pattern from memory. Lean: .soul/init.md holds dated answers;
+           every run goes status → repairs → only never-answered questions; a
+           recorded "no" is not re-asked (/soul-init revisit reopens); fixed
+           wording; tools/init-status.py works out the state. Deeper research:
+           not worth it. The Body took the five proposed calls (2026-10-26).
+STATUS:    Maturing — target v3.6.0.
+```
