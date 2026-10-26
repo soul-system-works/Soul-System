@@ -9219,3 +9219,18 @@ TYPE:         witness (live trial)
 CONSEQUENCE:  v3.6.0 released with these fixes. Unrun: Codex; the vault paths live.
 STATUS:       Closed
 ```
+
+```
+ID:           SOUL-222
+WHEN:         2026-10-26 / Soul-System session, after the v3.6.0 push
+WHERE:        tools/init-status.py check_history_scan; skills/soul-init `history-scan`
+WHAT:         v3.6.0 re-offered the gitleaks history scan after any new commit, so
+              an active repo would be asked on almost every /soul-init run. Three
+              options were put to the Body (keep re-offering; offer once; re-offer
+              after a gap); the Body took "offer once": one recorded scan is never
+              re-offered, `/soul-init revisit history-scan` runs it again, and the
+              secret guard covers each new commit as it is made.
+TYPE:         witness (Body decision)
+CONSEQUENCE:  v3.6.1, released and pushed the same day.
+STATUS:       Closed — unconfirmed — owner to ratify
+```
