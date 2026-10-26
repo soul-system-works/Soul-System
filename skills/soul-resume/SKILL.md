@@ -38,9 +38,11 @@ source of truth; this loads them and continues.
      skill's base directory). Exit 1 means a problem — report its one line: BROKEN
      (the vault folder is missing; fix: clone the vault there, or re-run
      `/soul-init`) or TWO COPIES (the project and the vault each hold a record — the
-     owner picks which is current). A broken link hides every store and git stays
-     quiet, and the completion gate stays on only if `CLAUDE.md` carries the Soul
-     import (the I079 link test, 2026-10-22). With no record here, it also says when
+     owner picks which is current). A broken link hides every file behind it — the
+     whole record, or only `.soul/` for a sidecar link (`--sidecar`: the record
+     stays at the project root) — and git stays quiet, and the completion gate
+     stays on only if `CLAUDE.md` carries the Soul import (the I079 link test,
+     2026-10-22). With no record here, it also says when
      the vault already holds this project's record and only the link is missing (a
      fresh clone).
    - **Stores found?** Name where they are — project root or `.soul/`. Both are

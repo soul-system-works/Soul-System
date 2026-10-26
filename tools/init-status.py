@@ -399,6 +399,10 @@ def gather(project):
     c["stores"] = [p for p in STORES + tuple(os.path.join(".soul", s) for s in STORES)
                    if os.path.isfile(os.path.join(project, p))]
     c["fresh"] = not c["importer"] and not c["stores"]
+    # A sidecar link (vault.py link --sidecar): only .soul/ is in the vault; the record
+    # stays at the project root, so its state is read there as if nothing were linked.
+    c["sidecar"] = (os.path.islink(os.path.join(project, ".soul"))
+                    and vaultlib.check(project)["sidecar"])
     v = vaultlib.registered_vault()
     c["where"] = 1 if not v else (0 if vaultlib.is_vault(v) else 3)
     c["vault"] = v if c["where"] == 0 else None
@@ -485,15 +489,18 @@ NEITHER = ("The record stores are neither tracked nor ignored — one `git add -
 def _record_state(c):
     """Where the record actually is: linked · empty · nogit · tracked · ignored · neither."""
     p = c["project"]
-    if os.path.islink(os.path.join(p, ".soul")):
+    stores = c["stores"]
+    if c["sidecar"]:  # git refuses paths through the link, so only the root stores count
+        stores = [s for s in stores if not s.startswith(".soul" + os.sep)]
+    elif os.path.islink(os.path.join(p, ".soul")):
         return "linked"
-    if not c["stores"]:
+    if not stores:
         return "empty"
     if not c["git"]:
         return "nogit"
-    if _git(p, "ls-files", "--", *c["stores"]):
+    if _git(p, "ls-files", "--", *stores):
         return "tracked"
-    if all(_git_ok(p, "check-ignore", "-q", "--", s) for s in c["stores"]):
+    if all(_git_ok(p, "check-ignore", "-q", "--", s) for s in stores):
         return "ignored"
     return "neither"
 
@@ -506,6 +513,9 @@ def _infer_record(c, state):
     if state == "nogit":
         return "local", "Not a git repo: the record exists only on this machine."
     if state == "tracked":
+        if c["sidecar"] and _git_ok(c["project"], "check-ignore", "-q", "--", ".soul"):
+            return "git", ("The record stores are tracked at the project root; .soul/ is an "
+                           "ignored link into the vault (a sidecar).")
         if _git_ok(c["project"], "check-ignore", "-q", "--", ".soul/handoff.md"):
             return "git", "The record stores are tracked and .soul/handoff.md is ignored."
         return None, "The record stores are tracked, but .soul/handoff.md is not ignored."

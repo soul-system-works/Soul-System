@@ -14,11 +14,17 @@ this helper; the helper does the mechanical parts.
                                          none named; 3: named but not there yet)
   link <project> --key K --label L       move the record into the vault and link it,
        [--contributes a,b] [--vault DIR]  or re-link a record the vault already holds
-       [--dry-run]                        (a new machine after cloning the vault)
+       [--dry-run] [--sidecar]            (a new machine after cloning the vault)
   index [<vault>]                        rewrite the vault's index.md from projects/*/project.md
   check <project> [--json]               linked / broken / two copies / not linked;
                                          exit 1 if broken or two copies
   session-start                          SessionStart hook: one short line, or nothing
+
+--sidecar moves only the private .soul/ folder (handoff, private-names list, runs); the
+record (witness.md, ideas.md, mind.md, upstream.md) stays at the project root, tracked —
+for a project whose record is itself public, as Soul-System's is (SOUL-223). The move
+records `sidecar: true` in the vault's projects/<key>/project.md, so a fresh clone of a
+sidecar project re-links without the flag, and `check` reads the layout from there.
 
 One vault per machine: the machine file ($XDG_CONFIG_HOME or ~/.config, then
 soul/vault) holds one line, the vault's folder. The boundary is where the vault
@@ -210,9 +216,46 @@ def _remote_clash(project, home):
 
 def _has_local(project):
     """A record held in the project itself: a real .soul/ folder or a root store."""
+    return _real_soul(project) or _holds_record(project)
+
+
+def _real_soul(project):
     soul = os.path.join(project, ".soul")
-    return (os.path.isdir(soul) and not os.path.islink(soul)) or any(
-        os.path.isfile(os.path.join(project, n)) for n in ROOT_STORES)
+    return os.path.isdir(soul) and not os.path.islink(soul)
+
+
+def _held_records(path):
+    """The record stores (witness.md, ideas.md, ...) that sit directly in `path`."""
+    return [n for n in ROOT_STORES if os.path.isfile(os.path.join(path, n))]
+
+
+def _holds_record(path):
+    return bool(_held_records(path))
+
+
+def _is_sidecar(home):
+    """True when the vault project at `home` was linked with --sidecar (its project.md
+    says `sidecar: true`): the record stays at the project root, only .soul/ is here.
+    Recorded, never inferred from what soul/ holds — a vault copy that lost its stores
+    must still read as a second record beside a root one."""
+    return _frontmatter(os.path.join(home, "project.md")).get("sidecar", "").lower() == "true"
+
+
+def _mark_sidecar(pm):
+    """Add `sidecar: true` inside an existing project.md's frontmatter; True if it is
+    there afterwards."""
+    if _frontmatter(pm).get("sidecar", "").lower() == "true":
+        return True
+    try:
+        text = open(pm, encoding="utf-8").read()
+    except (OSError, UnicodeError):
+        return False
+    m = re.match(r"^---\n(.*?)\n---", text, re.S)
+    if not m:
+        return False
+    with open(pm, "w", encoding="utf-8") as f:
+        f.write(text[:m.end(1)] + "\nsidecar: true" + text[m.end(1):])
+    return True
 
 
 def _tree_hashes(root):
@@ -352,7 +395,7 @@ def _move_root_stores(project, soul, dry_run):
 
 # ---------------------------------------------------------------- link
 
-def link(project, key, label, contributes=(), vault=None, dry_run=False):
+def link(project, key, label, contributes=(), vault=None, dry_run=False, sidecar=False):
     project = os.path.realpath(project)
     if label not in LABELS:
         raise VaultError("unknown label {!r} — one of {}".format(label, ", ".join(LABELS)))
@@ -403,7 +446,10 @@ def link(project, key, label, contributes=(), vault=None, dry_run=False):
             raise VaultError(".soul is a broken link to {} and the vault has no record for "
                              "{!r} — clone the vault there, or name the right key".format(current, key))
     elif os.path.isdir(target):
-        if _has_local(project):
+        # A clash is a second record, not a root record beside a sidecar's vault folder
+        # (a fresh clone of a sidecar project re-links with no flag).
+        if _real_soul(project) or (_holds_record(project) and (
+                not _is_sidecar(home) or _holds_record(target))):
             raise VaultError("the vault already holds a record for {!r} and this project has "
                              "its own — merging two records is the owner's call; nothing "
                              "changed".format(key))
@@ -415,10 +461,18 @@ def link(project, key, label, contributes=(), vault=None, dry_run=False):
         if not _has_local(project):
             raise VaultError("no record to move (no .soul/ and no root witness.md or "
                              "ideas.md) — scaffold it first")
+        if sidecar and not _real_soul(project):
+            raise VaultError("--sidecar moves only .soul/ and there is none — nothing changed")
+        if sidecar and _holds_record(soul):
+            raise VaultError("--sidecar keeps the record at the project root, but .soul/ holds "
+                             "{} — which is the record is the owner's call; nothing changed"
+                             .format(", ".join(_held_records(soul))))
         mode = "move"
 
     if mode == "move":
-        moved, rewrites, unsure = _move_root_stores(project, soul, dry_run)
+        # Sidecar: the root record stays where it is (tracked, public); only .soul/ moves.
+        moved, rewrites, unsure = ([], [], []) if sidecar else \
+            _move_root_stores(project, soul, dry_run)
         for n in moved:
             say("move {} → .soul/{}", n, n)
         for p in rewrites:
@@ -480,10 +534,18 @@ def link(project, key, label, contributes=(), vault=None, dry_run=False):
             remote = re.sub(r"^([a-z+]+://)[^@/]+@", r"\1", _remote(project) or "")
             with open(pm, "w", encoding="utf-8") as f:
                 f.write("---\nkey: {}\nlabel: {}\ncontributes: [{}]\nremote: {}\nsoul: true\n"
-                        "---\n\n# {}\n".format(key, label, ", ".join(contributes), remote, key))
-    elif _frontmatter(pm).get("label") not in (None, label):
-        print("note: {} says label {} — kept; edit it there to change it"
-              .format(pm, _frontmatter(pm).get("label")))
+                        "{}---\n\n# {}\n".format(key, label, ", ".join(contributes), remote,
+                                               "sidecar: true\n" if sidecar else "", key))
+    else:
+        if _frontmatter(pm).get("label") not in (None, label):
+            print("note: {} says label {} — kept; edit it there to change it"
+                  .format(pm, _frontmatter(pm).get("label")))
+        if sidecar and not _is_sidecar(home):
+            say("add `sidecar: true` to {}", pm)
+            if not dry_run and not _mark_sidecar(pm):
+                print("CHECK BY HAND: {} has no frontmatter to record `sidecar: true` in — "
+                      "until it does, check reads a root record beside this link as TWO "
+                      "COPIES".format(pm))
 
     if dry_run:
         say("add .soul to .git/info/exclude; add the vault to "
@@ -496,7 +558,10 @@ def link(project, key, label, contributes=(), vault=None, dry_run=False):
             print("allowed the vault in .claude/settings.local.json (writes through the "
                   "link are refused without it)")
 
-    tracked = _git(project, "ls-files", "--", ".soul", *ROOT_STORES)
+    # A sidecar keeps its record tracked at the root on purpose (a fresh clone re-linking
+    # one reads that from project.md, with no flag); a tracked .soul still warns.
+    keeps_root = sidecar or _is_sidecar(home)
+    tracked = _git(project, "ls-files", "--", ".soul", *(() if keeps_root else ROOT_STORES))
     if tracked:
         print("STILL TRACKED in git — until a `git rm --cached` of these is committed, a git "
               "reset, stash, restore or checkout can put the old committed copy back in place "
@@ -582,7 +647,9 @@ def index(vault):
 # ---------------------------------------------------------------- check / hook
 
 def check(project):
-    """{'state': 'linked'|'broken'|'two-copies'|'not-linked', 'target', 'vault_has'}"""
+    """{'state': 'linked'|'broken'|'two-copies'|'not-linked', 'target', 'vault_has',
+    'sidecar'} — sidecar: the vault's project.md records `sidecar: true` (only .soul/ is
+    in the vault; the record stays at the project root)."""
     project = os.path.realpath(project)
     soul = os.path.join(project, ".soul")
     if os.path.islink(soul):
@@ -590,23 +657,32 @@ def check(project):
         if not os.path.isabs(target):
             target = os.path.normpath(os.path.join(project, target))
         state = "linked" if os.path.isdir(soul) else "broken"
-        if state == "linked" and any(os.path.isfile(os.path.join(project, n))
-                                     for n in ROOT_STORES):
+        # Broken and the vault gone: project.md is unreadable, so sidecar reads False.
+        sidecar = _is_sidecar(os.path.dirname(target.rstrip("/")))
+        if state == "linked" and _holds_record(project) and (
+                not sidecar or _holds_record(target)):
             state = "two-copies"  # a reset brought a tracked root-layout record back
-        return {"state": state, "target": target, "vault_has": None}
-    out = {"state": "not-linked", "target": None, "vault_has": None}
+        return {"state": state, "target": target, "vault_has": None, "sidecar": sidecar}
+    out = {"state": "not-linked", "target": None, "vault_has": None, "sidecar": False}
     vault = registered_vault()
     if vault and is_vault(vault):
         key = vault_match(project, vault)
         if key and os.path.isdir(os.path.join(vault, "projects", key, "soul")):
             out["vault_has"] = key
             out["target"] = os.path.join(vault, "projects", key, "soul")
-            if _has_local(project):
+            if _real_soul(project) or (_holds_record(project) and (
+                    not _is_sidecar(os.path.join(vault, "projects", key))
+                    or _holds_record(out["target"]))):
                 out["state"] = "two-copies"
     return out
 
 
 def check_line(state):
+    if state["state"] == "broken" and state.get("sidecar"):
+        return ("Soul vault link BROKEN: .soul → {} is missing, so this project's .soul/ "
+                "files (handoff, private-names list) cannot be read or written; the record "
+                "at the project root is unaffected. Fix: clone the vault there, or re-run "
+                "/soul-init.".format(state["target"]))
     if state["state"] == "broken":
         return ("Soul vault link BROKEN: .soul → {} is missing, so this project's record "
                 "(witness, ideas, Mind, handoff) cannot be read or written. Fix: clone the "
@@ -616,6 +692,9 @@ def check_line(state):
                 "root witness.md/ideas.md) and the vault holds one for it ({}). A git reset, stash or checkout of a still-tracked record "
                 "can replace the link this way. Compare them before writing; which is current "
                 "is the owner's call.".format(state["target"]))
+    if state["state"] == "linked" and state.get("sidecar"):
+        return ("This project's .soul/ lives in the vault: .soul → {} (the record itself "
+                "stays in the project).".format(state["target"]))
     if state["state"] == "linked":
         return "Soul record lives in the vault: .soul → {}.".format(state["target"])
     if state["vault_has"]:
@@ -652,6 +731,8 @@ def main():
     ln.add_argument("--contributes", default="", help="comma-separated tags")
     ln.add_argument("--vault", help="default: the machine file's vault")
     ln.add_argument("--dry-run", action="store_true")
+    ln.add_argument("--sidecar", action="store_true",
+                    help="move only .soul/; the root record stays in the project, tracked")
     c = sub.add_parser("check", help="linked / broken / not linked")
     c.add_argument("project")
     c.add_argument("--json", action="store_true")
@@ -691,7 +772,8 @@ def main():
             return index(v)
         if args.cmd == "link":
             tags = [t.strip() for t in args.contributes.split(",") if t.strip()]
-            return link(args.project, args.key, args.label, tags, args.vault, args.dry_run)
+            return link(args.project, args.key, args.label, tags, args.vault, args.dry_run,
+                        args.sidecar)
         st = check(args.project)
         print(json.dumps(st) if args.json else (check_line(st) or "not linked"))
         return 1 if st["state"] in ("broken", "two-copies") else 0
