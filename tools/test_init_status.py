@@ -176,6 +176,15 @@ def main():
     st, by = status(envl, p2)
     check("committing only .soul/init.md: no new scan asked",
           by["history-scan"]["action"] == "none", by["history-scan"])
+    with open(os.path.join(p2, "CLAUDE.md"), "a") as f:  # init's own edits, committed later
+        f.write("\n**Stage: prototype**\n")
+    with open(os.path.join(p2, ".gitignore"), "a") as f:
+        f.write(".soul/private-names.txt\n")
+    git(p2, "add", "CLAUDE.md", ".gitignore")
+    git(p2, "commit", "-qm", "init's edits")
+    st, by = status(envl, p2)
+    check("committing only init's own files (CLAUDE.md, .gitignore): no new scan asked",
+          by["history-scan"]["action"] == "none", by["history-scan"])
     write(os.path.join(p2, "src.py"), "x = 1\n")
     git(p2, "add", "src.py")
     git(p2, "commit", "-qm", "work")

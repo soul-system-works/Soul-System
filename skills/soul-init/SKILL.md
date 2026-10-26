@@ -10,9 +10,9 @@ disable-model-invocation: true
 following this workflow. Its Codex procedures replace Claude-specific loading,
 instruction-file, tool, and invocation mechanics; the shared workflow follows.
 
-Every run is the same three moves: **status** (what is set), **repairs** (what
-broke on this machine, fixed from answers already given), **questions** (only
-decisions never answered). A fresh project gets two or three short rounds; a
+Every run is the same three moves: **status** (what is set), **questions** (only
+decisions never answered), then **carrying out** the answers and the repairs (what
+broke on this machine, fixed from answers already given). A fresh project gets a few short rounds; a
 project already set up usually gets none. `tools/init-status.py` works out the
 state and holds the question wording; this skill carries out the answers.
 
@@ -84,43 +84,51 @@ Work from the directory the session started in; do not search upwards.
    at a missing folder (clone the vault there first — scaffolding would make a second
    record the vault then refuses).
 
-3. **Repairs**, each in one line, using the mechanics in the next section: `import`
-   (no CLAUDE.md: create it — no question; an import pointing at a path that no
-   longer exists, e.g. a plugin version folder an update removed: rewrite it to
-   `<root>`), `vault-link` (BROKEN: re-link), `record` (an answer recorded but no
-   stores: scaffold; `vault` recorded but not linked: the vault move; the files
-   disagree with the recorded answer: the fix its detail names), `hand-hooks`
-   (install the missing ones; rewrite a Soul hook whose plugin path is gone), `mind`
-   (add the import), `line-endings` (rewrite CRLF working copies; nothing to
-   commit). A repair that changes tracked files (untracking a record, a commit) is
-   put to the owner first, in one line, with the detail as the reason.
-
-4. **Questions, round by round**, in `rounds` order — one `AskUserQuestion` call per
+3. **Questions, round by round**, in `rounds` order — one `AskUserQuestion` call per
    round (up to four questions). Show each question's `text`, and each option's
    `label` and `description`, **word for word**; add "(Recommended)" only to the
    option at index `recommended` (null: none); `multi: true` allows several. Never
    reword, add or drop an option (one exception: `vault-link` below). After a
    single-question round (`vault-link`, `import`, `existing-store`, `public`), record
    the answer and run `status` again before the next round — those answers change the
-   later questions (a public repo changes the record and names wording). Without the
-   prompt tool (`claude -p`), list the questions and stop — never guess an answer.
+   later questions (a public repo changes the record and names wording). *Link it* is
+   carried out at once (link, then record `link`), and the new status may list
+   repairs from answers the vault already holds; they join step 4. **`vault-link`
+   *Not now* ends the run**: the vault holds this project's record, so until it is
+   linked nothing else can be set up here (the tool lists no other round and `record`
+   refuses; a local record would be a second copy). Say so; the next run asks again.
+   Without the prompt tool (`claude -p`), list the questions and stop — never guess
+   an answer.
 
-5. **Carry out and record each answer.** Do what the next section says for the key,
-   then `python3 <root>/tools/init-status.py record . <key> <value>` with the
-   option's `value`. Order: `record` (the scaffold, committed if the answer is git),
-   `stage`, the extras' line endings and hooks, the vault move if the answer was the
-   vault, and the history scan LAST, so it covers every commit this run made. Extras:
-   each ticked member is `yes` (do it), each unticked one `no`; with one member the
-   question is Yes/No for that member. A `no` is final until `revisit`. Not recorded:
-   `layout` (it keeps its own list). **`vault-link` *Not now* ends the run**: the
-   vault holds this project's record, so until it is linked nothing else can be set
-   up here (the tool lists no other round and `record` refuses; a local record would
-   be a second copy). Say so; the next run asks again.
+4. **Carry out the repairs and answers, in this order**, recording each answer with
+   `python3 <root>/tools/init-status.py record . <key> <value>` (the option's
+   `value`; an extras member ticked is `yes`, unticked `no`; the history scan is
+   recorded as `clean <sha12>`, `findings <sha12>` or `declined`). A `no` is final
+   until `revisit`; `layout` keeps its own list. Mechanics are in the next section.
+   1. **Line endings first** (a yes, or a repair), while nothing else has touched
+      tracked files: `eol.py fix` refuses when tracked files have other edits.
+   2. **The files:** `import` (create `CLAUDE.md`; add the line; or rewrite an import
+      whose path no longer exists — e.g. a plugin version folder an update removed —
+      to `<root>`), `existing-store`, `record` (the scaffold and `.gitignore` lines,
+      or the fix a disagreeing record's detail names), `mind`, `hand-hooks` (install
+      the missing ones; rewrite a Soul hook whose plugin path is gone), the `names`
+      file.
+   3. **`stage`**, after the record exists (it ends in a witness entry).
+   4. **The vault move**, if that was the answer, so the stage entry and the names
+      file move with the record.
+   5. **One commit**, when the record is in git: what this run wrote — the record
+      files, `.gitignore`, the `CLAUDE.md` lines, the stage block — named in the
+      report (the owner chose git; a record neither committed nor ignored is one
+      `git add -A` from an accidental commit).
+   6. **The history scan last**, so it covers every commit this run made.
 
-6. **Check.** Run `status` again. Nothing should be left to repair or ask; if
+   A repair that changes tracked files the owner did not choose (untracking a
+   record) is put to the owner first, in one line, with the detail as the reason.
+
+5. **Check.** Run `status` again. Nothing should be left to repair or ask; if
    something is, say what and why.
 
-7. **Report**, briefly: what changed (files written, hooks installed, commits made),
+6. **Report**, briefly: what changed (files written, hooks installed, commits made),
    then only the notes that apply —
    - the `CLAUDE.md` path, and that the contract loads from the *next* session;
    - the version-pin warning, if the import is pinned;
@@ -201,9 +209,9 @@ docs/ideas.md — append there.`) instead of an empty store. MODEL-TEST's
 project's record, each reached by a `.soul` link (SOUL-I079, [ADR
 0001](../../docs/adr/0001-soul-vault.md)). Re-link (*Link it*, or a BROKEN repair):
 `python3 <root>/tools/vault.py link . --key <key> --label <the label in its
-project.md>`. The move (*In your Soul vault*) is carried out late in step 5 —
+project.md>`. The move (*In your Soul vault*) is carried out late in step 4 —
 after the stage entry and the names file are written into the local record, so they
-move with it (the order the I079 link test used) — but its questions come first:
+move with it — but its questions come first:
 - **Label**, asked straight after the vault answer, before anything else is done —
   *public* (anyone may read it), *private* (yours), *confidential* (someone else's
   material, e.g. an employer's or client's — the owner decides whether a personal
@@ -229,7 +237,9 @@ stash or checkout puts the old copy back in place of the link and `check` report
 TWO COPIES; the old copies stay in history (moving is not redaction, mind 6d).
 The vault repo keeps the project's `private-names.txt` (it travels to the next machine
 with the record) and leaves out only `events.jsonl`. Any other `link` failure: run
-`vault.py check .` and report its line before going on.
+`vault.py check .` and report its line before going on. After a move, run
+`eol.py check <vault>`: a vault made before v3.5.0 may lack the line-ending rule —
+if line endings were a yes, fix and commit there too.
 **`link` refuses** (exit 2, nothing changed): the record stayed — ask the record
 question again without the vault; a record must never be left neither tracked nor
 ignored, where one `git add -A` commits it.
@@ -305,8 +315,8 @@ files with both. Before asking, show `eol.py check .`'s list of files committed 
 CRLF — some may need CRLF on purpose (`.eml`, `.ics` fixtures), and the fix stores
 them LF. On yes, run `python3 <root>/tools/eol.py fix <repo>` for each repo the
 tool's detail names (`Needs it: project`, `vault` or `both`), show its output and
-commit in that repo with the line it suggests (for the vault, commit step `vault`'s
-`index.md` change first). It refuses (exit 2, nothing changed) on staged work,
+commit in that repo with the line it suggests (in the vault, commit its `index.md`
+change first). With no vault the detail has no `Needs it:` line: fix the project. It refuses (exit 2, nothing changed) on staged work,
 real edits it would sweep in, an untracked or edited `.gitattributes`, or files
 hidden by assume-unchanged or skip-worktree: say why and leave it. Stopped partway
 (exit 2 after changing something): relay its list and undo lines word for word.
@@ -355,5 +365,5 @@ record answer, the move.
 **Amended:** 2026-10-26 (v3.5.0, SOUL-218/219) — line endings (`tools/eol.py`); the
 outside-files dialog in the bottom line.
 **Amended:** 2026-10-26 (v3.6.0, SOUL-I082, SOUL-A030) — rebuilt as status →
-repairs → questions over `tools/init-status.py`: fixed wording, answers remembered
+questions → carrying out over `tools/init-status.py`: fixed wording, answers remembered
 in `.soul/init.md`, a `no` final until `revisit`; the register question dropped.

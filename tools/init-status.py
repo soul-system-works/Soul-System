@@ -26,7 +26,8 @@ Exit 0 ok, 2 usage or error. Set SOUL_INIT_NO_GH=1 to skip the `gh` visibility
 lookup (the tests do, so they never reach the network).
 
 Values the skill records, per key (the option `value` fields in QUESTIONS):
-  import add|leave · vault-link link|not-now · record git|local|vault ·
+  import add|leave · vault-link link (recorded after linking; "Not now" is not
+  recorded) · record git|local|vault ·
   public yes|no · names none|listed · hand-hooks yes|no ·
   history-scan `clean <sha12>`|`findings <sha12>`|declined ·
   stage prototype|pre-release|released|not-now · line-endings yes|no ·
@@ -618,15 +619,20 @@ def check_hand_hooks(c):
                  "not checked.".format(d) + held)
 
 
+# Files /soul-init itself writes. A later commit touching only these is not new work
+# to scan: recording the scan, then committing init's own edits (the import line, a
+# stage block, an ignore line), must not make the next run ask again.
+INIT_FILES = (".soul/init.md", "CLAUDE.md", ".claude/CLAUDE.md", "AGENTS.md", ".gitignore")
+
+
 def _commits_since(project, sha):
-    """Commits after `sha` that change anything but .soul/init.md (recording a scan and
-    committing the answer must not make the next run ask again); None when `sha` is
-    not in this history."""
+    """Commits after `sha` that change anything but INIT_FILES; None when `sha` is not
+    in this history."""
     full = _git(project, "rev-parse", "--verify", "--quiet", sha + "^{commit}")
     if not full or not _git_ok(project, "merge-base", "--is-ancestor", full, "HEAD"):
         return None
     n = _git(project, "rev-list", "--count", full + "..HEAD", "--", ".",
-             ":(exclude).soul/init.md")
+             *(":(exclude){}".format(f) for f in INIT_FILES))
     return int(n) if n and n.isdigit() else None
 
 
