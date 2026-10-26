@@ -212,4 +212,11 @@ print(f"{'ok  ' if ok else 'FAIL'} FIFO sink -> None without blocking: hung {hun
       f"got {result}")
 total = len(CASES) + len(DELEGATION_CASES) + 3
 print(f"{'PASS' if not failed else 'FAIL'}  {total - failed}/{total} — gate verdict event")
-sys.exit(1 if failed else 0)
+# The checks above run on import; exit only as a script, so plain `pytest` can
+# collect this file instead of stopping at a module-level SystemExit (SOUL-224).
+if __name__ == "__main__":
+    sys.exit(1 if failed else 0)
+
+
+def test_fence():
+    assert not failed

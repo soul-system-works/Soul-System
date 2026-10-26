@@ -96,4 +96,11 @@ for name, records, want in CASES:
     failed += not ok
     print(f"{'ok  ' if ok else 'FAIL'} {name}: got {got}, want {want}")
 print(f"{'PASS' if not failed else 'FAIL'}  {len(CASES) - failed}/{len(CASES)} — turn slicing")
-sys.exit(1 if failed else 0)
+# The checks above run on import; exit only as a script, so plain `pytest` can
+# collect this file instead of stopping at a module-level SystemExit (SOUL-224).
+if __name__ == "__main__":
+    sys.exit(1 if failed else 0)
+
+
+def test_fence():
+    assert not failed

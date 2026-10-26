@@ -93,7 +93,7 @@ def main():
                     rows.append((os.path.basename(p.rstrip("/")), un, n))
                 break
     # Default is totals-only. The per-project lines carry real project names, and
-    # this is the one repo whose main is public and anonymises them (mind 5c) —
+    # this is the one repo whose main is public and anonymises them (mind 6c) —
     # printing them unconditionally put them in context on every /soul-next run
     # (fresh-context review, 2026-08-28).
     if args.detail:
