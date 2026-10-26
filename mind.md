@@ -21,6 +21,9 @@ book (`philosophy/the-soul.md`); everything else regenerates from the record.
    re-check it at the source; then have a fresh-context reviewer read it. It fired
    three more times on 2026-10-21 alone — probe arms named "Comparator", the asking
    standard, "31 sessions" for 66 — each caught at the source (SOUL-213/214).
+   On 2026-10-22 the claim "a careful file matched Soul on asking first" (recorded:
+   careful file 5/5, Soul 2/5) reached the Body in chat, I078 and a skill before
+   review caught it (SOUL-216).
 
 3. **Measurement under `claude -p`** (SOUL-F038, SOUL-190): `@`-imports from outside
    the project do not reliably load, and a session confabulates the missing content
@@ -70,6 +73,9 @@ book (`philosophy/the-soul.md`); everything else regenerates from the record.
    piped exit code, which reported "fetchable" by testing `head`. SOUL-175
    recorded three SHAs as unfetchable; all three still fetched three months
    later, and its local tag re-adoption had not taken either (SOUL-178).
+   (e) Push a release tag by explicit refspec, `refs/tags/vX.Y.Z` — NEVER `--tags`,
+   which published the private `archive/video-pipeline` ref (SOUL-182); a branch
+   sharing the tag's name made a bare `git push origin v3.3.0` fail (SOUL-216).
 
 7. **Transcript-measurement traps** (SOUL-173 — each returned a plausible WRONG
    number in one session). Count the TURN, not the text block: one turn emits
@@ -88,11 +94,12 @@ book (`philosophy/the-soul.md`); everything else regenerates from the record.
    the call only at chain R's judgment step on Sonnet (3/3 vs 0/4). On the stale-rule
    quiz, scored to one standard, a careful CLAUDE.md asked first 5/5 and Soul 2/5 (v2
    and v3) — this is NOT Soul's edge; the earlier "10/10 vs 0/5" was looser scoring
-   against a bare note (SOUL-214). Any grade that favours an arm gets a second blind
-   scorer before it is reported: both 2026-10-21 false-done flags dissolved on the
-   second read. Headless plugin arms measure "installed", not "used", unless the
-   prompt names the practice; then the skills fired 12/12, and Pocock's `tdd` stops
-   for the owner (SOUL-211).
+   against a bare note (SOUL-214). Both numbers predate v3.2's rule-7 text (ask before
+   you build), written in answer to them; the new text is unmeasured. Any grade that
+   favours an arm gets a second blind scorer before it is reported: both 2026-10-21
+   false-done flags dissolved on the second read. Headless plugin arms measure
+   "installed", not "used", unless the prompt names the practice; then the skills
+   fired 12/12, and Pocock's `tdd` stops for the owner (SOUL-211).
 
 9. **A probe that runs git here can damage this repo.** During the secret-guard
    reviews a probe's `cd` failed and it ran in Soul-System: it committed a file `y`
@@ -108,9 +115,13 @@ book (`philosophy/the-soul.md`); everything else regenerates from the record.
     conditional handovers that a second pair, grading all arms to one standard,
     scored 2/5. Before naming an arm in prose, read the runner script; before
     comparing two arms' grades, have the same scorers grade both in one pass.
+    The same holds for a live trial of an unreleased build: only a run under
+    `claude --plugin-dir <repo>` tests it — re-runs without it silently ran the
+    installed 3.5.0 (SOUL-221).
 
 ---
-**Last distilled:** 2026-10-22 against SOUL-214 / A029 / F074 / v3.1.0 (delta window
-SOUL-212→214, I071–I080, v3.0–v3.1; prior form at commit 77a70a1). Changed: item 8
-(the asking claim withdrawn, the floor's tie and cost added) and item 2 (three new
-instances). New: item 10. Nothing cut. Rules 9–10 still NOT carried (doctrine).
+**Last distilled:** 2026-10-26 against SOUL-224 / A030 / I082 / v3.6.1 (delta window
+SOUL-215→224, I081–I082, A030, v3.2–v3.6.1; prior form at commit 70db4ec). Changed:
+items 2 (a cited result), 6(e) (tag push), 8 (2/5 predates rule 7's text), 10 (live
+trials need --plugin-dir). Nothing cut. Cap raised past 120 by the Body,
+2026-10-26. Rules 9–10 still NOT carried (doctrine).
