@@ -72,6 +72,9 @@ def main():
     r = run(env, "init", vault, "--register")
     check("init scaffolds", r.returncode == 0 and all(os.path.exists(os.path.join(vault, f))
           for f in ("vault.md", ".gitignore", "index.md", "projects")), r.stderr)
+    ga = os.path.join(vault, ".gitattributes")
+    check("init writes the line-ending rule", os.path.isfile(ga)
+          and "* text=auto eol=lf" in read(ga))
     write(os.path.join(vault, "vault.md"), "# mine\n")
     r = run(env, "init", vault, "--register")
     check("init never overwrites", r.returncode == 0 and read(os.path.join(vault, "vault.md")) == "# mine\n")
@@ -256,6 +259,96 @@ def main():
           "| [notes](projects/notes/project.md) | private | research | no | — |" in idx, idx)
     check("index never lists a restricted or unlabelled project", "secret" not in idx
           and "nolabel" not in idx and "casey" not in idx and "4 left out" in r.stdout, r.stdout)
+
+    # 5f — witness logs written as dated headings: the cell shows the date, never the
+    #      title; whichever entry form comes last wins
+    for key, text in (
+            ("heady", "# W\n## 2026-10-23 — Vault | second machine\nbody\n"),
+            ("heady-hyphen", "# W\n## 2026-10-24 - a hyphen\n"),
+            ("id-then-heading", "ID:  SOUL-8\nWHEN:  2026-10-20 / x\n\n## 2026-10-25 — later\n"
+                                "WHEN:  2026-10-01 / not an entry of its own\n"),
+            ("heading-then-id", "## 2026-10-19 — earlier\n\nID:  SOUL-9\nWHEN:  2026-10-26\n"),
+            ("id-only", "ID:  SOUL-10\n")):
+        write(os.path.join(vault, "projects", key, "project.md"),
+              "---\nkey: {}\nlabel: private\n---\n".format(key))
+        write(os.path.join(vault, "projects", key, "soul", "witness.md"), text)
+    r = run(env, "index")
+    idx = read(os.path.join(vault, "index.md"))
+    check("a dated heading shows just the date",
+          "| [heady](projects/heady/project.md) | private |  | yes | 2026-10-23 |" in idx
+          and "second machine" not in idx, idx)
+    check("a hyphen after the date counts too", "| yes | 2026-10-24 |" in idx, idx)
+    check("a heading after an ID entry wins", "id-then-heading/project.md) | private |  | yes "
+          "| 2026-10-25 |" in idx and "SOUL-8" not in idx, idx)
+    check("an ID entry after a heading wins", "| yes | SOUL-9 (2026-10-26) |" in idx, idx)
+    check("an ID with no date shows the ID", "| yes | SOUL-10 |" in idx, idx)
+    probe = subprocess.run([sys.executable, "-I", "-c",
+                            "import importlib.util, sys\n"
+                            "s = importlib.util.spec_from_file_location('v', sys.argv[1])\n"
+                            "m = importlib.util.module_from_spec(s); s.loader.exec_module(m)\n"
+                            "print(m._latest_witness(sys.argv[2]))",
+                            _TOOL, os.path.join(vault, "projects", "heady", "soul", "witness.md")],
+                           capture_output=True, text=True, cwd=tmp)
+    check("a dated heading → (None, date)",
+          probe.stdout.strip() == "(None, '2026-10-23')", probe.stdout + probe.stderr)
+
+    # 5g — eol.py is imported only by init: the SessionStart hook (`session-start`, same load path as `check`), which
+    #      must work even where eol.py does not load; init finds eol.py from elsewhere
+    lone = os.path.join(tmp, "lone")
+    os.makedirs(lone)
+    shutil.copy(_TOOL, lone)
+    r = subprocess.run([sys.executable, "-I", os.path.join(lone, "vault.py"), "check", tmp],
+                       capture_output=True, text=True, env=env, cwd=tmp)
+    check("vault.py check runs with no eol.py beside it", r.returncode == 0
+          and "Error" not in r.stderr, r.stdout + r.stderr)
+    elsewhere = os.path.join(tmp, "vault-elsewhere")
+    probe = subprocess.run([sys.executable, "-I", "-c",
+                            "import importlib.util, sys\n"
+                            "s = importlib.util.spec_from_file_location('v', sys.argv[1])\n"
+                            "m = importlib.util.module_from_spec(s); s.loader.exec_module(m)\n"
+                            "m.init(sys.argv[2])",
+                            _TOOL, elsewhere], capture_output=True, text=True, cwd=tmp, env=env)
+    check("init loaded from elsewhere finds eol.py and writes the rule",
+          probe.returncode == 0 and os.path.isfile(os.path.join(elsewhere, ".gitattributes")),
+          probe.stdout + probe.stderr)
+
+    # 5h — index.md is written with the STORED copy's line ending, so a CRLF checkout
+    #      of an LF commit does not stay modified; not a git repo, or untracked → LF
+    path = os.path.join(vault, "index.md")
+    crlf = open(path, "rb").read().replace(b"\n", b"\r\n")
+    with open(path, "wb") as fh:
+        fh.write(crlf)
+    run(env, "index")
+    after = open(path, "rb").read()
+    check("not a git repo: a CRLF index.md is rewritten LF",
+          b"\r" not in after and after == crlf.replace(b"\r\n", b"\n"), repr(after[:80]))
+    v2 = os.path.join(tmp, "vault-git")
+    run(env, "init", v2)
+    os.remove(os.path.join(v2, ".gitattributes"))  # a vault made before the rule
+    p2 = os.path.join(v2, "index.md")
+    run(env, "index", v2)
+    git(v2, "init", "-q")
+    git(v2, "-c", "core.autocrlf=false", "add", "index.md")
+    git(v2, "commit", "-qm", "lf")
+    lf = open(p2, "rb").read()
+    with open(p2, "wb") as fh:
+        fh.write(lf.replace(b"\n", b"\r\n"))  # what a Windows autocrlf checkout leaves
+    run(env, "index", v2)
+    check("LF committed, CRLF working copy: written LF, git sees no change",
+          open(p2, "rb").read() == lf and git(v2, "status", "--porcelain", "--",
+                                              "index.md").stdout == "",
+          repr(open(p2, "rb").read()[:80]))
+    with open(p2, "wb") as fh:
+        fh.write(lf.replace(b"\n", b"\r\n"))
+    git(v2, "-c", "core.autocrlf=false", "add", "index.md")
+    git(v2, "commit", "-qm", "crlf")
+    with open(p2, "wb") as fh:
+        fh.write(lf)
+    run(env, "index", v2)
+    check("CRLF committed: written CRLF, git sees no change",
+          open(p2, "rb").read() == lf.replace(b"\n", b"\r\n")
+          and git(v2, "status", "--porcelain", "--", "index.md").stdout == "",
+          repr(open(p2, "rb").read()[:80]))
 
     # 6 — broken link: loud in check and at session start; silent where nothing is linked
     os.rename(target, target + ".gone")

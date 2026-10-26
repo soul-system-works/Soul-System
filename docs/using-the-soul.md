@@ -111,6 +111,12 @@ computer, run `/soul-migrate receive <zip>`: it checks every file, restores the
 project without overwriting anything, rebuilds, and runs one check. Settings that
 belong to no project (`~/.claude`, `~/.codex`) move by hand.
 
+**Line endings.** When a Windows git (or Sourcetree) and WSL git share one checkout,
+Windows writes files with Windows line endings and WSL then sees every file as
+changed. `/soul-init` checks for this and offers a one-time fix as its own commit:
+a `.gitattributes` rule so the repo decides, not each machine
+(`python3 <soul-system>/tools/eol.py check .` to look yourself).
+
 **Keeping every record in one private place.** A Soul vault is one private git repo
 that holds the record of every project, each in its own folder; the project keeps a
 `.soul` link into it, so the commands work as before (the next session asks once
