@@ -69,7 +69,10 @@ vendor a copy into the project; a copy never receives contract upgrades.
 Work from the directory the session started in; do not search upwards.
 
 0. **`/soul-init revisit [key ...]`** — run `python3 <root>/tools/init-status.py
-   revisit . [key ...]` first (no key: every answer), say what it forgot, then go on.
+   revisit . [key ...]` first (no key: every answer), say what it forgot, and in
+   step 1 add `--ask <key>` for each named key: an answer read from the files (a
+   tracked record, a Stage line) stays set otherwise, and `--ask` is the way back
+   (e.g. moving a git record into the vault).
 
 1. **Status.** Run `python3 <root>/tools/init-status.py status . --json`. Its
    `items` (each with an `action`: none · repair · ask · stop) and `rounds` ARE the
@@ -77,27 +80,40 @@ Work from the directory the session started in; do not search upwards.
 
 2. **Stop items first.** Show each one's `detail` and end the run there: TWO COPIES
    (which record is current is the owner's call — do not scaffold or link until they
-   decide); a vault named on this machine but not cloned (clone it first —
-   scaffolding would make a second record the vault then refuses).
+   decide); a vault named on this machine but not cloned, or a `.soul` link pointing
+   at a missing folder (clone the vault there first — scaffolding would make a second
+   record the vault then refuses).
 
 3. **Repairs**, each in one line, using the mechanics in the next section: `import`
-   (no CLAUDE.md: create it — no question), `vault-link` (BROKEN: re-link), `record`
-   (an answer recorded but no stores: scaffold; `vault` recorded but not linked:
-   the vault move), `hand-hooks` (install the missing ones), `mind` (add the import),
-   `line-endings` (rewrite CRLF working copies; nothing to commit). A repair that
-   would change tracked files the owner never chose to change is asked instead.
+   (no CLAUDE.md: create it — no question; an import pointing at a path that no
+   longer exists, e.g. a plugin version folder an update removed: rewrite it to
+   `<root>`), `vault-link` (BROKEN: re-link), `record` (an answer recorded but no
+   stores: scaffold; `vault` recorded but not linked: the vault move; the files
+   disagree with the recorded answer: the fix its detail names), `hand-hooks`
+   (install the missing ones; rewrite a Soul hook whose plugin path is gone), `mind`
+   (add the import), `line-endings` (rewrite CRLF working copies; nothing to
+   commit). A repair that changes tracked files (untracking a record, a commit) is
+   put to the owner first, in one line, with the detail as the reason.
 
 4. **Questions, round by round**, in `rounds` order — one `AskUserQuestion` call per
    round (up to four questions). Show each question's `text`, and each option's
    `label` and `description`, **word for word**; add "(Recommended)" only to the
    option at index `recommended` (null: none); `multi: true` allows several. Never
-   reword, add or drop an option. Without the prompt tool (`claude -p`), list the
-   questions and stop — never guess an answer.
+   reword, add or drop an option (one exception: `vault-link` below). After a
+   single-question round (`vault-link`, `import`, `existing-store`, `public`), record
+   the answer and run `status` again before the next round — those answers change the
+   later questions (a public repo changes the record and names wording). Without the
+   prompt tool (`claude -p`), list the questions and stop — never guess an answer.
 
 5. **Carry out and record each answer.** Do what the next section says for the key,
    then `python3 <root>/tools/init-status.py record . <key> <value>` with the
-   option's `value`. Extras: each ticked member is `yes` (do it), each unticked one
-   `no` (`declined` for history-scan). A `no` is final until `revisit`.
+   option's `value`. Order: `record` first (the scaffold or the move, so the record
+   exists), then `stage`, then the extras — line endings, hooks, and the history scan
+   LAST, so the scan covers any commit this run made. Extras: each ticked member is
+   `yes` (do it), each unticked one `no` (`declined` for history-scan); with one
+   member the question is Yes/No for that member. A `no` is final until `revisit`.
+   Not recorded: `layout` (it keeps its own list) and a `vault-link` *Not now* (the
+   record is unusable here until linked, so it is asked again).
 
 6. **Check.** Run `status` again. Nothing should be left to repair or ask; if
    something is, say what and why.
@@ -145,7 +161,11 @@ was dropped in v3.6.0, SOUL-A030).
 - *vault*: no `.gitignore` lines; the vault move (below) hides the link in
   `.git/info/exclude`, which never leaves this machine.
 
-Why it is asked, never assumed: a record outside git exists in one copy, on one
+**`public`** — asked only when `gh` cannot tell (no remote, not GitHub) and the
+record or names question needs it; it changes their wording. The old step said
+"otherwise ask the Body" (SOUL-202).
+
+Why the record question is asked, never assumed: a record outside git exists in one copy, on one
 disk, with no history, and does not travel when the repo is cloned or used from a
 second machine; two of six adopting projects had their record gitignored, one by
 drift, in a plugin that gets submoduled (2026-08-20 retrospective). In a public
@@ -179,10 +199,12 @@ project's record, each reached by a `.soul` link (SOUL-I079, [ADR
 `python3 <root>/tools/vault.py link . --key <key> --label <the label in its
 project.md>`. The move (*In your Soul vault*), last so everything above is in the
 record first — ask, in one round:
-- **Label** — *public* (anyone may read it), *private* (yours), *confidential*
-  (someone else's material, e.g. an employer's or client's — the owner decides
-  whether a personal vault may hold it), *restricted* (never in the vault; the tool
-  refuses it, so ask the record question again without the vault).
+- **Label**, asked straight after the vault answer, before anything else is done —
+  *public* (anyone may read it), *private* (yours), *confidential* (someone else's
+  material, e.g. an employer's or client's — the owner decides whether a personal
+  vault may hold it), *restricted* (never in the vault; the tool refuses it). On
+  *restricted*, say so and ask the record question again with the vault option left
+  out — the one change to a question this skill allows.
 - **What it contributes to** — free-form tags, may be empty.
 - **Key** — the project's folder in the vault; default the repo's name. The key,
   not the path, names the folder, so it survives the project moving.
@@ -200,6 +222,9 @@ it Claude Code refuses writes through the link), then rewrites the vault's
 recommend `git rm --cached` of those files and a commit, now — until then a reset,
 stash or checkout puts the old copy back in place of the link and `check` reports
 TWO COPIES; the old copies stay in history (moving is not redaction, mind 6d).
+The vault repo keeps the project's `private-names.txt` (it travels to the next machine
+with the record) and leaves out only `events.jsonl`. Any other `link` failure: run
+`vault.py check .` and report its line before going on.
 **`link` refuses** (exit 2, nothing changed): the record stayed — ask the record
 question again without the vault; a record must never be left neither tracked nor
 ignored, where one `git add -A` commits it.
@@ -218,7 +243,9 @@ worktrees, submodules and `core.hooksPath`; do NOT use `git rev-parse --git-path
 hooks`, which inside a session answers the plugin's own wrapper directory). Never
 overwrite an existing hook — it belongs to the owner or another tool (git-lfs,
 carried by five adopting projects, installs `pre-push`); say which was skipped and
-that hand commits or pushes are not checked at that step. Otherwise write it
+that hand commits or pushes are not checked at that step. The exception is a hook
+carrying the Soul marker line below whose plugin path no longer exists: it is
+Soul's own, so rewrite it with the current `<root>`. Otherwise write it
 executable, `<hook>` replaced in all three places. It fails open, loudly, when the
 plugin path is gone, and stays quiet when a session's wrapper already ran the check:
 ```sh
@@ -246,8 +273,10 @@ GitHub).
 **`stage`** — a chosen stage continues in `<root>/skills/soul-stage/SKILL.md` as
 if it had been the argument (its screen, block and witness entry; the block lands
 under the import). *Not now* writes nothing but the answer: no stage line means
-released-grade caution, the contract's default. Asked after the record exists,
-because a chosen stage ends in a witness entry. *Why ask at all:* two adopting
+released-grade caution, the contract's default. Carried out after the record
+exists, because a chosen stage ends in a witness entry (the 2.2.0–2.2.2 order had it
+before the scaffold; found by fresh-context review, 2026-08-26). If the tool's
+detail says a hand-written `**Phase:` block exists, show it before asking. *Why ask at all:* two adopting
 projects had the owner write "no backwards compatibility — this is beta" by hand on
 consecutive days (2026-08-24/25), into two files, in two wordings.
 
@@ -259,8 +288,10 @@ tests, user docs or ADRs. On *Review*, show its grouped dry run and ask per grou
 file outside the project (`{"<path>": "move|leave|content"}`, paths from `scan
 --json`), run `apply <project> --plan <file> --dry-run`, then `apply`. A file that
 project content links to is usually project content — put it to the owner on its own
-first, since project content must never link into `.ai/`. *Leave them* runs
-`decline <project>`, which remembers the list in `.soul/layout.json`.
+first, since project content must never link into `.ai/`. Any "project content now
+links into .ai/" line `apply` still prints is an open gap — report it: drop the link
+or promote the file, the owner's call. *Leave them* runs `decline <project>`, which
+remembers the list in `.soul/layout.json`.
 
 **`line-endings`** — the problem: a Windows git or Sourcetree with
 `core.autocrlf=true` checks files out with Windows line endings; WSL git sees every
@@ -289,7 +320,9 @@ contract import, **relative to the file the line goes into**: from a root
 
 ## What not to do
 
-- Do not ask a question the tool did not list, reword one, or answer one for the
+- Do not ask a setup decision the tool did not list, reword one, or answer one for
+  the owner. The follow-ups this skill names are not new decisions: the vault's
+  label, tags and key, the layout groups, and putting a tracked-file repair to the
   owner. Do not re-ask a recorded answer — `revisit` is the owner's way back.
 - Do not copy Soul doctrine (the contract, the philosophy) into the project; it is
   referenced by import so it stays current. The empty record scaffold is not a copy.

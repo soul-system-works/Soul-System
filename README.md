@@ -34,15 +34,15 @@ it says what is set, repairs what broke, and asks only what is new.
 ## What you get
 
 - **One page of rules the AI reads**: ten rules, such as "nothing is done until
-  it ran" and "never invent history". `/soul-init` links the page into your
+  it is verified by running it" and "never invent history". `/soul-init` links the page into your
   project, so it updates with the plugin.
 - **A record in your project**: `.soul/witness.md` (what happened, and why),
   `.soul/ideas.md` (what might), and later `mind.md` (the few facts a new session
   cannot work out for itself).
 - **A completion gate**: a hook that stops a session from ending on an unverified
   "done".
-- **A secret guard** (experimental): checks the AI's commits for credentials and
-  for names you list as private.
+- **A secret guard** (experimental): checks the AI's commits for credentials
+  (with gitleaks installed) and for names you list as private.
 
 | Command | When |
 |---|---|
@@ -102,8 +102,9 @@ Judge). The AI never reads it; it is there when you want the why.
 
 ## Contributing
 
-Clone the repo to a stable place and run `/soul-init` from your clone; projects
-then import the rules from it, so your edits reach them at once.
+Clone the repo to a stable place and point your skills at the clone (a symlinked
+skills folder); `/soul-init` then writes each project's import against the clone,
+so your edits to the rules reach every project at once.
 
 ```
 operations/   The page of rules the AI reads (operations/CLAUDE.md)

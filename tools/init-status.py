@@ -10,10 +10,16 @@ word), and keeps the owner's answers in `.soul/init.md`, one dated line per key:
 
 A recorded answer wins over what the files suggest, EXCEPT that a repair is always
 worked out from the real state of this machine: `hand-hooks: yes` recorded on one
-machine still reads `repair` on a new one where the hooks are missing.
+machine still reads `repair` on a new one where the hooks are missing, and
+`record: local` reads `repair` while the record is tracked.
 
-  status <project> [--json]          gather and report; never writes
-  record <project> <key> <value...>  write or replace that key's line, dated today
+  status <project> [--json] [--ask KEY ...]
+                                     gather and report; never writes. --ask puts that
+                                     key's question back this run, even when the answer
+                                     is inferred or recorded (/soul-init revisit)
+  record <project> <key> <value...>  write or replace that key's line, dated today;
+                                     refused (exit 2) while the vault holds this
+                                     project's record and nothing links to it
   revisit <project> [key ...]        forget those answers (all when none named)
 
 Exit 0 ok, 2 usage or error. Set SOUL_INIT_NO_GH=1 to skip the `gh` visibility
@@ -25,7 +31,8 @@ Values the skill records, per key (the option `value` fields in QUESTIONS):
   history-scan `clean <sha12>`|`findings <sha12>`|declined ·
   stage prototype|pre-release|released|not-now · line-endings yes|no ·
   existing-store use|no.  `layout` keeps its own list (.soul/layout.json); `mind` has
-  no answer, only a repair.
+  no answer, only a repair. An extras question with one member is yes|no; the skill
+  records the member's own value (history-scan: `declined` for no).
 """
 
 import argparse
@@ -67,6 +74,11 @@ SINGLE = ("vault-link", "import", "existing-store", "layout")
 LINE_RE = re.compile(r"^([A-Za-z][\w-]*):[ \t]+(.*?)(?:[ \t]+(\d{4}-\d{2}-\d{2}))?[ \t]*$")
 IMPORT_RE = re.compile(r"^\s*(?:-\s+)?@(\S+)\s*$")
 STAGE_RE = re.compile(r"^\*\*Stage:\s*([A-Za-z][\w-]*)")
+PHASE_RE = re.compile(r"^\*\*Phase:")
+GUARD_RE = re.compile(r'^\s*guard="([^"]*)"', re.M)
+# Folders the existing-store walk never enters (any folder starting "." is skipped too).
+WALK_SKIP = ("node_modules", "venv")
+WALK_DEPTH = 4
 
 # The fixed wording. The first option is the recommended one unless a question's
 # `recommended` comes out null (the record question in a public repo). Placeholders:
@@ -125,6 +137,21 @@ QUESTIONS = {
                              "label": "Make line endings the same on Windows and WSL",
                              "description": "one commit adding .gitattributes"},
         },
+        # AskUserQuestion needs 2–4 options, so one member is asked as yes / no.
+        "one_text": "Set this up? {label} ({description})",
+        "one_options": [
+            {"value": "yes", "label": "Yes", "description": None},  # the member's own
+            {"value": "no", "label": "No",
+             "description": "not asked again; /soul-init revisit to change"},
+        ],
+    },
+    "public": {
+        "group": "single", "multi": False,
+        "text": "Is this repo public, or will it be?",
+        "options": [
+            {"value": "yes", "label": "Yes", "description": "anyone can read what is committed"},
+            {"value": "no", "label": "No", "description": "private to you or your team"},
+        ],
     },
     "import": {
         "group": "single", "multi": False,
@@ -263,6 +290,13 @@ def record(project, key, value):
         out.append(ln)
     if not done:
         out.append(new)
+    # A real .soul/ made here beside the vault's copy would be TWO COPIES; the skill
+    # links first (vault-link), and "Not now" stays a pending question, not an answer.
+    st = vaultlib.check(project)
+    if st["state"] == "not-linked" and st["vault_has"]:
+        raise InitError("the vault holds this project's record ({}) and nothing links to it "
+                        "— link the vault record first; nothing recorded"
+                        .format(st["vault_has"]))
     _write_answers(project, out)
     print("recorded in {}: {}".format(ANSWERS, new))
     return 0
@@ -289,6 +323,7 @@ def revisit(project, keys):
         print("removed: {}".format(ln))
     if not removed:
         print("nothing removed")
+    print("inferred answers stay; run status --ask <key> to be asked anyway")
     return 0
 
 
@@ -334,19 +369,33 @@ def gather(project):
 def check_import(c):
     rec = c["answers"].get("import")
     if c["importer"]:
-        d = "{} imports the contract ({}).".format(c["importer"], c["import_target"])
-        if not os.path.isfile(c["import_real"]):
-            d += " That path does not exist on this machine, so the contract does not load."
-        return _item("import", "none", c["importer"], None, "inferred", d)
+        if not os.path.isfile(c["import_real"]):  # a dead import fails silently (F038)
+            return _item("import", "repair", c["importer"], None, "inferred", "{}: the import "
+                         "points at {}, which does not exist — rewrite it to the current Soul "
+                         "root (skill: import).".format(c["importer"], c["import_target"]))
+        return _item("import", "none", c["importer"], None, "inferred", "{} imports the "
+                     "contract ({}).".format(c["importer"], c["import_target"]))
     claude = [p for p in IMPORTERS[:2] if os.path.isfile(os.path.join(c["project"], p))]
     if not claude:
         return _item("import", "repair", detail="No CLAUDE.md here — the skill creates one "
-                                                "holding the import line (skill step 2).")
+                                                "holding the import line (skill: import).")
     if rec and rec[0] == "leave":
         return _recorded("import", rec, detail="You chose to leave {} without the Soul line."
                          .format(claude[0]))
     return _item("import", "ask", detail="{} exists without the Soul import line."
                  .format(claude[0]))
+
+
+def _vault_holds(c, target):
+    """True when this machine's vault is present and holds this project's record — by
+    the broken link's own key (<vault>/projects/<key>/soul) or by vault_match."""
+    v = c["vault"]
+    if not v:
+        return False
+    t = os.path.normpath(target or "")
+    keys = {os.path.basename(os.path.dirname(t))} if os.path.basename(t) == "soul" else set()
+    keys.add(vaultlib.vault_match(c["project"], v))
+    return any(os.path.isdir(os.path.join(v, "projects", k, "soul")) for k in keys if k)
 
 
 def check_vault_link(c):
@@ -356,15 +405,23 @@ def check_vault_link(c):
     if c["where"] == 3 and not os.path.islink(soul):
         return _item("vault-link", "stop", detail="This machine names a vault at {} but it is "
                      "not there — clone the vault to that path first; do not scaffold a "
-                     "record (skill step 3).".format(c["vault_named"]))
+                     "record (skill: vault-link).".format(c["vault_named"]))
     st = vaultlib.check(c["project"])
     rec = c["answers"].get("vault-link")
     line = vaultlib.check_line(st)
     if st["state"] == "linked":
         return _item("vault-link", "none", "linked", None, "inferred", line)
     if st["state"] == "broken":
+        # Re-linking needs the vault here AND holding this record; anything else has
+        # nothing to link to, so the run stops rather than offer a repair that fails.
+        if not _vault_holds(c, st["target"]):
+            d = ("the .soul link points at {}, which is missing — clone the vault there (or "
+                 "to the path in ~/.config/soul/vault) and re-run.".format(st["target"]))
+            if c["vault"]:
+                d += " The vault at {} holds no record for this project.".format(c["vault"])
+            return _item("vault-link", "stop", "broken", None, "inferred", d)
         return _item("vault-link", "repair", "broken", None, "inferred", line + " Never "
-                     "scaffold over it or remove the link (skill step 3).")
+                     "scaffold over it or remove the link (skill: vault-link).")
     if st["state"] == "two-copies":
         return _item("vault-link", "stop", "two-copies", None, "inferred", line)
     if st["vault_has"]:
@@ -376,45 +433,78 @@ def check_vault_link(c):
                  "A vault is named ({}); this project's record is not in it.".format(c["vault"]))
 
 
-def _infer_record(c):
+NEITHER = ("The record stores are neither tracked nor ignored — one `git add -A` would "
+           "commit them.")
+
+
+def _record_state(c):
+    """Where the record actually is: linked · empty · nogit · tracked · ignored · neither."""
     p = c["project"]
     if os.path.islink(os.path.join(p, ".soul")):
-        return "vault", "`.soul` links into the vault."
-    stores = c["stores"]
-    if not stores:
-        return None, "No record stores (witness.md, ideas.md) yet."
+        return "linked"
+    if not c["stores"]:
+        return "empty"
     if not c["git"]:
+        return "nogit"
+    if _git(p, "ls-files", "--", *c["stores"]):
+        return "tracked"
+    if all(_git_ok(p, "check-ignore", "-q", "--", s) for s in c["stores"]):
+        return "ignored"
+    return "neither"
+
+
+def _infer_record(c, state):
+    if state == "linked":
+        return "vault", "`.soul` links into the vault."
+    if state == "empty":
+        return None, "No record stores (witness.md, ideas.md) yet."
+    if state == "nogit":
         return "local", "Not a git repo: the record exists only on this machine."
-    if _git(p, "ls-files", "--", *stores):
-        if _git_ok(p, "check-ignore", "-q", "--", ".soul/handoff.md"):
+    if state == "tracked":
+        if _git_ok(c["project"], "check-ignore", "-q", "--", ".soul/handoff.md"):
             return "git", "The record stores are tracked and .soul/handoff.md is ignored."
         return None, "The record stores are tracked, but .soul/handoff.md is not ignored."
-    if all(_git_ok(p, "check-ignore", "-q", "--", s) for s in stores):
+    if state == "ignored":
         return "local", "git ignores the record stores: they stay on this machine."
-    return None, ("The record stores are neither tracked nor ignored — one `git add -A` "
-                  "would commit them.")
+    return None, NEITHER
 
 
 def check_record(c, vault_item, public):
-    val, why = _infer_record(c)
+    state = _record_state(c)
+    val, why = _infer_record(c, state)
     rec = c["answers"].get("record")
     if rec:
+        # A recorded answer never hides the real state: the files are read every run and
+        # a disagreement is a repair (the skill asks before changing tracked files).
         v = rec[0]
-        linked = os.path.islink(os.path.join(c["project"], ".soul"))
+        linked = state == "linked"
         if v == "vault" and not linked:
+            extra = (" " + NEITHER) if state == "neither" else ""
             if vault_item and vault_item["action"] != "none":
                 return _recorded("record", rec, detail="Recorded vault; settle vault-link "
-                                 "first.")
+                                 "first." + extra)
             if not c["vault"]:
                 return _item("record", "ask", v, rec[1], "recorded", "Recorded vault, but "
-                             "this machine names no vault.")
+                             "this machine names no vault." + extra)
             return _recorded("record", rec, "repair", (
                 "Recorded vault, but the record is not in it yet — " +
                 ("scaffold it (skill: the scaffold), then " if not c["stores"] else "") +
-                "move it into the vault (skill: the vault move)."))
-        if not c["stores"] and not linked:
+                "move it into the vault (skill: the vault move)." + extra))
+        if state == "empty":
             return _recorded("record", rec, "repair", "Recorded {}, but no record stores "
                              "exist yet — scaffold them (skill: the scaffold).".format(v))
+        if v == "local" and state == "tracked":
+            return _recorded("record", rec, "repair", "recorded local, but the record is "
+                             "tracked — untrack it (`git rm --cached`) and ignore `.soul/`.")
+        if v == "git" and state == "neither":
+            return _recorded("record", rec, "repair", "recorded git, but the record is not "
+                             "committed — commit it.")
+        if v == "git" and state == "ignored":
+            return _recorded("record", rec, "repair", "recorded git, but git ignores the "
+                             "record — narrow the ignore rule and commit it (skill: record).")
+        if state == "neither":
+            return _recorded("record", rec, "repair", "recorded {}, but {}".format(
+                v, NEITHER[0].lower() + NEITHER[1:]))
         note = "" if val in (None, v) else " (the files now look like {})".format(val)
         return _recorded("record", rec, detail="Recorded {}.{}".format(v, note))
     if val:
@@ -471,13 +561,16 @@ def check_hand_hooks(c):
     d = r.stdout.strip() if r is not None and r.returncode == 0 else ""
     if not d:
         return _item("hand-hooks", detail="Could not find this repo's own hooks folder.")
-    soul, foreign, free = [], [], []
+    soul, foreign, free, dead = [], [], [], []
     for h in HOOKS:
         text = _read(os.path.join(d, h))
         if text is None:
             free.append(h)
         elif HOOK_MARK in text:
             soul.append(h)
+            g = GUARD_RE.search(text)  # a pinned plugin path dies at the next update
+            if g and not os.path.isfile(os.path.expanduser(g.group(1))):
+                dead.append(h)
         else:
             who = "git-lfs" if re.search(r"git[ -]lfs", text) else "another tool"
             foreign.append("{} is held by {}, so hand {} are not checked at that step.".format(
@@ -488,10 +581,15 @@ def check_hand_hooks(c):
         return _recorded("hand-hooks", rec, detail="You chose not to check hand commits." + held)
     if soul or (rec and rec[0] == "yes"):
         src = ("recorded", rec[1]) if rec else ("inferred", None)
+        fix = []
         if free:
-            return _item("hand-hooks", "repair", "yes", src[1], src[0], "Install the missing "
-                         "Soul hook(s) {} in {} (skill: hand-hooks).".format(", ".join(free), d)
-                         + held)
+            fix.append("Install the missing Soul hook(s) {} in {} (skill: hand-hooks).".format(
+                ", ".join(free), d))
+        if dead:
+            fix.append("Soul hook(s) {} point at a missing plugin path — rewrite them with the "
+                       "current root (skill: hand-hooks).".format(", ".join(dead)))
+        if fix:
+            return _item("hand-hooks", "repair", "yes", src[1], src[0], " ".join(fix) + held)
         return _item("hand-hooks", "none", "yes", src[1], src[0],
                      "Soul hooks in {}: {}.".format(d, ", ".join(soul) or "none") + held)
     if not free:
@@ -542,22 +640,29 @@ def check_history_scan(c):
 
 
 def check_stage(c):
+    # Every instruction file: /soul-stage writes root CLAUDE.md (AGENTS.md in a Codex-only
+    # project), which need not be the file holding the import.
     p = c["project"]
-    f = c["importer"] or next((x for x in IMPORTERS[:2] if os.path.isfile(os.path.join(p, x))),
-                              None)
-    for ln in (_read(os.path.join(p, f)) or "").splitlines() if f else ():
-        m = STAGE_RE.match(ln)
-        if m:
-            return _item("stage", "none", m.group(1), None, "inferred",
-                         "{} declares the stage.".format(f))
+    phase = None
+    for f in IMPORTERS:
+        for ln in (_read(os.path.join(p, f)) or "").splitlines():
+            m = STAGE_RE.match(ln)
+            if m:
+                return _item("stage", "none", m.group(1), None, "inferred",
+                             "{} declares the stage.".format(f))
+            if phase is None and PHASE_RE.match(ln):
+                phase = f
+    note = (" {}: a hand-written **Phase:** block exists — show it before asking."
+            .format(phase) if phase else "")
     rec = c["answers"].get("stage")
     if rec and rec[0] == "not-now":
         return _recorded("stage", rec, detail="No stage chosen — treated as released until "
-                         "you choose (/soul-stage).")
+                         "you choose (/soul-stage)." + note)
     if rec:
         return _item("stage", "ask", rec[0], rec[1], "recorded", "Recorded {}, but no "
-                     "**Stage:** line is in {}.".format(rec[0], f or "CLAUDE.md"))
-    return _item("stage", "ask", detail="No **Stage:** line; treated as released.")
+                     "**Stage:** line is in CLAUDE.md, .claude/CLAUDE.md or AGENTS.md."
+                     .format(rec[0]) + note)
+    return _item("stage", "ask", detail="No **Stage:** line; treated as released." + note)
 
 
 def check_layout(c):
@@ -579,28 +684,69 @@ def check_layout(c):
     return it
 
 
-def check_line_endings(c):
-    if not c["git"] or not c["top"]:
-        return None
-    try:
-        f = eol.facts(c["top"])
-    except eol.EolError as exc:
-        return _item("line-endings", detail="The line-ending check failed: {}".format(exc))
+def _eol_need(top):
+    """(none|repair|ask, sentence) for one repo's line endings."""
+    f = eol.facts(top)
     if f["rule"] and not f["committed"] and not f["working"]:
-        return _item("line-endings", "none", "ok", None, "inferred",
-                     "The rule is in place and every file is LF.")
+        return "none", "The rule is in place and every file is LF."
     n = len(f["working"])
     if f["rule"] and not f["committed"]:
-        return _item("line-endings", "repair", detail="The rule is in place; {} working "
-                     "cop{} CRLF — rewrite to LF with `eol.py fix` (no commit needed)."
-                     .format(n, "y is" if n == 1 else "ies are"))
-    summary = " Rule {}; {} file(s) committed with CRLF; {} working cop{} CRLF.".format(
+        return "repair", ("The rule is in place; {} working cop{} CRLF — rewrite to LF with "
+                          "`eol.py fix` (no commit needed).".format(
+                              n, "y is" if n == 1 else "ies are"))
+    return "ask", "Rule {}; {} file(s) committed with CRLF; {} working cop{} CRLF.".format(
         "present" if f["rule"] else "missing", len(f["committed"]), n,
         "y" if n == 1 else "ies")
+
+
+def _vault_top(c):
+    """The git top of the vault `.soul` links into, when it is a repo other than this one."""
+    soul = os.path.join(c["project"], ".soul")
+    if not os.path.islink(soul) or not os.path.isdir(soul):
+        return None
+    top = _git(os.path.realpath(soul), "rev-parse", "--show-toplevel")
+    if not top or (c["top"] and os.path.realpath(top) == os.path.realpath(c["top"])):
+        return None
+    return top
+
+
+def check_line_endings(c):
+    # The vault is a second repo the record is written into, so it is checked too
+    # (SOUL-219: about 114 vault files rewritten by hand).
+    repos = []
+    if c["git"] and c["top"]:
+        repos.append(("project", c["top"]))
+    vtop = _vault_top(c)
+    if vtop:
+        repos.append(("vault", vtop))
+    if not repos:
+        return None
+    needs = []
+    for name, top in repos:
+        try:
+            needs.append((name,) + _eol_need(top))
+        except eol.EolError as exc:
+            return _item("line-endings", detail="The line-ending check failed ({}): {}"
+                         .format(name, exc))
+    vault = len(repos) > 1
+
+    def say(rows):
+        return " ".join(("{}: {}".format(n.capitalize(), d) if vault else d)
+                        for n, _, d in rows)
+
+    acting = [r for r in needs if r[1] != "none"]
+    if not acting:
+        return _item("line-endings", "none", "ok", None, "inferred", say(needs))
+    which = (" Needs it: {}.".format("both" if len(acting) == 2 else acting[0][0])
+             if vault else "")
     rec = c["answers"].get("line-endings")
-    if rec and rec[0] == "no":
-        return _recorded("line-endings", rec, detail="You chose not to add the rule." + summary)
-    return _item("line-endings", "ask", detail=summary.strip())
+    declined = bool(rec and rec[0] == "no")
+    if any(r[1] == "ask" for r in acting) and not declined:
+        return _item("line-endings", "ask", detail=say(needs) + which)
+    if any(r[1] == "repair" for r in acting):  # a recorded no never hides a repair
+        return _item("line-endings", "repair", detail=say(needs) + which)
+    return _recorded("line-endings", rec, detail="You chose not to add the rule. "
+                     + say(needs) + which)
 
 
 def check_mind(c):
@@ -619,12 +765,34 @@ def check_mind(c):
                  .format(minds[0], rel.replace(os.sep, "/"), f))
 
 
+def _walk_stores(project):
+    """`*ideas*.md` / `*witness*.md` below the root, found on disk (untracked, or no git)."""
+    out = []
+    for dirpath, dirs, files in os.walk(project):
+        rel = os.path.relpath(dirpath, project)
+        depth = 0 if rel == "." else rel.count(os.sep) + 1
+        dirs[:] = sorted(d for d in dirs if not d.startswith(".") and d not in WALK_SKIP
+                         and depth < WALK_DEPTH)
+        if depth == 0:
+            continue  # root stores are c["stores"]
+        for f in sorted(files):
+            if f.lower().endswith(".md") and re.search(r"ideas|witness", f, re.I):
+                out.append(os.path.join(rel, f).replace(os.sep, "/"))
+    return out
+
+
 def check_existing_store(c):
-    if not c["git"] or c["stores"]:
+    if c["stores"]:
         return None
-    out = _git(c["project"], "ls-files", "--", "*ideas*.md", "*witness*.md") or ""
+    out = (_git(c["project"], "ls-files", "--", "*ideas*.md", "*witness*.md") or ""
+           if c["git"] else "")
     found = [x for x in out.splitlines() if "/" in x and not x.startswith(".soul/")
              and re.search(r"ideas|witness", os.path.basename(x), re.I)]
+    if not found:
+        found = _walk_stores(c["project"])
+    if os.path.realpath(c["project"]) == os.path.realpath(ROOT):
+        # The Soul System's own doctrine (operations/witness-log-format.md) is no record.
+        found = [x for x in found if not x.startswith("operations/")]
     if not found:
         return None
     rec = c["answers"].get("existing-store")
@@ -644,8 +812,17 @@ def render_question(key, public=None, vault=None, path=None, n=None, members=())
     text, rec = q["text"], 0
     if key == "stage":  # how settled a project is only the owner knows
         rec = None
+    multi = q["multi"]
+    if key == "public":  # only the owner knows what the repo is, or will be
+        rec = None
     if key == "extras":  # each is an offer, none a default (skill: hand-hooks)
         opts, rec = [dict(q["members"][k]) for k in members], None
+        if len(opts) == 1:  # AskUserQuestion needs 2–4 options: one member is yes / no
+            m = opts[0]
+            text = q["one_text"].format(label=m["label"], description=m["description"])
+            opts = [dict(o) for o in q["one_options"]]
+            opts[0]["description"] = m["description"]
+            multi = False
     else:
         opts = [dict(o) for o in q["options"]]
     if key == "record":
@@ -654,14 +831,18 @@ def render_question(key, public=None, vault=None, path=None, n=None, members=())
         if public == "yes":
             opts[0]["description"] = q["public_description"]
             rec = None
-    if key == "names" and public == "yes":
+    if key == "names" and public == "yes":  # like record: in public, no default
         text += q["public_note"]
+        rec = None
     text = text.replace("{path}", str(path)).replace("{n}", str(n))
-    return {"text": text, "options": opts, "multi": q["multi"], "group": q["group"],
+    return {"text": text, "options": opts, "multi": multi, "group": q["group"],
             "recommended": rec}
 
 
-def status(project):
+ASKABLE = tuple(k for k in KEYS if k in QUESTIONS) + EXTRAS
+
+
+def status(project, force=()):
     c = gather(project)
     vault_item = check_vault_link(c)
     public = check_public(c)
@@ -673,6 +854,15 @@ def status(project):
         "layout": check_layout(c), "line-endings": check_line_endings(c),
         "mind": check_mind(c), "existing-store": check_existing_store(c),
     }
+    # Unknown visibility changes the record and names questions, so it is asked first.
+    if public["value"] is None and any(found[k] and found[k]["action"] == "ask"
+                                       for k in ("record", "names")):
+        public["action"] = "ask"
+    # --ask: the owner's way back to a question an inferred or recorded answer settled.
+    for k in force:
+        i = found.get(k)
+        if i is not None and i["action"] in ("none", "repair"):
+            i["action"] = "ask"
     items = [found[k] for k in KEYS if found[k] is not None]
     asked = {i["key"]: i for i in items if i["action"] == "ask"}
     for k, i in asked.items():
@@ -684,6 +874,8 @@ def status(project):
         i["group"] = i["question"]["group"]
     members = [k for k in EXTRAS if k in asked]
     rounds = [[k] for k in SINGLE if k in asked]
+    if "public" in asked:
+        rounds.append(["public"])
     main = [k for k in MAIN if k in asked]
     rounds += [main[i:i + 4] for i in range(0, len(main), 4)]
     if members:
@@ -745,6 +937,8 @@ def main():
     s = sub.add_parser("status", help="what is set, what to repair, what to ask (no writes)")
     s.add_argument("project")
     s.add_argument("--json", action="store_true")
+    s.add_argument("--ask", action="append", default=[], metavar="KEY",
+                   help="ask this key's question this run even when it is answered")
     r = sub.add_parser("record", help="remember one answer, dated today")
     r.add_argument("project")
     r.add_argument("key")
@@ -765,7 +959,11 @@ def main():
             return record(project, args.key, " ".join(args.value))
         if args.cmd == "revisit":
             return revisit(project, args.keys)
-        st = status(project)
+        bad = [k for k in args.ask if k not in ASKABLE]
+        if bad:
+            raise InitError("--ask: no question for {} — one of: {}".format(
+                ", ".join(bad), ", ".join(ASKABLE)))
+        st = status(project, force=args.ask)
         if args.json:
             print(json.dumps(st, indent=2))
         else:

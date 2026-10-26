@@ -1,7 +1,10 @@
 """Behaviour test for tools/init-status.py (/soul-init's checklist and remembered answers).
 
-FENCE: a recorded answer is never asked again, and a repair is never hidden by one —
-`hand-hooks: yes` recorded on one machine reads `repair` where the hooks are missing.
+FENCE: a recorded answer is not asked again unless the files show it no longer holds —
+names listed but .soul/private-names.txt gone, a stage recorded but no **Stage:** line,
+history-scan after new commits — or `status --ask KEY` forces it. A repair is never
+hidden by one — `hand-hooks: yes` recorded on one machine reads `repair` where the
+hooks are missing, and `record: local` reads `repair` while the record is tracked.
 `status` never writes; `record` keeps every line it does not own. Each run controls
 PATH (git only, plus a fake `gitleaks` when the scan should be offered), sets
 SOUL_INIT_NO_GH=1 so `gh` is never called (no network), and points XDG_CONFIG_HOME
@@ -289,8 +292,8 @@ def main():
     check("a broken .soul link: record refuses, exit 2", r.returncode == 2
           and not os.path.exists(os.path.join(tmp, "nowhere")), r.stderr)
     st, by = status(env, p8b)
-    check("a broken .soul link: vault-link repair", by.get("vault-link", {}).get("action")
-          == "repair", by.get("vault-link"))
+    check("a broken .soul link, no vault registered: vault-link stop",
+          by.get("vault-link", {}).get("action") == "stop", by.get("vault-link"))
 
     # 9 — CLAUDE.md without the import: ask, alone and first; recorded leave → none
     p9 = repo(tmp, "noimport", {"CLAUDE.md": "# My project\n"})
@@ -360,6 +363,191 @@ def main():
     q = mod.render_question("names", public="yes")
     check("public repo: names question says so",
           q["text"].endswith(" This repo is public — a name committed here is public."), q)
+    check("public repo: names recommends nothing", q["recommended"] is None, q)
+
+    # 15 — record never makes two copies: the vault holds it, nothing links → refuse
+    r = run(envv, "record", p13, "names", "none")
+    check("vault holds the record, nothing links: record refuses, exit 2, no .soul",
+          r.returncode == 2 and "link the vault record first" in r.stderr
+          and not os.path.lexists(os.path.join(p13, ".soul")), (r.returncode, r.stderr))
+
+    # 16 — a dead contract import is a repair; ~ and relative imports resolve
+    p16 = repo(tmp, "deadimport", {
+        "CLAUDE.md": "@/nonexistent/plugins/cache/m/soul/3.4.0/operations/CLAUDE.md\n"})
+    st, by = status(env, p16)
+    check("dead import: repair naming the path", by["import"]["action"] == "repair"
+          and "the import points at /nonexistent/plugins/cache/m/soul/3.4.0/operations/"
+              "CLAUDE.md, which does not exist" in by["import"]["detail"], by["import"])
+    home = os.path.join(tmp, "home")
+    write(os.path.join(home, "soulroot", "operations", "CLAUDE.md"), "# contract\n")
+    p16b = repo(tmp, "tildeimport", {"CLAUDE.md": "@~/soulroot/operations/CLAUDE.md\n"})
+    st, by = status(dict(env, HOME=home), p16b)
+    check("~ import that resolves: none", by["import"]["action"] == "none", by["import"])
+
+    # 17 — the stage is read from every instruction file; a **Phase:** block is named
+    p17 = repo(tmp, "stagedot", {".claude/CLAUDE.md": IMPORT,
+                                 "CLAUDE.md": "**Stage: prototype** (owner)\n"})
+    st, by = status(env, p17)
+    check("import in .claude/, stage in root CLAUDE.md: found",
+          by["stage"]["action"] == "none" and by["stage"]["value"] == "prototype", by["stage"])
+    p17b = repo(tmp, "stagecodex", {"AGENTS.md": "<!-- soul -->\n\n**Stage: pre-release**\n"})
+    st, by = status(env, p17b)
+    check("stage in AGENTS.md: found", by["stage"]["action"] == "none"
+          and by["stage"]["value"] == "pre-release", by["stage"])
+    p17c = repo(tmp, "phase", {"CLAUDE.md": IMPORT + "\n**Phase: beta — no compat**\n"})
+    st, by = status(env, p17c)
+    check("a hand-written **Phase:** line: stage asks and says so",
+          by["stage"]["action"] == "ask" and "a hand-written **Phase:** block exists — show "
+          "it before asking" in by["stage"]["detail"], by["stage"])
+
+    # 18 — extras with one member is a yes/no question
+    st, by = status(envl, p2)
+    q = by["extras"]["question"]
+    check("one extras member: single-choice yes/no, members kept",
+          q["text"] == "Set this up? Scan git history for leaked secrets now (reports only, "
+                       "changes nothing)"
+          and [o["value"] for o in q["options"]] == ["yes", "no"]
+          and q["options"][0]["description"] == "reports only, changes nothing"
+          and q["options"][1]["description"] == "not asked again; /soul-init revisit to change"
+          and q["multi"] is False and q["recommended"] is None
+          and by["extras"]["members"] == ["history-scan"], q)
+
+    # 19 — unknown visibility is asked, alone, before the main round; recorded wins
+    st, by = status(env, p1)
+    pub = by["public"]
+    check("unknown visibility: public asked in its own round before the main round",
+          pub["action"] == "ask" and ["public"] in st["rounds"]
+          and st["rounds"].index(["public"]) < st["rounds"].index(["record", "stage", "names"])
+          and pub["question"]["text"] == "Is this repo public, or will it be?"
+          and [(o["value"], o["label"], o["description"]) for o in pub["question"]["options"]]
+          == [("yes", "Yes", "anyone can read what is committed"),
+              ("no", "No", "private to you or your team")]
+          and pub["question"]["recommended"] is None, (pub, st["rounds"]))
+    p19 = repo(tmp, "pubrec", {"README.md": "x\n"})
+    run(env, "record", p19, "public", "no")
+    st, by = status(env, p19)
+    check("recorded public: none, from the record, not asked", by["public"]["action"] == "none"
+          and by["public"]["source"] == "recorded" and ["public"] not in st["rounds"],
+          by["public"])
+
+    # 20 — a recorded record answer never hides the real state
+    p20 = repo(tmp, "reclocal", {"CLAUDE.md": IMPORT, ".soul/witness.md": "# W\n"})
+    write(os.path.join(p20, ".soul", "init.md"), "record:        local        2026-10-26\n")
+    st, by = status(env, p20)
+    check("recorded local, record tracked: repair (untrack)",
+          by["record"]["action"] == "repair" and "git rm --cached" in by["record"]["detail"],
+          by["record"])
+    p20b = repo(tmp, "recgit", {"CLAUDE.md": IMPORT, "README.md": "x\n"})
+    write(os.path.join(p20b, ".soul", "witness.md"), "# W\n")
+    write(os.path.join(p20b, ".soul", "init.md"), "record:        git          2026-10-26\n")
+    st, by = status(env, p20b)
+    check("recorded git, record untracked and not ignored: repair (commit it)",
+          by["record"]["action"] == "repair"
+          and "recorded git, but the record is not committed" in by["record"]["detail"],
+          by["record"])
+    write(os.path.join(p20b, ".soul", "init.md"), "record:        local        2026-10-26\n")
+    st, by = status(env, p20b)
+    check("recorded local, record neither tracked nor ignored: repair naming it",
+          by["record"]["action"] == "repair" and "one `git add -A`" in by["record"]["detail"],
+          by["record"])
+    write(os.path.join(p20b, ".gitignore"), ".soul/\n")
+    st, by = status(env, p20b)
+    check("recorded local, record ignored: agree, none", by["record"]["action"] == "none"
+          and by["record"]["source"] == "recorded", by["record"])
+    write(os.path.join(p20b, ".soul", "init.md"), "record:        git          2026-10-26\n")
+    st, by = status(env, p20b)
+    check("recorded git, record ignored: repair", by["record"]["action"] == "repair",
+          by["record"])
+
+    # 21 — an existing store outside git's index, or outside git
+    p21 = repo(tmp, "untracked-store", {"CLAUDE.md": IMPORT})
+    write(os.path.join(p21, "docs", "ideas.md"), "# I\n")
+    write(os.path.join(p21, "node_modules", "x", "witness.md"), "# no\n")
+    st, by = status(env, p21)
+    check("untracked docs/ideas.md: existing-store asks",
+          by.get("existing-store", {}).get("action") == "ask"
+          and by["existing-store"]["detail"].endswith(": docs/ideas.md."),
+          by.get("existing-store"))
+    p21b = os.path.join(tmp, "nogit-store")
+    write(os.path.join(p21b, "CLAUDE.md"), IMPORT)
+    write(os.path.join(p21b, "docs", "ideas.md"), "# I\n")
+    st, by = status(env, p21b)
+    check("not a git repo, docs/ideas.md: existing-store asks",
+          by.get("existing-store", {}).get("action") == "ask", by.get("existing-store"))
+
+    # 22 — a broken .soul link with no usable vault stops; with the vault holding it, repair
+    envm = dict(env, XDG_CONFIG_HOME=os.path.join(tmp, "config-m"))
+    write(os.path.join(tmp, "config-m", "soul", "vault"), os.path.join(tmp, "no-vault") + "\n")
+    st, by = status(envm, p8b)
+    check("broken link, registered vault missing: stop",
+          by.get("vault-link", {}).get("action") == "stop"
+          and "which is missing — clone the vault there" in by["vault-link"]["detail"],
+          by.get("vault-link"))
+    write(os.path.join(vroot, "projects", "blink", "soul", "witness.md"), "# W\n")
+    p22 = repo(tmp, "blink", {"README.md": "x\n"})
+    os.symlink(os.path.join(tmp, "old-vault", "projects", "blink", "soul"),
+               os.path.join(p22, ".soul"))
+    st, by = status(envv, p22)
+    check("broken link, vault present and holding the key: repair",
+          by.get("vault-link", {}).get("action") == "repair", by.get("vault-link"))
+
+    # 23 — status --ask forces a question back; revisit says how
+    r = run(envl, "status", p2, "--json", "--ask", "record", "--ask", "names")
+    try:
+        st = json.loads(r.stdout)
+        by = {i["key"]: i for i in st["items"]}
+    except ValueError:
+        st, by = {"rounds": []}, {}
+    check("status --ask record --ask names: both asked though inferred",
+          by.get("record", {}).get("action") == "ask" and by["record"]["question"]
+          and by.get("names", {}).get("action") == "ask"
+          and any("record" in rnd and "names" in rnd for rnd in st["rounds"]),
+          (r.stderr, st.get("rounds")))
+    r = run(envl, "status", p2, "--ask", "mind")
+    check("status --ask with a key that has no question: exit 2", r.returncode == 2, r.stderr)
+    r = run(env, "revisit", p2)
+    check("revisit names the --ask route",
+          "inferred answers stay; run status --ask <key> to be asked anyway" in r.stdout,
+          r.stdout)
+
+    # 24 — a Soul hook whose guard path is gone: repair
+    p24 = repo(tmp, "deadhook", {"CLAUDE.md": IMPORT, ".soul/witness.md": "# W\n"})
+    for h in ("pre-commit", "commit-msg", "pre-push"):
+        path = os.path.join(p24, ".git", "hooks", h)
+        write(path, HOOK.format(h).replace("exit 0\n",
+                                           'guard="/gone/hooks/secret-guard.py"\nexit 0\n'))
+        os.chmod(path, 0o755)
+    st, by = status(env, p24)
+    check("Soul hooks with a dead guard path: repair",
+          by["hand-hooks"]["action"] == "repair"
+          and "point at a missing plugin path" in by["hand-hooks"]["detail"]
+          and "pre-commit, commit-msg, pre-push" in by["hand-hooks"]["detail"], by["hand-hooks"])
+
+    # 25 — the record in a vault: line endings check the vault repo too
+    v3 = repo(tmp, "vault3", {"vault.md": "# v\n", "projects/lv/soul/witness.md": "# W\n"})
+    p25 = repo(tmp, "lv", {"CLAUDE.md": IMPORT, ".gitattributes": RULES})
+    os.symlink(os.path.join(v3, "projects", "lv", "soul"), os.path.join(p25, ".soul"))
+    st, by = status(env, p25)
+    le = by.get("line-endings", {})
+    check("vault without the rule: line-endings asks, naming the vault",
+          le.get("action") == "ask" and le.get("detail", "").endswith("Needs it: vault."), le)
+    p25b = repo(tmp, "lv2", {"CLAUDE.md": IMPORT})
+    os.symlink(os.path.join(v3, "projects", "lv", "soul"), os.path.join(p25b, ".soul"))
+    st, by = status(env, p25b)
+    check("neither has the rule: line-endings names both",
+          by["line-endings"]["detail"].endswith("Needs it: both."), by["line-endings"])
+
+    # 26 — details cite the skill's section names, never step numbers
+    stale = [(k, i["detail"]) for p in (p1, p13, p8b) for k, i in status(envv, p)[1].items()
+             if "skill step" in i["detail"]]
+    check("no detail cites 'skill step N'", not stale, stale)
+
+    # 27 — one wording, two files: the stage descriptions match skills/soul-stage
+    stage_md = read(os.path.join(_ROOT, "skills", "soul-stage", "SKILL.md"))
+    missing = [o["description"] for o in mod.QUESTIONS["stage"]["options"]
+               if o["value"] != "not-now" and o["description"] not in stage_md]
+    check("stage descriptions appear verbatim in skills/soul-stage/SKILL.md", not missing,
+          missing)
 
     shutil.rmtree(tmp, ignore_errors=True)
     print("\n{} failure(s)".format(len(FAILS)) if FAILS else "\nALL PASS")

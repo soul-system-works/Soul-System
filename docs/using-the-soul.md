@@ -17,8 +17,8 @@ released, or *Not now*, which means "treat it as released") and whether any name
 must stay out of the repo, then offers a few safety checks in one list. It writes
 one import line into your `CLAUDE.md`, creates two empty record files,
 `.soul/ideas.md` and `.soul/witness.md`, and keeps your answers in `.soul/init.md`.
-Running it again asks only what is new; `/soul-init revisit` asks everything
-again. If your project already keeps its record at its root, it stays there; both
+Running it again asks only what is new. `/soul-init revisit` forgets your
+remembered answers (or the ones you name) and asks those again. If your project already keeps its record at its root, it stays there; both
 layouts work.
 
 Findings and amendments are NOT created locally. Those are records of changes to
