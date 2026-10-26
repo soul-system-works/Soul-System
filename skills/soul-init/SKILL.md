@@ -12,7 +12,7 @@ instruction-file, tool, and invocation mechanics; the shared workflow follows.
 
 Every run is the same three moves: **status** (what is set), **repairs** (what
 broke on this machine, fixed from answers already given), **questions** (only
-decisions never answered). A fresh project gets two short rounds of questions; a
+decisions never answered). A fresh project gets two or three short rounds; a
 project already set up usually gets none. `tools/init-status.py` works out the
 state and holds the question wording; this skill carries out the answers.
 
@@ -107,13 +107,15 @@ Work from the directory the session started in; do not search upwards.
 
 5. **Carry out and record each answer.** Do what the next section says for the key,
    then `python3 <root>/tools/init-status.py record . <key> <value>` with the
-   option's `value`. Order: `record` first (the scaffold or the move, so the record
-   exists), then `stage`, then the extras — line endings, hooks, and the history scan
-   LAST, so the scan covers any commit this run made. Extras: each ticked member is
-   `yes` (do it), each unticked one `no` (`declined` for history-scan); with one
-   member the question is Yes/No for that member. A `no` is final until `revisit`.
-   Not recorded: `layout` (it keeps its own list) and a `vault-link` *Not now* (the
-   record is unusable here until linked, so it is asked again).
+   option's `value`. Order: `record` (the scaffold, committed if the answer is git),
+   `stage`, the extras' line endings and hooks, the vault move if the answer was the
+   vault, and the history scan LAST, so it covers every commit this run made. Extras:
+   each ticked member is `yes` (do it), each unticked one `no`; with one member the
+   question is Yes/No for that member. A `no` is final until `revisit`. Not recorded:
+   `layout` (it keeps its own list). **`vault-link` *Not now* ends the run**: the
+   vault holds this project's record, so until it is linked nothing else can be set
+   up here (the tool lists no other round and `record` refuses; a local record would
+   be a second copy). Say so; the next run asks again.
 
 6. **Check.** Run `status` again. Nothing should be left to repair or ask; if
    something is, say what and why.
@@ -157,6 +159,8 @@ was dropped in v3.6.0, SOUL-A030).
   .soul/handoff.md
   .soul/events.jsonl
   ```
+  then commit the record files and `.gitignore` (the owner chose git; a record that
+  is neither committed nor ignored is one `git add -A` from an accidental commit).
 - *local*: ignore the whole directory, `.soul/`.
 - *vault*: no `.gitignore` lines; the vault move (below) hides the link in
   `.git/info/exclude`, which never leaves this machine.
@@ -197,8 +201,9 @@ docs/ideas.md — append there.`) instead of an empty store. MODEL-TEST's
 project's record, each reached by a `.soul` link (SOUL-I079, [ADR
 0001](../../docs/adr/0001-soul-vault.md)). Re-link (*Link it*, or a BROKEN repair):
 `python3 <root>/tools/vault.py link . --key <key> --label <the label in its
-project.md>`. The move (*In your Soul vault*), last so everything above is in the
-record first — ask, in one round:
+project.md>`. The move (*In your Soul vault*) is carried out late in step 5 —
+after the stage entry and the names file are written into the local record, so they
+move with it (the order the I079 link test used) — but its questions come first:
 - **Label**, asked straight after the vault answer, before anything else is done —
   *public* (anyone may read it), *private* (yours), *confidential* (someone else's
   material, e.g. an employer's or client's — the owner decides whether a personal
@@ -298,14 +303,15 @@ remembers the list in `.soul/layout.json`.
 one as modified, `git add -A` commits them, and tools that write Unix endings leave
 files with both. Before asking, show `eol.py check .`'s list of files committed with
 CRLF — some may need CRLF on purpose (`.eml`, `.ics` fixtures), and the fix stores
-them LF. On yes, run `python3 <root>/tools/eol.py fix .`, show its output and commit
-with the line it suggests. It refuses (exit 2, nothing changed) on staged work,
+them LF. On yes, run `python3 <root>/tools/eol.py fix <repo>` for each repo the
+tool's detail names (`Needs it: project`, `vault` or `both`), show its output and
+commit in that repo with the line it suggests (for the vault, commit step `vault`'s
+`index.md` change first). It refuses (exit 2, nothing changed) on staged work,
 real edits it would sweep in, an untracked or edited `.gitattributes`, or files
 hidden by assume-unchanged or skip-worktree: say why and leave it. Stopped partway
 (exit 2 after changing something): relay its list and undo lines word for word.
 Exit 1: the re-check is still not ok — show it, do not commit; the owner fixes what
-it names or undoes with `git restore --staged .`. If the record lives in the vault,
-check the vault too (`eol.py check <vault>`; commit the vault's `index.md` first).
+it names or undoes with `git restore --staged .`.
 *Why:* the owner (2026-10-26): "i have seen this on every soul project we have
 worked on (and non soul). the ai typically identifies it eventually that it is just
 eol issues after it checks and then fixes it. so i am trying to preempt it."

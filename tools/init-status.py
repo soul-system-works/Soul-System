@@ -269,12 +269,32 @@ def _line(key, value, date):
     return "{} {} {}".format((key + ":").ljust(14), value.ljust(12), date)
 
 
+# The values each key accepts (the option `value`s the skill records). A value outside
+# these would be stored, then read back as "not understood" and asked again forever.
+VALUES = {
+    "import": ("add", "leave"), "vault-link": ("link",), "record": ("git", "local", "vault"),
+    "public": ("yes", "no"), "names": ("none", "listed"), "hand-hooks": ("yes", "no"),
+    "stage": ("prototype", "pre-release", "released", "not-now"),
+    "line-endings": ("yes", "no"), "existing-store": ("use", "no"),
+}
+SCAN_RE = re.compile(r"^(clean|findings) [0-9a-f]{7,40}$|^declined$")
+
+
 def record(project, key, value):
     if key not in RECORDABLE:
         raise InitError("unknown key {!r} — one of: {}".format(key, ", ".join(RECORDABLE)))
     value = value.strip()
     if not value or "\n" in value or "\r" in value:
         raise InitError("the value must be one non-empty line")
+    if key == "history-scan" and value == "no":  # the one-member Yes/No question's "No"
+        value = "declined"
+    if key == "history-scan" and not SCAN_RE.match(value):
+        raise InitError("history-scan takes `clean <sha>`, `findings <sha>` or `declined`")
+    if key in VALUES and value not in VALUES[key]:
+        raise InitError("{} takes one of: {} (a vault-link \"Not now\" is not recorded — "
+                        "it stays a pending question)".format(key, ", ".join(VALUES[key]))
+                        if key == "vault-link" else
+                        "{} takes one of: {}".format(key, ", ".join(VALUES[key])))
     lines, _ = read_answers(project)
     if not lines:
         lines = HEADER.splitlines()
@@ -840,6 +860,11 @@ def render_question(key, public=None, vault=None, path=None, n=None, members=())
 
 
 ASKABLE = tuple(k for k in KEYS if k in QUESTIONS) + EXTRAS
+# Keys --ask may force: a choice the owner can sensibly make again. The rest
+# (import, vault-link, existing-store, layout) are asked only when the files call for
+# it — forcing them asks about something that is not there (a second import line).
+FORCEABLE = ("record", "public", "names", "hand-hooks", "history-scan", "stage",
+             "line-endings")
 
 
 def status(project, force=()):
@@ -854,15 +879,19 @@ def status(project, force=()):
         "layout": check_layout(c), "line-endings": check_line_endings(c),
         "mind": check_mind(c), "existing-store": check_existing_store(c),
     }
+    # --ask: the owner's way back to a question an inferred or recorded answer settled.
+    # A repair or a stop stays what it is; a scan that cannot run is not offered.
+    for k in force:
+        i = found.get(k)
+        if k not in FORCEABLE or i is None or i["action"] != "none":
+            continue
+        if k == "history-scan" and not shutil.which("gitleaks"):
+            continue
+        i["action"] = "ask"
     # Unknown visibility changes the record and names questions, so it is asked first.
     if public["value"] is None and any(found[k] and found[k]["action"] == "ask"
                                        for k in ("record", "names")):
         public["action"] = "ask"
-    # --ask: the owner's way back to a question an inferred or recorded answer settled.
-    for k in force:
-        i = found.get(k)
-        if i is not None and i["action"] in ("none", "repair"):
-            i["action"] = "ask"
     items = [found[k] for k in KEYS if found[k] is not None]
     asked = {i["key"]: i for i in items if i["action"] == "ask"}
     for k, i in asked.items():
@@ -878,6 +907,10 @@ def status(project, force=()):
         rounds.append(["public"])
     main = [k for k in MAIN if k in asked]
     rounds += [main[i:i + 4] for i in range(0, len(main), 4)]
+    # While the vault holds this record and nothing links to it, nothing else can be
+    # recorded here (record() refuses; a local .soul/ would be TWO COPIES): link first.
+    if "vault-link" in asked and found["vault-link"]["value"] != "broken":
+        rounds, members = [["vault-link"]], []
     if members:
         ex = _item("extras", "ask", detail="One combined question for: {}.".format(
             ", ".join(members)))
@@ -959,10 +992,11 @@ def main():
             return record(project, args.key, " ".join(args.value))
         if args.cmd == "revisit":
             return revisit(project, args.keys)
-        bad = [k for k in args.ask if k not in ASKABLE]
-        if bad:
-            raise InitError("--ask: no question for {} — one of: {}".format(
-                ", ".join(bad), ", ".join(ASKABLE)))
+        skip = [k for k in args.ask if k not in FORCEABLE]
+        if skip:  # warn, never fail: /soul-init revisit passes the keys the owner named
+            print("init-status: --ask ignores {} (asked only when the files call for it; "
+                  "forceable: {})".format(", ".join(skip), ", ".join(FORCEABLE)),
+                  file=sys.stderr)
         st = status(project, force=args.ask)
         if args.json:
             print(json.dumps(st, indent=2))

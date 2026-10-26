@@ -504,7 +504,8 @@ def main():
           and any("record" in rnd and "names" in rnd for rnd in st["rounds"]),
           (r.stderr, st.get("rounds")))
     r = run(envl, "status", p2, "--ask", "mind")
-    check("status --ask with a key that has no question: exit 2", r.returncode == 2, r.stderr)
+    check("status --ask with a key that cannot be forced: warned, not fatal",
+          r.returncode == 0 and "--ask ignores mind" in r.stderr, r.stderr)
     r = run(env, "revisit", p2)
     check("revisit names the --ask route",
           "inferred answers stay; run status --ask <key> to be asked anyway" in r.stdout,
@@ -548,6 +549,35 @@ def main():
                if o["value"] != "not-now" and o["description"] not in stage_md]
     check("stage descriptions appear verbatim in skills/soul-stage/SKILL.md", not missing,
           missing)
+
+    # 28 — scoped-check fixes: the vault link comes alone; record takes only known
+    #      values; --ask forces only choices, and a forced record still asks visibility
+    st, by = status(envv, p13)
+    check("vault holds it, nothing links: the re-link is the only round",
+          st["rounds"] == [["vault-link"]], st["rounds"])
+    p28 = repo(tmp, "values", {"README.md": "x\n"})
+    r = run(env, "record", p28, "history-scan", "no")
+    check("record history-scan no: stored as declined",
+          r.returncode == 0 and "declined" in read(os.path.join(p28, ".soul", "init.md")),
+          r.stdout + r.stderr)
+    r = run(env, "record", p28, "stage", "beta")
+    check("record an unknown value: exit 2, nothing stored", r.returncode == 2
+          and "beta" not in read(os.path.join(p28, ".soul", "init.md")), r.stderr)
+    r = run(env, "record", p28, "vault-link", "not-now")
+    check("record vault-link not-now: refused (it stays a pending question)",
+          r.returncode == 2, r.stderr)
+    r = run(envl, "status", p2, "--json", "--ask", "import", "--ask", "layout")
+    st = json.loads(r.stdout) if r.returncode == 0 else {"items": []}
+    by = {i["key"]: i for i in st["items"]}
+    check("--ask import/layout: warned and ignored, never a second import question",
+          r.returncode == 0 and "--ask ignores import, layout" in r.stderr
+          and by.get("import", {}).get("action") == "none", (r.stderr, by.get("import")))
+    r = run(envl, "status", p2, "--json", "--ask", "record")
+    st = json.loads(r.stdout) if r.returncode == 0 else {"items": [], "rounds": []}
+    by = {i["key"]: i for i in st["items"]}
+    check("--ask record with unknown visibility: public asked first",
+          by.get("public", {}).get("action") == "ask" and ["public"] in st["rounds"],
+          (by.get("public"), st.get("rounds")))
 
     shutil.rmtree(tmp, ignore_errors=True)
     print("\n{} failure(s)".format(len(FAILS)) if FAILS else "\nALL PASS")
