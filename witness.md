@@ -9232,5 +9232,81 @@ WHAT:         v3.6.0 re-offered the gitleaks history scan after any new commit, 
               secret guard covers each new commit as it is made.
 TYPE:         witness (Body decision)
 CONSEQUENCE:  v3.6.1, released and pushed the same day.
-STATUS:       Closed — unconfirmed — owner to ratify
+STATUS:       Closed
+```
+
+```
+ID:           SOUL-223
+WHEN:         2026-10-26 / Soul-System session, the Body moving this repo to the
+              new computer (plugin 3.6.1)
+WHERE:        /soul-migrate pack (Fast) of Soul-System; tools/migrate.py
+WHAT:         Soul-System packed for the move, the last project, as the move plan
+              said. The Body had already cloned the repo there; receive needs an
+              empty folder, so that clone is set aside first. In the zip: 424
+              commits on 15 branches (13 local-only release branches), .soul/,
+              .ai/, registry/ (NAME-MAP, PROJECTS), .claude/settings.local.json
+              (force-included: permission rules only, read and found secret-free),
+              the Claude memory folder (matched by transcript cwd), and this entry
+              as the only uncommitted change. Left out: __pycache__ and
+              .pytest_cache (recreated on use), the LaTeX aux files under
+              docs/study/tex/ablation (latexmk rebuilds them), the git history of
+              10 probe repos in .ai/guard-timing (their files travel). Not
+              reinstalled there, the Body's call: understand-anything and
+              karpathy-skills. Discovery: the inventory took 28 s on /mnt/d; the
+              whole session's time was not measured.
+              The Body also asked whether this repo's record belongs in the vault.
+              Answer given: the tracked record (witness, ideas, Mind, findings,
+              amendments) is the public product and stays; the private local-only
+              files (registry/NAME-MAP.md, registry/PROJECTS.txt,
+              .soul/private-names.txt, .soul/handoff.md) exist on one disk with no
+              backup and fit the vault. The Body chose: move them after the move,
+              as its own task. Open there: the vault's remote is code.ornl.gov —
+              whether the name map may live there is the Body's call.
+TYPE:         witness (machine move — prepared)
+CONSEQUENCE:  Receive milestones still to come: transferred · restored · workflow
+              checked · owner accepted. Follow-up task on the new computer: the
+              private files into the vault (vault.py link does not handle this
+              repo's layout as is).
+STATUS:       Open
+```
+
+```
+ID:           SOUL-224
+WHEN:         2026-10-26 / new computer, /soul-migrate receive (plugin 3.6.1)
+WHERE:        tools/migrate.py verify · place · place-memory; the smoke check
+WHAT:         Soul-System received at /mnt/d/Projects/soul/Soul-System (not the old
+              path, the Body's choice); the earlier clone was already set aside as
+              soul/Soul-System.pulled (its 113 changes: line endings only).
+              Milestones:
+              - prepared: SOUL-223, packed 19:55Z.
+              - transferred: verify passed, 2041 members, carried sha256 matched
+                (~1 min; the carry time was not measured).
+              - restored: HEAD 226f519, 15 branches, origin set, worktree.patch
+                applied, 2024 files placed (56 s); memory, 14 files, to key
+                -mnt-d-Projects-soul-Soul-System. Rebuild: none needed.
+              - workflow checked: the smoke check as written, `python3 -m pytest
+                -q`, did not pass. pytest was not installed here; run through uv,
+                it stopped at collection with INTERNALERROR, because
+                hooks/test_turn.py calls sys.exit at module level (unchanged
+                since 3ad3690). With test_turn.py and test_verdict.py run as
+                scripts (5/5, 21/21) and pytest on the rest: 133 passed and 5
+                subtests passed (27 s).
+              - owner accepted: 2026-10-26, in the next session, after
+                /soul-resume found the memory index loaded under the new key
+                and the smoke fix below passed.
+              Dependencies: plugin claude-api@anthropic-agent-skills is not
+              installed, and ~/.claude/agents/ does not exist; the four agents
+              are present as greenwoodms06-skills plugin agents. ~/.claude/CLAUDE.md,
+              both render_check.py copies and /mnt/d/soul-vault are present.
+TYPE:         witness (machine move — transferred, restored, workflow checked,
+              accepted)
+CONSEQUENCE:  The smoke command recorded at pack time could not pass on this
+              repo as is. Fixed the same day: hooks/test_turn.py and
+              test_verdict.py exit only when run as scripts and give pytest a
+              test_fence; `python -m pytest -q` (through uv, pytest is not
+              installed here) now runs 135 passed, 5 subtests passed (33 s),
+              and a mutated copy of test_turn.py fails both under pytest and
+              as a script. Still open: the SOUL-223 follow-up (private files into
+              the vault).
+STATUS:       Closed
 ```
