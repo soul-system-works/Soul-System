@@ -2,7 +2,7 @@
 
 FENCE: a recorded answer is not asked again unless the files show it no longer holds —
 names listed but .soul/private-names.txt gone, a stage recorded but no **Stage:** line,
-history-scan after new commits — or `status --ask KEY` forces it. A repair is never
+or `status --ask KEY` forces it. A repair is never
 hidden by one — `hand-hooks: yes` recorded on one machine reads `repair` where the
 hooks are missing, and `record: local` reads `repair` while the record is tracked.
 `status` never writes; `record` keeps every line it does not own. Each run controls
@@ -192,10 +192,11 @@ def main():
     git(p2, "commit", "-qm", "work")
     st, by = status(envl, p2)
     asks = sorted(k for k, a in actions(by).items() if a != "none")
-    check("after a new commit: only history-scan asks",
-          asks == ["extras", "history-scan"] and st["rounds"] == [["extras"]]
-          and by["extras"]["members"] == ["history-scan"], (asks, st["rounds"]))
-    check("history-scan detail names the new commit", "1 new commit" in by["history-scan"]["detail"],
+    check("after a new commit: nothing asks — the scan is offered once (v3.6.1)",
+          asks == [] and st["rounds"] == [], (asks, st["rounds"]))
+    check("history-scan detail names the new commit and how to rescan",
+          "1 commit(s) since" in by["history-scan"]["detail"]
+          and "revisit history-scan" in by["history-scan"]["detail"],
           by["history-scan"]["detail"])
 
     # 4 — recorded hand-hooks yes, hooks gone (a new machine): repair
@@ -412,8 +413,10 @@ def main():
           by["stage"]["action"] == "ask" and "a hand-written **Phase:** block exists — show "
           "it before asking" in by["stage"]["detail"], by["stage"])
 
-    # 18 — extras with one member is a yes/no question
-    st, by = status(envl, p2)
+    # 18 — extras with one member is a yes/no question (the scan, asked back by --ask)
+    r = run(envl, "status", p2, "--json", "--ask", "history-scan")
+    st = json.loads(r.stdout)
+    by = {i["key"]: i for i in st["items"]}
     q = by["extras"]["question"]
     check("one extras member: single-choice yes/no, members kept",
           q["text"].startswith("Set this up? Scan git history for leaked secrets now (")

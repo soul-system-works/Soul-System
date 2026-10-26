@@ -286,8 +286,10 @@ exit 0
 ```
 
 **`history-scan`** — `gitleaks git --redact --no-banner`, results to the owner,
-then record `clean <sha12>` or `findings <sha12>` (HEAD's first 12 characters); the
-tool offers it again only after new commits. Rewrite nothing: a found credential is
+then record `clean <sha12>` or `findings <sha12>` (HEAD's first 12 characters). It is
+offered once; `/soul-init revisit history-scan` runs it again. The secret guard checks
+each new commit as it is made, so the one scan covers what came before the guard
+(the owner chose this over re-offering after every commit, 2026-10-26, v3.6.1). Rewrite nothing: a found credential is
 rotated first, and any rewrite is the owner's separate call (on a native Linux
 filesystem, not a `/mnt` drive; a rewritten-away commit stays fetchable by SHA on
 GitHub).

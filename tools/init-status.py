@@ -674,12 +674,15 @@ def check_history_scan(c):
         if word == "declined":
             return _recorded("history-scan", rec, detail="You declined the history scan.")
         if word in ("clean", "findings") and sha:
+            # Offered once (the owner, 2026-10-26, v3.6.1): re-offering after every new
+            # commit asked on almost every run of an active repo, and the secret guard
+            # already checks each new commit as it is made. `--ask history-scan` (or
+            # /soul-init revisit history-scan) scans again.
             n = _commits_since(p, sha)
-            if n == 0:
-                return _recorded("history-scan", rec, detail="Scanned at {} ({}); no new "
-                                 "commits since.".format(sha, word))
-            stale = ("{} new commit(s) since the scan at {}.".format(n, sha) if n else
-                     "The scanned commit {} is not in this history.".format(sha))
+            since = ("; {} commit(s) since — `/soul-init revisit history-scan` scans "
+                     "again".format(n) if n else "")
+            return _recorded("history-scan", rec, detail="Scanned at {} ({}){}.".format(
+                sha, word, since))
         else:
             stale = "The recorded value {!r} is not understood.".format(rec[0])
     value, date, src = (rec[0], rec[1], "recorded") if rec else (None, None, "none")
