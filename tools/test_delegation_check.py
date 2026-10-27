@@ -138,11 +138,18 @@ class DelegationCheck(unittest.TestCase):
         self.assertEqual(seen["timeout"], 540)  # the Bash tool's foreground cap is 600 s
 
     def test_bad_worker_exits_2_and_records_nothing(self):
-        for worker in ("expert:subagent", "deep", "deep:", "subagent"):
+        for worker in ("deep", "deep:", "subagent", ":claude", "9x:claude", "a b:claude"):
             out = self.record("touch ran", worker=worker)
             self.assertEqual(out.returncode, 2, worker)
         self.assertEqual(self.events(), [])
         self.assertFalse(os.path.exists(os.path.join(self.tmp, "ran")))
+
+    def test_workflow_role_names_are_accepted_as_the_worker_tier(self):
+        out = self.record("true", worker="implementer:claude:sonnet")
+        self.assertEqual(out.returncode, 0, out.stderr)
+        [ev] = self.events()
+        self.assertEqual(ev["data"]["worker"], {"tier": "implementer", "tool": "claude",
+                                                "model": "sonnet"})
 
     def test_review_fields_are_self_reported(self):
         self.record("true", "--reviewer", "diff-reviewer:opus", "--review-verdict", "pass")

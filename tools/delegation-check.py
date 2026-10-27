@@ -61,6 +61,7 @@ that promise. On Windows the tool refuses to run (exit 2).
 import argparse
 import json
 import os
+import re
 import signal
 import subprocess
 import sys
@@ -72,6 +73,7 @@ EVENT_TYPE = "soul.delegation.checked"
 REVIEW_EVENT = "soul.workflow.review"
 WORKFLOW_FIELDS = ("workflow", "role", "rung", "round", "run_id")
 TIERS = ("deep", "routine", "review")
+ROLE_RE = re.compile(r"^[A-Za-z][A-Za-z0-9_-]*$")
 TAIL_MAX = 300
 TAIL_READ = 65536  # bytes read from the end of the output file for the tail
 STORES = ("witness.md", os.path.join(".soul", "witness.md"))
@@ -142,11 +144,14 @@ def resolve_project(args, ap):
 
 
 def parse_worker(text):
-    """TIER:TOOL[:MODEL] -> dict. MODEL keeps any further colons (`qwen3:32b`)."""
+    """TIER:TOOL[:MODEL] -> dict. MODEL keeps any further colons (`qwen3:32b`).
+    TIER is a /soul-workflow role name (`implementer`) or one of the old tiers
+    (deep|routine|review): the skill records roles, and the first live replay
+    (2026-10-27) was refused here for naming one."""
     parts = text.split(":", 2)
-    if len(parts) < 2 or parts[0] not in TIERS or not parts[1].strip():
-        raise ValueError("--worker must be TIER:TOOL[:MODEL] with TIER one of {}, got {!r}"
-                         .format("|".join(TIERS), text))
+    if len(parts) < 2 or not ROLE_RE.match(parts[0]) or not parts[1].strip():
+        raise ValueError("--worker must be ROLE:TOOL[:MODEL] (ROLE e.g. implementer, or "
+                         "one of {}), got {!r}".format("|".join(TIERS), text))
     model = parts[2].strip() if len(parts) == 3 else ""
     return {"tier": parts[0], "tool": parts[1].strip(), "model": model or None}
 
@@ -477,7 +482,7 @@ def main():
     sub = ap.add_subparsers(dest="cmd", required=True)
     r = sub.add_parser("record", help="run a step's check and record the result")
     r.add_argument("--step", required=True, help="the plan step's text")
-    r.add_argument("--worker", required=True, help="TIER:TOOL[:MODEL], TIER = deep|routine|review")
+    r.add_argument("--worker", required=True, help="ROLE:TOOL[:MODEL] — a /soul-workflow role, or deep|routine|review")
     r.add_argument("--check", required=True, help="the step's Done-when shell command")
     r.add_argument("--reviewer", help="TOOL[:MODEL] that reviewed the worker's output")
     r.add_argument("--review-verdict", choices=("pass", "fail"))
