@@ -140,8 +140,11 @@ Write the winner's patch with the brief to the reviewers:
 
 ```
 python3 <root>/tools/dispatch.py review --role reviewer --brief <brief> \
-  --diff <patch> --run-id <id>
+  --diff <patch> --workdir <winner worktree> --run-id <id>
 ```
+
+`--workdir` makes the reviewers read the candidate's files; without it they read this
+checkout, which is not what the patch was written against.
 
 Each reviewer works read-only and returns `FINDING:` lines. **A finding is a claim,
 not a verdict.** Check each one against the code; accept it only when you can see
