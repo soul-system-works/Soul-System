@@ -1,6 +1,6 @@
 ---
 name: soul-workflow
-description: Run a named workflow across models — `build-verify` (another model implements a step in its own worktree, this session re-runs the check, two read-only reviewers from different model families report findings, at most two repair rounds) or `review` (the two reviewers alone, on a diff). Roles (harness + model, e.g. Claude, Codex, a local Ollama model) come from a roles table; this session keeps judgment and the record, and never takes a worker's word. Owner-invoked. `/soul-workflow roles` shows or edits the roles table.
+description: Run a named workflow across models — `build-verify` (another model implements a step in its own worktree, this session re-runs the check, read-only reviewers report findings (by default a fresh Claude, and Codex when it is installed), at most two repair rounds) or `review` (the reviewers alone, on a diff). Roles (harness + model, e.g. Claude, Codex, a local Ollama model) come from a roles table; this session keeps judgment and the record, and never takes a worker's word. Owner-invoked. `/soul-workflow roles` shows or edits the roles table.
 disable-model-invocation: true
 ---
 
