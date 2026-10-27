@@ -766,6 +766,28 @@ def main():
         check(rc == 0 and "private-name list is staged" in out and all(p in out for p in kept),
               f"MISS: outside a vault, the machine list or a registry/NAME-MAP.md did not warn: {out[-400:]!r}")
 
+        # 23d. Inside a vault, the lists it keeps are not scanned for the names they hold
+        # (the owner's call, v3.6.3): a configured name in them is silent. The same name in
+        # any other vault file still warns, and outside a vault those files still warn.
+        lists = kept + ("projects/p/soul/private-names.txt",)
+        for rel in lists:
+            write(rv, rel, f"{NAME}\n")
+        plain_git(rv, "add", "-A")
+        rc, out, _ = sh(E, rv, f"export SOUL_GUARD_CWD='{r1}'\ngit commit -qm listed")
+        check(rc == 0 and f'"{NAME}"' not in out,
+              f"NOISE: a configured name in a vault's own name lists warned: {out[-400:]!r}")
+        write(rv, "projects/p/soul/notes.md", f"met {NAME}\n")
+        plain_git(rv, "add", "-A")
+        rc, out, _ = sh(E, rv, f"export SOUL_GUARD_CWD='{r1}'\ngit commit -qm notes")
+        check(rc == 0 and f'"{NAME}"' in out and "projects/p/soul/notes.md" in out,
+              f"VAULT: a configured name in another vault file did not warn: {out[-400:]!r}")
+        for rel in kept:
+            write(rnv, rel, f"{NAME}\n")
+        plain_git(rnv, "add", "-A")
+        rc, out, _ = sh(E, rnv, "git commit -qm named")
+        check(rc == 0 and f'"{NAME}"' in out and all(p in out for p in kept),
+              f"MISS: outside a vault, a configured name in those files did not warn: {out[-400:]!r}")
+
         # 24. --own-hooks-dir resolves a relative core.hooksPath against the worktree top (M2).
         os.makedirs(os.path.join(r8, "a", "b"))
         rc, own, _ = sh(E, os.path.join(r8, "a", "b"), f"python3 '{HOOK}' --own-hooks-dir")

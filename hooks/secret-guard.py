@@ -766,12 +766,17 @@ def check_pre_commit(rep, root, names):
         vault and VAULT_LISTS.match(p))]
     if not names or not is_public(root, _remote_url(root, _default_remote(root)), rep):
         return
+    # Nor are those lists scanned for the names they hold (the owner's call, v3.6.3): a
+    # list is made of names, so every commit of one warned. Every other vault file is.
+    kept = lambda p: vault and bool(VAULT_LISTS.match(p or ""))
     for p in paths:
-        rep.add_name_hits(names, p, f"file {p}")
+        if not kept(p):
+            rep.add_name_hits(names, p, f"file {p}")
     diff = _git_out(root, "diff", "--cached", "--no-ext-diff", "--no-color", "-U0",
                     "--diff-filter=d") or ""
     for path, text in _added_lines(diff):
-        rep.add_name_hits(names, text, f"file {path}")
+        if not kept(path):
+            rep.add_name_hits(names, text, f"file {path}")
     rep.add_name_hits(names, "\n".join(_identity_emails(root)), "author/committer email")
 
 
