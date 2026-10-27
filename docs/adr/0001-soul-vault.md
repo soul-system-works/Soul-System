@@ -76,6 +76,32 @@ Private names in a vault commit still warn. The guard cannot confirm a GitLab
 repo is private, and it never assumes a repo is private (the Body's call,
 2026-10-22): the warnings are expected noise, never a block.
 
+## The sidecar layout (v3.6.2; v3.6.3)
+
+Some projects' records are their public product. Soul-System's witness, ideas and
+Mind are what it publishes, so they stay tracked in its git. Only its private files
+lived on one disk with no backup: `.soul/` (handoff, private-names list) and the
+gitignored `registry/` (SOUL-223). The Body chose to move just those into the vault
+(SOUL-225). `vault.py link --sidecar` moves `.soul/` alone and leaves the root
+record where it is.
+
+- **The marker is `sidecar: true` in the vault's `projects/<key>/project.md`.** It
+  is recorded by the move and never inferred from what `soul/` holds. A vault copy
+  that lost its stores must still read as a second record beside a root one.
+- **A fresh clone re-links without the flag.** `link` reads the marker, so a root
+  record beside the vault folder is not TWO COPIES.
+- **The completion gate's event log does not block that re-link** (v3.6.3). The
+  gate writes `.soul/events.jsonl` by itself, before anyone re-links. A real
+  `.soul/` holding only that log (or nothing) is not a second record: `link` merges
+  the log into the vault's, checks every line arrived, and only then links. This
+  holds for every project, sidecar or not. Anything else in `.soul/` is still TWO
+  COPIES.
+- `/soul-init` offers the move only where it fits: record tracked at the root, a
+  private `.soul/` with no record files and nothing tracked, and a vault here with
+  no record for the project (v3.6.3).
+- Inside a vault the secret guard also leaves `machine/soul-private-names.txt` (the
+  machine-wide list) and `projects/<key>/registry/NAME-MAP.md` unflagged (v3.6.3).
+
 ## Known hazard, kept and reported
 
 While a moved record is still tracked in the project's git, a reset, stash,
