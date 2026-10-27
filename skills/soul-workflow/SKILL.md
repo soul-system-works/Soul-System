@@ -99,8 +99,12 @@ python3 <root>/tools/dispatch.py run --role implementer --brief <brief> \
 ```
 
 Run it in the background: workers take minutes (a local model's first call took
-227 s, SOUL-200). It prints a result with each try's patch, its check result, and
-the winner. A try flagged `record_touched` changed the Soul record: reject it.
+227 s, SOUL-200). Without `--rung` it runs the lowest rung. With `n=` above 1 the
+tries run one after another, each in its own worktree; the winner is a try whose
+check passed, and among those the one that changed the fewest lines. It prints a
+result with each try's patch, its check result, and the winner. A try flagged
+`record_touched` changed the Soul record: reject that try; the others stay
+eligible.
 
 ### 4 · Check it here
 
@@ -115,12 +119,14 @@ python3 <root>/tools/delegation-check.py record --step "<step>" \
 ```
 
 - **Pass** → step 5.
-- **Fail, or no winner** → dispatch once more at the same rung with the failure
-  text added to the brief. **Fails twice** → the next rung (`--rung K+1`). The top
-  rung failing → do it here, or bring it to the owner with the evidence.
+- **Fail, or no winner** → each rung gets two attempts: the first dispatch and one
+  retry with the failure text added to the brief. Both failed → the next rung
+  (`--rung K+1`), again two attempts. The top rung's second failure → bring it to
+  the owner with the evidence (or, if the owner says so, do it here).
 
-Every dispatch takes its own run id (`<id>`, then `<id>-retry`, `<id>-r2`, …): a run
-id that already holds a result is refused, so evidence is never overwritten.
+Every dispatch takes its own run id — `<id>-k<rung>-a<attempt>` for the first round,
+`<id>-r<round>` for a repair round: a run id that already holds a result is refused,
+so evidence is never overwritten.
 
 ### 5 · Two reviews
 
@@ -144,7 +150,8 @@ python3 <root>/tools/delegation-check.py review --run-id <id> \
 
 ### 6 · Repair — at most two rounds
 
-Accepted defects go back to the same implementer row as a new brief: the original
+Accepted defects go back to the implementer row that produced the candidate (the
+rung it had reached, not the bottom of the ladder) as a new brief: the original
 plus the accepted findings, each with its failure scenario. Then steps 3–5 again,
 `--round 2`, then `--round 3`. Still failing after round 3 → stop and hand the owner
 the candidate, the evidence and the open findings. Do not spend a fourth round
