@@ -667,6 +667,12 @@ def main():
                "(`/soul-init revisit sidecar` asks again)")], q)
     asked, _, _ = sidecar_asked(env, p31)
     check("sidecar: not asked when this machine names no vault", not asked)
+    p31o = repo(tmp, "sc-open", {"CLAUDE.md": IMPORT, "witness.md": "# W\n", "ideas.md": "# I\n"})
+    write(os.path.join(p31o, ".soul", "handoff.md"), "# H\n")  # tracked root, .soul/ not ignored
+    asked, _, byo = sidecar_asked(envv, p31o)
+    check("sidecar: not offered while the record question is open (no opposite answers)",
+          not asked and byo.get("record", {}).get("action") in ("ask", "repair"),
+          (byo.get("record"), byo.get("sidecar")))
     p31b = sidecar_repo("sc-link")
     shutil.rmtree(os.path.join(p31b, ".soul"))
     write(os.path.join(tmp, "sc-elsewhere", "handoff.md"), "# H\n")

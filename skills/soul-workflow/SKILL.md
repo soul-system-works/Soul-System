@@ -161,7 +161,10 @@ python3 <root>/tools/delegation-check.py review --run-id <id> \
 
 Accepted defects go back to the implementer row that produced the candidate (the
 rung it had reached, not the bottom of the ladder) as a new brief: the original
-plus the accepted findings, each with its failure scenario. Then steps 3–5 again,
+plus the accepted findings, each with its failure scenario. A repair starts from the
+candidate, not from the original base: commit the winner on its own worktree branch
+(`git -C <winner worktree> add -A && git -C <winner worktree> commit -m "candidate
+<id> round <R>"`) and dispatch with `--base soul-wf/<winner's run id>-<try>`. Then steps 3–5 again,
 `--round 2`, then `--round 3`. Still failing after round 3 → stop and hand the owner
 the candidate, the evidence and the open findings. Do not spend a fourth round
 unasked.
