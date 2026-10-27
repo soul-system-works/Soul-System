@@ -101,11 +101,11 @@ record where it is.
   record tracked at the root; a `.soul/` holding `handoff.md` or
   `private-names.txt`, with no record files and nothing tracked; a vault here with
   no record for the project (v3.6.3).
-- On a commit inside a vault, the secret guard neither flags nor scans for names the
-  lists the vault keeps: each project's `soul/private-names.txt`,
-  `machine/soul-private-names.txt` (the machine-wide list) and
-  `projects/<key>/registry/NAME-MAP.md` (the owner's call, v3.6.3). Every other
-  vault file is still scanned, and the pre-push scan is unchanged.
+- Inside a vault, the secret guard neither flags on commit nor scans for names, on
+  commit or on push, the lists the vault keeps: each project's
+  `soul/private-names.txt`, `machine/soul-private-names.txt` (the machine-wide list)
+  and `projects/<key>/registry/NAME-MAP.md` (the owner's call, v3.6.3). Commit
+  messages and every other vault file are still scanned.
 
 ## Known hazard, kept and reported
 

@@ -460,6 +460,13 @@ VAULT_LISTS = re.compile(r"^(?:projects/[^/]+/soul/private-names\.txt"
                          r"|projects/[^/]+/registry/NAME-MAP\.md)$")
 
 
+def _kept_list(vault, path):
+    """A name list this vault keeps: on commit and on push it is neither flagged nor
+    scanned for the names it holds (the owner's call, v3.6.3) — a list is made of
+    names, so every commit and push of one warned. Every other vault file is scanned."""
+    return vault and bool(VAULT_LISTS.match(path or ""))
+
+
 def _name_list_file(path):
     base = os.path.basename(path)
     return base.endswith("private-names.txt") or base == "NAME-MAP.md"
@@ -762,20 +769,16 @@ def check_pre_commit(rep, root, names):
     # ~/.claude/soul-private-names.txt links to) and Soul-System's private registry
     # kept in its vault folder (SOUL-225). Lists anywhere else in it are still flagged.
     vault = is_soul_vault(root)
-    rep.files = [p for p in paths if _name_list_file(p) and not (
-        vault and VAULT_LISTS.match(p))]
+    rep.files = [p for p in paths if _name_list_file(p) and not _kept_list(vault, p)]
     if not names or not is_public(root, _remote_url(root, _default_remote(root)), rep):
         return
-    # Nor are those lists scanned for the names they hold (the owner's call, v3.6.3): a
-    # list is made of names, so every commit of one warned. Every other vault file is.
-    kept = lambda p: vault and bool(VAULT_LISTS.match(p or ""))
     for p in paths:
-        if not kept(p):
+        if not _kept_list(vault, p):
             rep.add_name_hits(names, p, f"file {p}")
     diff = _git_out(root, "diff", "--cached", "--no-ext-diff", "--no-color", "-U0",
                     "--diff-filter=d") or ""
     for path, text in _added_lines(diff):
-        if not kept(path):
+        if not _kept_list(vault, path):
             rep.add_name_hits(names, text, f"file {path}")
     rep.add_name_hits(names, "\n".join(_identity_emails(root)), "author/committer email")
 
@@ -1017,18 +1020,19 @@ def check_pre_push(rep, root, argv, stdin_text, names):
     files = _git_out(root, "log", "--name-only", "-z", "--diff-filter=d", "--format=%x1e%H",
                      *rargs, "--") or ""
     short = "?"
+    vault = is_soul_vault(root)
     for chunk in files.split("\0"):
         for ln in chunk.split("\n"):
             if ln.startswith("\x1e"):
                 short = ln[1:8]
-            elif ln.strip():
+            elif ln.strip() and not _kept_list(vault, ln):
                 rep.add_name_hits(names, ln, f"commit {short} file {ln}")
     diff = _git_out(root, "log", "-p", "--no-ext-diff", "--no-color", "-U0", "--diff-filter=d",
                     "--format=%x1e%H", *rargs, "--") or ""
     for path, text in _added_lines(diff):
         if path is None:
             short = text[:7]
-        else:
+        elif not _kept_list(vault, path):
             rep.add_name_hits(names, text, f"commit {short} file {path}")
 
 

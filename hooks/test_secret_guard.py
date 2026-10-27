@@ -788,6 +788,35 @@ def main():
         check(rc == 0 and f'"{NAME}"' in out and all(p in out for p in kept),
               f"MISS: outside a vault, a configured name in those files did not warn: {out[-400:]!r}")
 
+        # 23e. The same on push (the owner's call, v3.6.3): a vault push whose commit changes
+        # only its kept lists is silent; one touching another vault file warns; outside a
+        # vault it warns. What is already on the remote is pushed first, without the hooks.
+        for repo_, bare_ in ((rv, os.path.join(tmp, "remote-rv.git")),
+                             (rnv, os.path.join(tmp, "remote-rnv.git"))):
+            subprocess.run(["git", "init", "-q", "--bare", bare_], check=True)
+            plain_git(repo_, "config", "remote.origin.pushurl", bare_)
+            plain_git(repo_, "push", "-q", "origin", "main")
+        for rel in lists:
+            write(rv, rel, f"{NAME} => CLIENT-Z\n")
+        plain_git(rv, "add", "-A")
+        plain_git(rv, "commit", "-qm", "lists again")
+        rc, out, _ = sh(E, rv, f"export SOUL_GUARD_CWD='{r1}'\ngit push origin main")
+        check(rc == 0 and f'"{NAME}"' not in out,
+              f"NOISE: a vault push of only its kept name lists warned: {out[-400:]!r}")
+        write(rv, "projects/p/soul/notes2.md", f"met {NAME} again\n")
+        plain_git(rv, "add", "-A")
+        plain_git(rv, "commit", "-qm", "notes again")
+        rc, out, _ = sh(E, rv, f"export SOUL_GUARD_CWD='{r1}'\ngit push origin main")
+        check(rc == 0 and f'"{NAME}"' in out and "projects/p/soul/notes2.md" in out,
+              f"VAULT: a vault push with the name in another file did not warn: {out[-400:]!r}")
+        for rel in kept:
+            write(rnv, rel, f"{NAME} => CLIENT-Z\n")
+        plain_git(rnv, "add", "-A")
+        plain_git(rnv, "commit", "-qm", "lists again")
+        rc, out, _ = sh(E, rnv, "git push origin main")
+        check(rc == 0 and f'"{NAME}"' in out and all(p in out for p in kept),
+              f"MISS: outside a vault, a push of those files with the name did not warn: {out[-400:]!r}")
+
         # 24. --own-hooks-dir resolves a relative core.hooksPath against the worktree top (M2).
         os.makedirs(os.path.join(r8, "a", "b"))
         rc, own, _ = sh(E, os.path.join(r8, "a", "b"), f"python3 '{HOOK}' --own-hooks-dir")
