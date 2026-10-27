@@ -745,6 +745,27 @@ def main():
         check(rc != 0 and "BLOCKED" in out, f"VAULT: a credential committed to a Soul vault was not blocked: {out[-200:]!r}")
         plain_git(rv, "reset", "-q", "--hard")
 
+        # 23c. A vault also keeps the machine-wide list (machine/, symlinked from ~/.claude)
+        # and a project's private registry/NAME-MAP.md (Soul-System's, SOUL-225): not
+        # flagged there. The same names anywhere else in a vault, or outside one, still are.
+        kept = ("machine/soul-private-names.txt", "projects/p/registry/NAME-MAP.md")
+        stray = ("machine/old/soul-private-names.txt", "projects/p/notes/NAME-MAP.md")
+        for rel in kept + stray:
+            write(rv, rel, "Somebody\n")
+        plain_git(rv, "add", "-A")
+        rc, out, _ = sh(E, rv, f"export SOUL_GUARD_CWD='{r1}'\ngit commit -qm lists")
+        check(rc == 0 and "private-name list is staged" in out and all(p in out for p in stray),
+              f"VAULT: a name list at another path in a vault was not flagged: {out[-400:]!r}")
+        check(not any(p in out for p in kept),
+              f"VAULT: the machine list or a project's registry/NAME-MAP.md was flagged in a vault: {out[-400:]!r}")
+        rnv = make_repo(tmp, "rnv")  # a Soul project, not a vault
+        for rel in kept:
+            write(rnv, rel, "Somebody\n")
+        plain_git(rnv, "add", "-A")
+        rc, out, _ = sh(E, rnv, "export SOUL_GUARD_SESSION=s-priv\ngit commit -qm lists", vis="PRIVATE")
+        check(rc == 0 and "private-name list is staged" in out and all(p in out for p in kept),
+              f"MISS: outside a vault, the machine list or a registry/NAME-MAP.md did not warn: {out[-400:]!r}")
+
         # 24. --own-hooks-dir resolves a relative core.hooksPath against the worktree top (M2).
         os.makedirs(os.path.join(r8, "a", "b"))
         rc, own, _ = sh(E, os.path.join(r8, "a", "b"), f"python3 '{HOOK}' --own-hooks-dir")
@@ -1125,7 +1146,9 @@ def main():
             def install_hand(root):
                 for hk in ("pre-commit", "commit-msg", "pre-push"):
                     p = os.path.join(r20, ".git", "hooks", hk)
-                    write(os.path.dirname(p), hk, body.replace("<derived-root>", root).replace("<hook>", hk))
+                    # The skill names the plugin root `<root>` since v3.6.0 (`<derived-root>` before).
+                    write(os.path.dirname(p), hk, body.replace("<root>", root)
+                          .replace("<derived-root>", root).replace("<hook>", hk))
                     os.chmod(p, 0o755)
 
             install_hand(os.path.dirname(_HERE))

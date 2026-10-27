@@ -454,6 +454,12 @@ def load_names(root, notes):
     return Names(entries, allows), Redactor(nmap_entries)
 
 
+# The name lists a Soul vault keeps on purpose (check_pre_commit).
+VAULT_LISTS = re.compile(r"^(?:projects/[^/]+/soul/private-names\.txt"
+                         r"|machine/soul-private-names\.txt"
+                         r"|projects/[^/]+/registry/NAME-MAP\.md)$")
+
+
 def _name_list_file(path):
     base = os.path.basename(path)
     return base.endswith("private-names.txt") or base == "NAME-MAP.md"
@@ -752,10 +758,12 @@ def check_pre_commit(rep, root, names):
     out = _git_out(root, "diff", "--cached", "--name-only", "-z", "--diff-filter=d") or ""
     paths = [p for p in out.split("\0") if p]
     # A vault keeps each project's list on purpose (ADR 0001): it arms the guard on
-    # the next machine. Lists anywhere else in it are still flagged.
+    # the next machine. So too the machine-wide list (machine/, which
+    # ~/.claude/soul-private-names.txt links to) and Soul-System's private registry
+    # kept in its vault folder (SOUL-225). Lists anywhere else in it are still flagged.
     vault = is_soul_vault(root)
     rep.files = [p for p in paths if _name_list_file(p) and not (
-        vault and re.match(r"^projects/[^/]+/soul/private-names\.txt$", p))]
+        vault and VAULT_LISTS.match(p))]
     if not names or not is_public(root, _remote_url(root, _default_remote(root)), rep):
         return
     for p in paths:
