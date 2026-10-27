@@ -9337,5 +9337,6 @@ CONSEQUENCE:  v3.6.2. Until the installed plugin is updated past 3.6.1, its
               session-start check reads this repo as TWO COPIES. Follow-ups in
               the 3.6.2 row's known limits. The derived Obsidian view
               (.soul/vault/) now sits inside the Obsidian vault.
-STATUS:       Closed
+STATUS:       Closed. After the Body restarted on 3.6.2 (2026-10-27), the
+              SessionStart line read the sidecar correctly — no TWO COPIES.
 ```
