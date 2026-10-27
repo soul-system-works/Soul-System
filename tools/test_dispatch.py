@@ -435,6 +435,23 @@ def main():
           r.returncode == 2 and "socat" in r.stderr and not w.calls()
           and not os.path.exists(w.wt("sb2", 1)), (r.returncode, r.stderr))
 
+    # 7c2 — dispatch's own git never trusts the worktree's .git: a worker that swaps it
+    # for a repo of its own with a core.fsmonitor hook must not get that hook run by
+    # dispatch, unconfined, on the host (the 2026-10-27 review)
+    w.roles("| implementer | claude | sonnet | |")
+    pwned = os.path.join(tmp, "PWNED")
+    w.script({"write": {"app.txt": "FIXED\n"},
+              "sh": "rm .git && git init -q . && git config core.fsmonitor "
+                    "'touch {}; false'".format(pwned)})
+    r, res = w.run("g1")
+    t = ((res or {}).get("tries") or [{}])[0]
+    patch = read(t["patch"]) if t.get("patch") and os.path.exists(t["patch"]) else ""
+    check("a worker's own .git hook never runs in dispatch's git calls",
+          not os.path.exists(pwned), "sentinel written by the worker's fsmonitor hook")
+    check("the patch is still taken against the real base through the project's git",
+          "+FIXED" in patch and t.get("changed_lines") == 2 and res.get("winner") == 1,
+          (t, patch[:300]))
+
     # 7d — no bubblewrap: one try skips the selection check (the host's confined
     # re-run is the gate); best-of-n, which needs the check, is refused at start
     nobw = [d for d in (w.bin, gitonly) if os.path.exists(os.path.join(d, "bwrap"))]

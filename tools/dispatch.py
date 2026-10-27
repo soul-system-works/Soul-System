@@ -537,21 +537,48 @@ def emit_result(path, result):
 
 # ---------------------------------------------------------------- run
 
-def stage_and_diff(worktree, base, patch_path):
+def worktree_git(project, worktree):
+    """git options that reach `worktree` through the project's own records of it,
+    never through the worktree's `.git` file, which the worker can rewrite: a worker
+    that swapped it for a repo of its own with a core.fsmonitor hook had that hook
+    run by dispatch's `git add`, unconfined, on the host (the 2026-10-27 review of
+    v3.7.0). Taken before the worker starts; the admin folder must point back here."""
+    common = git(project, "rev-parse", "--git-common-dir").stdout.strip()
+    admins = os.path.join(os.path.realpath(os.path.join(project, common)), "worktrees")
+    want = os.path.realpath(os.path.join(worktree, ".git"))
+    # Usually worktrees/<basename>; git adds a number when that name is taken.
+    names = [os.path.basename(worktree)] + sorted(
+        os.listdir(admins) if os.path.isdir(admins) else [])
+    for name in names:
+        try:
+            with open(os.path.join(admins, name, "gitdir"), encoding="utf-8") as fh:
+                points = fh.read().strip()
+        except OSError:
+            continue
+        if os.path.realpath(points) == want:
+            return ["--git-dir=" + os.path.join(admins, name), "--work-tree=" + worktree,
+                    "-c", "core.fsmonitor=false", "-c", "core.hooksPath=/dev/null"]
+    raise UsageError("cannot find git's record of the worktree {} in {}".format(
+        worktree, admins))
+
+
+def stage_and_diff(worktree, gitargs, base, patch_path):
     """Stage everything the worker left (untracked too; never commit) and write the
-    diff against base. Returns (changed_lines, record_touched)."""
-    git(worktree, "add", "-A")
-    patch = subprocess.run(["git", "diff", "--cached", "--binary", "--no-renames", base],
-                           cwd=worktree, capture_output=True, stdin=subprocess.DEVNULL)
+    diff against base. Returns (changed_lines, record_touched). `gitargs` come
+    from worktree_git."""
+    git(worktree, *gitargs, "add", "-A")
+    patch = subprocess.run(["git", *gitargs, "diff", "--cached", "--binary", "--no-renames",
+                            base], cwd=worktree, capture_output=True,
+                           stdin=subprocess.DEVNULL)
     with open(patch_path, "wb") as fh:
         fh.write(patch.stdout)
     changed = 0
-    for line in git(worktree, "diff", "--cached", "--numstat", "--no-renames",
+    for line in git(worktree, *gitargs, "diff", "--cached", "--numstat", "--no-renames",
                     base).stdout.splitlines():
         added, deleted = line.split("\t")[:2]  # "-" for a binary file: counts 0
         changed += (int(added) if added.isdigit() else 0) + (
             int(deleted) if deleted.isdigit() else 0)
-    names = git(worktree, "diff", "--cached", "--name-only", "-z", "--no-renames",
+    names = git(worktree, *gitargs, "diff", "--cached", "--name-only", "-z", "--no-renames",
                 base).stdout.split("\0")
     touched = any(n in RECORD_FILES or n.startswith(".soul/") for n in names if n)
     return changed, touched
@@ -628,13 +655,14 @@ def cmd_run(args):
         if added.returncode != 0:
             raise UsageError("git worktree add {} failed: {}".format(
                 worktree, added.stderr.strip()))
+        gitargs = worktree_git(project, worktree)
         stem = os.path.join(run_dir, "try-{}".format(i))
         last = stem + ".last.txt"
         code, wall = run_process(worker_command(row, worktree, "run", args.check, last),
                                  worktree, worker_env(row["harness"]), prompt,
                                  stem + ".log", stem + ".stderr", row["timeout"])
         tokens_in, tokens_out, _ = read_output(row["harness"], stem + ".log", last)
-        changed, touched = stage_and_diff(worktree, base, stem + ".patch")
+        changed, touched = stage_and_diff(worktree, gitargs, base, stem + ".patch")
         # A try whose shell ran unconfined or not at all can never win.
         inactive = sandbox_inactive(row, stem + ".stderr")
         check_rc = None
