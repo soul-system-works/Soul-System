@@ -345,6 +345,19 @@ def main():
     check("clean keeps the run's evidence (result.json, patches)",
           os.path.exists(os.path.join(w.proj, ".ai", "workflow-runs", "r1", "result.json")))
 
+    # 8b — a project that does not ignore .ai/: dispatch keeps the tries out of git
+    exclude = os.path.join(w.proj, ".git", "info", "exclude")
+    check("a project that already ignores .ai/ gets no exclude line",
+          ".ai/" not in (read(exclude) if os.path.exists(exclude) else ""))
+    git(w.proj, "rm", "-q", "--cached", ".gitignore")
+    os.remove(os.path.join(w.proj, ".gitignore"))
+    git(w.proj, "commit", "-qm", "no ignore")
+    w.script({"write": {"app.txt": "FIXED\n"}})
+    w.run("x1")
+    status = git(w.proj, "status", "--porcelain").stdout
+    check("without an ignore rule: .ai/ goes to .git/info/exclude, git status stays clean",
+          ".ai/" in read(exclude) and ".ai" not in status, status)
+
     # 9 — review: every reviewer, read-only, FINDING lines parsed
     w.roles("| reviewer | claude | opus | |", "| reviewer | codex | default | |")
     diff = os.path.join(tmp, "change.diff")

@@ -443,6 +443,22 @@ def run_dir_for(project, run_id):
     return os.path.join(project, ".ai", "workflow-runs", run_id)
 
 
+def ignore_ai(project):
+    """Keep .ai/ out of git here before tries land in it. In a project that does not
+    ignore it, the try worktrees show as untracked and one `git add -A` in the main
+    checkout adds them as embedded repos (the v3.7.0 build's own report). Local only:
+    .git/info/exclude, never the project's tracked .gitignore."""
+    if git(project, "check-ignore", "-q", ".ai/workflow-runs").returncode == 0:
+        return
+    path = git(project, "rev-parse", "--git-path", "info/exclude").stdout.strip()
+    if not path:
+        return
+    path = os.path.join(project, path) if not os.path.isabs(path) else path
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, "a", encoding="utf-8") as f:
+        f.write("\n.ai/\n")
+
+
 def emit_result(path, result):
     with open(path, "w", encoding="utf-8") as fh:
         json.dump(result, fh, indent=2)
@@ -506,6 +522,7 @@ def cmd_run(args):
     prompt = brief.rstrip("\n") + WORKER_RULES.format(
         check=": `{}`".format(args.check) if args.check else " (no check was named: say so)")
 
+    ignore_ai(project)
     tries = []
     for i in range(1, row["n"] + 1):  # one at a time: a GPU holds one model
         name = "{}-{}".format(run_id, i)
