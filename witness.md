@@ -9356,5 +9356,5 @@ TYPE:         witness (process slip, caught by the session)
 CONSEQUENCE:  Run the scan as its own command and read its result before pushing;
               never gate a push on a piped exit code (mind 6d names the same trap
               for fetch probes). Candidate for mind 6(c) at the next distill.
-STATUS:       Closed — unconfirmed — owner to ratify
+STATUS:       Closed — ratified by the Body 2026-10-27
 ```
