@@ -12,9 +12,10 @@ tools/delegation-check.py, because a worker's report is a claim (SOUL-I066).
   roles  [--project DIR] [--json]                    the effective roles table
   run    --role R --brief FILE [--project DIR] [--base REF] [--check CMD]
          [--rung K] [--run-id ID]                    implement, n tries, pick one
-  review --role R --brief FILE --diff FILE [--project DIR] [--run-id ID]
-                                                     every reviewer of R, read-only
-  clean  --run-id ID [--project DIR]                 remove a run's worktrees+branches
+  review --role R --brief FILE --diff FILE [--project DIR] [--workdir DIR]
+         [--run-id ID]                               every reviewer of R, read-only
+  clean  --run-id ID [--family] [--project DIR]      remove a run's worktrees+branches
+                                                     (--family: every <ID>-* run too)
 
 Roles table: `~/.claude/soul-roles.md` (global) and `<project>/.claude/soul-roles.md`,
 a Markdown table `| role | harness | model | settings |` — settings `key=value`
@@ -27,8 +28,9 @@ claude:opus; reviewer claude:opus, plus codex:default when `codex` is on PATH.
 `run` makes each try a worktree `<project>/.ai/worktrees/<run-id>-<i>` on branch
 `soul-wf/<run-id>-<i>` from --base (default HEAD), stages everything the worker left
 (untracked too, never committed), writes the diff against base to
-`<project>/.ai/workflow-runs/<run-id>/try-<i>.patch`, and runs --check there only to
-pick the winner: check passed, then fewest changed lines. Tries run one at a time
+`<project>/.ai/workflow-runs/<run-id>/try-<i>.patch`, and runs --check there, under
+bubblewrap (tools/confine.py), only to pick the winner: exited 0 and changed
+something, then check passed, then fewest changed lines. Tries run one at a time
 (a GPU holds one model). result.json (review.json for `review`) holds what was seen.
 
 POSIX only (Linux, macOS, WSL): a timed-out worker's whole process group is killed.
@@ -306,7 +308,7 @@ def worker_env(harness):
     return confine.clean_env()
 
 
-def worker_command(row, workdir, mode, check=None, last_file=None):
+def worker_command(row, workdir, mode, last_file=None):
     """argv for one worker. mode "run" may edit `workdir`; "review" only reads it."""
     harness, model = row["harness"], row["model"]
     if harness in ("claude", "claude-ollama"):
@@ -680,7 +682,7 @@ def cmd_run(args):
         gitargs = worktree_git(project, worktree)
         stem = os.path.join(run_dir, "try-{}".format(i))
         last = stem + ".last.txt"
-        code, wall = run_process(worker_command(row, worktree, "run", args.check, last),
+        code, wall = run_process(worker_command(row, worktree, "run", last),
                                  worktree, worker_env(row["harness"]), prompt,
                                  stem + ".log", stem + ".stderr", row["timeout"])
         tokens_in, tokens_out, _ = read_output(row["harness"], stem + ".log", last)
@@ -834,8 +836,8 @@ def main():
     p.add_argument("--brief", required=True, help="file holding the brief")
     p.add_argument("--project", help=here)
     p.add_argument("--base", default="HEAD", help="commit the tries start from (default HEAD)")
-    p.add_argument("--check", help="the step's Done-when command: the only Bash the "
-                   "worker may run, and how the winner is picked")
+    p.add_argument("--check", help="the step's Done-when command: named to the worker, "
+                   "and run (confined) on each try to pick the winner")
     p.add_argument("--rung", type=int, help="ladder rung to run (default: the lowest)")
     p.add_argument("--run-id", help="names the worktrees, branches and run folder "
                    "(default: a timestamp)")

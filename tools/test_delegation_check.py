@@ -479,6 +479,14 @@ class DelegationCheck(unittest.TestCase):
         self.assertEqual(self.events(), [])
         self.assertFalse(os.path.exists(os.path.join(self.tmp, "ran")))
 
+    def test_round_help_says_the_first_attempt_is_round_1(self):
+        # /soul-workflow counts the first attempt as round 1 and repairs as 2 and 3;
+        # the help said 0 (the 2026-10-27 review).
+        out = self.run_tool("record", "--help")
+        text = " ".join(out.stdout.split())
+        self.assertIn("1 = the first attempt", text)
+        self.assertNotIn("0 = first attempt", text)
+
     def review(self, *args, env=None):
         return self.run_tool("review", *args, env=env)
 

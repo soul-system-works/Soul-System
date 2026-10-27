@@ -103,9 +103,9 @@ plugins, or a path conflict other than plans.
 done by a command — tests, a build — type `/soul-workflow build-verify`. Another
 model (a smaller Claude, Codex, or a local model through Ollama) does it in its own
 copy of the repo; the AI **re-runs the check itself** and records the result, then
-has the change reviewed by two models from different families, with at most two
-repair rounds before it comes back to you. `/soul-workflow review` runs just the two
-reviews on a diff. Who does what lives in a roles table (`/soul-workflow roles`).
+has the change reviewed — two reviewers by default — a fresh Claude and Codex when it
+is installed — with at most two repair rounds before it comes back to you.
+`/soul-workflow review` runs just the reviews on a diff. Who does what lives in a roles table (`/soul-workflow roles`).
 Skip it for design work or anything you can only judge by reading.
 
 **Moving to another computer.** In each project, run `/soul-init` (it tidies the

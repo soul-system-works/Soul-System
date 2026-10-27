@@ -548,7 +548,8 @@ def main():
     r.add_argument("--workflow", help="the /soul-workflow name (build-verify, review)")
     r.add_argument("--role", help="the roles-table role the worker filled")
     r.add_argument("--rung", type=int, help="the role's ladder rung (1 = first)")
-    r.add_argument("--round", type=int, help="the repair round (0 = first attempt)")
+    r.add_argument("--round", type=int, help="the round (1 = the first attempt, then 2 "
+                   "and 3 for the repair rounds)")
     r.add_argument("--run-id", help="the tools/dispatch.py run id")
     v = sub.add_parser("review", help="record the host's verdict on a reviewer's findings")
     v.add_argument("--run-id", required=True, help="the tools/dispatch.py run id")

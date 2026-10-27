@@ -695,8 +695,61 @@ def main():
           r.returncode == 2 and "socat" in r.stderr and not w.calls(), (r.returncode, r.stderr))
 
     shutil.rmtree(tmp, ignore_errors=True)
+    docs()
     print("\n{} failure(s)".format(len(FAILS)) if FAILS else "\nALL PASS")
     return 1 if FAILS else 0
+
+
+def section(text, start, end):
+    """The text from the line holding `start` up to the next line holding `end`."""
+    i = text.find(start)
+    j = text.find(end, i + len(start)) if i >= 0 else -1
+    return text[i:j if j >= 0 else None] if i >= 0 else ""
+
+
+def docs():
+    """The skill, the user guide and the tool's own help say what the code does
+    (the 2026-10-27 review found each saying something no longer true)."""
+    root = os.path.dirname(os.path.dirname(_TOOL))
+    skill = " ".join(read(os.path.join(root, "skills", "soul-workflow", "SKILL.md")).split())
+    guide = " ".join(read(os.path.join(root, "docs", "using-the-soul.md")).split())
+    tool = read(_TOOL)
+    step4 = section(skill, "### 4 ·", "### 5 ·")
+    step7 = section(skill, "### 7 ·", "### 8 ·")
+    check("skill step 4: the recorder re-runs the check with --confine, patch read first",
+          "--confine" in step4 and step4.find("patch") < step4.find("--confine"), step4[:600])
+    check("skill step 7: the re-run is confined and comes after reading the patch",
+          "--confine" in step7 and "patch" in step7
+          and step7.find("patch") < step7.find("--confine"), step7)
+    check("skill: apply the COMBINED change from the original base, not the last round's",
+          "diff --binary --cached <original base>" in skill
+          and "never only the last round's patch" in skill, section(skill, "### 6 ·", "### 8 ·"))
+    check("skill: run ids -k<rung>-a<attempt>, -r<round>, -rev<round>; clean --family",
+          all(s in skill for s in ("<id>-k<rung>-a<attempt>", "<id>-r<round>",
+                                   "<id>-rev<round>", "clean --run-id <id> --family")), "")
+    review = section(skill, "## review", "## Seeing how roles do")
+    check("skill review workflow: a branch gets a worktree of <head> and --workdir",
+          "<head>" in review and "worktree" in review and "--workdir" in review, review)
+    check("skill: workers load no Soul record or project instructions, can still read",
+          "load no Soul record or project instructions (they can still read files in "
+          "their worktree)" in skill, section(skill, "What happens", "## The roles"))
+    check("skill: the sandbox paragraph names the confined checks and the scoped writes",
+          "--confine" in section(skill, "What happens", "## The roles")
+          and "bubblewrap" in section(skill, "What happens", "## The roles"),
+          section(skill, "What happens", "## The roles"))
+    check("guide: two reviewers by default — a fresh Claude and Codex when installed",
+          "two reviewers by default — a fresh Claude and Codex when it is installed" in guide,
+          section(guide, "Handing work to other models", "Moving to another"))
+    helptext = " ".join(subprocess.run([sys.executable, _TOOL, "run", "--help"],
+                                       capture_output=True, text=True).stdout.split())
+    check("dispatch --check help no longer calls it the only Bash the worker may run",
+          "--check" in helptext and "only Bash" not in helptext
+          and "pick the winner" in helptext, helptext)
+    check("worker_command has no unused check parameter",
+          "def worker_command(row, workdir, mode, last_file=None)" in tool, "")
+    head = tool[:tool.find('"""', tool.find('"""') + 3)]
+    check("module docstring lists review --workdir and clean --family",
+          "--workdir" in section(head, "review ", "clean ") and "--family" in head, head)
 
 
 def test_fence():

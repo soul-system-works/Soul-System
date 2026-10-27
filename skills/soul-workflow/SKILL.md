@@ -27,15 +27,21 @@ What happens, every time:
 1. This session says, in one line, which model does what
    (`implementer → claude:sonnet · reviewers → claude:opus + codex:default`). Say
    "use X for this" to override any of it.
-2. Workers start with nothing but a written brief — no conversation, no Soul
-   record, no project instructions (each runs as its own process with those
-   switched off; SOUL-I080 step 1 probe, 2026-10-27).
+2. Workers start with a written brief and no conversation. They load no Soul record
+   or project instructions (they can still read files in their worktree): each runs
+   as its own process with those switched off (SOUL-I080 step 1 probe, 2026-10-27),
+   and with an allowlisted environment, not this session's.
 3. Workers run inside a sandbox. A Claude worker has a full shell, but the operating
-   system lets it write only in its own worktree, gives it no network, and hides
-   credential folders (`~/.ssh`, `~/.claude`, `~/.codex`, the vault …) from it. On
-   Linux and WSL that needs `bubblewrap` and `socat`; without them the dispatch tool
-   refuses to start a Claude worker rather than run it unconfined. Codex workers use
-   Codex's own `workspace-write` sandbox. Native Windows is not supported.
+   system lets that shell write only in its own worktree, gives it no network, and
+   hides credential folders (`~/.ssh`, `~/.claude`, `~/.codex`, the vault …) from
+   it; its Write and Edit tools are allowed only inside the worktree. On Linux and
+   WSL the sandbox needs `bubblewrap` and `socat`; without them the dispatch tool
+   refuses to start a Claude worker or reviewer, and a sandbox that cannot start
+   fails the run rather than letting it run unconfined. Codex workers use Codex's
+   own `workspace-write` sandbox. The checks that run a worker's code are confined
+   too: the dispatch tool's own check and this session's re-run
+   (`delegation-check.py record --confine`) run under bubblewrap — only the worktree
+   writable, no network, the same folders hidden. Native Windows is not supported.
 4. Nothing is called done on a worker's word. This session re-runs every check
    itself and records what it saw.
 5. You get one report: what changed, which checks ran and passed, what each
@@ -106,23 +112,30 @@ python3 <root>/tools/dispatch.py run --role implementer --brief <brief> \
 
 Run it in the background: workers take minutes (a local model's first call took
 227 s, SOUL-200). Without `--rung` it runs the lowest rung. With `n=` above 1 the
-tries run one after another, each in its own worktree; the winner is a try whose
-check passed, and among those the one that changed the fewest lines. It prints a
+tries run one after another, each in its own worktree; the winner is a try that
+finished cleanly, changed something and passed its check, and among those the one
+that changed the fewest lines (best-of-n needs bubblewrap to run each try's check;
+with one try and no bubblewrap the dispatch tool skips its check and says so). It
+prints a
 result with each try's patch, its check result, and the winner. A try flagged
 `record_touched` changed the Soul record: reject that try; the others stay
 eligible.
 
 ### 4 · Check it here
 
-Read the winner's **patch**, not the worker's report. Then run the check through the
-recorder, in the winner's worktree:
+Read the winner's **patch**, not the worker's report — before any re-run, because
+the check runs the worker's code. Then run the check through the recorder, confined,
+in the winner's worktree:
 
 ```
 python3 <root>/tools/delegation-check.py record --step "<step>" \
   --worker implementer:<harness>:<model> --check "<Done-when command>" \
-  --cwd <winner worktree> --workflow build-verify --role implementer \
+  --cwd <winner worktree> --confine --workflow build-verify --role implementer \
   --rung <K> --round <R> --run-id <id>
 ```
+
+`--confine` refuses (exit 2, nothing recorded) where there is no bubblewrap; then
+whether to run the worker's code here unconfined is the owner's call.
 
 - **Pass** → step 5.
 - **Fail, or no winner** → each rung gets two attempts: the first dispatch and one
@@ -130,9 +143,11 @@ python3 <root>/tools/delegation-check.py record --step "<step>" \
   (`--rung K+1`), again two attempts. The top rung's second failure → bring it to
   the owner with the evidence (or, if the owner says so, do it here).
 
-Every dispatch takes its own run id — `<id>-k<rung>-a<attempt>` for the first round,
-`<id>-r<round>` for a repair round: a run id that already holds a result is refused,
-so evidence is never overwritten.
+Every dispatch takes its own run id, all from one `<id>`: `<id>-k<rung>-a<attempt>`
+for the first round's dispatches, `<id>-r<round>` for a repair round's,
+`<id>-rev<round>` for each round's review. A run id that already holds a result is
+refused, so evidence is never overwritten; one `clean --family` removes them all
+(step 7).
 
 ### 5 · Two reviews
 
@@ -140,7 +155,7 @@ Write the winner's patch with the brief to the reviewers:
 
 ```
 python3 <root>/tools/dispatch.py review --role reviewer --brief <brief> \
-  --diff <patch> --workdir <winner worktree> --run-id <id>
+  --diff <patch> --workdir <winner worktree> --run-id <id>-rev<round>
 ```
 
 `--workdir` makes the reviewers read the candidate's files; without it they read this
@@ -153,7 +168,7 @@ the evidence for that is one planted-error study, so it stays an experiment the
 records decide. Record each reviewer's tally:
 
 ```
-python3 <root>/tools/delegation-check.py review --run-id <id> \
+python3 <root>/tools/delegation-check.py review --run-id <id>-rev<round> \
   --reviewer <harness>:<model> --raised <N> --accepted <M>
 ```
 
@@ -171,8 +186,19 @@ unasked.
 
 ### 7 · Accept and clean up
 
-Apply the winner's patch to the branch you are working on (`git apply <patch>`),
-run the checks here again, then `python3 <root>/tools/dispatch.py clean --run-id <id>`.
+Apply the COMBINED change from the original base — never only the last round's
+patch: after a repair, the last patch is against the committed candidate, not
+against your branch. From the final round's winning worktree:
+
+```
+git -C <final worktree> add -A && \
+  git -C <final worktree> diff --binary --cached <original base> > <file>
+```
+
+Read that patch, then `git apply <file>` on the branch you are working on. Only
+after reading it, re-run the checks here through the recorder with `--confine`
+(as in step 4, `--cwd` this checkout). Then remove every worktree and branch the
+run made: `python3 <root>/tools/dispatch.py clean --run-id <id> --family`.
 
 ### 8 · Report
 
@@ -185,10 +211,13 @@ offer a witness entry.
 ## review
 
 1. Make the diff file: your working changes (`git diff HEAD` plus untracked files)
-   or a branch (`git diff <base>...<head>`). Write a short brief: what the change is
-   for, what it must not break.
-2. `dispatch.py review` as in build-verify step 5; weigh each finding; record the
-   tallies.
+   or a branch (`git diff <base>...<head>`). For a branch, also make a worktree of
+   `<head>` (`git worktree add --detach .ai/worktrees/<id>-head <head>`) and pass it
+   as `--workdir`, so the reviewers read the branch's files, not this checkout's.
+   Write a short brief: what the change is for, what it must not break.
+2. `dispatch.py review` as in build-verify step 5 (`--run-id <id>-rev1`); weigh each
+   finding; record the tallies. `dispatch.py clean --run-id <id> --family` removes
+   the `<id>-head` worktree afterwards.
 3. Report the findings you accept, those you reject and why. Review makes no edits;
    fixing is a separate step the owner chooses.
 
