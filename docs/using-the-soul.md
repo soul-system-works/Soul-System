@@ -99,12 +99,13 @@ to `docs/superpowers/plans/` every time; with Soul added, every plan went to `.a
 and named the override (witness SOUL-211). Not yet run: other models, other
 plugins, or a path conflict other than plans.
 
-**Handing work to other models (optional).** When a plan has routine steps that a
-command can check — tests, a build — type `/soul-delegate`. Each step then carries
-`Tier:` (who does it) and `Done when:` (the command that proves it). The AI can hand
-routine steps to a local model, Codex or a smaller Claude, and it **runs every check
-itself** and records the result, so a step is never marked done on the other model's
-word. `/soul-delegate off` stops it; `/soul-delegate tiers` changes who does what.
+**Handing work to other models (optional).** When a piece of work can be proven
+done by a command — tests, a build — type `/soul-workflow build-verify`. Another
+model (a smaller Claude, Codex, or a local model through Ollama) does it in its own
+copy of the repo; the AI **re-runs the check itself** and records the result, then
+has the change reviewed by two models from different families, with at most two
+repair rounds before it comes back to you. `/soul-workflow review` runs just the two
+reviews on a diff. Who does what lives in a roles table (`/soul-workflow roles`).
 Skip it for design work or anything you can only judge by reading.
 
 **Moving to another computer.** In each project, run `/soul-init` (it tidies the

@@ -390,7 +390,7 @@ def _scan(transcript_path: str):
             # a subagent) never appear here as an edit tool, so such a turn can
             # claim done ungated. Counting Bash/Agent calls would mark nearly
             # every turn shipped, so the gate would fire on most completion
-            # claims (the over-firing class F063 recorded); /soul-delegate re-runs
+            # claims (the over-firing class F063 recorded); /soul-workflow re-runs
             # each worker's check in the main session instead. Claude Code only:
             # the Codex adapter (hooks/codex.py) sees Git-visible Bash edits.
             # Fence: test_turn.py.

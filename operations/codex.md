@@ -128,8 +128,8 @@ shared rule that an inherited pointer is a claim to verify.
   unavailable and leave a brief for a fresh session; do not imitate isolation by
   rewriting in the current conversation. A fork with inherited history fails this
   requirement.
-- **soul-delegate:** dispatch a Claude-tier step with the skill's `claude -p` line;
-  it needs network access, so expect to approve a sandbox escalation (unverified).
+- **soul-workflow:** `tools/dispatch.py` starts each worker as its own process (`claude -p`,
+  `codex exec`); a `claude` row needs network access, so expect to approve a sandbox escalation (unverified).
   A Codex session started outside Claude Code has no `CLAUDE_CODE_SESSION_ID` (one
   started from a Claude shell inherits it), so its records carry no session id —
   view them with `delegation-check.py list` without `--session`. The verdict event's

@@ -39,8 +39,8 @@ wants the lay of the land). Not a deep philosophy dump — point to depth, don't
    rivals, the strongest objection, a short cited scan, a held lean), `soul-next`
    (what to do next), `soul-distill`
    (refresh the Mind), `soul-prompt` (rewrite a rough prompt into a project-informed
-   one), opt-in `soul-delegate` (hand plan steps to other models; the main
-   session re-runs each check and records it), and `soul-migrate` (move a project
+   one), `soul-workflow` (other models build or review; this session re-runs
+   each check, weighs the reviews and records the result), and `soul-migrate` (move a project
    to another computer — what git does not carry, in one zip).
 
 4. **Where the record lives:** `witness.md` (observations, append-only) · `findings/`
