@@ -304,8 +304,13 @@ def worker_command(row, workdir, mode, check=None, last_file=None):
             # the first design; the v3.6.3 replay (2026-10-27) showed it too tight — the
             # worker could not run one test file to see it fail, nor `git status`, and
             # stopped with five denials. The Body chose the sandbox over an unsandboxed
-            # shell or an allow list (SOUL-I080).
-            tools, permission = "Read,Write,Edit,Glob,Grep,Bash", "acceptEdits"
+            # shell or an allow list (SOUL-I080). The sandbox confines Bash only: a
+            # probe on 2026-10-27 (haiku, these flags) with bare `Write,Edit` wrote
+            # ../x, an absolute path outside and Edited a file one level up — all
+            # landed. Scoped to `Write(./**),Edit(./**)` (relative to the worktree,
+            # the worker's cwd), the same probe was denied all three and still wrote
+            # inside the worktree.
+            tools, permission = "Read,Write(./**),Edit(./**),Glob,Grep,Bash", "acceptEdits"
         else:
             tools, permission = "Read,Glob,Grep", "plan"
         cmd = ["claude", "-p", "--output-format", "json", "--permission-mode", permission,

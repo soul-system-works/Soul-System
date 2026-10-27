@@ -236,8 +236,9 @@ def main():
           "-p" in argv and after(argv, "--output-format") == "json"
           and after(argv, "--permission-mode") == "acceptEdits"
           and after(argv, "--model") == "sonnet", argv)
-    check("claude: full Bash for the implementer (the sandbox is the boundary)",
-          after(argv, "--allowedTools") == "Read,Write,Edit,Glob,Grep,Bash", argv)
+    check("claude: full Bash for the implementer (the sandbox is the boundary); "
+          "Write and Edit only inside the worktree",
+          after(argv, "--allowedTools") == "Read,Write(./**),Edit(./**),Glob,Grep,Bash", argv)
     sset = json.loads(after(argv, "--settings") or "{}")
     check("claude: sandbox on, fails closed, auto-allow inside it, no unsandboxed escape",
           sset.get("sandbox") == {"enabled": True, "failIfUnavailable": True,
