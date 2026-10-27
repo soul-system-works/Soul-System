@@ -2724,7 +2724,56 @@ GOAL:      (2026-10-27, the Body) "a workflow that uses my local gpu effectively
            local model can do to the local GPU, and save subscription usage for
            the work that needs it. The Body first wants a stable point
            (v3.6.3: the 3.6.2 known limits) before diving into this.
-STATUS:    Raw — Body-captured.
+DISCUSSED: (2026-10-27) /soul-discuss round, then a grilling session (23
+           decisions). Sources read: the guide's 8 chapters; the Body's
+           downloaded session "Frontier Models for Code Development … SWE-Skills-
+           Bench" (general evidence: procedures must earn their place by
+           measurement); two background web scans (cross-model review, routing
+           cascades, local models, headless harness CLIs — evidence on all of it
+           thin; no measured result for cross-family review or cascades on
+           repo-level agentic work). Found in place: Codex CLI logged in, OpenAI's
+           Codex plugin for Claude Code (/codex:review, adversarial-review,
+           rescue); /soul-delegate built but never used ("I don't understand it,
+           how to use it, when to use it" — the Body). The Body's aims, in their
+           words: "a more automated solution 'best practices' where when in
+           question task can fall back to the best model available"; cost AND
+           quality; replace the manual copy-paste between Claude and Codex
+           sessions; "soul-system creates a thin layer itself and a thin layer
+           with the best external tools rather than doing it all ourself";
+           "most important [is] the machinations that enable further use and
+           experimentation and improving over time (or sunsetting)"; a local
+           model "is only unique in that it is local" — judging what a model can
+           do is the user's call, not this effort's.
+DECIDED:   (2026-10-27, the Body) Entry `/soul-workflow <name>`; v1 workflows
+           `build-verify` and `review`. The host is whatever harness+model the
+           Body started in (Claude Code now; any Soul-supported host); other
+           harnesses are workers in v1. A roles table (global + per-project
+           override, 2+ roles, each harness + model + settings such as best-of-n,
+           default n=1) replaces /soul-delegate's tiers; /soul-delegate is retired
+           in the same release, its Done-when lines and recorder carried over.
+           One dispatch tool, a thin adapter per harness (Claude Code — also over
+           Ollama, each role its own process with a clean environment — and
+           Codex), run through each harness's headless CLI so the subscriptions
+           are used; no LangGraph, Deep Agents, MCP or router in v1. Rules pick
+           the model per step and say so in one line; the Body may override.
+           Ladder: an ordered list of roles, default claude:sonnet →
+           claude:opus; failing a check twice moves up one rung; a step with no
+           runnable check, or one the rules cannot place, goes to the top rung.
+           Loop: implementer in its own git worktree → host re-runs the check →
+           two read-only reviewers (fresh Claude + Codex; experimental — the
+           evidence is one planted-error study) → at most 2 repair rounds → back
+           to the Body. Workers run without Soul (instruction imports and hooks
+           off); the brief carries the rules (never write the record, run the
+           check, report what was not run). Every dispatch is recorded (role,
+           model, check result, rounds, time, whose findings were accepted) — the
+           data for improving or retiring parts. In this repo, v3.7.0, own branch.
+           First live job: replay the v3.6.3 brief from 27bdd5c, scored against
+           the 2ecc420 tests with a blind judge on disagreements — a test of the
+           tool, not of models; ask the Body before pulling a larger local model.
+           Parked: I080-B, the guide's external runtime (unattended runs, job
+           ids, recovery) — only if unattended runs are wanted. Model and
+           workflow benchmarking → SOUL-I083.
+STATUS:    Maturing — decided; v1 plan next (2026-10-27).
 ```
 
 ```
@@ -2795,4 +2844,25 @@ DISCUSSED: (2026-10-26) Options: do nothing · stored answers · doctor-style
            wording; tools/init-status.py works out the state. Deeper research:
            not worth it. The Body took the five proposed calls (2026-10-26).
 STATUS:    Built — v3.6.0 (2026-10-26; live trials SOUL-221).
+```
+
+```
+ID:        SOUL-I083
+WHEN:      2026-10-27
+RAW:       Benchmarks for workflow and model choice belong in soul-benchmark, not
+           in /soul-workflow: "benchmarks could be added to soul-benchmark perhaps
+           when someone wanted to test their workflow and model selection ... if
+           there are benchmarks out there we may want to adopt those instead of
+           developing a benchmark ourselves ... also open to evolution of the
+           benchmark as it is soul-system focused and we may need ways to test
+           value purpose of the other skills/agents/hooks/etc that we have" (the
+           Body, during the I080 grilling).
+SHAPE:     Raw — Body-captured. Near: SOUL-I080 (the roles table and the
+           per-dispatch records are what a benchmark would vary and read);
+           the SWE-Skills-Bench method in the Body's downloaded session (same
+           task, with and without a component); existing agentic benchmarks named
+           in the I080 scans (SWE-bench Verified/Pro, Terminal-Bench); mind item 8
+           (what Soul measurably does) and item 10 (score every arm to one
+           standard).
+STATUS:    Raw — Body-captured.
 ```
