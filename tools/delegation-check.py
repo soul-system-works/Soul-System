@@ -14,7 +14,7 @@ event keeps. The gate's verdict event then summarises these records per session.
   record --step S --worker TIER:TOOL[:MODEL] --check CMD   run CMD, record the result
          [--reviewer TOOL[:MODEL]] [--review-verdict pass|fail]
          [--workflow W] [--role R] [--rung K] [--round N] [--run-id ID]
-         [--cwd DIR] [--project DIR] [--timeout SECS]
+         [--cwd DIR] [--project DIR] [--timeout SECS] [--confine]
   review --run-id ID --reviewer TOOL[:MODEL] --raised N --accepted M [--project DIR]
                                                            the host's verdict on a review
   list [--project DIR] [--session ID] [--json]             show recorded checks
@@ -192,8 +192,21 @@ def _unblock_in_child():
     signal.pthread_sigmask(signal.SIG_UNBLOCK, SIGNALS)
 
 
-def run_check(command, cwd, timeout):
+def _confine():
+    """tools/confine.py, loaded by path (this file is itself loaded by path)."""
+    import importlib.util
+    spec = importlib.util.spec_from_file_location(
+        "confine", os.path.join(os.path.dirname(os.path.abspath(__file__)), "confine.py"))
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
+def run_check(command, cwd, timeout, confined=None):
     """Run `command` through the shell; return (exit_code | None, timed_out, tail).
+
+    `confined` is (argv, env) from --confine: the same shell under bubblewrap with
+    the allowlisted environment, in place of `shell=True` with this one.
 
     Output goes to a temp file, not a pipe: with a pipe, a background child still
     holding it made a passing shell look like a timeout, and a grandchild that left
@@ -211,7 +224,8 @@ def run_check(command, cwd, timeout):
         try:
             mask = signal.pthread_sigmask(signal.SIG_BLOCK, SIGNALS)
             try:
-                proc = subprocess.Popen(command, shell=True, cwd=cwd,
+                argv, env = confined or (command, None)
+                proc = subprocess.Popen(argv, shell=confined is None, cwd=cwd, env=env,
                                         stdin=subprocess.DEVNULL, stdout=out,
                                         stderr=subprocess.STDOUT, start_new_session=True,
                                         preexec_fn=_unblock_in_child)
@@ -277,6 +291,18 @@ def record(args, ap):
     if not os.path.isdir(cwd):
         ap.error("no directory at --cwd {}".format(args.cwd))
     project = resolve_project(args, ap)
+    confined = None
+    if args.confine:
+        # The check runs code a worker wrote (the 2026-10-27 review of v3.7.0): under
+        # bubblewrap with the allowlisted environment, or not at all — never bare.
+        c = _confine()
+        argv = c.confine_argv(["/bin/sh", "-c", args.check], cwd)
+        if argv is None:
+            print("error: --confine needs bubblewrap (`bwrap`) on Linux — install it "
+                  "(e.g. `sudo apt install bubblewrap`); nothing run, nothing recorded",
+                  file=sys.stderr)
+            return 2
+        confined = (argv, c.clean_env())
 
     # Killing the recorder must not orphan the check: turn the signals into an
     # exception so run_check's finally kills the check's process group first. A
@@ -286,7 +312,7 @@ def record(args, ap):
         for s in SIGNALS:
             if signal.getsignal(s) is not signal.SIG_IGN:
                 previous[s] = signal.signal(s, _on_signal)
-        exit_code, timed_out, tail = run_check(args.check, cwd, args.timeout)
+        exit_code, timed_out, tail = run_check(args.check, cwd, args.timeout, confined)
     except Killed as k:
         print("killed by signal {} — check stopped, nothing recorded".format(k.signum),
               file=sys.stderr)
@@ -510,6 +536,10 @@ def main():
     r.add_argument("--reviewer", help="TOOL[:MODEL] that reviewed the worker's output")
     r.add_argument("--review-verdict", choices=("pass", "fail"))
     r.add_argument("--cwd", default=".", help="where the check runs (only that)")
+    r.add_argument("--confine", action="store_true",
+                   help="run the check under bubblewrap: only --cwd and a private /tmp "
+                   "writable, no network, secret folders hidden, an allowlisted "
+                   "environment; refused (exit 2, nothing recorded) without bwrap")
     r.add_argument("--project", help="where the record goes (default: found by walking "
                    "up from the recorder's own working directory)")
     r.add_argument("--timeout", type=float, default=540,

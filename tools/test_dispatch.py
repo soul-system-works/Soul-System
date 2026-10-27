@@ -5,7 +5,11 @@ starts with the isolation the 2026-10-27 probe verified (no setting sources, str
 MCP, every CLAUDE.md in reach excluded, auto-memory off) and with the host's
 Anthropic routing removed — a host running on a local model must not send the
 worker there by inheritance — while the Ollama route sets it on purpose; a Codex
-worker skips user config, rules and AGENTS.md. Each try works in its own worktree
+worker skips user config, rules and AGENTS.md. Every worker gets the allowlisted
+environment (none of the host's socket, tokens, keys or git config), and the
+selection check that runs a worker's code runs under bubblewrap with that same
+environment — skipped for one try and refused for best-of-n where it cannot be
+confined (2026-10-27 review). Each try works in its own worktree
 on its own branch and is never committed; the patch holds untracked files too;
 best-of-n picks a passing try with the fewest changed lines; a hung worker is
 killed with its whole process group and recorded as "timeout"; a try that touches
@@ -34,8 +38,8 @@ CHECK = "grep -qx FIXED app.txt"
 FAILS = []
 
 STUB = r'''#!{python}
-import json, os, sys, time
-log = os.environ["STUB_LOG"]
+import json, os, subprocess, sys, time
+log = {log!r}  # baked in: a worker gets the allowlisted environment, not the test's
 name = os.path.basename(sys.argv[0])
 args = sys.argv[1:]
 n = len([f for f in os.listdir(log) if f.startswith("call-")])
@@ -44,8 +48,12 @@ work = args[args.index("-C") + 1] if "-C" in args else os.getcwd()
 with open(os.path.join(log, "call-%03d.json" % n), "w") as f:
     json.dump({{"name": name, "argv": args, "env": dict(os.environ), "cwd": os.getcwd(),
                "stdin": stdin}}, f)
-plan = json.load(open(os.environ["STUB_PLAN"]))
+plan = json.load(open({plan!r}))
 act = plan[min(n, len(plan) - 1)]
+for rel, text in act.get("early", {{}}).items():  # written before any sleep
+    open(os.path.join(work, rel), "w").write(text)
+if act.get("sh"):
+    subprocess.run(act["sh"], shell=True, cwd=work)
 time.sleep(act.get("sleep", 0))
 for rel, text in act.get("write", {{}}).items():
     p = os.path.join(work, rel)
@@ -63,6 +71,40 @@ else:
         "input_tokens": 50, "cached_input_tokens": 10, "output_tokens": 3}}}}))
 sys.exit(act.get("exit", 0))
 '''
+
+# A stand-in for bubblewrap: records its argv and environment, then runs the command
+# after its options in the --chdir folder. It confines nothing; the real confinement
+# is tools/test_confine.py's real case.
+FAKE_BWRAP = r'''#!{python}
+import json, os, sys
+ARITY = {{"--ro-bind": 2, "--bind": 2, "--dev": 1, "--proc": 1, "--tmpfs": 1,
+         "--chdir": 1, "--unshare-net": 0, "--die-with-parent": 0, "--new-session": 0}}
+args = sys.argv[1:]
+log = {log!r}
+n = len(os.listdir(log))
+with open(os.path.join(log, "bwrap-%03d.json" % n), "w") as f:
+    json.dump({{"argv": args, "env": dict(os.environ)}}, f)
+i, chdir = 0, None
+while i < len(args) and args[i] in ARITY:
+    if args[i] == "--chdir":
+        chdir = args[i + 1]
+    i += 1 + ARITY[args[i]]
+if chdir:
+    os.chdir(chdir)
+os.execvp(args[i], args[i:])
+'''
+ALLOWED = {"PATH", "HOME", "USER", "LOGNAME", "LANG", "TERM", "TMPDIR", "SHELL", "OLLAMA_HOST"}
+HOST_POWERS = dict(CLAUDE_CODE_MESSAGING_SOCKET="/run/sock", CLAUDE_CODE_MESSAGING_TOKEN="tok",
+                   CLAUDE_CODE_SESSION_ID="sid", GH_TOKEN="ghp_x", OPENAI_API_KEY="sk-o",
+                   GIT_CONFIG_COUNT="1", GIT_CONFIG_KEY_0="core.pager", GIT_CONFIG_VALUE_0="x",
+                   SOUL_GUARD_CWD="/", CODEX_COMPANION_SESSION_ID="c",
+                   ANTHROPIC_MODEL="opus", CLAUDE_CODE_USE_BEDROCK="1", LC_ALL="C")
+
+
+def allowlisted(env, *extra):
+    """The variable names in `env` outside the allowlist (LC_* allowed) and `extra`."""
+    return sorted(k for k in env if k not in ALLOWED and not k.startswith("LC_")
+                  and k not in extra)
 
 
 def check(name, ok, detail=""):
@@ -98,13 +140,19 @@ class World:
         self.log = os.path.join(tmp, "stub-log")
         self.plan = os.path.join(tmp, "stub-plan.json")
         self.brief = os.path.join(tmp, "brief.md")
+        self.wrap = os.path.join(tmp, "wrap-bin")
+        self.wraplog = os.path.join(tmp, "wrap-log")
         os.makedirs(self.home)
         os.makedirs(self.bin)
         os.makedirs(self.log)
-        stub = STUB.format(python=sys.executable)
+        os.makedirs(self.wraplog)
+        stub = STUB.format(python=sys.executable, log=self.log, plan=self.plan)
         for name in ("claude", "codex"):
             write(os.path.join(self.bin, name), stub)
             os.chmod(os.path.join(self.bin, name), 0o755)
+        write(os.path.join(self.wrap, "bwrap"),
+              FAKE_BWRAP.format(python=sys.executable, log=self.wraplog))
+        os.chmod(os.path.join(self.wrap, "bwrap"), 0o755)
         write(os.path.join(tmp, "CLAUDE.md"), "an ancestor's file\n")  # above the project
         for rel, text in {"app.txt": "BUG\n", "CLAUDE.md": "project contract\n",
                           "sub/CLAUDE.md": "nested\n", "witness.md": "# record\n",
@@ -122,9 +170,14 @@ class World:
               + "".join(r + "\n" for r in rows))
 
     def script(self, *acts):
-        shutil.rmtree(self.log)
-        os.makedirs(self.log)
+        for d in (self.log, self.wraplog):
+            shutil.rmtree(d)
+            os.makedirs(d)
         write(self.plan, json.dumps(list(acts)))
+
+    def wraps(self):
+        return [json.loads(read(os.path.join(self.wraplog, f)))
+                for f in sorted(os.listdir(self.wraplog))]
 
     def calls(self):
         out = []
@@ -134,8 +187,8 @@ class World:
 
     def env(self, **extra):
         env = {k: v for k, v in _GIT_ENV.items() if not k.startswith("ANTHROPIC_")}
-        env.update(HOME=self.home, PATH=os.pathsep.join([self.bin, "/usr/bin", "/bin"]),
-                   STUB_LOG=self.log, STUB_PLAN=self.plan,
+        env.update(HOME=self.home,
+                   PATH=os.pathsep.join([self.bin, self.wrap, "/usr/bin", "/bin"]),
                    SOUL_EVENT_LOG=os.path.join(self.tmp, "events.jsonl"))
         env.update(extra)
         return env
@@ -169,7 +222,7 @@ def main():
     w.script({"write": {"app.txt": "FIXED\n", "notes/new.txt": "untracked line\n"},
               "say": "changed app.txt; check passed"})
     host_env = w.env(ANTHROPIC_BASE_URL="http://localhost:11434",
-                     ANTHROPIC_AUTH_TOKEN="ollama", ANTHROPIC_API_KEY="sk-host")
+                     ANTHROPIC_AUTH_TOKEN="ollama", ANTHROPIC_API_KEY="sk-host", **HOST_POWERS)
     r, res = w.run("a1", env=host_env)
     calls = w.calls()
     check("run exits 0 with a winner and writes result.json",
@@ -210,6 +263,20 @@ def main():
           "ANTHROPIC_BASE_URL" not in env and "ANTHROPIC_AUTH_TOKEN" not in env
           and env.get("ANTHROPIC_API_KEY") == "",
           {k: v for k, v in env.items() if k.startswith("ANTHROPIC")})
+    check("anthropic route: the allowlisted environment plus an empty API key only",
+          not allowlisted(env, "ANTHROPIC_API_KEY") and env.get("HOME") == w.home
+          and env.get("LC_ALL") == "C", allowlisted(env, "ANTHROPIC_API_KEY"))
+    wraps = w.wraps()
+    bw = wraps[0] if wraps else {"argv": [], "env": {}}
+    rwt = os.path.realpath(wt)
+    check("selection check runs under bubblewrap: worktree bound, no network, then the check",
+          len(wraps) == 1 and bw["argv"][-3:] == ["/bin/sh", "-c", CHECK]
+          and after(bw["argv"], "--bind") == rwt and after(bw["argv"], "--chdir") == rwt
+          and "--unshare-net" in bw["argv"] and after(bw["argv"], "--ro-bind") == "/",
+          bw["argv"])
+    check("selection check gets the allowlisted environment, not the host's",
+          bw["env"] and not allowlisted(bw["env"]) and "GH_TOKEN" not in bw["env"],
+          allowlisted(bw["env"]))
     check("worker runs in its own worktree on its own branch",
           os.path.realpath(call["cwd"]) == os.path.realpath(wt)
           and git(w.proj, "branch", "--list", "soul-wf/a1-1").stdout.strip() != ""
@@ -242,9 +309,13 @@ def main():
     w.roles("| implementer | claude | sonnet | |",
             "| implementer | claude-ollama | qwen3.8:27b-q8_0 | |")
     w.script({"write": {"app.txt": "FIXED\n"}})
-    r, res = w.run("o1", "--rung", "2")
+    r, res = w.run("o1", "--rung", "2", env=w.env(**HOST_POWERS))
     call = (w.calls() or [{"argv": [], "env": {}}])[0]
     env = call["env"]
+    check("ollama route: the allowlisted environment plus its three values only",
+          env and not allowlisted(env, "ANTHROPIC_BASE_URL", "ANTHROPIC_AUTH_TOKEN",
+                                  "ANTHROPIC_API_KEY"),
+          allowlisted(env, "ANTHROPIC_BASE_URL", "ANTHROPIC_AUTH_TOKEN", "ANTHROPIC_API_KEY"))
     check("ollama route sets base URL, token and an empty API key",
           env.get("ANTHROPIC_BASE_URL") == "http://localhost:11434"
           and env.get("ANTHROPIC_AUTH_TOKEN") == "ollama"
@@ -261,10 +332,12 @@ def main():
     # 3 — codex flags, default model and the Ollama variant
     w.roles("| implementer | codex | default | |")
     w.script({"write": {"app.txt": "FIXED\n"}})
-    r, res = w.run("c1")
-    call = (w.calls() or [{"argv": []}])[0]
+    r, res = w.run("c1", env=w.env(**HOST_POWERS))
+    call = (w.calls() or [{"argv": [], "env": {}}])[0]
     argv = call["argv"]
     wt = w.wt("c1", 1)
+    check("codex: the allowlisted environment, nothing added",
+          call["env"] and not allowlisted(call["env"]), allowlisted(call["env"]))
     check("codex exec: isolation flags as probed",
           argv[:1] == ["exec"] and "--ephemeral" in argv and "--ignore-user-config" in argv
           and "--ignore-rules" in argv and after(argv, "-c") == "project_doc_max_bytes=0",
@@ -359,6 +432,26 @@ def main():
     check("no bubblewrap/socat: refused with exit 2 naming them, no worker started",
           r.returncode == 2 and "socat" in r.stderr and not w.calls()
           and not os.path.exists(w.wt("sb2", 1)), (r.returncode, r.stderr))
+
+    # 7d — no bubblewrap: one try skips the selection check (the host's confined
+    # re-run is the gate); best-of-n, which needs the check, is refused at start
+    nobw = [d for d in (w.bin, gitonly) if os.path.exists(os.path.join(d, "bwrap"))]
+    w.roles("| implementer | codex | default | |")
+    w.script({"write": {"app.txt": "FIXED\n"}})
+    r, res = w.run("nb1", env=w.env(PATH=os.pathsep.join([w.bin, gitonly])))
+    t = ((res or {}).get("tries") or [{}])[0]
+    check("no bwrap, n=1: the check is skipped, not run bare; the try still wins",
+          not nobw and r.returncode == 0 and t.get("check_rc") is None
+          and res.get("winner") == 1 and not w.wraps()
+          and not os.path.exists(os.path.join(w.proj, ".ai", "workflow-runs", "nb1",
+                                              "try-1.check.log")),
+          (nobw, r.returncode, r.stderr, t))
+    w.roles("| implementer | codex | default | n=2 |")
+    w.script({"write": {"app.txt": "FIXED\n"}})
+    r, res = w.run("nb2", env=w.env(PATH=os.pathsep.join([w.bin, gitonly])))
+    check("no bwrap, n=2: refused with exit 2 naming bubblewrap, no worker started",
+          r.returncode == 2 and "bubblewrap" in r.stderr and not w.calls()
+          and not os.path.exists(w.wt("nb2", 1)), (r.returncode, r.stderr))
 
     # 8 — clean removes only its own run's worktrees and branches
     w.roles("| implementer | claude | sonnet | |")

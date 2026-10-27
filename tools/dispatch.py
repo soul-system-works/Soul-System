@@ -45,6 +45,11 @@ import sys
 import tempfile
 import time
 
+_HERE = os.path.dirname(os.path.abspath(__file__))
+if _HERE not in sys.path:
+    sys.path.insert(0, _HERE)
+import confine  # noqa: E402  (tools/confine.py — allowlisted env, bubblewrap)
+
 HARNESSES = ("claude", "claude-ollama", "codex", "codex-ollama")
 SETTINGS = ("rung", "n", "timeout")
 DEFAULT_TIMEOUT = 1800
@@ -53,7 +58,6 @@ PROJECT_ROLES = os.path.join(".claude", "soul-roles.md")
 RECORD_FILES = ("witness.md", "ideas.md", "mind.md", "upstream.md")
 CLAUDE_MD_NAMES = ("CLAUDE.md", "CLAUDE.local.md", os.path.join(".claude", "CLAUDE.md"))
 WALK_SKIP = (".git", "node_modules", ".venv", "venv", "__pycache__")
-_HERE = os.path.dirname(os.path.abspath(__file__))
 OLLAMA_URL = "http://localhost:11434"
 RUN_ID = re.compile(r"[A-Za-z0-9][A-Za-z0-9._-]*\Z")
 SIGNALS = tuple(getattr(signal, n) for n in ("SIGTERM", "SIGINT", "SIGHUP")
@@ -248,21 +252,15 @@ def claude_md_excludes(workdir):
     return list(dict.fromkeys(paths))
 
 
-SECRET_DIRS = (".ssh", ".gnupg", ".aws", ".config/gh", ".claude", ".codex", ".config/soul")
-
-
 def secret_dirs():
     """Folders a Claude worker may not read: credentials and the owner's private
-    record. The sandbox limits writes and network, but reads are wide by default.
-    `~/x` and `//abs/path` are Claude Code's permission-rule spellings."""
-    out = ["~/" + d for d in SECRET_DIRS]
-    try:
-        import vault  # tools/vault.py — the vault holds every vaulted project's record
-        v = vault.registered_vault()
-    except Exception:
-        v = None
+    record (confine.SECRET_DIRS, the list the confined checks hide too). The sandbox
+    limits writes and network, but reads are wide by default. `~/x` and
+    `//abs/path` are Claude Code's permission-rule spellings."""
+    out = ["~/" + d for d in confine.SECRET_DIRS]
+    v = confine.registered_vault()  # the vault holds every vaulted project's record
     if v:
-        out.append("/" + os.path.realpath(os.path.expanduser(v)))
+        out.append("/" + v)
     return out
 
 
@@ -281,20 +279,20 @@ def need_sandbox(rows):
 
 
 def worker_env(harness):
-    env = dict(os.environ)
-    # Step 1 isolation probe, 2026-10-27 (v3.7.0 plan, "Step 1 result"): a host that
-    # itself runs over Ollama exports ANTHROPIC_BASE_URL/AUTH_TOKEN, and a worker
-    # inheriting them would silently go to the local model. The Anthropic route
-    # drops them and passes an EMPTY API key so the subscription login answers; the
-    # Ollama route sets all three on purpose.
+    """The allowlisted environment plus the route's own values, nothing inherited.
+    The 2026-10-27 review of v3.7.0: workers got the host's whole environment — its
+    messaging socket and token, session id, GH_TOKEN, GIT_CONFIG_*, the secret
+    guard's variables. Step 1 isolation probe, 2026-10-27 (v3.7.0 plan, "Step 1
+    result"): a host that itself runs over Ollama exports ANTHROPIC_BASE_URL and
+    AUTH_TOKEN, and a worker inheriting them would silently go to the local model;
+    the Anthropic route gets none of ANTHROPIC_* but an EMPTY API key, so the
+    subscription login answers. The Ollama route sets all three on purpose."""
     if harness == "claude":
-        env.pop("ANTHROPIC_BASE_URL", None)
-        env.pop("ANTHROPIC_AUTH_TOKEN", None)
-        env["ANTHROPIC_API_KEY"] = ""
-    elif harness == "claude-ollama":
-        env.update(ANTHROPIC_BASE_URL=OLLAMA_URL, ANTHROPIC_AUTH_TOKEN="ollama",
-                   ANTHROPIC_API_KEY="")
-    return env
+        return confine.clean_env({"ANTHROPIC_API_KEY": ""})
+    if harness == "claude-ollama":
+        return confine.clean_env({"ANTHROPIC_BASE_URL": OLLAMA_URL,
+                                  "ANTHROPIC_AUTH_TOKEN": "ollama", "ANTHROPIC_API_KEY": ""})
+    return confine.clean_env()
 
 
 def worker_command(row, workdir, mode, check=None, last_file=None):
@@ -583,6 +581,15 @@ def cmd_run(args):
     need_sandbox([row])
     if args.check is not None and not args.check.strip():
         raise UsageError("--check is blank")
+    # The selection check runs the worker's code, so it runs confined (the 2026-10-27
+    # review: it ran with the host's whole environment and no sandbox). Where it
+    # cannot be confined, one try skips it — the host's confined re-run through the
+    # recorder is the gate — and best-of-n, which needs it to choose, is refused.
+    confinable = confine.confine_argv(["true"], project) is not None
+    if args.check and not confinable and row["n"] > 1:
+        raise UsageError("best-of-n runs each try's check, which needs bubblewrap to "
+                         "confine it — install it (e.g. `sudo apt install bubblewrap`) "
+                         "or use n=1")
     brief = read_text(args.brief, "brief")
     base = git(project, "rev-parse", "--verify", "--quiet", args.base + "^{commit}")
     if base.returncode != 0:
@@ -618,10 +625,10 @@ def cmd_run(args):
         inactive = row["harness"] in ("claude", "claude-ollama") and \
             "Sandbox disabled" in read_text_quiet(stem + ".stderr")
         check_rc = None
-        if args.check:  # for selection only: the host re-runs it through the recorder
-            check_rc, _ = run_process(["/bin/sh", "-c", args.check], worktree,
-                                      dict(os.environ), "", stem + ".check.log", None,
-                                      row["timeout"])
+        if args.check and confinable:  # for selection only: the host re-runs it
+            check_rc, _ = run_process(
+                confine.confine_argv(["/bin/sh", "-c", args.check], worktree), worktree,
+                confine.clean_env(), "", stem + ".check.log", None, row["timeout"])
         tries.append({"try": i, "worktree": worktree, "branch": branch, "exit": code,
                       "wall_s": wall, "tokens_in": tokens_in, "tokens_out": tokens_out,
                       "patch": stem + ".patch", "log": stem + ".log",
@@ -629,8 +636,11 @@ def cmd_run(args):
                       "record_touched": touched, "sandbox_inactive": inactive})
     result = {"run_id": run_id, "role": args.role, "harness": row["harness"],
               "model": row["model"], "rung": row["rung"], "base": base,
-              "check": args.check, "tries": tries,
-              "winner": pick_winner(tries, bool(args.check))}
+              "check": args.check, "check_skipped": bool(args.check) and not confinable,
+              "tries": tries, "winner": pick_winner(tries, bool(args.check) and confinable)}
+    if result["check_skipped"]:
+        print("note: no bubblewrap here, so the selection check did not run; the "
+              "recorder's confined re-run is the gate", file=sys.stderr)
     emit_result(os.path.join(run_dir, "result.json"), result)
     log_dispatch(project, {
         "mode": "run", "run_id": run_id, "role": args.role, "harness": row["harness"],

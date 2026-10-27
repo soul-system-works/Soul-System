@@ -126,7 +126,7 @@ class DelegationCheck(unittest.TestCase):
     def test_default_timeout_is_under_the_bash_tool_cap(self):
         seen = {}
 
-        def fake_run(command, cwd, timeout):
+        def fake_run(command, cwd, timeout, confined=None):
             seen["timeout"] = timeout
             return 0, False, ""
         argv = [_TOOL, "record", "--step", "s", "--worker", "routine:t", "--check", "true"]
@@ -589,6 +589,88 @@ class DelegationCheck(unittest.TestCase):
             code = _mod.main()
         self.assertEqual(code, 2)
         self.assertIn("POSIX-only", err.getvalue())
+
+    # --confine (the 2026-10-27 review of v3.7.0): the host's re-run executes code a
+    # worker wrote, so on request it runs under bubblewrap with the allowlisted
+    # environment, or not at all.
+
+    def fake_bwrap(self):
+        """A bwrap stand-in on a PATH dir: logs argv and env, then runs the command."""
+        d = os.path.join(self.tmp, "wrap-bin")
+        self.wraplog = os.path.join(self.tmp, "wrap-log.json")
+        os.makedirs(d)
+        with open(os.path.join(d, "bwrap"), "w") as f:
+            f.write("#!{}\nimport json, os, sys\n"
+                    "ARITY = {{'--ro-bind': 2, '--bind': 2, '--dev': 1, '--proc': 1,\n"
+                    "         '--tmpfs': 1, '--chdir': 1, '--unshare-net': 0,\n"
+                    "         '--die-with-parent': 0, '--new-session': 0}}\n"
+                    "a = sys.argv[1:]\n"
+                    "json.dump({{'argv': a, 'env': dict(os.environ)}}, open({!r}, 'w'))\n"
+                    "i = 0\n"
+                    "while a[i] in ARITY:\n"
+                    "    if a[i] == '--chdir':\n"
+                    "        os.chdir(a[i + 1])\n"
+                    "    i += 1 + ARITY[a[i]]\n"
+                    "os.execvp(a[i], a[i:])\n".format(sys.executable, self.wraplog))
+        os.chmod(os.path.join(d, "bwrap"), 0o755)
+        return d
+
+    def test_confine_runs_the_check_under_bwrap_with_the_allowlisted_env(self):
+        wrap = self.fake_bwrap()
+        work = os.path.join(self.tmp, "work")
+        os.makedirs(work)
+        env = dict(self.env, PATH=wrap + os.pathsep + self.env.get("PATH", ""),
+                   GH_TOKEN="ghp_x", CLAUDE_CODE_MESSAGING_TOKEN="tok",
+                   GIT_CONFIG_COUNT="1", OPENAI_API_KEY="sk")
+        out = self.record("echo confined ok", "--confine", "--cwd", work, env=env)
+        self.assertEqual(out.returncode, 0, out.stdout + out.stderr)
+        with open(self.wraplog) as fh:
+            seen = json.load(fh)
+        real = os.path.realpath(work)
+        self.assertEqual(seen["argv"][-3:], ["/bin/sh", "-c", "echo confined ok"])
+        self.assertEqual(seen["argv"][seen["argv"].index("--bind") + 1], real)
+        self.assertIn("--unshare-net", seen["argv"])
+        for k in ("GH_TOKEN", "CLAUDE_CODE_MESSAGING_TOKEN", "GIT_CONFIG_COUNT",
+                  "OPENAI_API_KEY", "SOUL_EVENT_LOG"):
+            self.assertNotIn(k, seen["env"])
+        [ev] = self.events()
+        self.assertIs(ev["data"]["check"]["passed"], True)
+        self.assertEqual(ev["data"]["check"]["tail"], "confined ok")
+
+    def test_confine_without_bwrap_refuses_and_records_nothing(self):
+        empty = os.path.join(self.tmp, "no-bwrap")
+        os.makedirs(empty)
+        out = self.record("touch ran", "--confine", env=dict(self.env, PATH=empty))
+        self.assertEqual(out.returncode, 2, out.stdout + out.stderr)
+        self.assertIn("bubblewrap", out.stderr)
+        self.assertEqual(self.events(), [])
+        self.assertFalse(os.path.exists(os.path.join(self.tmp, "ran")))
+
+    def test_without_confine_the_check_runs_as_before(self):
+        wrap = self.fake_bwrap()
+        out = self.record("echo plain", env=dict(self.env, PATH=wrap + os.pathsep
+                                                 + self.env.get("PATH", "")))
+        self.assertEqual(out.returncode, 0, out.stderr)
+        self.assertFalse(os.path.exists(self.wraplog))
+
+    @unittest.skipUnless(sys.platform.startswith("linux") and shutil.which("bwrap"),
+                         "needs a real bubblewrap")
+    def test_confine_with_real_bwrap_cannot_write_outside(self):
+        base = tempfile.mkdtemp(prefix="soul-dc-confine-",
+                                dir="/var/tmp" if os.access("/var/tmp", os.W_OK) else None)
+        self.addCleanup(shutil.rmtree, base, True)
+        work = os.path.join(base, "work")
+        os.makedirs(work)
+        outside = os.path.join(base, "outside.txt")
+        check = "touch inside.txt && touch {}".format(outside)
+        out = self.record(check, "--confine", "--cwd", work)
+        self.assertEqual(out.returncode, 1, out.stdout + out.stderr)
+        self.assertFalse(os.path.exists(outside))
+        self.assertTrue(os.path.exists(os.path.join(work, "inside.txt")))
+        free = self.record(check, "--cwd", work)  # control: unconfined it does write
+        self.assertEqual(free.returncode, 0, free.stdout + free.stderr)
+        self.assertTrue(os.path.exists(outside))
+
 
 if __name__ == "__main__":
     unittest.main()
