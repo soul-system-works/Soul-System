@@ -2719,6 +2719,11 @@ SOURCE:    (2026-10-22) The discussion is published as the Body's guide
            runtime: repositories and interfaces, proposed workflow experience,
            handoff and design decisions; ~3,600 words; untested proposals by the
            guide's own statement). The context reminder above is resolved.
+GOAL:      (2026-10-27, the Body) "a workflow that uses my local gpu effectively so
+           i can use my subscription usage more efficiently" — route work that a
+           local model can do to the local GPU, and save subscription usage for
+           the work that needs it. The Body first wants a stable point
+           (v3.6.3: the 3.6.2 known limits) before diving into this.
 STATUS:    Raw — Body-captured.
 ```
 
