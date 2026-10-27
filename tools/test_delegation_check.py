@@ -446,6 +446,118 @@ class DelegationCheck(unittest.TestCase):
         [ev] = self.events()
         self.assertEqual(ev["data"]["check"]["tail"], "\u2713 \u65e5 ok")
 
+    # SOUL-I080: /soul-workflow adds where a check sits in a workflow, the host's
+    # verdict on each reviewer's findings, and a per-role table of both.
+
+    def test_workflow_fields_are_optional_on_record(self):
+        out = self.record("true", "--workflow", "build-verify", "--role", "implementer",
+                          "--rung", "2", "--round", "1", "--run-id", "r1",
+                          worker="routine:claude:sonnet")
+        self.assertEqual(out.returncode, 0, out.stderr)
+        self.record("true")
+        full, bare = self.events()
+        self.assertEqual(full["type"], "soul.delegation.checked")  # the gate counts it
+        self.assertEqual({k: full["data"][k] for k in ("workflow", "role", "rung", "round",
+                                                       "run_id")},
+                         {"workflow": "build-verify", "role": "implementer", "rung": 2,
+                          "round": 1, "run_id": "r1"})
+        self.assertIs(full["data"]["check"]["observed"], True)
+        for key in ("workflow", "role", "rung", "round", "run_id"):
+            self.assertNotIn(key, bare["data"])  # the old record shape is unchanged
+
+    def test_bad_rung_or_round_is_a_usage_error(self):
+        for extra in (("--rung", "0"), ("--rung", "x"), ("--round", "-1")):
+            out = self.record("touch ran", *extra)
+            self.assertEqual(out.returncode, 2, extra)
+        self.assertEqual(self.events(), [])
+        self.assertFalse(os.path.exists(os.path.join(self.tmp, "ran")))
+
+    def review(self, *args, env=None):
+        return self.run_tool("review", *args, env=env)
+
+    def test_review_records_a_self_reported_review_event(self):
+        out = self.review("--run-id", "r1", "--reviewer", "codex:default",
+                          "--raised", "3", "--accepted", "1")
+        self.assertEqual(out.returncode, 0, out.stderr)
+        [ev] = self.events()
+        self.assertEqual(ev["type"], "soul.workflow.review")
+        self.assertEqual(ev["specversion"], "1.0")
+        self.assertEqual(ev["data"], {"run_id": "r1",
+                                      "reviewer": {"tool": "codex", "model": "default"},
+                                      "raised": 3, "accepted": 1, "self_reported": True})
+        listed = self.run_tool("list")
+        self.assertEqual(listed.stdout.strip(), "no delegation records")  # not a check
+
+    def test_review_usage_errors_record_nothing(self):
+        for args in (("--run-id", "r", "--reviewer", "codex", "--raised", "1",
+                      "--accepted", "2"),
+                     ("--run-id", "r", "--reviewer", "codex", "--raised", "-1",
+                      "--accepted", "0"),
+                     ("--run-id", "r", "--reviewer", ":opus", "--raised", "1",
+                      "--accepted", "0"),
+                     ("--run-id", "", "--reviewer", "codex", "--raised", "1",
+                      "--accepted", "0"),
+                     ("--reviewer", "codex", "--raised", "1", "--accepted", "0")):
+            out = self.review(*args)
+            self.assertEqual(out.returncode, 2, (args, out.stdout, out.stderr))
+        self.assertEqual(self.events(), [])
+
+    def test_review_event_is_not_counted_by_the_gate(self):
+        hook = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                            "hooks", "pre-completion-verify.py")
+        spec = importlib.util.spec_from_file_location("pcv", hook)
+        pcv = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(pcv)
+        env = dict(self.env, CLAUDE_CODE_SESSION_ID="S")
+        self.review("--run-id", "r", "--reviewer", "claude:opus", "--raised", "2",
+                    "--accepted", "2", env=env)
+        self.record("false", "--role", "implementer", "--rung", "1", env=env)
+        with mock.patch.dict(os.environ, {"SOUL_EVENT_LOG": self.sink}):
+            self.assertEqual(pcv._delegation_counts(self.tmp, "S"),
+                             {"checked": 1, "failed": 1})
+
+    def stats_fixture(self):
+        self.record("true", "--role", "implementer", "--rung", "1",
+                    worker="routine:claude:sonnet")
+        self.record("false", "--role", "implementer", "--rung", "1",
+                    worker="routine:claude:sonnet")
+        self.record("true", "--role", "implementer", "--rung", "2",
+                    worker="routine:claude:opus")
+        self.record("false", worker="deep:subagent")
+        for reviewer, raised, accepted in (("claude:opus", 2, 1), ("claude:opus", 3, 3),
+                                           ("codex:default", 1, 0)):
+            self.review("--run-id", "r", "--reviewer", reviewer, "--raised", str(raised),
+                        "--accepted", str(accepted))
+        with open(self.sink, "a") as fh:
+            fh.write("not json{\n")
+
+    def test_stats_per_role_and_per_reviewer(self):
+        self.stats_fixture()
+        out = self.run_tool("stats", "--json")
+        self.assertEqual(out.returncode, 0, out.stderr)
+        got = json.loads(out.stdout)
+        self.assertEqual(got["workers"], [
+            {"role": "deep", "worker": "subagent", "checks": 1, "passed": 0, "failed": 1,
+             "top_rung": None},
+            {"role": "implementer", "worker": "claude:opus", "checks": 1, "passed": 1,
+             "failed": 0, "top_rung": 2},
+            {"role": "implementer", "worker": "claude:sonnet", "checks": 2, "passed": 1,
+             "failed": 1, "top_rung": 1}])
+        self.assertEqual(got["reviewers"], [
+            {"reviewer": "claude:opus", "runs": 2, "raised": 5, "accepted": 4},
+            {"reviewer": "codex:default", "runs": 1, "raised": 1, "accepted": 0}])
+        text = self.run_tool("stats")
+        self.assertEqual(text.returncode, 0, text.stderr)
+        self.assertRegex(text.stdout, r"implementer\s+claude:sonnet\s+2\s+1\s+1\s+1")
+        self.assertRegex(text.stdout, r"claude:opus\s+2\s+5\s+4")
+
+    def test_stats_with_no_records(self):
+        out = self.run_tool("stats")
+        self.assertEqual(out.returncode, 0, out.stderr)
+        self.assertEqual(out.stdout.strip(), "no workflow records")
+        got = json.loads(self.run_tool("stats", "--json").stdout)
+        self.assertEqual(got, {"workers": [], "reviewers": []})
+
     def test_windows_is_refused(self):
         err = io.StringIO()
         with mock.patch.object(_mod.os, "name", "nt"), \
