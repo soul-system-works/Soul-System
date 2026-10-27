@@ -72,7 +72,8 @@ The guard does not flag those lists in a vault. A list can hold names no record
 mentions, such as a work email; those enter the vault's history — the Body kept
 the lists with that known (2026-10-22).
 
-Private names in a vault commit still warn. The guard cannot confirm a GitLab
+Private names in a vault commit still warn, except inside those kept lists
+themselves (v3.6.3, below). The guard cannot confirm a GitLab
 repo is private, and it never assumes a repo is private (the Body's call,
 2026-10-22): the warnings are expected noise, never a block.
 
@@ -96,11 +97,15 @@ record where it is.
   the log into the vault's, checks every line arrived, and only then links. This
   holds for every project, sidecar or not. Anything else in `.soul/` is still TWO
   COPIES.
-- `/soul-init` offers the move only where it fits: record tracked at the root, a
-  private `.soul/` with no record files and nothing tracked, and a vault here with
+- `/soul-init` offers the move only where it fits, and recommends neither answer:
+  record tracked at the root; a `.soul/` holding `handoff.md` or
+  `private-names.txt`, with no record files and nothing tracked; a vault here with
   no record for the project (v3.6.3).
-- Inside a vault the secret guard also leaves `machine/soul-private-names.txt` (the
-  machine-wide list) and `projects/<key>/registry/NAME-MAP.md` unflagged (v3.6.3).
+- On a commit inside a vault, the secret guard neither flags nor scans for names the
+  lists the vault keeps: each project's `soul/private-names.txt`,
+  `machine/soul-private-names.txt` (the machine-wide list) and
+  `projects/<key>/registry/NAME-MAP.md` (the owner's call, v3.6.3). Every other
+  vault file is still scanned, and the pre-push scan is unchanged.
 
 ## Known hazard, kept and reported
 

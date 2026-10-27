@@ -503,7 +503,7 @@ def main():
           and not os.path.islink(os.path.join(a4, ".soul"))
           and peek(os.path.join(a4, ".soul", "events.jsonl")) == e1 and not os.path.exists(ev),
           r.stdout + r.stderr)
-    r = run(env, "link", a4, "--key", "alpha", "--label", "private")
+    r = log4 = run(env, "link", a4, "--key", "alpha", "--label", "private")
     check("gate log only: link succeeds, .soul is now the link", r.returncode == 0
           and os.path.islink(os.path.join(a4, ".soul"))
           and os.path.realpath(os.path.join(a4, ".soul")) == os.path.realpath(target),
@@ -526,6 +526,10 @@ def main():
     check("an empty .soul/: not TWO COPIES, and link replaces it with the link",
           st.get("state") == "not-linked" and r.returncode == 0
           and os.path.islink(os.path.join(a6, ".soul")), json.dumps(st) + r.stdout + r.stderr)
+    check("an empty .soul/: link says it was empty, not that it held the event log",
+          "it was empty" in r.stdout and "event log" not in r.stdout, r.stdout)
+    check("gate log only: link says the removed .soul/ held only the event log",
+          "it held only the gate's event log" in log4.stdout, log4.stdout)
 
     # The fence stays: a .soul/ holding anything beside the log is a second record
     a7 = project(tmp, "alpha-clone7", {".soul/events.jsonl": e1, ".soul/handoff.md": "# H\n",

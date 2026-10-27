@@ -595,7 +595,8 @@ def link(project, key, label, contributes=(), vault=None, dry_run=False, sidecar
                 say("merge .soul/{} ({} line(s)) into {} — {}", EVENT_LOG, len(_lines(log)),
                     os.path.join(target, EVENT_LOG), "appending the lines it lacks"
                     if os.path.exists(os.path.join(target, EVENT_LOG)) else "a copy")
-            say("remove the local .soul/ (it held only the gate's event log)")
+            say("remove the local .soul/ ({})", "it held only the gate's event log"
+                if os.path.isfile(log) else "it was empty")
             if not dry_run:
                 # Merge, check every line arrived, and only then remove the local copy.
                 if os.path.isfile(log):
