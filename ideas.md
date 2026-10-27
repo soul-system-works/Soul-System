@@ -2742,7 +2742,33 @@ SHAPE:     Raw — Body-captured (from the I079 discussion). Sketch: group candi
            Limits: ADRs and docs that explain the code stay with it (contract rule
            1); git history keeps the old copies (mind 6d — moving is not
            redaction). Depends on I079's vault; buildable separately.
-STATUS:    Raw — Body-captured.
+DISCUSSED: (2026-10-27) Clarify round — the Body confirmed all five guesses: the
+           pain is repos that look cluttered to the Body, coworkers and agents;
+           keep the old material somewhere private (sometimes re-read, mostly
+           not); old copies in git history are fine (no rewriting); work projects
+           prompted it; the existing `layout` step has not been seen to run or
+           caught too little. Reframe: the clean-up half already exists —
+           /soul-init's `layout` step (tools/layout-cleanup.py) moves stray
+           working files into `.ai/`, which is gitignored. What is missing is a
+           home for `.ai/` off one disk (here 853K, one copy). Options weighed:
+           do nothing · the vault holds `.ai/` too (an opt-in link like the 3.6.2
+           sidecar; registry/ was moved this way by hand, SOUL-225) · put working
+           files inside `.soul/` (rejected: a git-record project would commit
+           its scratch, and the contract's `.ai/` rule would change) · delete
+           (against the Body's answer). Strongest objection: most of `.ai/` is
+           never re-read, so vaulting it versions scratch forever and bloats the
+           vault, and for work projects it copies employer material into a
+           personal vault (the label rule makes that the Body's call per
+           project). Sources: this repo only (layout-cleanup.py, vault.py, ADR
+           0001, SOUL-225); no web search. Deeper research: not worth it — a
+           test settles more. Lean: run `layout-cleanup.py scan` read-only on
+           2–3 real work projects first; if it catches enough, the only new work
+           is an opt-in "vault holds `.ai/`" link with large/binary files left
+           out. Would change: the scan misses most clutter (then detection is
+           the work), or the Body wants no work material in the personal vault
+           (then I081 shrinks to nothing). Next step: the Body chose to park it
+           until after I080; the scan runs then.
+STATUS:    Maturing — parked until after I080 (the Body, 2026-10-27).
 ```
 
 ```
