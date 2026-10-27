@@ -5,8 +5,9 @@ sends work to the wrong model without a word. A project that names a role replac
 EVERY global row of that role (never a mix of the two); with no row anywhere the
 built-in default applies, and its Codex reviewer only when `codex` is on PATH; a
 role's rows form its ladder, ordered by rung (row order when no rung is given); a
-malformed row or an unknown harness stops the load with an error that names the
-file, the line and the row.
+malformed row, an unknown harness, or two rows of one role on the same rung stops
+the load with an error that names the file, the line and the row (both rows, for
+a shared rung).
 
 Run: python3 tools/test_roles.py  (exit 0 = PASS)
 """
@@ -161,6 +162,20 @@ def main():
         msg = r.stderr
         check("error: " + name, r.returncode == 2 and project_file in msg
               and ":8:" in msg and row.strip() in msg and word in msg, msg + r.stdout)
+    # 6b — two rows of one role on the same rung: an error naming both rows
+    first = "| implementer | claude | sonnet | |"
+    second = "| implementer | claude | opus | rung=1 |"
+    write(project_file, table("| reviewer | claude | opus | |", first, second))
+    r = roles(home, project, [nopath])
+    check("error: duplicate rung names both rows", r.returncode == 2
+          and project_file in r.stderr and first in r.stderr and second in r.stderr
+          and ":8" in r.stderr and ":9" in r.stderr and "rung 1" in r.stderr,
+          r.stderr + r.stdout)
+    write(project_file, table("| implementer | claude | sonnet | |",
+                              "| reviewer | claude | opus | rung=1 |"))
+    r = roles(home, project, [nopath])
+    check("the same rung in two different roles is fine", r.returncode == 0, r.stderr)
+
     write(global_file, table("| implementer | claude | opus | bogus |"))
     os.remove(project_file)
     r = roles(home, project, [nopath])

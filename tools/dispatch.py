@@ -56,6 +56,7 @@ DEFAULT_TIMEOUT = 1800
 GLOBAL_ROLES = os.path.join("~", ".claude", "soul-roles.md")
 PROJECT_ROLES = os.path.join(".claude", "soul-roles.md")
 RECORD_FILES = ("witness.md", "ideas.md", "mind.md", "upstream.md")
+RECORD_DIRS = (".soul/", "findings/", "amendments/")  # the last two: Soul System's own
 CLAUDE_MD_NAMES = ("CLAUDE.md", "CLAUDE.local.md", os.path.join(".claude", "CLAUDE.md"))
 WALK_SKIP = (".git", "node_modules", ".venv", "venv", "__pycache__")
 OLLAMA_URL = "http://localhost:11434"
@@ -68,7 +69,8 @@ WORKER_RULES = """
 ## Worker rules (added by dispatch)
 
 - You are a worker with only this brief: no earlier conversation, no project record.
-- Do not write witness.md, ideas.md, mind.md, upstream.md or anything under .soul/.
+- Do not write witness.md, ideas.md, mind.md, upstream.md, or anything under .soul/,
+  findings/ or amendments/.
 - Run the check yourself before finishing{check}.
 - End with what you changed, the check's result, and anything you did not run or
   could not do.
@@ -88,7 +90,8 @@ Report findings only, never edit. One finding per line, as
 `FINDING: <file:line> — <what is wrong> — <a concrete failure scenario>`,
 or the single line `NO FINDINGS`.
 """
-FINDING = re.compile(r"^[\s>*_`-]*FINDING[*_`]*\s*:[*_`]*\s*(.+?)\s*$")
+# A list marker may lead: `- `, `> `, `**`, or a number (`1. `, `2) `).
+FINDING = re.compile(r"^[\s>*_`-]*(?:\d+[.)]\s*)?[*_`]*FINDING[*_`]*\s*:[*_`]*\s*(.+?)\s*$")
 NO_FINDINGS = re.compile(r"^[\s>*_`-]*NO FINDINGS\b")
 
 
@@ -134,6 +137,7 @@ def parse_roles_file(path, source):
         return []
     rows = []
     position = {}
+    rungs = {}  # (role, rung) -> (lineno, line) of the row that holds it
     for lineno, line in enumerate(lines, 1):
         if not line.lstrip().startswith("|"):
             continue
@@ -177,8 +181,15 @@ def parse_roles_file(path, source):
                                  "setting {} must be 1 or more, got {}".format(key, number))
             settings[key] = number
         position[role] = position.get(role, 0) + 1
+        rung = settings.get("rung", position[role])
+        if (role, rung) in rungs:
+            # Two rows on one rung: `run --rung K` would silently take the first.
+            other, other_line = rungs[(role, rung)]
+            raise _row_error(path, lineno, line, "rung {} of role {} is also at {}:{} "
+                             "(row: {})".format(rung, role, path, other, other_line.strip()))
+        rungs[(role, rung)] = (lineno, line)
         rows.append({"role": role, "harness": harness, "model": model,
-                     "rung": settings.get("rung", position[role]),
+                     "rung": rung,
                      "n": settings.get("n", 1),
                      "timeout": settings.get("timeout", DEFAULT_TIMEOUT),
                      "source": source, "where": "{}:{}".format(path, lineno)})
@@ -375,6 +386,16 @@ def read_output(harness, log_path, last_file):
     if harness.startswith("claude"):
         result = next((ev for ev in reversed(events) if "result" in ev or "usage" in ev), {})
         text = result.get("result") if isinstance(result.get("result"), str) else ""
+        # modelUsage covers the whole run, per model; `usage` can be the last turn
+        # only (the 2026-10-27 replay: usage said 82 output tokens where modelUsage
+        # said 26,958). Summed across models, as a run can use more than one.
+        per_model = result.get("modelUsage")
+        per_model = [u for u in per_model.values() if isinstance(u, dict)] \
+            if isinstance(per_model, dict) else []
+        if per_model:
+            return (sum(u.get(k) or 0 for u in per_model for k in (
+                        "inputTokens", "cacheReadInputTokens", "cacheCreationInputTokens")),
+                    sum(u.get("outputTokens") or 0 for u in per_model), text)
         usage = result.get("usage")
         if not isinstance(usage, dict):
             return None, None, text
@@ -580,7 +601,7 @@ def stage_and_diff(worktree, gitargs, base, patch_path):
             int(deleted) if deleted.isdigit() else 0)
     names = git(worktree, *gitargs, "diff", "--cached", "--name-only", "-z", "--no-renames",
                 base).stdout.split("\0")
-    touched = any(n in RECORD_FILES or n.startswith(".soul/") for n in names if n)
+    touched = any(n in RECORD_FILES or n.startswith(RECORD_DIRS) for n in names if n)
     return changed, touched
 
 
@@ -600,14 +621,15 @@ def sandbox_inactive(row, err_path):
 
 
 def pick_winner(tries, have_check):
-    """Passing check, then fewest changed lines. With no check given, a try that
-    exited 0 and changed something stands in for passing. A try that touched the
-    Soul record, or ran without its sandbox, is never the winner."""
-    tries = [t for t in tries if not t["record_touched"] and not t.get("sandbox_inactive")]
+    """A try that exited 0 and changed something, then (when the check ran) passed
+    it, then fewest changed lines. A check that already passes at base made an
+    empty or timed-out try the winner — fewest lines is zero (the 2026-10-27
+    review). A try that touched the Soul record, or ran without its sandbox, is
+    never the winner."""
+    ok = [t for t in tries if not t["record_touched"] and not t.get("sandbox_inactive")
+          and t["exit"] == 0 and t["changed_lines"] > 0]
     if have_check:
-        ok = [t for t in tries if t["check_rc"] == 0]
-    else:
-        ok = [t for t in tries if t["exit"] == 0 and t["changed_lines"] > 0]
+        ok = [t for t in ok if t["check_rc"] == 0]
     return min(ok, key=lambda t: (t["changed_lines"], t["try"]))["try"] if ok else None
 
 
@@ -763,7 +785,9 @@ def cmd_review(args):
 def cmd_clean(args):
     project = project_dir(args.project)
     run_dir_for(project, args.run_id)  # validates the id
-    own = re.compile(re.escape(args.run_id) + r"-\d+\Z")
+    # --family: every run the skill names from this id (<id>-k1-a1, <id>-r2 …), so
+    # `<id>-<anything>`; the dash keeps r1's family off r10's runs.
+    own = re.compile(re.escape(args.run_id) + (r"-.+\Z" if args.family else r"-\d+\Z"))
     root = os.path.realpath(os.path.join(project, ".ai", "worktrees"))
     removed = []
     for line in git(project, "worktree", "list", "--porcelain").stdout.splitlines():
@@ -780,14 +804,20 @@ def cmd_clean(args):
         else:
             removed.append(path)
     git(project, "worktree", "prune")
-    branches = [b for b in git(project, "for-each-ref", "--format=%(refname:short)",
-                               "refs/heads/soul-wf/").stdout.split()
-                if own.match(b[len("soul-wf/"):])]
-    for b in branches:
-        git(project, "branch", "-D", b)
-    print("removed {} worktree(s) and {} branch(es) of run {}; its evidence stays in "
-          ".ai/workflow-runs/{}/".format(len(removed), len(branches), args.run_id,
-                                         args.run_id))
+    deleted = 0
+    for b in git(project, "for-each-ref", "--format=%(refname:short)",
+                 "refs/heads/soul-wf/").stdout.split():
+        if not own.match(b[len("soul-wf/"):]):
+            continue
+        r = git(project, "branch", "-D", b)
+        if r.returncode != 0:  # e.g. still checked out in a worktree that stayed
+            print("warning: could not delete branch {}: {}".format(b, r.stderr.strip()),
+                  file=sys.stderr)
+        else:
+            deleted += 1
+    print("removed {} worktree(s) and {} branch(es) of run {}{}; its evidence stays in "
+          ".ai/workflow-runs/".format(len(removed), deleted, args.run_id,
+                                      " and its family" if args.family else ""))
     return 0
 
 
@@ -819,6 +849,9 @@ def main():
     p.add_argument("--run-id", help="names the run folder (default: a timestamp)")
     p = sub.add_parser("clean", help="remove a run's worktrees and branches")
     p.add_argument("--run-id", required=True)
+    p.add_argument("--family", action="store_true",
+                   help="also every run named <run-id>-<anything> (its attempts, repair "
+                   "rounds and reviews)")
     p.add_argument("--project", help=here)
     args = ap.parse_args()
     if os.name == "nt":

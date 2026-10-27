@@ -11,10 +11,14 @@ selection check that runs a worker's code runs under bubblewrap with that same
 environment — skipped for one try and refused for best-of-n where it cannot be
 confined (2026-10-27 review). Each try works in its own worktree
 on its own branch and is never committed; the patch holds untracked files too;
-best-of-n picks a passing try with the fewest changed lines; a hung worker is
-killed with its whole process group and recorded as "timeout"; a try that touches
-the record is flagged; reviewers run read-only and their FINDING lines are parsed;
-`clean` removes only its own run's worktrees and branches.
+best-of-n picks a try that exited 0, changed something and passed, with the fewest
+changed lines — never an empty or timed-out try, even when the check passes at
+base; a hung worker is killed with its whole process group and recorded as
+"timeout"; a try that touches the record (findings/ and amendments/ included) is
+flagged; dispatch's own git never trusts the worktree's `.git`; tokens come from
+modelUsage when Claude reports it; reviewers run read-only and their FINDING lines
+(numbered ones too) are parsed; `clean` removes only its own run's worktrees and
+branches, `--family` every `<id>-*` run, and reports only what it deleted.
 
 Stub `claude` and `codex` executables on a temp PATH record argv, environment, cwd
 and stdin, and make the scripted edit. Nothing here touches the real repository.
@@ -62,8 +66,11 @@ for rel, text in act.get("write", {{}}).items():
 say = act.get("say", "done")
 sys.stderr.write(act.get("stderr", ""))
 if name == "claude":
-    print(json.dumps({{"type": "result", "result": say, "usage": {{
-        "input_tokens": 100, "cache_read_input_tokens": 20, "output_tokens": 7}}}}))
+    out = {{"type": "result", "result": say, "usage": {{
+        "input_tokens": 100, "cache_read_input_tokens": 20, "output_tokens": 7}}}}
+    if act.get("model_usage"):
+        out["modelUsage"] = act["model_usage"]
+    print(json.dumps(out))
 else:
     open(args[args.index("-o") + 1], "w").write(say)
     print(json.dumps({{"type": "thread.started"}}))
@@ -198,9 +205,9 @@ class World:
                               capture_output=True, text=True, env=env or self.env(),
                               cwd=self.tmp, timeout=timeout)
 
-    def run(self, run_id, *extra, env=None):
+    def run(self, run_id, *extra, env=None, check=CHECK):
         r = self.dispatch("run", "--role", "implementer", "--brief", self.brief,
-                          "--check", CHECK, "--run-id", run_id, *extra, env=env)
+                          "--check", check, "--run-id", run_id, *extra, env=env)
         path = os.path.join(self.proj, ".ai", "workflow-runs", run_id, "result.json")
         result = json.loads(read(path)) if os.path.exists(path) else None
         return r, result
@@ -413,6 +420,59 @@ def main():
     check("record_touched: a try that touched the record never wins",
           (res or {}).get("winner") == 3, res)
 
+    # 7a — Soul System's own record: findings/ and amendments/ count too
+    w.script({"write": {"app.txt": "FIXED\n", "findings/F999.md": "forged\n"}},
+             {"write": {"app.txt": "FIXED\n", "amendments/A999.md": "forged\n"}},
+             {"write": {"app.txt": "FIXED\n", "docs/findings.txt": "fine\n"}})
+    r, res = w.run("w2")
+    tries = (res or {}).get("tries", [])
+    stdin = (w.calls() or [{"stdin": ""}])[0]["stdin"]
+    check("record_touched: findings/ and amendments/ flagged, docs/findings.txt not",
+          [x.get("record_touched") for x in tries] == [True, True, False]
+          and (res or {}).get("winner") == 3, tries)
+    check("worker rules name findings/ and amendments/",
+          "findings/" in stdin and "amendments/" in stdin, stdin)
+
+    # 7a2 — no empty or timed-out winner, even when the check already passes at base
+    w.roles("| implementer | claude | sonnet | |")
+    w.script({"say": "nothing to do"})
+    r, res = w.run("e1", check="true")
+    check("check passes at base, try changed nothing: no winner, exit 1",
+          r.returncode == 1 and res and res["winner"] is None
+          and res["tries"][0]["check_rc"] == 0, (r.returncode, res and res["winner"]))
+    w.roles("| implementer | claude | sonnet | timeout=1 |")
+    w.script({"early": {"app.txt": "FIXED\n"}, "sleep": 5})
+    r, res = w.run("e2", check="true")
+    t = ((res or {}).get("tries") or [{}])[0]
+    check("a timed-out try with a change and a passing check never wins",
+          t.get("exit") == "timeout" and t.get("changed_lines", 0) > 0
+          and res["winner"] is None, t)
+    w.roles("| implementer | claude | sonnet | n=2 |")
+    w.script({"write": {"app.txt": "FIXED\n"}}, {"say": "nothing to do"})
+    r, res = w.run("e3", check="true")
+    check("n=2, a real change and an empty try: the real change wins",
+          res and res["winner"] == 1, res and [(x["changed_lines"], x["check_rc"])
+                                               for x in res["tries"]])
+    w.roles("| implementer | claude | sonnet | n=2 |")
+    w.script({"write": {"app.txt": "FIXED\n"}, "exit": 3}, {"write": {"app.txt": "FIXED\n",
+                                                                     "b.txt": "b\n"}})
+    r, res = w.run("e4")
+    check("a try that exited non-zero never wins, even with fewer lines and a pass",
+          res and res["winner"] == 2, res and [(x["exit"], x["changed_lines"], x["check_rc"])
+                                               for x in res["tries"]])
+
+    # 7a3 — tokens: modelUsage summed across models when Claude reports it
+    w.roles("| implementer | claude | sonnet | |")
+    w.script({"write": {"app.txt": "FIXED\n"}, "model_usage": {
+        "claude-sonnet": {"inputTokens": 10, "outputTokens": 500, "cacheReadInputTokens": 1000,
+                          "cacheCreationInputTokens": 30},
+        "claude-haiku": {"inputTokens": 5, "outputTokens": 26000,
+                         "cacheReadInputTokens": 0, "cacheCreationInputTokens": 0}}})
+    r, res = w.run("tk1")
+    t = ((res or {}).get("tries") or [{}])[0]
+    check("tokens from modelUsage across models (input + cache read + creation; output)",
+          t.get("tokens_in") == 1045 and t.get("tokens_out") == 26500, t)
+
     # 7b — Claude Code reports the sandbox off: that try never wins
     w.roles("| implementer | claude | sonnet | |")
     w.script({"write": {"app.txt": "FIXED\n"},
@@ -489,6 +549,35 @@ def main():
     check("clean keeps the run's evidence (result.json, patches)",
           os.path.exists(os.path.join(w.proj, ".ai", "workflow-runs", "r1", "result.json")))
 
+    # 8a — clean --family: every run named <id>-<anything>, and only those
+    w.run("r1-k1-a1")
+    w.run("r1-r2")
+    w.run("r10-k1-a1")
+    r = w.dispatch("clean", "--run-id", "r1")
+    check("clean without --family leaves <id>-k1-a1 and <id>-r2 runs alone",
+          os.path.isdir(w.wt("r1-k1-a1", 1)) and os.path.isdir(w.wt("r1-r2", 1)),
+          r.stdout + r.stderr)
+    r = w.dispatch("clean", "--run-id", "r1", "--family")
+    branches = git(w.proj, "branch", "--list", "soul-wf/*").stdout
+    check("clean --family removes every r1-* worktree and branch",
+          r.returncode == 0 and not os.path.exists(w.wt("r1-k1-a1", 1))
+          and not os.path.exists(w.wt("r1-r2", 1)) and "soul-wf/r1-k1-a1-1" not in branches
+          and "soul-wf/r1-r2-1" not in branches
+          and "removed 2 worktree(s) and 2 branch(es)" in r.stdout,
+          r.stdout + r.stderr + branches)
+    check("clean --family r1 never touches r10-*",
+          os.path.isdir(w.wt("r10", 1)) and os.path.isdir(w.wt("r10-k1-a1", 1))
+          and "soul-wf/r10-1" in branches and "soul-wf/r10-k1-a1-1" in branches, branches)
+    # a locked worktree stays, and so does its branch: report what was deleted
+    w.run("lk1")
+    git(w.proj, "worktree", "lock", w.wt("lk1", 1))
+    r = w.dispatch("clean", "--run-id", "lk1")
+    branches = git(w.proj, "branch", "--list", "soul-wf/*").stdout
+    check("clean counts the branches it deleted, not those it tried",
+          "soul-wf/lk1-1" in branches and "0 branch(es)" in r.stdout,
+          r.stdout + r.stderr + branches)
+    git(w.proj, "worktree", "unlock", w.wt("lk1", 1))
+
     # 8b — a project that does not ignore .ai/: dispatch keeps the tries out of git
     exclude = os.path.join(w.proj, ".git", "info", "exclude")
     check("a project that already ignores .ai/ gets no exclude line",
@@ -507,7 +596,9 @@ def main():
     diff = os.path.join(tmp, "change.diff")
     write(diff, "DIFF-SENTINEL\n--- a/app.txt\n+++ b/app.txt\n@@\n-BUG\n+FIXED\n")
     w.script({"say": "Read it.\nFINDING: app.txt:1 — wrong word — FIXED is not tested\n"
-                     "- **FINDING:** app.txt:2 — second — scenario two\n"},
+                     "- **FINDING:** app.txt:2 — second — scenario two\n"
+                     "1. FINDING: app.txt:3 — numbered — scenario three\n"
+                     "2) **FINDING:** app.txt:4 — numbered too — scenario four\n"},
              {"say": "NO FINDINGS"})
     r = w.dispatch("review", "--role", "reviewer", "--brief", w.brief, "--diff", diff,
                    "--run-id", "v1")
@@ -536,7 +627,9 @@ def main():
     check("findings parsed per reviewer; NO FINDINGS is none",
           len(revs) == 2 and revs[0].get("findings") == [
               "app.txt:1 — wrong word — FIXED is not tested",
-              "app.txt:2 — second — scenario two"]
+              "app.txt:2 — second — scenario two",
+              "app.txt:3 — numbered — scenario three",
+              "app.txt:4 — numbered too — scenario four"]
           and revs[0].get("verdict") == "findings"
           and revs[1].get("findings") == [] and revs[1].get("verdict") == "none", revs)
     check("review keeps each reviewer's raw text, exit, wall and tokens",
