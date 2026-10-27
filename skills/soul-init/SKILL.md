@@ -253,8 +253,9 @@ question again without the vault; a record must never be left neither tracked no
 ignored, where one `git add -A` commits it.
 
 **`sidecar`** — asked only when the record files are committed at the project root
-and a `.soul/` beside them (handoff, private-names list) exists only on this disk,
-with this machine's vault present and holding nothing for the project. *Move it to
+and a `.soul/` beside them holding `handoff.md` or `private-names.txt` exists only on
+this disk, with this machine's vault present and holding nothing for the project.
+No option is recommended: whether it moves is the owner's call. *Move it to
 the vault* moves `.soul/` alone; the root record stays tracked (SOUL-223, [ADR
 0001](../../docs/adr/0001-soul-vault.md)). Ask label, contributes and key exactly as
 for the vault move, run `vault.py link . --key <key> --label <label> --contributes

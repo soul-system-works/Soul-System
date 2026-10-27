@@ -654,6 +654,8 @@ def main():
     check("sidecar fits: asked in a round of its own", asked and ["sidecar"] in st["rounds"]
           and q.get("group") == "single" and q.get("multi") is False, (by.get("sidecar"),
                                                                       st["rounds"]))
+    check("sidecar question: no option recommended", "recommended" in q
+          and q["recommended"] is None, q)
     check("sidecar question: fixed wording",
           q.get("text") == "This project's record is committed here, but its .soul/ folder "
           "(handoff, private-names list) is only on this disk. Move .soul/ into your vault?"
@@ -689,6 +691,21 @@ def main():
     asked, _, by = sidecar_asked(envv, p31f)
     check("sidecar: not asked when the vault already holds a record for it", not asked,
           by.get("sidecar"))
+    p31g = sidecar_repo("sc-nothing-private")
+    os.remove(os.path.join(p31g, ".soul", "handoff.md"))
+    write(os.path.join(p31g, ".soul", "events.jsonl"), '{"event": "x"}\n')
+    write(os.path.join(p31g, ".soul", "init.md"), "names:         none         2026-10-27\n")
+    asked, _, by = sidecar_asked(envv, p31g)
+    check("sidecar: not asked when .soul/ holds only events.jsonl and init.md", not asked,
+          by.get("sidecar"))
+    write(os.path.join(p31g, ".soul", "private-names.txt"), "Acme\n")
+    asked, _, by = sidecar_asked(envv, p31g)
+    check("sidecar: asked when .soul/ holds private-names.txt (no handoff.md)", asked,
+          by.get("sidecar"))
+    r = run(envv, "record", p31, "sidecar", "move")
+    asked, _, by = sidecar_asked(envv, p31)
+    check("sidecar: a recorded move while .soul/ is still a real folder asks again",
+          r.returncode == 0 and asked, (r.stderr, by.get("sidecar")))
     r = run(envv, "record", p31, "sidecar", "keep")
     asked, st, by = sidecar_asked(envv, p31)
     check("sidecar: a recorded keep is final — none, from the record", r.returncode == 0
@@ -696,7 +713,8 @@ def main():
           and by["sidecar"]["source"] == "recorded" and ["sidecar"] not in st["rounds"],
           (r.stderr, by.get("sidecar")))
     r = run(envv, "record", p31, "sidecar", "maybe")
-    check("sidecar: an unknown value is refused", r.returncode == 2, r.stderr)
+    check("sidecar: an unknown value is refused, naming move, keep", r.returncode == 2
+          and "move, keep" in r.stderr, r.stderr)
     run(envv, "revisit", p31, "sidecar")
     asked, _, by = sidecar_asked(envv, p31)
     check("sidecar: revisit asks again", asked, by.get("sidecar"))

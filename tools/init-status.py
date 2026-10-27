@@ -71,6 +71,7 @@ LAYOUT_SKIP = (".soul/init.md", ".soul/private-names.txt")
 EXTRAS = ("hand-hooks", "history-scan", "line-endings")
 MAIN = ("record", "stage", "names")
 SINGLE = ("vault-link", "import", "existing-store", "layout", "sidecar")
+SIDECAR_FILES = ("handoff.md", "private-names.txt")  # what makes .soul/ worth a sidecar
 
 LINE_RE = re.compile(r"^([A-Za-z][\w-]*):[ \t]+(.*?)(?:[ \t]+(\d{4}-\d{2}-\d{2}))?[ \t]*$")
 IMPORT_RE = re.compile(r"^\s*(?:-\s+)?@(\S+)\s*$")
@@ -507,6 +508,10 @@ def check_sidecar(c):
         return None
     if vaultlib.check(p)["vault_has"] or vaultlib._holds_record(soul):
         return None
+    # Narrow (the owner's call): only a .soul/ holding a private file worth keeping. One
+    # holding just the gate's log and init.md has nothing the vault would add.
+    if not any(os.path.isfile(os.path.join(soul, n)) for n in SIDECAR_FILES):
+        return None
     root = [s for s in c["stores"] if os.sep not in s]
     tracked = set((_git(p, "ls-files", "--", *root) or "").splitlines()) if root else set()
     if not root or not tracked.issuperset(root) or _git(p, "ls-files", "--", ".soul"):
@@ -916,8 +921,8 @@ def render_question(key, public=None, vault=None, path=None, n=None, members=())
     if key == "stage":  # how settled a project is only the owner knows
         rec = None
     multi = q["multi"]
-    if key == "public":  # only the owner knows what the repo is, or will be
-        rec = None
+    if key in ("public", "sidecar"):  # only the owner knows what the repo is, or will be;
+        rec = None                     # whether .soul/ goes to the vault is theirs (v3.6.3)
     if key == "extras":
         # Hooks and the scan are offers, not defaults (skill: hand-hooks). Line endings
         # is recommended: it is offered only when the repo has the problem, and the
