@@ -322,8 +322,11 @@ def worker_command(row, workdir, mode, check=None, last_file=None):
                     # Sandbox probe, 2026-10-27 (v3.7.0 plan, "Sandbox probe"): with these,
                     # git status/log, the test suites (temp writes) and writes in the
                     # worktree worked; a write outside, the network, and a shell or Read
-                    # of a denied folder were all blocked. No command may leave it.
-                    "sandbox": {"enabled": True, "autoAllowBashIfSandboxed": True,
+                    # of a denied folder were all blocked. No command may leave it, and a
+                    # sandbox that cannot start fails the run instead of being switched
+                    # off (the 2026-10-27 review: without socat it was turned off).
+                    "sandbox": {"enabled": True, "failIfUnavailable": True,
+                                "autoAllowBashIfSandboxed": True,
                                 "allowUnsandboxedCommands": False},
                     "permissions": {"deny": ["Read({}/**)".format(p) for p in secret_dirs()]}}
         return cmd + ["--setting-sources", "", "--strict-mcp-config",
@@ -557,6 +560,13 @@ def read_text_quiet(path):
         return ""
 
 
+def sandbox_inactive(row, err_path):
+    """Claude Code says "Sandbox disabled" on stderr when it could not start the
+    sandbox (seen 2026-10-27, without socat)."""
+    return row["harness"] in ("claude", "claude-ollama") and \
+        "Sandbox disabled" in read_text_quiet(err_path)
+
+
 def pick_winner(tries, have_check):
     """Passing check, then fewest changed lines. With no check given, a try that
     exited 0 and changed something stands in for passing. A try that touched the
@@ -620,10 +630,8 @@ def cmd_run(args):
                                  stem + ".log", stem + ".stderr", row["timeout"])
         tokens_in, tokens_out, _ = read_output(row["harness"], stem + ".log", last)
         changed, touched = stage_and_diff(worktree, base, stem + ".patch")
-        # Claude Code says so on stderr when it could not start the sandbox; such a
-        # try's shell ran unconfined or not at all, so it can never win.
-        inactive = row["harness"] in ("claude", "claude-ollama") and \
-            "Sandbox disabled" in read_text_quiet(stem + ".stderr")
+        # A try whose shell ran unconfined or not at all can never win.
+        inactive = sandbox_inactive(row, stem + ".stderr")
         check_rc = None
         if args.check and confinable:  # for selection only: the host re-runs it
             check_rc, _ = run_process(
@@ -676,6 +684,7 @@ def cmd_review(args):
         raise UsageError("--workdir {} is not a folder".format(args.workdir))
     rows = role_rows(project, args.role)
     need_harness(rows)
+    need_sandbox(rows)
     brief = read_text(args.brief, "brief")
     diff = read_text(args.diff, "diff")
     run_id = args.run_id or time.strftime("%Y%m%d-%H%M%S")
@@ -697,16 +706,21 @@ def cmd_review(args):
         with open(stem + ".txt", "w", encoding="utf-8") as fh:
             fh.write(text)
         findings, verdict = parse_findings(text)
+        inactive = sandbox_inactive(row, stem + ".stderr")
+        if inactive:  # read-only by its tools, but not by the sandbox it was given
+            verdict = "unconfined"
         reviewers.append({"harness": row["harness"], "model": row["model"],
                           "exit": code, "wall_s": wall, "tokens_in": tokens_in,
                           "tokens_out": tokens_out, "raw": stem + ".txt",
-                          "log": stem + ".log", "findings": findings, "verdict": verdict})
+                          "log": stem + ".log", "findings": findings, "verdict": verdict,
+                          "sandbox_inactive": inactive})
     emit_result(os.path.join(run_dir, "review.json"),
                 {"run_id": run_id, "role": args.role, "reviewers": reviewers})
     for r in reviewers:
         log_dispatch(project, {
             "mode": "review", "run_id": run_id, "role": args.role, "harness": r["harness"],
-            "model": r["model"], "tries": 1, "won": r["exit"] == 0 and r["verdict"] != "unparsed",
+            "model": r["model"], "tries": 1,
+            "won": r["exit"] == 0 and r["verdict"] in ("findings", "none"),
             "timeouts": 1 if r["exit"] == "timeout" else 0, "wall_s": r["wall_s"]})
     return 0
 

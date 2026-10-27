@@ -239,8 +239,9 @@ def main():
     check("claude: full Bash for the implementer (the sandbox is the boundary)",
           after(argv, "--allowedTools") == "Read,Write,Edit,Glob,Grep,Bash", argv)
     sset = json.loads(after(argv, "--settings") or "{}")
-    check("claude: sandbox on, auto-allow inside it, no unsandboxed escape",
-          sset.get("sandbox") == {"enabled": True, "autoAllowBashIfSandboxed": True,
+    check("claude: sandbox on, fails closed, auto-allow inside it, no unsandboxed escape",
+          sset.get("sandbox") == {"enabled": True, "failIfUnavailable": True,
+                                  "autoAllowBashIfSandboxed": True,
                                   "allowUnsandboxedCommands": False}, sset)
     deny = sset.get("permissions", {}).get("deny", [])
     check("claude: credential folders unreadable (~/.ssh, ~/.claude, ~/.codex)",
@@ -559,6 +560,28 @@ def main():
     r = w.dispatch("review", "--role", "reviewer", "--brief", w.brief, "--diff", diff,
                    "--run-id", "v3", "--workdir", os.path.join(tmp, "nope"))
     check("review --workdir that is not a folder: usage error", r.returncode == 2, r.stderr)
+
+    # 9c — the reviewer's sandbox fails closed too
+    w.script({"say": "NO FINDINGS",
+              "stderr": "Sandbox disabled: sandbox is enabled but dependencies are missing\n"},
+             {"say": "NO FINDINGS"})
+    r = w.dispatch("review", "--role", "reviewer", "--brief", w.brief, "--diff", diff,
+                   "--run-id", "v4")
+    calls = w.calls()
+    rset = json.loads(after(calls[0]["argv"], "--settings") or "{}") if calls else {}
+    check("review claude: sandbox settings fail closed",
+          rset.get("sandbox", {}).get("failIfUnavailable") is True, rset)
+    path = os.path.join(w.proj, ".ai", "workflow-runs", "v4", "review.json")
+    revs = (json.loads(read(path)) if os.path.exists(path) else {}).get("reviewers", [{}, {}])
+    check("review: a reviewer that says Sandbox disabled is flagged unconfined",
+          revs[0].get("sandbox_inactive") is True and revs[0].get("verdict") == "unconfined"
+          and revs[1].get("sandbox_inactive") is False and revs[1].get("verdict") == "none",
+          revs)
+    w.script({"say": "NO FINDINGS"})
+    r = w.dispatch("review", "--role", "reviewer", "--brief", w.brief, "--diff", diff,
+                   "--run-id", "v5", env=w.env(PATH=os.pathsep.join([w.bin, gitonly])))
+    check("review: no bubblewrap/socat with a Claude reviewer is refused, none started",
+          r.returncode == 2 and "socat" in r.stderr and not w.calls(), (r.returncode, r.stderr))
 
     shutil.rmtree(tmp, ignore_errors=True)
     print("\n{} failure(s)".format(len(FAILS)) if FAILS else "\nALL PASS")
