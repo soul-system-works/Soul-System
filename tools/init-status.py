@@ -27,7 +27,7 @@ lookup (the tests do, so they never reach the network).
 
 Values the skill records, per key (the option `value` fields in QUESTIONS):
   import add|leave · vault-link link (recorded after linking; "Not now" is not
-  recorded) · record git|local|vault ·
+  recorded) · sidecar move|keep (move recorded after linking) · record git|local|vault ·
   public yes|no · names none|listed · hand-hooks yes|no ·
   history-scan `clean <sha12>`|`findings <sha12>`|declined ·
   stage prototype|pre-release|released|not-now · line-endings yes|no ·
@@ -58,8 +58,8 @@ GUARD = os.path.join(ROOT, "hooks", "secret-guard.py")
 ANSWERS = os.path.join(".soul", "init.md")
 HEADER = ("# /soul-init's remembered answers (tools/init-status.py).\n"
           "# Delete a line, or run `init-status.py revisit`, to be asked again.\n")
-KEYS = ("import", "vault-link", "record", "public", "names", "hand-hooks", "history-scan",
-        "stage", "layout", "line-endings", "mind", "existing-store")
+KEYS = ("import", "vault-link", "sidecar", "record", "public", "names", "hand-hooks",
+        "history-scan", "stage", "layout", "line-endings", "mind", "existing-store")
 RECORDABLE = tuple(k for k in KEYS if k not in ("layout", "mind"))
 IMPORTERS = ("CLAUDE.md", os.path.join(".claude", "CLAUDE.md"), "AGENTS.md")
 STORES = ("witness.md", "ideas.md")
@@ -70,7 +70,8 @@ HOOK_MARK = "Soul System secret check"
 LAYOUT_SKIP = (".soul/init.md", ".soul/private-names.txt")
 EXTRAS = ("hand-hooks", "history-scan", "line-endings")
 MAIN = ("record", "stage", "names")
-SINGLE = ("vault-link", "import", "existing-store", "layout")
+SINGLE = ("vault-link", "import", "existing-store", "layout", "sidecar")
+SIDECAR_FILES = ("handoff.md", "private-names.txt")  # what makes .soul/ worth a sidecar
 
 LINE_RE = re.compile(r"^([A-Za-z][\w-]*):[ \t]+(.*?)(?:[ \t]+(\d{4}-\d{2}-\d{2}))?[ \t]*$")
 IMPORT_RE = re.compile(r"^\s*(?:-\s+)?@(\S+)\s*$")
@@ -191,6 +192,19 @@ QUESTIONS = {
                             "it is linked"},
         ],
     },
+    "sidecar": {
+        "group": "single", "multi": False,
+        "text": "This project's record is committed here, but its .soul/ folder (handoff, "
+                "private-names list) is only on this disk. Move .soul/ into your vault?",
+        "options": [
+            {"value": "move", "label": "Move it to the vault",
+             "description": "copies .soul/ into your private vault, checks every file, and "
+                            "leaves a link here; the record files at the root stay committed"},
+            {"value": "keep", "label": "Keep it here",
+             "description": "nothing changes and this is not asked again (`/soul-init "
+                            "revisit sidecar` asks again)"},
+        ],
+    },
     "existing-store": {
         "group": "single", "multi": False,
         "text": "{path} looks like this project's record. Use it?",
@@ -294,7 +308,8 @@ def _line(key, value, date):
 # The values each key accepts (the option `value`s the skill records). A value outside
 # these would be stored, then read back as "not understood" and asked again forever.
 VALUES = {
-    "import": ("add", "leave"), "vault-link": ("link",), "record": ("git", "local", "vault"),
+    "import": ("add", "leave"), "vault-link": ("link",), "sidecar": ("move", "keep"),
+    "record": ("git", "local", "vault"),
     "public": ("yes", "no"), "names": ("none", "listed"), "hand-hooks": ("yes", "no"),
     "stage": ("prototype", "pre-release", "released", "not-now"),
     "line-endings": ("yes", "no"), "existing-store": ("use", "no"),
@@ -480,6 +495,33 @@ def check_vault_link(c):
         return _item("vault-link", "ask", detail=line)
     return _item("vault-link", "none", "not linked", None, "inferred",
                  "A vault is named ({}); this project's record is not in it.".format(c["vault"]))
+
+
+def check_sidecar(c):
+    """Offer `vault.py link --sidecar` only where it fits (the owner's call, v3.6.3): the
+    record is committed at the root, a real .soul/ beside it holds only private files
+    (handoff, private-names list) kept on this disk alone, and this machine's vault is
+    here with no record for the project. Anything else is a different move, or none."""
+    p = c["project"]
+    soul = os.path.join(p, ".soul")
+    if os.path.islink(soul) or not os.path.isdir(soul) or c["where"] != 0 or not c["git"]:
+        return None
+    if vaultlib.check(p)["vault_has"] or vaultlib._holds_record(soul):
+        return None
+    # Narrow (the owner's call): only a .soul/ holding a private file worth keeping. One
+    # holding just the gate's log and init.md has nothing the vault would add.
+    if not any(os.path.isfile(os.path.join(soul, n)) for n in SIDECAR_FILES):
+        return None
+    root = [s for s in c["stores"] if os.sep not in s]
+    tracked = set((_git(p, "ls-files", "--", *root) or "").splitlines()) if root else set()
+    if not root or not tracked.issuperset(root) or _git(p, "ls-files", "--", ".soul"):
+        return None
+    rec = c["answers"].get("sidecar")
+    if rec and rec[0] == "keep":
+        return _recorded("sidecar", rec, detail="You chose to keep .soul/ on this disk.")
+    return _item("sidecar", "ask", detail="The record stores ({}) are tracked; .soul/ is not, "
+                 "and the vault at {} holds no record for this project."
+                 .format(", ".join(root), c["vault"]))
 
 
 NEITHER = ("The record stores are neither tracked nor ignored — one `git add -A` would "
@@ -879,8 +921,8 @@ def render_question(key, public=None, vault=None, path=None, n=None, members=())
     if key == "stage":  # how settled a project is only the owner knows
         rec = None
     multi = q["multi"]
-    if key == "public":  # only the owner knows what the repo is, or will be
-        rec = None
+    if key in ("public", "sidecar"):  # only the owner knows what the repo is, or will be;
+        rec = None                     # whether .soul/ goes to the vault is theirs (v3.6.3)
     if key == "extras":
         # Hooks and the scan are offers, not defaults (skill: hand-hooks). Line endings
         # is recommended: it is offered only when the repo has the problem, and the
@@ -923,7 +965,7 @@ def status(project, force=()):
     vault_item = check_vault_link(c)
     public = check_public(c)
     found = {
-        "import": check_import(c), "vault-link": vault_item,
+        "import": check_import(c), "vault-link": vault_item, "sidecar": check_sidecar(c),
         "record": check_record(c, vault_item, public["value"]), "public": public,
         "names": check_names(c), "hand-hooks": check_hand_hooks(c),
         "history-scan": check_history_scan(c), "stage": check_stage(c),

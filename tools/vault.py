@@ -26,6 +26,12 @@ for a project whose record is itself public, as Soul-System's is (SOUL-223). The
 records `sidecar: true` in the vault's projects/<key>/project.md, so a fresh clone of a
 sidecar project re-links without the flag, and `check` reads the layout from there.
 
+A real .soul/ holding only the completion gate's events.jsonl (or nothing) is not a
+second record: the gate writes that log by itself in a fresh clone before anyone
+re-links it. `check` reads it as not linked, and `link` merges the log into the
+vault's (copy, or append the missing lines), checks every line arrived, and only then
+removes the local folder and links. Anything else in .soul/ is still TWO COPIES.
+
 One vault per machine: the machine file ($XDG_CONFIG_HOME or ~/.config, then
 soul/vault) holds one line, the vault's folder. The boundary is where the vault
 lives, so the one label rule is enforced here: `restricted` is refused.
@@ -224,6 +230,61 @@ def _real_soul(project):
     return os.path.isdir(soul) and not os.path.islink(soul)
 
 
+EVENT_LOG = "events.jsonl"
+
+
+def _only_event_log(project):
+    """True when the project's real .soul/ holds nothing but the completion gate's
+    events.jsonl, or nothing at all. The gate writes that log on its own, so a fresh
+    clone not yet re-linked grows one before /soul-init runs; it is no second record,
+    and reading it as one made check say TWO COPIES and link refuse (v3.6.3)."""
+    soul = os.path.join(project, ".soul")
+    if not _real_soul(project):
+        return False
+    try:
+        names = os.listdir(soul)
+    except OSError:
+        return False
+    log = os.path.join(soul, EVENT_LOG)
+    return all(n == EVENT_LOG for n in names) and (
+        not names or (os.path.isfile(log) and not os.path.islink(log)))
+
+
+def _second_record(project):
+    """A real .soul/ that is a record of its own, not just the gate's event log."""
+    return _real_soul(project) and not _only_event_log(project)
+
+
+def _lines(path):
+    """The non-blank lines of a file as bytes, in order, without their newline."""
+    with open(path, "rb") as f:
+        return [ln for ln in f.read().split(b"\n") if ln.strip()]
+
+
+def _merge_event_log(local, theirs):
+    """Fold the local gate log into the vault's: copy it whole when the vault has none,
+    else append the local lines it lacks, in order. Raises unless every local line is
+    in the vault's file afterwards — the local log is removed only after this passes."""
+    if not os.path.exists(theirs):
+        shutil.copyfile(local, theirs)
+        if _file_hash(local) != _file_hash(theirs):
+            raise VaultError("the event log copied into the vault did not match — "
+                             ".soul/ untouched")
+        return
+    have = set(_lines(theirs))
+    new = [ln for ln in _lines(local) if ln not in have]
+    if new:
+        with open(theirs, "rb") as f:
+            text = f.read()
+        with open(theirs, "ab") as f:
+            f.write((b"" if not text or text.endswith(b"\n") else b"\n")
+                    + b"".join(ln + b"\n" for ln in new))
+    missing = set(_lines(local)) - set(_lines(theirs))
+    if missing:
+        raise VaultError("{} event-log line(s) did not reach {} — .soul/ untouched"
+                         .format(len(missing), theirs))
+
+
 def _held_records(path):
     """The record stores (witness.md, ideas.md, ...) that sit directly in `path`."""
     return [n for n in ROOT_STORES if os.path.isfile(os.path.join(path, n))]
@@ -268,12 +329,16 @@ def _tree_hashes(root):
             if os.path.islink(p):
                 out[rel] = "link:" + os.readlink(p)
             elif os.path.isfile(p):
-                h = hashlib.sha256()
-                with open(p, "rb") as f:
-                    for chunk in iter(lambda: f.read(1 << 20), b""):
-                        h.update(chunk)
-                out[rel] = h.hexdigest()
+                out[rel] = _file_hash(p)
     return out
+
+
+def _file_hash(path):
+    h = hashlib.sha256()
+    with open(path, "rb") as f:
+        for chunk in iter(lambda: f.read(1 << 20), b""):
+            h.update(chunk)
+    return h.hexdigest()
 
 
 def _is_wsl():
@@ -447,8 +512,9 @@ def link(project, key, label, contributes=(), vault=None, dry_run=False, sidecar
                              "{!r} — clone the vault there, or name the right key".format(current, key))
     elif os.path.isdir(target):
         # A clash is a second record, not a root record beside a sidecar's vault folder
-        # (a fresh clone of a sidecar project re-links with no flag).
-        if _real_soul(project) or (_holds_record(project) and (
+        # (a fresh clone of a sidecar project re-links with no flag), and not a .soul/
+        # holding only the gate's event log (merged into the vault's below).
+        if _second_record(project) or (_holds_record(project) and (
                 not _is_sidecar(home) or _holds_record(target))):
             raise VaultError("the vault already holds a record for {!r} and this project has "
                              "its own — merging two records is the owner's call; nothing "
@@ -523,6 +589,25 @@ def link(project, key, label, contributes=(), vault=None, dry_run=False, sidecar
             say("remove the broken .soul link")
             if not dry_run:
                 os.unlink(soul)
+        if mode == "relink" and _real_soul(project):  # only the gate's log (or empty)
+            log = os.path.join(soul, EVENT_LOG)
+            if os.path.isfile(log):
+                say("merge .soul/{} ({} line(s)) into {} — {}", EVENT_LOG, len(_lines(log)),
+                    os.path.join(target, EVENT_LOG), "appending the lines it lacks"
+                    if os.path.exists(os.path.join(target, EVENT_LOG)) else "a copy")
+            say("remove the local .soul/ ({})", "it held only the gate's event log"
+                if os.path.isfile(log) else "it was empty")
+            if not dry_run:
+                # Merge, check every line arrived, and only then remove the local copy.
+                if os.path.isfile(log):
+                    _merge_event_log(log, os.path.join(target, EVENT_LOG))
+                    os.remove(log)
+                try:
+                    os.rmdir(soul)
+                except OSError:  # something new appeared in .soul/ meanwhile
+                    raise VaultError("the event log is merged into the vault, but .soul/ "
+                                     "now holds {} — not linked; run check and compare"
+                                     .format(", ".join(sorted(os.listdir(soul)))))
         say("link .soul → {} ({}) — the vault already holds this record", target, kind)
         if not dry_run:
             _make_link(kind, soul, target)
@@ -621,6 +706,8 @@ def index(vault):
         rows.append("| [{0}](projects/{0}/project.md) | {1} | {2} | {3} | {4} |".format(
             key, label, cell(fm.get("contributes", "").strip("[]")),
             "yes" if os.path.isdir(soul) else "no",
+            # A sidecar's witness is tracked at the project root, out of the vault's sight.
+            "in the project" if _is_sidecar(os.path.join(projects, key)) else
             "{} ({})".format(wid, when) if wid and when else (wid or when or "—")))
     text = ("# Projects\n\nGenerated by `tools/vault.py index` — not written by hand.\n\n"
             + ("| Project | Label | Contributes to | Soul | Latest witness |\n"
@@ -670,7 +757,8 @@ def check(project):
         if key and os.path.isdir(os.path.join(vault, "projects", key, "soul")):
             out["vault_has"] = key
             out["target"] = os.path.join(vault, "projects", key, "soul")
-            if _real_soul(project) or (_holds_record(project) and (
+            # A .soul/ holding only the gate's event log is not a second record.
+            if _second_record(project) or (_holds_record(project) and (
                     not _is_sidecar(os.path.join(vault, "projects", key))
                     or _holds_record(out["target"]))):
                 out["state"] = "two-copies"

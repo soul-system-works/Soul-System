@@ -620,6 +620,105 @@ def main():
           by["import"]["action"] == "repair" and ["import"] not in st["rounds"],
           (by["import"], st["rounds"]))
 
+    # 30 — a fresh clone the completion gate wrote .soul/events.jsonl into: the re-link is
+    #      asked, not a TWO COPIES stop (v3.6.3); anything more in .soul/ still stops
+    write(os.path.join(vroot, "projects", "clone2", "soul", "witness.md"), "# W\n")
+    p30 = repo(tmp, "clone2", {"README.md": "x\n"})
+    write(os.path.join(p30, ".soul", "events.jsonl"), '{"event": "x"}\n')
+    st, by = status(envv, p30)
+    check("gate log only in .soul/, vault holds the record: vault-link asks, alone",
+          by.get("vault-link", {}).get("action") == "ask" and st["rounds"] == [["vault-link"]],
+          (by.get("vault-link"), st["rounds"]))
+    write(os.path.join(p30, ".soul", "handoff.md"), "# H\n")
+    st, by = status(envv, p30)
+    check("gate log plus handoff.md: vault-link stops on TWO COPIES",
+          by.get("vault-link", {}).get("action") == "stop"
+          and by["vault-link"]["value"] == "two-copies", by.get("vault-link"))
+
+    # 31 — the sidecar offer (v3.6.3): the record is tracked at the root, the private .soul/
+    #      is only on this disk, and this machine's vault holds no record for the project →
+    #      asked alone; any one condition off → not asked; a recorded keep is final
+    def sidecar_repo(name, commit=True):
+        p = repo(tmp, name, {"CLAUDE.md": IMPORT, "witness.md": "# W\n", "ideas.md": "# I\n",
+                             ".gitignore": ".soul/\n"}, commit=commit)
+        write(os.path.join(p, ".soul", "handoff.md"), "# H\n")
+        return p
+
+    def sidecar_asked(env_, p):
+        st_, by_ = status(env_, p)
+        return by_.get("sidecar", {}).get("action") == "ask", st_, by_
+
+    p31 = sidecar_repo("sc")
+    asked, st, by = sidecar_asked(envv, p31)
+    q = (by.get("sidecar") or {}).get("question") or {}
+    check("sidecar fits: asked in a round of its own", asked and ["sidecar"] in st["rounds"]
+          and q.get("group") == "single" and q.get("multi") is False, (by.get("sidecar"),
+                                                                      st["rounds"]))
+    check("sidecar question: no option recommended", "recommended" in q
+          and q["recommended"] is None, q)
+    check("sidecar question: fixed wording",
+          q.get("text") == "This project's record is committed here, but its .soul/ folder "
+          "(handoff, private-names list) is only on this disk. Move .soul/ into your vault?"
+          and [(o["value"], o["label"], o["description"]) for o in q.get("options", [])] == [
+              ("move", "Move it to the vault", "copies .soul/ into your private vault, checks "
+               "every file, and leaves a link here; the record files at the root stay "
+               "committed"),
+              ("keep", "Keep it here", "nothing changes and this is not asked again "
+               "(`/soul-init revisit sidecar` asks again)")], q)
+    asked, _, _ = sidecar_asked(env, p31)
+    check("sidecar: not asked when this machine names no vault", not asked)
+    p31b = sidecar_repo("sc-link")
+    shutil.rmtree(os.path.join(p31b, ".soul"))
+    write(os.path.join(tmp, "sc-elsewhere", "handoff.md"), "# H\n")
+    os.symlink(os.path.join(tmp, "sc-elsewhere"), os.path.join(p31b, ".soul"))
+    asked, _, by = sidecar_asked(envv, p31b)
+    check("sidecar: not asked when .soul is a link", not asked, by.get("sidecar"))
+    p31c = sidecar_repo("sc-untracked", commit=False)
+    asked, _, by = sidecar_asked(envv, p31c)
+    check("sidecar: not asked when the root stores are untracked", not asked, by.get("sidecar"))
+    p31d = sidecar_repo("sc-store")
+    write(os.path.join(p31d, ".soul", "mind.md"), "# M\n")
+    asked, _, by = sidecar_asked(envv, p31d)
+    check("sidecar: not asked when .soul/ holds a record store", not asked, by.get("sidecar"))
+    p31e = sidecar_repo("sc-tracked")
+    write(os.path.join(p31e, ".soul", "notes.md"), "n\n")
+    git(p31e, "add", "-f", ".soul/notes.md")
+    git(p31e, "commit", "-qm", "notes")
+    asked, _, by = sidecar_asked(envv, p31e)
+    check("sidecar: not asked when .soul/ has a tracked file", not asked, by.get("sidecar"))
+    p31f = sidecar_repo("sc-held")
+    write(os.path.join(vroot, "projects", "sc-held", "soul", "handoff.md"), "# H\n")
+    asked, _, by = sidecar_asked(envv, p31f)
+    check("sidecar: not asked when the vault already holds a record for it", not asked,
+          by.get("sidecar"))
+    p31g = sidecar_repo("sc-nothing-private")
+    os.remove(os.path.join(p31g, ".soul", "handoff.md"))
+    write(os.path.join(p31g, ".soul", "events.jsonl"), '{"event": "x"}\n')
+    write(os.path.join(p31g, ".soul", "init.md"), "names:         none         2026-10-27\n")
+    asked, _, by = sidecar_asked(envv, p31g)
+    check("sidecar: not asked when .soul/ holds only events.jsonl and init.md", not asked,
+          by.get("sidecar"))
+    write(os.path.join(p31g, ".soul", "private-names.txt"), "Acme\n")
+    asked, _, by = sidecar_asked(envv, p31g)
+    check("sidecar: asked when .soul/ holds private-names.txt (no handoff.md)", asked,
+          by.get("sidecar"))
+    r = run(envv, "record", p31, "sidecar", "move")
+    asked, _, by = sidecar_asked(envv, p31)
+    check("sidecar: a recorded move while .soul/ is still a real folder asks again",
+          r.returncode == 0 and asked, (r.stderr, by.get("sidecar")))
+    r = run(envv, "record", p31, "sidecar", "keep")
+    asked, st, by = sidecar_asked(envv, p31)
+    check("sidecar: a recorded keep is final — none, from the record", r.returncode == 0
+          and not asked and by.get("sidecar", {}).get("action") == "none"
+          and by["sidecar"]["source"] == "recorded" and ["sidecar"] not in st["rounds"],
+          (r.stderr, by.get("sidecar")))
+    r = run(envv, "record", p31, "sidecar", "maybe")
+    check("sidecar: an unknown value is refused, naming move, keep", r.returncode == 2
+          and "move, keep" in r.stderr, r.stderr)
+    run(envv, "revisit", p31, "sidecar")
+    asked, _, by = sidecar_asked(envv, p31)
+    check("sidecar: revisit asks again", asked, by.get("sidecar"))
+
     shutil.rmtree(tmp, ignore_errors=True)
     print("\n{} failure(s)".format(len(FAILS)) if FAILS else "\nALL PASS")
     return 1 if FAILS else 0

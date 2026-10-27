@@ -92,10 +92,11 @@ or to report a problem. The tool calls already show the work.
    `label` and `description`, **word for word**; add "(Recommended)" only to the
    option at index `recommended` (null: none); `multi: true` allows several. Never
    reword, add or drop an option (one exception: `vault-link` below). After a
-   single-question round (`vault-link`, `import`, `existing-store`, `public`), record
-   the answer and run `status` again before the next round — those answers change the
-   later questions (a public repo changes the record and names wording). *Link it* is
-   carried out at once (link, then record `link`), and the new status may list
+   single-question round (`vault-link`, `import`, `existing-store`, `public`,
+   `sidecar`), record the answer and run `status` again before the next round — those
+   answers change the later questions (a public repo changes the record and names
+   wording). *Link it* is carried out at once (link, then record `link`), and so is
+   `sidecar`'s *Move it to the vault* (link, then record `move`); the new status may list
    repairs from answers the vault already holds; they join step 4. **`vault-link`
    *Not now* ends the run**: the vault holds this project's record, so until it is
    linked nothing else can be set up here (the tool lists no other round and `record`
@@ -250,6 +251,17 @@ if line endings were a yes, fix and commit there too.
 **`link` refuses** (exit 2, nothing changed): the record stayed — ask the record
 question again without the vault; a record must never be left neither tracked nor
 ignored, where one `git add -A` commits it.
+
+**`sidecar`** — asked only when the record files are committed at the project root
+and a `.soul/` beside them holding `handoff.md` or `private-names.txt` exists only on
+this disk, with this machine's vault present and holding nothing for the project.
+No option is recommended: whether it moves is the owner's call. *Move it to
+the vault* moves `.soul/` alone; the root record stays tracked (SOUL-223, [ADR
+0001](../../docs/adr/0001-soul-vault.md)). Ask label, contributes and key exactly as
+for the vault move, run `vault.py link . --key <key> --label <label> --contributes
+<tags> --sidecar --dry-run`, show its lines, and on the owner's yes run it without
+`--dry-run`. Record `move` only after the link succeeds (like `vault-link`). *Keep
+it here* is recorded `keep` and is final until `/soul-init revisit sidecar`.
 
 **`names`** — *Type them*: write the names, one per line (`Name => TOKEN` suggests
 a replacement), to `.soul/private-names.txt`; it is gitignored with the rest of
