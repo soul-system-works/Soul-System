@@ -9340,3 +9340,21 @@ CONSEQUENCE:  v3.6.2. Until the installed plugin is updated past 3.6.1, its
 STATUS:       Closed. After the Body restarted on 3.6.2 (2026-10-27), the
               SessionStart line read the sidecar correctly — no TWO COPIES.
 ```
+
+```
+ID:           SOUL-226
+WHEN:         2026-10-27 / Soul-System session, after the Body restarted on 3.6.2
+WHERE:        the pre-push name-map scan (mind 6c); the session scratchpad
+WHAT:         A push ran without its name-map scan. The scan script had been
+              written to the session scratchpad, which the restart replaced; the
+              command chained `python3 scan.py … | tail -2 && git push`, and a
+              pipeline's exit status is its last command's, so the missing script
+              (exit 2) still let `tail` succeed and the push run. Scanned straight
+              after: the pushed commit (a STATUS line in SOUL-225) holds no
+              NAME-MAP name in its diff or message.
+TYPE:         witness (process slip, caught by the session)
+CONSEQUENCE:  Run the scan as its own command and read its result before pushing;
+              never gate a push on a piped exit code (mind 6d names the same trap
+              for fetch probes). Candidate for mind 6(c) at the next distill.
+STATUS:       Closed — unconfirmed — owner to ratify
+```
