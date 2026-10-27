@@ -436,6 +436,21 @@ def main():
           and read(os.path.join(w.proj, "app.txt")) == "BUG\n",
           git(w.proj, "status", "--porcelain").stdout)
 
+    # 9b — --workdir: a candidate's reviewers read the candidate's worktree
+    cand = w.wt("r10", 1)
+    w.script({"say": "NO FINDINGS"}, {"say": "NO FINDINGS"})
+    r = w.dispatch("review", "--role", "reviewer", "--brief", w.brief, "--diff", diff,
+                   "--run-id", "v2", "--workdir", cand)
+    calls = w.calls()
+    check("review --workdir: both reviewers read that folder, not the project",
+          r.returncode == 0 and len(calls) == 2
+          and os.path.realpath(calls[0]["cwd"]) == os.path.realpath(cand)
+          and os.path.realpath(after(calls[1]["argv"], "-C")) == os.path.realpath(cand),
+          [(c["cwd"], after(c["argv"], "-C")) for c in calls] or r.stderr)
+    r = w.dispatch("review", "--role", "reviewer", "--brief", w.brief, "--diff", diff,
+                   "--run-id", "v3", "--workdir", os.path.join(tmp, "nope"))
+    check("review --workdir that is not a folder: usage error", r.returncode == 2, r.stderr)
+
     shutil.rmtree(tmp, ignore_errors=True)
     print("\n{} failure(s)".format(len(FAILS)) if FAILS else "\nALL PASS")
     return 1 if FAILS else 0

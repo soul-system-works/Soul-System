@@ -630,6 +630,12 @@ def parse_findings(text):
 
 def cmd_review(args):
     project = project_dir(args.project, need_git=False)
+    # A candidate's reviewers must read the candidate, not the project's own checkout:
+    # the first live review (2026-10-27) would have read the host branch's files
+    # beside a diff written against another base.
+    workdir = os.path.realpath(args.workdir) if args.workdir else project
+    if not os.path.isdir(workdir):
+        raise UsageError("--workdir {} is not a folder".format(args.workdir))
     rows = role_rows(project, args.role)
     need_harness(rows)
     brief = read_text(args.brief, "brief")
@@ -646,8 +652,8 @@ def cmd_review(args):
     for j, row in enumerate(rows, 1):  # each reviewer once, not a ladder
         stem = os.path.join(run_dir, "review-{}-{}".format(j, row["harness"]))
         last = stem + ".last.txt"
-        code, wall = run_process(worker_command(row, project, "review", last_file=last),
-                                 project, worker_env(row["harness"]), prompt,
+        code, wall = run_process(worker_command(row, workdir, "review", last_file=last),
+                                 workdir, worker_env(row["harness"]), prompt,
                                  stem + ".log", stem + ".stderr", row["timeout"])
         tokens_in, tokens_out, text = read_output(row["harness"], stem + ".log", last)
         with open(stem + ".txt", "w", encoding="utf-8") as fh:
@@ -718,6 +724,8 @@ def main():
     p.add_argument("--brief", required=True, help="file holding the brief")
     p.add_argument("--diff", required=True, help="file holding the diff to review")
     p.add_argument("--project", help=here)
+    p.add_argument("--workdir", help="folder the reviewers read (default: the project); "
+                   "for a build-verify candidate, its winner's worktree")
     p.add_argument("--run-id", help="names the run folder (default: a timestamp)")
     p = sub.add_parser("clean", help="remove a run's worktrees and branches")
     p.add_argument("--run-id", required=True)
