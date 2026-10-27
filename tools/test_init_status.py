@@ -620,6 +620,21 @@ def main():
           by["import"]["action"] == "repair" and ["import"] not in st["rounds"],
           (by["import"], st["rounds"]))
 
+    # 30 — a fresh clone the completion gate wrote .soul/events.jsonl into: the re-link is
+    #      asked, not a TWO COPIES stop (v3.6.3); anything more in .soul/ still stops
+    write(os.path.join(vroot, "projects", "clone2", "soul", "witness.md"), "# W\n")
+    p30 = repo(tmp, "clone2", {"README.md": "x\n"})
+    write(os.path.join(p30, ".soul", "events.jsonl"), '{"event": "x"}\n')
+    st, by = status(envv, p30)
+    check("gate log only in .soul/, vault holds the record: vault-link asks, alone",
+          by.get("vault-link", {}).get("action") == "ask" and st["rounds"] == [["vault-link"]],
+          (by.get("vault-link"), st["rounds"]))
+    write(os.path.join(p30, ".soul", "handoff.md"), "# H\n")
+    st, by = status(envv, p30)
+    check("gate log plus handoff.md: vault-link stops on TWO COPIES",
+          by.get("vault-link", {}).get("action") == "stop"
+          and by["vault-link"]["value"] == "two-copies", by.get("vault-link"))
+
     shutil.rmtree(tmp, ignore_errors=True)
     print("\n{} failure(s)".format(len(FAILS)) if FAILS else "\nALL PASS")
     return 1 if FAILS else 0

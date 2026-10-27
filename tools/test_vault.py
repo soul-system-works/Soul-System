@@ -481,6 +481,101 @@ def main():
     check("clone with a root witness.md, vault holds the record: link refused",
           r.returncode == 2 and not os.path.lexists(os.path.join(a3, ".soul")), r.stderr)
 
+    # 8 — a fresh clone the completion gate has already written .soul/events.jsonl into:
+    #     that log alone is no second record. check is not-linked; link merges the log into
+    #     the vault's, checks every line arrived, and only then swaps in the link (v3.6.3).
+    #     The vault itself gitignores events.jsonl, so a fresh vault clone has none.
+    peek = lambda p: read(p) if os.path.isfile(p) else None
+    ev = os.path.join(target, "events.jsonl")
+    check("fixture: the vault's alpha record has no events.jsonl", not os.path.exists(ev))
+    e1 = '{"event": "one"}\n{"event": "two"}\n'
+    a4 = project(tmp, "alpha-clone4", {".soul/events.jsonl": e1, "README.md": "x\n"},
+                 remote="https://example.com/me/alpha", commit=True)
+    r = run(env, "check", a4, "--json")
+    st = json.loads(r.stdout or "{}")
+    check("gate log only in .soul/: check is not-linked with the vault's record named, exit 0",
+          r.returncode == 0 and st.get("state") == "not-linked" and st.get("vault_has") == "alpha",
+          r.stdout + r.stderr)
+    r = run(env, "link", a4, "--key", "alpha", "--label", "private", "--dry-run")
+    check("gate log only: dry run says it would merge, and changes nothing",
+          r.returncode == 0 and "would merge" in r.stdout and "events.jsonl" in r.stdout
+          and os.path.isdir(os.path.join(a4, ".soul"))
+          and not os.path.islink(os.path.join(a4, ".soul"))
+          and peek(os.path.join(a4, ".soul", "events.jsonl")) == e1 and not os.path.exists(ev),
+          r.stdout + r.stderr)
+    r = run(env, "link", a4, "--key", "alpha", "--label", "private")
+    check("gate log only: link succeeds, .soul is now the link", r.returncode == 0
+          and os.path.islink(os.path.join(a4, ".soul"))
+          and os.path.realpath(os.path.join(a4, ".soul")) == os.path.realpath(target),
+          r.stdout + r.stderr)
+    check("gate log only, vault had none: the log is copied whole into the vault",
+          os.path.isfile(ev) and peek(ev) == e1
+          and peek(os.path.join(a4, ".soul", "events.jsonl")) == e1
+          and "SOUL-7" in (peek(os.path.join(a4, ".soul", "witness.md")) or ""))
+    a5 = project(tmp, "alpha-clone5", {".soul/events.jsonl": '{"event": "two"}\n'
+                                       '{"event": "three"}\n', "README.md": "x\n"},
+                 remote="https://example.com/me/alpha")
+    r = run(env, "link", a5, "--key", "alpha", "--label", "private")
+    check("gate log only, vault has one: only the new lines are appended, in order",
+          r.returncode == 0 and os.path.islink(os.path.join(a5, ".soul"))
+          and peek(ev) == e1 + '{"event": "three"}\n', r.stdout + r.stderr + repr(peek(ev)))
+    a6 = project(tmp, "alpha-clone6", {"README.md": "x\n"}, remote="https://example.com/me/alpha")
+    os.makedirs(os.path.join(a6, ".soul"))
+    st = json.loads(run(env, "check", a6, "--json").stdout or "{}")
+    r = run(env, "link", a6, "--key", "alpha", "--label", "private")
+    check("an empty .soul/: not TWO COPIES, and link replaces it with the link",
+          st.get("state") == "not-linked" and r.returncode == 0
+          and os.path.islink(os.path.join(a6, ".soul")), json.dumps(st) + r.stdout + r.stderr)
+
+    # The fence stays: a .soul/ holding anything beside the log is a second record
+    a7 = project(tmp, "alpha-clone7", {".soul/events.jsonl": e1, ".soul/handoff.md": "# H\n",
+                                       "README.md": "x\n"}, remote="https://example.com/me/alpha")
+    r = run(env, "check", a7, "--json")
+    st = json.loads(r.stdout or "{}")
+    check("gate log plus handoff.md: still TWO COPIES", r.returncode == 1
+          and st.get("state") == "two-copies", r.stdout)
+    before = peek(ev)
+    r = run(env, "link", a7, "--key", "alpha", "--label", "private")
+    check("gate log plus handoff.md: link refused, nothing changed or merged", r.returncode == 2
+          and os.path.isdir(os.path.join(a7, ".soul"))
+          and not os.path.islink(os.path.join(a7, ".soul"))
+          and read(os.path.join(a7, ".soul", "handoff.md")) == "# H\n" and peek(ev) == before,
+          r.stdout + r.stderr)
+
+    # Sidecar layout: the same, with the record tracked at the root
+    zev = '{"event": "z"}\n'
+    z3 = project(tmp, "zeta-clone3", dict(roots, **{".soul/events.jsonl": zev}),
+                 remote="https://example.com/me/zeta")
+    git(z3, "add", *roots)
+    git(z3, "commit", "-qm", "init")
+    r = run(env, "check", z3, "--json")
+    st = json.loads(r.stdout or "{}")
+    check("sidecar clone with the gate log: not-linked, not TWO COPIES", r.returncode == 0
+          and st.get("state") == "not-linked" and st.get("vault_has") == "zeta", r.stdout)
+    r = run(env, "link", z3, "--key", "zeta", "--label", "private")
+    check("sidecar clone with the gate log: re-links without --sidecar, log merged",
+          r.returncode == 0 and os.path.islink(os.path.join(z3, ".soul"))
+          and peek(os.path.join(zt, "events.jsonl")) == zev
+          and peek(os.path.join(z3, ".soul", "handoff.md")) == "# Handoff\n"
+          and read(os.path.join(z3, "witness.md")) == roots["witness.md"], r.stdout + r.stderr)
+    z4 = project(tmp, "zeta-clone4", dict(roots, **{".soul/events.jsonl": zev,
+                                                     ".soul/init.md": "record: git\n"}),
+                 remote="https://example.com/me/zeta")
+    r = run(env, "check", z4, "--json")
+    st = json.loads(r.stdout or "{}")
+    r2 = run(env, "link", z4, "--key", "zeta", "--label", "private")
+    check("sidecar clone, .soul/ holds init.md too: TWO COPIES, link refused",
+          st.get("state") == "two-copies" and r2.returncode == 2
+          and not os.path.islink(os.path.join(z4, ".soul")), r.stdout + r2.stderr)
+
+    # 9 — the index: a sidecar's witness is at the project root, not in the vault
+    r = run(env, "index")
+    idx = read(os.path.join(vault, "index.md"))
+    check("index: a sidecar row says its witness is in the project",
+          "| [zeta](projects/zeta/project.md) | private |  | yes | in the project |" in idx, idx)
+    check("index: a non-sidecar row with no witness still shows —",
+          "| [notes](projects/notes/project.md) | private | research | no | — |" in idx, idx)
+
     shutil.rmtree(tmp, ignore_errors=True)
     print("\n{} failure(s)".format(len(FAILS)) if FAILS else "\nALL PASS")
     return 1 if FAILS else 0
