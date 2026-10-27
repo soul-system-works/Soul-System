@@ -247,6 +247,38 @@ def claude_md_excludes(workdir):
     return list(dict.fromkeys(paths))
 
 
+SECRET_DIRS = (".ssh", ".gnupg", ".aws", ".config/gh", ".claude", ".codex", ".config/soul")
+
+
+def secret_dirs():
+    """Folders a Claude worker may not read: credentials and the owner's private
+    record. The sandbox limits writes and network, but reads are wide by default.
+    `~/x` and `//abs/path` are Claude Code's permission-rule spellings."""
+    out = ["~/" + d for d in SECRET_DIRS]
+    try:
+        import vault  # tools/vault.py — the vault holds every vaulted project's record
+        v = vault.registered_vault()
+    except Exception:
+        v = None
+    if v:
+        out.append("/" + os.path.realpath(os.path.expanduser(v)))
+    return out
+
+
+def need_sandbox(rows):
+    """A Claude worker without its sandbox would run its shell unconfined — refuse.
+    On Linux the sandbox needs bubblewrap and socat; without socat Claude Code turns
+    the sandbox off (seen 2026-10-27). macOS has it built in."""
+    if not sys.platform.startswith("linux"):
+        return
+    if any(r["harness"] in ("claude", "claude-ollama") for r in rows):
+        missing = [t for t in ("bwrap", "socat") if not shutil.which(t)]
+        if missing:
+            raise UsageError("a Claude worker runs inside Claude Code's sandbox, which needs "
+                             "{} here — install it (e.g. `sudo apt install bubblewrap socat`)"
+                             .format(" and ".join(missing)))
+
+
 def worker_env(harness):
     env = dict(os.environ)
     # Step 1 isolation probe, 2026-10-27 (v3.7.0 plan, "Step 1 result"): a host that
@@ -269,10 +301,12 @@ def worker_command(row, workdir, mode, check=None, last_file=None):
     harness, model = row["harness"], row["model"]
     if harness in ("claude", "claude-ollama"):
         if mode == "run":
-            # The check is the only Bash the worker gets. acceptEdits alone blocked
-            # the worker's own check (SOUL-200); the prefix form let it run (SOUL-201).
-            tools = "Read,Write,Edit,Glob,Grep" + (",Bash({} *)".format(check) if check else "")
-            permission = "acceptEdits"
+            # Full Bash, inside the OS sandbox below. "The check is the only Bash" was
+            # the first design; the v3.6.3 replay (2026-10-27) showed it too tight — the
+            # worker could not run one test file to see it fail, nor `git status`, and
+            # stopped with five denials. The Body chose the sandbox over an unsandboxed
+            # shell or an allow list (SOUL-I080).
+            tools, permission = "Read,Write,Edit,Glob,Grep,Bash", "acceptEdits"
         else:
             tools, permission = "Read,Glob,Grep", "plan"
         cmd = ["claude", "-p", "--output-format", "json", "--permission-mode", permission,
@@ -285,7 +319,14 @@ def worker_command(row, workdir, mode, check=None, last_file=None):
         # them it answered NONE to all, on both the Anthropic and the Ollama route.
         # Only the worktree's top two CLAUDE.md levels were probed; the rest of the
         # exclude list is the same mechanism applied further.
-        settings = {"claudeMdExcludes": claude_md_excludes(workdir), "autoMemoryEnabled": False}
+        settings = {"claudeMdExcludes": claude_md_excludes(workdir), "autoMemoryEnabled": False,
+                    # Sandbox probe, 2026-10-27 (v3.7.0 plan, "Sandbox probe"): with these,
+                    # git status/log, the test suites (temp writes) and writes in the
+                    # worktree worked; a write outside, the network, and a shell or Read
+                    # of a denied folder were all blocked. No command may leave it.
+                    "sandbox": {"enabled": True, "autoAllowBashIfSandboxed": True,
+                                "allowUnsandboxedCommands": False},
+                    "permissions": {"deny": ["Read({}/**)".format(p) for p in secret_dirs()]}}
         return cmd + ["--setting-sources", "", "--strict-mcp-config",
                       "--settings", json.dumps(settings)]
     # codex / codex-ollama. Step 1 probe, 2026-10-27: without these flags `codex exec`
@@ -488,9 +529,19 @@ def stage_and_diff(worktree, base, patch_path):
     return changed, touched
 
 
+def read_text_quiet(path):
+    try:
+        with open(path, encoding="utf-8", errors="replace") as fh:
+            return fh.read()
+    except OSError:
+        return ""
+
+
 def pick_winner(tries, have_check):
     """Passing check, then fewest changed lines. With no check given, a try that
-    exited 0 and changed something stands in for passing."""
+    exited 0 and changed something stands in for passing. A try that touched the
+    Soul record, or ran without its sandbox, is never the winner."""
+    tries = [t for t in tries if not t["record_touched"] and not t.get("sandbox_inactive")]
     if have_check:
         ok = [t for t in tries if t["check_rc"] == 0]
     else:
@@ -507,6 +558,7 @@ def cmd_run(args):
         raise UsageError("role {!r} has no rung {} (its rungs: {})".format(
             args.role, rung, ", ".join(str(r["rung"]) for r in rows)))
     need_harness([row])
+    need_sandbox([row])
     if args.check is not None and not args.check.strip():
         raise UsageError("--check is blank")
     brief = read_text(args.brief, "brief")
@@ -539,6 +591,10 @@ def cmd_run(args):
                                  stem + ".log", stem + ".stderr", row["timeout"])
         tokens_in, tokens_out, _ = read_output(row["harness"], stem + ".log", last)
         changed, touched = stage_and_diff(worktree, base, stem + ".patch")
+        # Claude Code says so on stderr when it could not start the sandbox; such a
+        # try's shell ran unconfined or not at all, so it can never win.
+        inactive = row["harness"] in ("claude", "claude-ollama") and \
+            "Sandbox disabled" in read_text_quiet(stem + ".stderr")
         check_rc = None
         if args.check:  # for selection only: the host re-runs it through the recorder
             check_rc, _ = run_process(["/bin/sh", "-c", args.check], worktree,
@@ -548,7 +604,7 @@ def cmd_run(args):
                       "wall_s": wall, "tokens_in": tokens_in, "tokens_out": tokens_out,
                       "patch": stem + ".patch", "log": stem + ".log",
                       "changed_lines": changed, "check_rc": check_rc,
-                      "record_touched": touched})
+                      "record_touched": touched, "sandbox_inactive": inactive})
     result = {"run_id": run_id, "role": args.role, "harness": row["harness"],
               "model": row["model"], "rung": row["rung"], "base": base,
               "check": args.check, "tries": tries,

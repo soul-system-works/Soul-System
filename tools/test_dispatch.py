@@ -52,6 +52,7 @@ for rel, text in act.get("write", {{}}).items():
     os.makedirs(os.path.dirname(p), exist_ok=True)
     open(p, "w").write(text)
 say = act.get("say", "done")
+sys.stderr.write(act.get("stderr", ""))
 if name == "claude":
     print(json.dumps({{"type": "result", "result": say, "usage": {{
         "input_tokens": 100, "cache_read_input_tokens": 20, "output_tokens": 7}}}}))
@@ -181,9 +182,15 @@ def main():
           "-p" in argv and after(argv, "--output-format") == "json"
           and after(argv, "--permission-mode") == "acceptEdits"
           and after(argv, "--model") == "sonnet", argv)
-    check("claude: only the check may run in Bash",
-          after(argv, "--allowedTools") == "Read,Write,Edit,Glob,Grep,Bash({} *)".format(CHECK),
-          argv)
+    check("claude: full Bash for the implementer (the sandbox is the boundary)",
+          after(argv, "--allowedTools") == "Read,Write,Edit,Glob,Grep,Bash", argv)
+    sset = json.loads(after(argv, "--settings") or "{}")
+    check("claude: sandbox on, auto-allow inside it, no unsandboxed escape",
+          sset.get("sandbox") == {"enabled": True, "autoAllowBashIfSandboxed": True,
+                                  "allowUnsandboxedCommands": False}, sset)
+    deny = sset.get("permissions", {}).get("deny", [])
+    check("claude: credential folders unreadable (~/.ssh, ~/.claude, ~/.codex)",
+          all("Read(~/{}/**)".format(d) in deny for d in (".ssh", ".claude", ".codex")), deny)
     check("claude: isolation flags as probed (setting sources empty, strict MCP)",
           after(argv, "--setting-sources") == "" and "--strict-mcp-config" in argv, argv)
     try:
@@ -327,6 +334,30 @@ def main():
     tries = (res or {}).get("tries", [])
     check("record_touched: witness.md and .soul/ flagged, other files not",
           [x.get("record_touched") for x in tries] == [True, True, False], tries)
+    check("record_touched: a try that touched the record never wins",
+          (res or {}).get("winner") == 3, res)
+
+    # 7b — Claude Code reports the sandbox off: that try never wins
+    w.roles("| implementer | claude | sonnet | |")
+    w.script({"write": {"app.txt": "FIXED\n"},
+              "stderr": "Sandbox disabled: sandbox is enabled but dependencies are missing\n"})
+    r, res = w.run("sb1")
+    t1 = ((res or {}).get("tries") or [{}])[0]
+    check("sandbox reported off: try flagged, no winner, exit 1",
+          t1.get("sandbox_inactive") is True and res.get("winner") is None
+          and r.returncode == 1, (r.returncode, res))
+
+    # 7c — no socat on PATH: a Claude worker is refused before anything starts
+    gitonly = os.path.join(w.tmp, "gitonly")
+    os.makedirs(gitonly, exist_ok=True)
+    if not os.path.exists(os.path.join(gitonly, "git")):
+        os.symlink(shutil.which("git"), os.path.join(gitonly, "git"))
+    env = w.env(PATH=os.pathsep.join([w.bin, gitonly]))
+    w.script({"write": {"app.txt": "FIXED\n"}})
+    r, res = w.run("sb2", env=env)
+    check("no bubblewrap/socat: refused with exit 2 naming them, no worker started",
+          r.returncode == 2 and "socat" in r.stderr and not w.calls()
+          and not os.path.exists(w.wt("sb2", 1)), (r.returncode, r.stderr))
 
     # 8 — clean removes only its own run's worktrees and branches
     w.roles("| implementer | claude | sonnet | |")

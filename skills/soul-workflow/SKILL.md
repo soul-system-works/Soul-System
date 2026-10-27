@@ -30,9 +30,15 @@ What happens, every time:
 2. Workers start with nothing but a written brief — no conversation, no Soul
    record, no project instructions (each runs as its own process with those
    switched off; SOUL-I080 step 1 probe, 2026-10-27).
-3. Nothing is called done on a worker's word. This session re-runs every check
+3. Workers run inside a sandbox. A Claude worker has a full shell, but the operating
+   system lets it write only in its own worktree, gives it no network, and hides
+   credential folders (`~/.ssh`, `~/.claude`, `~/.codex`, the vault …) from it. On
+   Linux and WSL that needs `bubblewrap` and `socat`; without them the dispatch tool
+   refuses to start a Claude worker rather than run it unconfined. Codex workers use
+   Codex's own `workspace-write` sandbox. Native Windows is not supported.
+4. Nothing is called done on a worker's word. This session re-runs every check
    itself and records what it saw.
-4. You get one report: what changed, which checks ran and passed, what each
+5. You get one report: what changed, which checks ran and passed, what each
    reviewer found and what was done about it, and what is still open.
 
 ## The roles table
