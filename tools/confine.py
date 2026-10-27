@@ -81,4 +81,11 @@ def confine_argv(argv, workdir, which=shutil.which, platform=None):
     for d in secret_paths():
         if os.path.isdir(d):
             cmd += ["--tmpfs", d]
+    # The host session's sockets live here (cc-socks: Claude Code's messaging socket,
+    # which takes a user message given its token). The token is in no file a check
+    # can read (/proc/<pid>/environ is denied inside bwrap — probed 2026-10-27), but a
+    # check has no business near the socket either: hide the whole folder.
+    run_user = "/run/user/{}".format(os.getuid())
+    if os.path.isdir(run_user):
+        cmd += ["--tmpfs", run_user]
     return cmd + list(argv)

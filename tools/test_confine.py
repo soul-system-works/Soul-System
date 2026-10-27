@@ -210,6 +210,14 @@ def real_case(c):
                           free.returncode == 0, free.stdout + free.stderr)
                     check("real bwrap: " + name + " fails confined", not got_ok
                           and "SECRET" not in boxed.stdout, boxed.stdout + boxed.stderr)
+            run_user = "/run/user/{}".format(os.getuid())
+            if os.path.isdir(run_user) and os.listdir(run_user):
+                seen = subprocess.run(c.confine_argv(["/bin/ls", "-A", run_user], work),
+                                      cwd=work, env=env, capture_output=True, text=True,
+                                      timeout=30)
+                check("real bwrap: the session socket folder ({}) is empty inside"
+                      .format(run_user), seen.returncode == 0 and not seen.stdout.strip(),
+                      seen.stdout + seen.stderr)
             check("real bwrap: nothing written outside the work folder",
                   not os.path.exists(os.path.join(tmp, "outside.txt")))
     finally:
