@@ -53,6 +53,7 @@ PROJECT_ROLES = os.path.join(".claude", "soul-roles.md")
 RECORD_FILES = ("witness.md", "ideas.md", "mind.md", "upstream.md")
 CLAUDE_MD_NAMES = ("CLAUDE.md", "CLAUDE.local.md", os.path.join(".claude", "CLAUDE.md"))
 WALK_SKIP = (".git", "node_modules", ".venv", "venv", "__pycache__")
+_HERE = os.path.dirname(os.path.abspath(__file__))
 OLLAMA_URL = "http://localhost:11434"
 RUN_ID = re.compile(r"[A-Za-z0-9][A-Za-z0-9._-]*\Z")
 SIGNALS = tuple(getattr(signal, n) for n in ("SIGTERM", "SIGINT", "SIGHUP")
@@ -500,6 +501,27 @@ def ignore_ai(project):
         f.write("\n.ai/\n")
 
 
+def log_dispatch(project, payload):
+    """One soul.workflow.dispatch event per run or review, to the project's event sink
+    (the recorder's rules: $SOUL_EVENT_LOG, else .soul/events.jsonl of a Soul project,
+    else nothing). The host's recorder sees only the winner it re-checks, so a role
+    that times out or never passes left no trace — the v3.6.3 replay's local arm
+    (2026-10-27) ran an hour, failed, and stats showed nothing. These are the tool's
+    own observations (exit codes, its selection check), never a worker's claim."""
+    try:
+        import importlib.util
+        spec = importlib.util.spec_from_file_location(
+            "delegation_check", os.path.join(_HERE, "delegation-check.py"))
+        dc = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(dc)
+        where = None if os.environ.get("SOUL_EVENT_LOG") else dc.find_project(project)
+        if where is None and not os.environ.get("SOUL_EVENT_LOG"):
+            return
+        dc.emit(where, project, payload, event_type="soul.workflow.dispatch")
+    except Exception as exc:  # a record that cannot be written never fails the run
+        print("warning: dispatch event not recorded ({})".format(exc), file=sys.stderr)
+
+
 def emit_result(path, result):
     with open(path, "w", encoding="utf-8") as fh:
         json.dump(result, fh, indent=2)
@@ -610,6 +632,12 @@ def cmd_run(args):
               "check": args.check, "tries": tries,
               "winner": pick_winner(tries, bool(args.check))}
     emit_result(os.path.join(run_dir, "result.json"), result)
+    log_dispatch(project, {
+        "mode": "run", "run_id": run_id, "role": args.role, "harness": row["harness"],
+        "model": row["model"], "rung": row["rung"], "tries": len(tries),
+        "won": result["winner"] is not None,
+        "timeouts": sum(1 for t in tries if t["exit"] == "timeout"),
+        "wall_s": round(sum(t["wall_s"] for t in tries), 1)})
     return 0 if result["winner"] is not None else 1
 
 
@@ -665,6 +693,11 @@ def cmd_review(args):
                           "log": stem + ".log", "findings": findings, "verdict": verdict})
     emit_result(os.path.join(run_dir, "review.json"),
                 {"run_id": run_id, "role": args.role, "reviewers": reviewers})
+    for r in reviewers:
+        log_dispatch(project, {
+            "mode": "review", "run_id": run_id, "role": args.role, "harness": r["harness"],
+            "model": r["model"], "tries": 1, "won": r["exit"] == 0 and r["verdict"] != "unparsed",
+            "timeouts": 1 if r["exit"] == "timeout" else 0, "wall_s": r["wall_s"]})
     return 0
 
 

@@ -135,7 +135,8 @@ class World:
     def env(self, **extra):
         env = {k: v for k, v in _GIT_ENV.items() if not k.startswith("ANTHROPIC_")}
         env.update(HOME=self.home, PATH=os.pathsep.join([self.bin, "/usr/bin", "/bin"]),
-                   STUB_LOG=self.log, STUB_PLAN=self.plan)
+                   STUB_LOG=self.log, STUB_PLAN=self.plan,
+                   SOUL_EVENT_LOG=os.path.join(self.tmp, "events.jsonl"))
         env.update(extra)
         return env
 
@@ -435,6 +436,21 @@ def main():
           git(w.proj, "status", "--porcelain").stdout.strip() == "?? .claude/"
           and read(os.path.join(w.proj, "app.txt")) == "BUG\n",
           git(w.proj, "status", "--porcelain").stdout)
+
+    # 9a — every run and every reviewer leaves one dispatch event, won or not
+    log = os.path.join(tmp, "events.jsonl")
+    evs = [json.loads(l) for l in (read(log) if os.path.exists(log) else "").splitlines()]
+    disp = [e["data"] for e in evs if e.get("type") == "soul.workflow.dispatch"]
+    runs = {d["run_id"]: d for d in disp if d["mode"] == "run"}
+    check("dispatch event per run: role, worker, rung, tries, won, time",
+          runs.get("a1", {}).get("won") is True and runs["a1"].get("harness") == "claude"
+          and runs["a1"].get("tries") == 1 and isinstance(runs["a1"].get("wall_s"), float),
+          runs.get("a1"))
+    check("a run with no winner, and a timeout, are logged too",
+          runs.get("z1", {}).get("won") is False and runs.get("t1", {}).get("timeouts") == 1,
+          (runs.get("z1"), runs.get("t1")))
+    check("a review logs one dispatch event per reviewer",
+          len([d for d in disp if d["mode"] == "review" and d["run_id"] == "v1"]) == 2, disp[-3:])
 
     # 9b — --workdir: a candidate's reviewers read the candidate's worktree
     cand = w.wt("r10", 1)

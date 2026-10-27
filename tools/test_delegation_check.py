@@ -558,12 +558,29 @@ class DelegationCheck(unittest.TestCase):
         self.assertRegex(text.stdout, r"implementer\s+claude:sonnet\s+2\s+1\s+1\s+1")
         self.assertRegex(text.stdout, r"claude:opus\s+2\s+5\s+4")
 
+    def test_stats_counts_every_dispatch_won_or_not(self):
+        with open(self.sink, "a") as fh:
+            for data in ({"mode": "run", "role": "local", "harness": "claude-ollama",
+                          "model": "q:27b", "won": False, "timeouts": 1, "wall_s": 3600},
+                         {"mode": "run", "role": "local", "harness": "claude-ollama",
+                          "model": "q:27b", "won": True, "timeouts": 0, "wall_s": 60},
+                         {"mode": "review", "role": "reviewer", "harness": "codex",
+                          "model": "default", "won": True, "timeouts": 0, "wall_s": 30}):
+                fh.write(json.dumps({"type": "soul.workflow.dispatch", "data": data}) + "\n")
+        got = json.loads(self.run_tool("stats", "--json").stdout)
+        self.assertEqual(got["dispatches"], [
+            {"mode": "review", "role": "reviewer", "worker": "codex:default", "runs": 1,
+             "won": 1, "timeouts": 0, "minutes": 0.5},
+            {"mode": "run", "role": "local", "worker": "claude-ollama:q:27b", "runs": 2,
+             "won": 1, "timeouts": 1, "minutes": 61.0}])
+        self.assertIn("timeouts", self.run_tool("stats").stdout)
+
     def test_stats_with_no_records(self):
         out = self.run_tool("stats")
         self.assertEqual(out.returncode, 0, out.stderr)
         self.assertEqual(out.stdout.strip(), "no workflow records")
         got = json.loads(self.run_tool("stats", "--json").stdout)
-        self.assertEqual(got, {"workers": [], "reviewers": []})
+        self.assertEqual(got, {"dispatches": [], "workers": [], "reviewers": []})
 
     def test_windows_is_refused(self):
         err = io.StringIO()

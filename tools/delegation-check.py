@@ -71,6 +71,7 @@ from datetime import datetime, timezone
 
 EVENT_TYPE = "soul.delegation.checked"
 REVIEW_EVENT = "soul.workflow.review"
+DISPATCH_EVENT = "soul.workflow.dispatch"  # written by tools/dispatch.py, one per run
 WORKFLOW_FIELDS = ("workflow", "role", "rung", "round", "run_id")
 TIERS = ("deep", "routine", "review")
 ROLE_RE = re.compile(r"^[A-Za-z][A-Za-z0-9_-]*$")
@@ -394,14 +395,36 @@ def stats(args, ap):
         row["runs"] += 1
         row["raised"] += data["raised"]
         row["accepted"] += data["accepted"]
-    table = {"workers": [workers[k] for k in sorted(workers)],
+    dispatches = {}
+    for ev in read_records(sink, event_type=DISPATCH_EVENT):
+        data = ev.get("data") or {}
+        if data.get("mode") not in ("run", "review"):
+            continue
+        key = (data["mode"], str(data.get("role")), _who(data.get("harness"), data.get("model")))
+        row = dispatches.setdefault(key, {"mode": key[0], "role": key[1], "worker": key[2],
+                                          "runs": 0, "won": 0, "timeouts": 0, "minutes": 0.0})
+        row["runs"] += 1
+        row["won"] += 1 if data.get("won") is True else 0
+        row["timeouts"] += data.get("timeouts") if isinstance(data.get("timeouts"), int) else 0
+        if isinstance(data.get("wall_s"), (int, float)):
+            row["minutes"] = round(row["minutes"] + data["wall_s"] / 60, 1)
+    table = {"dispatches": [dispatches[k] for k in sorted(dispatches)],
+             "workers": [workers[k] for k in sorted(workers)],
              "reviewers": [reviewers[k] for k in sorted(reviewers)]}
     if args.json:
         print(json.dumps(table, indent=2))
         return 0
-    if not workers and not reviewers:
+    if not workers and not reviewers and not dispatches:
         print("no workflow records")
         return 0
+    if dispatches:  # every run, won or not: a role that keeps failing shows here
+        print("{:<7} {:<14} {:<28} {:>5} {:>5} {:>8} {:>8}".format(
+            "mode", "role", "worker", "runs", "won", "timeouts", "minutes"))
+        for r in table["dispatches"]:
+            print("{:<7} {:<14} {:<28} {:>5} {:>5} {:>8} {:>8}".format(
+                r["mode"], r["role"], r["worker"], r["runs"], r["won"], r["timeouts"],
+                r["minutes"]))
+        print()
     if workers:
         print("{:<14} {:<28} {:>6} {:>6} {:>6} {:>8}".format(
             "role", "worker", "checks", "passed", "failed", "top rung"))
