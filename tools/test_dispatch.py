@@ -772,6 +772,8 @@ def docs():
     tool = read(_TOOL)
     step4 = section(skill, "### 4 ·", "### 5 ·")
     step7 = section(skill, "### 7 ·", "### 8 ·")
+    step3 = section(skill, "### 3 ·", "### 4 ·")
+    step5 = section(skill, "### 5 ·", "### 6 ·")
     check("skill step 4: the recorder re-runs the check with --confine, patch read first",
           "--confine" in step4 and step4.find("patch") < step4.find("--confine"), step4[:600])
     check("skill step 7: the re-run is confined and comes after reading the patch",
@@ -793,6 +795,20 @@ def docs():
           "--confine" in section(skill, "What happens", "## The roles")
           and "bubblewrap" in section(skill, "What happens", "## The roles"),
           section(skill, "What happens", "## The roles"))
+    check("skill: run and review commands pass --workflow <name>, built-ins included",
+          "dispatch.py run --role implementer --workflow <name>" in step3
+          and "dispatch.py review --role reviewer --workflow <name>" in step5
+          and "built-ins included" in skill, (step3, step5))
+    custom = section(skill, "## Custom workflows", "## Seeing how roles do")
+    check("skill: a workflow's own ## Roles, the lookup order, and roles <name>",
+          "## Roles" in custom and "/soul-workflow roles <name>" in skill
+          and all(s in custom for s in ("`.claude/soul-roles.md`", "`~/.claude/soul-roles.md`",
+                                        "built-in default")), custom)
+    wguide = " ".join(read(os.path.join(root, "docs", "workflows.md")).split())
+    part = section(wguide, "Different models for one workflow", "## When something goes wrong")
+    check("workflows guide: one workflow's own models, lookup order, three workflows",
+          "## Roles" in part and "security-check" in part and "quick-fix" in part
+          and "build-verify" in part and "soul-roles.md" in part, part[:800])
     check("guide: two reviewers by default — a fresh Claude and Codex when installed",
           "two reviewers by default — a fresh Claude and Codex when it is installed" in guide,
           section(guide, "Handing work to other models", "Moving to another"))
