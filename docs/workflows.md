@@ -74,6 +74,8 @@ shows the table in use. With no table, the default is:
 Change it by writing your own table to `~/.claude/soul-roles.md` (every project) or a
 project's `.claude/soul-roles.md` (that project only; it replaces a role's rows from
 the global file). Several rows of one role are its **ladder**: tried in `rung` order.
+One custom workflow can also have models of its own: see *Different models for one
+workflow* below.
 
 Try the local GPU first, then Claude:
 ```
@@ -140,6 +142,46 @@ description: one try at the lowest rung, the reviewers once, no repair round
 Whatever a workflow file says, the safety rules above still hold, and anything
 outside the building blocks (network, pushing, another project, credentials) waits
 for your yes.
+
+## Different models for one workflow
+
+The roles table is shared by every workflow. To give one workflow other models, add
+a `## Roles` section to its file, written exactly like the roles table. For each
+role, the first place that names it supplies all of that role's rows:
+
+1. the workflow file's `## Roles` section;
+2. the project's `.claude/soul-roles.md`;
+3. the global `~/.claude/soul-roles.md`;
+4. the built-in default.
+
+A role the section does not name keeps its rows from the shared table. A table
+inside a ``` fence or an HTML comment is not read, so an example can sit in the file
+switched off. `/soul-workflow roles <name>` shows the table a workflow will use and
+where each row came from.
+
+Example — three workflows, each with the models it needs:
+
+- **`build-verify`** (built in, no file): the shared table — say Sonnet then Opus
+  implementing, a fresh Claude and Codex reviewing.
+- **`quick-fix`** (`.claude/soul-workflows/quick-fix.md`): only Codex reviews; the
+  implementer comes from the shared table.
+  ```
+  ## Roles
+
+  | role     | harness | model   | settings |
+  |----------|---------|---------|----------|
+  | reviewer | codex   | default |          |
+  ```
+- **`security-check`** (`.claude/soul-workflows/security-check.md`): Opus implements
+  and Opus alone reviews.
+  ```
+  ## Roles
+
+  | role        | harness | model | settings |
+  |-------------|---------|-------|----------|
+  | implementer | claude  | opus  |          |
+  | reviewer    | claude  | opus  |          |
+  ```
 
 ## When something goes wrong
 

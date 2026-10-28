@@ -24,7 +24,7 @@ FAILS = []
 
 
 def check(name, ok, detail=""):
-    print(("PASS " if ok else "FAIL ") + name + ("" if ok else "  — " + detail))
+    print(("PASS " if ok else "FAIL ") + name + ("" if ok else "  — " + str(detail)))
     if not ok:
         FAILS.append(name)
 
@@ -41,10 +41,10 @@ def table(*rows):
             + "".join(r + "\n" for r in rows))
 
 
-def roles(home, project, path_dirs):
+def roles(home, project, path_dirs, *extra):
     env = dict(os.environ, HOME=home, PATH=os.pathsep.join(path_dirs))
-    return subprocess.run([sys.executable, _TOOL, "roles", "--project", project, "--json"],
-                          capture_output=True, text=True, env=env)
+    return subprocess.run([sys.executable, _TOOL, "roles", "--project", project, "--json",
+                           *extra], capture_output=True, text=True, env=env)
 
 
 def rows_of(r):
@@ -216,9 +216,125 @@ def main():
           "ignored" in wf.get("Bad Name", {}).get("note", "")
           and wf.get("bare", {}).get("note") == "no description: line", r.stdout)
 
+    workflow_roles(home, project, nopath, gdir, pdir, global_file, project_file)
+
     shutil.rmtree(tmp, ignore_errors=True)
     print("\n{} failure(s)".format(len(FAILS)) if FAILS else "\nALL PASS")
     return 1 if FAILS else 0
+
+
+def line_of(path, text):
+    """The 1-based line of `path` that holds `text`."""
+    with open(path, encoding="utf-8") as f:
+        return next(i for i, l in enumerate(f, 1) if text in l)
+
+
+def workflow_roles(home, project, nopath, gdir, pdir, global_file, project_file):
+    """A workflow file's `## Roles` section over the shared table, per role."""
+    def flow(name, *rows, before="", after=""):
+        return ("---\nname: {}\ndescription: d\n---\n\n# {}\n\n1. Step.\n\n{}"
+                "## Roles\n\n| role | harness | model | settings |\n|---|---|---|---|\n{}\n"
+                "{}## Notes\n\n| reviewer | gemini | not-read | |\n"
+                .format(name, name, before, "".join(r + "\n" for r in rows), after))
+    write(global_file, table("| implementer | claude | sonnet | |",
+                             "| reviewer | claude | opus | |"))
+    write(project_file, table("| reviewer | claude | opus | |",
+                              "| reviewer | codex | default | |"))
+    quick = os.path.join(pdir, "quick-fix.md")
+    codex_row = "| reviewer | codex | gpt-5.4 | timeout=900 |"
+    write(quick, flow("quick-fix", codex_row))
+    write(os.path.join(gdir, "quick-fix.md"),
+          flow("quick-fix", "| tester | claude | haiku | |"))
+    second = os.path.join(gdir, "second-look.md")
+    write(second, flow("second-look", "| implementer | claude | opus | |",
+                       "| reviewer | claude | opus | |"))
+    write(os.path.join(pdir, "review.md"), flow("review", "| reviewer | codex | shadow | |"))
+    write(os.path.join(pdir, "Bad Name.md"), flow("x", "| reviewer | codex | bad | |"))
+    shared = roles(home, project, [nopath])
+    check("workflow roles: the shared table loads", shared.returncode == 0, shared.stderr)
+
+    r = roles(home, project, [nopath], "--workflow", "quick-fix")
+    rows = rows_of(r) or []
+    got = brief(rows)
+    check("workflow roles: the file's role replaces every row of that role below it",
+          r.returncode == 0 and [x for x in got if x[0] == "reviewer"] == [
+              ("reviewer", "codex", "gpt-5.4", 1, "workflow")], r.stdout + r.stderr)
+    check("workflow roles: a role the file does not name falls through unchanged",
+          [x for x in got if x[0] == "implementer"] == [
+              ("implementer", "claude", "sonnet", 1, "global")], got)
+    wrow = [x for x in rows if x["source"] == "workflow"]
+    check("workflow roles: --json gives the file and line, and the row's settings",
+          len(wrow) == 1 and wrow[0]["where"] == "{}:{}".format(quick, line_of(quick, codex_row))
+          and wrow[0]["timeout"] == 900, wrow)
+    check("workflow roles: a table outside the ## Roles section is not read",
+          bool(got) and not any(x[2] == "not-read" for x in got), got)
+    check("workflow roles: the project's quick-fix.md replaces the global one, its "
+          "Roles section too", bool(got) and not any(x[0] == "tester" for x in got), got)
+    r = roles(home, project, [nopath], "--workflow", "second-look")
+    rows = rows_of(r) or []
+    check("workflow roles: a global workflow file's section is used when no project twin",
+          r.returncode == 0 and brief(rows) == [
+              ("implementer", "claude", "opus", 1, "workflow"),
+              ("reviewer", "claude", "opus", 1, "workflow")]
+          and all(x["where"].startswith(second + ":") for x in rows), r.stdout + r.stderr)
+    env = dict(os.environ, HOME=home, PATH=nopath)
+    r = subprocess.run([sys.executable, _TOOL, "roles", "--project", project,
+                        "--workflow", "quick-fix"], capture_output=True, text=True, env=env)
+    check("workflow roles: the text view names the workflow file and line as source",
+          r.returncode == 0
+          and "workflow ({}:{})".format(quick, line_of(quick, codex_row)) in r.stdout
+          and "global ({}:".format(global_file) in r.stdout, r.stdout + r.stderr)
+
+    for name in ("build-verify", "review"):
+        r = roles(home, project, [nopath], "--workflow", name)
+        check("workflow roles: built-in {} selects the shared table, unchanged".format(name),
+              r.returncode == 0 and rows_of(r) == rows_of(shared), r.stdout + r.stderr)
+    r = roles(home, project, [nopath], "--workflow", "no-such-flow")
+    check("workflow roles: an unknown workflow is a usage error naming it",
+          r.returncode == 2 and "no workflow named 'no-such-flow'" in r.stderr
+          and not r.stdout, r.stderr)
+    r = roles(home, project, [nopath], "--workflow", "Bad Name")
+    check("workflow roles: a workflow the listing marks ignored is refused, with why",
+          r.returncode == 2 and "ignored" in r.stderr and "lower-case" in r.stderr, r.stderr)
+
+    bad = "| reviewer | gemini | pro | |"
+    write(quick, flow("quick-fix", "| reviewer | claude | opus | |", bad))
+    r = roles(home, project, [nopath], "--workflow", "quick-fix")
+    check("workflow roles: a malformed row names the workflow file, line and row",
+          r.returncode == 2 and "{}:{}:".format(quick, line_of(quick, bad)) in r.stderr
+          and bad in r.stderr and "gemini" in r.stderr, r.stderr)
+    r = roles(home, project, [nopath])
+    check("workflow roles: without --workflow a broken workflow section changes nothing",
+          r.returncode == 0 and rows_of(r) == rows_of(shared), r.stderr)
+    first, second_row = "| reviewer | claude | opus | |", "| reviewer | codex | default | rung=1 |"
+    write(quick, flow("quick-fix", first, second_row))
+    r = roles(home, project, [nopath], "--workflow", "quick-fix")
+    check("workflow roles: two rows on one rung inside the section name both",
+          r.returncode == 2 and quick in r.stderr and first in r.stderr
+          and second_row in r.stderr and "rung 1" in r.stderr, r.stderr)
+
+    # A commented-out or fenced example is not a table; the template ships one commented
+    write(quick, flow("quick-fix", before="```\n## Roles\n| reviewer | codex | fenced | |\n```\n\n"))
+    r = roles(home, project, [nopath], "--workflow", "quick-fix")
+    check("workflow roles: an empty section and a fenced example change nothing",
+          r.returncode == 0 and rows_of(r) == rows_of(shared), r.stdout + r.stderr)
+    template = os.path.join(os.path.dirname(_TOOL), "..", "skills", "soul-workflow",
+                            "templates", "quick-fix.md")
+    with open(template, encoding="utf-8") as f:
+        text = f.read()
+    write(quick, text)
+    r = roles(home, project, [nopath], "--workflow", "quick-fix")
+    check("template: its commented-out ## Roles example changes nothing",
+          r.returncode == 0 and rows_of(r) == rows_of(shared) and "## Roles" in text,
+          r.stdout + r.stderr)
+    write(quick, text.replace("<!--", "").replace("-->", ""))
+    r = roles(home, project, [nopath], "--workflow", "quick-fix")
+    got = brief(rows_of(r))
+    check("template: uncommented, its example makes Codex the only reviewer",
+          r.returncode == 0 and [x[:3] for x in got if x[0] == "reviewer"] == [
+              ("reviewer", "codex", "default")]
+          and [x[4] for x in got if x[0] == "implementer"] == ["global"],
+          r.stdout + r.stderr)
 
 
 def test_fence():

@@ -9,12 +9,12 @@ hands back the evidence — the patch, the exit, the wall time, the tokens — n
 verdict. It never records: the host re-runs the check through
 tools/delegation-check.py, because a worker's report is a claim (SOUL-I066).
 
-  roles  [--project DIR] [--json]                    the effective roles table
+  roles  [--project DIR] [--json] [--workflow W]     the effective roles table
   workflows [--project DIR] [--json]                 built-in and custom workflows
   run    --role R --brief FILE [--project DIR] [--base REF] [--check CMD]
-         [--rung K] [--run-id ID]                    implement, n tries, pick one
+         [--rung K] [--run-id ID] [--workflow W]     implement, n tries, pick one
   review --role R --brief FILE --diff FILE [--project DIR] [--workdir DIR]
-         [--run-id ID]                               every reviewer of R, read-only
+         [--run-id ID] [--workflow W]                every reviewer of R, read-only
   clean  --run-id ID [--family] [--project DIR]      remove a run's worktrees+branches
                                                      (--family: every <ID>-* run too)
 
@@ -25,6 +25,9 @@ project that defines any row for a role replaces ALL global rows for that role.
 A role's rows are its ladder, ordered by rung (row order when none is given).
 Built-in default for a role neither file names: implementer claude:sonnet then
 claude:opus; reviewer claude:opus, plus codex:default when `codex` is on PATH.
+With `--workflow W`, a custom workflow file's `## Roles` section (the same table)
+sits above both files the same way, per role: workflow, project, global, built-in.
+A built-in W has no file, so the shared table; an unknown or ignored W is refused.
 
 `run` makes each try a worktree `<project>/.ai/worktrees/<run-id>-<i>` on branch
 `soul-wf/<run-id>-<i>` from --base (default HEAD), stages everything the worker left
@@ -148,10 +151,47 @@ def parse_roles_file(path, source):
             lines = fh.readlines()
     except FileNotFoundError:
         return []
+    return parse_roles_lines(path, enumerate(lines, 1), source)
+
+
+def roles_section(path):
+    """(lineno, line) of a workflow file's `## Roles` section: from that heading to
+    the next heading of level 1 or 2. Lines inside a ``` fence or an HTML comment
+    are not part of it, so a file can show an example without it taking effect."""
+    try:
+        with open(path, encoding="utf-8") as fh:
+            lines = fh.readlines()
+    except FileNotFoundError:
+        return []
+    out, inside, fence, comment = [], False, False, False
+    for lineno, line in enumerate(lines, 1):
+        text = line.strip()
+        if comment:
+            comment = "-->" not in text
+            continue
+        if text.startswith("<!--"):
+            comment = "-->" not in text[4:]
+            continue
+        if text.startswith("```"):
+            fence = not fence
+            continue
+        if fence:
+            continue
+        if re.match(r"#{1,2}\s", text):
+            inside = re.fullmatch(r"##\s+roles", text, re.I) is not None
+            continue
+        if inside:
+            out.append((lineno, line))
+    return out
+
+
+def parse_roles_lines(path, numbered, source):
+    """Rows of the table lines among `numbered` ((lineno, line) pairs), checked as
+    a roles file's are; errors name `path` and the line."""
     rows = []
     position = {}
     rungs = {}  # (role, rung) -> (lineno, line) of the row that holds it
-    for lineno, line in enumerate(lines, 1):
+    for lineno, line in numbered:
         if not line.lstrip().startswith("|"):
             continue
         cells = _cells(line)
@@ -221,11 +261,17 @@ def builtin_rows(which=shutil.which):
     return rows
 
 
-def load_roles(project):
-    """{role: [rows ordered by rung]} — project over global over built-in, per role."""
+def load_roles(project, workflow_file=None):
+    """{role: [rows ordered by rung]} — the workflow file's `## Roles` section (when
+    one is given) over project over global over built-in, per role. Option C, the
+    Body's choice of 2026-10-28: one workflow may use other models without changing
+    the shared table for every other workflow."""
     layers = [builtin_rows(),
               parse_roles_file(os.path.expanduser(GLOBAL_ROLES), "global"),
               parse_roles_file(os.path.join(project, PROJECT_ROLES), "project")]
+    if workflow_file:
+        layers.append(parse_roles_lines(workflow_file, roles_section(workflow_file),
+                                        "workflow"))
     table = {}
     for rows in layers:
         named = {}
@@ -241,7 +287,8 @@ def flat(table):
 
 
 def cmd_roles(args):
-    table = load_roles(project_dir(args.project, need_git=False))
+    project = project_dir(args.project, need_git=False)
+    table = load_roles(project, workflow_file(project, args.workflow))
     if args.json:
         print(json.dumps(flat(table), indent=2))
         return 0
@@ -293,6 +340,21 @@ def load_workflows(project):
         out.append({"name": name, "source": source, "path": path,
                     "description": _description(path), "note": note})
     return out
+
+
+def workflow_file(project, name):
+    """The file whose `## Roles` section `--workflow NAME` adds; None for no name or
+    a built-in (the shared table). An unknown name, or a file the listing marks
+    ignored, is a usage error."""
+    if name is None or name in BUILT_IN_WORKFLOWS:
+        return None
+    found = [w for w in load_workflows(project) if w["name"] == name]
+    if not found:
+        raise UsageError("no workflow named {!r} (see: dispatch.py workflows)".format(name))
+    if found[0]["note"].startswith("ignored"):
+        raise UsageError("workflow {!r} is {} ({})".format(name, found[0]["note"],
+                                                           found[0]["path"]))
+    return found[0]["path"]
 
 
 def cmd_workflows(args):
@@ -550,12 +612,17 @@ def project_dir(path, need_git=True):
     return project
 
 
-def role_rows(project, role):
-    rows = load_roles(project).get(role)
+def role_rows(project, role, workflow=None):
+    rows = load_roles(project, workflow_file(project, workflow)).get(role)
     if not rows:
-        raise UsageError("no role {!r} in the roles table (see: dispatch.py roles)"
-                         .format(role))
+        raise UsageError("no role {!r} in the roles table (see: dispatch.py roles{})"
+                         .format(role, " --workflow " + workflow if workflow else ""))
     return rows
+
+
+def with_workflow(payload, workflow):
+    """`payload` plus a `workflow` field when --workflow was given (only then)."""
+    return dict(payload, workflow=workflow) if workflow else payload
 
 
 def read_text(path, what):
@@ -702,7 +769,7 @@ def pick_winner(tries, have_check):
 
 def cmd_run(args):
     project = project_dir(args.project)
-    rows = role_rows(project, args.role)
+    rows = role_rows(project, args.role, args.workflow)
     rung = args.rung if args.rung is not None else rows[0]["rung"]
     row = next((r for r in rows if r["rung"] == rung), None)
     if row is None:
@@ -764,20 +831,22 @@ def cmd_run(args):
                       "patch": stem + ".patch", "log": stem + ".log",
                       "changed_lines": changed, "check_rc": check_rc,
                       "record_touched": touched, "sandbox_inactive": inactive})
-    result = {"run_id": run_id, "role": args.role, "harness": row["harness"],
-              "model": row["model"], "rung": row["rung"], "base": base,
-              "check": args.check, "check_skipped": bool(args.check) and not confinable,
-              "tries": tries, "winner": pick_winner(tries, bool(args.check) and confinable)}
+    result = with_workflow({
+        "run_id": run_id, "role": args.role, "harness": row["harness"],
+        "model": row["model"], "rung": row["rung"], "base": base,
+        "check": args.check, "check_skipped": bool(args.check) and not confinable,
+        "tries": tries, "winner": pick_winner(tries, bool(args.check) and confinable)},
+        args.workflow)
     if result["check_skipped"]:
         print("note: no bubblewrap here, so the selection check did not run; the "
               "recorder's confined re-run is the gate", file=sys.stderr)
     emit_result(os.path.join(run_dir, "result.json"), result)
-    log_dispatch(project, {
+    log_dispatch(project, with_workflow({
         "mode": "run", "run_id": run_id, "role": args.role, "harness": row["harness"],
         "model": row["model"], "rung": row["rung"], "tries": len(tries),
         "won": result["winner"] is not None,
         "timeouts": sum(1 for t in tries if t["exit"] == "timeout"),
-        "wall_s": round(sum(t["wall_s"] for t in tries), 1)})
+        "wall_s": round(sum(t["wall_s"] for t in tries), 1)}, args.workflow))
     return 0 if result["winner"] is not None else 1
 
 
@@ -804,7 +873,7 @@ def cmd_review(args):
     workdir = os.path.realpath(args.workdir) if args.workdir else project
     if not os.path.isdir(workdir):
         raise UsageError("--workdir {} is not a folder".format(args.workdir))
-    rows = role_rows(project, args.role)
+    rows = role_rows(project, args.role, args.workflow)
     need_harness(rows)
     need_sandbox(rows)
     brief = read_text(args.brief, "brief")
@@ -836,14 +905,15 @@ def cmd_review(args):
                           "tokens_out": tokens_out, "raw": stem + ".txt",
                           "log": stem + ".log", "findings": findings, "verdict": verdict,
                           "sandbox_inactive": inactive})
-    emit_result(os.path.join(run_dir, "review.json"),
-                {"run_id": run_id, "role": args.role, "reviewers": reviewers})
+    emit_result(os.path.join(run_dir, "review.json"), with_workflow(
+        {"run_id": run_id, "role": args.role, "reviewers": reviewers}, args.workflow))
     for r in reviewers:
-        log_dispatch(project, {
+        log_dispatch(project, with_workflow({
             "mode": "review", "run_id": run_id, "role": args.role, "harness": r["harness"],
             "model": r["model"], "tries": 1,
             "won": r["exit"] == 0 and r["verdict"] in ("findings", "none"),
-            "timeouts": 1 if r["exit"] == "timeout" else 0, "wall_s": r["wall_s"]})
+            "timeouts": 1 if r["exit"] == "timeout" else 0, "wall_s": r["wall_s"]},
+            args.workflow))
     return 0
 
 
@@ -893,9 +963,12 @@ def main():
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest="cmd", required=True)
     here = "project directory (default: the git top level here)"
+    flow = ("the workflow this is for: its file's `## Roles` rows replace those roles' "
+            "shared rows (a built-in name: the shared table)")
     p = sub.add_parser("roles", help="show the effective roles table")
     p.add_argument("--project", help=here)
     p.add_argument("--json", action="store_true")
+    p.add_argument("--workflow", help=flow)
     p = sub.add_parser("workflows", help="list built-in and custom workflows")
     p.add_argument("--project", help=here)
     p.add_argument("--json", action="store_true")
@@ -909,6 +982,7 @@ def main():
     p.add_argument("--rung", type=int, help="ladder rung to run (default: the lowest)")
     p.add_argument("--run-id", help="names the worktrees, branches and run folder "
                    "(default: a timestamp)")
+    p.add_argument("--workflow", help=flow)
     p = sub.add_parser("review", help="every reviewer of a role, read-only, on a diff")
     p.add_argument("--role", required=True)
     p.add_argument("--brief", required=True, help="file holding the brief")
@@ -917,6 +991,7 @@ def main():
     p.add_argument("--workdir", help="folder the reviewers read (default: the project); "
                    "for a build-verify candidate, its winner's worktree")
     p.add_argument("--run-id", help="names the run folder (default: a timestamp)")
+    p.add_argument("--workflow", help=flow)
     p = sub.add_parser("clean", help="remove a run's worktrees and branches")
     p.add_argument("--run-id", required=True)
     p.add_argument("--family", action="store_true",

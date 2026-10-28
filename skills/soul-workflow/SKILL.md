@@ -10,7 +10,7 @@ disable-model-invocation: true
 following this workflow. Its Codex procedures replace Claude-specific loading,
 instruction-file, tool, and invocation mechanics; the shared workflow follows.
 
-`/soul-workflow build-verify` · `/soul-workflow review` · `/soul-workflow <name>` (a custom workflow) · `/soul-workflow list` · `/soul-workflow roles`
+`/soul-workflow build-verify` · `/soul-workflow review` · `/soul-workflow <name>` (a custom workflow) · `/soul-workflow list` · `/soul-workflow roles [<name>]`
 
 ## In short — when and how to use it
 
@@ -25,8 +25,9 @@ judge: those stay in this session.
 What happens, every time:
 
 1. This session says, in one line, which model does what
-   (`implementer → claude:sonnet · reviewers → claude:opus + codex:default`). Say
-   "use X for this" to override any of it.
+   (`implementer → claude:sonnet · reviewers → claude:opus + codex:default`), read
+   from `dispatch.py roles --workflow <name>`. Say "use X for this" to override any
+   of it.
 2. Workers start with a written brief and no conversation. They load no Soul record
    or project instructions (they can still read files in their worktree): each runs
    as its own process with those switched off (SOUL-I080 step 1 probe, 2026-10-27),
@@ -76,8 +77,17 @@ safe to delete.
   `claude` row still reaches Anthropic from a session launched on Ollama — the
   dispatch tool clears the inherited Ollama variables.
 
-`/soul-workflow roles`: show the table; on request, ask which file (global or this
-project's) and write the change there.
+A custom workflow file may carry its own `## Roles` table for that workflow alone
+(see Custom workflows). So **every `dispatch.py roles`, `run` and `review` call a
+workflow run makes passes `--workflow <name>`** — the workflow being run, built-ins
+included (`--workflow build-verify`, `--workflow review`; a built-in has no file, so
+it gets the shared table). `--workflow` also puts the name in `result.json`,
+`review.json` and the dispatch record.
+
+`/soul-workflow roles`: show the shared table; on request, ask which file (global or
+this project's) and write the change there. `/soul-workflow roles <name>`: show
+`dispatch.py roles --workflow <name>`, the table that workflow will use, each row
+with its source (`workflow (<file>:<line>)`, `project`, `global` or `built-in`).
 
 ## build-verify
 
@@ -106,9 +116,12 @@ the check; report what was not run).
 ### 3 · Dispatch
 
 ```
-python3 <root>/tools/dispatch.py run --role implementer --brief <brief> \
-  --check "<Done-when command>" --run-id <id> [--rung K]
+python3 <root>/tools/dispatch.py run --role implementer --workflow <name> \
+  --brief <brief> --check "<Done-when command>" --run-id <id> [--rung K]
 ```
+
+`<name>` is the workflow being run: `build-verify` here, a custom workflow's own name
+when its steps use this one.
 
 Run it in the background: workers take minutes (a local model's first call took
 227 s, SOUL-200). Without `--rung` it runs the lowest rung. With `n=` above 1 the
@@ -154,8 +167,8 @@ refused, so evidence is never overwritten; one `clean --family` removes them all
 Write the winner's patch with the brief to the reviewers:
 
 ```
-python3 <root>/tools/dispatch.py review --role reviewer --brief <brief> \
-  --diff <patch> --workdir <winner worktree> --run-id <id>-rev<round>
+python3 <root>/tools/dispatch.py review --role reviewer --workflow <name> \
+  --brief <brief> --diff <patch> --workdir <winner worktree> --run-id <id>-rev<round>
 ```
 
 `--workdir` makes the reviewers read the candidate's files; without it they read this
@@ -215,7 +228,8 @@ offer a witness entry.
    `<head>` (`git worktree add --detach .ai/worktrees/<id>-head <head>`) and pass it
    as `--workdir`, so the reviewers read the branch's files, not this checkout's.
    Write a short brief: what the change is for, what it must not break.
-2. `dispatch.py review` as in build-verify step 5 (`--run-id <id>-rev1`); weigh each
+2. `dispatch.py review` as in build-verify step 5 (`--workflow review`,
+   `--run-id <id>-rev1`); weigh each
    finding; record the tallies. `dispatch.py clean --run-id <id> --family` removes
    the `<id>-head` worktree afterwards.
 3. Report the findings you accept, those you reject and why. Review makes no edits;
@@ -254,8 +268,18 @@ digits and `-`.
 
 Its steps name build-verify's building blocks by number — settle (1), brief (2),
 dispatch (3), check here (4), review (5), repair (6), accept (7), report (8) — and
-roles from the roles table. A role the file names but the table lacks: stop and ask
-the owner for a row. A copy to start from: `<root>/skills/soul-workflow/templates/quick-fix.md`.
+roles from the roles table. A role the file names but `dispatch.py roles --workflow
+<name>` lacks: stop and ask the owner for a row. A copy to start from:
+`<root>/skills/soul-workflow/templates/quick-fix.md`.
+
+**A workflow's own models.** A workflow file may hold an optional `## Roles` section:
+a table in the roles-table format, read only for that workflow (`--workflow <name>`),
+with the same checks (an error names the file and line). For each role, the first of
+these that names it supplies ALL of that role's rows: the workflow file's `## Roles`,
+then the project's `.claude/soul-roles.md`, then the global `~/.claude/soul-roles.md`,
+then the built-in default. Roles the section does not name keep their shared rows.
+A table inside a ``` fence or an HTML comment is not read. `/soul-workflow roles
+<name>` shows the result.
 
 **What no workflow file can change** — these hold whatever a file says, and a step
 that would break one is skipped and named in the report:

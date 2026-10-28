@@ -19,6 +19,9 @@ flagged; dispatch's own git never trusts the worktree's `.git`; tokens come from
 modelUsage when Claude reports it; reviewers run read-only and their FINDING lines
 (numbered ones too) are parsed; `clean` removes only its own run's worktrees and
 branches, `--family` every `<id>-*` run, and reports only what it deleted.
+`run`/`review --workflow NAME` use that workflow's `## Roles` rows over the shared
+table, and say so in result.json, review.json and the dispatch event; an unknown
+name is refused before any worker starts.
 
 Stub `claude` and `codex` executables on a temp PATH record argv, environment, cwd
 and stdin, and make the scripted edit. Nothing here touches the real repository.
@@ -694,6 +697,59 @@ def main():
     check("review: no bubblewrap/socat with a Claude reviewer is refused, none started",
           r.returncode == 2 and "socat" in r.stderr and not w.calls(), (r.returncode, r.stderr))
 
+    # 10 — --workflow: the workflow file's ## Roles rows win over the shared table
+    w.roles("| implementer | claude | sonnet | |", "| reviewer | claude | opus | |",
+            "| reviewer | codex | default | |")
+    write(os.path.join(w.proj, ".claude", "soul-workflows", "quick-fix.md"),
+          "---\nname: quick-fix\ndescription: d\n---\n\n1. Step.\n\n## Roles\n\n"
+          "| role | harness | model | settings |\n|---|---|---|---|\n"
+          "| implementer | claude | opus | |\n| reviewer | codex | default | |\n")
+    w.script({"write": {"app.txt": "FIXED\n"}})
+    r, res = w.run("wf1", "--workflow", "quick-fix")
+    argv = (w.calls() or [{"argv": []}])[0]["argv"]
+    check("run --workflow: the workflow's implementer row runs, not the shared one",
+          r.returncode == 0 and after(argv, "--model") == "opus"
+          and (res or {}).get("model") == "opus", (r.returncode, r.stderr, argv))
+    check("run --workflow: result.json names the workflow",
+          (res or {}).get("workflow") == "quick-fix", res)
+    a1 = json.loads(read(os.path.join(w.proj, ".ai", "workflow-runs", "a1", "result.json")))
+    check("run without --workflow: result.json has no workflow field", "workflow" not in a1,
+          a1.keys())
+    w.script({"write": {"app.txt": "FIXED\n"}})
+    r, res = w.run("wf2", "--workflow", "build-verify")
+    argv = (w.calls() or [{"argv": []}])[0]["argv"]
+    check("run --workflow build-verify: the shared table, the workflow named",
+          r.returncode == 0 and after(argv, "--model") == "sonnet"
+          and (res or {}).get("workflow") == "build-verify", (r.stderr, argv, res))
+    w.script({"write": {"app.txt": "FIXED\n"}})
+    r, res = w.run("wf3", "--workflow", "no-such-flow")
+    check("run --workflow with an unknown name: exit 2, no worker, no worktree",
+          r.returncode == 2 and "no workflow named 'no-such-flow'" in r.stderr
+          and not w.calls() and not os.path.exists(w.wt("wf3", 1)) and res is None,
+          (r.returncode, r.stderr))
+    w.script({"say": "NO FINDINGS"})
+    r = w.dispatch("review", "--role", "reviewer", "--brief", w.brief, "--diff", diff,
+                   "--run-id", "wfv1", "--workflow", "quick-fix")
+    calls = w.calls()
+    path = os.path.join(w.proj, ".ai", "workflow-runs", "wfv1", "review.json")
+    rv = json.loads(read(path)) if os.path.exists(path) else {}
+    check("review --workflow: only the workflow's reviewer runs",
+          r.returncode == 0 and [c["name"] for c in calls] == ["codex"]
+          and [x["harness"] for x in rv.get("reviewers", [])] == ["codex"],
+          (r.stderr, [c["name"] for c in calls]))
+    check("review --workflow: review.json names the workflow", rv.get("workflow") == "quick-fix",
+          rv)
+    evs = [json.loads(l) for l in (read(log) if os.path.exists(log) else "").splitlines()]
+    disp = [e["data"] for e in evs if e.get("type") == "soul.workflow.dispatch"]
+    by = {(d["mode"], d["run_id"]): d for d in disp}
+    check("dispatch events carry the workflow when it was given, and only then",
+          by.get(("run", "wf1"), {}).get("workflow") == "quick-fix"
+          and by.get(("run", "wf2"), {}).get("workflow") == "build-verify"
+          and by.get(("review", "wfv1"), {}).get("workflow") == "quick-fix"
+          and "workflow" not in by.get(("run", "a1"), {"workflow": 1})
+          and "workflow" not in by.get(("review", "v1"), {"workflow": 1}),
+          [(k, d.get("workflow")) for k, d in by.items()])
+
     shutil.rmtree(tmp, ignore_errors=True)
     docs()
     print("\n{} failure(s)".format(len(FAILS)) if FAILS else "\nALL PASS")
@@ -716,6 +772,8 @@ def docs():
     tool = read(_TOOL)
     step4 = section(skill, "### 4 ·", "### 5 ·")
     step7 = section(skill, "### 7 ·", "### 8 ·")
+    step3 = section(skill, "### 3 ·", "### 4 ·")
+    step5 = section(skill, "### 5 ·", "### 6 ·")
     check("skill step 4: the recorder re-runs the check with --confine, patch read first",
           "--confine" in step4 and step4.find("patch") < step4.find("--confine"), step4[:600])
     check("skill step 7: the re-run is confined and comes after reading the patch",
@@ -737,6 +795,20 @@ def docs():
           "--confine" in section(skill, "What happens", "## The roles")
           and "bubblewrap" in section(skill, "What happens", "## The roles"),
           section(skill, "What happens", "## The roles"))
+    check("skill: run and review commands pass --workflow <name>, built-ins included",
+          "dispatch.py run --role implementer --workflow <name>" in step3
+          and "dispatch.py review --role reviewer --workflow <name>" in step5
+          and "built-ins included" in skill, (step3, step5))
+    custom = section(skill, "## Custom workflows", "## Seeing how roles do")
+    check("skill: a workflow's own ## Roles, the lookup order, and roles <name>",
+          "## Roles" in custom and "/soul-workflow roles <name>" in skill
+          and all(s in custom for s in ("`.claude/soul-roles.md`", "`~/.claude/soul-roles.md`",
+                                        "built-in default")), custom)
+    wguide = " ".join(read(os.path.join(root, "docs", "workflows.md")).split())
+    part = section(wguide, "Different models for one workflow", "## When something goes wrong")
+    check("workflows guide: one workflow's own models, lookup order, three workflows",
+          "## Roles" in part and "security-check" in part and "quick-fix" in part
+          and "build-verify" in part and "soul-roles.md" in part, part[:800])
     check("guide: two reviewers by default — a fresh Claude and Codex when installed",
           "two reviewers by default — a fresh Claude and Codex when it is installed" in guide,
           section(guide, "Handing work to other models", "Moving to another"))
