@@ -667,6 +667,25 @@ def main():
                "(`/soul-init revisit sidecar` asks again)")], q)
     asked, _, _ = sidecar_asked(env, p31)
     check("sidecar: not asked when this machine names no vault", not asked)
+    p31o = repo(tmp, "sc-open", {"CLAUDE.md": IMPORT, "witness.md": "# W\n", "ideas.md": "# I\n"})
+    write(os.path.join(p31o, ".soul", "handoff.md"), "# H\n")  # tracked root, .soul/ not ignored
+    asked, _, byo = sidecar_asked(envv, p31o)
+    check("sidecar: not offered while the record question is open (no opposite answers)",
+          not asked and byo.get("record", {}).get("action") in ("ask", "repair"),
+          (byo.get("record"), byo.get("sidecar")))
+    # the two further cases the replay's round-2 reviewers raised (2026-10-27)
+    p31f = sidecar_repo("sc-force")
+    r = run(envv, "status", p31f, "--json", "--ask", "record")
+    byf = {i["key"]: i for i in json.loads(r.stdout)["items"]} if r.stdout.strip() else {}
+    check("sidecar: not offered beside a forced record question (--ask record)",
+          byf.get("record", {}).get("action") == "ask" and not byf.get("sidecar"),
+          (byf.get("record"), byf.get("sidecar"), r.stderr[-300:]))
+    p31l = sidecar_repo("sc-local")
+    run(envv, "record", p31l, "record", "local")
+    asked, _, byl = sidecar_asked(envv, p31l)
+    check("sidecar: not offered while a recorded `record: local` needs its repair",
+          not asked and byl.get("record", {}).get("action") == "repair",
+          (byl.get("record"), byl.get("sidecar")))
     p31b = sidecar_repo("sc-link")
     shutil.rmtree(os.path.join(p31b, ".soul"))
     write(os.path.join(tmp, "sc-elsewhere", "handoff.md"), "# H\n")

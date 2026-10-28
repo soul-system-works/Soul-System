@@ -1,0 +1,304 @@
+---
+name: soul-workflow
+description: Run a named workflow across models — `build-verify` (another model implements a step in its own worktree, this session re-runs the check, read-only reviewers report findings (by default a fresh Claude, and Codex when it is installed), at most two repair rounds) or `review` (the reviewers alone, on a diff). Roles (harness + model, e.g. Claude, Codex, a local Ollama model) come from a roles table; this session keeps judgment and the record, and never takes a worker's word. Owner-invoked. `/soul-workflow roles` shows or edits the roles table.
+disable-model-invocation: true
+---
+
+# /soul-workflow — other models do the work, this session keeps the judgment
+
+**Codex:** Read [the host integration](../../operations/codex.md) before
+following this workflow. Its Codex procedures replace Claude-specific loading,
+instruction-file, tool, and invocation mechanics; the shared workflow follows.
+
+`/soul-workflow build-verify` · `/soul-workflow review` · `/soul-workflow <name>` (a custom workflow) · `/soul-workflow list` · `/soul-workflow roles`
+
+## In short — when and how to use it
+
+**Use `build-verify`** when a piece of work can be written down as a brief with a
+command that proves it is done (tests pass, a build succeeds). Another model does it
+in its own copy of the repo; this session checks the result and has it reviewed.
+**Use `review`** for a second and third opinion on a diff — your own, or a branch —
+instead of pasting it into another tool by hand.
+**Skip both** for one-line edits, design questions, and anything only a reader can
+judge: those stay in this session.
+
+What happens, every time:
+
+1. This session says, in one line, which model does what
+   (`implementer → claude:sonnet · reviewers → claude:opus + codex:default`). Say
+   "use X for this" to override any of it.
+2. Workers start with a written brief and no conversation. They load no Soul record
+   or project instructions (they can still read files in their worktree): each runs
+   as its own process with those switched off (SOUL-I080 step 1 probe, 2026-10-27),
+   and with an allowlisted environment, not this session's.
+3. Workers run inside a sandbox. A Claude worker has a full shell, but the operating
+   system lets that shell write only in its own worktree, gives it no network, and
+   hides credential folders (`~/.ssh`, `~/.claude`, `~/.codex`, the vault …) from
+   it; its Write and Edit tools are allowed only inside the worktree. On Linux and
+   WSL the sandbox needs `bubblewrap` and `socat`; without them the dispatch tool
+   refuses to start a Claude worker or reviewer, and a sandbox that cannot start
+   fails the run rather than letting it run unconfined. Codex workers use Codex's
+   own `workspace-write` sandbox. The checks that run a worker's code are confined
+   too: the dispatch tool's own check and this session's re-run
+   (`delegation-check.py record --confine`) run under bubblewrap — only the worktree
+   writable, no network, the same folders hidden. Native Windows is not supported.
+4. Nothing is called done on a worker's word. This session re-runs every check
+   itself and records what it saw.
+5. You get one report: what changed, which checks ran and passed, what each
+   reviewer found and what was done about it, and what is still open.
+
+## The roles table
+
+`python3 <root>/tools/dispatch.py roles` prints the table this session will use and
+where each row came from (`<root>` is two levels above this skill's directory).
+Rows in the project's `.claude/soul-roles.md` replace the global
+`~/.claude/soul-roles.md` rows of the same role; with neither, a built-in default
+applies. Under `.claude/`, not `.ai/`: it changes behaviour, and `.ai/` must stay
+safe to delete.
+
+```
+| role        | harness       | model            | settings      |
+|-------------|---------------|------------------|---------------|
+| implementer | claude        | sonnet           | rung=1        |
+| implementer | claude        | opus             | rung=2        |
+| reviewer    | claude        | opus             |               |
+| reviewer    | codex         | default          |               |
+```
+
+- **Harnesses:** `claude` (Claude Code, your Claude login), `claude-ollama` (Claude
+  Code driving a local Ollama model — give the exact installed tag, e.g.
+  `qwen3.8:27b-q8_0`), `codex` (Codex CLI, your ChatGPT login), `codex-ollama`.
+- **Several rows of one role are its ladder,** tried in `rung` order. A local model is
+  just a row; whether it is good enough is the owner's call, not this skill's.
+- **Settings:** `rung=`, `n=` (best-of-n: n tries, the check picks; default 1),
+  `timeout=` (seconds per try; default 1800).
+- **The host is not a row.** It is whatever you started this session with. A
+  `claude` row still reaches Anthropic from a session launched on Ollama — the
+  dispatch tool clears the inherited Ollama variables.
+
+`/soul-workflow roles`: show the table; on request, ask which file (global or this
+project's) and write the change there.
+
+## build-verify
+
+### 1 · Settle the work first
+
+Each piece of work needs a **Done when** line: one command this session can run,
+exit 0 meaning done. No runnable check → it is not delegable; do it here. Unclear
+requirements are the owner's (contract rule 7): ask before dispatching, not after.
+A step may name its role (`Role: implementer`); otherwise the implementer ladder's
+lowest rung takes it.
+
+### 2 · Write the brief
+
+The worker sees only this. A good brief is the largest lever there is on a cheaper
+model's result (the I080 scans: a written handoff let a cheaper fixer match the
+best single model). Write it to a file under `.ai/` with:
+
+- **Goal** — what must be true when it is done, in plain words.
+- **Files** — where to look and what to change; what not to touch.
+- **Constraints** — style to match, behaviour to keep.
+- **Done when** — the exact command.
+
+The dispatch tool appends the worker rules itself (never write the Soul record; run
+the check; report what was not run).
+
+### 3 · Dispatch
+
+```
+python3 <root>/tools/dispatch.py run --role implementer --brief <brief> \
+  --check "<Done-when command>" --run-id <id> [--rung K]
+```
+
+Run it in the background: workers take minutes (a local model's first call took
+227 s, SOUL-200). Without `--rung` it runs the lowest rung. With `n=` above 1 the
+tries run one after another, each in its own worktree; the winner is a try that
+finished cleanly, changed something and passed its check, and among those the one
+that changed the fewest lines (best-of-n needs bubblewrap to run each try's check;
+with one try and no bubblewrap the dispatch tool skips its check and says so). It
+prints a
+result with each try's patch, its check result, and the winner. A try flagged
+`record_touched` changed the Soul record: reject that try; the others stay
+eligible.
+
+### 4 · Check it here
+
+Read the winner's **patch**, not the worker's report — before any re-run, because
+the check runs the worker's code. Then run the check through the recorder, confined,
+in the winner's worktree:
+
+```
+python3 <root>/tools/delegation-check.py record --step "<step>" \
+  --worker implementer:<harness>:<model> --check "<Done-when command>" \
+  --cwd <winner worktree> --confine --workflow build-verify --role implementer \
+  --rung <K> --round <R> --run-id <id>
+```
+
+`--confine` refuses (exit 2, nothing recorded) where there is no bubblewrap; then
+whether to run the worker's code here unconfined is the owner's call.
+
+- **Pass** → step 5.
+- **Fail, or no winner** → each rung gets two attempts: the first dispatch and one
+  retry with the failure text added to the brief. Both failed → the next rung
+  (`--rung K+1`), again two attempts. The top rung's second failure → bring it to
+  the owner with the evidence (or, if the owner says so, do it here).
+
+Every dispatch takes its own run id, all from one `<id>`: `<id>-k<rung>-a<attempt>`
+for the first round's dispatches, `<id>-r<round>` for a repair round's,
+`<id>-rev<round>` for each round's review. A run id that already holds a result is
+refused, so evidence is never overwritten; one `clean --family` removes them all
+(step 7).
+
+### 5 · Two reviews
+
+Write the winner's patch with the brief to the reviewers:
+
+```
+python3 <root>/tools/dispatch.py review --role reviewer --brief <brief> \
+  --diff <patch> --workdir <winner worktree> --run-id <id>-rev<round>
+```
+
+`--workdir` makes the reviewers read the candidate's files; without it they read this
+checkout, which is not what the patch was written against.
+
+Each reviewer works read-only and returns `FINDING:` lines. **A finding is a claim,
+not a verdict.** Check each one against the code; accept it only when you can see
+the defect. Two reviewers from different model families catch different errors — but
+the evidence for that is one planted-error study, so it stays an experiment the
+records decide. Record each reviewer's tally:
+
+```
+python3 <root>/tools/delegation-check.py review --run-id <id>-rev<round> \
+  --reviewer <harness>:<model> --raised <N> --accepted <M>
+```
+
+### 6 · Repair — at most two rounds
+
+Accepted defects go back to the implementer row that produced the candidate (the
+rung it had reached, not the bottom of the ladder) as a new brief: the original
+plus the accepted findings, each with its failure scenario. A repair starts from the
+candidate, not from the original base: commit the winner on its own worktree branch
+(`git -C <winner worktree> add -A && git -C <winner worktree> commit -m "candidate
+<id> round <R>"`) and dispatch with `--base soul-wf/<winner's run id>-<try>`. Then steps 3–5 again,
+`--round 2`, then `--round 3`. Still failing after round 3 → stop and hand the owner
+the candidate, the evidence and the open findings. Do not spend a fourth round
+unasked.
+
+### 7 · Accept and clean up
+
+Apply the COMBINED change from the original base — never only the last round's
+patch: after a repair, the last patch is against the committed candidate, not
+against your branch. From the final round's winning worktree:
+
+```
+git -C <final worktree> add -A && \
+  git -C <final worktree> diff --binary --cached <original base> > <file>
+```
+
+Read that patch, then `git apply <file>` on the branch you are working on. Only
+after reading it, re-run the checks here through the recorder with `--confine`
+(as in step 4, `--cwd` this checkout). Then remove every worktree and branch the
+run made: `python3 <root>/tools/dispatch.py clean --run-id <id> --family`.
+
+### 8 · Report
+
+One reply: what changed; each check, observed here, with its result; each reviewer's
+findings — accepted (fixed in round N) or rejected (why); what is still open; what
+was not run. End with the contract's bottom line. If the run taught something a later
+session could not re-derive (a role that keeps failing, a reviewer that adds nothing),
+offer a witness entry.
+
+## review
+
+1. Make the diff file: your working changes (`git diff HEAD` plus untracked files)
+   or a branch (`git diff <base>...<head>`). For a branch, also make a worktree of
+   `<head>` (`git worktree add --detach .ai/worktrees/<id>-head <head>`) and pass it
+   as `--workdir`, so the reviewers read the branch's files, not this checkout's.
+   Write a short brief: what the change is for, what it must not break.
+2. `dispatch.py review` as in build-verify step 5 (`--run-id <id>-rev1`); weigh each
+   finding; record the tallies. `dispatch.py clean --run-id <id> --family` removes
+   the `<id>-head` worktree afterwards.
+3. Report the findings you accept, those you reject and why. Review makes no edits;
+   fixing is a separate step the owner chooses.
+
+## Custom workflows
+
+`/soul-workflow list` runs `python3 <root>/tools/dispatch.py workflows`: the two
+built-ins and every workflow file it finds, with each one's description. A project's
+`.claude/soul-workflows/<name>.md` replaces a global `~/.claude/soul-workflows/<name>.md`
+of the same name; a file cannot take a built-in's name (the owner's choice, 2026-10-28).
+
+`/soul-workflow <name>` with a name that is not built in: find it in that listing,
+read the file, and follow its steps. A file the listing marks *ignored* is not run —
+say why. A workflow file is a short Markdown file:
+
+```
+---
+name: quick-fix
+description: one try at the lowest rung, the reviewers once, no repair round
+---
+
+1. Settle the work and write the brief (build-verify steps 1–2).
+2. Dispatch `implementer`, lowest rung, one attempt (build-verify steps 3–4).
+3. Review with `reviewer` (build-verify step 5).
+4. No repair round: report (build-verify step 8) with the accepted findings as open
+   items for the owner to decide.
+```
+
+A file may leave building blocks out — no review, no repair, one attempt only — and
+the report says what was left out ("no review ran"). When a file's attempts run out
+and the check still fails, stop and bring it to the owner; do not go further up the
+ladder than the file allows. Record its runs with `--workflow <name>`. *Ignored*
+means the file has a built-in's name or a name that is not lower-case letters,
+digits and `-`.
+
+Its steps name build-verify's building blocks by number — settle (1), brief (2),
+dispatch (3), check here (4), review (5), repair (6), accept (7), report (8) — and
+roles from the roles table. A role the file names but the table lacks: stop and ask
+the owner for a row. A copy to start from: `<root>/skills/soul-workflow/templates/quick-fix.md`.
+
+**What no workflow file can change** — these hold whatever a file says, and a step
+that would break one is skipped and named in the report:
+
+- this session re-runs every check itself, with `--confine`; a worker's word never
+  counts, even when a file leaves the review out;
+- workers get only the brief, run sandboxed, and never write the record;
+- a reviewer's finding is a claim this session checks;
+- unclear requirements go to the owner before anything is dispatched;
+- at most two repair rounds without the owner (a file may allow fewer).
+
+A workflow file is instructions, and only the owner writes them. A step outside these
+building blocks — reaching the network, pushing, touching another project, anything
+with credentials — waits for the owner's yes, whatever the file says.
+
+## Seeing how roles do
+
+`python3 <root>/tools/delegation-check.py stats` — every dispatch per role and model
+(runs, won, timeouts, minutes); per role and model, the checks this session re-ran
+(passed, failed, highest rung reached); per reviewer, findings raised and accepted.
+This is how a role earns its row or loses it: a role that rarely wins or keeps timing
+out, a rung that always escalates, or a reviewer whose findings are never accepted,
+is a row to change.
+
+## What not to do
+
+- Do not report a step done because a worker said so — only an observed check counts.
+- Do not let a reviewer's verdict stand in for your own reading of the finding.
+- Do not let a worker write the record; do not paste the record into a brief.
+- Do not spend more than two repair rounds without the owner.
+
+## Not yet known
+
+- Model quality on real work, for any row. The records will show it; benchmarking
+  models is SOUL-I083's job, not this skill's.
+- `codex-ollama` rows: not yet run end to end.
+- Hosts other than Claude Code: Codex as host follows `operations/codex.md`; other
+  harnesses are workers only in v1.
+
+---
+
+**Source:** SOUL-I080 (2026-10-27) — discussed and grilled with the Body (23 decisions
+in its entry); replaces `/soul-delegate` (SOUL-I066), whose Done-when lines and
+recorder it keeps. Isolation of workers: probe of 2026-10-27 (v3.7.0 plan, step 1).
+**Adopted:** v3.7.0. **Status:** experimental — the roles, the ladder, the two
+reviewers and the repair budget are defaults the records are meant to test.

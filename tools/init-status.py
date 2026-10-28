@@ -981,6 +981,13 @@ def status(project, force=()):
         if k == "history-scan" and not shutil.which("gitleaks"):
             continue
         i["action"] = "ask"
+    # Never offer the sidecar while the record's own place is still open: the owner
+    # could answer `record vault` and `sidecar move`, opposite layouts. Found by the
+    # v3.7.0 replay's reviewer (2026-10-27) in released v3.6.3.
+    rec_item, sc_item = found["record"], found["sidecar"]
+    if sc_item and sc_item["action"] == "ask" and rec_item and \
+            rec_item["action"] in ("ask", "repair"):
+        found["sidecar"] = None
     # Unknown visibility changes the record and names questions, so it is asked first.
     if public["value"] is None and any(found[k] and found[k]["action"] == "ask"
                                        for k in ("record", "names")):

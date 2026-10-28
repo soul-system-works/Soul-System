@@ -1,6 +1,6 @@
 {
   "name": "soul-system",
-  "version": "3.6.3",
+  "version": "3.7.0",
   "description": "Project memory, handoff workflows, a verification reminder, and an opt-in, experimental secret guard on git commit/push for human–AI collaboration. Codex support is an experimental local integration; run $soul-system:soul-init to wire project instructions.",
   "skills": "./skills/",
   "hooks": "./hooks/codex.json",
