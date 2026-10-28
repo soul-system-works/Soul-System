@@ -3,16 +3,18 @@
 `/soul-workflow` lets other models do pieces of work — a smaller Claude, Codex, or a
 model running on your own GPU — while the session you are talking to keeps the
 judgment. It writes the task down for the other model, has it work in a separate
-copy of your repo, checks the result itself, has it reviewed, and brings you one
-report. You stop copying prompts between tools by hand.
+copy of your repo, has the result checked and reviewed, and brings you one report.
+You stop copying prompts between tools by hand.
 
 ```
  YOU ──▶ this session (whatever you started: Claude Code, any model)
           │  /soul-workflow build-verify
           ├─ brief ──▶ IMPLEMENTER   own copy of the repo · sees only the brief · sandboxed
-          ├─ runs the "done when" check itself, in a locked-down box
+          │    the "done when" check runs in a locked-down box, recorded by the recorder
           ├─ diff ───▶ REVIEWERS     read-only · fresh Claude, and Codex if installed
-          ├─ real defect? → back to the implementer (at most 2 rounds)
+          │    (one call does all of the above and hands back one bundle)
+          ├─ reads the change · real defect? → back to the implementer (at most 2 rounds)
+          ├─ applies it here and runs the check once more
           ▼
          one report to you: what changed · what was checked · what is still open
 ```
@@ -44,11 +46,15 @@ For a second opinion on a change you already made, type `/soul-workflow review`.
 Use it for work you can describe and check with a command. Not for design questions
 or anything only a person can judge by reading — those stay in your session.
 What happens: the work is written up as a short brief; the implementer makes the
-change in its own copy of the repo; this session re-runs the check itself (a worker
-saying "tests pass" never counts); the reviewers read the change and report problems;
-each problem is checked against the code before it is believed; real ones go back to
-the implementer, at most twice; then you get the report. If the cheapest implementer
-fails twice, the next one up the list takes over.
+change in its own copy of the repo; the check runs in a locked-down box and a
+separate tool, the recorder, writes down what it saw (a worker saying "tests pass"
+never counts); the reviewers read the change and report problems. All of that is one
+call, which hands this session one summary to read — the first trial of the workflow
+spent most of its cost on the session doing those steps one by one. This session then
+reads the change itself and checks each problem against it before believing it; real
+ones go back to the implementer, at most twice; when it is right, the change is
+applied to your checkout and the check runs once more there; then you get the report.
+If the cheapest implementer fails twice, the next one up the list takes over.
 What you get: the change ready to apply, the check results, the reviewers' findings
 (accepted or rejected, with why), and what is still open.
 
@@ -88,8 +94,15 @@ Everything local:
 | reviewer    | claude-ollama | qwen3.8:27b-q8_0 |        |
 ```
 Settings: `rung=` (ladder order), `n=` (best of n: n tries, the check picks the
-winner — cheap on your own GPU), `timeout=` (seconds per try; default 1800). Whether
-a model is good enough is your call; the records below show how each one does.
+winner — cheap on your own GPU), `timeout=` (seconds per try; default 1800),
+`effort=` (how hard the model thinks: `low`, `medium`, `high`, `xhigh` or `max` for
+Claude; `minimal`, `low`, `medium`, `high` or `xhigh` for Codex). Whether a model is
+good enough is your call; the records below show how each one does.
+
+A Codex row with model `default` gets Codex's own default model and effort, not the
+ones in your `~/.codex/config.toml` — workers ignore your own settings. (On
+2026-10-28, codex-cli 0.163.0 ran `gpt-6.1-sol` with no effort set.) When you compare
+models, name both the model and `effort=`.
 
 ## Your usual subagents
 
@@ -97,7 +110,7 @@ Outside a workflow, Claude Code hands work to its own subagents as usual — and
 CLAUDE.md of yours may tell it to, for example sending implementation to an Opus
 `implementer` agent. Inside a `/soul-workflow` run, the implementing and reviewing
 go to the workflow's roles instead, never to those subagents: only dispatched work
-runs sandboxed, has its check re-run, and shows up in the stats. Other help —
+runs sandboxed, has its check recorded, and shows up in the stats. Other help —
 searching the code, reading a long log — may still use subagents.
 
 ## What keeps it safe
@@ -109,9 +122,11 @@ searching the code, reading a long log — may still use subagents.
   `~/.ssh`, `~/.claude`, `~/.codex`, your vault and similar folders. A Codex worker
   uses Codex's own sandbox: it limits where Codex can write, but not what it can read.
 - **Checks run boxed in too.** The check runs the worker's code, so it runs in the same
-  kind of locked-down box, never with your session's permissions.
-- **Nothing is "done" on a worker's word.** This session re-runs every check and
-  records what it saw.
+  kind of locked-down box, never with your session's permissions. Even when it runs
+  in your own checkout, it cannot change the repo's git folder or your Soul record.
+- **Nothing is "done" on a worker's word.** Every check runs boxed in and is recorded
+  by the recorder, a tool separate from the worker. This session reads every change
+  before applying it, and applying it runs the check once more, on your checkout.
 - **You decide what is unclear.** Unclear requirements come to you before any work is
   handed out; more than two repair rounds needs your yes.
 
@@ -119,7 +134,7 @@ searching the code, reading a long log — may still use subagents.
 
 `python3 <plugin>/tools/delegation-check.py stats` (or ask the session for the
 workflow stats) shows, for each role and model: how many runs, how many produced a
-winner, timeouts, minutes; the checks this session re-ran and whether they passed;
+winner, timeouts, minutes; the checks the recorder ran and whether they passed;
 and for each reviewer how many findings it raised and how many held up. A model that
 rarely wins, or a reviewer whose findings never hold up, is a row to change or drop.
 
@@ -131,8 +146,10 @@ rarely wins, or a reviewer whose findings never hold up, is a row to change or d
    all projects). The file name is the workflow's name: lower-case letters, digits
    and `-`; the built-in names are taken.
 3. Edit its `description:` line and its steps. Steps are short sentences that use
-   build-verify's building blocks — settle, brief, dispatch a role, check here,
-   review, repair, accept, report — and role names from your roles table.
+   build-verify's building blocks — settle, brief, dispatch a role, check, review,
+   repair, accept, report — and role names from your roles table. A step that wants
+   less than build-verify's one-call round (one attempt, no review) runs the smaller
+   pieces, `run` and `review`, by hand.
 4. Run it: `/soul-workflow <name>`.
 
 Example — a cheap fix with a second opinion and no repair rounds:

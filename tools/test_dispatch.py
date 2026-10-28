@@ -73,6 +73,8 @@ if name == "claude":
         "input_tokens": 100, "cache_read_input_tokens": 20, "output_tokens": 7}}}}
     if act.get("model_usage"):
         out["modelUsage"] = act["model_usage"]
+    if act.get("cost") is not None:
+        out["total_cost_usd"] = act["cost"]
     print(json.dumps(out))
 else:
     open(args[args.index("-o") + 1], "w").write(say)
@@ -750,10 +752,470 @@ def main():
           and "workflow" not in by.get(("review", "v1"), {"workflow": 1}),
           [(k, d.get("workflow")) for k, d in by.items()])
 
+    effort_cases(w)
+    build_verify_cases(w, gitonly)
+    review_fix_cases()
+
     shutil.rmtree(tmp, ignore_errors=True)
     docs()
     print("\n{} failure(s)".format(len(FAILS)) if FAILS else "\nALL PASS")
     return 1 if FAILS else 0
+
+
+def pairs(argv):
+    return list(zip(argv, argv[1:]))
+
+
+def events(w, kind):
+    log = os.path.join(w.tmp, "events.jsonl")
+    evs = [json.loads(l) for l in (read(log) if os.path.exists(log) else "").splitlines()]
+    return [e["data"] for e in evs if e.get("type") == kind]
+
+
+def effort_cases(w):
+    """11 — `effort=`: a word per harness, passed as that harness's own flag."""
+    w.roles("| implementer | claude | sonnet | effort=high |")
+    w.script({"write": {"app.txt": "FIXED\n"}})
+    r, res = w.run("ef1")
+    argv = (w.calls() or [{"argv": []}])[0]["argv"]
+    check("effort: a claude row passes --effort <level>",
+          r.returncode == 0 and ("--effort", "high") in pairs(argv), (r.stderr, argv))
+    check("effort: result.json carries it, header and try",
+          res and res.get("effort") == "high" and res["tries"][0].get("effort") == "high", res)
+    run_ev = [d for d in events(w, "soul.workflow.dispatch") if d["run_id"] == "ef1"]
+    check("effort: the dispatch event carries it when set",
+          run_ev and run_ev[0].get("effort") == "high", run_ev)
+    w.roles("| implementer | codex | default | effort=minimal |")
+    w.script({"write": {"app.txt": "FIXED\n"}})
+    r, res = w.run("ef2")
+    argv = (w.calls() or [{"argv": []}])[0]["argv"]
+    check("effort: a codex row passes -c model_reasoning_effort=<level>",
+          r.returncode == 0 and ("-c", "model_reasoning_effort=minimal") in pairs(argv)
+          and ("-c", "project_doc_max_bytes=0") in pairs(argv), (r.stderr, argv))
+    w.roles("| implementer | claude | sonnet | |", "| reviewer | codex | default | |")
+    w.script({"write": {"app.txt": "FIXED\n"}})
+    r, res = w.run("ef3")
+    argv = (w.calls() or [{"argv": []}])[0]["argv"]
+    w.script({"say": "NO FINDINGS"})
+    diff = os.path.join(w.tmp, "change.diff")
+    w.dispatch("review", "--role", "reviewer", "--brief", w.brief, "--diff", diff,
+               "--run-id", "ef4")
+    cargv = (w.calls() or [{"argv": []}])[0]["argv"]
+    run_ev = [d for d in events(w, "soul.workflow.dispatch") if d["run_id"] in ("ef3", "ef4")]
+    check("effort unset: no --effort, no model_reasoning_effort, no event field",
+          "--effort" not in argv and not any("model_reasoning_effort" in a for a in cargv)
+          and res and res.get("effort") is None and len(run_ev) == 2
+          and all("effort" not in d for d in run_ev), (argv, cargv, run_ev))
+    roles_file = os.path.join(w.proj, ".claude", "soul-roles.md")
+    for row, levels in (("| implementer | claude | sonnet | effort=minimal |",
+                         "low, medium, high, xhigh, max"),
+                        ("| implementer | codex | default | effort=max |",
+                         "minimal, low, medium, high, xhigh")):
+        w.roles(row)
+        r = w.dispatch("roles")
+        check("effort: an invalid level is a row error naming file:line and the levels "
+              "({})".format(row.split("|")[2].strip()),
+              r.returncode == 2 and roles_file + ":3:" in r.stderr and levels in r.stderr,
+              r.stderr)
+    w.roles("| implementer | claude-ollama | qwen3.8:27b-q8_0 | effort=low rung=1 |",
+            "| reviewer | codex-ollama | qwen3.8:27b-q8_0 | effort=xhigh |")
+    r = w.dispatch("roles", "--json")
+    rows = json.loads(r.stdout or "[]")
+    text = w.dispatch("roles").stdout
+    check("effort: roles --json and the text view carry it ('-' when unset)",
+          [x.get("effort") for x in rows] == ["low", "xhigh"]
+          and "effort" in text.splitlines()[0], (rows, text))
+
+
+def build_verify_cases(w, gitonly):
+    """12–15 — build-verify: one call per round; repair; accept."""
+    runs = os.path.join(w.proj, ".ai", "workflow-runs")
+    head = git(w.proj, "rev-parse", "HEAD").stdout.strip()  # 8b committed after head
+
+    def bundle(run_id):
+        path = os.path.join(runs, run_id, "bundle.json")
+        return json.loads(read(path)) if os.path.exists(path) else {}
+
+    # 12 — the ladder: rung 1 fails twice, rung 2 wins; the recorder runs the check;
+    # the reviewers read the winner's worktree; bundle.md has what the host needs
+    w.roles("| implementer | claude | sonnet | |", "| implementer | claude | opus | effort=max |",
+            "| reviewer | claude | opus | |", "| reviewer | codex | default | |")
+    w.script({"write": {"app.txt": "WRONG\n"}}, {"write": {"app.txt": "WRONG\n"}},
+             {"write": {"app.txt": "FIXED\n"}, "cost": 0.25},
+             {"say": "FINDING: app.txt:1 — first — scenario one\n", "cost": 0.5},
+             {"say": "FINDING: app.txt:1 — second — scenario two\n"})
+    r = w.dispatch("build-verify", "--brief", w.brief, "--check", CHECK, "--run-id", "bv")
+    calls = w.calls()
+    b = bundle("bv")
+    win = b.get("winner") or {}
+    check("build-verify: rung 1's two attempts fail, rung 2 wins, exit 0",
+          r.returncode == 0 and b.get("status") == "winner" and win.get("rung") == 2
+          and win.get("run_id") == "bv-k2-a1"
+          and [a["run_id"] for a in b.get("attempts", [])] == ["bv-k1-a1", "bv-k1-a2", "bv-k2-a1"],
+          (r.returncode, r.stderr, b.get("status"), win))
+    stdins = [c["stdin"] for c in calls]
+    check("build-verify: attempt 2's brief carries the failure section; a new rung starts clean",
+          len(stdins) >= 3 and "## The previous attempt failed" not in stdins[0]
+          and "## The previous attempt failed" in stdins[1]
+          and "try 1: exit 0, 2 changed line(s), check exit 1" in stdins[1]
+          and "## The previous attempt failed" not in stdins[2]
+          and stdins[1].startswith("GOAL-SENTINEL"), stdins[1:2])
+    check("build-verify: rung 2 runs its row, effort included",
+          len(calls) >= 3 and after(calls[2]["argv"], "--model") == "opus"
+          and ("--effort", "max") in pairs(calls[2]["argv"]), calls[2:3] and calls[2]["argv"])
+    rec = [d for d in events(w, "soul.delegation.checked") if d.get("run_id") == "bv-k2-a1"]
+    d = rec[0] if rec else {}
+    check("build-verify: the recorder recorded the winner's check, with every field",
+          len(rec) == 1 and d["check"]["passed"] is True and d["check"]["observed"] is True
+          and d["check"]["command"] == CHECK
+          and d["worker"] == {"tier": "implementer", "tool": "claude", "model": "opus"}
+          and (d.get("workflow"), d.get("role"), d.get("rung"), d.get("round"))
+          == ("build-verify", "implementer", 2, 1)
+          and d.get("step") == "GOAL-SENTINEL: make app.txt say FIXED.", rec)
+    wt = os.path.realpath(w.wt("bv-k2-a1", 1))
+    check("build-verify: both reviewers read the winner's worktree",
+          len(calls) == 5 and os.path.realpath(calls[3]["cwd"]) == wt
+          and os.path.realpath(after(calls[4]["argv"], "-C") or "") == wt
+          and os.path.exists(os.path.join(runs, "bv-rev1", "review.json")),
+          [(c["name"], c["cwd"]) for c in calls])
+    md = r.stdout
+    check("build-verify: bundle.md — status, row, check, patch, F-numbered findings, cost",
+          "winner recorded passing" in md and "claude:opus · effort max · rung 2" in md
+          and "recorder exit 0" in md and "+FIXED" in md
+          and "F1 [claude:opus] app.txt:1 — first — scenario one" in md
+          and "F2 [codex:default] app.txt:1 — second — scenario two" in md
+          and "$0.2500" in md and "$0.5000" in md and "Reported cost: $0.7500" in md, md)
+    check("build-verify: bundle.md names the next commands, and is saved as printed",
+          "build-verify --repair-of bv --accepted" in md and "accept --run-id bv" in md
+          and read(os.path.join(runs, "bv", "bundle.md")) == md, md[-800:])
+    check("build-verify: bundle.json keeps the family, round, bases, briefs and check",
+          b.get("family") == "bv" and b.get("round") == 1 and b.get("original_base") == head
+          and b.get("check") == CHECK and b.get("workflow") == "build-verify"
+          and read(b.get("original_brief", w.brief)) == read(w.brief)
+          and win.get("harness") == "claude" and win.get("effort") == "max", b)
+
+    # 13 — the recorder disagrees with the selection check: that attempt failed; with
+    # no rung left, no winner (exit 1) and no review
+    w.roles("| implementer | claude | sonnet | |", "| reviewer | claude | opus | |")
+    w.script({"write": {"app.txt": "FIXED\n"}})
+    seen = "grep -qx FIXED app.txt && if [ -e .seen ]; then exit 1; else touch .seen; fi"
+    r = w.dispatch("build-verify", "--brief", w.brief, "--check", seen, "--run-id", "nw")
+    calls = w.calls()
+    b = bundle("nw")
+    rec = [d for d in events(w, "soul.delegation.checked") if d.get("run_id", "").startswith("nw-")]
+    check("recorder fails a selected try: counted as that attempt failing, ladder goes on",
+          [a.get("recorder_rc") for a in b.get("attempts", [])] == [1, 1]
+          and [x["check"]["passed"] for x in rec] == [False, False]
+          and len(calls) == 2 and "recorder's re-run" in calls[1]["stdin"],
+          (b.get("attempts") and [a.get("recorder_rc") for a in b["attempts"]], len(calls)))
+    check("no winner: exit 1, status no-winner, no review, bundle.md says so",
+          r.returncode == 1 and b.get("status") == "no-winner" and b.get("winner") is None
+          and b.get("review") is None and "no winner" in r.stdout
+          and not os.path.exists(os.path.join(runs, "nw-rev1")), (r.returncode, r.stdout[:600]))
+
+    # 13a — no bubblewrap: refused before any worker spends tokens (the recorder
+    # confines every check, so the round could only end check-not-recorded)
+    w.roles("| implementer | codex | default | |", "| reviewer | codex | default | |")
+    w.script({"write": {"app.txt": "FIXED\n"}})
+    r = w.dispatch("build-verify", "--brief", w.brief, "--check", CHECK, "--run-id", "nb",
+                   env=w.env(PATH=os.pathsep.join([w.bin, gitonly])))
+    check("no bubblewrap: refused with exit 2 naming bubblewrap, no worker, no bundle",
+          r.returncode == 2 and "bubblewrap" in r.stderr and len(w.calls()) == 0
+          and not os.path.exists(os.path.join(runs, "nb", "bundle.json")),
+          (r.returncode, r.stderr, r.stdout[:600]))
+    check("build-verify: a family that already has a bundle is refused",
+          w.dispatch("build-verify", "--brief", w.brief, "--check", CHECK, "--run-id",
+                     "nw").returncode == 2)
+
+    # 14 — repair: refusals first, with nothing recorded
+    w.roles("| implementer | claude | sonnet | |", "| implementer | claude | opus | effort=max |",
+            "| reviewer | claude | opus | |", "| reviewer | codex | default | |")
+    acc = os.path.join(w.tmp, "accepted.txt")
+    write(acc, "\n\n")
+    w.script({"write": {"extra.txt": "round two\n"}})
+    r = w.dispatch("build-verify", "--repair-of", "bv", "--accepted", acc)
+    check("repair: an empty accepted file is refused", r.returncode == 2
+          and "nothing accepted" in r.stderr and not w.calls(), r.stderr)
+    write(acc, "F2: real\nF9 — not there\n")
+    r = w.dispatch("build-verify", "--repair-of", "bv", "--accepted", acc)
+    check("repair: an unknown finding id is refused, naming it", r.returncode == 2
+          and "F9" in r.stderr and not w.calls(), r.stderr)
+    fake = dict(bundle("bv"), round=3, run_id="fk-r3")
+    write(os.path.join(runs, "fk-r3", "bundle.json"), json.dumps(fake))
+    write(acc, "F2\n")
+    r = w.dispatch("build-verify", "--repair-of", "fk-r3", "--accepted", acc)
+    check("repair: refused at round 3 — two repair rounds are spent", r.returncode == 2
+          and "two repair rounds are spent" in r.stderr and not w.calls(), r.stderr)
+    r = w.dispatch("build-verify", "--repair-of", "nw", "--accepted", acc)
+    check("repair: a round with no winner is refused", r.returncode == 2
+          and "no recorded winner" in r.stderr, r.stderr)
+    check("repair refusals record no tallies", not events(w, "soul.workflow.review"))
+
+    # 14a — the repair round itself
+    write(acc, "- F2: real defect\n")
+    w.script({"write": {"extra.txt": "round two\n"}}, {"say": "NO FINDINGS"},
+             {"say": "NO FINDINGS"})
+    r = w.dispatch("build-verify", "--repair-of", "bv", "--accepted", acc)
+    calls = w.calls()
+    b = bundle("bv-r2")
+    tallies = sorted((t["run_id"], t["reviewer"]["tool"], t["raised"], t["accepted"])
+                     for t in events(w, "soul.workflow.review"))
+    check("repair: one tally per reviewer of the previous round",
+          tallies == [("bv-rev1", "claude", 1, 0), ("bv-rev1", "codex", 1, 1)], tallies)
+    cand = git(w.proj, "rev-parse", "soul-wf/bv-k2-a1-1").stdout.strip()
+    check("repair: the candidate is committed on its own worktree branch",
+          git(w.proj, "log", "-1", "--format=%s", "soul-wf/bv-k2-a1-1").stdout.strip()
+          == "candidate bv round 1" and cand != head
+          and git(w.proj, "rev-parse", "HEAD").stdout.strip() == head, cand)
+    stdin = calls[0]["stdin"] if calls else ""
+    check("repair: the ladder starts at the previous winner's rung, from the candidate",
+          r.returncode == 0 and calls and after(calls[0]["argv"], "--model") == "opus"
+          and os.path.isdir(w.wt("bv-r2-k2-a1", 1))
+          and git(w.wt("bv-r2-k2-a1", 1), "rev-parse", "HEAD").stdout.strip() == cand
+          and b.get("base") == cand, (r.returncode, r.stderr, calls and calls[0]["argv"]))
+    check("repair: the brief is the original plus the accepted findings, each with its note",
+          stdin.startswith("GOAL-SENTINEL") and "## Accepted findings to fix" in stdin
+          and "F2 [codex:default] app.txt:1 — second — scenario two" in stdin
+          and "Host's note: real defect" in stdin and "scenario one" not in stdin
+          and read(os.path.join(runs, "bv-r2", "brief.md")) in stdin, stdin)
+    check("repair: bundle round 2, family and original base kept, review bv-rev2",
+          b.get("round") == 2 and b.get("family") == "bv" and b.get("original_base") == head
+          and (b.get("review") or {}).get("run_id") == "bv-rev2" and b.get("findings") == []
+          and "accept --run-id bv-r2" in r.stdout, b)
+    r = w.dispatch("build-verify", "--repair-of", "bv", "--accepted", acc)
+    check("repair: the same round again is refused (it has a bundle)", r.returncode == 2
+          and "already has a bundle" in r.stderr, r.stderr)
+
+    # 15 — accept: both rounds' changes from the original base, applied, spot-checked,
+    # the family cleaned
+    r = w.dispatch("accept", "--run-id", "bv-r2")
+    combined = read(os.path.join(runs, "bv-r2", "combined.patch")) \
+        if os.path.exists(os.path.join(runs, "bv-r2", "combined.patch")) else ""
+    check("accept: the combined patch is against the original base (both rounds)",
+          "+FIXED" in combined and "+round two" in combined, combined)
+    check("accept: applied to the project checkout",
+          r.returncode == 0 and read(os.path.join(w.proj, "app.txt")) == "FIXED\n"
+          and os.path.exists(os.path.join(w.proj, "extra.txt")), (r.returncode, r.stdout, r.stderr))
+    spot = [d for d in events(w, "soul.delegation.checked") if d.get("run_id") == "bv-accept"]
+    check("accept: the spot check is recorded, in the project, final round",
+          len(spot) == 1 and spot[0]["check"]["passed"] is True and spot[0].get("round") == 2
+          and spot[0]["worker"]["model"] == "opus", spot)
+    tallies = [t for t in events(w, "soul.workflow.review") if t["run_id"] == "bv-rev2"]
+    check("accept: the final round's tallies recorded, none accepted",
+          len(tallies) == 2 and all(t["raised"] == 0 and t["accepted"] == 0 for t in tallies),
+          tallies)
+    listing = git(w.proj, "worktree", "list").stdout
+    branches = git(w.proj, "branch", "--list", "soul-wf/bv-*").stdout
+    check("accept: the family's worktrees and branches are gone",
+          "/bv-" not in listing and not branches.strip() and "removed" in r.stdout,
+          (listing, branches))
+    r = w.dispatch("accept", "--run-id", "bv-r2")
+    check("accept: a second accept is refused", r.returncode == 2, r.stderr)
+
+
+def bv(w, run_id, *extra, check=CHECK, brief=None, env=None):
+    return w.dispatch("build-verify", "--brief", brief or w.brief, "--check", check,
+                      "--run-id", run_id, *extra, env=env)
+
+
+def review_fix_cases():
+    """16–24 — the 2026-10-28 review of v3.8.0: each defect it found, fixed."""
+    def fresh(tag):
+        return World(tempfile.mkdtemp(prefix="soul-dispatch-{}-".format(tag)))
+
+    def bundle(w, run_id):
+        path = os.path.join(w.proj, ".ai", "workflow-runs", run_id, "bundle.json")
+        return json.loads(read(path)) if os.path.exists(path) else {}
+
+    # 16 — clean --family X leaves family X-2 alone (accept cleans with it)
+    w = fresh("fam")
+    w.roles("| implementer | claude | sonnet | |")
+    w.script({"write": {"app.txt": "FIXED\n"}})
+    bv(w, "X", "--no-review")
+    bv(w, "X-2", "--no-review")
+    r = w.dispatch("accept", "--run-id", "X")
+    branches = git(w.proj, "branch", "--list", "soul-wf/*").stdout
+    check("accept X leaves family X-2's worktree and branch",
+          r.returncode == 0 and not os.path.exists(w.wt("X-k1-a1", 1))
+          and os.path.isdir(w.wt("X-2-k1-a1", 1)) and "soul-wf/X-2-k1-a1-1" in branches,
+          (r.returncode, r.stderr, branches))
+    git(w.proj, "checkout", "--", ".")
+    r = w.dispatch("accept", "--run-id", "X-2")
+    check("then accept X-2 works", r.returncode == 0
+          and read(os.path.join(w.proj, "app.txt")) == "FIXED\n", (r.returncode, r.stderr))
+    for name in ("Y-head", "Y-zzz"):
+        git(w.proj, "worktree", "add", "-q", "--detach",
+            os.path.join(w.proj, ".ai", "worktrees", name), "HEAD")
+    r = w.dispatch("clean", "--run-id", "Y", "--family")
+    check("clean --family Y removes Y-head (the review workflow's), not Y-zzz",
+          not os.path.exists(os.path.join(w.proj, ".ai", "worktrees", "Y-head"))
+          and os.path.isdir(os.path.join(w.proj, ".ai", "worktrees", "Y-zzz")),
+          r.stdout + r.stderr)
+    shutil.rmtree(w.tmp, ignore_errors=True)
+
+    # 17 — what the check leaves in a worktree is in neither the candidate commit,
+    # the combined patch nor the project; round 1's change survives the repair
+    w = fresh("art")
+    w.roles("| implementer | claude | sonnet | |", "| reviewer | claude | opus | |")
+    art = "grep -qx FIXED app.txt && if [ -f .git ]; then echo artefact > build.out; fi"
+    w.script({"write": {"app.txt": "FIXED\n"}}, {"say": "FINDING: app.txt:1 — f — s\n"})
+    r1 = bv(w, "art", check=art)
+    acc = os.path.join(w.tmp, "acc.txt")
+    write(acc, "F1\n")
+    w.script({"write": {"extra.txt": "round two\n"}}, {"say": "NO FINDINGS"})
+    r2 = w.dispatch("build-verify", "--repair-of", "art", "--accepted", acc)
+    tree = git(w.proj, "ls-tree", "-r", "--name-only", "soul-wf/art-k1-a1-1").stdout.split()
+    check("the candidate commit holds the try's patch, not the check's build.out",
+          r1.returncode == 0 and r2.returncode == 0 and "app.txt" in tree
+          and "build.out" not in tree and os.path.exists(os.path.join(w.wt("art-k1-a1", 1),
+                                                                      "build.out"))
+          and git(w.proj, "show", "soul-wf/art-k1-a1-1:app.txt").stdout == "FIXED\n",
+          (r1.stderr, r2.stderr, tree))
+    r = w.dispatch("accept", "--run-id", "art-r2")
+    comb = os.path.join(w.proj, ".ai", "workflow-runs", "art-r2", "combined.patch")
+    comb = read(comb) if os.path.exists(comb) else ""
+    check("accept: the combined patch is the stored patches — no build.out, both rounds",
+          r.returncode == 0 and "build.out" not in comb and "+FIXED" in comb
+          and "+round two" in comb, (r.returncode, r.stderr, comb))
+    check("accept: build.out never reaches the project",
+          not os.path.exists(os.path.join(w.proj, "build.out"))
+          and os.path.exists(os.path.join(w.proj, "extra.txt")), os.listdir(w.proj))
+    shutil.rmtree(w.tmp, ignore_errors=True)
+
+    # 18 — a non-Soul project with no SOUL_EVENT_LOG gets no .soul/; accept refuses
+    # a subfolder of the checkout
+    w = fresh("plain")
+    git(w.proj, "rm", "-q", "witness.md")
+    git(w.proj, "commit", "-qm", "not a Soul project")
+    env = w.env()
+    env.pop("SOUL_EVENT_LOG")
+    w.roles("| implementer | claude | sonnet | |")
+    w.script({"write": {"app.txt": "FIXED\n"}})
+    r = bv(w, "ns", "--no-review", env=env)
+    sub = subprocess.run([sys.executable, _TOOL, "accept", "--run-id", "ns", "--project",
+                          os.path.join(w.proj, "sub")], capture_output=True, text=True,
+                         env=env, cwd=w.tmp)
+    check("accept --project <subfolder>: refused, nothing applied",
+          sub.returncode == 2 and "top level" in sub.stderr
+          and read(os.path.join(w.proj, "app.txt")) == "BUG\n", sub.stderr)
+    a = w.dispatch("accept", "--run-id", "ns", env=env)
+    check("a non-Soul project gets no .soul/ from build-verify and accept",
+          r.returncode == 0 and a.returncode == 0
+          and not os.path.exists(os.path.join(w.proj, ".soul")),
+          (r.returncode, a.returncode, r.stderr, a.stderr))
+    shutil.rmtree(w.tmp, ignore_errors=True)
+
+    w = fresh("misc")
+    log = os.path.join(w.tmp, "events.jsonl")
+
+    def evs(kind):
+        return [json.loads(l)["data"] for l in (read(log) if os.path.exists(log) else "")
+                .splitlines() if json.loads(l).get("type") == kind]
+
+    # 19 — a brief whose first line is `---` (the step) reaches the recorder intact
+    fm = os.path.join(w.tmp, "fm-brief.md")
+    write(fm, "---\ntitle: x\n---\nmake app.txt say FIXED\n")
+    w.roles("| implementer | claude | sonnet | |", "| reviewer | claude | opus | |")
+    w.script({"write": {"app.txt": "FIXED\n"}})
+    r = bv(w, "fm", "--no-review", brief=fm)
+    rec = [d for d in evs("soul.delegation.checked") if d.get("run_id") == "fm-k1-a1"]
+    check("a step of `---` is recorded, not refused by the recorder's argparse",
+          r.returncode == 0 and bundle(w, "fm").get("status") == "winner"
+          and rec and rec[0].get("step") == "---", (r.returncode, r.stdout[-400:], rec))
+
+    # 20 — a Latin-1 file in the patch: the bundle is still written
+    w.script({"write": {"app.txt": "FIXED\n"}, "sh": "printf 'caf\\351\\n' > latin.txt"},
+             {"say": "NO FINDINGS"})
+    r = bv(w, "lt")
+    check("a non-UTF-8 patch: review ran, bundle written, exit 0",
+          r.returncode == 0 and bundle(w, "lt").get("status") == "winner"
+          and "latin.txt" in r.stdout and len(w.calls()) == 2, (r.returncode, r.stderr[-600:]))
+
+    # 21 — repair tallies only after the candidate is committed
+    w.script({"write": {"app.txt": "FIXED\n"}}, {"say": "FINDING: app.txt:1 — f — s\n"})
+    bv(w, "tc")
+    w.dispatch("clean", "--run-id", "tc", "--family")
+    acc = os.path.join(w.tmp, "acc.txt")
+    write(acc, "F1\n")
+    r = w.dispatch("build-verify", "--repair-of", "tc", "--accepted", acc)
+    check("repair refused at the candidate commit records no tallies",
+          r.returncode == 2 and not [t for t in evs("soul.workflow.review")
+                                     if t["run_id"] == "tc-rev1"], (r.returncode, r.stderr))
+
+    # 22 — a check that times out in the recorder is a recorded failure, not "not
+    # recorded"
+    w.roles("| implementer | claude | sonnet | timeout=2 |")
+    w.script({"write": {"app.txt": "FIXED\n"}})
+    slow = "grep -qx FIXED app.txt && if [ -e .seen ]; then sleep 6; else touch .seen; fi"
+    r = bv(w, "to", "--no-review", check=slow)
+    b = bundle(w, "to")
+    rec = [d for d in evs("soul.delegation.checked") if d.get("run_id", "").startswith("to-")]
+    check("recorder timeout: counted as a failed attempt, recorded as timed out",
+          r.returncode == 1 and b.get("status") == "no-winner"
+          and [a["recorder_rc"] for a in b.get("attempts", [])] == [2, 2]
+          and [d["check"]["timed_out"] for d in rec] == [True, True],
+          (r.returncode, b.get("status"), rec))
+
+    # 23 — accept: a patch that does not apply is refused, nothing applied; a spot
+    # check that fails leaves the patch applied and prints the undo
+    w.roles("| implementer | claude | sonnet | |")
+    w.script({"write": {"app.txt": "FIXED\n"}})
+    bv(w, "na", "--no-review")
+    write(os.path.join(w.proj, "app.txt"), "LOCAL\n")
+    r = w.dispatch("accept", "--run-id", "na")
+    check("accept: a patch that does not apply here is refused, nothing applied",
+          r.returncode == 2 and "does not apply" in r.stderr
+          and read(os.path.join(w.proj, "app.txt")) == "LOCAL\n", (r.returncode, r.stderr))
+    git(w.proj, "checkout", "--", ".")
+    w.script({"write": {"app.txt": "FIXED\n"}})
+    bv(w, "af", "--no-review", check="[ -f .git ] && " + CHECK)  # fails in the checkout
+    r = w.dispatch("accept", "--run-id", "af")
+    check("accept: a failing spot check exits 1, the patch stays, the undo is printed",
+          r.returncode == 1 and "git apply -R" in r.stdout
+          and read(os.path.join(w.proj, "app.txt")) == "FIXED\n", (r.returncode, r.stdout))
+    git(w.proj, "checkout", "--", ".")
+
+    # 24 — patches keep a/ b/ prefixes whatever the user's diff config says
+    noprefix = w.env(GIT_CONFIG_COUNT="1", GIT_CONFIG_KEY_0="diff.noprefix",
+                     GIT_CONFIG_VALUE_0="true")
+    w.script({"write": {"app.txt": "FIXED\n"}})
+    r = bv(w, "np", "--no-review", env=noprefix)
+    patch = os.path.join(w.proj, ".ai", "workflow-runs", "np-k1-a1", "try-1.patch")
+    patch = read(patch) if os.path.exists(patch) else ""
+    a = w.dispatch("accept", "--run-id", "np", env=noprefix)
+    comb = os.path.join(w.proj, ".ai", "workflow-runs", "np", "combined.patch")
+    comb = read(comb) if os.path.exists(comb) else ""
+    check("diff.noprefix set: try and combined patches keep a/ b/, accept applies",
+          r.returncode == 0 and a.returncode == 0 and "--- a/app.txt" in patch
+          and "+++ b/app.txt" in comb and read(os.path.join(w.proj, "app.txt")) == "FIXED\n",
+          (r.returncode, a.returncode, a.stderr, patch[:300]))
+    git(w.proj, "checkout", "--", ".")
+
+    # 25 — clean's git runs none of the checkout's hooks (git 2.53 runs
+    # reference-transaction on `branch -D`)
+    # The host session may export core.hooksPath (GIT_CONFIG_COUNT/KEY/VALUE, as the
+    # Soul secret guard does), which would hide the checkout's hooks from this case.
+    plain = {k: v for k, v in w.env().items()
+             if not k.startswith("GIT_CONFIG_") or k in ("GIT_CONFIG_GLOBAL",
+                                                          "GIT_CONFIG_NOSYSTEM")}
+    w.script({"write": {"app.txt": "FIXED\n"}})
+    bv(w, "hk", "--no-review", env=plain)
+    sentinel = os.path.join(w.tmp, "HOOK-RAN")
+    hook = os.path.join(w.proj, ".git", "hooks", "reference-transaction")
+    write(hook, "#!/bin/sh\ntouch {}\n".format(sentinel))
+    os.chmod(hook, 0o755)
+    git(w.proj, "branch", "ctl")
+    subprocess.run(["git", "-C", w.proj, "branch", "-D", "ctl"], env=plain,
+                   capture_output=True)
+    live = os.path.exists(sentinel)  # control: plain git runs the hook here
+    if live:
+        os.remove(sentinel)
+    r = w.dispatch("clean", "--run-id", "hk", "--family", env=plain)
+    os.remove(hook)
+    check("clean runs no hook of the checkout, and still deletes the branch",
+          live and not os.path.exists(sentinel) and "1 branch(es)" in r.stdout,
+          (live, r.stdout + r.stderr))
+    shutil.rmtree(w.tmp, ignore_errors=True)
 
 
 def section(text, start, end):
@@ -801,10 +1263,37 @@ def docs():
           "--confine" in section(skill, "What happens", "## The roles")
           and "bubblewrap" in section(skill, "What happens", "## The roles"),
           section(skill, "What happens", "## The roles"))
+    blocks = section(skill, "### Building blocks", "## review")
     check("skill: run and review commands pass --workflow <name>, built-ins included",
-          "dispatch.py run --role implementer --workflow <name>" in step3
-          and "dispatch.py review --role reviewer --workflow <name>" in step5
-          and "built-ins included" in skill, (step3, step5))
+          "dispatch.py run --role implementer --workflow <name>" in blocks
+          and "dispatch.py review --role reviewer --workflow <name>" in blocks
+          and "--confine" in blocks and "built-ins included" in skill, blocks)
+    step6 = section(skill, "### 6 ·", "### 7 ·")
+    check("skill: the lean loop — one build-verify call per round, and why",
+          "dispatch.py build-verify --workflow <name>" in step3
+          and "experiments/2026-10-28-workflow-value/RESULT.md" in step3
+          and "32 turns" in step3 and "--repair-of" in step6
+          and "dispatch.py accept" in step7 and "bundle.md" in step4, (step3, step6))
+    check("skill step 5: findings weighed against the patch, tallies by the next call",
+          "against the patch" in step5 and "--repair-of" in step5
+          and "do not record them by hand" in step5, step5)
+    check("skill step 7: accept in the background, exit 2, tallies before the spot check",
+          "background" in step7 and "Exit 2" in step7
+          and step7.find("tallies") < step7.find("spot check)"), step7)
+    check("skill step 4: check-not-recorded no longer blamed on a missing bubblewrap",
+          "Check not recorded" in step4 and "no bubblewrap" not in step4, step4)
+    template = read(os.path.join(root, "skills", "soul-workflow", "templates", "quick-fix.md"))
+    check("quick-fix template: the record step points at the building blocks",
+          "as in step 4" not in template and "Building blocks" in template, template)
+    rules = section(skill, "What no workflow file can change", "A workflow file is")
+    check("skill: no workflow file changes the recorded check or the patch read",
+          "confined and recorded by the recorder" in rules
+          and "reads every patch before `accept`" in rules
+          and "`accept` re-runs the check on this checkout" in rules
+          and "re-runs every check itself" not in skill, rules)
+    roles = section(skill, "## The roles table", "## build-verify")
+    check("skill roles: effort= and the codex default model/effort note",
+          "`effort=`" in roles and "gpt-6.1-sol" in roles and "config.toml" in roles, roles)
     custom = section(skill, "## Custom workflows", "## Seeing how roles do")
     check("skill: a workflow's own ## Roles, the lookup order, and roles <name>",
           "## Roles" in custom and "/soul-workflow roles <name>" in skill
@@ -815,6 +1304,9 @@ def docs():
     check("workflows guide: one workflow's own models, lookup order, three workflows",
           "## Roles" in part and "security-check" in part and "quick-fix" in part
           and "build-verify" in part and "soul-roles.md" in part, part[:800])
+    check("workflows guide: effort= and the codex default note, no host re-run claim",
+          "`effort=`" in wguide and "gpt-6.1-sol" in wguide
+          and "re-runs every check" not in wguide, "")
     check("guide: two reviewers by default — a fresh Claude and Codex when installed",
           "two reviewers by default — a fresh Claude and Codex when it is installed" in guide,
           section(guide, "Handing work to other models", "Moving to another"))
@@ -828,6 +1320,13 @@ def docs():
     head = tool[:tool.find('"""', tool.find('"""') + 3)]
     check("module docstring lists review --workdir and clean --family",
           "--workdir" in section(head, "review ", "clean ") and "--family" in head, head)
+    check("module docstring lists build-verify, --repair-of, accept, and effort",
+          "build-verify --brief" in head and "--repair-of" in head
+          and "accept --run-id" in head and "`effort`" in head, head)
+    for sub in ("build-verify", "accept"):
+        r = subprocess.run([sys.executable, _TOOL, sub, "-h"], capture_output=True, text=True)
+        check("dispatch {} -h prints its usage".format(sub),
+              r.returncode == 0 and r.stdout.startswith("usage: dispatch.py " + sub), r.stderr)
 
 
 def test_fence():

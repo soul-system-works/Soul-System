@@ -135,6 +135,30 @@ def main():
     check("confine_argv: the secret folders come after the work folder's bind",
           all(argv.index(p) > i for p in want), argv)
 
+    check("confine_argv: no .git or .soul in the work folder, nothing extra bound",
+          argv.count("--ro-bind") == 1, argv)
+
+    # 3a — the work folder's .git (a folder, or a worktree's file) and .soul stay
+    # read-only; a .soul symlink to a folder outside is not bound (read-only already)
+    ro = os.path.join(tmp, "ro")
+    os.makedirs(os.path.join(ro, ".git", "hooks"))
+    os.makedirs(os.path.join(ro, ".soul"))
+    wtree = os.path.join(tmp, "wtree")
+    os.makedirs(wtree)
+    with open(os.path.join(wtree, ".git"), "w") as f:
+        f.write("gitdir: /elsewhere\n")
+    os.symlink(vault, os.path.join(wtree, ".soul"))
+    with Env({"HOME": home, "PATH": "/usr/bin"}):
+        a1 = c.confine_argv(["true"], ro, which=lambda n: "/x/bwrap", platform="linux")
+        a2 = c.confine_argv(["true"], wtree, which=lambda n: "/x/bwrap", platform="linux")
+    rro, rwt = os.path.realpath(ro), os.path.realpath(wtree)
+    pairs = lambda a: [a[k + 1:k + 3] for k, x in enumerate(a) if x == "--ro-bind"]
+    check("confine_argv: the work folder's .git and .soul bound read-only, after its bind",
+          [rro + "/.git"] * 2 in pairs(a1) and [rro + "/.soul"] * 2 in pairs(a1)
+          and a1.index(rro + "/.git") > a1.index("--bind"), a1)
+    check("confine_argv: a worktree's .git file bound read-only; a .soul symlink outside not",
+          [rwt + "/.git"] * 2 in pairs(a2) and len(pairs(a2)) == 2, a2)
+
     shutil.rmtree(tmp, ignore_errors=True)
 
     # 4 — real confinement, when bubblewrap is here
@@ -173,7 +197,8 @@ def real_case(c):
     home = os.path.join(tmp, "home")
     work = os.path.join(tmp, "work")
     os.makedirs(os.path.join(home, ".ssh"))
-    os.makedirs(work)
+    os.makedirs(os.path.join(work, ".git", "hooks"))
+    os.makedirs(os.path.join(work, ".soul"))
     sentinel = os.path.join(home, ".ssh", "id_sentinel")
     with open(sentinel, "w") as f:
         f.write("SECRET-SENTINEL\n")
@@ -187,7 +212,11 @@ def real_case(c):
     cases = [("write inside", "write", os.path.join(work, "in.txt"), True),
              ("write outside", "write", os.path.join(tmp, "outside.txt"), False),
              ("reach the host's loopback", "net", port, False),
-             ("read a hidden secret folder", "read", sentinel, False)]
+             ("read a hidden secret folder", "read", sentinel, False),
+             ("plant a git hook in the work folder", "write",
+              os.path.join(work, ".git", "hooks", "pre-commit"), False),
+             ("write the work folder's Soul record", "write",
+              os.path.join(work, ".soul", "witness.md"), False)]
     try:
         with Env(dict(os.environ, HOME=home)):
             env = c.clean_env()
@@ -195,7 +224,9 @@ def real_case(c):
                 cmd = [sys.executable, probe, what, arg]
                 free = subprocess.run(cmd, cwd=work, env=env, capture_output=True, text=True,
                                       timeout=30)
-                for p in (os.path.join(tmp, "outside.txt"),):
+                for p in (os.path.join(tmp, "outside.txt"),
+                          os.path.join(work, ".git", "hooks", "pre-commit"),
+                          os.path.join(work, ".soul", "witness.md")):
                     if os.path.exists(p):
                         os.remove(p)
                 argv = c.confine_argv(cmd, work)
