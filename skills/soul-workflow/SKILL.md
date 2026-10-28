@@ -10,7 +10,7 @@ disable-model-invocation: true
 following this workflow. Its Codex procedures replace Claude-specific loading,
 instruction-file, tool, and invocation mechanics; the shared workflow follows.
 
-`/soul-workflow build-verify` · `/soul-workflow review` · `/soul-workflow roles`
+`/soul-workflow build-verify` · `/soul-workflow review` · `/soul-workflow <name>` (a custom workflow) · `/soul-workflow list` · `/soul-workflow roles`
 
 ## In short — when and how to use it
 
@@ -221,12 +221,57 @@ offer a witness entry.
 3. Report the findings you accept, those you reject and why. Review makes no edits;
    fixing is a separate step the owner chooses.
 
+## Custom workflows
+
+`/soul-workflow list` runs `python3 <root>/tools/dispatch.py workflows`: the two
+built-ins and every workflow file it finds, with each one's description. A project's
+`.claude/soul-workflows/<name>.md` replaces a global `~/.claude/soul-workflows/<name>.md`
+of the same name; a file cannot take a built-in's name (the owner's choice, 2026-10-28).
+
+`/soul-workflow <name>` with a name that is not built in: find it in that listing,
+read the file, and follow its steps. A file the listing marks *ignored* is not run —
+say why. A workflow file is a short Markdown file:
+
+```
+---
+name: quick-fix
+description: one try at the lowest rung, the reviewers once, no repair round
+---
+
+1. Settle the work and write the brief (build-verify steps 1–2).
+2. Dispatch `implementer`, lowest rung, one attempt (build-verify steps 3–4).
+3. Review with `reviewer` (build-verify step 5).
+4. No repair round: report (build-verify step 8) with the accepted findings as open
+   items for the owner to decide.
+```
+
+Its steps name build-verify's building blocks by number — settle (1), brief (2),
+dispatch (3), check here (4), review (5), repair (6), accept (7), report (8) — and
+roles from the roles table. A role the file names but the table lacks: stop and ask
+the owner for a row. A copy to start from: `<root>/skills/soul-workflow/templates/quick-fix.md`.
+
+**What no workflow file can change** — these hold whatever a file says, and a step
+that would break one is skipped and named in the report:
+
+- this session re-runs every check itself, with `--confine`; a worker's word never
+  counts;
+- workers get only the brief, run sandboxed, and never write the record;
+- a reviewer's finding is a claim this session checks;
+- unclear requirements go to the owner before anything is dispatched;
+- at most two repair rounds without the owner (a file may allow fewer).
+
+A workflow file is instructions, and only the owner writes them. A step outside these
+building blocks — reaching the network, pushing, touching another project, anything
+with credentials — waits for the owner's yes, whatever the file says.
+
 ## Seeing how roles do
 
-`python3 <root>/tools/delegation-check.py stats` — per role and model: checks run,
-passed, failed, highest rung reached; per reviewer: findings raised and accepted.
-This is how a role earns its row or loses it: a rung that always escalates, or a
-reviewer whose findings are never accepted, is a row to change.
+`python3 <root>/tools/delegation-check.py stats` — every dispatch per role and model
+(runs, won, timeouts, minutes); per role and model, the checks this session re-ran
+(passed, failed, highest rung reached); per reviewer, findings raised and accepted.
+This is how a role earns its row or loses it: a role that rarely wins or keeps timing
+out, a rung that always escalates, or a reviewer whose findings are never accepted,
+is a row to change.
 
 ## What not to do
 
