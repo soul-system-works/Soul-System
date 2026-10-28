@@ -245,6 +245,13 @@ description: one try at the lowest rung, the reviewers once, no repair round
    items for the owner to decide.
 ```
 
+A file may leave building blocks out — no review, no repair, one attempt only — and
+the report says what was left out ("no review ran"). When a file's attempts run out
+and the check still fails, stop and bring it to the owner; do not go further up the
+ladder than the file allows. Record its runs with `--workflow <name>`. *Ignored*
+means the file has a built-in's name or a name that is not lower-case letters,
+digits and `-`.
+
 Its steps name build-verify's building blocks by number — settle (1), brief (2),
 dispatch (3), check here (4), review (5), repair (6), accept (7), report (8) — and
 roles from the roles table. A role the file names but the table lacks: stop and ask
@@ -254,7 +261,7 @@ the owner for a row. A copy to start from: `<root>/skills/soul-workflow/template
 that would break one is skipped and named in the report:
 
 - this session re-runs every check itself, with `--confine`; a worker's word never
-  counts;
+  counts, even when a file leaves the review out;
 - workers get only the brief, run sandboxed, and never write the record;
 - a reviewer's finding is a claim this session checks;
 - unclear requirements go to the owner before anything is dispatched;
