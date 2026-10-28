@@ -6,8 +6,9 @@ the record; workers are other harness+model pairs that get only a brief (SOUL-I0
 This tool is the thin layer between them: it reads the roles table, starts the
 worker through that harness's headless CLI with the host's context kept out, and
 hands back the evidence — the patch, the exit, the wall time, the tokens — never a
-verdict. It never records: the host re-runs the check through
-tools/delegation-check.py, because a worker's report is a claim (SOUL-I066).
+verdict. It never writes the check record itself: `build-verify` and `accept` launch
+tools/delegation-check.py, the recorder, as its own process to run the check
+confined and record what it saw, because a worker's report is a claim (SOUL-I066).
 
   roles  [--project DIR] [--json] [--workflow W]     the effective roles table
   workflows [--project DIR] [--json]                 built-in and custom workflows
@@ -17,10 +18,19 @@ tools/delegation-check.py, because a worker's report is a claim (SOUL-I066).
          [--run-id ID] [--workflow W]                every reviewer of R, read-only
   clean  --run-id ID [--family] [--project DIR]      remove a run's worktrees+branches
                                                      (--family: every <ID>-* run too)
+  build-verify --brief FILE --check CMD --run-id ID [--project DIR] [--base REF]
+         [--workflow W] [--step TEXT] [--no-review]  one round: ladder, recorded
+                                                     check, reviewers, bundle.md
+  build-verify --repair-of PREV --accepted FILE [--project DIR] [--workflow W]
+         [--no-review]                               a repair round from PREV's winner
+  accept --run-id ID [--accepted FILE] [--project DIR]
+                                                     apply from the original base,
+                                                     re-run the check here, clean
 
 Roles table: `~/.claude/soul-roles.md` (global) and `<project>/.claude/soul-roles.md`,
 a Markdown table `| role | harness | model | settings |` — settings `key=value`
-separated by spaces, only `rung`, `n` (best-of-n) and `timeout` (seconds). A
+separated by spaces, only `rung`, `n` (best-of-n), `timeout` (seconds) and `effort`
+(a word: the harness's reasoning effort, unset = the harness's own default). A
 project that defines any row for a role replaces ALL global rows for that role.
 A role's rows are its ladder, ordered by rung (row order when none is given).
 Built-in default for a role neither file names: implementer claude:sonnet then
@@ -44,6 +54,7 @@ import argparse
 import json
 import os
 import re
+import shlex
 import shutil
 import signal
 import subprocess
@@ -57,7 +68,15 @@ if _HERE not in sys.path:
 import confine  # noqa: E402  (tools/confine.py — allowlisted env, bubblewrap)
 
 HARNESSES = ("claude", "claude-ollama", "codex", "codex-ollama")
-SETTINGS = ("rung", "n", "timeout")
+SETTINGS = ("rung", "n", "timeout", "effort")
+# `effort=` is a word, not a number (v3.8.0). Claude Code 2.x `--effort` takes the
+# first list; Codex's `model_reasoning_effort` the second. A codex worker runs with
+# --ignore-user-config, so without `effort=` it gets Codex's built-in default, not
+# the user's ~/.codex/config.toml (seen 2026-10-28: reasoning_effort null).
+CLAUDE_EFFORTS = ("low", "medium", "high", "xhigh", "max")
+CODEX_EFFORTS = ("minimal", "low", "medium", "high", "xhigh")
+EFFORTS = {"claude": CLAUDE_EFFORTS, "claude-ollama": CLAUDE_EFFORTS,
+           "codex": CODEX_EFFORTS, "codex-ollama": CODEX_EFFORTS}
 DEFAULT_TIMEOUT = 1800
 GLOBAL_ROLES = os.path.join("~", ".claude", "soul-roles.md")
 PROJECT_ROLES = os.path.join(".claude", "soul-roles.md")
@@ -66,8 +85,8 @@ PROJECT_ROLES = os.path.join(".claude", "soul-roles.md")
 GLOBAL_WORKFLOWS = os.path.join("~", ".claude", "soul-workflows")
 PROJECT_WORKFLOWS = os.path.join(".claude", "soul-workflows")
 BUILT_IN_WORKFLOWS = {
-    "build-verify": "another model implements in its own worktree; this session "
-                    "re-runs the check; reviewers report; at most two repair rounds",
+    "build-verify": "another model implements in its own worktree; the recorder runs "
+                    "the check confined; reviewers report; at most two repair rounds",
     "review": "the reviewers alone, read-only, on a diff",
 }
 WORKFLOW_NAME = re.compile(r"^[a-z0-9][a-z0-9-]*$")
@@ -223,6 +242,13 @@ def parse_roles_lines(path, numbered, source):
             if key not in SETTINGS:
                 raise _row_error(path, lineno, line, "unknown setting {!r} (known: {})"
                                  .format(key, ", ".join(SETTINGS)))
+            if key == "effort":
+                if value not in EFFORTS[harness]:
+                    raise _row_error(path, lineno, line,
+                                     "effort for a {} row must be one of {}, got {!r}"
+                                     .format(harness, ", ".join(EFFORTS[harness]), value))
+                settings[key] = value
+                continue
             try:
                 number = int(value)
             except ValueError:
@@ -245,6 +271,7 @@ def parse_roles_lines(path, numbered, source):
                      "rung": rung,
                      "n": settings.get("n", 1),
                      "timeout": settings.get("timeout", DEFAULT_TIMEOUT),
+                     "effort": settings.get("effort"),
                      "source": source, "where": "{}:{}".format(path, lineno)})
     return rows
 
@@ -252,7 +279,8 @@ def parse_roles_lines(path, numbered, source):
 def builtin_rows(which=shutil.which):
     def row(role, harness, model, rung):
         return {"role": role, "harness": harness, "model": model, "rung": rung, "n": 1,
-                "timeout": DEFAULT_TIMEOUT, "source": "built-in", "where": None}
+                "timeout": DEFAULT_TIMEOUT, "effort": None, "source": "built-in",
+                "where": None}
     rows = [row("implementer", "claude", "sonnet", 1),
             row("implementer", "claude", "opus", 2),
             row("reviewer", "claude", "opus", 1)]
@@ -292,12 +320,12 @@ def cmd_roles(args):
     if args.json:
         print(json.dumps(flat(table), indent=2))
         return 0
-    print("{:<12} {:<5} {:<14} {:<22} {:<3} {:<8} {}".format(
-        "role", "rung", "harness", "model", "n", "timeout", "source"))
+    print("{:<12} {:<5} {:<14} {:<22} {:<3} {:<8} {:<7} {}".format(
+        "role", "rung", "harness", "model", "n", "timeout", "effort", "source"))
     for r in flat(table):
-        print("{:<12} {:<5} {:<14} {:<22} {:<3} {:<8} {}".format(
+        print("{:<12} {:<5} {:<14} {:<22} {:<3} {:<8} {:<7} {}".format(
             r["role"], r["rung"], r["harness"], r["model"], r["n"], r["timeout"],
-            r["source"] + (" ({})".format(r["where"]) if r["where"] else "")))
+            r["effort"] or "-", r["source"] + (" ({})".format(r["where"]) if r["where"] else "")))
     return 0
 
 
@@ -457,6 +485,8 @@ def worker_command(row, workdir, mode, last_file=None):
                "--allowedTools", tools]
         if model != "default":
             cmd += ["--model", model]
+        if row.get("effort"):
+            cmd += ["--effort", row["effort"]]
         # Isolation verified by the Step 1 probe, 2026-10-27: without these flags the
         # worker answered sentinel questions from ~/.claude/CLAUDE.md, the contract
         # and the Mind, and loaded plugins, hooks, auto-memory and MCP servers; with
@@ -487,6 +517,10 @@ def worker_command(row, workdir, mode, last_file=None):
         cmd += ["--oss", "--local-provider", "ollama"]
     if model != "default":
         cmd += ["-m", model]
+    if row.get("effort"):
+        # Probe, 2026-10-28 (codex-cli 0.163.0, --ignore-user-config): with this the
+        # session file recorded "reasoning_effort":"high"; without it, null.
+        cmd += ["-c", "model_reasoning_effort=" + row["effort"]]
     return cmd + ["-"]  # the prompt comes on stdin: a diff can outgrow one argv entry
 
 
@@ -593,7 +627,16 @@ def _on_signal(signum, frame):
 
 def git(cwd, *args):
     return subprocess.run(["git", *args], cwd=cwd, capture_output=True, text=True,
-                          stdin=subprocess.DEVNULL)
+                          errors="replace", stdin=subprocess.DEVNULL)
+
+
+# Options for dispatch's own git calls in the project checkout (clean, accept): no
+# hook and no fsmonitor of the checkout's runs. git 2.53 runs reference-transaction
+# hooks even on `branch -D` (the 2026-10-28 review of v3.8.0).
+NO_HOOKS = ("-c", "core.hooksPath=/dev/null", "-c", "core.fsmonitor=false")
+# Every diff that writes a patch: a user's diff.noprefix, diff.external or textconv
+# config would otherwise change the format `git apply` reads back (the same review).
+PATCH_FORMAT = ("--no-ext-diff", "--no-textconv", "--src-prefix=a/", "--dst-prefix=b/")
 
 
 # ---------------------------------------------------------------- shared
@@ -627,7 +670,9 @@ def with_workflow(payload, workflow):
 
 def read_text(path, what):
     try:
-        with open(path, encoding="utf-8") as fh:
+        # errors="replace": a worker's patch may hold non-UTF-8 bytes (a Latin-1
+        # file crashed bundle-building after the pass was recorded — 2026-10-28 review)
+        with open(path, encoding="utf-8", errors="replace") as fh:
             return fh.read()
     except OSError as e:
         raise UsageError("cannot read the {} {}: {}".format(what, path, e)) from None
@@ -683,11 +728,15 @@ def log_dispatch(project, payload):
         print("warning: dispatch event not recorded ({})".format(exc), file=sys.stderr)
 
 
-def emit_result(path, result):
+def with_effort(payload, row):
+    """`payload` plus the row's `effort` when the row sets one (only then)."""
+    return dict(payload, effort=row["effort"]) if row.get("effort") else payload
+
+
+def write_json(path, result):
     with open(path, "w", encoding="utf-8") as fh:
         json.dump(result, fh, indent=2)
         fh.write("\n")
-    print(json.dumps(result, indent=2))
 
 
 # ---------------------------------------------------------------- run
@@ -723,7 +772,7 @@ def stage_and_diff(worktree, gitargs, base, patch_path):
     from worktree_git."""
     git(worktree, *gitargs, "add", "-A")
     patch = subprocess.run(["git", *gitargs, "diff", "--cached", "--binary", "--no-renames",
-                            base], cwd=worktree, capture_output=True,
+                            *PATCH_FORMAT, base], cwd=worktree, capture_output=True,
                            stdin=subprocess.DEVNULL)
     with open(patch_path, "wb") as fh:
         fh.write(patch.stdout)
@@ -767,6 +816,28 @@ def pick_winner(tries, have_check):
     return min(ok, key=lambda t: (t["changed_lines"], t["try"]))["try"] if ok else None
 
 
+def confinable_here(project):
+    return confine.confine_argv(["true"], project) is not None
+
+
+def need_confine_for_n(row, check, project):
+    # The selection check runs the worker's code, so it runs confined (the 2026-10-27
+    # review: it ran with the host's whole environment and no sandbox). Where it
+    # cannot be confined, one try skips it — the host's confined re-run through the
+    # recorder is the gate — and best-of-n, which needs it to choose, is refused.
+    if check and row["n"] > 1 and not confinable_here(project):
+        raise UsageError("best-of-n runs each try's check, which needs bubblewrap to "
+                         "confine it — install it (e.g. `sudo apt install bubblewrap`) "
+                         "or use n=1")
+
+
+def resolve_base(project, ref, flag="--base"):
+    base = git(project, "rev-parse", "--verify", "--quiet", ref + "^{commit}")
+    if base.returncode != 0:
+        raise UsageError("{} {!r} is not a commit".format(flag, ref))
+    return base.stdout.strip()
+
+
 def cmd_run(args):
     project = project_dir(args.project)
     rows = role_rows(project, args.role, args.workflow)
@@ -779,27 +850,28 @@ def cmd_run(args):
     need_sandbox([row])
     if args.check is not None and not args.check.strip():
         raise UsageError("--check is blank")
-    # The selection check runs the worker's code, so it runs confined (the 2026-10-27
-    # review: it ran with the host's whole environment and no sandbox). Where it
-    # cannot be confined, one try skips it — the host's confined re-run through the
-    # recorder is the gate — and best-of-n, which needs it to choose, is refused.
-    confinable = confine.confine_argv(["true"], project) is not None
-    if args.check and not confinable and row["n"] > 1:
-        raise UsageError("best-of-n runs each try's check, which needs bubblewrap to "
-                         "confine it — install it (e.g. `sudo apt install bubblewrap`) "
-                         "or use n=1")
+    need_confine_for_n(row, args.check, project)
     brief = read_text(args.brief, "brief")
-    base = git(project, "rev-parse", "--verify", "--quiet", args.base + "^{commit}")
-    if base.returncode != 0:
-        raise UsageError("--base {!r} is not a commit".format(args.base))
-    base = base.stdout.strip()
+    base = resolve_base(project, args.base)
     run_id = args.run_id or time.strftime("%Y%m%d-%H%M%S")
+    result = run_tries(project, args.role, row, brief, args.check, base, run_id,
+                       args.workflow)
+    print(json.dumps(result, indent=2))
+    return 0 if result["winner"] is not None else 1
+
+
+def run_tries(project, role, row, brief, check, base, run_id, workflow):
+    """One `run`: `row`'s n tries of `brief` from `base`, each in its own worktree,
+    one picked. Writes result.json and the dispatch event and returns the result;
+    the caller prints. Shared by `run` and `build-verify` (v3.8.0), so the ladder
+    that build-verify climbs is the same machinery a custom workflow's `run` uses."""
+    confinable = confinable_here(project)
     run_dir = run_dir_for(project, run_id)
     if os.path.exists(os.path.join(run_dir, "result.json")):
         raise UsageError("run id {} already has a result.json".format(run_id))
     os.makedirs(run_dir, exist_ok=True)
     prompt = brief.rstrip("\n") + WORKER_RULES.format(
-        check=": `{}`".format(args.check) if args.check else " (no check was named: say so)")
+        check=": `{}`".format(check) if check else " (no check was named: say so)")
 
     ignore_ai(project)
     tries = []
@@ -822,32 +894,33 @@ def cmd_run(args):
         # A try whose shell ran unconfined or not at all can never win.
         inactive = sandbox_inactive(row, stem + ".stderr")
         check_rc = None
-        if args.check and confinable:  # for selection only: the host re-runs it
+        if check and confinable:  # for selection only: the recorder re-runs it
             check_rc, _ = run_process(
-                confine.confine_argv(["/bin/sh", "-c", args.check], worktree), worktree,
+                confine.confine_argv(["/bin/sh", "-c", check], worktree), worktree,
                 confine.clean_env(), "", stem + ".check.log", None, row["timeout"])
         tries.append({"try": i, "worktree": worktree, "branch": branch, "exit": code,
                       "wall_s": wall, "tokens_in": tokens_in, "tokens_out": tokens_out,
+                      "effort": row.get("effort"),
                       "patch": stem + ".patch", "log": stem + ".log",
                       "changed_lines": changed, "check_rc": check_rc,
                       "record_touched": touched, "sandbox_inactive": inactive})
     result = with_workflow({
-        "run_id": run_id, "role": args.role, "harness": row["harness"],
-        "model": row["model"], "rung": row["rung"], "base": base,
-        "check": args.check, "check_skipped": bool(args.check) and not confinable,
-        "tries": tries, "winner": pick_winner(tries, bool(args.check) and confinable)},
-        args.workflow)
+        "run_id": run_id, "role": role, "harness": row["harness"],
+        "model": row["model"], "effort": row.get("effort"), "rung": row["rung"],
+        "base": base, "check": check, "check_skipped": bool(check) and not confinable,
+        "tries": tries, "winner": pick_winner(tries, bool(check) and confinable)},
+        workflow)
     if result["check_skipped"]:
         print("note: no bubblewrap here, so the selection check did not run; the "
               "recorder's confined re-run is the gate", file=sys.stderr)
-    emit_result(os.path.join(run_dir, "result.json"), result)
-    log_dispatch(project, with_workflow({
-        "mode": "run", "run_id": run_id, "role": args.role, "harness": row["harness"],
+    write_json(os.path.join(run_dir, "result.json"), result)
+    log_dispatch(project, with_workflow(with_effort({
+        "mode": "run", "run_id": run_id, "role": role, "harness": row["harness"],
         "model": row["model"], "rung": row["rung"], "tries": len(tries),
         "won": result["winner"] is not None,
         "timeouts": sum(1 for t in tries if t["exit"] == "timeout"),
-        "wall_s": round(sum(t["wall_s"] for t in tries), 1)}, args.workflow))
-    return 0 if result["winner"] is not None else 1
+        "wall_s": round(sum(t["wall_s"] for t in tries), 1)}, row), workflow))
+    return result
 
 
 # ---------------------------------------------------------------- review
@@ -879,6 +952,16 @@ def cmd_review(args):
     brief = read_text(args.brief, "brief")
     diff = read_text(args.diff, "diff")
     run_id = args.run_id or time.strftime("%Y%m%d-%H%M%S")
+    result = review_all(project, args.role, rows, workdir, brief, diff, run_id,
+                        args.workflow)
+    print(json.dumps(result, indent=2))
+    return 0
+
+
+def review_all(project, role, rows, workdir, brief, diff, run_id, workflow):
+    """Every reviewer row once, read-only, in `workdir`. Writes review.json and one
+    dispatch event per reviewer and returns the result; the caller prints. Shared by
+    `review` and `build-verify` (v3.8.0)."""
     run_dir = run_dir_for(project, run_id)
     if os.path.exists(os.path.join(run_dir, "review.json")):
         raise UsageError("run id {} already has a review.json".format(run_id))
@@ -901,20 +984,22 @@ def cmd_review(args):
         if inactive:  # read-only by its tools, but not by the sandbox it was given
             verdict = "unconfined"
         reviewers.append({"harness": row["harness"], "model": row["model"],
+                          "effort": row.get("effort"),
                           "exit": code, "wall_s": wall, "tokens_in": tokens_in,
                           "tokens_out": tokens_out, "raw": stem + ".txt",
                           "log": stem + ".log", "findings": findings, "verdict": verdict,
                           "sandbox_inactive": inactive})
-    emit_result(os.path.join(run_dir, "review.json"), with_workflow(
-        {"run_id": run_id, "role": args.role, "reviewers": reviewers}, args.workflow))
+    result = with_workflow({"run_id": run_id, "role": role, "reviewers": reviewers},
+                           workflow)
+    write_json(os.path.join(run_dir, "review.json"), result)
     for r in reviewers:
-        log_dispatch(project, with_workflow({
-            "mode": "review", "run_id": run_id, "role": args.role, "harness": r["harness"],
+        log_dispatch(project, with_workflow(with_effort({
+            "mode": "review", "run_id": run_id, "role": role, "harness": r["harness"],
             "model": r["model"], "tries": 1,
             "won": r["exit"] == 0 and r["verdict"] in ("findings", "none"),
-            "timeouts": 1 if r["exit"] == "timeout" else 0, "wall_s": r["wall_s"]},
-            args.workflow))
-    return 0
+            "timeouts": 1 if r["exit"] == "timeout" else 0, "wall_s": r["wall_s"]}, r),
+            workflow))
+    return result
 
 
 # ---------------------------------------------------------------- clean
@@ -922,31 +1007,34 @@ def cmd_review(args):
 def cmd_clean(args):
     project = project_dir(args.project)
     run_dir_for(project, args.run_id)  # validates the id
-    # --family: every run the skill names from this id (<id>-k1-a1, <id>-r2 …), so
-    # `<id>-<anything>`; the dash keeps r1's family off r10's runs.
-    own = re.compile(re.escape(args.run_id) + (r"-.+\Z" if args.family else r"-\d+\Z"))
+    # --family: only the names dispatch and the skill make from this id — tries
+    # <id>-<i>, <id>-k<rung>-a<attempt>-<i>, <id>-r<round>[-k..-a..]-<i>, and the
+    # review workflow's <id>-head. `<id>-<anything>` was the first pattern; it took
+    # family X-2's worktrees when X was accepted (the 2026-10-28 review of v3.8.0).
+    own = re.compile(r"\A" + re.escape(args.run_id) + (
+        r"(?:(?:-r\d+)?(?:-k\d+-a\d+)?-\d+|-head)\Z" if args.family else r"-\d+\Z"))
     root = os.path.realpath(os.path.join(project, ".ai", "worktrees"))
     removed = []
-    for line in git(project, "worktree", "list", "--porcelain").stdout.splitlines():
+    for line in git(project, *NO_HOOKS, "worktree", "list", "--porcelain").stdout.splitlines():
         if not line.startswith("worktree "):
             continue
         path = line[len("worktree "):]
         if (os.path.dirname(os.path.realpath(path)) != root
                 or not own.match(os.path.basename(path))):
             continue
-        r = git(project, "worktree", "remove", "--force", path)
+        r = git(project, *NO_HOOKS, "worktree", "remove", "--force", path)
         if r.returncode != 0:
             print("warning: could not remove {}: {}".format(path, r.stderr.strip()),
                   file=sys.stderr)
         else:
             removed.append(path)
-    git(project, "worktree", "prune")
+    git(project, *NO_HOOKS, "worktree", "prune")
     deleted = 0
-    for b in git(project, "for-each-ref", "--format=%(refname:short)",
+    for b in git(project, *NO_HOOKS, "for-each-ref", "--format=%(refname:short)",
                  "refs/heads/soul-wf/").stdout.split():
         if not own.match(b[len("soul-wf/"):]):
             continue
-        r = git(project, "branch", "-D", b)
+        r = git(project, *NO_HOOKS, "branch", "-D", b)
         if r.returncode != 0:  # e.g. still checked out in a worktree that stayed
             print("warning: could not delete branch {}: {}".format(b, r.stderr.strip()),
                   file=sys.stderr)
@@ -956,6 +1044,566 @@ def cmd_clean(args):
           ".ai/workflow-runs/".format(len(removed), deleted, args.run_id,
                                       " and its family" if args.family else ""))
     return 0
+
+
+# ---------------------------------------------------------------- build-verify
+#
+# Round 1 of the workflow-value test (soul-benchmark experiments/2026-10-28-
+# workflow-value/RESULT.md): build-verify cost 3.3x plain Claude Code for the same
+# quality. The workers were cheap; the host was not — 32 turns (plain: 8) spent on
+# mechanics: launching each attempt, reading result.json, re-running the check,
+# launching review, recording tallies, committing the candidate, applying. The
+# owner's call (2026-10-28): one call per round does the mechanics; the host reads
+# one bundle, weighs the findings, and decides. The check is still never a worker's
+# word: the recorder runs it, confined, as its own process.
+
+RECORDER = os.path.join(_HERE, "delegation-check.py")
+MAX_ROUND = 3  # round 1 plus at most two repair rounds without the owner
+INLINE_PATCH_LINES = 600
+ACCEPTED_LINE = re.compile(r"^[-*]?\s*(F\d+)(?!\w)\s*(?:[:—–-]\s*)?(.*)$")
+
+FAILED_ATTEMPT = """
+
+## The previous attempt failed
+
+This is a fresh attempt from the same starting point. What the previous attempt
+left, as the dispatch tool saw it:
+"""
+
+
+def tail_lines(text, n):
+    lines = (text or "").rstrip("\n").splitlines()
+    return "\n".join(lines[-n:])
+
+
+def fenced(text, lang=""):
+    """`text` in a code fence longer than any backtick run inside it."""
+    longest = max([len(m) for m in re.findall(r"`+", text)] + [0])
+    fence = "`" * max(3, longest + 1)
+    return "{}{}\n{}\n{}".format(fence, lang, text.rstrip("\n"), fence)
+
+
+def run_recorder(argv, cwd):
+    """(exit code, output) of tools/delegation-check.py run as its own process: the
+    recorder is the instrument the worker did not make, so dispatch launches it and
+    reads its exit code — never imports it and calls it in-process. Killed while it
+    runs, dispatch passes SIGTERM on: the recorder then kills its check's process
+    group and records nothing."""
+    proc = subprocess.Popen([sys.executable, RECORDER] + argv, cwd=cwd,
+                            stdin=subprocess.DEVNULL, stdout=subprocess.PIPE,
+                            stderr=subprocess.STDOUT)
+    try:
+        out, _ = proc.communicate()
+    except BaseException:
+        proc.terminate()
+        try:
+            proc.wait(timeout=10)
+        except Exception:
+            proc.kill()
+        raise
+    return proc.returncode, out.decode("utf-8", "replace")
+
+
+def record_check(project, ctx, row, cwd, run_id, round_no):
+    """Run ctx's check through the recorder, confined, in `cwd`. Returns {rc, tail,
+    counted}: `counted` when the recorder ran the check and recorded the result —
+    exit 0 or 1, or 2 for a check that timed out (the recorder records a timeout
+    and prints "FAIL (timeout"). Any other 2 is a refusal (no bubblewrap, a check
+    that could not start): nothing was recorded."""
+    # Values go as `--opt=value`: a step that starts with `-` (a brief whose first
+    # line is `---`) made the recorder's argparse fail (the 2026-10-28 review). No
+    # --project: the recorder finds the Soul project from its working directory, as
+    # the host's own call always did; --project made it create .soul/events.jsonl in
+    # projects that do not use Soul (the same review).
+    rc, out = run_recorder(
+        ["record", "--step=" + ctx["step"],
+         "--worker=implementer:{}:{}".format(row["harness"], row["model"]),
+         "--check=" + ctx["check"], "--cwd=" + cwd, "--confine",
+         "--workflow=" + ctx["workflow"], "--role=implementer",
+         "--rung={}".format(row["rung"]), "--round={}".format(round_no),
+         "--run-id=" + run_id,
+         # The row's timeout, as the selection check had: the recorder's own default
+         # (540 s) would record a slower check as a timeout the selection passed.
+         "--timeout={}".format(row.get("timeout", DEFAULT_TIMEOUT))],
+        project)
+    counted = rc in (0, 1) or (rc == 2 and "FAIL (timeout" in out)
+    return {"rc": rc, "tail": tail_lines(out, 40), "counted": counted}
+
+
+def failure_section(run_dir, result, rec):
+    """What attempt 2 is told about attempt 1: each try's exit, changed lines and
+    the end of its check log, and the recorder's word when it disagreed."""
+    out = [FAILED_ATTEMPT]
+    for t in result["tries"]:
+        log = read_text_quiet(os.path.join(run_dir, "try-{}.check.log".format(t["try"])))
+        out.append("\n- try {}: exit {}, {} changed line(s), check {}; {}\n".format(
+            t["try"], t["exit"], t["changed_lines"],
+            "not run" if t["check_rc"] is None else "exit {}".format(t["check_rc"]),
+            "the end of its check's output:\n\n" + fenced(tail_lines(log, 60)) + "\n"
+            if log.strip() else "no check output"))
+    if rec is not None and rec["rc"] != 0:
+        out.append("\nThe recorder's re-run of the check on the selected try failed "
+                   "(exit {}):\n\n{}\n".format(rec["rc"], fenced(rec["tail"])))
+    return "".join(out)
+
+
+def load_bundle(project, run_id):
+    path = os.path.join(run_dir_for(project, run_id), "bundle.json")
+    try:
+        with open(path, encoding="utf-8") as fh:
+            return json.load(fh)
+    except (OSError, ValueError) as e:
+        raise UsageError("no readable bundle for run {} ({}): pass a build-verify "
+                         "round's family run id".format(run_id, e)) from None
+
+
+def parse_accepted(path, bundle, allow_empty):
+    """{finding id: the host's note} from an accepted-findings file: one finding per
+    line, each starting with an id from the bundle (`F2`, `F2: note`, `F2 — note`)."""
+    text = read_text(path, "accepted findings")
+    known = {f["id"] for f in bundle.get("findings") or []}
+    accepted, bad, unknown = {}, [], []
+    for lineno, line in enumerate(text.splitlines(), 1):
+        if not line.strip():
+            continue
+        m = ACCEPTED_LINE.match(line.strip())
+        if not m:
+            bad.append(str(lineno))
+        elif m.group(1) not in known:
+            unknown.append(m.group(1))
+        else:
+            note = m.group(2).strip()
+            prev = accepted.get(m.group(1))
+            accepted[m.group(1)] = "; ".join(x for x in (prev, note) if x)
+    if bad:
+        raise UsageError("{}: line(s) {} do not start with a finding id (F1, F2, …)"
+                         .format(path, ", ".join(bad)))
+    if unknown:
+        raise UsageError("{}: no finding {} in run {} (it has: {})".format(
+            path, ", ".join(unknown), bundle["run_id"],
+            ", ".join(sorted(known, key=lambda x: int(x[1:]))) or "none"))
+    if not accepted and not allow_empty:
+        raise UsageError("{}: nothing accepted — use `accept`, not a repair".format(path))
+    return accepted
+
+
+def record_tallies(project, bundle, accepted):
+    """One `delegation-check.py review` per reviewer of `bundle`'s round: findings
+    raised, and how many the host accepted (handed in, so self-reported there)."""
+    review = bundle.get("review")
+    lines = []
+    for r in (review or {}).get("reviewers", []):
+        ids = r["finding_ids"]
+        rc, out = run_recorder(  # `=` values and no --project: see record_check
+            ["review", "--run-id=" + review["run_id"],
+             "--reviewer={}:{}".format(r["harness"], r["model"]),
+             "--raised={}".format(len(ids)),
+             "--accepted={}".format(sum(1 for i in ids if i in accepted))], project)
+        if rc != 0:  # a tally that cannot be written never stops the round
+            print("warning: review tally not recorded (exit {}): {}".format(
+                rc, tail_lines(out, 5)), file=sys.stderr)
+        lines.append(out.strip())
+    return lines
+
+
+def read_cost(harness, log_path):
+    """total_cost_usd from a `claude` worker's JSON result, else None — never for
+    claude-ollama, whose runs report a made-up price (SOUL-200), nor codex, which
+    reports none."""
+    if harness != "claude":
+        return None
+    result = next((ev for ev in reversed(_json_lines(log_path))
+                   if "result" in ev or "usage" in ev), {})
+    cost = result.get("total_cost_usd")
+    return cost if isinstance(cost, (int, float)) and not isinstance(cost, bool) else None
+
+
+def first_line(text):
+    return next((l.strip() for l in text.splitlines() if l.strip()), "")[:120]
+
+
+def prepare_first(project, args):
+    """The first round's context, checked; nothing is started or written."""
+    for flag, value in (("--brief", args.brief), ("--check", args.check),
+                        ("--run-id", args.run_id)):
+        if not value:
+            raise UsageError("build-verify needs {} (or --repair-of for a repair "
+                             "round)".format(flag))
+    if args.accepted:
+        raise UsageError("--accepted goes with --repair-of (or with `accept`)")
+    if not args.check.strip():
+        raise UsageError("--check is blank")
+    brief = read_text(args.brief, "brief")
+    base = resolve_base(project, args.base or "HEAD")
+    workflow = args.workflow or "build-verify"
+    return {"family": args.run_id, "round": 1, "prefix": args.run_id,
+            "original_base": base, "base": base, "brief_text": brief,
+            "original_brief": None, "check": args.check,
+            "step": args.step or first_line(brief), "workflow": workflow,
+            "start_rung": None, "prev": None, "accepted": {}}
+
+
+def prepare_repair(project, args):
+    """A repair round's context from PREV's bundle, checked; nothing written yet."""
+    for flag, value in (("--brief", args.brief), ("--check", args.check),
+                        ("--run-id", args.run_id), ("--base", args.base),
+                        ("--step", args.step)):
+        if value:
+            raise UsageError("{} is not taken with --repair-of: a repair round keeps "
+                             "the previous round's".format(flag))
+    if not args.accepted:
+        raise UsageError("--repair-of needs --accepted FILE (the findings to fix)")
+    prev = load_bundle(project, args.repair_of)
+    if prev.get("status") != "winner" or not prev.get("winner"):
+        raise UsageError("run {} has no recorded winner to repair (status {})".format(
+            args.repair_of, prev.get("status")))
+    if prev["round"] >= MAX_ROUND:
+        raise UsageError("run {} is round {}: two repair rounds are spent — bring it "
+                         "to the owner".format(args.repair_of, prev["round"]))
+    accepted = parse_accepted(args.accepted, prev, allow_empty=False)
+    found = {f["id"]: f for f in prev["findings"]}
+    round_no = prev["round"] + 1
+    lines = ["\n\n## Accepted findings to fix\n\n"
+             "Reviewers read the previous candidate (the code you start from) and "
+             "raised these; the host checked each against the code and accepted it.\n"]
+    for fid, note in accepted.items():
+        lines.append("\n- {} [{}] {}".format(fid, found[fid]["reviewer"], found[fid]["text"]))
+        if note:
+            lines.append("\n  Host's note: {}".format(note))
+    original = read_text(prev["original_brief"], "original brief")
+    return {"family": prev["family"], "round": round_no,
+            "prefix": "{}-r{}".format(prev["family"], round_no),
+            "original_base": prev["original_base"], "base": None,
+            "brief_text": original.rstrip("\n") + "".join(lines) + "\n",
+            "original_brief": prev["original_brief"], "check": prev["check"],
+            "step": prev["step"], "workflow": args.workflow or prev["workflow"],
+            "start_rung": prev["winner"]["rung"], "prev": prev, "accepted": accepted}
+
+
+def index_from_patch(project, winner, base):
+    """Set the winner worktree's index to `base` plus the winner's stored try patch —
+    the patch the host read — and return its git options (worktree_git). Never
+    `add -A` on the live worktree: the selection check and the recorder ran there
+    with write access, and their artefacts (build.out, __pycache__) were swept into
+    the candidate commit and the applied patch (the 2026-10-28 review of v3.8.0).
+    The worktree's files are left as they are."""
+    gitargs = worktree_git(project, winner["worktree"])
+    for args in (("read-tree", base), ("apply", "--cached", "--binary", winner["patch"])):
+        r = git(winner["worktree"], *gitargs, *args)
+        if r.returncode != 0:
+            raise UsageError("git {} in {} failed: {}".format(
+                args[0], winner["worktree"], (r.stderr or r.stdout).strip()))
+    return gitargs
+
+
+def commit_candidate(project, prev):
+    """Commit PREV's winner on its own worktree branch, through the project's own
+    record of the worktree (worktree_git): the worker could rewrite the worktree's
+    `.git`, and a hook of its making must not run here (the 2026-10-27 review). The
+    identity is given and signing is off, so a host's git config cannot stop it."""
+    w = prev["winner"]
+    gitargs = index_from_patch(project, w, prev["base"])
+    done = git(w["worktree"], *gitargs, "-c", "user.name=soul-workflow",
+               "-c", "user.email=soul-workflow@localhost", "-c", "commit.gpgsign=false",
+               "commit", "--no-verify", "-qm",
+               "candidate {} round {}".format(prev["run_id"], prev["round"]))
+    staged = git(w["worktree"], *gitargs, "diff", "--cached", "--quiet").returncode
+    if done.returncode != 0 and staged != 0:
+        raise UsageError("could not commit the candidate in {}: {}".format(
+            w["worktree"], (done.stderr or done.stdout).strip()))
+    return resolve_base(project, w["branch"], "the candidate branch")
+
+
+def cmd_build_verify(args):
+    project = project_dir(args.project)
+    ctx = prepare_repair(project, args) if args.repair_of else prepare_first(project, args)
+    run_dir = run_dir_for(project, ctx["prefix"])
+    if os.path.exists(os.path.join(run_dir, "bundle.json")):
+        raise UsageError("run {} already has a bundle.json".format(ctx["prefix"]))
+    review_id = "{}-rev{}".format(ctx["family"], ctx["round"])
+    if not args.no_review and os.path.exists(
+            os.path.join(run_dir_for(project, review_id), "review.json")):
+        raise UsageError("review run {} already has a review.json".format(review_id))
+    rows = role_rows(project, "implementer", ctx["workflow"])
+    start = ctx["start_rung"] if ctx["start_rung"] is not None else rows[0]["rung"]
+    ladder = [r for r in rows if r["rung"] >= start]
+    if not ladder:
+        raise UsageError("role 'implementer' has no rung {} or above".format(start))
+    reviewers = [] if args.no_review else role_rows(project, "reviewer", ctx["workflow"])
+    need_harness(ladder + reviewers)
+    need_sandbox(ladder + reviewers)
+    for row in ladder:
+        need_confine_for_n(row, ctx["check"], project)
+    # The recorder confines every check; without bubblewrap it refuses, and the round
+    # would end check-not-recorded only after a worker had spent its tokens.
+    if not confinable_here(project):
+        raise UsageError("build-verify records each check confined, which needs "
+                         "bubblewrap here — install it (e.g. `sudo apt install "
+                         "bubblewrap`), or use the `run`/`review` building blocks")
+
+    os.makedirs(run_dir, exist_ok=True)
+    tallies = []
+    if ctx["prev"]:
+        # Tallies only once the candidate is committed: a repair refused there can be
+        # retried without counting the reviewers twice.
+        ctx["base"] = commit_candidate(project, ctx["prev"])
+        tallies = record_tallies(project, ctx["prev"], ctx["accepted"])
+    brief_path = os.path.join(run_dir, "brief.md")
+    with open(brief_path, "w", encoding="utf-8") as fh:
+        fh.write(ctx["brief_text"])
+    if ctx["original_brief"] is None:  # round 1: its own copy is the original
+        ctx["original_brief"] = brief_path
+
+    status, attempts, chosen, rec = "no-winner", [], None, None
+    for row in ladder:
+        prompt, last = ctx["brief_text"], None
+        for attempt in (1, 2):
+            run_id = "{}-k{}-a{}".format(ctx["prefix"], row["rung"], attempt)
+            if attempt == 2:
+                prompt = ctx["brief_text"].rstrip("\n") + failure_section(*last)
+                with open(os.path.join(run_dir, "brief-k{}-a2.md".format(row["rung"])),
+                          "w", encoding="utf-8") as fh:
+                    fh.write(prompt)
+            result = run_tries(project, "implementer", row, prompt, ctx["check"],
+                               ctx["base"], run_id, ctx["workflow"])
+            entry = {"run_id": run_id, "rung": row["rung"], "attempt": attempt,
+                     "harness": row["harness"], "model": row["model"],
+                     "effort": row.get("effort"), "selected": result["winner"],
+                     "recorder_rc": None, "tries": result["tries"]}
+            attempts.append(entry)
+            rec = None
+            if result["winner"] is not None:
+                t = result["tries"][result["winner"] - 1]
+                rec = record_check(project, ctx, row, t["worktree"], run_id, ctx["round"])
+                entry["recorder_rc"] = rec["rc"]
+                chosen = dict({k: t[k] for k in ("try", "worktree", "branch", "patch")},
+                              run_id=run_id, harness=row["harness"], model=row["model"],
+                              effort=row.get("effort"), rung=row["rung"],
+                              timeout=row["timeout"])
+                if rec["rc"] == 0:
+                    status = "winner"
+                elif not rec["counted"]:
+                    status = "check-not-recorded"
+            if status != "no-winner":
+                break
+            last = (run_dir_for(project, run_id), result, rec)
+        if status != "no-winner":
+            break
+    if status == "no-winner":
+        chosen = None  # a try the recorder failed is not shown as the candidate
+
+    review, findings = None, []
+    if status == "winner" and reviewers:
+        result = review_all(project, "reviewer", reviewers,
+                            os.path.realpath(chosen["worktree"]), ctx["brief_text"],
+                            read_text(chosen["patch"], "winner's patch"), review_id,
+                            ctx["workflow"])
+        review = {"run_id": review_id, "reviewers": []}
+        for r in result["reviewers"]:
+            ids = []
+            for text in r["findings"]:
+                ids.append("F{}".format(len(findings) + 1))
+                findings.append({"id": ids[-1], "reviewer": "{}:{}".format(
+                    r["harness"], r["model"]), "text": text})
+            review["reviewers"].append(dict(r, finding_ids=ids))
+
+    bundle = {"run_id": ctx["prefix"], "family": ctx["family"], "round": ctx["round"],
+              "status": status, "workflow": ctx["workflow"], "step": ctx["step"],
+              "check": ctx["check"], "project": project,
+              "original_base": ctx["original_base"], "base": ctx["base"],
+              "original_brief": ctx["original_brief"], "brief": brief_path,
+              "repair_of": ctx["prev"]["run_id"] if ctx["prev"] else None,
+              "accepted": ctx["accepted"], "tallies": tallies,
+              "winner": chosen if status == "winner" else None,
+              "candidate": chosen, "attempts": attempts,
+              "recorded_check": rec and {"command": ctx["check"], "rc": rec["rc"],
+                                         "tail": rec["tail"]},
+              "review": review, "findings": findings}
+    write_json(os.path.join(run_dir, "bundle.json"), bundle)
+    text = bundle_md(project, bundle)
+    with open(os.path.join(run_dir, "bundle.md"), "w", encoding="utf-8") as fh:
+        fh.write(text)
+    print(text, end="")
+    return {"winner": 0, "no-winner": 1}.get(status, 2)
+
+
+def bundle_md(project, b):
+    """Everything the host needs from a round, in ONE read: status, the winning row,
+    the recorded check, the patch, the findings, the cost, the next commands."""
+    say = {"winner": "winner recorded passing", "no-winner": "no winner",
+           "check-not-recorded": "check not recorded"}[b["status"]]
+    out = ["# build-verify {} — {}\n\n".format(b["run_id"], say),
+           "Status: {} · round {} of {} · family run id {}{}\n".format(
+               say, b["round"], MAX_ROUND, b["family"],
+               " · repair of {}".format(b["repair_of"]) if b["repair_of"] else "")]
+    c = b["candidate"]
+    if c:
+        out.append("Implementer: {}:{} · effort {} · rung {} · run {} try {}\n".format(
+            c["harness"], c["model"], c["effort"] or "-", c["rung"], c["run_id"], c["try"]))
+    per_rung = {}
+    for a in b["attempts"]:
+        per_rung[a["rung"]] = a["attempt"]
+    out.append("Attempts: {}\n".format(" · ".join(
+        "rung {}: {}".format(k, v) for k, v in per_rung.items()) or "none"))
+
+    out.append("\n## Recorded check\n\n")
+    r = b["recorded_check"]
+    if r:
+        out.append("`{}` — recorder exit {}\n\n{}\n".format(r["command"], r["rc"],
+                                                           fenced(r["tail"])))
+        if b["status"] == "check-not-recorded":
+            out.append("\nThe recorder refused or could not run the check (its output is "
+                       "above), so nothing was recorded. What to do next is the owner's "
+                       "call.\n")
+    else:
+        out.append("The last attempt selected no try, so the recorder ran nothing.\n")
+    if b["status"] == "no-winner":
+        out.append("\nEach attempt (selection check per try; recorder exit when a try "
+                   "was selected):\n\n")
+        for a in b["attempts"]:
+            out.append("- {} ({}:{}): {}; recorder {}\n".format(
+                a["run_id"], a["harness"], a["model"], "; ".join(
+                    "try {} exit {}, {} lines, check {}".format(
+                        t["try"], t["exit"], t["changed_lines"], t["check_rc"])
+                    for t in a["tries"]),
+                "-" if a["recorder_rc"] is None else "exit {}".format(a["recorder_rc"])))
+
+    if c:
+        out.append("\n## Patch\n\n")
+        numstat = git(project, "apply", "--numstat", c["patch"]).stdout.strip()
+        out.append("{}\n\n".format(fenced(numstat or "(empty)")))
+        patch = read_text_quiet(c["patch"])
+        if len(patch.splitlines()) <= INLINE_PATCH_LINES:
+            out.append(fenced(patch, "diff") + "\n")
+        else:
+            out.append("{} lines — at {}; read it before accepting.\n".format(
+                len(patch.splitlines()), c["patch"]))
+
+    out.append("\n## Findings\n\n")
+    if b["review"] is None:
+        out.append("No review ran{}.\n".format(
+            "" if b["status"] == "winner" else " (no recorded winner)"))
+    else:
+        out.extend("{} [{}] {}\n".format(f["id"], f["reviewer"], f["text"])
+                   for f in b["findings"])
+        if not b["findings"]:
+            out.append("None.\n")
+        out.append("\nReviewers:\n")
+        for rv in b["review"]["reviewers"]:
+            out.append("- {}:{} (effort {}) — {}, exit {}, {} s{}\n".format(
+                rv["harness"], rv["model"], rv["effort"] or "-", rv["verdict"], rv["exit"],
+                rv["wall_s"], ", findings " + " ".join(rv["finding_ids"])
+                if rv["finding_ids"] else ""))
+            if rv["verdict"] == "unparsed":
+                raw = read_text_quiet(rv["raw"]) or read_text_quiet(
+                    rv["log"][:-len(".log")] + ".stderr")
+                out.append("\n" + fenced(tail_lines(raw, 30) or "(no output)") + "\n")
+
+    out.append("\n## Cost\n\n")
+    total, unknown = 0.0, 0
+    workers = [("implementer", a["run_id"], t, a["harness"], a["model"])
+               for a in b["attempts"] for t in a["tries"]]
+    workers += [("reviewer", b["review"]["run_id"], rv, rv["harness"], rv["model"])
+                for rv in (b["review"] or {}).get("reviewers", [])]
+    for role, run_id, w, harness, model in workers:
+        cost = read_cost(harness, w["log"])
+        if cost is None:
+            unknown += 1
+        else:
+            total += cost
+        out.append("- {} {}{} {}:{} — tokens in {} / out {}, {} s{}\n".format(
+            role, run_id, " try {}".format(w["try"]) if "try" in w else "", harness, model,
+            w["tokens_in"], w["tokens_out"], w["wall_s"],
+            ", ${:.4f}".format(cost) if cost is not None else ""))
+    out.append("Reported cost: ${:.4f}{}\n".format(
+        total, " ({} worker(s) report none)".format(unknown) if unknown else ""))
+
+    out.append("\n## Next\n\n")
+    tool = "python3 " + shlex.quote(os.path.abspath(__file__))
+    where = " --project " + shlex.quote(project)
+    accepted = os.path.join(run_dir_for(project, b["run_id"]), "accepted.txt")
+    if b["status"] == "winner":
+        if b["findings"] and b["round"] < MAX_ROUND:
+            out.append("Repair: write the accepted finding ids, one per line (`F1: note`), "
+                       "to {} and run\n  {} build-verify --repair-of {} --accepted {}{}\n"
+                       .format(accepted, tool, b["run_id"], shlex.quote(accepted), where))
+        elif b["findings"]:
+            out.append("No repair round left: two repair rounds are spent — bring open "
+                       "findings to the owner.\n")
+        out.append("Accept: {} accept --run-id {}{}{}\n".format(
+            tool, b["run_id"], " [--accepted {}]".format(shlex.quote(accepted))
+            if b["findings"] else "", where))
+    elif b["status"] == "no-winner":
+        out.append("Every rung's two attempts failed: bring it to the owner with this "
+                   "evidence. Clean up after: {} clean --run-id {} --family{}\n".format(
+                       tool, b["family"], where))
+    else:
+        out.append("The recorder refused or could not run the check: bring its output "
+                   "to the owner. Clean up after: {} clean --run-id {} --family{}\n"
+                   .format(tool, b["family"], where))
+    return "".join(out)
+
+
+# ---------------------------------------------------------------- accept
+
+def cmd_accept(args):
+    """Apply the final round's change from the ORIGINAL base, spot-check it here
+    through the recorder, and clean the family's worktrees and branches."""
+    project = project_dir(args.project)
+    # From a subfolder, `git apply` silently skips paths outside it and still exits
+    # 0 (the 2026-10-28 review): apply only at the top level.
+    top = git(project, *NO_HOOKS, "rev-parse", "--show-toplevel").stdout.strip()
+    if not top or os.path.realpath(top) != os.path.realpath(project):
+        raise UsageError("accept applies at the git top level; --project {} is not it "
+                         "({})".format(project, top or "no top level"))
+    bundle = load_bundle(project, args.run_id)
+    if bundle.get("status") != "winner" or not bundle.get("winner"):
+        raise UsageError("run {} has no recorded winner to accept (status {})".format(
+            args.run_id, bundle.get("status")))
+    accepted = parse_accepted(args.accepted, bundle, allow_empty=True) \
+        if args.accepted else {}
+    w = bundle["winner"]
+    run_dir = run_dir_for(project, args.run_id)
+    # The combined change, never only the last round's patch: after a repair, that
+    # patch is against the committed candidate, not against the host's branch. Built
+    # from the stored patches the host read, never the live worktree (index_from_patch).
+    gitargs = index_from_patch(project, w, bundle["base"])
+    diff = subprocess.run(["git", *gitargs, "diff", "--binary", "--cached", *PATCH_FORMAT,
+                           bundle["original_base"]], cwd=w["worktree"],
+                          capture_output=True, stdin=subprocess.DEVNULL)
+    if diff.returncode != 0:
+        raise UsageError("could not diff {} against the original base: {}".format(
+            w["worktree"], diff.stderr.decode("utf-8", "replace").strip()))
+    combined = os.path.join(run_dir, "combined.patch")
+    with open(combined, "wb") as fh:
+        fh.write(diff.stdout)
+    checked = git(project, *NO_HOOKS, "apply", "--check", combined)
+    if checked.returncode != 0:
+        raise UsageError("the combined patch does not apply here; nothing applied:\n{}"
+                         .format((checked.stderr or checked.stdout).strip()))
+    numstat = git(project, *NO_HOOKS, "apply", "--numstat", combined).stdout.strip()
+    applied = git(project, *NO_HOOKS, "apply", combined)
+    if applied.returncode != 0:
+        raise UsageError("git apply failed after its --check passed: {}".format(
+            applied.stderr.strip()))
+    # Tallies only once the change is in: a refused apply can be retried without
+    # counting the reviewers twice.
+    record_tallies(project, bundle, accepted)
+    rec = record_check(project, bundle, w, project, bundle["family"] + "-accept",
+                       bundle["round"])
+    print("applied {} from {} (from the original base {}):\n{}".format(
+        combined, args.run_id, bundle["original_base"][:12], numstat))
+    print("\nspot check, recorded here (recorder exit {}):\n{}\n".format(
+        rec["rc"], rec["tail"]))
+    cmd_clean(argparse.Namespace(project=project, run_id=bundle["family"], family=True))
+    if rec["rc"] == 0:
+        return 0
+    print("\nthe patch stays applied. Undo: git apply -R {}".format(shlex.quote(combined)))
+    if not rec["counted"]:
+        print("the check was not recorded (the recorder refused or could not run it); "
+              "what to do next is the owner's call")
+        return 2
+    return 1
 
 
 def main():
@@ -998,6 +1646,30 @@ def main():
                    help="also every run named <run-id>-<anything> (its attempts, repair "
                    "rounds and reviews)")
     p.add_argument("--project", help=here)
+    p = sub.add_parser("build-verify", help="one build-verify round: implementer ladder, "
+                       "the check run by the recorder, reviewers, bundle.md")
+    p.add_argument("--brief", help="file holding the brief (first round)")
+    p.add_argument("--check", help="the Done-when command (first round): named to the "
+                   "worker, run confined on each try, then run by the recorder")
+    p.add_argument("--run-id", help="the family run id (first round); attempts run as "
+                   "<id>-k<rung>-a<attempt>, the review as <id>-rev<round>")
+    p.add_argument("--project", help=here)
+    p.add_argument("--base", help="commit the first round starts from (default HEAD)")
+    p.add_argument("--workflow", help=flow + " (default build-verify; a repair round: "
+                   "the previous round's)")
+    p.add_argument("--step", help="the step text for the record (default: the brief's "
+                   "first non-blank line)")
+    p.add_argument("--repair-of", metavar="PREV", help="a repair round of PREV, the "
+                   "previous round's family run id (<id>, then <id>-r2)")
+    p.add_argument("--accepted", metavar="FILE", help="with --repair-of: the accepted "
+                   "findings, one per line, each starting with its id (F1, F2: note)")
+    p.add_argument("--no-review", action="store_true", help="no reviewers this round")
+    p = sub.add_parser("accept", help="apply a build-verify winner from the original "
+                       "base, re-run the check here through the recorder, clean")
+    p.add_argument("--run-id", required=True, help="the final round's family run id")
+    p.add_argument("--accepted", metavar="FILE", help="findings of the final round the "
+                   "host accepted (for the reviewers' tallies; default none)")
+    p.add_argument("--project", help=here)
     args = ap.parse_args()
     if os.name == "nt":
         print("error: dispatch is POSIX-only (Linux, macOS, WSL) — it needs process "
@@ -1009,7 +1681,7 @@ def main():
         if signal.getsignal(s) is not signal.SIG_IGN:
             signal.signal(s, _on_signal)
     commands = {"roles": cmd_roles, "workflows": cmd_workflows, "run": cmd_run, "review": cmd_review,
-                "clean": cmd_clean}
+                "clean": cmd_clean, "build-verify": cmd_build_verify, "accept": cmd_accept}
     try:
         return commands[args.cmd](args)
     except (RolesError, UsageError) as e:

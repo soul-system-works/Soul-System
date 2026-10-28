@@ -9,8 +9,9 @@ must not run it with the host's own powers. Two helpers, stdlib only:
                                keys, GH_TOKEN, GIT_CONFIG_*, SOUL_GUARD_*, routing)
                                reaches the child unless named in `extra`
   confine_argv(argv, workdir)  argv wrapped in bubblewrap: the whole filesystem
-                               read-only except `workdir` and a private /tmp, no
-                               network, the secret folders hidden; None when it
+                               read-only except `workdir` (its .git and .soul kept
+                               read-only) and a private /tmp, no network, the
+                               secret folders hidden; None when it
                                cannot confine (not Linux, or no `bwrap` on PATH)
 
 The 2026-10-27 fresh-context review of v3.7.0 found the selection check in
@@ -78,6 +79,16 @@ def confine_argv(argv, workdir, which=shutil.which, platform=None):
     cmd = [bwrap, "--ro-bind", "/", "/", "--dev", "/dev", "--proc", "/proc",
            "--tmpfs", "/tmp", "--bind", workdir, workdir, "--unshare-net",
            "--die-with-parent", "--new-session", "--chdir", workdir]
+    # The work folder's own .git and .soul stay read-only: accept's spot check runs in
+    # the host's checkout, and a check with write access there could plant
+    # .git/hooks/*, edit .git/config or write the Soul record (the 2026-10-28 review
+    # of v3.8.0). In a worktree .git is a file, and its admin folder is read-only
+    # under `/` already. A symlink is bound at its target when that lies inside the
+    # work folder; a target outside it is read-only already.
+    for name in (".git", ".soul"):
+        target = os.path.realpath(os.path.join(workdir, name))
+        if target.startswith(workdir + os.sep) and os.path.exists(target):
+            cmd += ["--ro-bind", target, target]
     for d in secret_paths():
         if os.path.isdir(d):
             cmd += ["--tmpfs", d]

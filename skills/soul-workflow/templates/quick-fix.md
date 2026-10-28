@@ -12,12 +12,17 @@ numbered steps in the soul-workflow skill and to roles in your roles table.
 
 1. Settle the work and write the brief (build-verify steps 1–2). The work must have
    a Done-when command.
-2. Dispatch `implementer` at its lowest rung, one attempt — no retry, no escalation
-   (build-verify steps 3–4).
-3. Review the winner with `reviewer` (build-verify step 5).
-4. No repair round. Apply the winner only if no finding was accepted (step 7);
-   otherwise leave it on its branch. Report (step 8), with any accepted findings as
-   open items for the owner to decide.
+2. Dispatch `implementer` at its lowest rung, one attempt — no retry, no escalation.
+   This is less than build-verify's one-call round (step 3), so use its building
+   blocks by hand: `dispatch.py run`, read the winner's patch, then record its check
+   through the recorder with `--confine` (the `delegation-check.py record` command
+   under "Building blocks" at the end of build-verify).
+3. Review the winner with `reviewer` (the building block `dispatch.py review`), weigh
+   each finding (step 5) and record the tallies.
+4. No repair round. Apply the winner only if no finding was accepted (by hand, as the
+   building blocks say: the change from the original base, the check re-run here,
+   then `clean`); otherwise leave it on its branch. Report (step 8), with any
+   accepted findings as open items for the owner to decide.
 
 <!-- Optional: this workflow's own models. Remove the comment marks around this block to
 make Codex the only reviewer for this workflow; roles this section does not name keep
