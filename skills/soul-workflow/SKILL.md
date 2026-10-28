@@ -48,6 +48,16 @@ What happens, every time:
 5. You get one report: what changed, which checks ran and passed, what each
    reviewer found and what was done about it, and what is still open.
 
+**Inside a workflow run, its roles do the implementing and the reviewing.** Hand
+those steps to `dispatch.py`, never to this session's own subagents (the Agent tool),
+whatever a CLAUDE.md delegation rule says about implementers or reviewers: the owner
+chose this workflow's roles by invoking it, and only dispatched work runs sandboxed,
+gets its check re-run and lands in `stats`. Other help — searching the code, reading
+a long log, looking something up — may still use subagents as usual. Outside a
+workflow run nothing here applies, and the session delegates as it normally would.
+(The owner's call, 2026-10-28: two delegation systems side by side, with the
+expensive one automatic, was the concern.)
+
 ## The roles table
 
 `python3 <root>/tools/dispatch.py roles` prints the table this session will use and

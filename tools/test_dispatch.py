@@ -774,6 +774,12 @@ def docs():
     step7 = section(skill, "### 7 ·", "### 8 ·")
     step3 = section(skill, "### 3 ·", "### 4 ·")
     step5 = section(skill, "### 5 ·", "### 6 ·")
+    check("skill: inside a workflow, implement and review go to its roles, not subagents",
+          "never to this session's own subagents" in skill
+          and "Outside a workflow run nothing here applies" in skill)
+    page = " ".join(read(os.path.join(root, "docs", "workflows.md")).split())
+    check("guide page: says what happens to the session's usual subagents",
+          "usual subagents" in page and "Opus" in section(page, "## Your usual subagents", "##"))
     check("skill step 4: the recorder re-runs the check with --confine, patch read first",
           "--confine" in step4 and step4.find("patch") < step4.find("--confine"), step4[:600])
     check("skill step 7: the re-run is confined and comes after reading the patch",

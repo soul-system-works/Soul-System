@@ -91,6 +91,15 @@ Settings: `rung=` (ladder order), `n=` (best of n: n tries, the check picks the
 winner — cheap on your own GPU), `timeout=` (seconds per try; default 1800). Whether
 a model is good enough is your call; the records below show how each one does.
 
+## Your usual subagents
+
+Outside a workflow, Claude Code hands work to its own subagents as usual — and a
+CLAUDE.md of yours may tell it to, for example sending implementation to an Opus
+`implementer` agent. Inside a `/soul-workflow` run, the implementing and reviewing
+go to the workflow's roles instead, never to those subagents: only dispatched work
+runs sandboxed, has its check re-run, and shows up in the stats. Other help —
+searching the code, reading a long log — may still use subagents.
+
 ## What keeps it safe
 
 - **Workers see only the brief.** Not your conversation, not your project's notes or
