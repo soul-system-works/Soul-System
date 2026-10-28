@@ -105,7 +105,7 @@ model (a smaller Claude, Codex, or a local model through Ollama) does it in its 
 copy of the repo; the AI **re-runs the check itself** and records the result, then
 has the change reviewed — two reviewers by default — a fresh Claude and Codex when it
 is installed — with at most two repair rounds before it comes back to you.
-`/soul-workflow review` runs just the reviews on a diff. Who does what lives in a roles table (`/soul-workflow roles`).
+`/soul-workflow review` runs just the reviews on a diff. Who does what lives in a roles table (`/soul-workflow roles`). How to use it, change who does what, and write your own workflows: [docs/workflows.md](workflows.md).
 Skip it for design work or anything you can only judge by reading.
 
 **Moving to another computer.** In each project, run `/soul-init` (it tidies the

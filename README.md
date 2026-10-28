@@ -56,7 +56,7 @@ it says what is set, repairs what broke, and asks only what is new.
 | `/soul-distill` | Compress a grown record into `mind.md` |
 | `/soul-stage` | Declare prototype, pre-release or released |
 | `/soul-prompt` | Turn a rough prompt into a clear one |
-| `/soul-workflow` | Have other models (Claude, Codex, a local model) build or review; checks and judgment stay here |
+| `/soul-workflow` | Have other models (Claude, Codex, a local model) build or review; checks and judgment stay here — [how to use it](docs/workflows.md) |
 | `/soul-migrate` | Move a project to another computer |
 | `/soul-help` | A short tour |
 
