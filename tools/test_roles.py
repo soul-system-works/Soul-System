@@ -182,6 +182,40 @@ def main():
     check("error in the global file names the global file",
           r.returncode == 2 and global_file in r.stderr and "bogus" in r.stderr, r.stderr)
 
+    # workflows: built-ins, then files; a project file replaces a global one; a file
+    # may not take a built-in's name or an unusable one
+    def flow(name, desc):
+        return "---\nname: {}\ndescription: {}\n---\n\n1. Step.\n".format(name, desc)
+    gdir = os.path.join(home, ".claude", "soul-workflows")
+    pdir = os.path.join(project, ".claude", "soul-workflows")
+    write(os.path.join(gdir, "quick-fix.md"), flow("quick-fix", "GLOBAL quick fix"))
+    write(os.path.join(gdir, "second-look.md"), flow("second-look", "a second look"))
+    write(os.path.join(pdir, "quick-fix.md"), flow("quick-fix", "PROJECT quick fix"))
+    write(os.path.join(pdir, "review.md"), flow("review", "shadow"))
+    write(os.path.join(pdir, "Bad Name.md"), flow("x", "bad"))
+    write(os.path.join(pdir, "bare.md"), "1. Step without frontmatter.\n")
+    r = subprocess.run([sys.executable, _TOOL, "workflows", "--project", project, "--json"],
+                       capture_output=True, text=True, env=dict(os.environ, HOME=home))
+    try:
+        wf = {w["name"]: w for w in json.loads(r.stdout)}
+    except ValueError:
+        wf = {}
+    check("workflows: the two built-ins listed first",
+          [w for w in wf][:2] == ["build-verify", "review"]
+          and wf["build-verify"]["source"] == "built-in", r.stdout + r.stderr)
+    check("workflows: a project file replaces a global one of the same name",
+          wf.get("quick-fix", {}).get("description") == "PROJECT quick fix"
+          and wf["quick-fix"]["source"] == "project", wf.get("quick-fix"))
+    check("workflows: a global file with no project twin is listed",
+          wf.get("second-look", {}).get("source") == "global", wf.get("second-look"))
+    named_review = [w for w in json.loads(r.stdout or "[]") if w["name"] == "review"]
+    check("workflows: a file may not take a built-in's name",
+          [w["source"] for w in named_review] == ["built-in", "project"]
+          and named_review[1]["note"].startswith("ignored: a built-in"), named_review)
+    check("workflows: an unusable name and a missing description are marked",
+          "ignored" in wf.get("Bad Name", {}).get("note", "")
+          and wf.get("bare", {}).get("note") == "no description: line", r.stdout)
+
     shutil.rmtree(tmp, ignore_errors=True)
     print("\n{} failure(s)".format(len(FAILS)) if FAILS else "\nALL PASS")
     return 1 if FAILS else 0

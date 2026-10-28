@@ -10,6 +10,7 @@ verdict. It never records: the host re-runs the check through
 tools/delegation-check.py, because a worker's report is a claim (SOUL-I066).
 
   roles  [--project DIR] [--json]                    the effective roles table
+  workflows [--project DIR] [--json]                 built-in and custom workflows
   run    --role R --brief FILE [--project DIR] [--base REF] [--check CMD]
          [--rung K] [--run-id ID]                    implement, n tries, pick one
   review --role R --brief FILE --diff FILE [--project DIR] [--workdir DIR]
@@ -57,6 +58,16 @@ SETTINGS = ("rung", "n", "timeout")
 DEFAULT_TIMEOUT = 1800
 GLOBAL_ROLES = os.path.join("~", ".claude", "soul-roles.md")
 PROJECT_ROLES = os.path.join(".claude", "soul-roles.md")
+# Custom workflows: one Markdown file of steps each, named by its file (the Body's
+# choice, 2026-10-28). The host follows the file; the built-ins live in the skill.
+GLOBAL_WORKFLOWS = os.path.join("~", ".claude", "soul-workflows")
+PROJECT_WORKFLOWS = os.path.join(".claude", "soul-workflows")
+BUILT_IN_WORKFLOWS = {
+    "build-verify": "another model implements in its own worktree; this session "
+                    "re-runs the check; reviewers report; at most two repair rounds",
+    "review": "the reviewers alone, read-only, on a diff",
+}
+WORKFLOW_NAME = re.compile(r"^[a-z0-9][a-z0-9-]*$")
 RECORD_FILES = ("witness.md", "ideas.md", "mind.md", "upstream.md")
 RECORD_DIRS = (".soul/", "findings/", "amendments/")  # the last two: Soul System's own
 CLAUDE_MD_NAMES = ("CLAUDE.md", "CLAUDE.local.md", os.path.join(".claude", "CLAUDE.md"))
@@ -240,6 +251,60 @@ def cmd_roles(args):
         print("{:<12} {:<5} {:<14} {:<22} {:<3} {:<8} {}".format(
             r["role"], r["rung"], r["harness"], r["model"], r["n"], r["timeout"],
             r["source"] + (" ({})".format(r["where"]) if r["where"] else "")))
+    return 0
+
+
+def _description(path):
+    """The `description:` line of a workflow file's frontmatter, or ""."""
+    try:
+        with open(path, encoding="utf-8") as fh:
+            text = fh.read()
+    except OSError:
+        return ""
+    m = re.match(r"^---\n(.*?)\n---\n", text, re.S)
+    for line in (m.group(1).splitlines() if m else []):
+        if line.startswith("description:"):
+            return line.split(":", 1)[1].strip()
+    return ""
+
+
+def load_workflows(project):
+    """[{name, source, path, description, note}] — built-ins first, then files. A
+    project file replaces a global one of the same name; a file may not take a
+    built-in's name (it is listed, marked ignored) or an unusable one."""
+    found = {}
+    for source, folder in (("global", os.path.expanduser(GLOBAL_WORKFLOWS)),
+                           ("project", os.path.join(project, PROJECT_WORKFLOWS))):
+        try:
+            names = sorted(os.listdir(folder))
+        except OSError:
+            continue
+        for f in names:
+            if f.endswith(".md"):
+                found[f[:-3]] = (source, os.path.join(folder, f))
+    out = [{"name": n, "source": "built-in", "path": None, "description": d, "note": ""}
+           for n, d in BUILT_IN_WORKFLOWS.items()]
+    for name in sorted(found):
+        source, path = found[name]
+        note = ("ignored: a built-in has this name" if name in BUILT_IN_WORKFLOWS else
+                "ignored: name must be lower-case letters, digits and -"
+                if not WORKFLOW_NAME.match(name) else
+                "no description: line" if not _description(path) else "")
+        out.append({"name": name, "source": source, "path": path,
+                    "description": _description(path), "note": note})
+    return out
+
+
+def cmd_workflows(args):
+    rows = load_workflows(project_dir(args.project, need_git=False))
+    if args.json:
+        print(json.dumps(rows, indent=2))
+        return 0
+    for r in rows:
+        print("{:<16} {:<9} {}{}".format(r["name"], r["source"], r["description"],
+                                         "  [{}]".format(r["note"]) if r["note"] else ""))
+        if r["path"]:
+            print("{:<16} {:<9} {}".format("", "", r["path"]))
     return 0
 
 
@@ -831,6 +896,9 @@ def main():
     p = sub.add_parser("roles", help="show the effective roles table")
     p.add_argument("--project", help=here)
     p.add_argument("--json", action="store_true")
+    p = sub.add_parser("workflows", help="list built-in and custom workflows")
+    p.add_argument("--project", help=here)
+    p.add_argument("--json", action="store_true")
     p = sub.add_parser("run", help="run a role's worker on a brief, n tries, pick one")
     p.add_argument("--role", required=True)
     p.add_argument("--brief", required=True, help="file holding the brief")
@@ -865,7 +933,7 @@ def main():
     for s in SIGNALS:
         if signal.getsignal(s) is not signal.SIG_IGN:
             signal.signal(s, _on_signal)
-    commands = {"roles": cmd_roles, "run": cmd_run, "review": cmd_review,
+    commands = {"roles": cmd_roles, "workflows": cmd_workflows, "run": cmd_run, "review": cmd_review,
                 "clean": cmd_clean}
     try:
         return commands[args.cmd](args)
