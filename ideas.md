@@ -2785,7 +2785,11 @@ BUILT:     (2026-10-27/28, v3.7.0) Changed from DECIDED by the Body during the b
            SYSTEM-VERSION 3.7.0 row. Open: whether roles should be per workflow
            (discussed 2026-10-28); a value comparison against a single-session
            baseline (quality, speed, usage) — the Body's next step.
-STATUS:    Built — v3.7.0 (2026-10-28).
+           (2026-10-28) Per-workflow roles: the Body chose shared defaults plus a
+           workflow file's own `## Roles` override (option C of three) → v3.7.1.
+           Inside a workflow run its roles implement and review, never the
+           session's own subagents, whatever a CLAUDE.md rule says → v3.7.2.
+STATUS:    Built — v3.7.0–3.7.2 (2026-10-28).
 ```
 
 ```
@@ -2876,5 +2880,11 @@ SHAPE:     Raw — Body-captured. Near: SOUL-I080 (the roles table and the
            in the I080 scans (SWE-bench Verified/Pro, Terminal-Bench); mind item 8
            (what Soul measurably does) and item 10 (score every arm to one
            standard).
-STATUS:    Raw — Body-captured.
+STARTED:   (2026-10-28) Round 1 in soul-benchmark experiments/2026-10-28-workflow-
+           value: one game spec (Orbit Courier), arms A plain / B the Body's normal
+           setup / C + /soul-workflow, judged on quality, speed and usage; the Body
+           drives and records; scorers the Body + a fresh Claude session; prediction
+           locked and pushed first. Arm D (workflow with an Opus implementer) only
+           if C differs; round 2 a purely local arm, set up the best way.
+STATUS:    Maturing — round 1 ready to run (2026-10-28).
 ```

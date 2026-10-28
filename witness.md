@@ -9358,3 +9358,49 @@ CONSEQUENCE:  Run the scan as its own command and read its result before pushing
               for fetch probes). Candidate for mind 6(c) at the next distill.
 STATUS:       Closed — ratified by the Body 2026-10-27
 ```
+
+```
+ID:           SOUL-227
+WHEN:         2026-10-27/28 / Soul-System session (v3.6.3 → v3.7.2)
+WHERE:        tools/dispatch.py, tools/confine.py, skills/soul-workflow; the v3.6.3
+              replay (.ai/replay-v363, .ai/workflow-runs); SYSTEM-VERSION 3.7.0–3.7.2
+WHAT:         /soul-workflow built and released (I080). What only running it found:
+              the live replay surfaced four defects the unit tests had not (a
+              check-only shell too tight to work, the recorder refusing role names,
+              reviewers reading the host checkout, a failed run leaving no record);
+              its reviewers found a defect in already-released v3.6.3 (sidecar and
+              record questions together). The fresh-context review found worker code
+              run unconfined with the host's environment — including the session's
+              messaging token — and a real probe then showed Claude's Write/Edit
+              tools writing outside the worktree in 3 of 3 attempts until scoped to
+              it (the OS sandbox covers the shell only). Sonnet matched Opus on the
+              replay's hidden tests (n = 1); the local 27B timed out at 1 h.
+TYPE:         witness (build; security findings; live-run evidence)
+CONSEQUENCE:  A worker boundary is proven by a probe of each tool path (shell,
+              Write/Edit, the checks that run the worker's code, the environment),
+              not by the sandbox's name. Value against a single-session baseline is
+              still unmeasured — soul-benchmark experiments/2026-10-28-workflow-value.
+STATUS:       Open — unconfirmed — owner to ratify
+```
+
+```
+ID:           SOUL-228
+WHEN:         2026-10-28 / Soul-System session
+WHERE:        soul-benchmark (public) experiments/2026-10-28-workflow-value/PLAN.md;
+              the pre-push name scan; the session scratchpad
+WHAT:         Two near-misses on the name rule (mind 6c), both caught before a
+              commit. (1) A draft PLAN for the public benchmark repo named one of the
+              owner's private projects as round 2's candidate; a scan of the draft
+              against NAME-MAP found it (two REF hits) and it was replaced by "a real
+              project of the owner's". (2) After a computer restart the scratchpad
+              scan script was gone again (SOUL-226's cause); checking that it
+              existed, as its own command, caught it; it now lives in
+              .ai/tools/namescan.py, which a restart does not wipe. A piped exit code
+              (`… | tail`) also read 0 for a failing check once this session; the
+              real exit was 1.
+TYPE:         witness (process; caught by the session)
+CONSEQUENCE:  Scan any file bound for a public repo against NAME-MAP when it is
+              WRITTEN, not only at push; keep the scan script outside the
+              scratchpad. Candidate for mind 6(c) at the next distill, with SOUL-226.
+STATUS:       Open — unconfirmed — owner to ratify
+```
