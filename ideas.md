@@ -2789,7 +2789,15 @@ BUILT:     (2026-10-27/28, v3.7.0) Changed from DECIDED by the Body during the b
            workflow file's own `## Roles` override (option C of three) → v3.7.1.
            Inside a workflow run its roles implement and review, never the
            session's own subagents, whatever a CLAUDE.md rule says → v3.7.2.
-STATUS:    Built — v3.7.0–3.7.2 (2026-10-28).
+           (2026-10-28) After I083 round 1 (C cost 3.3× plain; the host's 32 turns
+           of mechanics, not the workers, were the cost) the Body chose: build the
+           lean loop before round 2 — one `dispatch.py build-verify` call per round,
+           `accept` to finish; the dispatch tool's confined, recorded check stands
+           as the observed result (the host reads every patch, `accept` re-runs the
+           check on the host checkout); an `effort=` roles setting, so a Codex
+           row's model and effort can be named (its `default` was gpt-6.1-sol at
+           Codex's built-in effort, the user's config ignored) → v3.8.0.
+STATUS:    Built — v3.7.0–3.8.0 (2026-10-28).
 ```
 
 ```
@@ -2886,5 +2894,19 @@ STARTED:   (2026-10-28) Round 1 in soul-benchmark experiments/2026-10-28-workflo
            drives and records; scorers the Body + a fresh Claude session; prediction
            locked and pushed first. Arm D (workflow with an Opus implementer) only
            if C differs; round 2 a purely local arm, set up the best way.
-STATUS:    Maturing — round 1 ready to run (2026-10-28).
+           (2026-10-28) Round 1 result (soul-benchmark RESULT.md): a quality tie at
+           ceiling; C cost 3.3× A ($2.42 vs $0.74) and took about twice as long —
+           the task never strained a single session. Research (a single agent, not
+           deep-research): multi-agent returns turn negative once one agent passes
+           ~45% of a task set, so round 2 needs tasks a single session passes
+           ~30-70%, with hidden tests. The Body chose for round 2: standalone tasks
+           before their own projects ("we need these standalone ones first to
+           prove/disprove the value"); a calibrated puzzle game with hidden tests
+           (one plain pilot run to land at ~50-80%) plus a headless Blender asset
+           graded by hidden bpy gates; reviewers compared as Opus alone, Codex
+           alone, and both — the Body's three; on the same finished patch (my
+           recommendation, which the Body told me to go ahead with); Codex's model
+           and effort named explicitly. First: re-run arm C once on round 1's spec
+           with the lean loop (v3.8.0), arm folder wf-value-arms/C2.
+STATUS:    Maturing — round 1 done; lean re-run (C2) next, then round 2 (2026-10-28).
 ```
