@@ -2773,7 +2773,19 @@ DECIDED:   (2026-10-27, the Body) Entry `/soul-workflow <name>`; v1 workflows
            Parked: I080-B, the guide's external runtime (unattended runs, job
            ids, recovery) — only if unattended runs are wanted. Model and
            workflow benchmarking → SOUL-I083.
-STATUS:    Maturing — decided; v1 plan next (2026-10-27).
+BUILT:     (2026-10-27/28, v3.7.0) Changed from DECIDED by the Body during the build:
+           implementers' worker boundary is Claude Code's OS sandbox with a full
+           shell (the check-only shell was too tight in the live replay), credential
+           folders unreadable, containers later as a per-role option (triggers:
+           unattended runs, untrusted repos, workers needing network or
+           credentials); a step with no runnable check stays with the HOST, not the
+           top rung (after review); new workflows are Markdown files of steps
+           (`.claude/soul-workflows/<name>.md`, project over global), with a how-to
+           page, `docs/workflows.md`, before release. Evidence and limits: the
+           SYSTEM-VERSION 3.7.0 row. Open: whether roles should be per workflow
+           (discussed 2026-10-28); a value comparison against a single-session
+           baseline (quality, speed, usage) — the Body's next step.
+STATUS:    Built — v3.7.0 (2026-10-28).
 ```
 
 ```
