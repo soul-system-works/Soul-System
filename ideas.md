@@ -2908,5 +2908,13 @@ STARTED:   (2026-10-28) Round 1 in soul-benchmark experiments/2026-10-28-workflo
            recommendation, which the Body told me to go ahead with); Codex's model
            and effort named explicitly. First: re-run arm C once on round 1's spec
            with the lean loop (v3.8.0), arm folder wf-value-arms/C2.
-STATUS:    Maturing — round 1 done; lean re-run (C2) next, then round 2 (2026-10-28).
+           (2026-10-28) Lean re-run C2 (v3.8.0): host requests 32 → 16, Claude
+           total $2.42 → $1.83 (3.3× → 2.5× plain), the owner's clock 9 → 6 min;
+           review caught a real spec miss (soul-benchmark RESULT.md, "Lean re-run").
+           Round 2 run design, the Body's answers: arms A plain, B normal, C lean
+           workflow, L purely local (Ollama implementer, best-of-n, local reviewer;
+           a Claude host coordinates); 3 runs per arm per task; run scripted and
+           headless by the session, not by the Body (the Body scores); the reviewer
+           comparison reviews arm A's finished patches.
+STATUS:    Maturing — round 2 kit next (2026-10-28).
 ```
