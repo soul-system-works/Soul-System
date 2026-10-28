@@ -18,3 +18,14 @@ numbered steps in the soul-workflow skill and to roles in your roles table.
 4. No repair round. Apply the winner only if no finding was accepted (step 7);
    otherwise leave it on its branch. Report (step 8), with any accepted findings as
    open items for the owner to decide.
+
+<!-- Optional: this workflow's own models. Remove the comment marks around this block to
+make Codex the only reviewer for this workflow; roles this section does not name keep
+the rows of the shared roles table. `/soul-workflow roles <your-name>` shows the result.
+
+## Roles
+
+| role     | harness | model   | settings |
+|----------|---------|---------|----------|
+| reviewer | codex   | default |          |
+-->
