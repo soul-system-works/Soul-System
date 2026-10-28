@@ -9380,7 +9380,7 @@ CONSEQUENCE:  A worker boundary is proven by a probe of each tool path (shell,
               Write/Edit, the checks that run the worker's code, the environment),
               not by the sandbox's name. Value against a single-session baseline is
               still unmeasured — soul-benchmark experiments/2026-10-28-workflow-value.
-STATUS:       Open — unconfirmed — owner to ratify
+STATUS:       Open — ratified by the Body 2026-10-28
 ```
 
 ```
@@ -9402,5 +9402,5 @@ TYPE:         witness (process; caught by the session)
 CONSEQUENCE:  Scan any file bound for a public repo against NAME-MAP when it is
               WRITTEN, not only at push; keep the scan script outside the
               scratchpad. Candidate for mind 6(c) at the next distill, with SOUL-226.
-STATUS:       Open — unconfirmed — owner to ratify
+STATUS:       Open — ratified by the Body 2026-10-28
 ```
