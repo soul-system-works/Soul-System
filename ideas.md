@@ -2928,5 +2928,16 @@ STARTED:   (2026-10-28) Round 1 in soul-benchmark experiments/2026-10-28-workflo
            of the contract does not load headless, so B/C/L get it inlined. Hidden
            tests and references stay unpushed until the runs end (a run could find
            them). Next: calibration pilots (plain, uncounted), then PREDICTION locked.
-STATUS:    Maturing — round 2 pilots running (2026-10-29).
+           (2026-10-29) Calibration: plain Opus aced v1 (puzzle 47/47 in 1.5 min,
+           $0.35; bench 39/39, $0.46) and the ~5× v2 (picnic set 184/184 in 7 min,
+           $1.31; puzzle v2 3.6 min, $0.76, grading pending). Exact specs get executed;
+           at $0.40–1.30 a task costs less than the lean host's own overhead ($0.91 in
+           C2). The Body's calls: if the puzzle is also at ceiling, go to Terminal-
+           Bench 2.0 (Docker setup started); PARK a visual Blender study (reference
+           image, renders, animation) as its own experiment — workflow reviewers see
+           diffs, not renders, so it would test a missing feature; and workers start
+           with skills off, so a skill-heavy task handicaps C/L by design. Skills
+           value is its own study (same task, skill on/off); letting named skills reach
+           workers is a later design question.
+STATUS:    Maturing — round 2: Terminal-Bench setup (2026-10-29).
 ```
