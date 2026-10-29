@@ -2916,5 +2916,17 @@ STARTED:   (2026-10-28) Round 1 in soul-benchmark experiments/2026-10-28-workflo
            a Claude host coordinates); 3 runs per arm per task; run scripted and
            headless by the session, not by the Body (the Body scores); the reviewer
            comparison reviews arm A's finished patches.
-STATUS:    Maturing — round 2 kit next (2026-10-28).
+           (2026-10-29) Round 2 kit built in soul-benchmark experiments/2026-10-28-
+           workflow-value-r2 and approved by the Body: Turnstile (an original 2×2-turn
+           match puzzle, 47 hidden tests, target 4000 set so a greedy player wins
+           about half the seeds) and a park bench in Linux Blender 5.2.1 (39 hidden
+           gates). Both fairness-reviewed by a fresh session (SPEC-correct variants run
+           through the graders); every mutant caught. Found while building: Windows
+           programs cannot start inside the Claude worker sandbox (WSL interop's socket
+           is blocked), so Linux Blender was installed (the Body's choice); `claude -p`
+           does wait for the workflow's background dispatch; the arms' CLAUDE.md import
+           of the contract does not load headless, so B/C/L get it inlined. Hidden
+           tests and references stay unpushed until the runs end (a run could find
+           them). Next: calibration pilots (plain, uncounted), then PREDICTION locked.
+STATUS:    Maturing — round 2 pilots running (2026-10-29).
 ```
