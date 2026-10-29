@@ -9404,3 +9404,27 @@ CONSEQUENCE:  Scan any file bound for a public repo against NAME-MAP when it is
               scratchpad. Candidate for mind 6(c) at the next distill, with SOUL-226.
 STATUS:       Open — ratified by the Body 2026-10-28
 ```
+
+```
+ID:           SOUL-229
+WHEN:         2026-10-29 / Soul-System session, building round 2 of the workflow-value
+              test (I083)
+WHERE:        tools/dispatch.py (Claude worker sandbox); docs/workflows.md; skills/
+              soul-workflow
+WHAT:         A Claude worker dispatched by /soul-workflow cannot start a Windows
+              program on WSL. A haiku worker told to run Blender's blender.exe got
+              only "UtilConnectUnix … socket failed" / "UtilBindVsockAnyPort …
+              socket failed": Claude Code's sandbox blocks the socket WSL interop
+              uses to launch .exe files. The same command under tools/confine.py's
+              bubblewrap (the recorder's check) ran fine. The Linux build of Blender
+              (~/opt) ran inside the worker sandbox, CPU render included. Also seen
+              while building: the 3.8.0 confined check had to keep a Go build cache
+              inside the worktree (GOCACHE=$PWD/.gocache) — the default
+              ~/.cache/go-build is read-only there.
+TYPE:         witness (live finding; known limit)
+CONSEQUENCE:  Not yet in docs/workflows.md: on WSL, workflow workers cannot run
+              Windows programs — use Linux builds of the tools a check needs, and
+              keep tool caches inside the worktree. Candidate for the next release's
+              docs.
+STATUS:       Open — unconfirmed — owner to ratify
+```
