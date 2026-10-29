@@ -2939,5 +2939,18 @@ STARTED:   (2026-10-28) Round 1 in soul-benchmark experiments/2026-10-28-workflo
            with skills off, so a skill-heavy task handicaps C/L by design. Skills
            value is its own study (same task, skill on/off); letting named skills reach
            workers is a later design question.
-STATUS:    Maturing — round 2: Terminal-Bench setup (2026-10-29).
+           (2026-10-29) Terminal-Bench dropped before setup: its tasks are terminal/
+           environment work with no repo diff or visible check, so build-verify does
+           not apply (C/L would collapse into B), and Harbor's Claude agent bills an
+           API key. Built instead (the Body's go): 8 SWE-bench Pro HARD tasks (ansible
+           ×5, flipt ×3), offline on the host — Go 1.21.13 and CPython 3.8 user-local,
+           wheel/module caches in ~/opt — each validated (base fails the official
+           tests, gold passes), neutral arm folder names (the task ids are fix-commit
+           hash prefixes), leak scan per run. Pilot, plain Opus: 8/8 RESOLVED,
+           $0.24–1.02 and 1.5–8.4 min each, no web use. Puzzle v2 pilot 89/90. Every
+           task type is at ceiling for one Opus session. The Body agreed to reframe
+           round 2: can a CHEAPER setup match Opus (plain Sonnet = arm S; plain local
+           Qwen 27B as Claude Code's model = arm Q; then cheap/local implementer +
+           review)? S and Q pilots on the 8 tasks running.
+STATUS:    Maturing — round 2 reframed; S/Q pilots running (2026-10-29).
 ```
