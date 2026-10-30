@@ -2954,3 +2954,26 @@ STARTED:   (2026-10-28) Round 1 in soul-benchmark experiments/2026-10-28-workflo
            review)? S and Q pilots on the 8 tasks running.
 STATUS:    Maturing — round 2 reframed; S/Q pilots running (2026-10-29).
 ```
+
+```
+ID:        SOUL-I084
+WHEN:      2026-10-30
+RAW:       Should the main orchestrator of workflows, and the global Claude default,
+           be Fable 5.1 instead of Opus 5.5 — or do we wait for Fable 5.5 or whatever
+           comes next? The Body switched fully to Opus when Opus 5.5 came out and is
+           not sure that was the right move; it is not clear what Fable 5.1 is best
+           used for.
+DISCUSSED: (2026-10-30, round 1) Options: stay on Opus 5.5 · Opus at higher effort ·
+           Opus default + Fable by hand when stuck · wait for the next Fable.
+           Strongest objection: Fable 5.1 costs 2.5x Opus 5.5 per token ($10/$50 vs
+           $4/$20), runs slower, and reportedly trails Opus 5.5 on agentic coding
+           (Terminal-Bench 66.4% vs 55.8%, per secondary sources citing Anthropic's
+           2026-09-22 launch table; not checked at the source); Anthropic also says
+           prompts written for earlier models are often too prescriptive for Fable.
+           Sources: claudeaihub.com, digitalapplied.com, appwrite.io (secondary);
+           Anthropic API reference bundled with Claude Code (prices, behaviour).
+           Lean: keep Opus 5.5 as global default and workflow orchestrator; switch to
+           Fable by hand only when Opus is stuck; re-ask at each model release. The
+           Body: "i wasn't having issues just wondering ... no test required."
+STATUS:    Resolved — stay on Opus 5.5; no test (the Body, 2026-10-30).
+```
