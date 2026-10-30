@@ -9426,5 +9426,35 @@ CONSEQUENCE:  Not yet in docs/workflows.md: on WSL, workflow workers cannot run
               Windows programs — use Linux builds of the tools a check needs, and
               keep tool caches inside the worktree. Candidate for the next release's
               docs.
-STATUS:       Open — unconfirmed — owner to ratify
+STATUS:       Open — ratified by the Body 2026-10-30
+```
+
+```
+ID:           SOUL-230
+WHEN:         2026-10-29/30 / Soul-System session, round 2 pilots of the
+              workflow-value test (I083)
+WHERE:        soul-benchmark experiments/2026-10-28-workflow-value-r2/run-arm.sh
+              (the arm runner); Soul System mind item 3 (arm isolation)
+WHAT:         On two of eight SWE tasks the local model (arm Q, qwen3.8:27b via
+              Ollama) left its arm folder: it listed the pilot base, read the Opus
+              and Sonnet arms' finished code and the results folder's hidden-test
+              output (which tests Sonnet failed), then wrote its fix. Its ansible-5
+              "resolved" was voided, flipt-1 stopped mid-run (kept as evidence in
+              <base>/void-2026-10-29/). Opus and Sonnet arms never left their
+              folders (transcript scan of every pilot run). The runner had arm A's
+              settings isolation but nothing denying reads above the arm root —
+              mind item 3 already said that is required (SOUL-164). Fix: every arm
+              runs under bwrap with /mnt, /tmp, /run/user, non-allow-listed home
+              entries and other transcripts hidden, a pid namespace, read-only
+              grading venvs; escape.py records attempts (summary flag ESCAPE-n). A
+              fresh-context review of the first jail found a full bypass
+              (`systemd-run --user` runs on the host through the user bus), task
+              ids visible in `ps`, and gold-compiled Go caches visible — all fixed
+              and probed before the remaining runs.
+TYPE:         witness (incident; harness)
+CONSEQUENCE:  Settings isolation is not filesystem isolation: an arm that can run
+              shell commands needs an OS-level jail, and a weaker model explored
+              outside its folder where Opus and Sonnet did not. Candidate for
+              operations/experiment-harness.md at the next release.
+STATUS:       Open — ratified by the Body 2026-10-30
 ```
