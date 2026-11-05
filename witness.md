@@ -9458,3 +9458,32 @@ CONSEQUENCE:  Settings isolation is not filesystem isolation: an arm that can ru
               operations/experiment-harness.md at the next release.
 STATUS:       Open — ratified by the Body 2026-10-30
 ```
+
+```
+ID:           SOUL-231
+WHEN:         2026-10-30 / Soul-System session, round 2 counted runs of the
+              workflow-value test (I083), arm R (local Qwen + Opus review)
+WHERE:        the R queue, run as a Claude Code background shell
+              (scratchpad queue.sh); soul-benchmark experiments/
+              2026-10-28-workflow-value-r2/
+WHAT:         The R queue was cut off twice, both times in the middle of flipt-3 run
+              2's stage 1, before any grade. First the host lost internet and
+              was rebooted: the background shell died, and the reboot emptied /tmp,
+              taking the queue script in the session scratchpad with it (it was
+              rebuilt from the session transcript). Second, Claude Code itself killed
+              the background shell "because the system is running low on memory":
+              another project's `capture/sfm.py` held about 42 of 62 GB. Both
+              cut-off runs were moved to <base>/void-2026-10-30-{reboot,memkill}/
+              with a README, voided for the interruption, not for anything they
+              scored. Graded runs were untouched. At the time, 2 of 12 R runs were
+              graded and all 12 T runs were done.
+TYPE:         witness (incident; harness)
+CONSEQUENCE:  A multi-hour queue run as a Claude Code background shell can be killed
+              by a reboot or by Claude Code's memory-pressure reaper (it can be
+              turned off with CLAUDE_CODE_DISABLE_BG_SHELL_PRESSURE_REAP=1 at
+              Claude Code start). The queue script now lives in the kit
+              (queue.sh) and skips graded cells, so a restart resumes. Candidate for
+              operations/experiment-harness.md: run long queues outside the
+              session (nohup / systemd-run), and keep their scripts out of /tmp.
+STATUS:       Open
+```
