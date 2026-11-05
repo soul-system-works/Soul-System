@@ -2993,3 +2993,46 @@ STATUS:    Built in v3.9.0 (SOUL-A031) — the Body chose opt-out for every
            model-started capture; a witness entry the Body types keeps its draft
            step (2026-11-05).
 ```
+
+```
+ID:        SOUL-I086
+WHEN:      2026-11-05
+RAW:       Adopt /soul-debrief? A draft skill from an adopting project (its local
+           .ai/skills/soul-debrief/, revised once after one trial run) catches the
+           Body up after a long or unattended run: one page that explains each
+           result with visuals and says how sure each is, then where the work
+           stands, the best next move, what is worth trying, and what only the Body
+           can decide. The Body's asks: fit it to Soul conventions (/soul-explain,
+           /soul-next, /soul-handoff), keeping the re-read-every-number fact sheet
+           and the one independent check of the page; decide where the debrief
+           index lives; decide whether /soul-handoff's long-run step should ask for
+           a decisions log; test it on another project first; adopt / change /
+           drop; easier figure viewing; readable, non-verbose formatting.
+           The draft is from CAPTURE-RIG (codename, the Body 2026-11-05).
+DISCUSSED: (2026-11-05, round 1) Options: do nothing (bottom lines + /soul-explain
+           + /soul-next) · a mode of an existing skill (/soul-explain may not
+           recommend) · a short rule · the draft as is · a slimmer draft.
+           Strongest objection: one trial in one image-heavy project; a heavy,
+           slow process; a quarter of it repeats /soul-handoff and /soul-next.
+           For it: the fact sheet caught a wrong number that had also reached a
+           ratified witness entry; the after-publish check found 15 defects
+           (an image captioned for something it did not show, overclaimed checks).
+           Sources (search): NN/g writing for the web (conclusion first); GOV.UK
+           clear language and content design; native <dialog> for click-to-zoom.
+           Lean: slim it (~100 lines): read the cursor and Stage for "where we
+           are", point at /soul-next's method for next steps, keep "worth trying"
+           tied to a run result; check before telling the Body; cap new visuals;
+           pages and index stay in .ai/debriefs/, the cursor points at the newest
+           debrief, lasting feedback goes to witness.md; /soul-handoff's long-run
+           step asks for a decisions log; standard figure viewing and a
+           conclusion-first page of about 1,500 words; reuse author-voice for
+           phrasing. Test on round 2 of I083 here (tables, few images) before
+           adopting as experimental. Deeper research: not worth it.
+           The Body: "yes"; codename the trial project; "make sure we don't
+           hyperfocus on images as that is one form of visual of data/media.
+           there are other optoins and some debriefs may need or want some thing
+           interactive. not sure what artifact skill already handles so of course
+           we need to play within what is reasonable".
+STATUS:    Maturing — slim version to be built on a branch and tested on I083
+           round 2 before release (2026-11-05).
+```
