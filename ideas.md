@@ -2989,4 +2989,7 @@ RAW:       The Body: "that i have to "ratify" something all the time. i hate it.
            /soul-capture appends model-initiated entries with it when the Body may be
            away, and /soul-handoff lists them in the cursor's UNCONFIRMED field. It
            applies to ideas as well as witness entries.)
+STATUS:    Built in v3.9.0 (SOUL-A031) — the Body chose opt-out for every
+           model-started capture; a witness entry the Body types keeps its draft
+           step (2026-11-05).
 ```
