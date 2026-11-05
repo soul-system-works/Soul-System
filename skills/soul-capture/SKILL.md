@@ -1,6 +1,6 @@
 ---
 name: soul-capture
-description: "Capture to the record in one of three modes — idea (frictionless, forward), witness (light scaffold, backward), finding (earned scaffolder). The mode token is the first arg and selects friction + target store + format. Use when the Body asks to capture, OR proactively when you spot an UNGUESSABLE mid-session — a fact, decision, or convention a later session could not re-derive (F044 triage) — in idea/witness mode only: append it at once, unmarked, and say so in one line (\"say no to strike it\") — the Body's no marks it declined. A witness entry the Body types still shows its draft first. Never self-invoke finding mode; graduation is the Body's explicit call (A022)."
+description: "Capture to the record in one of three modes — idea (frictionless, forward), witness (light scaffold, backward), finding (earned scaffolder). The mode token is the first arg and selects friction + target store + format. Use when the Body asks to capture, OR proactively when you spot an UNGUESSABLE mid-session — a fact, decision, or convention a later session could not re-derive (F044 triage) — in idea/witness mode only: append it at once, unmarked, and say so in one line (\"say no to strike it\") — the Body's no marks it declined. A witness entry the Body types is appended the same way and shown in full. Never self-invoke finding mode; graduation is the Body's explicit call (A022)."
 ---
 
 # /soul-capture — capture to the record
@@ -35,9 +35,9 @@ caught it, SOUL-163/164) — under these limits:
 - **The F044 triage rule is the trigger.** Capture only the unguessable; do
   not capture what a fresh session would re-derive.
 - **Append at once, with no mark — the entry counts as accepted.** Do not draft
-  and wait, and do not ask. This holds whether or not the Body is there. (Only
-  captures the model starts. One the Body starts is unchanged: a witness entry the
-  Body types still shows its draft first — witness step 5.)
+  and wait, and do not ask. This holds whether or not the Body is there. A
+  witness entry the Body types is appended at once too, and shown in full
+  (witness step 5).
 - **Say so in one short line** in the reply that appended it, e.g. *"Added
   THERMAL-231 to witness.md — say no to strike it."* No question; silence keeps it.
   `/soul-handoff` lists it again in the cursor's `NEW ENTRIES`.
@@ -115,8 +115,8 @@ renaming ids across six projects would break permanent handles for no gain.
 ## Mode `witness` — light scaffold, backward (→ `witness.md`)
 
 Hybrid capture: the Body types the observation, or the model starts the capture (*Who
-fires this*); the command fills the standard fields. A Body-typed entry is shown as a
-draft before appending (step 5); one the model starts is appended at once.
+fires this*); the command fills the standard fields. Either way the entry is appended
+at once; a Body-typed one is shown in full afterwards (step 5).
 
 1. Take the observation as typed. Body-typed with no observation: ask one short
    question — do not interview field-by-field. A capture the model starts asks
@@ -135,14 +135,19 @@ draft before appending (step 5); one the model starts is appended at once.
 4. Scaffold the fenced entry (format per `operations/witness-log-format.md`):
    `ID / WHEN / WHERE / WHAT / TYPE / CONSEQUENCE / STATUS`. Preserve the Body's voice in
    WHAT; do not add interpretation or the word "should"; mark TYPE with `?` if uncertain.
-5. **Owner-typed only: show the draft before appending.** The Body typed the
-   observation, but the fields around it are yours, so the Body says go / edit /
-   cancel. On go, append (with the I027 re-verify) and report the ID. Do not reorder
+5. **Append at once** (with the I027 re-verify), then report it. Do not reorder
    existing entries.
+   - **Body-typed:** the Body wrote WHAT, but the fields around it are yours, so
+     show the whole entry in the reply: *"Added THERMAL-231 to witness.md: <the
+     entry> — say no to strike it, or tell me what to change."* A change is made the
+     way the record allows: in an entry just appended this session, edit it; later,
+     correct it forward.
+   - **Model-started:** name it in one line with the opt-out — *"Added THERMAL-231
+     to witness.md — say no to strike it"* (*Who fires this*).
 
-   A capture the model starts skips this step: append at once (with the I027
-   re-verify) and name it in one line with the opt-out — *"Added THERMAL-231 to
-   witness.md — say no to strike it"* (*Who fires this*).
+   *Why no draft step (2026-11-05, v3.9.1):* v3.9.0 kept a go / edit / cancel draft
+   for a witness entry the Body typed. Asked whether that step should go too, the
+   Body: "opt out too".
 
 ## Mode `finding` — earned scaffolder (→ upstream, or `findings/open/` at home)
 
@@ -185,7 +190,7 @@ init had created. The store was never a project store; the scaffold said otherwi
     that their call; a session that quietly downgrades it has taken a decision that
     is not its own. Name the destination you would suggest — `witness.md` for an
     incident (run **witness mode** for it — the Body typed it, so the project-code
-    id scan, the re-read-verify and the owner-typed draft step all apply — this
+    id scan, the re-read-verify and the full-entry report all apply — this
     branch must not append to `witness.md` by itself), `mind.md` at the next `/soul-distill` for a
     convention, a proposed line in the project's `CLAUDE.md` for a standing rule —
     and let the Body choose.
@@ -256,4 +261,6 @@ with the dash `/soul-handoff` scans for, not a comma.
 reminder, deleted: its condition (a reference project) is never true where STEP 0
 lets it run. **Amended:** 2026-11-05 (v3.9.0, SOUL-A031) — model-initiated captures
 are appended accepted with an opt-out; the unconfirmed mark and the ratify step are
-retired; a witness entry the Body types keeps its draft step (SOUL-I085). **Adopted:** 2026-06-08. **Status:** active.
+retired; a witness entry the Body types keeps its draft step (SOUL-I085).
+**Amended:** 2026-11-05 (v3.9.1, SOUL-A031) — the Body-typed witness draft step goes
+too: the entry is appended at once and shown in full with the opt-out. **Adopted:** 2026-06-08. **Status:** active.
