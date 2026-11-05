@@ -2977,3 +2977,16 @@ DISCUSSED: (2026-10-30, round 1) Options: stay on Opus 5.5 · Opus at higher eff
            Body: "i wasn't having issues just wondering ... no test required."
 STATUS:    Resolved — stay on Opus 5.5; no test (the Body, 2026-10-30).
 ```
+
+```
+ID:        SOUL-I085
+WHEN:      2026-11-05
+RAW:       The Body: "that i have to "ratify" something all the time. i hate it. i
+           think the witness docs (i think that is what it is for) should be
+           autoratified with opt out. this way it isn't an extra commit or extra step
+           all the time in the workflow"
+           (Context: the mark `unconfirmed — owner to ratify` comes from F065/SOUL-202:
+           /soul-capture appends model-initiated entries with it when the Body may be
+           away, and /soul-handoff lists them in the cursor's UNCONFIRMED field. It
+           applies to ideas as well as witness entries.)
+```
