@@ -102,12 +102,19 @@ source of truth; this loads them and continues.
    stage when there is no line — absence is the default, not a gap. Say "the
    current design frame" rather than "the LIVE AL"; plain language throughout.
 
-   **Then name every `UNCONFIRMED` id the cursor lists** — entries appended while
-   the Body was away (F065) — and ask the Body to ratify each. Yes → remove the
-   `unconfirmed — owner to ratify` mark. No → the entry stays and says so,
-   corrected forward: a witness entry's `STATUS` records the no; an idea gets
+   **Then name the cursor's `NEW ENTRIES` in one line**, if it lists any — every
+   entry the model added last session: *"Last session added THERMAL-231,
+   THERMAL-I086 — say no to strike any."* No question; they are already
+   accepted, and silence keeps them. A no → the entry stays and says so, corrected
+   forward: a witness entry's `STATUS` records the no; an idea gets
    `— declined by the Body <date>` appended (`/soul-capture`, *Who fires this*).
-   No answer → leave the mark; the next `/soul-handoff` lists it again.
+
+   *Older records:* a cursor written before v3.9.0 may carry an `UNCONFIRMED` field
+   instead. Its ids are treated as accepted: name them the same one-line way. This
+   step reads only that field — it does not scan the stores for the old mark
+   `unconfirmed — owner to ratify`, and a leftover mark in the stores is ignored. It
+   is harmless text; taking it off would be the extra commit the Body objected to
+   (SOUL-I085).
 4. **Continue from the NEXT STEP** — but if it is a non-trivial build or a decision the
    Body should make, confirm first rather than diving in (explore before execute).
 
@@ -129,4 +136,7 @@ from F061 (the unresolvable pointer is the one most in need of resolution).
 check; step 2 treats inherited gates/next steps as claims (F067) and lists what
 landed after the cursor; step 3 puts the cursor's `UNCONFIRMED` ids to the Body
 (F065). **Amended:** 2026-10-22 (v3.4.0, SOUL-I079) — step 0 gains the vault-link
-check. **Adopted:** 2026-05-21. **Status:** active.
+check. **Amended:** 2026-11-05 (v3.9.0, SOUL-A031) — model-initiated captures are
+appended accepted with an opt-out; the unconfirmed mark and the ratify step are
+retired, so step 3 names the cursor's `NEW ENTRIES` in one line instead of asking
+(SOUL-I085). **Adopted:** 2026-05-21. **Status:** active.

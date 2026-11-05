@@ -23,8 +23,9 @@ wants the lay of the land). Not a deep philosophy dump — point to depth, don't
 
 2. **The lifecycle in three lines** (the full page: `docs/using-the-soul.md` — read it
    and summarize rather than reciting from memory): day one is `/soul-init` and nothing
-   else; every session, the completion gate fires by itself and the AI *proposes*
-   captures (the Body answers yes/no; only the Body promotes a `finding`); over time
+   else; every session, the completion gate fires by itself and the AI records what a
+   later session could not re-derive, naming each entry in one line (the Body says no
+   to strike one; silence keeps it; only the Body promotes a `finding`); over time
    the AI proposes `/soul-distill` when the record has grown, and the Body curates
    the draft.
 
