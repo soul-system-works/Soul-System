@@ -53,6 +53,7 @@ it says what is set, repairs what broke, and asks only what is new.
 | `/soul-next` | What to do next, from the record |
 | `/soul-discuss` | Test an idea against rivals and objections before building it |
 | `/soul-explain` | Explain where things stand, without deciding anything |
+| `/soul-debrief` | Back from a long or unattended run: one page on what it found, how sure, and what next (experimental) |
 | `/soul-distill` | Compress a grown record into `mind.md` |
 | `/soul-stage` | Declare prototype, pre-release or released |
 | `/soul-prompt` | Turn a rough prompt into a clear one |

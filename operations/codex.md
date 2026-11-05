@@ -147,6 +147,10 @@ shared rule that an inherited pointer is a claim to verify.
 - **soul-discuss:** the source scan needs web search; where the host has none,
   say the scan is unrun and list what to look up, rather than citing from memory
   as if searched.
+- **soul-debrief:** where the host cannot publish a private page, write the HTML
+  file to `.ai/debriefs/` with its media beside it. The independent check needs a
+  fresh-context reviewer, as for soul-prompt; if none is available, say the check
+  is unrun and leave its brief (untested under Codex).
 - **soul-help:** describe Codex invocation and actual hook readiness; do not repeat
   the Claude guide's automatic-gate claim when hooks are untrusted or unexercised.
 - **soul-handoff:** preserve the shared cursor and provenance. When running in the

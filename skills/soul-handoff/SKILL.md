@@ -26,6 +26,12 @@ its result decides, and the next step for each outcome. A context lost mid-run
 takes with it everything not yet flushed (PLANT-BOP's upstream note; mining pass 2,
 SOUL-202).
 
+A long unattended run also keeps a short **decisions log** at
+`.ai/runs/<date>-<run>-decisions.md` (`<run>` a short lowercase hyphenated slug):
+each choice it made on its own, the reason, and which numbers it re-checked. The
+pre-run cursor names that path (in NEXT STEP or OPEN GATES), so a later
+`/soul-debrief` can find it (SOUL-I086).
+
 ## What to do
 
 1. **Flush volatile → durable** (the real work — do this first):
@@ -129,6 +135,7 @@ SOUL-202).
      - ideas:          ideas.md ([ripe ids]) [read]
      - tasks:          [open task ids / subjects] [read|inherited]
      - specs/ADRs:     [relevant paths] [read|inherited]
+     - debrief:        newest line of .ai/debriefs/INDEX.md, if any [read]
    SUGGESTED ROLES / SKILLS: [for the next session]
    ```
 
@@ -263,4 +270,6 @@ first checks for the Soul System repo itself, where there is no upstream (SOUL-1
 **Amended:** 2026-11-05 (v3.9.0, SOUL-A031) — model-initiated captures are appended
 accepted with an opt-out; the unconfirmed mark and the ratify step are retired, and
 the cursor's `UNCONFIRMED` field becomes `NEW ENTRIES` (SOUL-I085).
+**Amended:** 2026-11-05 (unreleased, SOUL-I086) — a long unattended run keeps a
+decisions log for `/soul-debrief`; POINTERS gains the newest debrief.
 **Adopted:** 2026-05-21. **Status:** active.

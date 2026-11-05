@@ -54,7 +54,8 @@ That's the install. There is no new workflow to learn — start working.
 - Say no to any new entry you don't want kept (silence is a yes).
 - Start a session with `/soul-resume` (picks up where the last one left off) and
   end one with `/soul-handoff` (leaves the cursor for the next). Ask "what's
-  next?" with `/soul-next`.
+  next?" with `/soul-next`. Back from a long or unattended run, `/soul-debrief`
+  gives you one page on what it found, how sure, and what next (experimental).
 - Explore an idea before building it: `/soul-discuss` — the AI sets rivals beside
   it, gives the strongest objection first, scans a few sources, and, on your
   yes, keeps the result in the idea's entry. `/soul-next` reminds you when an idea is still
