@@ -32,23 +32,21 @@ SOUL-202).
    - Is the current abstraction layer recorded in a spec/ADR? If it is live and unwritten, record it.
    - Any witness-worthy moment this session not yet in `witness.md`? Any new idea
      not captured in `ideas.md` (minimal)? Capture it through `/soul-capture`
-     (id scan, re-read-verify), and **append it marked `unconfirmed — owner to
-     ratify`** — whether or not the Body seems to be there: this step usually runs
-     as they leave, and an answer may never come. Do not hold it for a go first: the
-     cursor is replaced wholesale, so a held draft is discarded. Write the cursor
-     (step 2) with the drafts listed as unconfirmed, THEN show them (step 5); a
-     "go" then removes the mark.
-   - **Collect the marks into the cursor.** Scan `witness.md` and `ideas.md` for
-     `unconfirmed — owner to ratify` and list every entry that still carries it —
-     this session's and any earlier one not yet ratified — in the cursor's
-     `UNCONFIRMED` field. That field is written here and only here: `/soul-capture`
-     never writes the cursor by hand (rule 6), it leaves the mark for this scan.
+     (id scan, re-read-verify): **append it at once, with no mark — it counts as
+     accepted** (*Who fires this* there). Do not hold it for a go: this step usually
+     runs as the Body leaves, and the cursor is replaced wholesale, so a held draft
+     is discarded (F065).
+   - **List every entry the model added this session** — mentioned in chat already
+     or not, the ones just added here included — in the cursor's `NEW ENTRIES` field
+     (step 2); step 5 names them in one line. Every one, so the list is the same
+     whoever reads it and still holds after an unattended run. Nothing is scanned
+     for and nothing waits for an answer: the Body's no is the only thing that
+     changes an entry (`/soul-capture`).
 
-     **F065 is ruled (SOUL-202):** this step and `/soul-capture` used to give
-     opposite orders at session end — "add it" here, "draft and hold" there. Both
-     now say: append marked unconfirmed, list it in the cursor, put it to the Body.
-     Four sessions in four projects had already appended rather than held, and
-     said so.
+     **Why no mark (SOUL-A031, from SOUL-I085):** entries used to be appended
+     marked `unconfirmed` and ratified one by one later — an extra step and an
+     extra commit each. The Body: "should be autoratified with opt out. this way it
+     isn't an extra commit or extra step."
    - Is the task tracker current? Update it.
    - Any counter-default fence relied on this session? Verify its **force** — the incident
      and the explicit negation, not just the rule — lives in a durable record at the site
@@ -63,7 +61,7 @@ SOUL-202).
    does — `findings/open/` **and** `operations/CLAUDE.md` **and**
    `SYSTEM-VERSION.md`, all at the repo root; never "the witness log uses
    `SOUL-###`", which reads true in adopting projects too. If so there is no
-   upstream: a system lesson goes in through `/soul-capture witness`, marked as in
+   upstream: a system lesson goes in through `/soul-capture witness`, appended as in
    step 1 (or `/soul-capture finding` if the Body graduates it). Skip the rest of
    1b, and never create an `upstream.md` here (SOUL-187).
 
@@ -124,8 +122,8 @@ SOUL-202).
                         can't vary; else "none open"]
    OPEN GATES:         [any gate mid-evaluation, each [read]; else "none"]
    NEXT STEP:          [the immediate next action — the cursor] [read]
-   UNCONFIRMED:        [ids of every entry still marked `unconfirmed — owner to
-                        ratify` (step 1's scan); else "none"]
+   NEW ENTRIES:        [ids of every entry the model added this session (step 1);
+                        else "none"]
    POINTERS (reference, do not duplicate; mark provenance on every entry):
      - witness tail:   last entries in witness.md ([ids]) [read]
      - ideas:          ideas.md ([ripe ids]) [read]
@@ -160,9 +158,12 @@ SOUL-202).
    **CARRY FORWARD anything still owed.** Before writing, read the OLD cursor and
    move any unfinished obligation into the new one — an open gate, a NEXT STEP
    obligation, a `[inherited]` pointer not yet expired, a Body call still
-   unanswered. (Unratified entries need no carrying: step 1's scan finds them in the
-   stores.) **An inherited OPEN GATES or NEXT STEP obligation is checked in this
-   session — the one that inherits it — or dropped, and the cursor says which;**
+   unanswered. (`NEW ENTRIES` is never carried: it is written fresh for each cursor,
+   and an entry needs nothing from the Body to stay. An old cursor's `UNCONFIRMED`
+   field is dropped the same way: those entries are treated as accepted, and a mark
+   left on them is harmless text — do not remove it.) **An inherited OPEN GATES or
+   NEXT STEP obligation is checked in this session — the one that inherits it — or
+   dropped, and the cursor says which;**
    checked, it carries `[read]`. It is not carried `[inherited]` to a later cursor
    (confirmed by the Body, 2026-10-19). A carried pointer keeps its mark:
    checked this session, it becomes `[read]`; otherwise it stays `[inherited]`
@@ -220,11 +221,9 @@ SOUL-202).
    the next session from the surrounding repo; a worker may still read sibling files for
    consistency. A vague handoff is the named cause of duplicated work and gaps.
 5. Report that the cursor was written and remind the Body that the next session
-   should read `.soul/handoff.md` first. **Then show each `UNCONFIRMED` entry** —
-   the cursor already lists them, so nothing is lost if no one answers. A "go"
-   removes the mark from the entry and its id from the cursor's field; a "no" is
-   recorded the way `/soul-capture` says (*Who fires this*), and its id leaves the
-   field too.
+   should read `.soul/handoff.md` first. **Then name the `NEW ENTRIES` in one
+   line** — *"Added THERMAL-231, THERMAL-I086 — say no to strike any."* No question;
+   silence keeps them. A "no" is recorded the way `/soul-capture` says (*Who fires this*).
 
 ## What not to do
 
@@ -261,4 +260,7 @@ Body's confirmation; commands, not counts, in WHERE WE ARE); flush before a long
 `git check-ignore` instead of asserting the cursor is ignored; 1b's surface gains
 `operations/*.md` and `tools/*`. **Amended:** 2026-10-21 (v2.10.1, SOUL-208) — 1b
 first checks for the Soul System repo itself, where there is no upstream (SOUL-187).
+**Amended:** 2026-11-05 (v3.9.0, SOUL-A031) — model-initiated captures are appended
+accepted with an opt-out; the unconfirmed mark and the ratify step are retired, and
+the cursor's `UNCONFIRMED` field becomes `NEW ENTRIES` (SOUL-I085).
 **Adopted:** 2026-05-21. **Status:** active.

@@ -1,6 +1,6 @@
 ---
 name: soul-capture
-description: "Capture to the record in one of three modes — idea (frictionless, forward), witness (light scaffold, backward), finding (earned scaffolder). The mode token is the first arg and selects friction + target store + format. Use when the Body asks to capture, OR proactively when you spot an UNGUESSABLE mid-session — a fact, decision, or convention a later session could not re-derive (F044 triage) — in idea/witness mode only: hold drafts for the Body's yes (Body away: append marked unconfirmed). Never self-invoke finding mode; graduation is the Body's explicit call (A022)."
+description: "Capture to the record in one of three modes — idea (frictionless, forward), witness (light scaffold, backward), finding (earned scaffolder). The mode token is the first arg and selects friction + target store + format. Use when the Body asks to capture, OR proactively when you spot an UNGUESSABLE mid-session — a fact, decision, or convention a later session could not re-derive (F044 triage) — in idea/witness mode only: append it at once, unmarked, and say so in one line (\"say no to strike it\") — the Body's no marks it declined. A witness entry the Body types still shows its draft first. Never self-invoke finding mode; graduation is the Body's explicit call (A022)."
 ---
 
 # /soul-capture — capture to the record
@@ -23,7 +23,7 @@ session reason its way back to this?" No → capture. Yes → skip. And per cont
 rule 2: capture what HAPPENED — never dramatize, never invent the incident a rule
 "deserves" (SOUL-164).
 
-## Who fires this (A022 — model-proposable, Body-confirmed)
+## Who fires this (A022 — model-proposable; A031 — accepted unless the Body says no)
 
 The Body can invoke this at any time. The MODEL may also invoke it **proactively**
 — the capture gap is the program's most universal failure (in every condition
@@ -32,36 +32,36 @@ caught it, SOUL-163/164) — under these limits:
 
 - **Modes `idea` and `witness` only.** Never self-invoke `finding` — graduation
   is the Body's explicit, earned act (Rule 7 / I024).
-- **The F044 triage rule is the trigger.** Propose only for the unguessable; do
-  not propose for what a fresh session would re-derive.
-- **Hold for confirmation when the Body is there to give it.** Model-initiated
-  captures draft the entry and show it; nothing is appended until the Body says
-  go. (Body-initiated `idea` keeps its near-zero ceremony; model-initiated `idea`
-  shows the one-liner first.)
-- **When the Body is not there — session end, an unattended run — append, do not
-  hold.** Mark the entry `unconfirmed — owner to ratify`, and the next
-  `/soul-handoff` lists it: its step 1 scans the stores for the mark and writes
-  every marked id into the cursor's `UNCONFIRMED` field, so this skill never writes
-  the cursor by hand (rule 6). A held draft has nowhere durable to wait: the cursor
-  is replaced wholesale, so at session end "hold" means "discard" (F065).
-  - **Witness entry:** the mark goes in its `STATUS`, e.g.
-    `Open — unconfirmed — owner to ratify`, whose mark is exactly
-    `unconfirmed — owner to ratify`, the string `/soul-handoff` scans for. v2.8.0's
-    example had a comma there, which that scan would miss (SOUL-204;
-    `tools/test_unconfirmed_mark.py`). On the Body's yes the mark comes off
-    (`STATUS` is the one field an entry may change); on a no the entry stays and its
-    `STATUS` says so.
-  - **Idea:** a captured idea has no `STATUS` (`/soul-discuss` may add one later), so the mark goes at the end of the idea's
-    line (or of its entry, in a heading-per-entry file), and on a yes it comes off
-    the same way. On a no, the entry stays and `— declined by the Body <date>` is
-    appended after it.
+- **The F044 triage rule is the trigger.** Capture only the unguessable; do
+  not capture what a fresh session would re-derive.
+- **Append at once, with no mark — the entry counts as accepted.** Do not draft
+  and wait, and do not ask. This holds whether or not the Body is there. (Only
+  captures the model starts. One the Body starts is unchanged: a witness entry the
+  Body types still shows its draft first — witness step 5.)
+- **Say so in one short line** in the reply that appended it, e.g. *"Added
+  THERMAL-231 to witness.md — say no to strike it."* No question; silence keeps it.
+  `/soul-handoff` lists it again in the cursor's `NEW ENTRIES`.
+- **On the Body's no, the entry stays and is marked declined** — the record is
+  append-only, corrected forward:
+  - **Witness entry:** its `STATUS` says `Declined by the Body <date>`
+    (`STATUS` is the one field an entry may change).
+  - **Idea:** a captured idea has no `STATUS` (`/soul-discuss` may add one
+    later), so `— declined by the Body <date>` is appended after the idea's line
+    (or its entry, in a heading-per-entry file).
 
-  Either way the record stays append-only, corrected forward. A wrong entry
-  costs a correction; a lost one cannot be recovered. Four sessions in four
-  projects had already appended rather than held, and said so, before the ruling
-  (SOUL-202). Finding mode is never covered by this — unattended or not,
-  graduation waits for the Body.
-- The Body's "no" is final and costs nothing — proposals are cheap, vetoes cheaper.
+*Why opt-out (SOUL-A031, from SOUL-I085):* this used to be opt-in. The Body had to
+confirm each entry the model started — a "go" before it was appended, or, when the
+Body had been away and it was appended with an `unconfirmed` mark, a ratify later —
+and the record took a commit for it. The Body: "i have to "ratify"
+something all the time. i hate it. ... should be autoratified with opt out. this
+way it isn't an extra commit or extra step." Two older reasons still point the same
+way: a held draft has nowhere durable to wait, so at session end "hold" meant
+"discard" (F065); and four sessions in four projects had already appended rather
+than held (SOUL-202). A wrong entry costs a correction; a lost one cannot be
+recovered. The one-line mention is what keeps the veto real: every entry the model
+adds is named in chat — in the reply that adds it, and again through the cursor's
+`NEW ENTRIES` (`/soul-handoff` step 5, `/soul-resume` step 3). Finding mode is never covered by this — graduation always
+waits for the Body.
 
 ## Where it writes (target — read this first)
 
@@ -87,7 +87,8 @@ repo's own record is the target.
 Near-zero ceremony. Append the Body's forward-looking possibility to `ideas.md`
 with a fresh id. Minimal at capture; enrich later. Jot it, confirm the ID, done.
 No interview, no scaffolding beyond the ID + a one-line title. Ideas are cheap by
-design (Rule 7).
+design (Rule 7). An idea the model starts is appended the same way, then named in one
+line with the opt-out (*Who fires this*).
 
 **The id rule — three lines, and they are the whole format:**
 
@@ -113,11 +114,13 @@ renaming ids across six projects would break permanent handles for no gain.
 
 ## Mode `witness` — light scaffold, backward (→ `witness.md`)
 
-Hybrid capture: the Body types the observation; the command fills the standard fields and
-shows the draft before appending.
+Hybrid capture: the Body types the observation, or the model starts the capture (*Who
+fires this*); the command fills the standard fields. A Body-typed entry is shown as a
+draft before appending (step 5); one the model starts is appended at once.
 
-1. Take the observation as typed (if none, ask one short question — do not interview
-   field-by-field).
+1. Take the observation as typed. Body-typed with no observation: ask one short
+   question — do not interview field-by-field. A capture the model starts asks
+   nothing.
 2. Next ID: scan `witness.md` for the highest `^ID: +[CODE]-\d+`, increment. `[CODE]` is
    this project's own code, taken from the log header. **Do NOT default to `SOUL`** —
    that prefix belongs to the Soul System's own witness log, and a project using it
@@ -132,9 +135,14 @@ shows the draft before appending.
 4. Scaffold the fenced entry (format per `operations/witness-log-format.md`):
    `ID / WHEN / WHERE / WHAT / TYPE / CONSEQUENCE / STATUS`. Preserve the Body's voice in
    WHAT; do not add interpretation or the word "should"; mark TYPE with `?` if uncertain.
-5. **Show the draft before appending.** Body says go / edit / cancel. On go, append (with
-   the I027 re-verify) and report the ID. Do not reorder existing entries. (Body not
-   there to answer: append it marked unconfirmed — see *Who fires this*.)
+5. **Owner-typed only: show the draft before appending.** The Body typed the
+   observation, but the fields around it are yours, so the Body says go / edit /
+   cancel. On go, append (with the I027 re-verify) and report the ID. Do not reorder
+   existing entries.
+
+   A capture the model starts skips this step: append at once (with the I027
+   re-verify) and name it in one line with the opt-out — *"Added THERMAL-231 to
+   witness.md — say no to strike it"* (*Who fires this*).
 
 ## Mode `finding` — earned scaffolder (→ upstream, or `findings/open/` at home)
 
@@ -176,9 +184,9 @@ init had created. The store was never a project store; the scaffold said otherwi
     stop — do not silently re-route it.** The Body typed `finding`, and A022 makes
     that their call; a session that quietly downgrades it has taken a decision that
     is not its own. Name the destination you would suggest — `witness.md` for an
-    incident (run **witness mode** for it, so the project-code id scan, the
-    re-read-verify and the show-the-draft step all apply — this branch must not
-    append to `witness.md` by itself), `mind.md` at the next `/soul-distill` for a
+    incident (run **witness mode** for it — the Body typed it, so the project-code
+    id scan, the re-read-verify and the owner-typed draft step all apply — this
+    branch must not append to `witness.md` by itself), `mind.md` at the next `/soul-distill` for a
     convention, a proposed line in the project's `CLAUDE.md` for a standing rule —
     and let the Body choose.
 
@@ -246,4 +254,6 @@ instead of held, and the next `/soul-handoff` lists it in the cursor.
 with the dash `/soul-handoff` scans for, not a comma.
 **Amended:** 2026-10-21 (v2.10.1, SOUL-208) — finding mode's step 7, the upstream
 reminder, deleted: its condition (a reference project) is never true where STEP 0
-lets it run. **Adopted:** 2026-06-08. **Status:** active.
+lets it run. **Amended:** 2026-11-05 (v3.9.0, SOUL-A031) — model-initiated captures
+are appended accepted with an opt-out; the unconfirmed mark and the ratify step are
+retired; a witness entry the Body types keeps its draft step (SOUL-I085). **Adopted:** 2026-06-08. **Status:** active.

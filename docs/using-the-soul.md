@@ -43,14 +43,15 @@ That's the install. There is no new workflow to learn — start working.
   history, record decisions where they'll be tested.
 - When the AI hits something a later session couldn't figure out on its own — a
   decision with a non-obvious reason, a gotcha, an arbitrary convention — it
-  **proposes** recording it: "worth capturing?" You say yes or no. Nothing is
-  written without your yes.
+  **records** it and says so in one line: "Added THERMAL-231 to witness.md — say
+  no to strike it." Silence keeps it; a no marks it declined. There is nothing to
+  approve or commit one by one.
 - When a session tries to finish, the **completion gate** fires: work that nothing
   verified can't be called done; the session must name exactly what is unrun.
 
 **What you do:**
 
-- Answer the proposals (a yes or a no is the whole job).
+- Say no to any new entry you don't want kept (silence is a yes).
 - Start a session with `/soul-resume` (picks up where the last one left off) and
   end one with `/soul-handoff` (leaves the cursor for the next). Ask "what's
   next?" with `/soul-next`.

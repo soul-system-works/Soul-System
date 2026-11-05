@@ -37,9 +37,10 @@ that workflow; they do not change the contract's obligations.
   `agents/openai.yaml` policies. An explicit workflow handoff, such as init
   offering stage selection, can read the procedure; it is not authorization to
   choose or write a stage for the owner.
-- Keep capture/finding and distillation approval boundaries. Installation is not
-  consent to create project records or change project policy. Session hooks do
-  not perform those workflow writes.
+- Keep the approval boundaries: a finding and a distillation wait for the owner;
+  an idea/witness capture is appended with an opt-out (`soul-capture`).
+  Installation is not consent to create project records or change project
+  policy. Session hooks do not perform those workflow writes.
 
 ## soul-init: Codex procedure
 
