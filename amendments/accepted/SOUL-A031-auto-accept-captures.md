@@ -21,7 +21,8 @@ WHAT CHANGES:    A model-initiated idea or witness capture is appended at once,
                  Unchanged: finding mode (the Body's explicit act), the F044
                  triage rule, rule 2, and captures the Body starts — a witness
                  entry the Body types still shows its draft for go / edit /
-                 cancel, and a Body's idea is still jotted at once.
+                 cancel (until v3.9.1, below), and a Body's idea is still jotted
+                 at once.
 WHERE IN SOUL:   skills/soul-capture, skills/soul-handoff, skills/soul-resume,
                  skills/soul-help;
                  docs/using-the-soul.md; operations/codex.md;
@@ -48,3 +49,6 @@ QUESTION THREE:  Coherence — the veto survives as an opt-out: every entry the
                  is claimed.
 STATUS:          Accepted 2026-11-05 by the Body, who chose the option
                  'Opt-out everywhere' on the scope question. Applied in v3.9.0.
+                 Extended 2026-11-05 in v3.9.1: a witness entry the Body types is
+                 appended at once too and shown in full with the opt-out (asked
+                 whether its draft step should go, the Body: "opt out too").

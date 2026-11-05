@@ -21,11 +21,11 @@ are not rewritten to pass. The test fails if:
       `NEW ENTRIES:` field that replaced it;
   (c) /soul-capture, /soul-handoff or /soul-resume lacks the opt-out wording
       "say no to strike";
-  (d) any skill unit says "hold for confirmation", "nothing is appended until", or
-      "says go" about appending, or asks the Body to ratify. A witness entry the Body
-      types still shows its draft for go / edit / cancel (/soul-capture witness step
-      5); that unit passes because it opens "Owner-typed only" — the opt-out covers
-      only captures the model starts, so the scope is in the step's own words;
+  (d) any skill unit says "hold for confirmation", "nothing is appended until",
+      "show the draft before appending", or "says go" about appending, or asks the
+      Body to ratify. v3.9.0 exempted the draft step for a witness entry the Body
+      types; v3.9.1 removed that step too (the Body: "opt out too"), so there is no
+      exemption;
   (e) /soul-help or docs/using-the-soul.md still describes the opt-in model
       ("proposes captures", "nothing is written without your yes", "answers yes/no").
 
@@ -44,8 +44,7 @@ _COMPAT_WORDS = "treated as accepted"
 _INSTRUCTS = re.compile(r"\b(write|writes|add|adds|remove|removes|strip|strips|delete|append)\b", re.I)
 _OPT_OUT = "say no to strike"
 _OPT_OUT_SKILLS = ("soul-capture", "soul-handoff", "soul-resume")
-_OWNER_SCOPE = "owner-typed only"
-_HOLD = re.compile(r"hold for confirmation|nothing is appended until", re.I)
+_HOLD = re.compile(r"hold for confirmation|nothing is appended until|show the draft before appending", re.I)
 _GO = re.compile(r"says go", re.I)
 _ASK_RATIFY = re.compile(r"\b(ask|asks|asking)\b[^.]*\bratif", re.I)
 _OPT_IN = re.compile(r"propos\w*\s+captures|nothing is written without your yes|answers yes/no", re.I)
@@ -92,9 +91,8 @@ def main():
                 elif _INSTRUCTS.search(u):
                     fails.append(f"(a) {skill}'s compat line tells the session to "
                                  f"'{_INSTRUCTS.search(u).group(0)}': {u[:110]}...")
-            # (d) no hold-for-go, outside the owner-typed draft step; no ask to ratify.
-            owner_step = u.lower().lstrip("0123456789. ").startswith(_OWNER_SCOPE)
-            if not owner_step and (_HOLD.search(u) or (_GO.search(u) and "append" in u.lower())):
+            # (d) no hold-for-go anywhere; no ask to ratify.
+            if _HOLD.search(u) or (_GO.search(u) and "append" in u.lower()):
                 fails.append(f"(d) {skill} holds a capture for a go: {u[:110]}...")
             if _ASK_RATIFY.search(u):
                 fails.append(f"(d) {skill} asks for a ratify: {u[:110]}...")
@@ -127,7 +125,7 @@ def main():
             print("FAIL: " + f)
         return 1
     print("PASS: no skill writes the unconfirmed mark or holds a model capture for a go "
-          "(soul-resume's compat line and the owner-typed draft step excepted); cursor has "
+          "(soul-resume's compat line excepted); cursor has "
           "NEW ENTRIES, not UNCONFIRMED; opt-out wording in " + ", ".join(_OPT_OUT_SKILLS)
           + "; soul-help and the user guide describe the opt-out")
     return 0
