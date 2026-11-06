@@ -3036,4 +3036,8 @@ DISCUSSED: (2026-11-05, round 1) Options: do nothing (bottom lines + /soul-expla
 STATUS:    Built in v3.10.0 (2026-11-06). Tested once, on the Sonnet half of I083
            round 2 (page in .ai/debriefs/INDEX.md); the Body's fixes from that test
            (originals open in the page, Markdown shown formatted) are in the skill.
+           Second run in CAPTURE-RIG (its upstream notes, 2026-11-06): the page
+           confused the owner; v3.10.1 opens with a plain story, keeps only results
+           that change a decision, says what opens a file result, and checks printed
+           counts against their code. No debrief has run on 3.10.1 yet.
 ```
