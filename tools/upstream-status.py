@@ -1,8 +1,11 @@
 #!/usr/bin/env python3
 """Count unmined upstream notes across the registered adopting projects.
 
-Run from the Soul System repo. Reads project paths from `registry/PROJECTS.txt`
-(gitignored — the paths are private and never reach public main). An entry is a
+Run from the Soul System repo. Reads every project record in this machine's vault
+(`projects/*/soul/`, the vault named by `tools/vault.py`'s machine file), then the
+paths in `registry/PROJECTS.txt` for projects outside the vault (gitignored — the
+paths are private and never reach public main). A record reached both ways is
+counted once. An entry is a
 `### ` heading in a project's `upstream.md`; it counts as MINED once it carries a
 `**Mined:**` line.
 
@@ -20,6 +23,17 @@ import sys
 
 REG = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
                    "registry", "PROJECTS.txt")
+
+
+def _vault():
+    """This machine's vault folder (tools/vault.py's machine file), or None."""
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    try:
+        import vault
+        v = vault.registered_vault()
+    except Exception:
+        return None
+    return v if v and vault.is_vault(v) else None
 
 
 def entries(path):
@@ -75,13 +89,23 @@ def main():
     args = ap.parse_args()
     if args.stamp:
         return stamp(args.stamp[0], int(args.stamp[1]), args.stamp[2])
-    if not os.path.exists(REG):
-        print("no registry/PROJECTS.txt — nothing registered")
+    # Every project record in this machine's vault is read directly, so a project
+    # that moves folders or lives on another computer needs no registry line
+    # (the Body, 2026-11-06). PROJECTS.txt lists only projects outside the vault.
+    paths = []
+    vault = _vault()
+    if vault:
+        pdir = os.path.join(vault, "projects")
+        paths += sorted(os.path.join(pdir, k, "soul") for k in os.listdir(pdir)
+                        if os.path.isdir(os.path.join(pdir, k, "soul")))
+    if os.path.exists(REG):
+        paths += [l.strip() for l in open(REG, encoding="utf-8")
+                  if l.strip() and not l.startswith("#")]
+    if not paths:
+        print("no vault and no registry/PROJECTS.txt — nothing registered")
         return 0
-    paths = [l.strip() for l in open(REG, encoding="utf-8")
-             if l.strip() and not l.startswith("#")]
     rows, tot_un, tot_all, tot_held = [], 0, 0, 0
-    missing, offformat = [], []
+    missing, offformat, seen = [], [], set()
     for p in paths:
         # A vault record folder (<vault>/projects/<name>/soul) is named by <name>.
         base = os.path.basename(p.rstrip("/"))
@@ -96,6 +120,10 @@ def main():
         for cand in (os.path.join(p, "upstream.md"),
                      os.path.join(p, ".soul", "upstream.md")):
             if os.path.exists(cand):
+                real = os.path.realpath(cand)
+                if real in seen:  # a project's .soul link into the vault
+                    break
+                seen.add(real)
                 n, un, hl = entries(cand)
                 tot_all += n
                 tot_un += un
