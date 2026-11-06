@@ -3050,3 +3050,21 @@ STATUS:    Built in v3.10.0 (2026-11-06). Tested once, on the Sonnet half of I08
            that change a decision, says what opens a file result, and checks printed
            counts against their code. No debrief has run on 3.10.1 yet.
 ```
+
+```
+ID:        SOUL-I087
+WHEN:      2026-11-06
+RAW:       The Body: "capture the idea to help projects automatically periodically
+           improve the skills (or prompt to mine skills). i forget to occasionally
+           make sure the in development/prototype skills '/mnt/d/Projects/skills'
+           are properly being improved, or new skills/agents/etc are identified in
+           projects. related to this is also making sure skills are being used and
+           not forgotten. i'm not sure what the effective way to do that is hence
+           capture the idea"
+           (Context: the same day, upstream mining pass 3 found 18 uncollected
+           notes because nothing prompted a pass and the tool's project list had
+           gone stale (SOUL-234); the Body's own prototype-skills repo has no such
+           loop at all. Nearby: tools/upstream-status.py and /soul-next's upstream
+           line (the Soul System's own mining prompt); the greenwoodms06-skills
+           `skill-usage` skill (measures how often each skill is used).)
+```
