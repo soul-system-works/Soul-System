@@ -115,7 +115,10 @@ carry git-lfs `pre-push` and `post-*` hooks. Each wrapper:
    `git lfs <hook>` with the same arguments and input, as LFS's own hook would. Inside a
    session LFS cannot write its hooks (the folder is read-only), and a push then skipped
    the upload: reproduced, the push passed and the remote got no LFS object (mining
-   pass 3, SOUL-234).
+   pass 3, SOUL-234). **Limit:** only the root `.gitattributes` is read; LFS rules kept
+   only in a nested `.gitattributes` or in `.git/info/attributes` are not seen, and
+   the upload is then skipped as before. A blocked credential stops the push before
+   this step.
 
 **No wrapper, on purpose** — so a repo's own hook of these names does **not run inside AI
 sessions**:

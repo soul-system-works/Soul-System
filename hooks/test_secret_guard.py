@@ -1225,6 +1225,15 @@ def main():
                 check(rc == 0 and "ARGS:post-commit" in log and f"ARGS:pre-push origin {bare}" in log
                       and f"IN:refs/heads/main {head(r)} refs/heads/main " in log,
                       f"LFS: the stub git-lfs did not get the hook, its args and the ref line: {log!r} {out!r}")
+                # A credential still blocks the push before the LFS fallback runs.
+                plain_git(r, "commit", "-q", "--no-verify", "--allow-empty", "-m", f"by hand: key {FAKE_AWS}")
+                sent = plain_git(bare, "rev-parse", "main").stdout.strip()
+                rm(lfs_stub_log)
+                rc, out, _ = sh(E, r, "git push -q origin main", PATH=stub_path)
+                check(rc != 0 and "BLOCKED" in out and "pre-push" not in slurp(lfs_stub_log)
+                      and plain_git(bare, "rev-parse", "main").stdout.strip() == sent,
+                      f"LFS: a blocked credential did not stop the LFS fallback: {slurp(lfs_stub_log)!r} {out!r}")
+                plain_git(r, "reset", "-q", "--hard", "HEAD~1")
                 recorder(os.path.join(r, ".git", "hooks", "pre-push"), os.path.join(tmp, "own36c.log"))
                 rm(lfs_stub_log)
                 rc, out, _ = sh(E, r, "git commit -q --allow-empty -m d && git push -q origin main",

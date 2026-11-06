@@ -94,8 +94,8 @@ def main():
     # (the Body, 2026-11-06). PROJECTS.txt lists only projects outside the vault.
     paths = []
     vault = _vault()
-    if vault:
-        pdir = os.path.join(vault, "projects")
+    pdir = os.path.join(vault, "projects") if vault else None
+    if pdir and os.path.isdir(pdir):  # a fresh vault may have no projects/ yet
         paths += sorted(os.path.join(pdir, k, "soul") for k in os.listdir(pdir)
                         if os.path.isdir(os.path.join(pdir, k, "soul")))
     if os.path.exists(REG):

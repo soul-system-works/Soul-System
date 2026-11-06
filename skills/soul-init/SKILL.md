@@ -167,9 +167,11 @@ without it is the owner's file: on *Add it*, put the line at the top and change
 nothing else; *Leave it* writes nothing. The wording is plain by default and the
 contract carries that default, so nothing else is written (the `fluent` register
 was dropped in v3.6.0, SOUL-A030).
-**Wiring in `CLAUDE.local.md`** (the gitignored local file; status names it as the
-importer): write the Mind import and the Stage block there too, never into a tracked
-`CLAUDE.md` — in a repo going public that would publish them (mining pass 3, SOUL-234).
+**Wiring in `CLAUDE.local.md`** (status names it as the importer): write the Mind
+import and the Stage block there too, never into a tracked `CLAUDE.md` — in a repo
+going public that would publish them (mining pass 3, SOUL-234). First run `git
+check-ignore -q CLAUDE.local.md`: not ignored, it may be tracked and public — say so
+and ask before writing there.
 
 **`record`** — where the record lives; `.gitignore` lines to match:
 - *git*: ignore only the volatile runtime state, never the record —
@@ -260,14 +262,21 @@ with the record) and leaves out only `events.jsonl`. Any other `link` failure: r
 `eol.py check <vault>`: a vault made before v3.5.0 may lack the line-ending rule —
 if line endings were a yes, fix and commit there too.
 **Commit the vault with `vault.py sync .`**, never raw git: it commits only
-`projects/<key>/`, then pulls with rebase and pushes, under a lock in the vault's
-`.git/` — other sessions leave their own edits uncommitted in the one shared vault, and
-two once ran git there in the same second (mining pass 3, SOUL-234). Exit 4: another
-sync holds the lock — say its line and try again later; never remove the lock while
-git may run in the vault.
-**`link` refuses** (exit 2, nothing changed): the record stayed — ask the record
-question again without the vault; a record must never be left neither tracked nor
-ignored, where one `git add -A` commits it.
+`projects/<key>/` and the regenerated `index.md`, and pushes, under a lock in the
+vault's `.git/`. It never resets, stashes or rebases the shared vault folder: other
+sessions leave their own edits uncommitted there, and two once ran git there in the
+same second (mining pass 3, SOUL-234). Say what it printed: "behind" means pushed, but
+this vault's copy waits for other sessions' edits — the next sync catches up. Exit 2
+with `NOT PUSHED`: committed here only (a conflict with the remote, named, or no
+remote) — tell the owner. Exit 4: the lock is held — a running sync, so try again
+later; or it "looks stale", and its line names the file to remove once the owner has
+checked no git runs in the vault.
+**`link` refuses** (exit 2): the record stayed where it was — every check runs before
+anything changes, and a failed compare rolls the move back. Ask the record question
+again without the vault; a record must never be left neither tracked nor ignored,
+where one `git add -A` commits it. **Exit 5:** the record moved and is linked, but an
+`--also` path did not; its lines name each one and why, and it is back where it was —
+report them, and do not ask the record question again.
 
 **`sidecar`** — asked only when the record files are committed at the project root
 and a `.soul/` beside them holding `handoff.md` or `private-names.txt` exists only on
@@ -377,8 +386,10 @@ files with both. Before asking, show `eol.py check .`'s list of files committed 
 CRLF — some may need CRLF on purpose (`.eml`, `.ics` fixtures), and the fix stores
 them LF. On yes, run `python3 <root>/tools/eol.py fix <repo>` for each repo the
 tool's detail names (`Needs it: project`, `vault` or `both`), show its output and
-commit in that repo with the line it suggests (in the vault, commit its `index.md`
-change first). With no vault the detail has no `Needs it:` line: fix the project. It refuses (exit 2, nothing changed) on staged work,
+commit in that repo with the line it suggests (in the vault, run `vault.py sync .`
+first — it commits a regenerated `index.md` with this project's folder; the line-ending
+commit itself is plain git, outside sync's lock, so run it while no other session is
+writing there). With no vault the detail has no `Needs it:` line: fix the project. It refuses (exit 2, nothing changed) on staged work,
 real edits it would sweep in, an untracked or edited `.gitattributes`, or files
 hidden by assume-unchanged or skip-worktree: say why and leave it. Stopped partway
 (exit 2 after changing something): relay its list and undo lines word for word.

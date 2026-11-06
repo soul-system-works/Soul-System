@@ -25,9 +25,10 @@ nothing about the completion gate or the record's rules.
 **Where it writes.** The project's `CLAUDE.md` in the directory the session started
 in — never the Soul System source repo (unless the session is running in that repo,
 whose own `CLAUDE.md` is then the target, the same exception `/soul-capture` makes).
-When the Soul wiring (the contract import) is in `CLAUDE.local.md` — the gitignored
-local file — the block goes there instead, never into a tracked public `CLAUDE.md`
-(mining pass 3, SOUL-234).
+When the Soul wiring (the contract import) is in `CLAUDE.local.md` — the local file,
+normally gitignored — the block goes there instead, never into a tracked public
+`CLAUDE.md` (mining pass 3, SOUL-234). First run `git check-ignore -q CLAUDE.local.md`:
+not ignored, it may be tracked and public — say so and ask before writing there.
 The block goes directly under the `**Register:**` line if there is one, otherwise
 directly under the `@` import lines. One block per file. A nested `CLAUDE.md` — a
 sub-deliverable with a different stage, such as a library living inside a larger

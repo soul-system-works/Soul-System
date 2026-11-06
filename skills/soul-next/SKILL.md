@@ -57,8 +57,11 @@ across sessions; this reconciles it with reality and emits a tiered next-options
    - **Later** — parked, trigger-gated, or awaiting evidence.
    **If a Stage block exists**, one line at the top of Next:
    `Stage: <stage> since <date> · next stage when: <trigger> — met?` When the
-   records suggest it has been (an outside consumer appeared, a release was cut),
-   say so and point at `/soul-stage`; do not run it. No block, no line.
+   records suggest it has been (an outside consumer appeared, the first release was
+   cut), say so and point at `/soul-stage`; do not run it. No block, no line. For
+   `released` — the last stage — the line is just `Stage: released since <date>`: no
+   trigger, no "met?", and a later release is not a reason to suggest `/soul-stage`
+   (a version tag in a released project once prompted it; mining pass 3, SOUL-234).
    Each item **points at its durable source** (idea ID, finding ID, spec) — do not copy the
    content in.
    An idea listed under Now or Next whose `STATUS` is `Raw`, or that has no
