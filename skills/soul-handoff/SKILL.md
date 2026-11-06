@@ -140,23 +140,44 @@ pre-run cursor names that path (in NEXT STEP or OPEN GATES), so a later
    ```
 
    **The cursor is replaced, never accumulated — which makes step 1 load-bearing.**
-   One cursor, one file. **Check, do not assume, whether the old one survives:**
-   run `git check-ignore -v .soul/handoff.md` — one call that sees `.gitignore`,
-   `.git/info/exclude` and the global excludes alike (F068 defect 3).
-   - **Ignored** (what `/soul-init` writes under either answer): the previous
-     cursor is **gone** — no copy in git history, no copy anywhere else. Nothing in
-     it survives except what step 1 flushed into `witness.md` / `ideas.md` first.
-     Read that as a hazard, not a reassurance — an earlier draft of this rule
-     claimed the old cursor "lives in git history", which is false for an ignored
-     cursor and would have licensed overwriting an unflushed decision (caught by
-     fresh-context review, 2026-08-20).
-   - **Not ignored:** only a committed version survives, so an uncommitted cursor
-     is still lost on replacement — the flush is load-bearing either way. Treat a
-     tracked cursor as the project's choice: leave the ignore rules alone, say once
-     that the cursor is tracked (and, in a public repo, public), and offer adding
-     `.soul/handoff.md` to `.gitignore` as the owner's call. This paragraph used to
-     assert the cursor is always ignored; GAME-THERMAL's is tracked (mining pass 2,
-     SOUL-202).
+   One cursor, one file. **Check, do not assume, whether the old one survives.**
+   - **Vault link** (`.soul` is a link: `test -L .soul`) — this case replaces the two
+     below for the cursor, and the `.gitignore` offer does not apply. Git refuses a
+     path through the link ("pathspec … is beyond a symbolic link"), so check in the
+     repo that holds the target, `<vault>/projects/<key>/soul` (where `.soul`
+     resolves): the old cursor survives only if `git -C <vault> ls-files --
+     projects/<key>/soul/handoff.md` lists it AND `git -C <vault> diff --quiet --
+     <that path>` exits 0 (committed, with no edits since). After writing the new
+     cursor, run `python3 <root>/tools/vault.py sync .` (`<root>` is two levels above
+     this skill's base directory): it commits only this project's vault folder, under
+     the vault's lock, and pushes only when the vault's server has not moved. Say in
+     one line what it printed. Exit 2 with `NOT PUSHED`: the cursor is committed in
+     the vault, safe on this machine, but not on the server — say why (its line names
+     it). If the server has newer commits, merging them is a deliberate step — the
+     Body's, or a session's when no other session is writing in the vault, with the
+     command that line names — not part of the handoff. "Already on the server; this
+     vault's copy is behind" (exit 0) means the cursor is safe on the server. Exit 4: a running sync holds the lock — the cursor stays uncommitted,
+     say so; or the lock "looks stale" — give the Body its removal step word for word
+     (remove that file once they have checked no git runs in the vault), and do not
+     remove it yourself. Three adopting projects and this repo hit the error (mining
+     pass 3, SOUL-233/234).
+   - **No link:** run `git check-ignore -v .soul/handoff.md` — one call that sees
+     `.gitignore`, `.git/info/exclude` and the global excludes alike (F068 defect 3);
+     then one of these two:
+     - **Ignored** (what `/soul-init` writes under either answer): the previous
+       cursor is **gone** — no copy in git history, no copy anywhere else. Nothing in
+       it survives except what step 1 flushed into `witness.md` / `ideas.md` first.
+       Read that as a hazard, not a reassurance — an earlier draft of this rule
+       claimed the old cursor "lives in git history", which is false for an ignored
+       cursor and would have licensed overwriting an unflushed decision (caught by
+       fresh-context review, 2026-08-20).
+     - **Not ignored:** only a committed version survives, so an uncommitted cursor
+       is still lost on replacement — the flush is load-bearing either way. Treat a
+       tracked cursor as the project's choice: leave the ignore rules alone, say once
+       that the cursor is tracked (and, in a public repo, public), and offer adding
+       `.soul/handoff.md` to `.gitignore` as the owner's call. This paragraph used to
+       assert the cursor is always ignored; GAME-THERMAL's is tracked (mining pass 2,
+       SOUL-202).
 
    The rule is stated because its absence produced drift: with nothing said, five of
    six projects replaced and one appended, reaching four stacked generations, 472
@@ -272,4 +293,6 @@ accepted with an opt-out; the unconfirmed mark and the ratify step are retired, 
 the cursor's `UNCONFIRMED` field becomes `NEW ENTRIES` (SOUL-I085).
 **Amended:** 2026-11-05 (unreleased, SOUL-I086) — a long unattended run keeps a
 decisions log for `/soul-debrief`; POINTERS gains the newest debrief.
+**Amended:** 2026-11-06 (v3.11.0, mining pass 3, SOUL-234) — a vault-linked cursor is
+checked in the vault and committed with `vault.py sync`.
 **Adopted:** 2026-05-21. **Status:** active.

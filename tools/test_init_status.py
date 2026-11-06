@@ -738,6 +738,99 @@ def main():
     asked, _, by = sidecar_asked(envv, p31)
     check("sidecar: revisit asks again", asked, by.get("sidecar"))
 
+    # 32 — wiring kept in the gitignored CLAUDE.local.md is found: the import, the stage,
+    #      and the Mind repair names that file (mining pass 3, SOUL-234)
+    p32 = repo(tmp, "localmd", {"CLAUDE.local.md": IMPORT + "\n**Stage: pre-release** (owner)\n",
+                                ".soul/witness.md": "# W\n", ".soul/mind.md": "# M\n",
+                                ".gitignore": "CLAUDE.local.md\n"})
+    st, by = status(env, p32)
+    check("CLAUDE.local.md holds the import: found, not asked",
+          by["import"]["action"] == "none" and by["import"]["value"] == "CLAUDE.local.md",
+          by["import"])
+    check("CLAUDE.local.md holds the stage: found",
+          by["stage"]["action"] == "none" and by["stage"]["value"] == "pre-release", by["stage"])
+    check("the Mind repair writes into CLAUDE.local.md",
+          by.get("mind", {}).get("action") == "repair"
+          and "after the contract import in CLAUDE.local.md" in by["mind"]["detail"],
+          by.get("mind"))
+
+    # 33 — `triaged <sha>`: every hit read, none real
+    p33 = repo(tmp, "triaged", {"README.md": "x\n"})
+    head33 = git(p33, "rev-parse", "--short=12", "HEAD").stdout.strip()
+    r = run(env, "record", p33, "history-scan", "triaged", head33)
+    st, by = status(envl, p33)
+    check("record history-scan triaged <sha>: stored", r.returncode == 0
+          and "history-scan:  triaged " + head33 in read(os.path.join(p33, ".soul", "init.md")),
+          r.stdout + r.stderr)
+    check("triaged: not asked again, says hits checked, none real",
+          by["history-scan"]["action"] == "none"
+          and by["history-scan"]["detail"] == "Scanned at {}: hits checked, none real."
+          .format(head33), by["history-scan"])
+    r = run(env, "record", p33, "history-scan", "triaged")
+    check("triaged with no sha: refused", r.returncode == 2 and "triaged <sha>" in r.stderr,
+          r.stderr)
+
+    # 34 — hand hooks: the skill's template is all Soul lines; a hook merged by hand keeps
+    #      its other lines (only guard= is rewritten); an old pre-push in an LFS repo is
+    #      rewritten so hand pushes upload LFS objects (mining pass 3, SOUL-234)
+    skill = read(os.path.join(_ROOT, "skills", "soul-init", "SKILL.md"))
+    tpl = skill.split("**`hand-hooks`**", 1)[1].split("```sh\n", 1)[1].split("\n```", 1)[0]
+    old = ('#!/bin/sh\n# Soul System secret check (<hook>), installed by /soul-init '
+           '(operations/secret-guard.md).\nguard="<root>/hooks/secret-guard.py"\n'
+           'if [ ! -f "$guard" ] || ! command -v python3 >/dev/null 2>&1; then\n'
+           '  echo "Soul secret check NOT running — plugin path missing; re-run /soul-init '
+           'to repair the hook" >&2\n  exit 0\nfi\npython3 "$guard" --hand-hook <hook> "$@"\n'
+           'rc=$?\n[ "$rc" -eq 3 ] && exit 1\n[ "$rc" -ne 0 ] && echo "Soul secret guard '
+           'failed (exit $rc) — this git <hook> was NOT checked" >&2\nexit 0\n')
+    left = {n: mod.hand_hook_extras(t.replace("<root>", _ROOT).replace("<hook>", "pre-push"))
+            for n, t in (("current", tpl), ("v2.10.0", old))}
+    check("every template version (the skill's current one too) is all Soul lines",
+          left == {"current": [], "v2.10.0": []}, left)
+
+    def hooks34(name, text_for, files=None):
+        p = repo(tmp, name, dict({"CLAUDE.md": IMPORT, ".soul/witness.md": "# W\n"},
+                                 **(files or {})))
+        for h in ("pre-commit", "commit-msg", "pre-push"):
+            path = os.path.join(p, ".git", "hooks", h)
+            write(path, text_for(h))
+            os.chmod(path, 0o755)
+        return p
+    p34 = hooks34("tplhooks", lambda h: tpl.replace("<root>", _ROOT).replace("<hook>", h))
+    st, by = status(env, p34)
+    check("the skill's template, live root: none", by["hand-hooks"]["action"] == "none",
+          by["hand-hooks"])
+    merged = lambda h: old.replace("<root>", "/gone").replace("<hook>", h).replace(
+        "\nexit 0\n", '\ngit lfs pre-push "$@" < "$in"\nexit 0\n') if h == "pre-push" else \
+        old.replace("<root>", "/gone").replace("<hook>", h)
+    p34b = hooks34("mergedhooks", merged)
+    st, by = status(env, p34b)
+    d = by["hand-hooks"]["detail"]
+    check("a hand-merged pre-push with a dead path: rewrite only its guard= line",
+          by["hand-hooks"]["action"] == "repair"
+          and "Soul hook(s) pre-push point at a missing plugin path and also hold lines merged "
+              "by hand — rewrite only the guard= line" in d
+          and "Soul hook(s) pre-commit, commit-msg point at a missing plugin path — rewrite "
+              "them with the current root" in d, d)
+    lfs_bin = os.path.join(tmp, "bin-lfs")
+    os.makedirs(lfs_bin)
+    os.symlink(shutil.which("git"), os.path.join(lfs_bin, "git"))
+    write(os.path.join(lfs_bin, "git-lfs"), "#!/bin/sh\nexit 0\n")
+    os.chmod(os.path.join(lfs_bin, "git-lfs"), 0o755)
+    envlfs = dict(base, PATH=lfs_bin)
+    attrs = {".gitattributes": "*.bin filter=lfs diff=lfs merge=lfs -text\n"}
+    p34c = hooks34("oldlfs", lambda h: old.replace("<root>", _ROOT).replace("<hook>", h), attrs)
+    st, by = status(envlfs, p34c)
+    check("an old Soul pre-push in an LFS repo: repair, rewrite with the current template",
+          by["hand-hooks"]["action"] == "repair"
+          and "does not run `git lfs pre-push`" in by["hand-hooks"]["detail"], by["hand-hooks"])
+    st, by = status(env, p34c)
+    check("...but not where git-lfs is not installed", by["hand-hooks"]["action"] == "none",
+          by["hand-hooks"])
+    p34d = hooks34("newlfs", lambda h: tpl.replace("<root>", _ROOT).replace("<hook>", h), attrs)
+    st, by = status(envlfs, p34d)
+    check("the current template in an LFS repo: none", by["hand-hooks"]["action"] == "none",
+          by["hand-hooks"])
+
     shutil.rmtree(tmp, ignore_errors=True)
     print("\n{} failure(s)".format(len(FAILS)) if FAILS else "\nALL PASS")
     return 1 if FAILS else 0

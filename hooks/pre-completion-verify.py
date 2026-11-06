@@ -330,7 +330,9 @@ def _is_soul_project(cwd: str) -> bool:
             return True
     # Codex reads AGENTS.md (or its override), not Claude's @import mechanism.
     # Those two files use the stricter _AGENTS_MARKERS (see its comment).
-    names = ["CLAUDE.md", *_AGENTS_FILES]
+    # CLAUDE.local.md is the gitignored local file Claude Code also loads; a project going
+    # public keeps its Soul wiring there, and the gate stayed off (mining pass 3, SOUL-234).
+    names = ["CLAUDE.md", "CLAUDE.local.md", *_AGENTS_FILES]
     # `.claude/CLAUDE.md` is a documented PROJECT instruction path — but when cwd is
     # the home directory it resolves to ~/.claude/CLAUDE.md, the USER's global memory
     # file, which is not a project and often mentions /soul-* commands. Scoping on it

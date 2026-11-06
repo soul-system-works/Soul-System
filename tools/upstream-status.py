@@ -1,8 +1,11 @@
 #!/usr/bin/env python3
 """Count unmined upstream notes across the registered adopting projects.
 
-Run from the Soul System repo. Reads project paths from `registry/PROJECTS.txt`
-(gitignored — the paths are private and never reach public main). An entry is a
+Run from the Soul System repo. Reads every project record in this machine's vault
+(`projects/*/soul/`, the vault named by `tools/vault.py`'s machine file), then the
+paths in `registry/PROJECTS.txt` for projects outside the vault (gitignored — the
+paths are private and never reach public main). A record reached both ways is
+counted once. An entry is a
 `### ` heading in a project's `upstream.md`; it counts as MINED once it carries a
 `**Mined:**` line.
 
@@ -20,6 +23,17 @@ import sys
 
 REG = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
                    "registry", "PROJECTS.txt")
+
+
+def _vault():
+    """This machine's vault folder (tools/vault.py's machine file), or None."""
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    try:
+        import vault
+        v = vault.registered_vault()
+    except Exception:
+        return None
+    return v if v and vault.is_vault(v) else None
 
 
 def entries(path):
@@ -75,22 +89,53 @@ def main():
     args = ap.parse_args()
     if args.stamp:
         return stamp(args.stamp[0], int(args.stamp[1]), args.stamp[2])
-    if not os.path.exists(REG):
-        print("no registry/PROJECTS.txt — nothing registered")
+    # Every project record in this machine's vault is read directly, so a project
+    # that moves folders or lives on another computer needs no registry line
+    # (the Body, 2026-11-06). PROJECTS.txt lists only projects outside the vault.
+    paths = []
+    vault = _vault()
+    pdir = os.path.join(vault, "projects") if vault else None
+    if pdir and os.path.isdir(pdir):  # a fresh vault may have no projects/ yet
+        paths += sorted(os.path.join(pdir, k, "soul") for k in os.listdir(pdir)
+                        if os.path.isdir(os.path.join(pdir, k, "soul")))
+    if os.path.exists(REG):
+        paths += [l.strip() for l in open(REG, encoding="utf-8")
+                  if l.strip() and not l.startswith("#")]
+    if not paths:
+        print("no vault and no registry/PROJECTS.txt — nothing registered")
         return 0
-    paths = [l.strip() for l in open(REG, encoding="utf-8")
-             if l.strip() and not l.startswith("#")]
     rows, tot_un, tot_all, tot_held = [], 0, 0, 0
+    missing, offformat, seen = [], [], set()
     for p in paths:
+        # A vault record folder (<vault>/projects/<name>/soul) is named by <name>.
+        base = os.path.basename(p.rstrip("/"))
+        name = (os.path.basename(os.path.dirname(p.rstrip("/")))
+                if base == "soul" else base)
+        if not os.path.isdir(p):
+            # A moved project used to be skipped without a word, and the count
+            # read low: on 2026-11-06 it said 3 unmined while 14 sat in projects
+            # that had moved or were never listed.
+            missing.append(name)
+            continue
         for cand in (os.path.join(p, "upstream.md"),
                      os.path.join(p, ".soul", "upstream.md")):
             if os.path.exists(cand):
+                real = os.path.realpath(cand)
+                if real in seen:  # a project's .soul link into the vault
+                    break
+                seen.add(real)
                 n, un, hl = entries(cand)
                 tot_all += n
                 tot_un += un
                 tot_held += hl
                 if un:
-                    rows.append((os.path.basename(p.rstrip("/")), un, n))
+                    rows.append((name, un, n))
+                # Dated "## " headings are entries this parser cannot see or
+                # stamp (one such note sat uncounted since 2026-10-29).
+                k = len(re.findall(r"^## \d{4}-\d{2}-\d{2}", open(
+                    cand, encoding="utf-8").read(), flags=re.M))
+                if k:
+                    offformat.append((name, k))
                 break
     # Default is totals-only. The per-project lines carry real project names, and
     # this is the one repo whose main is public and anonymises them (mind 6c) —
@@ -107,6 +152,16 @@ def main():
         print("\nNo unmined upstream notes (%d collected)." % tot_all)
     if tot_held:
         print("%d held for the owner's ruling — a decision, not a backlog." % tot_held)
+    if offformat:
+        print("%d note%s under a dated '## ' heading, not counted above%s"
+              % (sum(k for _, k in offformat), "" if sum(k for _, k in offformat) == 1
+                 else "s", ": " + ", ".join("%s %d" % r for r in offformat)
+                 if args.detail else " (--detail names them)."))
+    if missing:
+        print("%d registered path%s not found%s"
+              % (len(missing), "" if len(missing) == 1 else "s",
+                 ": " + ", ".join(missing) if args.detail
+                 else " (--detail names them); refresh registry/PROJECTS.txt."))
     return 0
 
 

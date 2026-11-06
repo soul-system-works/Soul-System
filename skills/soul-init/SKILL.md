@@ -107,19 +107,20 @@ or to report a problem. The tool calls already show the work.
 4. **Carry out the repairs and answers, in this order**, recording each answer with
    `python3 <root>/tools/init-status.py record . <key> <value>` (the option's
    `value`; an extras member ticked is `yes`, unticked `no`; the history scan is
-   recorded as `clean <sha12>`, `findings <sha12>` or `declined`). A `no` is final
-   until `revisit`; `layout` keeps its own list. Mechanics are in the next section.
+   recorded as `clean <sha12>`, `findings <sha12>`, `triaged <sha12>` or `declined`).
+   A `no` is final until `revisit`; `layout` keeps its own list. Mechanics are in the
+   next section.
    1. **Line endings first** (a yes, or a repair), while nothing else has touched
       tracked files: `eol.py fix` refuses when tracked files have other edits.
    2. **The files:** `import` (create `CLAUDE.md`; add the line; or rewrite an import
       whose path no longer exists — e.g. a plugin version folder an update removed —
       to `<root>`), `existing-store`, `record` (the scaffold and `.gitignore` lines,
       or the fix a disagreeing record's detail names), `mind`, `hand-hooks` (install
-      the missing ones; rewrite a Soul hook whose plugin path is gone), the `names`
+      the missing ones; repair a Soul hook as its detail says), the `names`
       file.
    3. **`stage`**, after the record exists (it ends in a witness entry).
    4. **The vault move**, if that was the answer, so the stage entry and the names
-      file move with the record.
+      file move with the record; then `vault.py sync .` (below).
    5. **One commit**, when the record is in git: what this run wrote — the record
       files, `.gitignore`, the `CLAUDE.md` lines, the stage block — named in the
       report (the owner chose git; a record neither committed nor ignored is one
@@ -143,7 +144,8 @@ or to report a problem. The tool calls already show the work.
    - a public repo with a GitHub remote (no remote: say nothing): whether push
      protection is on —
      `gh api repos/<owner>/<repo> --jq .security_and_analysis.secret_scanning_push_protection.status`;
-   - the record moved into the vault: commit and push the vault.
+   - the record moved into the vault: what `vault.py sync .` printed — `NOT PUSHED`
+     means committed on this machine but not yet on the vault's server.
 
    **The outside-files dialog goes in the bottom line on the run that wrote the
    import or moved the record into the vault** — as its own 🙋 item ("approve the
@@ -165,6 +167,11 @@ without it is the owner's file: on *Add it*, put the line at the top and change
 nothing else; *Leave it* writes nothing. The wording is plain by default and the
 contract carries that default, so nothing else is written (the `fluent` register
 was dropped in v3.6.0, SOUL-A030).
+**Wiring in `CLAUDE.local.md`** (status names it as the importer): write the Mind
+import and the Stage block there too, never into a tracked `CLAUDE.md` — in a repo
+going public that would publish them (mining pass 3, SOUL-234). First run `git
+check-ignore -q CLAUDE.local.md`: not ignored, it may be tracked and public — say so
+and ask before writing there.
 
 **`record`** — where the record lives; `.gitignore` lines to match:
 - *git*: ignore only the volatile runtime state, never the record —
@@ -229,9 +236,15 @@ move with it — but its questions come first:
 - **What it contributes to** — free-form tags, may be empty.
 - **Key** — the project's folder in the vault; default the repo's name. The key,
   not the path, names the folder, so it survives the project moving.
+- **Private paths**, asked once: anything else private to move with the record —
+  plans, reviews, research folders (a project going public)? Each named path is passed
+  as `--also <path> …`, relative to the project; it lands in the vault's `soul/` at the
+  same path, copied, hash-compared and only then removed here, like the record. Paths
+  outside the project or inside `.git` are refused (SOUL-I081's narrow case, mining
+  pass 3, SOUL-234).
 
-Run `vault.py link . --key <key> --label <label> --contributes <tags> --dry-run`,
-show its lines, and on the owner's yes run it without `--dry-run`. It moves a
+Run `vault.py link . --key <key> --label <label> --contributes <tags> [--also <path>
+…] --dry-run`, show its lines, and on the owner's yes run it without `--dry-run`. It moves a
 root-layout record into `.soul/` first and repoints a `@mind.md` import; copies
 `.soul/` into `<vault>/projects/<key>/soul/` and compares every hash; replaces
 `.soul/` with a link and compares again. On WSL with the project on a Windows drive
@@ -248,9 +261,25 @@ with the record) and leaves out only `events.jsonl`. Any other `link` failure: r
 `vault.py check .` and report its line before going on. After a move, run
 `eol.py check <vault>`: a vault made before v3.5.0 may lack the line-ending rule —
 if line endings were a yes, fix and commit there too.
-**`link` refuses** (exit 2, nothing changed): the record stayed — ask the record
-question again without the vault; a record must never be left neither tracked nor
-ignored, where one `git add -A` commits it.
+**Commit the vault with `vault.py sync .`**, never raw git: it commits only
+`projects/<key>/`, under a lock in the vault's `.git/`, and pushes only when the
+vault's server has not moved. It touches nothing else in the shared vault folder, where
+other sessions keep uncommitted edits; two sessions once ran git there in the same
+second (mining pass 3, SOUL-234). It does not commit `index.md`, which each machine
+regenerates. Exit 2 with `NOT PUSHED`: the commit is safe here, but not on the server —
+its line says why (no upstream, a refused push, or the server has newer commits).
+Merging those is a deliberate step, the owner's or this session's when no other
+session is writing in the vault (the command its line names — not a bare `git pull`,
+which fails on diverged branches), then sync again; tell the
+owner. Exit 4: the lock is held — a running sync, so try again later; or it "looks
+stale", and its line names the file to remove once the owner has checked no git runs
+in the vault.
+**`link` refuses** (exit 2): the record stayed where it was — every check runs before
+anything changes, and a failed compare rolls the move back. Ask the record question
+again without the vault; a record must never be left neither tracked nor ignored,
+where one `git add -A` commits it. **Exit 5:** the record moved and is linked, but an
+`--also` path did not; its lines name each one and why, and it is back where it was —
+report them, and do not ask the record question again.
 
 **`sidecar`** — asked only when the record files are committed at the project root
 and a `.soul/` beside them holding `handoff.md` or `private-names.txt` exists only on
@@ -278,27 +307,43 @@ hooks`, which inside a session answers the plugin's own wrapper directory). Neve
 overwrite an existing hook — it belongs to the owner or another tool (git-lfs,
 carried by five adopting projects, installs `pre-push`); say which was skipped and
 that hand commits or pushes are not checked at that step. The exception is a hook
-carrying the Soul marker line below whose plugin path no longer exists: it is
-Soul's own, so rewrite it with the current `<root>`. Otherwise write it
-executable, `<hook>` replaced in all three places. It fails open, loudly, when the
-plugin path is gone, and stays quiet when a session's wrapper already ran the check:
+carrying the Soul marker line below: it is Soul's own. Repair it as the status detail
+says — a hook of only the template's lines is rewritten whole with the current
+`<root>`; a hook merged by hand with other lines (e.g. `git lfs pre-push`) gets only
+its `guard=` line rewritten, and the other lines are kept and named in one line. A
+whole rewrite there would drop the merged LFS upload (mining pass 3, SOUL-234).
+Otherwise write it executable, every `<hook>` replaced. It fails open, loudly, when
+the plugin path is gone, and stays quiet when a session's wrapper already ran the
+check. A `pre-push` reads git's input once and, after the guard, runs `git lfs
+pre-push` when git-lfs is installed and `.gitattributes` names `filter=lfs`: LFS
+cannot install its own hook while this one holds the slot:
 ```sh
 #!/bin/sh
 # Soul System secret check (<hook>), installed by /soul-init (operations/secret-guard.md).
 guard="<root>/hooks/secret-guard.py"
+in=
+[ "<hook>" = pre-push ] && in=$(cat; echo .) && in=${in%.}
 if [ ! -f "$guard" ] || ! command -v python3 >/dev/null 2>&1; then
   echo "Soul secret check NOT running — plugin path missing; re-run /soul-init to repair the hook" >&2
-  exit 0
+else
+  printf '%s' "$in" | python3 "$guard" --hand-hook <hook> "$@"
+  rc=$?
+  [ "$rc" -eq 3 ] && exit 1
+  [ "$rc" -ne 0 ] && echo "Soul secret guard failed (exit $rc) — this git <hook> was NOT checked" >&2
 fi
-python3 "$guard" --hand-hook <hook> "$@"
-rc=$?
-[ "$rc" -eq 3 ] && exit 1
-[ "$rc" -ne 0 ] && echo "Soul secret guard failed (exit $rc) — this git <hook> was NOT checked" >&2
+if [ "<hook>" = pre-push ] && command -v git-lfs >/dev/null 2>&1; then
+  case $(cat .gitattributes 2>/dev/null) in
+  *filter=lfs*) printf '%s' "$in" | git lfs pre-push "$@" || exit $? ;;
+  esac
+fi
 exit 0
 ```
 
 **`history-scan`** — `gitleaks git --redact --no-banner`, results to the owner,
-then record `clean <sha12>` or `findings <sha12>` (HEAD's first 12 characters). It is
+then record `clean <sha12>` or `findings <sha12>` (HEAD's first 12 characters).
+Record `triaged <sha12>` only after each hit was read and none is a real secret
+(status shows "hits checked, none real"); a false match left as `findings` was later
+read to the owner as possible leaked secrets (mining pass 3, SOUL-234). It is
 offered once; `/soul-init revisit history-scan` runs it again. The secret guard checks
 each new commit as it is made, so the one scan covers what came before the guard
 (the owner chose this over re-offering after every commit, 2026-10-26, v3.6.1). Rewrite nothing: a found credential is
@@ -327,7 +372,10 @@ material (plans, handoffs, reviews, scratch, stray `.soul/` files), never code,
 tests, user docs or ADRs. On *Review*, show its grouped dry run and ask per group:
 *move to `.ai/`* / *leave* / *it is project content*. Write the answers to a plan
 file outside the project (`{"<path>": "move|leave|content"}`, paths from `scan
---json`), run `apply <project> --plan <file> --dry-run`, then `apply`. A file that
+--json`), run `apply <project> --plan <file> --dry-run`, then `apply`. `apply` adds
+`.ai/` to `.git/info/exclude` when git does not ignore it and says so — relay that line;
+a moved working file left unignored is one `git add -A` from a commit, in a public repo
+from publication (mining pass 3, SOUL-234). A file that
 project content links to is usually project content — put it to the owner on its own
 first, since project content must never link into `.ai/`. Any "project content now
 links into .ai/" line `apply` still prints is an open gap — report it: drop the link
@@ -342,7 +390,8 @@ CRLF — some may need CRLF on purpose (`.eml`, `.ics` fixtures), and the fix st
 them LF. On yes, run `python3 <root>/tools/eol.py fix <repo>` for each repo the
 tool's detail names (`Needs it: project`, `vault` or `both`), show its output and
 commit in that repo with the line it suggests (in the vault, commit its `index.md`
-change first). With no vault the detail has no `Needs it:` line: fix the project. It refuses (exit 2, nothing changed) on staged work,
+change first — `vault.py sync` never commits it; these commits are plain git, outside
+sync's lock, so make them while no other session is writing in the vault). With no vault the detail has no `Needs it:` line: fix the project. It refuses (exit 2, nothing changed) on staged work,
 real edits it would sweep in, an untracked or edited `.gitattributes`, or files
 hidden by assume-unchanged or skip-worktree: say why and leave it. Stopped partway
 (exit 2 after changing something): relay its list and undo lines word for word.
@@ -356,7 +405,7 @@ eol issues after it checks and then fixes it. so i am trying to preempt it."
 **`mind`** (repair) — a `mind.md` that nothing imports does nothing (one adopting
 project carried a 164-line Mind no file imported). Add the import directly after the
 contract import, **relative to the file the line goes into**: from a root
-`CLAUDE.md`, `@.soul/mind.md` or `@mind.md`; from `.claude/CLAUDE.md`,
+`CLAUDE.md` or `CLAUDE.local.md`, `@.soul/mind.md` or `@mind.md`; from `.claude/CLAUDE.md`,
 `@../.soul/mind.md` or `@../mind.md`. A fixed `@.soul/mind.md` once pointed at
 `.claude/.soul/mind.md` and MODEL-TEST's Mind went unloaded (SOUL-202).
 
@@ -364,7 +413,7 @@ contract import, **relative to the file the line goes into**: from a root
 
 - Do not ask a setup decision the tool did not list, reword one, or answer one for
   the owner. The follow-ups this skill names are not new decisions: the vault's
-  label, tags and key, the layout groups, and putting a tracked-file repair to the
+  label, tags, key and private paths, the layout groups, and putting a tracked-file repair to the
   owner. Do not re-ask a recorded answer — `revisit` is the owner's way back.
 - Do not copy Soul doctrine (the contract, the philosophy) into the project; it is
   referenced by import so it stays current. The empty record scaffold is not a copy.
@@ -393,3 +442,6 @@ outside-files dialog in the bottom line.
 **Amended:** 2026-10-26 (v3.6.0, SOUL-I082, SOUL-A030) — rebuilt as status →
 questions → carrying out over `tools/init-status.py`: fixed wording, answers remembered
 in `.soul/init.md`, a `no` final until `revisit`; the register question dropped.
+**Amended:** 2026-11-06 (v3.11.0, mining pass 3, SOUL-234) — `vault.py sync` and
+`link --also`; wiring in `CLAUDE.local.md`; `triaged` history scans; the hand pre-push
+chains to Git LFS and a merged hook keeps its other lines; `.ai/` ignored by `layout`.

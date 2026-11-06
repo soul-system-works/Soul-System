@@ -183,11 +183,27 @@ def main():
         if _mod._is_soul_project(cglobal):
             failures.append("LEAK: a .codex/AGENTS.md (the global Codex file at $HOME) scoped the gate")
 
+        # 16. Wiring kept only in the gitignored CLAUDE.local.md must scope (a project
+        # going public keeps it there; the gate stayed off, mining pass 3, SOUL-234) —
+        # and the SOUL-160 sentence there must not.
+        local = os.path.join(tmp, "localmd")
+        os.makedirs(local)
+        with open(os.path.join(local, "CLAUDE.local.md"), "w", encoding="utf-8") as fh:
+            fh.write("@~/.claude/plugins/marketplaces/soul-system/operations/CLAUDE.md\n")
+        if not _mod._is_soul_project(local):
+            failures.append("MISS: a seed import in CLAUDE.local.md does not scope the gate")
+        local_trap = os.path.join(tmp, "localtrap")
+        os.makedirs(local_trap)
+        with open(os.path.join(local_trap, "CLAUDE.local.md"), "w", encoding="utf-8") as fh:
+            fh.write("Tuning values are the soul of an action game.\n")
+        if _mod._is_soul_project(local_trap):
+            failures.append("LEAK: bare-word 'soul' in CLAUDE.local.md scoped the gate")
+
     if failures:
         for f in failures:
             print(f"FAIL  {f}")
         sys.exit(1)
-    print("PASS  15/15 — the scope fence holds, both store layouts scope, $HOME excluded, "
+    print("PASS  16/16 — the scope fence holds, both store layouts scope, $HOME excluded, "
           "AGENTS.md scopes only on wired-Soul markers")
 
 
