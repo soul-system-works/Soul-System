@@ -119,7 +119,7 @@ or to report a problem. The tool calls already show the work.
       file.
    3. **`stage`**, after the record exists (it ends in a witness entry).
    4. **The vault move**, if that was the answer, so the stage entry and the names
-      file move with the record.
+      file move with the record; then `vault.py sync .` (below).
    5. **One commit**, when the record is in git: what this run wrote — the record
       files, `.gitignore`, the `CLAUDE.md` lines, the stage block — named in the
       report (the owner chose git; a record neither committed nor ignored is one
@@ -143,7 +143,8 @@ or to report a problem. The tool calls already show the work.
    - a public repo with a GitHub remote (no remote: say nothing): whether push
      protection is on —
      `gh api repos/<owner>/<repo> --jq .security_and_analysis.secret_scanning_push_protection.status`;
-   - the record moved into the vault: commit and push the vault.
+   - the record moved into the vault: what `vault.py sync .` printed — `NOT PUSHED`
+     or a failure means the vault does not hold it safely yet.
 
    **The outside-files dialog goes in the bottom line on the run that wrote the
    import or moved the record into the vault** — as its own 🙋 item ("approve the
@@ -232,9 +233,15 @@ move with it — but its questions come first:
 - **What it contributes to** — free-form tags, may be empty.
 - **Key** — the project's folder in the vault; default the repo's name. The key,
   not the path, names the folder, so it survives the project moving.
+- **Private paths**, asked once: anything else private to move with the record —
+  plans, reviews, research folders (a project going public)? Each named path is passed
+  as `--also <path> …`, relative to the project; it lands in the vault's `soul/` at the
+  same path, copied, hash-compared and only then removed here, like the record. Paths
+  outside the project or inside `.git` are refused (SOUL-I081's narrow case, mining
+  pass 3, SOUL-234).
 
-Run `vault.py link . --key <key> --label <label> --contributes <tags> --dry-run`,
-show its lines, and on the owner's yes run it without `--dry-run`. It moves a
+Run `vault.py link . --key <key> --label <label> --contributes <tags> [--also <path>
+…] --dry-run`, show its lines, and on the owner's yes run it without `--dry-run`. It moves a
 root-layout record into `.soul/` first and repoints a `@mind.md` import; copies
 `.soul/` into `<vault>/projects/<key>/soul/` and compares every hash; replaces
 `.soul/` with a link and compares again. On WSL with the project on a Windows drive
@@ -251,6 +258,12 @@ with the record) and leaves out only `events.jsonl`. Any other `link` failure: r
 `vault.py check .` and report its line before going on. After a move, run
 `eol.py check <vault>`: a vault made before v3.5.0 may lack the line-ending rule —
 if line endings were a yes, fix and commit there too.
+**Commit the vault with `vault.py sync .`**, never raw git: it commits only
+`projects/<key>/`, then pulls with rebase and pushes, under a lock in the vault's
+`.git/` — other sessions leave their own edits uncommitted in the one shared vault, and
+two once ran git there in the same second (mining pass 3, SOUL-234). Exit 4: another
+sync holds the lock — say its line and try again later; never remove the lock while
+git may run in the vault.
 **`link` refuses** (exit 2, nothing changed): the record stayed — ask the record
 question again without the vault; a record must never be left neither tracked nor
 ignored, where one `git add -A` commits it.
@@ -386,7 +399,7 @@ contract import, **relative to the file the line goes into**: from a root
 
 - Do not ask a setup decision the tool did not list, reword one, or answer one for
   the owner. The follow-ups this skill names are not new decisions: the vault's
-  label, tags and key, the layout groups, and putting a tracked-file repair to the
+  label, tags, key and private paths, the layout groups, and putting a tracked-file repair to the
   owner. Do not re-ask a recorded answer — `revisit` is the owner's way back.
 - Do not copy Soul doctrine (the contract, the philosophy) into the project; it is
   referenced by import so it stays current. The empty record scaffold is not a copy.
@@ -415,3 +428,6 @@ outside-files dialog in the bottom line.
 **Amended:** 2026-10-26 (v3.6.0, SOUL-I082, SOUL-A030) — rebuilt as status →
 questions → carrying out over `tools/init-status.py`: fixed wording, answers remembered
 in `.soul/init.md`, a `no` final until `revisit`; the register question dropped.
+**Amended:** 2026-11-06 (v3.11.0, mining pass 3, SOUL-234) — `vault.py sync` and
+`link --also`; wiring in `CLAUDE.local.md`; `triaged` history scans; the hand pre-push
+chains to Git LFS and a merged hook keeps its other lines; `.ai/` ignored by `layout`.

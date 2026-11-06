@@ -580,6 +580,122 @@ def main():
     check("index: a non-sidecar row with no witness still shows —",
           "| [notes](projects/notes/project.md) | private | research | no | — |" in idx, idx)
 
+    # 10 — sync: commits only projects/<key>/, leaves other sessions' dirty files alone,
+    #      refuses while the lock is held (never breaks it), pulls with rebase, pushes
+    #      (mining pass 3, SOUL-234: two sessions ran git in the one vault at once)
+    head = lambda d, ref="HEAD": git(d, "rev-parse", ref).stdout.strip()
+    bare = os.path.join(tmp, "vault-remote.git")
+    git(tmp, "init", "-q", "--bare", "-b", "main", bare)
+    vs = os.path.join(tmp, "vault-sync")
+    run(env, "init", vs)
+    write(os.path.join(vs, "projects", "other", "soul", "witness.md"), "# other\n")
+    git(vs, "init", "-q", "-b", "main")
+    git(vs, "add", "-A")
+    git(vs, "commit", "-qm", "vault")
+    git(vs, "remote", "add", "origin", bare)
+    git(vs, "push", "-q", "-u", "origin", "main")
+    sp = project(tmp, "syncer", {".soul/witness.md": "# W\n"})
+    r = run(env, "link", sp, "--key", "syncer", "--label", "private", "--vault", vs)
+    check("sync fixture: linked into a git vault", r.returncode == 0, r.stderr + r.stdout)
+    other_w = os.path.join(vs, "projects", "other", "soul", "witness.md")
+    write(other_w, "# other\nuncommitted, another session's\n")
+    write(os.path.join(vs, "scratch.md"), "untracked, not ours\n")
+    git(vs, "add", "scratch.md")  # staged by someone else: must stay staged, uncommitted
+    r = run(env, "sync", sp)
+    files = git(vs, "show", "--name-only", "--format=", "HEAD").stdout.split()
+    check("sync commits only the project's folder", r.returncode == 0 and files
+          and all(f.startswith("projects/syncer/") for f in files), r.stdout + r.stderr + str(files))
+    check("sync leaves another session's dirty and staged files alone",
+          read(other_w) == "# other\nuncommitted, another session's\n"
+          and git(vs, "status", "--porcelain", "--", "scratch.md").stdout.startswith("A ")
+          and git(vs, "status", "--porcelain", "--", other_w).stdout.startswith(" M"),
+          git(vs, "status", "--porcelain").stdout)
+    check("sync pushes", head(vs) == head(bare, "main") and "pushed" in r.stdout, r.stdout)
+    lock = os.path.join(vs, ".git", "soul-sync.lock")
+    check("sync removes its lock when done", not os.path.exists(lock))
+    r = run(env, "sync", sp)
+    check("sync with nothing new: nothing to commit, exit 0", r.returncode == 0
+          and "nothing to commit" in r.stdout and "up to date" in r.stdout, r.stdout + r.stderr)
+
+    write(lock, "pid=999999 host={} key=someone started=2026-11-06T10:00:00\n".format(
+        __import__("socket").gethostname()))
+    write(os.path.join(sp, ".soul", "witness.md"), "# W\nSOUL-L\n")
+    before = head(vs)
+    r = run(env, "sync", sp)
+    check("sync refuses while the lock is held: exit 4, holder and age named, stale said",
+          r.returncode == 4 and "pid 999999" in r.stderr and "someone" in r.stderr
+          and " s by " in r.stderr and "stale" in r.stderr, r.stderr)
+    check("a held lock is never broken and nothing is committed", os.path.exists(lock)
+          and head(vs) == before, r.stdout + r.stderr)
+    os.remove(lock)
+
+    other_clone = os.path.join(tmp, "vault-sync-2")
+    git(tmp, "clone", "-q", bare, other_clone)
+    write(os.path.join(other_clone, "projects", "far", "soul", "witness.md"), "# far\n")
+    git(other_clone, "add", "-A")
+    git(other_clone, "commit", "-qm", "another machine")
+    git(other_clone, "push", "-q")
+    r = run(env, "sync", sp)
+    check("sync rebases onto the remote, then pushes; dirty files survive the rebase",
+          r.returncode == 0 and "rebased" in r.stdout and head(vs) == head(bare, "main")
+          and os.path.isfile(os.path.join(vs, "projects", "far", "soul", "witness.md"))
+          and read(other_w) == "# other\nuncommitted, another session's\n"
+          and git(vs, "status", "--porcelain", "--", "scratch.md").stdout.startswith("A "),
+          r.stdout + r.stderr + git(vs, "status", "--porcelain").stdout)
+    r = run(env, "sync", a)
+    check("sync on a vault that is not a git repo: refused", r.returncode == 2
+          and "not a git repo" in r.stderr, r.stderr)
+    r = run(env, "sync", plain)
+    check("sync with no .soul link: refused", r.returncode == 2 and "nothing to sync" in r.stderr,
+          r.stderr)
+
+    # 11 — link --also: named private paths move with the record, same relative paths,
+    #      copy → compare → delete; refusals change nothing (SOUL-I081 narrow case)
+    extra = {".soul/witness.md": "# W\n", "docs/plans/p1.md": "# plan\n",
+             "research/a/notes.md": "notes\n", "research/b.txt": "b\n",
+             "docs/private.md": "tracked, private\n", "README.md": "public\n"}
+    ap = project(tmp, "public-soon", extra)
+    git(ap, "add", "docs/private.md", "README.md")
+    git(ap, "commit", "-qm", "init")
+    for bad, why in (("../alpha", "outside the project"), (".git/config", "inside .git"),
+                     ("missing.md", "no such file"), (".soul/witness.md", "part of the record")):
+        r = run(env, "link", ap, "--key", "public-soon", "--label", "private", "--also", bad)
+        check("--also {}: refused, nothing changed".format(bad), r.returncode == 2
+              and why in r.stderr and not os.path.islink(os.path.join(ap, ".soul"))
+              and not os.path.exists(os.path.join(vault, "projects", "public-soon")), r.stderr)
+    r = run(env, "link", ap, "--key", "public-soon", "--label", "private", "--dry-run",
+            "--also", "docs/plans", "research", "docs/private.md")
+    check("--also dry run lists each path and changes nothing", r.returncode == 0
+          and all("would move {} →".format(x) in r.stdout
+                  for x in ("docs/plans", "research", "docs/private.md"))
+          and os.path.isfile(os.path.join(ap, "docs", "plans", "p1.md"))
+          and not os.path.exists(os.path.join(vault, "projects", "public-soon")), r.stdout)
+    r = run(env, "link", ap, "--key", "public-soon", "--label", "private",
+            "--also", "docs/plans", "research", "docs/private.md")
+    pt = os.path.join(vault, "projects", "public-soon", "soul")
+    check("--also moves each path into soul/ at the same relative path", r.returncode == 0
+          and all(read(os.path.join(pt, rel)) == text for rel, text in extra.items()
+                  if rel.startswith(("docs/", "research/"))), r.stdout + r.stderr)
+    check("--also: readable through the link, originals removed, the rest untouched",
+          read(os.path.join(ap, ".soul", "research", "a", "notes.md")) == "notes\n"
+          and not os.path.exists(os.path.join(ap, "research"))
+          and not os.path.exists(os.path.join(ap, "docs", "plans"))
+          and not os.path.exists(os.path.join(ap, "docs", "private.md"))
+          and read(os.path.join(ap, "README.md")) == "public\n", r.stdout)
+    check("--also: a tracked path moved is named as still tracked", "STILL TRACKED" in r.stdout
+          and "docs/private.md" in r.stdout, r.stdout)
+    write(os.path.join(ap, "later.md"), "later\n")
+    r = run(env, "link", ap, "--key", "public-soon", "--label", "private", "--also", "later.md")
+    check("--also on a project already linked: moved", r.returncode == 0
+          and read(os.path.join(pt, "later.md")) == "later\n"
+          and not os.path.exists(os.path.join(ap, "later.md")), r.stdout + r.stderr)
+    write(os.path.join(ap, "later.md"), "a second one\n")
+    r = run(env, "link", ap, "--key", "public-soon", "--label", "private", "--also", "later.md")
+    check("--also onto a path the vault already holds: refused, original kept",
+          r.returncode == 2 and "already exists" in r.stderr
+          and read(os.path.join(ap, "later.md")) == "a second one\n"
+          and read(os.path.join(pt, "later.md")) == "later\n", r.stderr)
+
     shutil.rmtree(tmp, ignore_errors=True)
     print("\n{} failure(s)".format(len(FAILS)) if FAILS else "\nALL PASS")
     return 1 if FAILS else 0

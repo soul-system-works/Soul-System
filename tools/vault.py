@@ -14,10 +14,15 @@ this helper; the helper does the mechanical parts.
                                          none named; 3: named but not there yet)
   link <project> --key K --label L       move the record into the vault and link it,
        [--contributes a,b] [--vault DIR]  or re-link a record the vault already holds
-       [--dry-run] [--sidecar]            (a new machine after cloning the vault)
+       [--dry-run] [--sidecar]            (a new machine after cloning the vault);
+       [--also PATH ...]                  --also moves named private paths with it, into
+                                         soul/<same path>, copy-compare-delete
   index [<vault>]                        rewrite the vault's index.md from projects/*/project.md
   check <project> [--json]               linked / broken / two copies / not linked;
                                          exit 1 if broken or two copies
+  sync <project> [-m MSG]                commit only projects/<key>/ (the key from the
+                                         .soul link), then pull --rebase and push, under a
+                                         lock in the vault's .git/ (exit 4: lock held)
   session-start                          SessionStart hook: one short line, or nothing
 
 --sidecar moves only the private .soul/ folder (handoff, private-names list, runs); the
@@ -31,6 +36,11 @@ second record: the gate writes that log by itself in a fresh clone before anyone
 re-links it. `check` reads it as not linked, and `link` merges the log into the
 vault's (copy, or append the missing lines), checks every line arrived, and only then
 removes the local folder and links. Anything else in .soul/ is still TWO COPIES.
+
+`sync` is how a skill commits the vault: only the project's own folder, under a lock
+file in the vault's .git/, so sessions sharing the one vault working tree neither commit
+each other's edits nor run git over each other. KNOWN LIMIT: git run by hand in the
+vault does not take the lock.
 
 One vault per machine: the machine file ($XDG_CONFIG_HOME or ~/.config, then
 soul/vault) holds one line, the vault's folder. The boundary is where the vault
@@ -55,8 +65,10 @@ import json
 import os
 import re
 import shutil
+import socket
 import subprocess
 import sys
+import time
 
 _HERE = os.path.dirname(os.path.abspath(__file__))
 
@@ -71,6 +83,10 @@ KEY_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*$")
 
 class VaultError(Exception):
     pass
+
+
+class VaultLocked(VaultError):
+    """Another sync holds the vault's lock (exit 4)."""
 
 
 # ---------------------------------------------------------------- machine file
@@ -458,9 +474,85 @@ def _move_root_stores(project, soul, dry_run):
     return moved, [p for p, _ in rewrites], unsure
 
 
+def _also_paths(project, paths):
+    """Validate `--also` paths: inside the project, not in .git, not part of the record,
+    present, not reached through a link, none inside another. Returns them relative."""
+    out = []
+    for raw in paths:
+        full = os.path.normpath(raw if os.path.isabs(raw) else os.path.join(project, raw))
+        rel = os.path.relpath(full, project)
+        parts = rel.split(os.sep)
+        if rel == "." or parts[0] == "..":
+            raise VaultError("--also {}: outside the project — nothing changed".format(raw))
+        if ".git" in parts:
+            raise VaultError("--also {}: inside .git — nothing changed".format(raw))
+        if parts[0] == ".soul" or rel in ROOT_STORES:
+            raise VaultError("--also {}: part of the record, which moves anyway — nothing "
+                             "changed".format(raw))
+        parent = os.path.dirname(full)
+        if os.path.realpath(parent) != parent:
+            raise VaultError("--also {}: reached through a link — nothing changed".format(raw))
+        if not os.path.lexists(full):
+            raise VaultError("--also {}: no such file or folder — nothing changed".format(raw))
+        out.append(rel)
+    for a in out:
+        for b in out:
+            if a != b and (b + os.sep).startswith(a + os.sep):
+                raise VaultError("--also {} is inside --also {} — name one — nothing changed"
+                                 .format(b, a))
+    return sorted(set(out))
+
+
+def _path_hashes(path):
+    """{relative path: hash} for a file, a link or a folder (a file's key is '')."""
+    if os.path.islink(path):
+        return {"": "link:" + os.readlink(path)}
+    if os.path.isfile(path):
+        return {"": _file_hash(path)}
+    return _tree_hashes(path)
+
+
+def _move_also(project, target, extras):
+    """Copy each extra path into the vault's soul/ folder at the same relative path,
+    compare every hash there and again through the .soul link, and only then remove the
+    original. A failed compare removes the copy and keeps the original."""
+    for rel in extras:
+        src, dst = os.path.join(project, rel), os.path.join(target, rel)
+        before = _path_hashes(src)
+        os.makedirs(os.path.dirname(dst), exist_ok=True)
+        try:
+            if os.path.islink(src):
+                os.symlink(os.readlink(src), dst)
+            elif os.path.isdir(src):
+                shutil.copytree(src, dst, symlinks=True)
+            else:
+                shutil.copy2(src, dst)
+            if (_path_hashes(dst) != before
+                    or _path_hashes(os.path.join(project, ".soul", rel)) != before):
+                raise VaultError("the copy of {} in the vault did not match — removed it; "
+                                 "the original is untouched".format(rel))
+        except BaseException:
+            if os.path.isdir(dst) and not os.path.islink(dst):
+                shutil.rmtree(dst, ignore_errors=True)
+            elif os.path.lexists(dst):
+                os.remove(dst)
+            raise
+        try:
+            if os.path.isdir(src) and not os.path.islink(src):
+                shutil.rmtree(src)
+            else:
+                os.remove(src)
+        except OSError as exc:
+            print("{} copied and compared, but the original could not be removed ({}) — "
+                  "delete it by hand".format(rel, exc))
+            continue
+        print("moved {} → {} ({} file(s); both compares passed)".format(rel, dst, len(before)))
+
+
 # ---------------------------------------------------------------- link
 
-def link(project, key, label, contributes=(), vault=None, dry_run=False, sidecar=False):
+def link(project, key, label, contributes=(), vault=None, dry_run=False, sidecar=False,
+         also=()):
     project = os.path.realpath(project)
     if label not in LABELS:
         raise VaultError("unknown label {!r} — one of {}".format(label, ", ".join(LABELS)))
@@ -534,6 +626,13 @@ def link(project, key, label, contributes=(), vault=None, dry_run=False, sidecar
                              "{} — which is the record is the owner's call; nothing changed"
                              .format(", ".join(_held_records(soul))))
         mode = "move"
+    # --also (SOUL-I081, narrow case; mining pass 3, SOUL-234): private paths a project
+    # going public moves out with its record — plans, reviews, research folders.
+    extras = _also_paths(project, also)
+    for rel in extras:
+        held = os.path.join(soul if mode == "move" else target, rel)
+        if os.path.lexists(held):
+            raise VaultError("--also {}: {} already exists — nothing changed".format(rel, held))
 
     if mode == "move":
         # Sidecar: the root record stays where it is (tracked, public); only .soul/ moves.
@@ -612,6 +711,12 @@ def link(project, key, label, contributes=(), vault=None, dry_run=False, sidecar
         if not dry_run:
             _make_link(kind, soul, target)
 
+    for rel in extras:
+        say("move {} → {} (copy, compare, then remove the original)", rel,
+            os.path.join(target, rel))
+    if extras and not dry_run:
+        _move_also(project, target, extras)
+
     pm = os.path.join(home, "project.md")
     if not os.path.exists(pm):
         say("write {}", pm)
@@ -646,7 +751,8 @@ def link(project, key, label, contributes=(), vault=None, dry_run=False, sidecar
     # A sidecar keeps its record tracked at the root on purpose (a fresh clone re-linking
     # one reads that from project.md, with no flag); a tracked .soul still warns.
     keeps_root = sidecar or _is_sidecar(home)
-    tracked = _git(project, "ls-files", "--", ".soul", *(() if keeps_root else ROOT_STORES))
+    tracked = _git(project, "ls-files", "--", ".soul", *(() if keeps_root else ROOT_STORES),
+                   *extras)
     if tracked:
         print("STILL TRACKED in git — until a `git rm --cached` of these is committed, a git "
               "reset, stash, restore or checkout can put the old committed copy back in place "
@@ -728,6 +834,133 @@ def index(vault):
     print("index.md: {} project(s){}".format(len(rows), ", {} left out (restricted or no "
                                              "public/private/confidential label)"
                                              .format(skipped) if skipped else ""))
+    return 0
+
+
+# ---------------------------------------------------------------- sync
+
+LOCK_NAME = "soul-sync.lock"
+LOCKED_EXIT = 4
+
+
+def _vault_git(vault, *args):
+    return subprocess.run(["git", "-C", vault, *args], capture_output=True, text=True)
+
+
+def _sync_target(project):
+    """(vault, key) from a working `.soul` link: <vault>/projects/<key>/soul."""
+    soul = os.path.join(os.path.realpath(project), ".soul")
+    if not (os.path.islink(soul) and os.path.isdir(soul)):
+        raise VaultError(".soul is not a working link into a vault — nothing to sync "
+                         "(`check` says why)")
+    home = os.path.dirname(os.path.realpath(soul))
+    vault = os.path.dirname(os.path.dirname(home))
+    if os.path.basename(os.path.dirname(home)) != "projects" or not is_vault(vault):
+        raise VaultError(".soul links to {}, which is not <vault>/projects/<key>/soul"
+                         .format(os.path.realpath(soul)))
+    return vault, os.path.basename(home)
+
+
+def _lock_holder(path):
+    """'held 3 min by pid 123 on host (key K)', from the lock file's text and age."""
+    try:
+        age = max(0, int(time.time() - os.path.getmtime(path)))
+        text = open(path, encoding="utf-8", errors="replace").read().strip()
+    except OSError:
+        return "held (the lock could not be read)"
+    info = dict(kv.partition("=")[::2] for kv in text.split())
+    who = "pid {} on {} (project {}, since {})".format(
+        info.get("pid", "?"), info.get("host", "?"), info.get("key", "?"),
+        info.get("started", "?"))
+    stale = ""
+    if info.get("host") == socket.gethostname() and info.get("pid", "").isdigit():
+        try:
+            os.kill(int(info["pid"]), 0)
+        except ProcessLookupError:
+            stale = " — that process is gone, so the lock looks stale"
+        except OSError:
+            pass
+    return "held {} s by {}{}".format(age, who, stale)
+
+
+def sync(project, message=None):
+    """Commit this project's vault folder, then pull --rebase and push, all under one
+    lock. Only projects/<key>/ is committed: other sessions leave their own edits
+    uncommitted in the one shared vault working tree, and those are never committed
+    here and never block the sync (a pull that has to rebase stashes them and puts them
+    back). The lock is a file created exclusively in the vault's .git/, held for the
+    whole run; a held or stale lock is reported with its age and holder and never
+    broken — remove it by hand once no git runs in the vault. Two sessions once ran git
+    in the vault in the same second (mining pass 3, SOUL-234; nothing was lost).
+    KNOWN LIMIT: git run by hand in the vault does not take the lock, so it is not
+    covered."""
+    vault, key = _sync_target(project)
+    gd = _vault_git(vault, "rev-parse", "--absolute-git-dir")
+    top = _vault_git(vault, "rev-parse", "--show-toplevel").stdout.strip()
+    if gd.returncode != 0 or os.path.realpath(top or "/") != os.path.realpath(vault):
+        raise VaultError("the vault at {} is not a git repo of its own — `git init` it and "
+                         "add its remote first".format(vault))
+    gitdir = gd.stdout.strip()
+    lock = os.path.join(gitdir, LOCK_NAME)
+    try:
+        fd = os.open(lock, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o644)
+    except FileExistsError:
+        raise VaultLocked("vault sync lock {}: {}. Nothing done; run sync again later, "
+                          "or remove the file by hand once no git runs in the vault"
+                          .format(lock, _lock_holder(lock)))
+    with os.fdopen(fd, "w", encoding="utf-8") as f:
+        f.write("pid={} host={} key={} started={}\n".format(
+            os.getpid(), socket.gethostname(), key,
+            time.strftime("%Y-%m-%dT%H:%M:%S")))
+    try:
+        return _sync_locked(vault, gitdir, key, message)
+    finally:
+        os.remove(lock)
+
+
+def _sync_locked(vault, gitdir, key, message):
+    for busy in ("rebase-merge", "rebase-apply", "MERGE_HEAD", "CHERRY_PICK_HEAD"):
+        if os.path.exists(os.path.join(gitdir, busy)):
+            raise VaultError("the vault is in the middle of a rebase or merge ({}) — "
+                             "finish it by hand first; nothing done".format(busy))
+    spec = "projects/{}/".format(key)
+    r = _vault_git(vault, "add", "-A", "--", spec)
+    if r.returncode != 0:
+        raise VaultError("git add {} failed: {}".format(spec, r.stderr.strip()))
+    if _vault_git(vault, "diff", "--cached", "--quiet", "--", spec).returncode == 0:
+        print("nothing to commit in {}".format(spec))
+    else:
+        # A pathspec commit (--only): other paths staged by someone else stay staged.
+        r = _vault_git(vault, "commit", "-q", "-m", message or "soul: sync {} ({})".format(
+            key, time.strftime("%Y-%m-%d")), "--only", "--", spec)
+        if r.returncode != 0:
+            raise VaultError("git commit of {} failed: {}".format(
+                spec, (r.stdout + r.stderr).strip()))
+        print("committed {} ({})".format(spec, _vault_git(
+            vault, "rev-parse", "--short", "HEAD").stdout.strip()))
+    if _vault_git(vault, "rev-parse", "--abbrev-ref", "@{u}").returncode != 0:
+        print("NOT PUSHED: the vault's branch has no upstream — the vault counts as kept "
+              "only once it is pushed")
+        return 0
+    r = _vault_git(vault, "fetch", "-q")
+    if r.returncode != 0:
+        raise VaultError("git fetch failed: {} — committed here, not pushed"
+                         .format(r.stderr.strip()))
+    if _vault_git(vault, "merge-base", "--is-ancestor", "@{u}", "HEAD").returncode != 0:
+        r = _vault_git(vault, "pull", "-q", "--rebase", "--autostash")
+        if r.returncode != 0:
+            _vault_git(vault, "rebase", "--abort")
+            raise VaultError("pull --rebase failed: {} — rebase aborted; the commit is kept "
+                             "here, not pushed".format((r.stdout + r.stderr).strip()))
+        print("rebased onto the remote")
+    if _vault_git(vault, "rev-list", "--count", "@{u}..HEAD").stdout.strip() in ("", "0"):
+        print("up to date with the remote")
+        return 0
+    r = _vault_git(vault, "push", "-q")
+    if r.returncode != 0:
+        raise VaultError("git push failed: {} — committed here, not pushed"
+                         .format(r.stderr.strip()))
+    print("pushed")
     return 0
 
 
@@ -819,6 +1052,9 @@ def main():
     ln.add_argument("--contributes", default="", help="comma-separated tags")
     ln.add_argument("--vault", help="default: the machine file's vault")
     ln.add_argument("--dry-run", action="store_true")
+    ln.add_argument("--also", nargs="+", default=[], metavar="PATH",
+                    help="also move these files or folders (relative to the project) into "
+                         "the vault's soul/ folder, keeping their paths")
     ln.add_argument("--sidecar", action="store_true",
                     help="move only .soul/; the root record stays in the project, tracked")
     c = sub.add_parser("check", help="linked / broken / not linked")
@@ -826,6 +1062,9 @@ def main():
     c.add_argument("--json", action="store_true")
     x = sub.add_parser("index", help="rewrite the vault's index.md")
     x.add_argument("vault", nargs="?", help="default: the machine file's vault")
+    sy = sub.add_parser("sync", help="commit this project's vault folder, pull, push")
+    sy.add_argument("project")
+    sy.add_argument("-m", "--message")
     sub.add_parser("session-start", help="SessionStart hook (reads the event on stdin)")
     args = ap.parse_args()
 
@@ -858,16 +1097,18 @@ def main():
             if not v:
                 raise VaultError("no vault named on this machine ({})".format(machine_file()))
             return index(v)
+        if args.cmd == "sync":
+            return sync(args.project, args.message)
         if args.cmd == "link":
             tags = [t.strip() for t in args.contributes.split(",") if t.strip()]
             return link(args.project, args.key, args.label, tags, args.vault, args.dry_run,
-                        args.sidecar)
+                        args.sidecar, args.also)
         st = check(args.project)
         print(json.dumps(st) if args.json else (check_line(st) or "not linked"))
         return 1 if st["state"] in ("broken", "two-copies") else 0
     except VaultError as exc:
         print("vault: " + str(exc), file=sys.stderr)
-        return 2
+        return LOCKED_EXIT if isinstance(exc, VaultLocked) else 2
 
 
 if __name__ == "__main__":

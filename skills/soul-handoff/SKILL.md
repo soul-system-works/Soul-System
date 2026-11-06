@@ -140,9 +140,20 @@ pre-run cursor names that path (in NEXT STEP or OPEN GATES), so a later
    ```
 
    **The cursor is replaced, never accumulated — which makes step 1 load-bearing.**
-   One cursor, one file. **Check, do not assume, whether the old one survives:**
-   run `git check-ignore -v .soul/handoff.md` — one call that sees `.gitignore`,
-   `.git/info/exclude` and the global excludes alike (F068 defect 3).
+   One cursor, one file. **Check, do not assume, whether the old one survives.**
+   - **Vault link first** (`.soul` is a link: `test -L .soul`): git refuses a path
+     through the link ("pathspec … is beyond a symbolic link"), so check in the repo
+     that holds the target — `git -C <vault> check-ignore -v projects/<key>/soul/handoff.md`
+     and `git -C <vault> ls-files` on the same path (`<vault>/projects/<key>/soul` is
+     where `.soul` resolves). The vault tracks the cursor, so the old one survives only
+     in a vault commit: after writing the new cursor, run `python3 <root>/tools/vault.py
+     sync .` (`<root>` is two levels above this skill's base directory); it commits only
+     this project's vault folder, under the vault's lock, and pushes. Say in one line
+     what it printed; exit 4 means another sync holds the lock — say so, the cursor
+     stays uncommitted.
+     Three adopting projects and this repo hit the error (mining pass 3, SOUL-233/234).
+   - Otherwise run `git check-ignore -v .soul/handoff.md` — one call that sees
+     `.gitignore`, `.git/info/exclude` and the global excludes alike (F068 defect 3).
    - **Ignored** (what `/soul-init` writes under either answer): the previous
      cursor is **gone** — no copy in git history, no copy anywhere else. Nothing in
      it survives except what step 1 flushed into `witness.md` / `ideas.md` first.
@@ -272,4 +283,6 @@ accepted with an opt-out; the unconfirmed mark and the ratify step are retired, 
 the cursor's `UNCONFIRMED` field becomes `NEW ENTRIES` (SOUL-I085).
 **Amended:** 2026-11-05 (unreleased, SOUL-I086) — a long unattended run keeps a
 decisions log for `/soul-debrief`; POINTERS gains the newest debrief.
+**Amended:** 2026-11-06 (v3.11.0, mining pass 3, SOUL-234) — a vault-linked cursor is
+checked in the vault and committed with `vault.py sync`.
 **Adopted:** 2026-05-21. **Status:** active.
