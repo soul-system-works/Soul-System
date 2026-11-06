@@ -149,10 +149,13 @@ pre-run cursor names that path (in NEXT STEP or OPEN GATES), so a later
      projects/<key>/soul/handoff.md` lists it AND `git -C <vault> diff --quiet --
      <that path>` exits 0 (committed, with no edits since). After writing the new
      cursor, run `python3 <root>/tools/vault.py sync .` (`<root>` is two levels above
-     this skill's base directory): it commits only this project's vault folder and
-     `index.md`, under the vault's lock, and pushes. Say in one line what it printed.
-     Exit 2 with `NOT PUSHED`: the cursor is committed in the vault but not pushed —
-     say why. Exit 4: a running sync holds the lock — the cursor stays uncommitted,
+     this skill's base directory): it commits only this project's vault folder, under
+     the vault's lock, and pushes only when the vault's server has not moved. Say in
+     one line what it printed. Exit 2 with `NOT PUSHED`: the cursor is committed in
+     the vault, safe on this machine, but not on the server — say why (its line names
+     it). If the server has newer commits, merging them is a deliberate step — the
+     Body's, or a session's when no other session is writing in the vault — not part
+     of the handoff. Exit 4: a running sync holds the lock — the cursor stays uncommitted,
      say so; or the lock "looks stale" — give the Body its removal step word for word
      (remove that file once they have checked no git runs in the vault), and do not
      remove it yourself. Three adopting projects and this repo hit the error (mining

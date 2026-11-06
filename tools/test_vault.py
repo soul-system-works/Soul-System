@@ -110,130 +110,133 @@ def worktrees(v):
     return git(v, "worktree", "list", "--porcelain").stdout.count("worktree ")
 
 
+def tree_bytes(d):
+    """{path: bytes} for every file under d except .git — ignored files included."""
+    out = {}
+    for dirpath, dirnames, filenames in os.walk(d):
+        dirnames[:] = [n for n in dirnames if n != ".git"]
+        for n in filenames:
+            p = os.path.join(dirpath, n)
+            out[os.path.relpath(p, d)] = open(p, "rb").read()
+    return out
+
+
 def sync_cases(tmp, env):
-    """Review cases A, B, F, I, J, K (fresh-context review of 3.11.0): sync never resets,
-    stashes or rebases the shared working tree; the lock never outlives a run."""
+    """Sync never touches the shared vault tree outside its own commit, and pushes only
+    when the server has not moved (fresh-context reviews of 3.11.0: cases A, B, F, K
+    from the first, E1, the ignored-file overwrite and index.md from the second)."""
     rev = lambda d, ref="HEAD": git(d, "rev-parse", ref).stdout.strip()
     ow = os.path.join("projects", "other", "soul", "witness.md")
     mine = os.path.join("soul", "witness.md")
+    lockf = lambda v: os.path.join(v, ".git", "soul-sync.lock")
 
-    # A — the remote changed another project's file that a session here has edited:
-    #     no conflict markers anywhere, that edit untouched, never committed or pushed
+    def untouched(name, v, before, r, server, bare):
+        check(name + ": exit 2, NOT PUSHED, the server unchanged", r.returncode == 2
+              and "NOT PUSHED" in r.stderr and rev(bare, "main") == server, r.stdout + r.stderr)
+        check(name + ": every file in the vault byte-identical, nothing stashed, no lock",
+              tree_bytes(v) == before and git(v, "stash", "list").stdout == ""
+              and not os.path.exists(lockf(v)) and worktrees(v) == 1,
+              str(sorted(k for k in set(tree_bytes(v)) | set(before)
+                         if tree_bytes(v).get(k) != before.get(k))))
+
+    # A — the server changed another project's file that a session here has edited
     p, v, bare, clone = sync_fixture(tmp, env, "A")
     remote_commit(clone, ow, "# other\nline1\nfrom machine 2\n")
     write(os.path.join(v, ow), "# other\nline1\nlocal work of session X\n")
     write(os.path.join(p, ".soul", "witness.md"), "# W\nA1\n")
+    server, before = rev(bare, "main"), tree_bytes(v)
     r = run(env, "sync", p)
-    remote_ow = git(bare, "show", "main:" + ow).stdout
-    check("A: sync pushes the project's commit; the shared copy is said to be behind",
-          r.returncode == 0 and "A1" in git(bare, "show", "main:projects/syncer/" + mine).stdout
-          and "behind" in r.stdout and ow in r.stdout, r.stdout + r.stderr)
-    check("A: another session's edit is untouched, no conflict markers, no stash",
-          read(os.path.join(v, ow)) == "# other\nline1\nlocal work of session X\n"
-          and "<<<<<<<" not in remote_ow and git(v, "stash", "list").stdout == "",
-          read(os.path.join(v, ow)) + remote_ow)
+    untouched("A", v, before, r, server, bare)
+    check("A: our commit is kept here", "A1" in git(v, "show", "HEAD:projects/syncer/" + mine).stdout)
     px = project(os.path.join(tmp, "sync-A"), "projX", {"README.md": "x\n"})
     os.symlink(os.path.join(v, "projects", "other", "soul"), os.path.join(px, ".soul"))
     r = run(env, "sync", px)
-    remote_ow = git(bare, "show", "main:" + ow).stdout
-    check("A: that session's own sync conflicts with the remote: NOT PUSHED, named, exit 2",
-          r.returncode == 2 and "NOT PUSHED" in r.stderr and ow in r.stderr
-          and "<<<<<<<" not in remote_ow and "<<<<<<<" not in read(os.path.join(v, ow))
-          and remote_ow == "# other\nline1\nfrom machine 2\n", r.stdout + r.stderr + remote_ow)
-    check("A: no temp worktree and no lock left", worktrees(v) == 1
-          and not os.path.exists(os.path.join(v, ".git", "soul-sync.lock")))
+    check("A: that session's sync stops too: no conflict markers anywhere",
+          r.returncode == 2 and "<<<<<<<" not in read(os.path.join(v, ow))
+          and "<<<<<<<" not in git(bare, "show", "main:" + ow).stdout, r.stdout + r.stderr)
 
-    # B — a session's uncommitted edit while the remote moved: never stashed, a write
-    #     during the run is kept (the review's post-rewrite hook fired mid-rebase)
+    # B — a session's uncommitted edit while the server moved: never stashed
     p, v, bare, clone = sync_fixture(tmp, env, "B")
     remote_commit(clone, os.path.join("projects", "far", "soul", "witness.md"), "# far\n")
     write(os.path.join(v, ow), "# other\nline1\nsession X: D1\n")
     hook(v, "post-rewrite", 'printf "session X: D2\\n" >> "{}"\n'.format(os.path.join(v, ow)))
     write(os.path.join(p, ".soul", "witness.md"), "# W\nB1\n")
+    server, before = rev(bare, "main"), tree_bytes(v)
     r = run(env, "sync", p)
-    check("B: pushed and brought forward; the session's edit kept, nothing in a stash",
-          r.returncode == 0 and rev(v) == rev(bare, "main")
-          and os.path.isfile(os.path.join(v, "projects", "far", "soul", "witness.md"))
-          and "session X: D1" in read(os.path.join(v, ow))
-          and git(v, "stash", "list").stdout == "", r.stdout + r.stderr
-          + git(v, "stash", "list").stdout + read(os.path.join(v, ow)))
+    untouched("B", v, before, r, server, bare)
 
-    # F — our commit conflicts with the remote, and a session writes mid-run (the review's
-    #     reference-transaction hook): the write survives, the commit is kept here
+    # F — a session writes while sync runs (the hook fires when sync's fetch updates the
+    #     remote-tracking ref): the write survives; the test fails if the hook never fired
     p, v, bare, clone = sync_fixture(tmp, env, "F")
     remote_commit(clone, os.path.join("projects", "syncer", mine), "# W\nfrom machine 2\n")
     write(os.path.join(v, ow), "# other\nline1\nsession X: D1\n")
     fired = os.path.join(tmp, "sync-F", "fired")
     hook(v, "reference-transaction",
          '[ "$1" = committed ] || exit 0\nrefs=$(cat)\n[ -e "{0}" ] && exit 0\n'
-         'case "$refs" in *REBASE_HEAD*|*CHERRY_PICK_HEAD*) ;; *) exit 0 ;; esac\n'
+         'case "$refs" in *refs/remotes/*) ;; *) exit 0 ;; esac\n'
          'touch "{0}"\nprintf "session X: D2 mid-sync\\n" >> "{1}"\n'
          .format(fired, os.path.join(v, ow)))
     write(os.path.join(p, ".soul", "witness.md"), "# W\nF1 here\n")
-    before_remote = rev(bare, "main")
+    server = rev(bare, "main")
     r = run(env, "sync", p)
     text = read(os.path.join(v, ow))
-    check("F: a conflict with the remote: exit 2, NOT PUSHED, the path named",
-          r.returncode == 2 and "NOT PUSHED" in r.stderr and "projects/syncer/" + mine in r.stderr
-          and rev(bare, "main") == before_remote, r.stdout + r.stderr)
-    check("F: a write made during the run survives, and D1 too",
-          "session X: D1" in text and (not os.path.exists(fired) or "D2 mid-sync" in text), text)
-    check("F: our commit is kept here, nothing mid-rebase, no temp worktree, no lock",
-          "F1 here" in git(v, "show", "HEAD:projects/syncer/" + mine).stdout
-          and not os.path.exists(os.path.join(v, ".git", "rebase-merge"))
-          and worktrees(v) == 1 and not os.path.exists(os.path.join(v, ".git", "soul-sync.lock")),
-          git(v, "status").stdout)
+    check("F: the mid-run write fired and survives, with D1; NOT PUSHED; commit kept here",
+          os.path.exists(fired) and "session X: D1" in text and "D2 mid-sync" in text
+          and r.returncode == 2 and "NOT PUSHED" in r.stderr and rev(bare, "main") == server
+          and "F1 here" in git(v, "show", "HEAD:projects/syncer/" + mine).stdout,
+          r.stdout + r.stderr + text)
 
-    # K — a path someone staged stays staged when the remote moved
+    # K — a path someone staged stays staged when the server moved
     p, v, bare, clone = sync_fixture(tmp, env, "K")
     remote_commit(clone, os.path.join("projects", "far", "soul", "witness.md"), "# far\n")
     write(os.path.join(v, ow), "# other\nline1\nstaged edit\n")
     git(v, "add", ow)
     write(os.path.join(p, ".soul", "handoff.md"), "# H\n")
+    server, before = rev(bare, "main"), tree_bytes(v)
     r = run(env, "sync", p)
-    check("K: a staged path stays staged, and is not committed",
-          r.returncode == 0 and ow.replace(os.sep, "/") in git(v, "diff", "--cached", "--name-only").stdout
-          and "staged edit" not in git(bare, "show", "main:" + ow).stdout,
-          r.stdout + r.stderr + git(v, "status", "--porcelain").stdout)
+    untouched("K", v, before, r, server, bare)
+    check("K: the staged path stays staged and uncommitted",
+          ow.replace(os.sep, "/") in git(v, "diff", "--cached", "--name-only").stdout
+          and "staged edit" not in git(v, "show", "HEAD:" + ow).stdout,
+          git(v, "status", "--porcelain").stdout)
 
-    # Behind, then caught up: the blocking edit goes away and the next sync brings the
-    # shared copy forward without pushing the same change twice
-    p, v, bare, clone = sync_fixture(tmp, env, "catchup")
-    remote_commit(clone, ow, "# other\nline1\nfrom machine 2\n")
-    write(os.path.join(v, ow), "# other\nline1\nsession X\n")
-    write(os.path.join(p, ".soul", "witness.md"), "# W\nC1\n")
-    r1 = run(env, "sync", p)
-    pushed = rev(bare, "main")
-    write(os.path.join(v, ow), "# other\nline1\n")  # session X drops its edit
-    r = run(env, "sync", p)
-    check("behind, then caught up: no second push, the shared copy at the remote",
-          r1.returncode == 0 and "behind" in r1.stdout and r.returncode == 0
-          and rev(bare, "main") == pushed and rev(v) == pushed
-          and read(os.path.join(v, ow)) == "# other\nline1\nfrom machine 2\n"
-          and git(v, "status", "--porcelain", "--", "projects").stdout == "",
-          r1.stdout + r.stdout + r.stderr)
-
-    # index.md: committed with the project's folder; a conflict only there is regenerated
-    p, v, bare, clone = sync_fixture(tmp, env, "index")
-    r = run(env, "sync", p)
-    check("index.md is committed with the project's folder",
-          r.returncode == 0 and git(v, "status", "--porcelain", "--", "index.md").stdout == ""
-          and "[syncer]" in git(bare, "show", "main:index.md").stdout, r.stdout + r.stderr)
+    # The server moved with another machine's tracked copy of a file that is ignored and
+    # different here (an events.jsonl): never overwritten (review 2: read-tree did)
+    p, v, bare, clone = sync_fixture(tmp, env, "ignored")
+    ev = os.path.join("projects", "other", "soul", "events.jsonl")
     git(clone, "pull", "-q")
-    write(os.path.join(clone, "projects", "far", "project.md"), "---\nkey: far\nlabel: private\n---\n")
-    os.makedirs(os.path.join(clone, "projects", "far", "soul"))
-    write(os.path.join(clone, "projects", "far", "soul", "witness.md"), "# far\n")
-    run(env, "index", clone)
-    git(clone, "add", "-A")
-    git(clone, "commit", "-qm", "far")
+    write(os.path.join(clone, ev), '{"theirs": 1}\n')
+    git(clone, "add", "-f", ev)
+    git(clone, "commit", "-qm", "theirs")
     git(clone, "push", "-q")
-    pm = os.path.join(v, "projects", "syncer", "project.md")
-    write(pm, read(pm).replace("label: private", "label: confidential"))
+    write(os.path.join(v, ev), '{"mine": 1}\n')
+    write(os.path.join(p, ".soul", "witness.md"), "# W\nI1\n")
+    server, before = rev(bare, "main"), tree_bytes(v)
     r = run(env, "sync", p)
-    idx = git(bare, "show", "main:index.md").stdout
-    check("a conflict only in index.md: regenerated, pushed, both projects listed",
-          r.returncode == 0 and "[far]" in idx and "| confidential |" in idx
-          and "<<<<<<<" not in idx, r.stdout + r.stderr + idx)
+    untouched("ignored file", v, before, r, server, bare)
+
+    # E1 — the upstream names a server branch that does not exist: nothing claimed pushed
+    p, v, bare, clone = sync_fixture(tmp, env, "E1")
+    empty = os.path.join(tmp, "sync-E1", "empty.git")
+    git(tmp, "init", "-q", "--bare", "-b", "main", empty)
+    git(v, "remote", "add", "empty", empty)
+    git(v, "config", "branch.main.remote", "empty")
+    write(os.path.join(p, ".soul", "witness.md"), "# W\nE1\n")
+    r = run(env, "sync", p)
+    check("E1: the server branch is missing: exit 2, NOT PUSHED, never 'pushed'",
+          r.returncode == 2 and "NOT PUSHED" in r.stderr and "pushed\n" not in r.stdout
+          and git(empty, "branch", "--list").stdout == "", r.stdout + r.stderr)
+
+    # A refused push (the server's hook says no): exit 2
+    p, v, bare, clone = sync_fixture(tmp, env, "refused")
+    write(os.path.join(bare, "hooks", "pre-receive"), "#!/bin/sh\nexit 1\n")
+    os.chmod(os.path.join(bare, "hooks", "pre-receive"), 0o755)
+    write(os.path.join(p, ".soul", "witness.md"), "# W\nR1\n")
+    server = rev(bare, "main")
+    r = run(env, "sync", p)
+    check("a refused push: exit 2, NOT PUSHED, the server unchanged",
+          r.returncode == 2 and "NOT PUSHED" in r.stderr and "refused" in r.stderr
+          and rev(bare, "main") == server, r.stdout + r.stderr)
 
     # I — no upstream: committed here, NOT PUSHED, and not a success
     p, v, bare, clone = sync_fixture(tmp, env, "I")
@@ -243,18 +246,19 @@ def sync_cases(tmp, env):
     check("I: no upstream: NOT PUSHED, exit 2", r.returncode == 2 and "NOT PUSHED" in r.stderr,
           r.stdout + r.stderr)
 
-    # A failed run (the remote is unreachable) leaves no lock behind
+    # A failed run (the server is unreachable) leaves no lock behind
     p, v, bare, clone = sync_fixture(tmp, env, "fail")
     git(v, "remote", "set-url", "origin", os.path.join(tmp, "no-such-remote.git"))
     write(os.path.join(p, ".soul", "x.md"), "x\n")
     r = run(env, "sync", p)
     check("a failed run: exit 2, the lock removed", r.returncode == 2
-          and not os.path.exists(os.path.join(v, ".git", "soul-sync.lock")), r.stdout + r.stderr)
+          and not os.path.exists(lockf(v)), r.stdout + r.stderr)
 
-    # J — SIGTERM mid-run (a slow pre-push): the lock is removed, no temp worktree left
+    # J — a killed sync leaves only its lock (git finishes on its own and leaves no lock of
+    #     its own); the next sync reports it as stale with the removal step
     p, v, bare, clone = sync_fixture(tmp, env, "J")
     mark = os.path.join(tmp, "sync-J", "in-push")
-    hook(v, "pre-push", 'touch "{}"\nsleep 20\n'.format(mark))
+    hook(v, "pre-push", 'touch "{}"\nsleep 2\n'.format(mark))
     write(os.path.join(p, ".soul", "handoff.md"), "# H\n")
     proc = subprocess.Popen([sys.executable, _TOOL, "sync", p], env=env,
                             stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
@@ -263,19 +267,22 @@ def sync_cases(tmp, env):
             break
         time.sleep(0.05)
     proc.send_signal(signal.SIGTERM)
-    try:
-        out, err = proc.communicate(timeout=30)
-    except subprocess.TimeoutExpired:
-        proc.kill()
-        out, err = proc.communicate()
-    check("J: SIGTERM mid-run: exit non-zero, the lock removed, no temp worktree",
-          os.path.exists(mark) and proc.returncode != 0
-          and not os.path.exists(os.path.join(v, ".git", "soul-sync.lock")) and worktrees(v) == 1,
-          "rc={} {} {}".format(proc.returncode, out, err))
+    proc.communicate(timeout=30)
+    time.sleep(3)  # the orphaned git push finishes its hook and exits
+    r = run(env, "sync", p)
+    check("J: killed: only soul-sync.lock is left; the next sync says it looks stale, "
+          "with the removal step", os.path.exists(mark) and r.returncode == 4
+          and "looks stale" in r.stderr and "remove " + lockf(v) in r.stderr
+          and not os.path.exists(os.path.join(v, ".git", "index.lock"))
+          and not os.path.exists(os.path.join(v, ".git", "HEAD.lock")), r.stderr)
+    if os.path.exists(lockf(v)):
+        os.remove(lockf(v))
+    r = run(env, "sync", p)
+    check("J: after the lock is removed by hand, sync runs", r.returncode == 0, r.stdout + r.stderr)
 
     # The lock: a live holder is "held", a dead one "looks stale" with the removal step
     p, v, bare, clone = sync_fixture(tmp, env, "lock")
-    lock = os.path.join(v, ".git", "soul-sync.lock")
+    lock = lockf(v)
     host = __import__("socket").gethostname()
     write(lock, "pid={} host={} key=x started=now\n".format(os.getpid(), host))
     r = run(env, "sync", p)
@@ -287,7 +294,6 @@ def sync_cases(tmp, env):
     check("a dead holder: exit 4, looks stale, says remove <path> after checking",
           r.returncode == 4 and "looks stale" in r.stderr and "remove " + lock in r.stderr
           and os.path.exists(lock), r.stderr)
-
 
 def main():
     tmp = tempfile.mkdtemp(prefix="soul-vault-test-")
@@ -813,7 +819,8 @@ def main():
           "| [notes](projects/notes/project.md) | private | research | no | — |" in idx, idx)
 
     # 10 — sync: commits only projects/<key>/, leaves other sessions' dirty files alone,
-    #      refuses while the lock is held (never breaks it), pulls with rebase, pushes
+    #      refuses while the lock is held (never breaks it), pushes when the server has
+    #      not moved and otherwise stops
     #      (mining pass 3, SOUL-234: two sessions ran git in the one vault at once)
     head = lambda d, ref="HEAD": git(d, "rev-parse", ref).stdout.strip()
     bare = os.path.join(tmp, "vault-remote.git")
@@ -835,9 +842,10 @@ def main():
     git(vs, "add", "scratch.md")  # staged by someone else: must stay staged, uncommitted
     r = run(env, "sync", sp)
     files = git(vs, "show", "--name-only", "--format=", "HEAD").stdout.split()
-    check("sync commits only the project's folder (and the regenerated index.md)",
-          r.returncode == 0 and files and all(f.startswith("projects/syncer/") or f == "index.md"
-                                              for f in files), r.stdout + r.stderr + str(files))
+    check("sync commits only the project's folder (index.md is not committed)",
+          r.returncode == 0 and files and all(f.startswith("projects/syncer/") for f in files)
+          and git(vs, "status", "--porcelain", "--", "index.md").stdout.startswith(" M"),
+          r.stdout + r.stderr + str(files) + git(vs, "status", "--porcelain").stdout)
     check("sync leaves another session's dirty and staged files alone",
           read(other_w) == "# other\nuncommitted, another session's\n"
           and git(vs, "status", "--porcelain", "--", "scratch.md").stdout.startswith("A ")
@@ -868,10 +876,13 @@ def main():
     git(other_clone, "add", "-A")
     git(other_clone, "commit", "-qm", "another machine")
     git(other_clone, "push", "-q")
+    server = head(bare, "main")
     r = run(env, "sync", sp)
-    check("sync puts its commit on top of the remote's, pushes; dirty files survive",
-          r.returncode == 0 and "pushed on top" in r.stdout and head(vs) == head(bare, "main")
-          and os.path.isfile(os.path.join(vs, "projects", "far", "soul", "witness.md"))
+    check("the server moved: committed here, NOT PUSHED, exit 2; dirty and staged files kept",
+          r.returncode == 2 and "NOT PUSHED" in r.stderr and "newer commits" in r.stderr
+          and head(bare, "main") == server and "SOUL-L" in git(vs, "show",
+                                                              "HEAD:projects/syncer/soul/witness.md").stdout
+          and not os.path.exists(os.path.join(vs, "projects", "far"))
           and read(other_w) == "# other\nuncommitted, another session's\n"
           and git(vs, "status", "--porcelain", "--", "scratch.md").stdout.startswith("A "),
           r.stdout + r.stderr + git(vs, "status", "--porcelain").stdout)
@@ -977,6 +988,37 @@ def main():
           and peek(os.path.join(mp, "b.md")) == "b\n"
           and not os.path.exists(os.path.join(mt, "soul", "b.md"))
           and not os.path.exists(os.path.join(mp, "b.md.vault-moving")), probe.stdout)
+
+    # Wok / Wfail — a file written at the original path while it moves is never
+    # overwritten or removed: the set-aside original is kept beside it, exit 5, and it
+    # is never reported as moved (fresh-context review 2)
+    for case, fail in (("Wok", False), ("Wfail", True)):
+        wp = project(tmp, "also-" + case.lower(), {".soul/witness.md": "# W\n", "plan.md": "old plan\n"})
+        probe = subprocess.run([sys.executable, "-I", "-c",
+                                "import importlib.util, shutil, sys\n"
+                                "s = importlib.util.spec_from_file_location('v', sys.argv[1])\n"
+                                "m = importlib.util.module_from_spec(s); s.loader.exec_module(m)\n"
+                                "real = shutil.copy2\n"
+                                "fail = sys.argv[2] == '1'\n"
+                                "def write_meanwhile(a, b, **k):\n"
+                                "    out = real(a, b, **k)\n"
+                                "    if a.endswith('plan.md.vault-moving'):\n"
+                                "        open(a[:-len('.vault-moving')], 'w').write('new plan\\n')\n"
+                                "        if fail: raise OSError('disk full')\n"
+                                "    return out\n"
+                                "shutil.copy2 = write_meanwhile\n"
+                                "sys.argv = ['vault.py'] + sys.argv[3:]\n"
+                                "sys.exit(m.main())",
+                                _TOOL, "1" if fail else "0", "link", wp, "--key", "also-" + case.lower(),
+                                "--label", "private", "--also", "plan.md"],
+                               capture_output=True, text=True, env=env, cwd=tmp)
+        check("{}: exit 5, plan.md reported NOT moved, never 'moved plan.md'".format(case),
+              probe.returncode == 5 and "NOT moved" in probe.stdout
+              and "moved plan.md" not in probe.stdout, probe.stdout + probe.stderr)
+        check("{}: the new plan.md kept; the original set aside, not lost".format(case),
+              peek(os.path.join(wp, "plan.md")) == "new plan\n"
+              and peek(os.path.join(wp, "plan.md.vault-moving")) == "old plan\n",
+              probe.stdout + str(os.listdir(wp)))
 
     # G — an --also path that cannot be read is refused before anything changes (it
     #     once failed after the record had moved, with no project.md and no exclude)

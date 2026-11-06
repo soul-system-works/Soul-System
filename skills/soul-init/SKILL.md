@@ -145,7 +145,7 @@ or to report a problem. The tool calls already show the work.
      protection is on —
      `gh api repos/<owner>/<repo> --jq .security_and_analysis.secret_scanning_push_protection.status`;
    - the record moved into the vault: what `vault.py sync .` printed — `NOT PUSHED`
-     or a failure means the vault does not hold it safely yet.
+     means committed on this machine but not yet on the vault's server.
 
    **The outside-files dialog goes in the bottom line on the run that wrote the
    import or moved the record into the vault** — as its own 🙋 item ("approve the
@@ -262,15 +262,17 @@ with the record) and leaves out only `events.jsonl`. Any other `link` failure: r
 `eol.py check <vault>`: a vault made before v3.5.0 may lack the line-ending rule —
 if line endings were a yes, fix and commit there too.
 **Commit the vault with `vault.py sync .`**, never raw git: it commits only
-`projects/<key>/` and the regenerated `index.md`, and pushes, under a lock in the
-vault's `.git/`. It never resets, stashes or rebases the shared vault folder: other
-sessions leave their own edits uncommitted there, and two once ran git there in the
-same second (mining pass 3, SOUL-234). Say what it printed: "behind" means pushed, but
-this vault's copy waits for other sessions' edits — the next sync catches up. Exit 2
-with `NOT PUSHED`: committed here only (a conflict with the remote, named, or no
-remote) — tell the owner. Exit 4: the lock is held — a running sync, so try again
-later; or it "looks stale", and its line names the file to remove once the owner has
-checked no git runs in the vault.
+`projects/<key>/`, under a lock in the vault's `.git/`, and pushes only when the
+vault's server has not moved. It touches nothing else in the shared vault folder, where
+other sessions keep uncommitted edits; two sessions once ran git there in the same
+second (mining pass 3, SOUL-234). It does not commit `index.md`, which each machine
+regenerates. Exit 2 with `NOT PUSHED`: the commit is safe here, but not on the server —
+its line says why (no upstream, a refused push, or the server has newer commits).
+Merging those is a deliberate step, the owner's or this session's when no other
+session is writing in the vault (`git -C <vault> pull`), then sync again; tell the
+owner. Exit 4: the lock is held — a running sync, so try again later; or it "looks
+stale", and its line names the file to remove once the owner has checked no git runs
+in the vault.
 **`link` refuses** (exit 2): the record stayed where it was — every check runs before
 anything changes, and a failed compare rolls the move back. Ask the record question
 again without the vault; a record must never be left neither tracked nor ignored,
@@ -386,10 +388,9 @@ files with both. Before asking, show `eol.py check .`'s list of files committed 
 CRLF — some may need CRLF on purpose (`.eml`, `.ics` fixtures), and the fix stores
 them LF. On yes, run `python3 <root>/tools/eol.py fix <repo>` for each repo the
 tool's detail names (`Needs it: project`, `vault` or `both`), show its output and
-commit in that repo with the line it suggests (in the vault, run `vault.py sync .`
-first — it commits a regenerated `index.md` with this project's folder; the line-ending
-commit itself is plain git, outside sync's lock, so run it while no other session is
-writing there). With no vault the detail has no `Needs it:` line: fix the project. It refuses (exit 2, nothing changed) on staged work,
+commit in that repo with the line it suggests (in the vault, commit its `index.md`
+change first — `vault.py sync` never commits it; these commits are plain git, outside
+sync's lock, so make them while no other session is writing in the vault). With no vault the detail has no `Needs it:` line: fix the project. It refuses (exit 2, nothing changed) on staged work,
 real edits it would sweep in, an untracked or edited `.gitattributes`, or files
 hidden by assume-unchanged or skip-worktree: say why and leave it. Stopped partway
 (exit 2 after changing something): relay its list and undo lines word for word.
