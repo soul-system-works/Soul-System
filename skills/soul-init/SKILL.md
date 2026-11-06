@@ -107,8 +107,9 @@ or to report a problem. The tool calls already show the work.
 4. **Carry out the repairs and answers, in this order**, recording each answer with
    `python3 <root>/tools/init-status.py record . <key> <value>` (the option's
    `value`; an extras member ticked is `yes`, unticked `no`; the history scan is
-   recorded as `clean <sha12>`, `findings <sha12>`, `triaged <sha12>` or `declined`). A `no` is final
-   until `revisit`; `layout` keeps its own list. Mechanics are in the next section.
+   recorded as `clean <sha12>`, `findings <sha12>`, `triaged <sha12>` or `declined`).
+   A `no` is final until `revisit`; `layout` keeps its own list. Mechanics are in the
+   next section.
    1. **Line endings first** (a yes, or a repair), while nothing else has touched
       tracked files: `eol.py fix` refuses when tracked files have other edits.
    2. **The files:** `import` (create `CLAUDE.md`; add the line; or rewrite an import
