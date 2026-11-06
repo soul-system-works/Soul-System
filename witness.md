@@ -9532,3 +9532,36 @@ TYPE:         witness (instance; skill text)
 CONSEQUENCE:  Fourth instance of the H1 cluster; the fix is in the mining pass.
 STATUS:       Open
 ```
+
+```
+ID:           SOUL-234
+WHEN:         2026-11-06 / Soul-System session, upstream mining pass 3
+WHERE:        .ai/mining/2026-11-06-triage.md (read-only triage agent) ·
+              tools/upstream-status.py · registry/PROJECTS.txt and NAME-MAP.md
+              (private, in the vault)
+WHAT:         The Body asked for a scan of this computer for outstanding upstream
+              notes. tools/upstream-status.py reported 3 unmined; a direct scan
+              found 18 in 8 projects. Its project list was stale: 15 listed paths
+              had moved or gone, 5 projects with an upstream.md were never listed,
+              and one note sat under a `## ` heading the tool cannot count. The
+              Body: the 8 gone projects are obsolete (dropped from the list; their
+              NAME-MAP rows kept); one is on another computer; the tool should
+              read every vault record directly and the list keep only projects
+              outside the vault ("yes to vault-only scan list"). Triage of the 18:
+              FIX 12, ALREADY-DONE 4, FINDING-CANDIDATE 1, IDEA 1. The Body's
+              rulings on its questions: (1) keep the stage name `released`; skip
+              the "next stage" question for it, reword the trigger to "the first
+              release is cut", and keep version numbers out of the block — "yes";
+              (2) graduate the owner-quote note — "yes" (SOUL-F075); (3) un-park
+              SOUL-I081 for the narrow case only, `vault.py link --also <path>` —
+              "yes"; (4) /soul-handoff commits a vault-linked cursor through a
+              vault sync — "yes". Codenames REF-28 to REF-31 added for the four
+              unmapped projects (MODEL-LIB, SENSOR-BED, SUB-OS, SIM-LAB).
+TYPE:         observation
+CONSEQUENCE:  The fixes go on branch mining-2026-11; the notes are stamped once
+              the changes they cite exist. The Body also asked how a vault should
+              handle a project that lives on another computer: answered by the
+              vault itself (a pushed vault is read on any machine); whether that
+              project's record may go into the vault is the Body's open call.
+STATUS:       Open
+```

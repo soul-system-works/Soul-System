@@ -2841,7 +2841,16 @@ DISCUSSED: (2026-10-27) Clarify round — the Body confirmed all five guesses: t
            the work), or the Body wants no work material in the personal vault
            (then I081 shrinks to nothing). Next step: the Body chose to park it
            until after I080; the scan runs then.
-STATUS:    Maturing — parked until after I080 (the Body, 2026-10-27).
+STATUS:    Maturing — narrow case (`link --also`) un-parked 2026-11-06 (SOUL-234);
+           the `.ai/` half stays parked.
+ROUND 2:   (2026-11-06, mining pass 3) A first real instance: SENSOR-BED, going
+           public, moved its planning docs (docs/plans, docs/reviews, research,
+           merge notes) into the vault by a hand-made copy-compare-delete, because
+           `vault.py link` moves only `.soul/` and the root stores. The Body
+           un-parked the narrow case only ("yes", SOUL-234): `vault.py link --also
+           <path>…` moves named extra paths with the record, hash-compared, and
+           /soul-init's vault step asks once whether such paths exist. "The vault
+           holds `.ai/`" stays parked.
 ```
 
 ```
