@@ -74,11 +74,13 @@ Arguments (optional): `<since>` (a date, commit, witness id, or "this session");
    - **Cost cap:** reuse what the run wrote; at most one new visual per item. A
      read-only render or plot from saved outputs is fine; no re-runs or retraining.
 8. **Standard viewing.** Each visual has a caption (what it shows, the selection
-   rule), alt text if an image, a click to enlarge (a native `<dialog>`; no library)
-   and a link to the full-resolution original. Media ship as files, never inlined:
-   on the artifact route as the artifact's own files, which the page links to (never
-   local paths); beside a local HTML page, in a folder. (The SOUL-I083 round-2 test
-   must confirm images and original links open on the published page.) Follow the
+   rule), alt text if an image, and a click that opens it full size in a native
+   `<dialog>` (no library), scrolling when larger than the screen, with the source
+   file's path. Media ship as files, never inlined: on the artifact route as the
+   artifact's own files, which the page loads by relative path; beside a local HTML
+   page, in a folder. On the artifact route, never offer a plain link to a published
+   file: in a new tab it reopens the page, not the file (first test, 2026-11-05).
+   Show the original in the page's dialog instead. Follow the
    host's own design or data-visualisation guidance (Claude Code's artifact skills,
    for example) for layout, theme, charts and interaction.
 9. **Where the work stands, and what next.**
@@ -97,7 +99,7 @@ Arguments (optional): `<since>` (a date, commit, witness id, or "this session");
 
 10. **Publish** privately where the host allows (an artifact starts private, so
     publishing before the check is fine); else write `.ai/debriefs/<date>-<run>.html`.
-    Either way the title names project, date and run.
+    Either way the page heading names project, date and run; the host's own title rule (a short name, for example) governs the tab title.
 11. **One independent check, before the Body is told.** A fresh-context reviewer
     gets the page, the fact sheet and the source paths, not your conclusions. It
     checks for numbers that differ from the fact sheet or sources; claims with no
@@ -137,5 +139,7 @@ the fact sheet caught a wrong number that had also reached a ratified record, an
 the trial notes record 15 findings from the independent check (a caption for
 something the image did not show, overclaimed checks, questions not the owner's).
 **Status:** experimental. The draft was tried once, on CAPTURE-RIG; this slim version
-is untried. Its new parts (conclusion first, contents, fold-outs, click to enlarge,
-reading the cursor, the cost cap) are first exercised on the SOUL-I083 round-2 debrief.
+was first run on 2026-11-05, on the Sonnet half of SOUL-I083 round 2. The fact sheet
+held every number; the independent check caught 6 real defects (one a misread
+field, the rest overstated claims); links to published files failed and step 8 now
+shows originals in the page.
