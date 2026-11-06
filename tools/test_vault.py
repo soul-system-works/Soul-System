@@ -200,6 +200,12 @@ def main():
           r.stdout)
     check("no credential in project.md",
           "ghp_SECRET" not in read(os.path.join(vault, "projects", "delta", "project.md")))
+    lm = project(tmp, "local-md", {"witness.md": "# W\n", "mind.md": "# M\n",
+                                   "CLAUDE.local.md": "@~/soul/operations/CLAUDE.md\n@mind.md\n"})
+    r = run(env, "link", lm, "--key", "local-md", "--label", "private")
+    check("the Mind import in CLAUDE.local.md is repointed too (mining pass 3)",
+          r.returncode == 0 and "@.soul/mind.md" in read(os.path.join(lm, "CLAUDE.local.md")),
+          r.stdout + r.stderr)
 
     # 5 — a new machine: the clone has no record, the vault holds it → found and re-linked
     a2 = project(tmp, "alpha-clone", {"README.md": "x\n"}, remote="https://example.com/me/alpha")
