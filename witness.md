@@ -9517,3 +9517,18 @@ CONSEQUENCE:  On these four tasks the reviewed-Sonnet setup ties Opus alone on
               fresh-context count review (due with RESULT.md, after the R row).
 STATUS:       Open
 ```
+
+```
+ID:           SOUL-233
+WHEN:         2026-11-06 / Soul-System session, /soul-handoff step 2
+WHERE:        skills/soul-handoff/SKILL.md step 2 (`git check-ignore -v .soul/handoff.md`);
+              this repo's .soul is a link into the soul vault
+WHAT:         The handoff's ignore check failed here with "fatal: pathspec
+              '.soul/handoff.md' is beyond a symbolic link"; `git check-ignore -v
+              .soul` answered instead (.git/info/exclude). Three adopting projects
+              had already reported the same failure in their upstream notes
+              (mining pass 3 triage, .ai/mining/2026-11-06-triage.md, cluster H1).
+TYPE:         witness (instance; skill text)
+CONSEQUENCE:  Fourth instance of the H1 cluster; the fix is in the mining pass.
+STATUS:       Open
+```
