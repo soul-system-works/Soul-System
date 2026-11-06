@@ -3033,6 +3033,7 @@ DISCUSSED: (2026-11-05, round 1) Options: do nothing (bottom lines + /soul-expla
            there are other optoins and some debriefs may need or want some thing
            interactive. not sure what artifact skill already handles so of course
            we need to play within what is reasonable".
-STATUS:    Maturing — slim version to be built on a branch and tested on I083
-           round 2 before release (2026-11-05).
+STATUS:    Built in v3.10.0 (2026-11-06). Tested once, on the Sonnet half of I083
+           round 2 (page in .ai/debriefs/INDEX.md); the Body's fixes from that test
+           (originals open in the page, Markdown shown formatted) are in the skill.
 ```
