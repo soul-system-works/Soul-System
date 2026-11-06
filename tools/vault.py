@@ -64,7 +64,7 @@ LABELS = ("public", "private", "confidential", "restricted")
 ROOT_STORES = ("witness.md", "ideas.md", "mind.md", "upstream.md")
 # Files that may import the Mind; a root-layout move rewrites `@mind.md` in them.
 IMPORTERS = ("CLAUDE.md", os.path.join(".claude", "CLAUDE.md"), "AGENTS.md",
-             "AGENTS.override.md")
+             "AGENTS.override.md", "CLAUDE.local.md")
 CASELESS_HOSTS = ("github.com", "gitlab.com", "bitbucket.org")
 KEY_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*$")
 

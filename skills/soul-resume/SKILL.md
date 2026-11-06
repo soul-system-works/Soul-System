@@ -50,7 +50,7 @@ source of truth; this loads them and continues.
    - **Gate armed?** Check exactly what the hook checks — `_is_soul_project()` in
      `hooks/pre-completion-verify.py`, which scopes on **`witness.md` or
      `.soul/witness.md`, or a specific Soul marker in `CLAUDE.md`,
-     `.claude/CLAUDE.md`, `AGENTS.md`, or `AGENTS.override.md`**.
+     `CLAUDE.local.md`, `.claude/CLAUDE.md`, `AGENTS.md`, or `AGENTS.override.md`**.
      Nothing else counts. In particular `.soul/events.jsonl` proves only that the
      gate fired at some point in the past, NOT that it still scopes — a project that
      later deleted its `CLAUDE.md` keeps a stale event log and would report armed

@@ -29,7 +29,7 @@ Values the skill records, per key (the option `value` fields in QUESTIONS):
   import add|leave · vault-link link (recorded after linking; "Not now" is not
   recorded) · sidecar move|keep (move recorded after linking) · record git|local|vault ·
   public yes|no · names none|listed · hand-hooks yes|no ·
-  history-scan `clean <sha12>`|`findings <sha12>`|declined ·
+  history-scan `clean <sha12>`|`findings <sha12>`|`triaged <sha12>`|declined ·
   stage prototype|pre-release|released|not-now · line-endings yes|no ·
   existing-store use|no.  `layout` keeps its own list (.soul/layout.json); `mind` has
   no answer, only a repair. An extras question with one member is yes|no; the skill
@@ -61,7 +61,10 @@ HEADER = ("# /soul-init's remembered answers (tools/init-status.py).\n"
 KEYS = ("import", "vault-link", "sidecar", "record", "public", "names", "hand-hooks",
         "history-scan", "stage", "layout", "line-endings", "mind", "existing-store")
 RECORDABLE = tuple(k for k in KEYS if k not in ("layout", "mind"))
-IMPORTERS = ("CLAUDE.md", os.path.join(".claude", "CLAUDE.md"), "AGENTS.md")
+# CLAUDE.local.md: the gitignored local file; a project going public keeps its wiring
+# there, and /soul-init then writes there, never into a tracked CLAUDE.md (mining pass 3,
+# SOUL-234; tools/dispatch.py already read it).
+IMPORTERS = ("CLAUDE.md", os.path.join(".claude", "CLAUDE.md"), "AGENTS.md", "CLAUDE.local.md")
 STORES = ("witness.md", "ideas.md")
 HOOKS = ("pre-commit", "commit-msg", "pre-push")
 HOOK_MARK = "Soul System secret check"
@@ -78,6 +81,41 @@ IMPORT_RE = re.compile(r"^\s*(?:-\s+)?@(\S+)\s*$")
 STAGE_RE = re.compile(r"^\*\*Stage:\s*([A-Za-z][\w-]*)")
 PHASE_RE = re.compile(r"^\*\*Phase:")
 GUARD_RE = re.compile(r'^\s*guard="([^"]*)"', re.M)
+# Every line /soul-init's hand-hook template has held (v2.10.0, then v3.11.0's, which
+# reads git's input once and runs `git lfs pre-push`), stripped; <root> and <hook> match
+# anything. A Soul hook holding any other line was merged by hand: its repair rewrites
+# only the `guard=` line and keeps the rest (mining pass 3, SOUL-234). test_init_status.py
+# checks the skill's current template against this list.
+HAND_TEMPLATE_LINES = (
+    '#!/bin/sh',
+    '# Soul System secret check (<hook>), installed by /soul-init (operations/secret-guard.md).',
+    'guard="<root>/hooks/secret-guard.py"',
+    'in=',
+    '[ "<hook>" = pre-push ] && in=$(cat; echo .) && in=${in%.}',
+    'if [ ! -f "$guard" ] || ! command -v python3 >/dev/null 2>&1; then',
+    'echo "Soul secret check NOT running — plugin path missing; re-run /soul-init to repair '
+    'the hook" >&2',
+    'exit 0', 'fi', 'else',
+    'python3 "$guard" --hand-hook <hook> "$@"',
+    'printf \'%s\' "$in" | python3 "$guard" --hand-hook <hook> "$@"',
+    'rc=$?',
+    '[ "$rc" -eq 3 ] && exit 1',
+    '[ "$rc" -ne 0 ] && echo "Soul secret guard failed (exit $rc) — this git <hook> was NOT '
+    'checked" >&2',
+    'if [ "<hook>" = pre-push ] && command -v git-lfs >/dev/null 2>&1; then',
+    'case $(cat .gitattributes 2>/dev/null) in',
+    '*filter=lfs*) printf \'%s\' "$in" | git lfs pre-push "$@" || exit $? ;;',
+    'esac',
+)
+_HAND_RES = tuple(re.compile("^" + re.escape(t).replace(re.escape("<root>"), ".+")
+                             .replace(re.escape("<hook>"), "[a-z-]+") + "$")
+                  for t in HAND_TEMPLATE_LINES)
+
+
+def hand_hook_extras(text):
+    """The lines of a Soul hand hook that no template version holds (a hand merge)."""
+    return [ln.strip() for ln in text.splitlines()
+            if ln.strip() and not any(r.match(ln.strip()) for r in _HAND_RES)]
 # Folders the existing-store walk never enters (any folder starting "." is skipped too).
 WALK_SKIP = ("node_modules", "venv")
 WALK_DEPTH = 4
@@ -314,7 +352,10 @@ VALUES = {
     "stage": ("prototype", "pre-release", "released", "not-now"),
     "line-endings": ("yes", "no"), "existing-store": ("use", "no"),
 }
-SCAN_RE = re.compile(r"^(clean|findings) [0-9a-f]{7,40}$|^declined$")
+# `triaged <sha>`: every hit was read and none is a real secret. Without it a scan whose
+# only hit was a false match stayed "findings", and a later session told the owner the
+# history held possible leaked secrets (mining pass 3, SOUL-234).
+SCAN_RE = re.compile(r"^(clean|findings|triaged) [0-9a-f]{7,40}$|^declined$")
 
 
 def record(project, key, value):
@@ -326,7 +367,8 @@ def record(project, key, value):
     if key == "history-scan" and value == "no":  # the one-member Yes/No question's "No"
         value = "declined"
     if key == "history-scan" and not SCAN_RE.match(value):
-        raise InitError("history-scan takes `clean <sha>`, `findings <sha>` or `declined`")
+        raise InitError("history-scan takes `clean <sha>`, `findings <sha>`, `triaged <sha>` "
+                        "or `declined`")
     if key in VALUES and value not in VALUES[key]:
         raise InitError("{} takes one of: {} (a vault-link \"Not now\" is not recorded — "
                         "it stays a pending question)".format(key, ", ".join(VALUES[key]))
@@ -658,16 +700,21 @@ def check_hand_hooks(c):
     d = r.stdout.strip() if r is not None and r.returncode == 0 else ""
     if not d:
         return _item("hand-hooks", detail="Could not find this repo's own hooks folder.")
-    soul, foreign, free, dead = [], [], [], []
+    soul, foreign, free, dead, merged, no_lfs = [], [], [], [], [], []
+    attrs = _read(os.path.join(c["top"] or c["project"], ".gitattributes")) or ""
+    uses_lfs = "filter=lfs" in attrs and shutil.which("git-lfs")
     for h in HOOKS:
         text = _read(os.path.join(d, h))
         if text is None:
             free.append(h)
         elif HOOK_MARK in text:
             soul.append(h)
+            extra = hand_hook_extras(text)
             g = GUARD_RE.search(text)  # a pinned plugin path dies at the next update
             if g and not os.path.isfile(os.path.expanduser(g.group(1))):
-                dead.append(h)
+                (merged if extra else dead).append(h)
+            elif h == "pre-push" and uses_lfs and not extra and "git lfs pre-push" not in text:
+                no_lfs.append(h)  # LFS was installed after this hook took its slot
         else:
             who = "git-lfs" if re.search(r"git[ -]lfs", text) else "another tool"
             foreign.append("{} is held by {}, so hand {} are not checked at that step.".format(
@@ -685,6 +732,14 @@ def check_hand_hooks(c):
         if dead:
             fix.append("Soul hook(s) {} point at a missing plugin path — rewrite them with the "
                        "current root (skill: hand-hooks).".format(", ".join(dead)))
+        if merged:
+            fix.append("Soul hook(s) {} point at a missing plugin path and also hold lines "
+                       "merged by hand — rewrite only the guard= line and keep the rest "
+                       "(skill: hand-hooks).".format(", ".join(merged)))
+        if no_lfs:
+            fix.append("The Soul pre-push does not run `git lfs pre-push` and this repo uses "
+                       "Git LFS, so hand pushes skip the LFS upload — rewrite it with the "
+                       "current template (skill: hand-hooks).")
         if fix:
             return _item("hand-hooks", "repair", "yes", src[1], src[0], " ".join(fix) + held)
         return _item("hand-hooks", "none", "yes", src[1], src[0],
@@ -725,7 +780,7 @@ def check_history_scan(c):
         sha = sha.strip()
         if word == "declined":
             return _recorded("history-scan", rec, detail="You declined the history scan.")
-        if word in ("clean", "findings") and sha:
+        if word in ("clean", "findings", "triaged") and sha:
             # Offered once (the owner, 2026-10-26, v3.6.1): re-offering after every new
             # commit asked on almost every run of an active repo, and the secret guard
             # already checks each new commit as it is made. `--ask history-scan` (or
@@ -733,8 +788,9 @@ def check_history_scan(c):
             n = _commits_since(p, sha)
             since = ("; {} commit(s) since — `/soul-init revisit history-scan` scans "
                      "again".format(n) if n else "")
-            return _recorded("history-scan", rec, detail="Scanned at {} ({}){}.".format(
-                sha, word, since))
+            how = ": hits checked, none real" if word == "triaged" else " ({})".format(word)
+            return _recorded("history-scan", rec, detail="Scanned at {}{}{}.".format(
+                sha, how, since))
         else:
             stale = "The recorded value {!r} is not understood.".format(rec[0])
     value, date, src = (rec[0], rec[1], "recorded") if rec else (None, None, "none")
@@ -746,7 +802,8 @@ def check_history_scan(c):
 
 def check_stage(c):
     # Every instruction file: /soul-stage writes root CLAUDE.md (AGENTS.md in a Codex-only
-    # project), which need not be the file holding the import.
+    # project; CLAUDE.local.md when the wiring is there), which need not be the file
+    # holding the import.
     p = c["project"]
     phase = None
     for f in IMPORTERS:
@@ -765,7 +822,8 @@ def check_stage(c):
                          "you choose (/soul-stage)." + note)
     if rec:
         return _item("stage", "ask", rec[0], rec[1], "recorded", "Recorded {}, but no "
-                     "**Stage:** line is in CLAUDE.md, .claude/CLAUDE.md or AGENTS.md."
+                     "**Stage:** line is in CLAUDE.md, .claude/CLAUDE.md, AGENTS.md or "
+                     "CLAUDE.local.md."
                      .format(rec[0]) + note)
     return _item("stage", "ask", detail="No **Stage:** line; treated as released." + note)
 

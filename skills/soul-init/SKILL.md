@@ -107,7 +107,7 @@ or to report a problem. The tool calls already show the work.
 4. **Carry out the repairs and answers, in this order**, recording each answer with
    `python3 <root>/tools/init-status.py record . <key> <value>` (the option's
    `value`; an extras member ticked is `yes`, unticked `no`; the history scan is
-   recorded as `clean <sha12>`, `findings <sha12>` or `declined`). A `no` is final
+   recorded as `clean <sha12>`, `findings <sha12>`, `triaged <sha12>` or `declined`). A `no` is final
    until `revisit`; `layout` keeps its own list. Mechanics are in the next section.
    1. **Line endings first** (a yes, or a repair), while nothing else has touched
       tracked files: `eol.py fix` refuses when tracked files have other edits.
@@ -115,7 +115,7 @@ or to report a problem. The tool calls already show the work.
       whose path no longer exists — e.g. a plugin version folder an update removed —
       to `<root>`), `existing-store`, `record` (the scaffold and `.gitignore` lines,
       or the fix a disagreeing record's detail names), `mind`, `hand-hooks` (install
-      the missing ones; rewrite a Soul hook whose plugin path is gone), the `names`
+      the missing ones; repair a Soul hook as its detail says), the `names`
       file.
    3. **`stage`**, after the record exists (it ends in a witness entry).
    4. **The vault move**, if that was the answer, so the stage entry and the names
@@ -165,6 +165,9 @@ without it is the owner's file: on *Add it*, put the line at the top and change
 nothing else; *Leave it* writes nothing. The wording is plain by default and the
 contract carries that default, so nothing else is written (the `fluent` register
 was dropped in v3.6.0, SOUL-A030).
+**Wiring in `CLAUDE.local.md`** (the gitignored local file; status names it as the
+importer): write the Mind import and the Stage block there too, never into a tracked
+`CLAUDE.md` — in a repo going public that would publish them (mining pass 3, SOUL-234).
 
 **`record`** — where the record lives; `.gitignore` lines to match:
 - *git*: ignore only the volatile runtime state, never the record —
@@ -278,27 +281,43 @@ hooks`, which inside a session answers the plugin's own wrapper directory). Neve
 overwrite an existing hook — it belongs to the owner or another tool (git-lfs,
 carried by five adopting projects, installs `pre-push`); say which was skipped and
 that hand commits or pushes are not checked at that step. The exception is a hook
-carrying the Soul marker line below whose plugin path no longer exists: it is
-Soul's own, so rewrite it with the current `<root>`. Otherwise write it
-executable, `<hook>` replaced in all three places. It fails open, loudly, when the
-plugin path is gone, and stays quiet when a session's wrapper already ran the check:
+carrying the Soul marker line below: it is Soul's own. Repair it as the status detail
+says — a hook of only the template's lines is rewritten whole with the current
+`<root>`; a hook merged by hand with other lines (e.g. `git lfs pre-push`) gets only
+its `guard=` line rewritten, and the other lines are kept and named in one line. A
+whole rewrite there would drop the merged LFS upload (mining pass 3, SOUL-234).
+Otherwise write it executable, every `<hook>` replaced. It fails open, loudly, when
+the plugin path is gone, and stays quiet when a session's wrapper already ran the
+check. A `pre-push` reads git's input once and, after the guard, runs `git lfs
+pre-push` when git-lfs is installed and `.gitattributes` names `filter=lfs`: LFS
+cannot install its own hook while this one holds the slot:
 ```sh
 #!/bin/sh
 # Soul System secret check (<hook>), installed by /soul-init (operations/secret-guard.md).
 guard="<root>/hooks/secret-guard.py"
+in=
+[ "<hook>" = pre-push ] && in=$(cat; echo .) && in=${in%.}
 if [ ! -f "$guard" ] || ! command -v python3 >/dev/null 2>&1; then
   echo "Soul secret check NOT running — plugin path missing; re-run /soul-init to repair the hook" >&2
-  exit 0
+else
+  printf '%s' "$in" | python3 "$guard" --hand-hook <hook> "$@"
+  rc=$?
+  [ "$rc" -eq 3 ] && exit 1
+  [ "$rc" -ne 0 ] && echo "Soul secret guard failed (exit $rc) — this git <hook> was NOT checked" >&2
 fi
-python3 "$guard" --hand-hook <hook> "$@"
-rc=$?
-[ "$rc" -eq 3 ] && exit 1
-[ "$rc" -ne 0 ] && echo "Soul secret guard failed (exit $rc) — this git <hook> was NOT checked" >&2
+if [ "<hook>" = pre-push ] && command -v git-lfs >/dev/null 2>&1; then
+  case $(cat .gitattributes 2>/dev/null) in
+  *filter=lfs*) printf '%s' "$in" | git lfs pre-push "$@" || exit $? ;;
+  esac
+fi
 exit 0
 ```
 
 **`history-scan`** — `gitleaks git --redact --no-banner`, results to the owner,
-then record `clean <sha12>` or `findings <sha12>` (HEAD's first 12 characters). It is
+then record `clean <sha12>` or `findings <sha12>` (HEAD's first 12 characters).
+Record `triaged <sha12>` only after each hit was read and none is a real secret
+(status shows "hits checked, none real"); a false match left as `findings` was later
+read to the owner as possible leaked secrets (mining pass 3, SOUL-234). It is
 offered once; `/soul-init revisit history-scan` runs it again. The secret guard checks
 each new commit as it is made, so the one scan covers what came before the guard
 (the owner chose this over re-offering after every commit, 2026-10-26, v3.6.1). Rewrite nothing: a found credential is
@@ -327,7 +346,10 @@ material (plans, handoffs, reviews, scratch, stray `.soul/` files), never code,
 tests, user docs or ADRs. On *Review*, show its grouped dry run and ask per group:
 *move to `.ai/`* / *leave* / *it is project content*. Write the answers to a plan
 file outside the project (`{"<path>": "move|leave|content"}`, paths from `scan
---json`), run `apply <project> --plan <file> --dry-run`, then `apply`. A file that
+--json`), run `apply <project> --plan <file> --dry-run`, then `apply`. `apply` adds
+`.ai/` to `.git/info/exclude` when git does not ignore it and says so — relay that line;
+a moved working file left unignored is one `git add -A` from a commit, in a public repo
+from publication (mining pass 3, SOUL-234). A file that
 project content links to is usually project content — put it to the owner on its own
 first, since project content must never link into `.ai/`. Any "project content now
 links into .ai/" line `apply` still prints is an open gap — report it: drop the link
@@ -356,7 +378,7 @@ eol issues after it checks and then fixes it. so i am trying to preempt it."
 **`mind`** (repair) — a `mind.md` that nothing imports does nothing (one adopting
 project carried a 164-line Mind no file imported). Add the import directly after the
 contract import, **relative to the file the line goes into**: from a root
-`CLAUDE.md`, `@.soul/mind.md` or `@mind.md`; from `.claude/CLAUDE.md`,
+`CLAUDE.md` or `CLAUDE.local.md`, `@.soul/mind.md` or `@mind.md`; from `.claude/CLAUDE.md`,
 `@../.soul/mind.md` or `@../mind.md`. A fixed `@.soul/mind.md` once pointed at
 `.claude/.soul/mind.md` and MODEL-TEST's Mind went unloaded (SOUL-202).
 

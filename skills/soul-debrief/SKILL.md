@@ -25,6 +25,10 @@ Arguments (optional): `<since>` (a date, commit, witness id, or "this session");
    run's start if the run ended with `/soul-handoff`). None (a fresh clone): ask the
    Body for `<since>`; do not guess. State the scope as commit and time ranges. An
    empty scope from the first three gets one line and no page; from the cursor, ask.
+   **`.ai/` ignored first**, before any file is written there (`INDEX.md` too): run
+   `git check-ignore -q .ai/x`; if it is not ignored, add `.ai/` to
+   `.git/info/exclude` (as `tools/dispatch.py` does) and say so in one line. In a
+   public repo, write nothing there until it is ignored (mining pass 3, SOUL-234).
 2. **Gather the sources**, most trusted first: the files the run wrote (results,
    metrics, logs, images, the code at its commits); records added in scope (witness,
    ideas, plan changes, `git log <range>`); the decisions log at

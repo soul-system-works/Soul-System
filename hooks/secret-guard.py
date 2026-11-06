@@ -1224,7 +1224,8 @@ def stable_dir(data_dir=None):
     return os.path.join(os.path.expanduser("~"), ".claude", name)
 
 
-# The wrapper uses shell builtins, git, and `cat` for pre-push only (one linear read
+# The wrapper uses shell builtins, git (and git-lfs, for a repo with no hook of its own),
+# and `cat` for pre-push only (one linear read
 # of git's ref lines, which go to the guard and then to the chained hook). Every other
 # hook execs the chained one with stdin untouched (proc-receive speaks a protocol on
 # it). Line 2 marks the file as owned: install() may replace or remove only such
@@ -1303,6 +1304,29 @@ SOUL_REFS
     exec "$orig/$hook" "$@"
   fi
 fi
+# No hook of the repo's own ran. Git LFS cannot install its hooks while this read-only
+# dir is the hooks path, so a push would skip the upload: when git-lfs is installed and
+# .gitattributes names filter=lfs, run what LFS's own hook runs (mining pass 3, SOUL-234).
+case " pre-push post-checkout post-commit post-merge " in
+*" $hook "*)
+  if command -v git-lfs >/dev/null 2>&1 && [ -f .gitattributes ]; then
+    lfs=
+    while IFS= read -r l || [ -n "$l" ]; do
+      case $l in *filter=lfs*) lfs=1; break ;; esac
+    done < .gitattributes
+    if [ -n "$lfs" ]; then
+      if [ "$hook" = pre-push ]; then
+        [ -z "$refs" ] && exec git lfs pre-push "$@" </dev/null
+        refs=${refs%?}
+        exec git lfs pre-push "$@" <<SOUL_REFS
+$refs
+SOUL_REFS
+      fi
+      exec git lfs "$hook" "$@"
+    fi
+  fi
+  ;;
+esac
 exit 0
 """
 

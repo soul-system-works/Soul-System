@@ -178,6 +178,15 @@ def main():
               os.path.exists(os.path.join(repo, ".ai/scratch/notes.txt"))
               and not os.path.exists(os.path.join(repo, "scratch/notes.txt")))
         check(".ai/README.md created", os.path.exists(os.path.join(repo, ".ai/README.md")))
+        check(".ai/ added to .git/info/exclude, said once",
+              ".ai/" in read(repo, ".git/info/exclude").splitlines()
+              and out.stdout.count("add .ai/ to .git/info/exclude") == 1
+              and git(repo, "check-ignore", "-q", ".ai/scratch/notes.txt").returncode == 0,
+              out.stdout)
+        check("moved untracked files are not left for `git add -A`",
+              not [l for l in git(repo, "status", "--porcelain").stdout.splitlines()
+                   if l.startswith("??") and ".ai/" in l],
+              git(repo, "status", "--porcelain").stdout)
         check("README link repointed into .ai/",
               "(.ai/plans/feature-x.md)" in read(repo, "README.md"), read(repo, "README.md"))
         check("README link fix reported",
@@ -224,6 +233,16 @@ def main():
         check("dry run changes nothing", tree_hash(repo3) == h and out3.returncode == 0)
         check("dry run reports the link it would repoint",
               "project content now links into .ai/: README.md" in out3.stdout, out3.stdout)
+        check("dry run says it would add .ai/ to the exclude, and does not",
+              "add .ai/ to .git/info/exclude" in out3.stdout
+              and ".ai/" not in read(repo3, ".git/info/exclude").splitlines(), out3.stdout)
+        repo4 = fixture(tmp, "ignored")
+        with open(os.path.join(repo4, ".gitignore"), "w") as fh:
+            fh.write(".ai/\n")
+        out4 = run("apply", repo4, "--plan", plan_file)
+        check("already ignored: no exclude line added",
+              out4.returncode == 0 and "exclude" not in out4.stdout
+              and ".ai/" not in read(repo4, ".git/info/exclude").splitlines(), out4.stdout)
 
         # 6. Edge cases from fresh-context review (each failed before its fix).
         edge = edge_fixture(tmp)

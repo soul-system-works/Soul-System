@@ -25,6 +25,9 @@ nothing about the completion gate or the record's rules.
 **Where it writes.** The project's `CLAUDE.md` in the directory the session started
 in — never the Soul System source repo (unless the session is running in that repo,
 whose own `CLAUDE.md` is then the target, the same exception `/soul-capture` makes).
+When the Soul wiring (the contract import) is in `CLAUDE.local.md` — the gitignored
+local file — the block goes there instead, never into a tracked public `CLAUDE.md`
+(mining pass 3, SOUL-234).
 The block goes directly under the `**Register:**` line if there is one, otherwise
 directly under the `@` import lines. One block per file. A nested `CLAUDE.md` — a
 sub-deliverable with a different stage, such as a library living inside a larger
@@ -54,7 +57,9 @@ first option of each is *Keep: <the current answer>*. Then ask the additions as 
 plain line of prose — "Anything to change or add? Say none, or type it" (quoting the
 current additions if a block exists) — because a one-option prompt is not allowed and
 a chosen label carries no text. Skip question 1 for prototype; for released, *Nothing*
-and *Not sure yet* are both refused — ask again for the list. Fall back to the prose
+and *Not sure yet* are both refused — ask again for the list. Skip question 2 for
+released: it is the last stage, so there is no next one to name (mining pass 3,
+SOUL-234 — a released project was asked it, and both suggestions had already happened). Fall back to the prose
 screen below only when the prompt is unavailable (a `claude -p` run). Never draft the
 owner's answers for them beyond the preset's defaults — the first live run pre-filled
 question 1 with a paragraph of this repo's internals, the opposite of approachable (the
@@ -74,7 +79,7 @@ the argument — show the chosen one with its description, do not re-ask it.
 >
 > **2. What would tell you it has moved on to the next stage?** One line, e.g.
 > "first outside user", "the v1.0 tag", "we start depending on it from project X".
-> *(optional)*
+> *(optional; skipped for released — it is the last stage)*
 >
 > **Anything to change or add?** *(optional — recorded as your additions)*
 
@@ -139,20 +144,23 @@ under about fifteen lines; it is always-on text for every session in the project
 - Next stage when: a consumer beyond the viewer appears.
 - Owner's additions: none.
 - Propose `/soul-stage` if something outside this project starts relying on it,
-  a release is cut, a rule above is about to be overridden, or you find yourself
+  the first release is cut, a rule above is about to be overridden, or you find yourself
   adding a deprecation path, alias or shim — one sentence, then wait; only the
   owner changes the stage.
 The contract's rules and the completion gate apply unchanged.
 ```
 
 For `prototype` the "Relied on from outside" line reads `nothing — nothing is
-promised`. The last bullet is where the model's proposal triggers live: this skill
+promised`. For `released` the "Next stage when" line reads `none — released is the
+last stage`, and the trigger line leaves out "the first release is cut" (a version tag
+in a released project fired it, mining pass 3, SOUL-234). The block holds no version
+numbers: "already released (v1.0)" goes stale at the next release. The last bullet is where the model's proposal triggers live: this skill
 is invisible to the model by design, so the always-on block has to carry them.
 
 ## What to do
 
-1. **Find the existing block.** Read `CLAUDE.md` in the directory the session
-   started in (do not search upward). The block runs from a line starting `**Stage:` through the line
+1. **Find the existing block.** Read `CLAUDE.md` (or `CLAUDE.local.md`, per *Where it
+   writes*) in the directory the session started in (do not search upward). The block runs from a line starting `**Stage:` through the line
    `The contract's rules and the completion gate apply unchanged.` A line starting
    `**Phase:` from before this skill existed counts as the header of a hand-written
    block. What that block covers is only: the Phase paragraph itself, plus any later
@@ -218,8 +226,8 @@ is invisible to the model by design, so the always-on block has to carry them.
    A refresh that changes neither the stage nor an answer writes no entry. Show
    the draft; append on go.
 6. **Report:** the file and what changed; that the rules apply from the *next*
-   session (this one loaded `CLAUDE.md` at start); and that `/soul-next` will show
-   the exit trigger from now on.
+   session (this one loaded `CLAUDE.md` at start); and, except for released, that
+   `/soul-next` will show the exit trigger from now on.
 
 ## What not to do
 

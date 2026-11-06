@@ -257,6 +257,25 @@ def tracked(project, path):
     return r.returncode == 0 and bool(r.stdout.strip())
 
 
+def ai_ignored(project):
+    return git(project, "check-ignore", "-q", ".ai/x").returncode == 0
+
+
+def ignore_ai(project):
+    """Add `.ai/` to .git/info/exclude (local, never the tracked .gitignore), as
+    tools/dispatch.py does. A moved working file left neither ignored nor tracked is one
+    `git add -A` from a commit — in a public repo, from publication (mining pass 3,
+    SOUL-234). Tracked files moved with `git mv` stay tracked."""
+    path = git(project, "rev-parse", "--git-path", "info/exclude").stdout.strip()
+    if not path:
+        return
+    path = os.path.join(project, path) if not os.path.isabs(path) else path
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    text = open(path, encoding="utf-8").read() if os.path.exists(path) else ""
+    with open(path, "a", encoding="utf-8") as f:
+        f.write(("" if not text or text.endswith("\n") else "\n") + ".ai/\n")
+
+
 # --- links -------------------------------------------------------------------
 
 def remap(path, moves):
@@ -391,6 +410,9 @@ def apply(project, plan, dry_run):
     for src, dst in sorted(moves.items()):
         how = "git mv" if use_git and tracked(project, src) else "move"
         actions.append("{} {} -> {}".format(how, src, dst))
+    exclude = bool(moves) and use_git and not ai_ignored(project)
+    if exclude:
+        actions.append("add .ai/ to .git/info/exclude (git did not ignore it)")
     if moves and not os.path.exists(readme):
         actions.append("create .ai/README.md")
     for _, new_file, _, changes in fixes:
@@ -407,6 +429,8 @@ def apply(project, plan, dry_run):
     if dry_run:
         return 0
 
+    if exclude:
+        ignore_ai(project)
     for src, dst in sorted(moves.items()):
         full_src, full_dst = os.path.join(project, src), os.path.join(project, dst)
         os.makedirs(os.path.dirname(full_dst), exist_ok=True)

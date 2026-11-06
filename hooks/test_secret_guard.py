@@ -1178,8 +1178,62 @@ def main():
             rc, out, _ = sh(E, r36, "git push -q origin main")
             uploaded = [f for _, _, fs in os.walk(os.path.join(bare36, "lfs")) for f in fs]
             check(rc == 0 and len(uploaded) == 1, f"LFS: the chained git-lfs pre-push uploaded {uploaded!r}: {out!r}")
+            # 36b. No LFS hook of the repo's own (LFS cannot write one inside a session):
+            # the wrapper runs `git lfs pre-push` itself, so the object still uploads.
+            # Reproduced before the fix: the push passed and the remote held 0 objects
+            # (mining pass 3, SOUL-234).
+            r36b = make_repo(tmp, "r36b")
+            plain_git(r36b, "lfs", "install", "--local", "--skip-repo")
+            plain_git(r36b, "lfs", "track", "*.bin")
+            write(r36b, "d.bin", "lfs payload with no repo hook\n")
+            plain_git(r36b, "add", ".gitattributes", "d.bin")
+            plain_git(r36b, "commit", "-qm", "lfs object")
+            bare36b = os.path.join(tmp, "remote36b.git")
+            subprocess.run(["git", "init", "-q", "--bare", bare36b], check=True)
+            plain_git(r36b, "remote", "set-url", "origin", bare36b)
+            for hk in ("pre-push", "post-checkout", "post-commit", "post-merge"):
+                rm(os.path.join(r36b, ".git", "hooks", hk))  # `git lfs track` wrote them here
+            check(not os.path.exists(os.path.join(r36b, ".git", "hooks", "pre-push")),
+                  "LFS: fixture — the repo has its own pre-push")
+            rc, out, _ = sh(E, r36b, "git push -q origin main")
+            uploaded = [f for _, _, fs in os.walk(os.path.join(bare36b, "lfs")) for f in fs]
+            check(rc == 0 and len(uploaded) == 1,
+                  f"LFS: with no repo hook, the wrapper's git lfs pre-push uploaded {uploaded!r}: {out!r}")
         else:
-            print("SKIP  git-lfs not installed — the real-lfs case did not run")
+            print("SKIP  git-lfs not installed — the real-lfs cases did not run")
+
+        # 36c. The same with a stub git-lfs (runs where git-lfs is absent too): it gets the
+        # hook's name, arguments and git's ref lines; post-commit is chained; a repo with no
+        # filter=lfs never calls it, and neither does one with its own hook.
+        lfs_stub_log = os.path.join(tmp, "lfs-stub.log")
+        stub = _bin(tmp, "lfs-stub", {"git-lfs": ("script", (
+            f'#!/bin/sh\necho "ARGS:$*" >> "{lfs_stub_log}"\n'
+            f'while IFS= read -r l; do echo "IN:$l" >> "{lfs_stub_log}"; done\nexit 0\n'))})
+        stub_path = stub + os.pathsep + E.env()["PATH"]
+        for name, attrs in (("r36c", "*.bin filter=lfs diff=lfs merge=lfs -text\n"), ("r36d", "*.txt text\n")):
+            r = make_repo(tmp, name)
+            write(r, ".gitattributes", attrs)
+            plain_git(r, "add", ".gitattributes")
+            plain_git(r, "commit", "-qm", "attrs")
+            bare = os.path.join(tmp, name + ".git")
+            subprocess.run(["git", "init", "-q", "--bare", bare], check=True)
+            plain_git(r, "remote", "set-url", "origin", bare)
+            rm(lfs_stub_log)
+            rc, out, _ = sh(E, r, "git commit -q --allow-empty -m c && git push -q origin main", PATH=stub_path)
+            log = slurp(lfs_stub_log)
+            if name == "r36c":
+                check(rc == 0 and "ARGS:post-commit" in log and f"ARGS:pre-push origin {bare}" in log
+                      and f"IN:refs/heads/main {head(r)} refs/heads/main " in log,
+                      f"LFS: the stub git-lfs did not get the hook, its args and the ref line: {log!r} {out!r}")
+                recorder(os.path.join(r, ".git", "hooks", "pre-push"), os.path.join(tmp, "own36c.log"))
+                rm(lfs_stub_log)
+                rc, out, _ = sh(E, r, "git commit -q --allow-empty -m d && git push -q origin main",
+                                PATH=stub_path)
+                check(rc == 0 and "pre-push" not in slurp(lfs_stub_log)
+                      and "ARGS:origin" in slurp(os.path.join(tmp, "own36c.log")),
+                      f"LFS: with the repo's own pre-push, the wrapper still called git lfs: {slurp(lfs_stub_log)!r}")
+            else:
+                check(rc == 0 and log == "", f"LFS: a repo with no filter=lfs called git lfs: {log!r}")
 
         # 20. /soul-init's hand-commit hooks: block without a session, fail open loudly when the
         # plugin is gone, and do not run twice when the session's wrapper chains to them.
@@ -1280,6 +1334,60 @@ def main():
             rc, out, _ = sh(E, r20, "git push -q origin main")
             check(rc == 0 and out.count("private names in what this") == 1,
                   f"DOUBLE: the pre-push wrapper and the hand pre-push both ran the check: {out!r}")
+
+            # 20b. Git LFS added after the hand hooks (it cannot install its pre-push then):
+            # the hand pre-push reads git's input once and runs `git lfs pre-push` after
+            # the guard (mining pass 3, SOUL-234). A stub git-lfs gets the ref line; a
+            # credential still blocks before it runs; with real git-lfs the object uploads.
+            def hand_lfs(name):
+                r = make_repo(tmp, name)
+                for hk in ("pre-commit", "commit-msg", "pre-push"):
+                    write(os.path.join(r, ".git", "hooks"), hk, body.replace(
+                        "<root>", os.path.dirname(_HERE)).replace("<hook>", hk))
+                    os.chmod(os.path.join(r, ".git", "hooks", hk), 0o755)
+                bare = os.path.join(tmp, name + ".git")
+                subprocess.run(["git", "init", "-q", "--bare", bare], check=True)
+                plain_git(r, "remote", "set-url", "origin", bare)
+                return r, bare
+            r20b, bare20b = hand_lfs("r20b")
+            write(r20b, ".gitattributes", "*.bin filter=lfs diff=lfs merge=lfs -text\n")
+            plain_git(r20b, "add", ".gitattributes")
+            plain_git(r20b, "commit", "-qm", "attrs")
+            hand_log = os.path.join(tmp, "hand-lfs.log")
+            hstub = _bin(tmp, "hand-lfs-stub", {"git-lfs": ("script", (
+                f'#!/bin/sh\necho "ARGS:$*" >> "{hand_log}"\n'
+                f'while IFS= read -r l; do echo "IN:$l" >> "{hand_log}"; done\nexit 0\n'))})
+            henv = E.env(PATH=hstub + os.pathsep + E.env()["PATH"])
+            res = subprocess.run(["git", "-C", r20b, "push", "-q", "origin", "main"],
+                                 capture_output=True, text=True, env=henv)
+            OUTPUTS.append(res.stdout + res.stderr)
+            check(res.returncode == 0 and f"ARGS:pre-push origin {bare20b}" in slurp(hand_log)
+                  and f"IN:refs/heads/main {head(r20b)} refs/heads/main " in slurp(hand_log),
+                  f"HAND-LFS: the hand pre-push did not pass the ref line to git lfs: {slurp(hand_log)!r} {res.stderr!r}")
+            rm(hand_log)
+            plain_git(r20b, "commit", "-q", "--no-verify", "--allow-empty", "-m", f"by hand: key {FAKE_AWS}")
+            res = subprocess.run(["git", "-C", r20b, "push", "-q", "origin", "main"],
+                                 capture_output=True, text=True, env=henv)
+            OUTPUTS.append(res.stdout + res.stderr)
+            check(res.returncode != 0 and "BLOCKED" in res.stderr and not os.path.exists(hand_log),
+                  f"HAND-LFS: a credential did not block before git lfs ran: {res.stderr!r}")
+            if shutil.which("git-lfs"):
+                r20c, bare20c = hand_lfs("r20c")
+                plain_git(r20c, "lfs", "install", "--local", "--skip-repo")
+                plain_git(r20c, "lfs", "track", "*.bin")
+                write(r20c, "d.bin", "lfs payload behind a hand hook\n")
+                plain_git(r20c, "add", ".gitattributes", "d.bin")
+                plain_git(r20c, "commit", "-qm", "lfs object")
+                for hk in ("post-checkout", "post-commit", "post-merge"):
+                    rm(os.path.join(r20c, ".git", "hooks", hk))
+                check("Soul System secret check" in slurp(os.path.join(r20c, ".git", "hooks", "pre-push")),
+                      "HAND-LFS: fixture — git lfs replaced the Soul pre-push")
+                res = subprocess.run(["git", "-C", r20c, "push", "-q", "origin", "main"],
+                                     capture_output=True, text=True, env=E.env())
+                OUTPUTS.append(res.stdout + res.stderr)
+                uploaded = [f for _, _, fs in os.walk(os.path.join(bare20c, "lfs")) for f in fs]
+                check(res.returncode == 0 and len(uploaded) == 1,
+                      f"HAND-LFS: the hand pre-push uploaded {uploaded!r}: {res.stderr!r}")
 
     # 21. No secret value in any output; this file carries no detectable credential.
     joined = "\n".join(OUTPUTS)

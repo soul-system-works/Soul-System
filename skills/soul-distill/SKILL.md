@@ -266,7 +266,10 @@ Then the signal is the first accumulation that would fill one (see /soul-init's
    **Write the draft to `.ai/`, never in place** — e.g.
    `.ai/distill/mind-draft-<date>.md`. `mind.md` is imported, so a draft written
    into it is live next session whether or not anyone commits (NAV-TOOL,
-   SOUL-202); it replaces `mind.md` only on the Body's yes.
+   SOUL-202); it replaces `mind.md` only on the Body's yes. **`.ai/` ignored first:**
+   run `git check-ignore -q .ai/x`; if it is not ignored, add `.ai/` to
+   `.git/info/exclude` (as `tools/dispatch.py` does) and say so in one line. In a
+   public repo, write nothing there until it is ignored (mining pass 3, SOUL-234).
    The review surface must make the *load-bearing question per entry* cheap to
    judge — the Body cannot weigh a draft buried in passing-check prose (the
    I037 pain). Apply the compact, gap-only discipline the completion gate
