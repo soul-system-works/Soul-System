@@ -9563,5 +9563,10 @@ CONSEQUENCE:  The fixes go on branch mining-2026-11; the notes are stamped once
               handle a project that lives on another computer: answered by the
               vault itself (a pushed vault is read on any machine); whether that
               project's record may go into the vault is the Body's open call.
-STATUS:       Open
+STATUS:       Open. Later the same day the Body ruled: PLANT-BOP's record stays out of
+              the vault ("no, [PLANT-BOP] stays off the vault"; its notes are mined
+              only from its own computer); after review reproduced data loss in
+              `vault.py sync`'s automatic integration, sync was cut to
+              commit-and-push-or-stop, and for work across computers the Body will
+              "just rely on git branches" (no automatic integration follow-up).
 ```
