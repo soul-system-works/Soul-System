@@ -96,6 +96,9 @@ source of truth; this loads them and continues.
    moved since: the owner pushing in between is a recorded staleness route (F067),
    and SENSOR-VIEW found a resume blind to what landed after its cursor (mining
    pass 2, SOUL-202).
+
+   If the cursor says an unattended run was started and results have landed since,
+   suggest `/soul-debrief` once, in one line; do not run it (SOUL-I086).
 3. **Restate, in 2–3 lines:** where we are · the live design frame (if any) · the
    next step · and, if a line in the project's CLAUDE.md starts `**Stage:`, the
    stage in one phrase ("stage: pre-release since 2026-08-26"). Say nothing about
@@ -139,4 +142,6 @@ landed after the cursor; step 3 puts the cursor's `UNCONFIRMED` ids to the Body
 check. **Amended:** 2026-11-05 (v3.9.0, SOUL-A031) — model-initiated captures are
 appended accepted with an opt-out; the unconfirmed mark and the ratify step are
 retired, so step 3 names the cursor's `NEW ENTRIES` in one line instead of asking
-(SOUL-I085). **Adopted:** 2026-05-21. **Status:** active.
+(SOUL-I085). **Amended:** 2026-11-05 (unreleased, SOUL-I086) — step 2 suggests
+`/soul-debrief` once when an unattended run has results since the cursor.
+**Adopted:** 2026-05-21. **Status:** active.

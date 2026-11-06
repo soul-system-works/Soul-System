@@ -38,7 +38,8 @@ wants the lay of the land). Not a deep philosophy dump — point to depth, don't
    (continuity across sessions), `soul-explain` (describe the present; `council`
    mode for a multi-lens read), `soul-discuss` (contest an idea so it can mature —
    rivals, the strongest objection, a short cited scan, a held lean), `soul-next`
-   (what to do next), `soul-distill`
+   (what to do next), `soul-debrief` (catch up on a long or unattended run — one
+   page per debrief, experimental), `soul-distill`
    (refresh the Mind), `soul-prompt` (rewrite a rough prompt into a project-informed
    one), `soul-workflow` (other models build or review; this session re-runs
    each check, weighs the reviews and records the result), and `soul-migrate` (move a project
