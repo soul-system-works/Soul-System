@@ -1,6 +1,6 @@
 ---
 name: soul-debrief
-description: Catch the Body up after a long or unattended run — one page that leads with the conclusion, then explains each result (what was tried, what happened, what was learned, how sure, and what to look at), where the work stands, the best next move, what is worth trying, and what only the Body can decide. Numbers are re-read from the run's files, and the page gets one independent check before the Body is told it is ready. Owner-invoked.
+description: Catch the Body up after a long or unattended run — one page that opens with a short plain story, then explains the results that change a decision (what was tried, what happened, what was learned, how sure, and what to look at or open), where the work stands, the best next move, what is worth trying, and what only the Body can decide. Numbers are re-read from the run's files, and the page gets one independent check before the Body is told it is ready. Owner-invoked.
 disable-model-invocation: true
 ---
 
@@ -42,14 +42,28 @@ Arguments (optional): `<since>` (a date, commit, witness id, or "this session");
    holds it too, correct it forward through `/soul-capture witness` (id scan,
    re-read, append), never by editing the old entry; step 13 names it. Output of
    helper scripts made for the page is a source too: read it, don't trust it.
+   A number taken from a log line or printed output: read the code that printed
+   it to confirm what it counts. In CAPTURE-RIG, a log line "missed (27/56)" counted
+   the cases detected, and the fact sheet, a record entry and the plan all read it
+   as 27 misses.
 
 ## Writing the page
 
-4. **Conclusion first:** the headline result, how sure, where it stands, the best
-   next move, and your calls — the chat reply's content (step 13). Just under it,
-   the scope line; then a contents list with links. About 1,500 words, plain
-   register: gloss each project or Soul term on first use; no padding or stock AI
-   phrasing (run the host's voice checker if it has one).
+4. **A plain story first:** at most five short sentences, with no numbers and no
+   term that needs explaining: what exists now, what got better, what is still
+   missing, and the best next move. Say in words how sure each point is ("checked",
+   "only reported", "no one has looked at it yet"). Then the bottom line with your
+   calls, the scope line, and a contents list with links. The story and the bottom
+   line are also the chat reply (step 13).
+   - **Only the results that change a decision get an item.** The others go in a
+     short list after the items, one line each. (In CAPTURE-RIG, seven items, each
+     with a verdict, a fold-out and tables, confused the owner, who then needed two
+     `/soul-explain` rounds to get a story that fit in four lines.)
+   - **Plain register.** Explain each term the Body may not know on first use,
+     whether from the project, the field or the Soul System. If a term needs
+     explaining and keeps coming back, reword those sentences to say what it means.
+     One explanation does not make a dense page plain. No padding or stock AI
+     phrasing (run the host's voice checker if it has one).
 5. **If a debrief already exists**, a short section next says what changed since it:
    new results, the Body's decisions, corrections to its numbers. Apply the Body's
    feedback (the newest index line; any witness entry with a debrief preference) and
@@ -60,6 +74,11 @@ Arguments (optional): `<since>` (a date, commit, witness id, or "this session");
    the fact sheet); **what we learned** (what it changes next time); **how sure** —
    checked by an instrument that did not make the claim (rule 4), reported, or
    unverified, said plainly in words, never by colour alone; **what to look at**.
+   When a result is a file (a model, a scene, a dataset, a build), here or in the
+   one-line list, say where it is, what opens it, and whether a person has opened
+   it ("not recorded" if the record does not say). Say plainly when no one has, or
+   when no viewer is installed: scores and test renders do not replace a person
+   looking at it.
 7. **What to look at: the form that shows the result best.** Images are one form
    among several: a small table of key numbers; a chart of fact-sheet numbers; an
    image or before/after pair; a short clip; a diff or code excerpt; a log excerpt;
@@ -112,9 +131,8 @@ Arguments (optional): `<since>` (a date, commit, witness id, or "this session");
     covered, page link, wording follow-ups; the Body's feedback is added later. A
     preference for every future debrief is also captured as a witness entry through
     `/soul-capture`, because `.ai/` does not survive a fresh clone.
-13. **In chat:** three or four sentences (headline result, where it stands, best next
-    move); the link (say if it needs sharing); if step 3 corrected a record, one
-    line: *"Added <CODE>-NNN correcting <CODE>-MMM — say no to strike it."*; last,
+13. **In chat:** the story from step 4; the link (say if it needs sharing); if
+    step 3 corrected a record, one line: *"Added <CODE>-NNN correcting <CODE>-MMM — say no to strike it."*; last,
     the bottom line (rule 10) with the 🙋 items. Nothing else (rule 9).
 
 ## What not to do
@@ -143,4 +161,7 @@ something the image did not show, overclaimed checks, questions not the owner's)
 was first run on 2026-11-05, on the Sonnet half of SOUL-I083 round 2. The fact sheet
 held every number; the independent check caught 6 real defects (one a misread
 field, the rest overstated claims); links to published files failed and step 8 now
-shows originals in the page.
+shows originals in the page. Second run, CAPTURE-RIG (2026-11-06, plugin 3.10.0): the
+owner found the page confusing (seven dense items); its main result, a 3D model, had
+never been opened by a person and the page did not say so; and the fact sheet misread
+a printed count. Steps 3, 4, 6 and 13 changed in 3.10.1.
