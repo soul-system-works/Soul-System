@@ -37,7 +37,10 @@ book (`philosophy/the-soul.md`); everything else regenerates from the record.
    loads `~/.claude/CLAUDE.md` and per-arm auto-memory: pass `--settings` with
    `claudeMdExcludes` and `"autoMemoryEnabled": false`, and prove it with a leak
    sentinel (two global-only lines asked verbatim) — both controls leaked without
-   it (soul-benchmark 2026-10-21 RESULT-phase0-isolation, SOUL-210).
+   it (soul-benchmark 2026-10-21 RESULT-phase0-isolation, SOUL-210). **Settings
+   isolation is not filesystem isolation:** an arm that runs shell commands needs an
+   OS-level jail (bwrap, built per session). On 2 of 8 SWE tasks local Qwen left its
+   arm folder and read the other arms' code and the hidden-test output (SOUL-230).
 
 4. **The fabrication axis** (SOUL-164): given bare rules, a doctrine-free session
    INVENTED incident history for its records ("a reviewer conflated the two" —
@@ -63,6 +66,12 @@ book (`philosophy/the-soul.md`); everything else regenerates from the record.
    `registry/NAME-MAP.md`; main is public and adopting projects appear only as
    codenames (PLANT-BOP, ROUTER-LAB). The message is the surface the SOUL-169
    rewrite never covered; one leaked all three names for eight weeks (SOUL-175).
+   Scan a file bound for a public repo when it is WRITTEN, not only at push
+   (SOUL-228); run `.ai/tools/namescan.py` as its own command and read its result —
+   `scan | tail -2 && git push` pushed unscanned when the script was missing
+   (SOUL-226). The Body's quoted words are a surface too: a quoted ruling put a
+   private project's name into a record commit, caught by the guard's warning
+   before push (2026-11-06, the SOUL-234 status line).
    (d) **A ref-scan CANNOT verify a redaction.** Unreachable is not deleted:
    GitHub serves unreachable objects by SHA indefinitely and says so, so no
    refs-only move removes one — not force-push, not branch deletion, not an
@@ -119,9 +128,27 @@ book (`philosophy/the-soul.md`); everything else regenerates from the record.
     `claude --plugin-dir <repo>` tests it — re-runs without it silently ran the
     installed 3.5.0 (SOUL-221).
 
+11. **Run multi-hour queues detached, never as a Claude Code background shell.**
+    `nohup setsid <script> > <log> 2>&1 < /dev/null &`, with the script in the kit,
+    never in /tmp or the session scratchpad. The I083 R queue was cut off twice: a
+    reboot killed the shell and emptied /tmp (taking the scratchpad script), then
+    Claude Code's memory-pressure reaper killed it while another project held about
+    42 of 62 GB (SOUL-231). The detached A×3 queue ran uncut (SOUL-232).
+
+12. **The soul vault is one working tree that several live sessions write at
+    once.** Each leaves uncommitted edits in its own `projects/<key>/`. Never stash,
+    rebase, reset or `pull --rebase --autostash` there, and never commit beyond your
+    own folder. Commit with `tools/vault.py sync`; take the server's commits with
+    `git -C <vault> pull --no-rebase --no-autostash` (drop a dirty `index.md`
+    first); when git refuses because another session is mid-commit, retry, never
+    force. Three reviews of 3.11.0 reproduced conflict markers committed into
+    another project's record, edits stranded in a stash and a mid-run write lost,
+    all from an autostash design (SOUL-234); a hand merge here was refused while
+    another session committed, and went through on retry (2026-11-06).
+
 ---
-**Last distilled:** 2026-10-26 against SOUL-224 / A030 / I082 / v3.6.1 (delta window
-SOUL-215→224, I081–I082, A030, v3.2–v3.6.1; prior form at commit 70db4ec). Changed:
-items 2 (a cited result), 6(e) (tag push), 8 (2/5 predates rule 7's text), 10 (live
-trials need --plugin-dir). Nothing cut. Cap raised past 120 by the Body,
-2026-10-26. Rules 9–10 still NOT carried (doctrine).
+**Last distilled:** 2026-11-06 against SOUL-234 / A031 / I087 / F075 / v3.11.0 (delta
+window SOUL-225→234, I083–I087, A031, F075, v3.7.0–v3.11.0; prior form at commit
+86a7f48). Changed: items 3 (an OS-level jail), 6(c) (scan at write time, as its own
+command; quotes are a surface). Added: 11 (detached queues), 12 (the shared vault).
+Nothing cut. Over the 120 cap the Body raised on 2026-10-26.
