@@ -1046,10 +1046,22 @@ def _sync_locked(vault, gitdir, key, message):
     if up == head:
         print("up to date with the server")
         return 0
+    if _vault_git(vault, "merge-base", "--is-ancestor", head, up).returncode == 0:
+        # Everything here is already on the server; only this copy is behind. Not a
+        # NOT PUSHED: that told the owner a pushed cursor was unsafe (third review).
+        print("already on the server; this vault's copy is behind it (catch up by hand "
+              "when no other session is writing: `git -C {} pull --ff-only`)".format(vault))
+        return 0
     if _vault_git(vault, "merge-base", "--is-ancestor", up, head).returncode != 0:
+        # A bare `git pull` fails here (the branches have diverged), and a user's
+        # pull.rebase/autostash would bring back the stash sync was rebuilt to avoid;
+        # index.md, which link rewrites and sync never commits, blocks a merge
+        # (third review).
         raise _not_pushed("the vault's server has newer commits. Merge them by hand when no "
-                          "other session is writing in the vault (`git -C {} pull`), then "
-                          "run sync again".format(vault))
+                          "other session is writing in the vault (`git -C {v} checkout -- "
+                          "index.md && git -C {v} pull --no-rebase --no-autostash`; "
+                          "index.md is regenerated, so its local copy can go), then run "
+                          "`vault.py index {v}` and sync again".format(v=vault))
     r = _vault_git(vault, "push", "-q", remote, "HEAD:" + merge)
     if r.returncode != 0:
         raise _not_pushed("git push was refused: {}".format(r.stderr.strip()))

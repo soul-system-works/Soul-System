@@ -269,7 +269,8 @@ second (mining pass 3, SOUL-234). It does not commit `index.md`, which each mach
 regenerates. Exit 2 with `NOT PUSHED`: the commit is safe here, but not on the server —
 its line says why (no upstream, a refused push, or the server has newer commits).
 Merging those is a deliberate step, the owner's or this session's when no other
-session is writing in the vault (`git -C <vault> pull`), then sync again; tell the
+session is writing in the vault (the command its line names — not a bare `git pull`,
+which fails on diverged branches), then sync again; tell the
 owner. Exit 4: the lock is held — a running sync, so try again later; or it "looks
 stale", and its line names the file to remove once the owner has checked no git runs
 in the vault.

@@ -227,6 +227,33 @@ def sync_cases(tmp, env):
           r.returncode == 2 and "NOT PUSHED" in r.stderr and "pushed\n" not in r.stdout
           and git(empty, "branch", "--list").stdout == "", r.stdout + r.stderr)
 
+    # BH — everything here is already on the server, which has moved on: not NOT PUSHED
+    p, v, bare, clone = sync_fixture(tmp, env, "BH")
+    write(os.path.join(p, ".soul", "witness.md"), "# W\nBH\n")
+    run(env, "sync", p)
+    remote_commit(clone, "projects/far/soul/witness.md", "# far\n")
+    r = run(env, "sync", p)
+    check("BH: already on the server, copy behind: exit 0, says so, not NOT PUSHED",
+          r.returncode == 0 and "already on the server" in r.stdout
+          and "NOT PUSHED" not in r.stderr, r.stdout + r.stderr)
+
+    # PULL — the merge the NOT PUSHED line names actually works (index.md dirty)
+    p, v, bare, clone = sync_fixture(tmp, env, "PULL")
+    remote_commit(clone, "index.md", "# index from the other machine\n")
+    write(os.path.join(v, "index.md"), "# regenerated here\n")
+    write(os.path.join(p, ".soul", "witness.md"), "# W\nPULL\n")
+    r = run(env, "sync", p)
+    line = r.stderr
+    ok = r.returncode == 2 and "--no-rebase --no-autostash" in line
+    m1 = git(v, "checkout", "--", "index.md")
+    m2 = git(v, "-c", "pull.rebase=true", "-c", "rebase.autostash=true", "pull", "-q",
+             "--no-rebase", "--no-autostash", "--no-edit")
+    r2 = run(env, "sync", p)
+    check("PULL: the named merge works on diverged branches with a dirty index.md, then "
+          "sync pushes", ok and m1.returncode == 0 and m2.returncode == 0
+          and r2.returncode == 0 and "pushed" in r2.stdout
+          and git(v, "stash", "list").stdout == "", line + m2.stderr + r2.stdout + r2.stderr)
+
     # A refused push (the server's hook says no): exit 2
     p, v, bare, clone = sync_fixture(tmp, env, "refused")
     write(os.path.join(bare, "hooks", "pre-receive"), "#!/bin/sh\nexit 1\n")

@@ -154,8 +154,9 @@ pre-run cursor names that path (in NEXT STEP or OPEN GATES), so a later
      one line what it printed. Exit 2 with `NOT PUSHED`: the cursor is committed in
      the vault, safe on this machine, but not on the server — say why (its line names
      it). If the server has newer commits, merging them is a deliberate step — the
-     Body's, or a session's when no other session is writing in the vault — not part
-     of the handoff. Exit 4: a running sync holds the lock — the cursor stays uncommitted,
+     Body's, or a session's when no other session is writing in the vault, with the
+     command that line names — not part of the handoff. "Already on the server; this
+     vault's copy is behind" (exit 0) means the cursor is safe on the server. Exit 4: a running sync holds the lock — the cursor stays uncommitted,
      say so; or the lock "looks stale" — give the Body its removal step word for word
      (remove that file once they have checked no git runs in the vault), and do not
      remove it yourself. Three adopting projects and this repo hit the error (mining
