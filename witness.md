@@ -9487,3 +9487,33 @@ CONSEQUENCE:  A multi-hour queue run as a Claude Code background shell can be ki
               session (nohup / systemd-run), and keep their scripts out of /tmp.
 STATUS:       Open
 ```
+
+```
+ID:           SOUL-232
+WHEN:         2026-11-06 / Soul-System session, Opus-alone baseline (arm A ×3) for
+              round 2 of the workflow-value test (I083), asked for by the Body
+WHERE:        soul-benchmark experiments/2026-10-28-workflow-value-r2/
+              (PREDICTION-A.md, locked at local commit d582b8c before any run);
+              results in /mnt/d/Projects/soul/wf-value-r2/results/swe-*-A{1,2,3}/
+WHAT:         Opus alone resolved 12 of 12 runs on the four split tasks, mean Claude
+              cost $0.62 a run (min $0.29, max $1.16). Against the T row (Sonnet,
+              then an Opus review and a Sonnet fix: 12/12, mean $0.55), per-task
+              mean cost A / T: ansible-3 0.66 / 0.35, ansible-4 0.34 / 0.37,
+              ansible-5 0.45 / 0.42, flipt-3 1.04 / 1.06. Scored against the locked
+              prediction: resolved 11 predicted, 12 actual (inside the 10–12
+              range); mean cost $0.60 predicted, $0.62 actual; T cheaper on 2 of 4
+              tasks predicted and actual, but the named tasks were ansible-3 and
+              flipt-3 and the second was ansible-5. Both miss-direction guesses
+              were wrong: Opus missed none of the subtle checks, and did not cost
+              less than the pilot ($0.60). Escape hits 0; the 32 leak hits are the
+              projects' own GitHub addresses, as in the T and S rows. The queue
+              ran detached (nohup setsid, outside the Claude Code background
+              shell) and finished without a cut-off.
+TYPE:         witness (measurement)
+CONSEQUENCE:  On these four tasks the reviewed-Sonnet setup ties Opus alone on
+              quality and is about 11% cheaper on average, nearly all of it from
+              ansible-3; on the other three the cost is a wash. Read from the
+              runs' usage.json and grade files by script; not yet given a
+              fresh-context count review (due with RESULT.md, after the R row).
+STATUS:       Open
+```
