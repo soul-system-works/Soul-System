@@ -80,7 +80,8 @@ Arguments (optional): `<since>` (a date, commit, witness id, or "this session");
    artifact's own files, which the page loads by relative path; beside a local HTML
    page, in a folder. On the artifact route, never offer a plain link to a published
    file: in a new tab it reopens the page, not the file (first test, 2026-11-05).
-   Show the original in the page's dialog instead. Follow the
+   Show the original in the page's dialog instead. Text written in Markdown (a
+   review, a report) is shown rendered and sanitised, never as raw marks. Follow the
    host's own design or data-visualisation guidance (Claude Code's artifact skills,
    for example) for layout, theme, charts and interaction.
 9. **Where the work stands, and what next.**
