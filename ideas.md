@@ -3192,5 +3192,14 @@ RAW:       The Body: "i have another idea that i think does integrate/work with,
            SOUL-I089 / SOUL-A032 (upkeep runs itself); SOUL-I090 (decisions as one
            grilling round — the post's setup asks in numbered rounds); SOUL-I081 and
            docs/adr/0001-soul-vault.md (the vault; its `projects/<key>/notes/` folder).
+NOTES:     2026-11-12, the Body adds: "add to the idea the possbility of leaving an
+           agent running that makes it easier to communicate to that agent from soul
+           initialized projects to do work, get updates, sync vualt, etc."
+           (Context, observed in this session's own tool list, not tested: Claude
+           Code can already list other local Claude sessions on the machine and send
+           them messages, and Remote Control can reach sessions on other machines —
+           a possible carrier for a standing home agent. Mind item 11: long-lived
+           processes are cut by reboots and the memory reaper; a power cut stopped
+           this session's reviewer on 2026-11-12.)
 STATUS:    Raw
 ```
