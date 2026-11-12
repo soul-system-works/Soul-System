@@ -25,8 +25,8 @@ break, and only the low grade applies on its own.
 1. **When.** The session runs `/soul-handoff` itself — not the Body — when the
    cursor is stale: (i) at the first turn after a context summary, and (ii) at the
    end of a turn when K or more commits have landed in the project since the cursor
-   was last written (proposed K = 3), or a decision the cursor names as open was
-   closed this session. Counted in events, never wall-clock time (the WSL clock can
+   was last written, or a decision the cursor names as open was closed this session
+   (the measure is open question 2: commit counts vary too much between agents). Counted in events, never wall-clock time (the WSL clock can
    pause; the Body's global rule).
 2. **How it is triggered.** Soul's existing Stop hook gains a staleness test; when
    it is true it returns `decision: "block"` with a reason ("the cursor is N commits
@@ -76,9 +76,7 @@ break, and only the low grade applies on its own.
   `/soul-distill`, proposed when the record has grown; the owner confirms."
   Proposed: "Upkeep: `/soul-distill` runs itself when the record has grown; it
   applies minor changes and tells the owner, and holds a cut or a changed rule for the
-  owner's yes." **This is contract wording the Body has not yet seen — it needs the
-  Body's own yes on this exact sentence** (SOUL-203: approval was once claimed for
-  contract wording the Body had not seen).
+  owner's yes." The Body saw this exact sentence and answered "accept" (2026-11-12).
 - Contract rule 6: unchanged in substance ("write the cursor with /soul-handoff, not
   by hand" still holds; the session now runs it unasked when stale).
 - `skills/soul-distill/SKILL.md`: the "Do not run without the Body's yes … Never
@@ -127,11 +125,20 @@ long session.
 
 ## Open questions for the Body (before acceptance)
 
-1. The contract sentence above — accept as written, or reword?
-2. K (commits before the cursor counts as stale): 3?
-3. An opt-out per project (a line in its `CLAUDE.md` or `CLAUDE.local.md`), or
-   everywhere at once?
-4. First trial: in one busy project (MODEL-LIB) before a release, or straight to a
-   release?
+1. The contract sentence — the Body, 2026-11-12: "accept".
+2. When the cursor counts as stale — the Body: "hard to say someagents/processes
+   commit a lot and others not so much. is there something more robust to base off
+   of?" Proposed instead of a commit count: the amount of new conversation since the
+   cursor was last written, read from the session's own transcript (each turn records
+   how large the working context is), with a fixed step (about 50,000 tokens) — plus
+   always after a summary. It measures what a lost context would lose, the same for a
+   session that commits often and one that never does. (Whether every host records
+   the context size per turn is to be confirmed while building.) Awaiting the Body.
+3. The opt-out — the Body: "ok, in soul-init? or elsewhere?" Proposed: one key in
+   `.soul/init.md` (where `/soul-init` already keeps the owner's answers, one dated
+   line per key, and the hooks can read it), asked once by `/soul-init`; a project
+   with no answer gets the default (on), and the first notice says how to turn it
+   off. Awaiting the Body.
+4. First trial — the Body: "into release".
 
 STATUS:          Proposed 2026-11-12. Not accepted; nothing built.
