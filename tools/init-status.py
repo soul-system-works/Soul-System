@@ -82,7 +82,8 @@ STAGE_RE = re.compile(r"^\*\*Stage:\s*([A-Za-z][\w-]*)")
 PHASE_RE = re.compile(r"^\*\*Phase:")
 GUARD_RE = re.compile(r'^\s*guard="([^"]*)"', re.M)
 # Every line /soul-init's hand-hook template has held (v2.10.0, then v3.11.0's, which
-# reads git's input once and runs `git lfs pre-push`), stripped; <root> and <hook> match
+# reads git's input once and runs `git lfs pre-push`, then the Windows-git line, mining
+# 2026-11-12), stripped; <root> and <hook> match
 # anything. A Soul hook holding any other line was merged by hand: its repair rewrites
 # only the `guard=` line and keeps the rest (mining pass 3, SOUL-234). test_init_status.py
 # checks the skill's current template against this list.
@@ -95,6 +96,11 @@ HAND_TEMPLATE_LINES = (
     'if [ ! -f "$guard" ] || ! command -v python3 >/dev/null 2>&1; then',
     'echo "Soul secret check NOT running — plugin path missing; re-run /soul-init to repair '
     'the hook" >&2',
+    'case $(uname -s 2>/dev/null) in',
+    'MINGW*|MSYS*|CYGWIN*) echo "Windows git cannot run the WSL guard — this git <hook> is NOT '
+    'checked" >&2 ;;',
+    '*) echo "Soul secret check NOT running — plugin path missing; re-run /soul-init to repair '
+    'the hook" >&2 ;;',
     'exit 0', 'fi', 'else',
     'python3 "$guard" --hand-hook <hook> "$@"',
     'printf \'%s\' "$in" | python3 "$guard" --hand-hook <hook> "$@"',

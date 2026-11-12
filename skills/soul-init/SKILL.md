@@ -314,7 +314,9 @@ its `guard=` line rewritten, and the other lines are kept and named in one line.
 whole rewrite there would drop the merged LFS upload (mining pass 3, SOUL-234).
 Otherwise write it executable, every `<hook>` replaced. It fails open, loudly, when
 the plugin path is gone, and stays quiet when a session's wrapper already ran the
-check. A `pre-push` reads git's input once and, after the guard, runs `git lfs
+check. Under Windows git (Git for Windows' shell, `uname -s` MINGW, MSYS or CYGWIN)
+it cannot reach the WSL guard at all, so it says that git is NOT checked and does not
+suggest `/soul-init`, which cannot repair it (MODEL-LIB, 2026-11-10). A `pre-push` reads git's input once and, after the guard, runs `git lfs
 pre-push` when git-lfs is installed and `.gitattributes` names `filter=lfs`: LFS
 cannot install its own hook while this one holds the slot:
 ```sh
@@ -324,7 +326,10 @@ guard="<root>/hooks/secret-guard.py"
 in=
 [ "<hook>" = pre-push ] && in=$(cat; echo .) && in=${in%.}
 if [ ! -f "$guard" ] || ! command -v python3 >/dev/null 2>&1; then
-  echo "Soul secret check NOT running — plugin path missing; re-run /soul-init to repair the hook" >&2
+  case $(uname -s 2>/dev/null) in
+  MINGW*|MSYS*|CYGWIN*) echo "Windows git cannot run the WSL guard — this git <hook> is NOT checked" >&2 ;;
+  *) echo "Soul secret check NOT running — plugin path missing; re-run /soul-init to repair the hook" >&2 ;;
+  esac
 else
   printf '%s' "$in" | python3 "$guard" --hand-hook <hook> "$@"
   rc=$?
@@ -379,8 +384,10 @@ from publication (mining pass 3, SOUL-234). A file that
 project content links to is usually project content — put it to the owner on its own
 first, since project content must never link into `.ai/`. Any "project content now
 links into .ai/" line `apply` still prints is an open gap — report it: drop the link
-or promote the file, the owner's call. *Leave them* runs `decline <project>`, which
-remembers the list in `.soul/layout.json`.
+or promote the file, the owner's call. Its "still names the old path: <file>:<line>"
+lines are plain-text mentions (a backticked path, a code comment) that `apply` never
+rewrites: relay them; hits in `witness.md` are history, expected and left alone.
+*Leave them* runs `decline <project>`, which remembers the list in `.soul/layout.json`.
 
 **`line-endings`** — the problem: a Windows git or Sourcetree with
 `core.autocrlf=true` checks files out with Windows line endings; WSL git sees every

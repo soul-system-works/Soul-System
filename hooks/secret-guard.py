@@ -37,7 +37,12 @@ GIT_DIR, pushd, a trailing # comment, backslash-newline, quoted <<EOF, git alias
 `gh repo create --push`, a time-out dropping a found credential). The owner
 approved replacing prediction with git's own hooks (2026-10-20). Do not add a
 command parser back: the only command-text matching left is the warn-only bypass
-notice (--no-verify and friends), which can neither block nor clear anything.
+notice (--no-verify and friends), which can neither block nor clear anything, and
+one refusal that can only block: `git push --all / --tags / --mirror` (the owner's
+ruling, 2026-11-12; git does not show the flag to any hook). The warn-only design
+was safe because a false hit cost nothing. This refusal's false hit blocks a
+command, which is why it matches only `git` at a command position and its reason
+names the way out (`_PUSH_AT_COMMAND`, `_shell_text`).
 
 FENCE — names WARN, they never block. SOUL-175 recorded the Body declining a
 mechanical forbidden-strings guard in favour of review; that ruling stands for
@@ -1581,15 +1586,100 @@ def command_notices(command):
     return out
 
 
+# The one command-text REFUSAL (owner's ruling, upstream mining 2026-11-12): a push of
+# every branch, tag or ref. git hands pre-push only the refs, not the flag, so git's own
+# check cannot see it. A ref pushed by mistake to a public remote cannot be taken back
+# (mind 6(d)), and this repo's own `git push --tags` made a private tag public
+# (SOUL-208). It can only refuse, never clear anything, so the FENCE's worry (a parser
+# that predicts what git will do) does not apply: a form it misses is simply not
+# refused, as before. But unlike the warn-only notices, a false hit here BLOCKS a
+# command, so the match is narrowed to `git` (or a path ending in /git, or git.exe) at a
+# command position: the start, or after ; & | ( or a newline, past VAR=value, the
+# keywords then do else if elif while until { ! and the wrappers time env nice nohup
+# timeout command exec sudo xargs. Inside quotes ; & | ( ) newlines and backticks are
+# text (`_shell_text`), so `git commit -m "… (git push --all) …"` passes; a
+# backslash-newline is a space. The reason names the way out of a false hit.
+# KNOWN LIMITS, not refused (operations/secret-guard.md): pushes outside a session;
+# `bash -c '…'`; a push inside backticks or inside a double-quoted "$(…)"; wrapper
+# options (sudo -u x, env -i, timeout -k 5 60); refspec globs ('refs/*:refs/*'); a
+# configured remote.<name>.push refspec or `mirror = true`; git aliases; built-up
+# commands (`$cmd push --tags`). Still refused though only text: a heredoc body line
+# that starts with `git push --tags`, and a trailing `# … --tags` comment.
+_GIT_VALUE = r"""(?:[^\s'"]|'[^'\n]*'|"[^"\n]*")+"""  # x, 'a b', "$repo", k='a b'
+_PUSH_AT_COMMAND = re.compile(
+    r"(?:^|[;&|(\n])[ \t]*"
+    r"(?:(?:[A-Za-z_]\w*=\S*|then|do|else|if|elif|while|until|\{|!|time|env|nohup|command"
+    r"|exec|sudo|xargs|nice(?:[ \t]+-n[ \t]*-?\d+|[ \t]+-\d+)?"
+    r"|timeout(?:[ \t]+-\S+)*[ \t]+\d\S*)[ \t]+)*"
+    r"(?:[^\s;&|()'\"`]*/)?(?i:git(?:\.exe)?)"
+    r"(?:[ \t]+(?:-[Cc][ \t]+" + _GIT_VALUE + r"|--(?:git-dir|work-tree)[ \t]+" + _GIT_VALUE
+    + r"|--(?!(?:git-dir|work-tree)(?:[ \t]|$))\w[\w-]*(?:=" + _GIT_VALUE + r")?"
+    r"|-(?![Cc](?:[ \t]|$))\w[\w-]*))*[ \t]+push\b"
+    r"([^\n;&|)]*)")
+# git 2.53 takes any unique prefix of a long option (checked by real pushes to a temp
+# bare repo, 2026-11-12): --al, --b, --ta and --m are accepted; --a (all/atomic) and
+# --t (tags/thin) are refused by git as ambiguous. --branches is --all's alias.
+_EVERY_FLAGS = (("all", 2, "--all", "branch"), ("branches", 1, "--branches", "branch"),
+                ("tags", 2, "--tags", "tag"), ("mirror", 1, "--mirror", "ref"))
+_LONG_OPT = re.compile(r"""(?:^|\s)['"]?--([a-z]+)(?=$|[\s)'"<>])""")
+_QUOTED_SEPARATORS = set(";&|()\n\r`")
+
+
+def _shell_text(command):
+    """`command` with backslash-newlines joined and the separators inside quotes blanked:
+    a quoted `; git push --tags` or (git push --all) is text, not a command."""
+    command = command.replace("\\\n", " ")
+    out, quote, i = [], None, 0
+    while i < len(command):
+        ch = command[i]
+        if ch == "\\" and quote != "'" and i + 1 < len(command):
+            nxt = command[i + 1]
+            out.append(ch + (" " if quote and nxt in _QUOTED_SEPARATORS else nxt))
+            i += 2
+            continue
+        if quote is None and ch in "'\"":
+            quote = ch
+        elif ch == quote:
+            quote = None
+        elif quote and ch in _QUOTED_SEPARATORS:
+            ch = " "
+        out.append(ch)
+        i += 1
+    return "".join(out)
+
+
+def push_every_ref(command):
+    """The refusal reason when `command` runs `git push` with --all, --branches, --tags or
+    --mirror (or a prefix git accepts for one), else None."""
+    if not isinstance(command, str):
+        return None
+    for m in _PUSH_AT_COMMAND.finditer(_shell_text(command)):
+        for opt in _LONG_OPT.findall(m.group(1)):
+            for name, shortest, flag, what in _EVERY_FLAGS:
+                if len(opt) >= shortest and name.startswith(opt):
+                    return (f"Soul secret guard: refused `git push {flag}` — it pushes every "
+                            f"{what}, private ones too, and a ref pushed by mistake to a "
+                            "public remote cannot be taken back. Push by name instead: "
+                            "`git push origin <branch>`, or a tag as "
+                            "`git push origin refs/tags/vX.Y.Z`. If the words are only text "
+                            "(a commit message, a string), write the text to a file with the "
+                            "editor or Write tool (not a shell heredoc) and use "
+                            "`git commit -F <file>`, or reword it.")
+    return None
+
+
 def pre_tool_use(data, data_dir=None, event="PreToolUse"):
     """PreToolUse on Bash (Claude Code; the Codex adapter calls it too): in a Soul
     project, re-verify the hook folder (reinstall if missing or modified, and say so)
-    and give the bypass / hook-installer notices. Never decides anything."""
+    and give the bypass / hook-installer notices. Decides one thing only: a push with
+    --all, --tags or --mirror is refused (`push_every_ref`)."""
     if data.get("tool_name") not in (None, "Bash"):
         return None
     cwd = data.get("cwd")
     if not isinstance(cwd, str) or not os.path.isdir(cwd) or not soul_scoped(cwd, _gate()):
         return None
+    command = (data.get("tool_input") or {}).get("command")
+    refused = push_every_ref(command)
     lines = []
     try:
         _, note = ensure_installed(data_dir)
@@ -1598,12 +1688,18 @@ def pre_tool_use(data, data_dir=None, event="PreToolUse"):
     except OSError as exc:
         lines.append(f"Soul secret guard: its git hook folder could not be reinstalled "
                      f"({type(exc).__name__}) — commits and pushes are NOT checked.")
-    lines += command_notices((data.get("tool_input") or {}).get("command"))
+    lines += command_notices(command)
+    if refused:
+        lines.append(refused)
     if not lines:
         return None
     text = "\n".join(lines)
-    return {"systemMessage": text,
-            "hookSpecificOutput": {"hookEventName": event, "additionalContext": text}}
+    out = {"systemMessage": text,
+           "hookSpecificOutput": {"hookEventName": event, "additionalContext": text}}
+    if refused:
+        out["hookSpecificOutput"].update(permissionDecision="deny",
+                                         permissionDecisionReason=refused)
+    return out
 
 
 def codex_opt_in(directory):

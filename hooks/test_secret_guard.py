@@ -401,6 +401,74 @@ def main():
             out = pretool(E, r1, form)
             check(out is None, f"NOISE: {form!r} drew a bypass notice")
 
+        # 4b. A push of every ref is REFUSED (owner's ruling, 2026-11-12): git shows the
+        # pre-push hook only refs, not the flag, and this repo's own `git push --tags` made a
+        # private tag public (SOUL-208). The refusal names the by-name forms and the way
+        # out of a false hit. git 2.53 accepts any unique prefix (--al, --b, --ta, --m;
+        # --a and --t are ambiguous to git) and --branches; each was a real push to a temp
+        # bare repo (2026-11-12). Only `git` at a command position counts: a quoted or
+        # mid-sentence mention must pass, since a false hit here blocks the command.
+        def denied(o):
+            reason = ((o or {}).get("hookSpecificOutput") or {}).get("permissionDecisionReason", "")
+            return (((o or {}).get("hookSpecificOutput") or {}).get("permissionDecision") == "deny"
+                    and "git push origin <branch>" in reason and "refs/tags/vX.Y.Z" in reason
+                    and "git commit -F <file>" in reason and "not a shell heredoc" in reason)
+        for form in ("git push --all", "git push origin --tags", "git push --mirror backup",
+                     "git -C sub push -q --tags origin", "git.exe push --all origin",
+                     "git push --al origin", "git push --ta origin", "git push --tag origin",
+                     "git push --m backup", "git push --mi backup", "git push --mirr backup",
+                     "git push --branches origin", "git push --b origin", "git push --br origin",
+                     "nice -n 10 git push --tags", "cd x && git push --all",
+                     "FOO=1 git push --mirror", "(git push --tags)", "$(git push --tags)",
+                     "git.exe -C 'D:\\Projects\\soul\\X' push --tags", 'git -C "$repo" push --tags',
+                     'git -C "a b" push --all', "git -c k='a b' push --mirror",
+                     "git --git-dir p push --tags", "git push \\\n  --tags", "cd x\ngit push --tags",
+                     "if true; then git push --tags; fi", "for r in a; do git push --tags; done",
+                     "false || true; else git push --all", "{ git push --tags; }", "! git push --tags",
+                     "time git push --tags", "/usr/bin/git push --tags"):
+            check(denied(pretool(E, r1, form)), f"PUSH-ALL: {form!r} was not refused")
+        for form in ("git push origin main", "git push origin refs/tags/v1.2.3",
+                     "git push --follow-tags origin main", "git fetch --tags",
+                     "git tag -l && git log --all --oneline", "git push origin main && git log --all",
+                     "git push --atomic origin main", "git push --thin origin main",
+                     "git push --no-tags origin main",
+                     "grep -n 'git push --tags' mind.md", "echo 'git push --all'",
+                     "gh pr create --body 'then git push --tags is refused'",
+                     'git commit -m "refuse git push --all / --tags / --mirror"',
+                     "git commit -F - <<'EOF'\nfix: refuse git push --all / --tags\nEOF",
+                     # Markdown backticks and a ( inside quoted text are text, not commands
+                     "git commit -m 'guard: refuse `git push --tags`'",
+                     'git commit -m "guard: refuse \\`git push --all\\` and \\`--tags\\`"',
+                     "gh pr create --title 'guard' --body 'Refuses `git push --tags` (SOUL-208).'",
+                     "git commit -F - <<'EOF'\nguard: refuse `git push --all / --tags / --mirror`\n"
+                     "\nThe pre-push hook never sees the flag.\nEOF",
+                     "gh pr create --body \"$(cat <<'EOF'\n## Summary\n- refuses `git push --tags`\n"
+                     "EOF\n)\"",
+                     "cat > .ai/msg.txt <<'EOF'\nrefuse `git push --tags`\nEOF",
+                     'git commit -m "refuse every-ref pushes (git push --all, --tags)"',
+                     "grep -rn '`git push --tags`' operations/", "rg -n 'git push --tags|--all' .",
+                     'echo "use git push origin <branch>; never git push --tags"',
+                     "echo 'a; git push --tags'", 'git commit -m "line1\n\ngit push --tags is refused"',
+                     "git log --oneline | grep -c 'git push --tags'",
+                     "python3 - <<'EOF'\nimport subprocess\nsubprocess.run('git push --tags'.split())\nEOF"):
+            check(pretool(E, r1, form) is None, f"PUSH-ALL: {form!r} was refused or noticed")
+        # A long run of options cannot be split two ways (fresh-context review): decided fast.
+        # In a child with a time-out, so a regression fails instead of hanging the run.
+        try:
+            tr = subprocess.run([sys.executable, "-B", "-c",
+                                 "import importlib.util,sys,time\n"
+                                 "s=importlib.util.spec_from_file_location('sg',sys.argv[1])\n"
+                                 "m=importlib.util.module_from_spec(s);s.loader.exec_module(m)\n"
+                                 "a=time.perf_counter();r=m.push_every_ref('git '+'--x '*200+'status')\n"
+                                 "print(r is None, time.perf_counter()-a)", HOOK],
+                                capture_output=True, text=True, timeout=10)
+            fast = tr.stdout.split()[:1] == ["True"] and float(tr.stdout.split()[1]) < 0.5
+        except subprocess.TimeoutExpired:
+            fast = False
+        check(fast, "PUSH-ALL: `git` + 200 `--x` options + `status` was not decided under 0.5 s")
+        check(pretool(E, plain_dir, "git push --tags") is None,
+              "SCOPE: a push of every tag was refused outside a Soul project")
+
         # 5. Push: an unpushed credential commit (made by hand, outside the session) is blocked;
         # the remote is unchanged; the repo's own pre-push (fake git-lfs) never runs for it.
         bare = os.path.join(tmp, "remote.git")
@@ -659,7 +727,8 @@ def main():
         check("1 table row(s) holding identifiers did not parse" in out,
               "SILENT: an unparsed NAME-MAP row dropped its names without saying so")
 
-        # 18. Codex (D1): PreToolUse never rewrites or decides — notices only; SessionStart says
+        # 18. Codex (D1): PreToolUse never rewrites, and decides only the push-every-ref refusal
+        # (4b) — otherwise notices only; SessionStart says
         # whether the owner's opt-in is present; the opt-in's variables do arm git.
         r18 = make_repo(tmp, "r18")
         write(r18, "cfg.py", KEYLINE + "\n")
@@ -679,6 +748,20 @@ def main():
               f"CODEX: PreToolUse rewrote or decided a command (D1): {outs!r}")
         outs = codex({**payload, "tool_input": {"command": "git commit --no-verify -m x"}})
         check(len(outs) == 1 and BYPASS in outs[0].get("systemMessage", ""), "CODEX: --no-verify drew no bypass notice")
+        outs = codex({**payload, "tool_input": {"command": "git push --tags"}})
+        spec = (outs or [{}])[0].get("hookSpecificOutput") or {}
+        check(len(outs) == 1 and spec.get("permissionDecision") == "deny"
+              and "refs/tags/vX.Y.Z" in spec.get("permissionDecisionReason", "")
+              and set(spec) == {"hookEventName", "permissionDecision", "permissionDecisionReason"},
+              f"CODEX: `git push --tags` was not refused in Codex's deny form: {outs!r}")
+        # The adapter's own step fails after the guard ran (no tool_use_id: _handle raises):
+        # the skip is said, and the refusal still stands.
+        nid = {k: v for k, v in payload.items() if k != "tool_use_id"}
+        outs = codex({**nid, "tool_input": {"command": "git push --tags"}})
+        spec = (outs or [{}])[0].get("hookSpecificOutput") or {}
+        check(len(outs) == 1 and "Soul Codex hook skipped" in outs[0].get("systemMessage", "")
+              and spec.get("permissionDecision") == "deny",
+              f"CODEX: the refusal was lost when the adapter's own step failed: {outs!r}")
         ss = {"hook_event_name": "SessionStart", "cwd": r18, "session_id": "cx"}
         ctx = (codex(ss) or [{}])[0].get("hookSpecificOutput", {}).get("additionalContext", "")
         check("NOT armed under Codex" in ctx and "shell_environment_policy" in ctx and E.stable in ctx,

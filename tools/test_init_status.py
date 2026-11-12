@@ -831,6 +831,25 @@ def main():
     check("the current template in an LFS repo: none", by["hand-hooks"]["action"] == "none",
           by["hand-hooks"])
 
+    # 34b — the template under Windows git (Git for Windows' shell) cannot reach the WSL
+    #       guard: it says the push is NOT checked and does not send the owner to
+    #       /soul-init, which cannot repair it (MODEL-LIB, 2026-11-10). uname is a stub.
+    def hand_run(uname):
+        stub = os.path.join(tmp, "bin-uname-" + uname[:5])
+        write(os.path.join(stub, "uname"), "#!/bin/sh\necho {}\n".format(uname))
+        os.chmod(os.path.join(stub, "uname"), 0o755)
+        hk = os.path.join(stub, "pre-push")
+        write(hk, tpl.replace("<root>", "/gone").replace("<hook>", "pre-push"))
+        return subprocess.run(["sh", hk, "origin", "x"], input="", capture_output=True,
+                              text=True, env=dict(base, PATH=stub + os.pathsep + "/usr/bin:/bin"))
+    rw, rl = hand_run("MINGW64_NT-10.0-19045"), hand_run("Linux")
+    check("34b: under Windows git the hand pre-push says NOT checked, no /soul-init advice; "
+          "under Linux the repair advice stays", rw.returncode == 0
+          and "Windows git cannot run the WSL guard — this git pre-push is NOT checked"
+          in rw.stderr and "/soul-init" not in rw.stderr and rl.returncode == 0
+          and "re-run /soul-init" in rl.stderr and "Windows" not in rl.stderr,
+          rw.stderr + rl.stderr)
+
     shutil.rmtree(tmp, ignore_errors=True)
     print("\n{} failure(s)".format(len(FAILS)) if FAILS else "\nALL PASS")
     return 1 if FAILS else 0
