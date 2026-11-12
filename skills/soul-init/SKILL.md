@@ -371,6 +371,16 @@ detail says a hand-written `**Phase:` block exists, show it before asking. *Why 
 projects had the owner write "no backwards compatibility — this is beta" by hand on
 consecutive days (2026-08-24/25), into two files, in two wordings.
 
+**`upkeep`** — nothing to carry out but the answer (`on` or `off`). *On*, which is
+also what a project that was never asked gets: the session refreshes the handoff
+cursor by itself when it goes stale — about 50,000 tokens of conversation, or a
+summary, since it was last written (`hooks/upkeep.py` notices) — and `/soul-distill`
+runs by itself at its growth signal, applying small Mind changes and holding big ones
+for the owner. Each tells the owner in one line, and a no undoes it. *Off*: neither
+runs by itself; `/soul-next` reminds instead. To change it later: `/soul-init revisit
+upkeep`. *Why ask once:* the owner accepts the cursor and the Mind "as created" and
+wanted the stop gone, with a way out (SOUL-A032).
+
 **`layout`** (projects already set up) — `python3 <root>/tools/layout-cleanup.py
 scan <project>` flags only text files whose name or folder marks them as working
 material (plans, handoffs, reviews, scratch, stray `.soul/` files), never code,
@@ -452,3 +462,5 @@ in `.soul/init.md`, a `no` final until `revisit`; the register question dropped.
 **Amended:** 2026-11-06 (v3.11.0, mining pass 3, SOUL-234) — `vault.py sync` and
 `link --also`; wiring in `CLAUDE.local.md`; `triaged` history scans; the hand pre-push
 chains to Git LFS and a merged hook keeps its other lines; `.ai/` ignored by `layout`.
+**Amended:** 2026-11-12 (unreleased, SOUL-A032) — the `upkeep` answer: on unless the
+owner says off, asked once.

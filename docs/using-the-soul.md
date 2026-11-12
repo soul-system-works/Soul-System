@@ -48,12 +48,22 @@ That's the install. There is no new workflow to learn — start working.
   approve or commit one by one.
 - When a session tries to finish, the **completion gate** fires: work that nothing
   verified can't be called done; the session must name exactly what is unrun.
+- In a long session, or after the conversation is summarised, the AI **refreshes the
+  handoff note** (`.soul/handoff.md`) by itself and says so in one line — "cursor
+  refreshed (about 60k tokens since the last)". It does this once about 50,000
+  tokens of conversation, or a summary, have passed since the note was last written
+  (Claude Code only; under Codex the AI does it without the reminder). This also
+  happens in headless runs (`claude -p`): a long scripted run is stopped once per
+  50,000 tokens to refresh the note, and its final answer becomes the "cursor
+  refreshed" line. For a run that must not be steered — a measurement, a scripted
+  pipeline — set `upkeep: off`, or run it without the plugin.
 
 **What you do:**
 
 - Say no to any new entry you don't want kept (silence is a yes).
 - Start a session with `/soul-resume` (picks up where the last one left off) and
-  end one with `/soul-handoff` (leaves the cursor for the next). Ask "what's
+  end one with `/soul-handoff` (leaves the cursor for the next; in long sessions it
+  also runs by itself). Ask "what's
   next?" with `/soul-next`. Back from a long or unattended run, `/soul-debrief`
   gives you one page on what it found, how sure, and what next (experimental).
 - Explore an idea before building it: `/soul-discuss` — the AI sets rivals beside
@@ -70,11 +80,23 @@ That's the install. There is no new workflow to learn — start working.
 ## Over time
 
 The notebook grows. When it has grown enough (roughly 15+ entries, or a finding
-closes), the AI proposes `/soul-distill`: it compresses what the project has
-learned into `mind.md` — **the Mind**, a short always-on page carrying only what
-an AI couldn't re-derive on its own. You review the draft; nothing is committed
-without you. Many projects never need one; the proposal arriving is how you find
-out yours does.
+closes), `/soul-distill` runs by itself the next time the handoff note is
+refreshed: it compresses what the project has learned into `mind.md` — **the
+Mind**, a short always-on page carrying only what an AI couldn't re-derive on its
+own. Small changes (a new item, new evidence, a fixed citation) are committed on
+their own and you get one line — "Mind refreshed: … — say no to undo" — with the
+command that undoes it. Big ones (cutting an item, changing what a rule says,
+dropping the incident behind it, merging two) wait in `.ai/distill/` for your yes,
+and a script holds back, whatever the AI judged, any change that removes or
+renumbers an item, or drops a record id (`SOUL-118`, `F063`) from the item that
+cited it. A change you say no to is not proposed again unless new entries bear on
+it. A first Mind always waits for you. Many projects never need
+one; the first draft arriving is how you find out yours does.
+
+**Turning upkeep off.** `/soul-init` asks once whether the handoff note and the
+Mind should keep themselves up to date (the answer is kept as `upkeep:` in
+`.soul/init.md`; not asked yet means on). Off: nothing runs by itself, and
+`/soul-next` reminds you instead. Change it with `/soul-init revisit upkeep`.
 
 **Declaring a stage.** When the project's situation changes — the first outside
 user, a v1.0, or the day you decide the prototype is now the real thing — run

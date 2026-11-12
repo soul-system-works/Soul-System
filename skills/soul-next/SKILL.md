@@ -1,6 +1,6 @@
 ---
 name: soul-next
-description: Refresh the task tracker against the durable records, then present a tiered list of likely next options (now / next / later) and flag when the Mind is distill-stale. The forward-momentum guardrail — surfaces grounded next steps so the agent doesn't invent direction and the Body doesn't have to ask.
+description: Refresh the task tracker against the durable records, then present a tiered list of likely next options (now / next / later) and report what Mind upkeep ran or what waits for the Body. The forward-momentum guardrail — surfaces grounded next steps so the agent doesn't invent direction and the Body doesn't have to ask.
 ---
 
 # /soul-next — refresh the tracker, show what's next
@@ -24,12 +24,20 @@ across sessions; this reconciles it with reality and emits a tiered next-options
    Also read the project CLAUDE.md's Stage block (a line starting `**Stage:`) if there is one — its
    "Next stage when" line is the exit trigger this view exists to re-read.
 
-2. **Mind distill-staleness check.** Compare `mind.md`'s last-distilled marker against the
-   findings/amendments accumulated since (count entries newer than the marker). If the gap
-   is material (≈3+ new findings, or a landed amendment not yet folded), surface
-   **"consider re-distilling the Mind (N new since last distill) → `/soul-distill`"** as a
-   Next-tier item. This is the trigger that keeps `mind.md` from silently going stale (the
-   re-distill activation rides here, not on memory — Rule 6).
+2. **Mind upkeep — report what ran, or what waits.** `/soul-distill` runs by itself
+   when the cursor refreshes (SOUL-A032), so this step reports rather than reminds:
+   - **Major changes waiting** — a `.ai/distill/mind-held-<date>.md`: one Now-tier
+     line, *"Mind: N changes wait for your yes — <short names> (.ai/distill/<file>)"*.
+   - **It ran today** (a `mind: auto-distill (minor)` commit, or the stamp is today):
+     one Later-tier line, *"Mind refreshed today: <what changed>"*.
+   - **Due but not run** — the growth signal is met (≈15+ new witness entries, or a
+     finding closed or an amendment accepted since the stamp): with `upkeep: off` in
+     `.soul/init.md`, surface **"consider re-distilling the Mind (N new since last
+     distill) → `/soul-distill`"** as a Next-tier item, as before. Otherwise the
+     Next-tier line is *"Mind due (N new) — it runs at the next cursor refresh"*; run
+     it now only if the Body asks.
+   Nothing to report: no line. In MODEL-LIB the reminder said "distill due" two days
+   running and nothing ran (SOUL-235) — the reason the reminder became a report.
 
 2b. **Upstream backlog — Soul System repo ONLY.** The guard is `findings/open/`
    **and** `operations/CLAUDE.md` **and** `SYSTEM-VERSION.md`, all at the repo root —
@@ -88,4 +96,6 @@ guardrail paired with `/soul-explain`; operationalizes proactive-next-steps (SOU
 while keeping the list a pointer to the durable records. **Amended:** 2026-08-28
 (v2.3.0) — step 2b, the upstream backlog line, which exists here because this is the
 only seat a mining pass can run from (SOUL-I062). **Amended:** 2026-10-22 (v3.3.0) —
-step 3 flags Raw ideas as not yet discussed (SOUL-I078). **Status:** active.
+step 3 flags Raw ideas as not yet discussed (SOUL-I078). **Amended:** 2026-11-12
+(unreleased, SOUL-A032) — step 2 reports what the self-running distill did, or what
+waits, instead of reminding. **Status:** active.

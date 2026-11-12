@@ -6,6 +6,9 @@ self_reported (the hook never observes verification itself). It must emit nothin
 when the block came from another hook, must never block, and a reply listing both
 a Verified and a Not-verified line is a gap. The verdict also carries this
 session's delegation counts, from observed soul.delegation.checked records only.
+Another Stop hook's feedback record in the same stop (the upkeep hook, SOUL-A032)
+is not a new user turn: with it after the checklist the verdict was lost (fresh-context
+review, 2026-11-12).
 
 Run: python3 hooks/test_verdict.py  (exit 0 = fence holds)
 """
@@ -43,6 +46,9 @@ FEEDBACK = _user("Stop hook feedback: [python3 hook]: " + _mod._GATE_MARK
                  + " Shipped + claimed complete this turn — fires at most once per 45 min in this project.",
                  isMeta=True)
 OTHER_HOOK = _user("Stop hook feedback: [codex review gate]: please review", isMeta=True)
+# The shape a live `claude -p` trial recorded for the upkeep hook's block (2026-11-12).
+UPKEEP = _user("Stop hook feedback:\n[Soul upkeep · SOUL-A032] The handoff cursor "
+               "(.soul/handoff.md) is stale ...", isMeta=True)
 START = [_user("fix calc.py"), _say("The fix is done.")]
 
 CASES = [
@@ -66,6 +72,13 @@ CASES = [
      START + [FEEDBACK, _say("> — Not verified: <missing>\n— Verified: pytest 4/4")], "verified"),
     ("the gate mark in ordinary user text -> no event",
      START + [_user("Explain " + _mod._GATE_MARK), _say("— Verified: x")], None),
+    ("upkeep's block recorded after the checklist -> verified",
+     START + [FEEDBACK, UPKEEP, _say("Cursor refreshed.\n— Verify: clean (15/15)")],
+     "verified"),
+    ("upkeep's block recorded before the checklist -> verified",
+     START + [UPKEEP, FEEDBACK, _say("— Verify: GAP → the CLI never ran")], "gap"),
+    ("upkeep's block alone (the gate did not fire) -> no event",
+     START + [UPKEEP, _say("— Verify: clean (x)")], None),
     ("checklist from an earlier turn -> no event",
      START + [FEEDBACK, _say("— Verify: clean (x)"), _user("now the docs"),
               _say("Docs updated.")], None),

@@ -26,6 +26,27 @@ its result decides, and the next step for each outcome. A context lost mid-run
 takes with it everything not yet flushed (PLANT-BOP's upstream note; mining pass 2,
 SOUL-202).
 
+**When it runs itself (SOUL-A032).** The session runs this unasked — no question
+first — when the cursor is stale: about 50,000 tokens of new conversation since it
+was last written, or a summary (compaction) since. Soul's hooks notice: a Stop hook
+(`hooks/upkeep.py`) blocks the stop once and asks for the refresh, and after a
+summary the session-start line says to re-read the cursor and refresh it first. A
+count of commits was not used: "some agents/processes commit a lot and others not so
+much" (the Body). It stays quiet in a project with no cursor yet, and when
+`.soul/init.md` holds `upkeep: off` (the owner's opt-out, asked once by
+`/soul-init`). The hooks are Claude Code's; elsewhere (Codex), refresh it unasked
+after a summary or a long stretch of work. A run that started itself does every step
+below, then reports in step 5.
+
+**Headless runs too.** The Stop check fires under `claude -p` (seen in a live trial,
+2026-11-12; the amendment had guessed hooks might not). A long headless run in a Soul
+project with a cursor is blocked once per 50,000 tokens, and its final result text
+becomes the refresh line, not the run's answer. A measurement arm or scripted run that
+must not be steered: record `upkeep: off`, or run without the plugin —
+`tools/dispatch.py` starts its workers with `--setting-sources ""`, which skips the
+settings that switch the plugin on. Writing the cursor before a long unattended run
+(above) still holds.
+
 A long unattended run also keeps a short **decisions log** at
 `.ai/runs/<date>-<run>-decisions.md` (`<run>` a short lowercase hyphenated slug):
 each choice it made on its own, the reason, and which numbers it re-checked. The
@@ -117,6 +138,13 @@ pre-run cursor names that path (in NEXT STEP or OPEN GATES), so a later
    gitignore it instead and say so. Unlike the cursor it replaced, this file can land
    in a tracked repo root, so the choice has to be made once rather than by default.
 
+1c. **Is the Mind due?** If `mind.md` exists and the record has grown past
+   `/soul-distill`'s growth signal since its `Last distilled` stamp (about 15+ new
+   witness entries, or a finding closed or an amendment accepted), run
+   `/soul-distill` now — by itself, at most once a day, and not with
+   `upkeep: off` (then name it as due in step 5 instead). It applies its minor
+   changes and holds its major ones; its one line joins step 5's report, and held
+   changes go in OPEN GATES.
 2. **Write `.soul/handoff.md` — REPLACING the previous cursor, not appending to it**
    (create `.soul/` if missing):
    ```
@@ -259,7 +287,10 @@ pre-run cursor names that path (in NEXT STEP or OPEN GATES), so a later
    the next session from the surrounding repo; a worker may still read sibling files for
    consistency. A vague handoff is the named cause of duplicated work and gaps.
 5. Report that the cursor was written and remind the Body that the next session
-   should read `.soul/handoff.md` first. **Then name the `NEW ENTRIES` in one
+   should read `.soul/handoff.md` first. A run that started itself says one line
+   instead — *"cursor refreshed (about 60k tokens since the last)"* or *"cursor
+   refreshed (a summary happened)"* — adds "to turn this off: /soul-init revisit
+   upkeep" when the hook's reason asked for it, and goes back to the work. **Then name the `NEW ENTRIES` in one
    line** — *"Added THERMAL-231, THERMAL-I086 — say no to strike any."* No question;
    silence keeps them. A "no" is recorded the way `/soul-capture` says (*Who fires this*).
 
@@ -305,4 +336,7 @@ the cursor's `UNCONFIRMED` field becomes `NEW ENTRIES` (SOUL-I085).
 decisions log for `/soul-debrief`; POINTERS gains the newest debrief.
 **Amended:** 2026-11-06 (v3.11.0, mining pass 3, SOUL-234) — a vault-linked cursor is
 checked in the vault and committed with `vault.py sync`.
+**Amended:** 2026-11-12 (unreleased, SOUL-A032) — runs itself when the cursor is stale
+(about 50,000 tokens, or a summary, since the last write; `hooks/upkeep.py`), and checks
+whether the Mind is due (step 1c).
 **Adopted:** 2026-05-21. **Status:** active.

@@ -143,3 +143,11 @@ long session.
 
 STATUS:          Accepted 2026-11-12 by the Body (all four open questions answered
                  above). To be built on a branch for the next release; not yet built.
+                 Built 2026-11-12 on branch upkeep-a032 (unreleased). Correction
+                 to (b) 4: a live trial showed the Stop check DOES fire under
+                 `claude -p` (transcript entrypoint sdk-cli) — "hooks may not fire"
+                 was a guess. A long headless run in a Soul project with a cursor
+                 is blocked once per 50,000 tokens and its final result text
+                 becomes the refresh line; `upkeep: off`, or running without the
+                 plugin, turns it off (skills/soul-handoff, docs/using-the-soul.md).
+                 "Once per session" for the Mind is built as once a calendar day.

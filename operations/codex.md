@@ -37,8 +37,9 @@ that workflow; they do not change the contract's obligations.
   `agents/openai.yaml` policies. An explicit workflow handoff, such as init
   offering stage selection, can read the procedure; it is not authorization to
   choose or write a stage for the owner.
-- Keep the approval boundaries: a finding and a distillation wait for the owner;
-  an idea/witness capture is appended with an opt-out (`soul-capture`).
+- Keep the approval boundaries: a finding and a distillation's major changes wait
+  for the owner; a distillation's minor changes and an idea/witness capture are
+  applied with an opt-out (`soul-distill`, `soul-capture`).
   Installation is not consent to create project records or change project
   policy. Session hooks do not perform those workflow writes.
 
@@ -156,6 +157,14 @@ shared rule that an inherited pointer is a claim to verify.
 - **soul-handoff:** preserve the shared cursor and provenance. When running in the
   Soul System source repo, route system lessons to its existing witness/ideas
   stores, not to an `upstream.md` aimed back at itself (known SOUL-187 gap).
+- **Upkeep (SOUL-A032) is not wired for Codex.** Claude Code's `hooks/upkeep.py`
+  measures the context from the session transcript and blocks a Stop once when the
+  cursor is stale, and a SessionStart `compact` hook asks for a refresh after a
+  summary. `hooks/codex.py` reads no transcripts by design, and where Codex records
+  the context size, or whether it fires a hook after a summary, has not been
+  checked. Under Codex, run `soul-handoff` unasked after a summary or a long
+  stretch of work (it then checks whether the Mind is due), unless `.soul/init.md`
+  holds `upkeep: off`.
 
 ## Detector boundaries
 

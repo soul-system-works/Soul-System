@@ -105,7 +105,8 @@ def set_up(root, name):
     install_hooks(p)
     head = git(p, "rev-parse", "--short=12", "HEAD").stdout.strip()
     write(os.path.join(p, ".soul", "init.md"),
-          "# header\nhistory-scan:  clean {}   2026-10-23\n".format(head))
+          "# header\nhistory-scan:  clean {}   2026-10-23\n"
+          "upkeep:        on           2026-11-12\n".format(head))
     return p
 
 
@@ -130,9 +131,10 @@ def main():
     check("fresh: fresh is true", st["fresh"] is True, st)
     check("fresh: import is a repair, not a question", by["import"]["action"] == "repair",
           by.get("import"))
-    check("fresh: record, stage, names asked in one main round",
-          ["record", "stage", "names"] in st["rounds"]
-          and all(by[k]["question"]["group"] == "main" for k in ("record", "stage", "names")),
+    check("fresh: record, stage, names, upkeep asked in one main round",
+          ["record", "stage", "names", "upkeep"] in st["rounds"]
+          and all(by[k]["question"]["group"] == "main"
+                  for k in ("record", "stage", "names", "upkeep")),
           st["rounds"])
     check("fresh: no layout item", "layout" not in by)
     check("fresh, no gitleaks: extras = hand-hooks + line-endings",
@@ -447,7 +449,7 @@ def main():
     pub = by["public"]
     check("unknown visibility: public asked in its own round before the main round",
           pub["action"] == "ask" and ["public"] in st["rounds"]
-          and st["rounds"].index(["public"]) < st["rounds"].index(["record", "stage", "names"])
+          and st["rounds"].index(["public"]) < st["rounds"].index(["record", "stage", "names", "upkeep"])
           and pub["question"]["text"] == "Is this repo public, or will it be?"
           and pub["question"]["options"] == mod.QUESTIONS["public"]["options"]
           and [(o["value"], o["label"]) for o in pub["question"]["options"]]
@@ -849,6 +851,50 @@ def main():
           in rw.stderr and "/soul-init" not in rw.stderr and rl.returncode == 0
           and "re-run /soul-init" in rl.stderr and "Windows" not in rl.stderr,
           rw.stderr + rl.stderr)
+
+    # 35 — upkeep (SOUL-A032): asked once, default on; the hook reads the same line.
+    #      Unanswered, it is on — the question is how to turn it off, so no answer must
+    #      never read as off (the owner's choice of default, A032 open question 3).
+    p35 = repo(tmp, "upkeep", {"README.md": "x\n"})
+    st, by = status(env, p35)
+    q = by["upkeep"]["question"]
+    check("upkeep: unanswered is asked, on recommended, fixed wording",
+          by["upkeep"]["action"] == "ask" and q["recommended"] == 0
+          and [o["value"] for o in q["options"]] == ["on", "off"]
+          and q["text"] == "Should the Soul keep its notes up to date on its own?"
+          and "until then it is on" in by["upkeep"]["detail"], by["upkeep"])
+    r = run(env, "record", p35, "upkeep", "sometimes")
+    check("upkeep: a value other than on/off is refused, nothing written",
+          r.returncode == 2 and "upkeep takes one of: on, off" in r.stderr
+          and not os.path.exists(os.path.join(p35, ".soul", "init.md")), r.stderr)
+    r = run(env, "record", p35, "upkeep", "off")
+    st, by = status(env, p35)
+    check("upkeep: recorded off is set, not asked again",
+          r.returncode == 0 and by["upkeep"]["action"] == "none"
+          and by["upkeep"]["value"] == "off" and "upkeep" not in sum(st["rounds"], []),
+          (r.stderr, by["upkeep"]))
+    spec = importlib.util.spec_from_file_location(
+        "soul_upkeep_hook", os.path.join(_ROOT, "hooks", "upkeep.py"))
+    hook = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(hook)
+    check("upkeep: the hook reads the line `record` wrote", hook.upkeep_answer(p35) == "off",
+          read(os.path.join(p35, ".soul", "init.md")))
+    st = json.loads(run(env, "status", p35, "--json", "--ask", "upkeep").stdout)
+    asked = {i["key"]: i["action"] for i in st["items"]}
+    check("upkeep: --ask upkeep puts the question back (/soul-init revisit upkeep)",
+          asked.get("upkeep") == "ask", asked)
+    # The tool and the hook read a hand-written value the same way: `OFF` is off in both;
+    # `no` is not understood — asked again here, and the hook stays on (it blocks).
+    write(os.path.join(p35, ".soul", "init.md"), "upkeep:        OFF          2026-11-12\n")
+    st, by = status(env, p35)
+    check("upkeep: a hand-written OFF reads as off in the tool and the hook",
+          by["upkeep"]["action"] == "none" and by["upkeep"]["value"] == "off"
+          and hook.upkeep_answer(p35) == "off", (by["upkeep"], hook.upkeep_answer(p35)))
+    write(os.path.join(p35, ".soul", "init.md"), "upkeep:        no           2026-11-12\n")
+    st, by = status(env, p35)
+    check("upkeep: a hand-written `no` is not understood — asked again, and not off",
+          by["upkeep"]["action"] == "ask" and "not understood" in by["upkeep"]["detail"]
+          and hook.upkeep_answer(p35) != "off", (by["upkeep"], hook.upkeep_answer(p35)))
 
     shutil.rmtree(tmp, ignore_errors=True)
     print("\n{} failure(s)".format(len(FAILS)) if FAILS else "\nALL PASS")
