@@ -9570,3 +9570,34 @@ STATUS:       Open. Later the same day the Body ruled: PLANT-BOP's record stays 
               commit-and-push-or-stop, and for work across computers the Body will
               "just rely on git branches" (no automatic integration follow-up).
 ```
+
+```
+ID:           SOUL-235
+WHEN:         2026-11-12 / Soul-System session, upstream mining pass 4
+WHERE:        .ai/mining/2026-11-12-triage.md (read-only triage agent) ·
+              tools/upstream-status.py
+WHAT:         The Body: "can you mine upstream potential ideas again". The tool
+              reported 14 unmined notes in 6 projects (MODEL-LIB, SENSOR-BED,
+              CAPTURE-RIG, GAME-WEB, LEARN-APP, SKILL-KIT). Triage: FIX 9,
+              IDEA 2, ALREADY-DONE 2, HELD 1. The Body's rulings: (1) block
+              `git push --all / --tags / --mirror` inside sessions — "block";
+              (2) under Windows git, ship the honest "this push is NOT checked"
+              message now and try a wsl.exe bridge only after a reproduction —
+              "yes"; (3) material retired from a project goes in the vault's
+              `projects/<key>/notes/` — "yes"; (4) asking several decisions as one
+              grilling round stays out of the contract — "don't do anything with
+              it BUT i think several dcisions as one grilling may make sense for
+              the soul-init. worth recording that as an idea and exploring it
+              later" (SOUL-I090); (5) capture the two new ideas — "yes" (SOUL-I088,
+              SOUL-I089). SOUL-I087 quotes the Body with a local folder path that
+              NAME-MAP later listed for SKILL-KIT; the entry was already public
+              — the Body: "leave it".
+TYPE:         observation
+CONSEQUENCE:  The fixes go on a branch for v3.11.1; the notes are stamped once
+              the changes they cite exist. The skill-description budget note
+              (SKILL-KIT #1, part 2) stays held until a firing test shows a Soul
+              skill failing to trigger. Mind 6(e) cites SOUL-182 for the `--tags`
+              publication; the record holding it is SOUL-208 (fix at the next
+              distill).
+STATUS:       Open.
+```

@@ -3067,4 +3067,59 @@ RAW:       The Body: "capture the idea to help projects automatically periodical
            loop at all. Nearby: tools/upstream-status.py and /soul-next's upstream
            line (the Soul System's own mining prompt); the greenwoodms06-skills
            `skill-usage` skill (measures how often each skill is used).)
+NOTES:     2026-11-12, mining pass 4 (SOUL-235): SKILL-KIT's notes bear on this.
+           A candidate instrument for the "improve" half: its `claude plugin
+           eval` pilot (with vs without the plugin; which lessons the baseline
+           already knows) — the Soul has used plugin eval since v2.4.0. One way a
+           skill gets "forgotten": skill descriptions share one listing budget
+           (that note, held until a firing test shows a miss). A vault place for
+           retired material (`projects/<key>/notes/`) keeps retired skills
+           findable rather than deleted.
+```
+
+```
+ID:        SOUL-I088
+WHEN:      2026-11-12
+IDEA:      An optional `MISSED BY:` line on witness incident entries — the check
+           that should have caught it, or "none could" — and, once enough entries
+           carry it, a per-check count in /soul-distill.
+WHY:       This repo names the catching layer in prose ("caught by fresh-context
+           review", SOUL-203/205, mind item 2) but never countably. Source:
+           MODEL-LIB's upstream note 2026-11-11 (its incidents MODEL-LIB-015,
+           -020, -022, -023), from an outside write-up on code review. Mining
+           pass 4 (SOUL-235).
+STATUS:    Raw
+```
+
+```
+ID:        SOUL-I089
+WHEN:      2026-11-12
+IDEA:      Let /soul-distill and /soul-handoff run more on their own: (a) distill
+           drafts itself past a growth threshold, leaving a diff for the Body;
+           (b) a duplicate-idea check at capture time; (c) the cursor refreshed at
+           natural points (before a compaction, after a commit).
+WHY:       MODEL-LIB's upstream note 2026-11-11: /soul-next said "distill due" two
+           days running and nothing ran; the cursor stayed a day stale through a
+           compaction. Reverses /soul-distill's "never schedule or hook this — the
+           trigger is human" (A022), so discuss before building; (c) is the piece
+           most likely to earn its place. Shares SOUL-I087's question (a periodic
+           prompt). Mining pass 4 (SOUL-235).
+STATUS:    Raw
+```
+
+```
+ID:        SOUL-I090
+WHEN:      2026-11-12
+IDEA:      /soul-init asks its several setup decisions as one grilling round (each
+           with context, reasons and a recommended answer, answered in one reply)
+           instead of one picker at a time.
+WHY:       The Body: "i think several dcisions as one grilling may make sense for
+           the soul-init. worth recording that as an idea and exploring it later".
+           From SKILL-KIT's upstream note 2026-11-09 (its SKILL-KIT-006): the Body
+           skipped two multi-select pickers and asked for the 12 open decisions
+           as a grilling round, "because then I get better context and reasons
+           behind each of the answers rather than your picker". Not a contract
+           rule (SOUL-235, ruling 4). Counter-evidence: /soul-init's fixed single
+           questions were answered without trouble the same day.
+STATUS:    Raw
 ```
