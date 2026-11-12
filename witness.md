@@ -9636,3 +9636,26 @@ STATUS:       Closed 2026-11-12. The Body: "vault, this project is being used on
               The stamp was committed alone (`commit --only`) and pushed; the server
               had not moved. The local `.soul` folder was left as it is.
 ```
+
+```
+ID:           SOUL-237
+WHEN:         2026-11-12 ~15:00 EST / Soul-System session, building SOUL-A032
+WHERE:        branch upkeep-a032 (uncommitted build); a background fresh-context
+              reviewer; .soul/handoff.md
+WHAT:         The machine lost power. The Body: "power to computer cutoff
+              unexpectently. if you were doing work are you able to recover and
+              resume?" After the reboot: the uncommitted build was intact (git fsck
+              clean, every named suite passed again); the R queue had been paused
+              that morning, so nothing ran; releases and records were already pushed.
+              Lost: the reviewer's half-done pass (resumed by message; it redid its
+              /tmp probes, which the reboot emptied). Found: the live-trial results and
+              the build's state lived only in the conversation, not in the cursor or
+              the record; they were written into the cursor before resuming.
+TYPE:         observation
+CONSEQUENCE:  Same lesson as mind item 11 (reboot, memory reaper), now with a power
+              cut: state held only in a session dies with it. SOUL-A032 (released the
+              same day as v3.12.0) makes the cursor refresh itself after about 50,000
+              tokens of new conversation, which would have caught this one. A
+              standing home agent (SOUL-I091) was weighed against the same risk.
+STATUS:       Closed.
+```
