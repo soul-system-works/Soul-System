@@ -3,6 +3,8 @@
 
 Requires the local Codex CLI. Does not invoke a model, change normal Codex config,
 trust hooks, or prove a live SessionStart/Stop cycle. All writes are temporary.
+The full check also needs PyYAML, for the strict-YAML check of the skills'
+frontmatter; `--frontmatter` runs only that check (no Codex needed).
 """
 
 import json
@@ -10,6 +12,7 @@ import os
 from pathlib import Path
 import queue
 import subprocess
+import sys
 import tempfile
 import threading
 import time
@@ -34,8 +37,40 @@ def check_versions(root=ROOT):
     return codex
 
 
+def check_frontmatter(root=ROOT):
+    """Every skill's frontmatter must parse as strict YAML, with a name and description.
+
+    Claude Code read soul-discuss's unquoted description ("…run it on the Body's yes:
+    when…") without complaint, but `yaml.safe_load` refused it ("mapping values are not
+    allowed here"), so a stricter host could drop the skill (SKILL-KIT's note, upstream
+    mining 2026-11-12). Needs PyYAML; without it this says so and stops.
+    """
+    try:
+        import yaml
+    except ImportError:
+        raise RuntimeError("PyYAML is not installed — skill frontmatter NOT checked "
+                           "(install it in a venv: pip install pyyaml)")
+    bad = []
+    skills = sorted((root / "skills").glob("*/SKILL.md"))
+    for source in skills:
+        parts = source.read_text(encoding="utf-8").split("---", 2)
+        try:
+            if parts[0].strip() or len(parts) < 3:
+                raise ValueError("no frontmatter block at the top")
+            data = yaml.safe_load(parts[1])
+            if not (isinstance(data, dict) and isinstance(data.get("name"), str)
+                    and isinstance(data.get("description"), str)):
+                raise ValueError("not a mapping with a string name and description")
+        except Exception as exc:
+            bad.append(f"{source.relative_to(root)}: {str(exc).splitlines()[0]}")
+    if bad:
+        raise RuntimeError("Skill frontmatter is not strict YAML:\n" + "\n".join(bad))
+    return len(skills)
+
+
 def check():
     version = check_versions()
+    check_frontmatter()
     with tempfile.TemporaryDirectory(prefix="soul-codex-check-") as temporary:
         base = Path(temporary)
         task_codex_home = base / "config"
@@ -149,4 +184,7 @@ def check():
 
 
 if __name__ == "__main__":
-    check()
+    if sys.argv[1:] == ["--frontmatter"]:  # this check alone; needs no Codex CLI
+        print(f"PASS: {check_frontmatter()} skill frontmatters parse as strict YAML")
+    else:
+        check()

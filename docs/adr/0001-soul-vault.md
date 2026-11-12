@@ -19,7 +19,10 @@ the issue".
 1. **One vault per machine.** A vault is a private git repo of Obsidian folders:
    `projects/<key>/project.md` (label, contributes, remote) and
    `projects/<key>/soul/` (the record). A one-line machine file names it. The
-   Body: "i don't want an overengineered system".
+   Body: "i don't want an overengineered system". Other folders beside `soul/` in
+   `projects/<key>/` — such as `notes/` for material retired from a project — are
+   the owner's: `vault.py sync` commits them, no tool reads them, and they carry
+   the project's label (upstream mining, 2026-11-12; SKILL-KIT's note).
 2. **The project keeps a `.soul` link into the vault**, so everything that finds
    `.soul/` today keeps working: the completion gate, the Mind import and every
    skill. The vault is a third answer in `/soul-init`; local and in-git stay.

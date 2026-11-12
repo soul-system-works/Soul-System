@@ -121,7 +121,9 @@ pre-run cursor names that path (in NEXT STEP or OPEN GATES), so a later
    (create `.soul/` if missing):
    ```
    # Handoff cursor — [date]
-   NEXT-SESSION FOCUS: [from the argument, if given]
+   NEXT-SESSION FOCUS: [from the argument, if given; the Body's own words for a topic
+                        are quoted with what they referred to, or "referent
+                        unknown — ask" (step 3)]
    WHERE WE ARE:       [one short paragraph — no count that goes stale; write the
                         command that produces it instead (step 3)]
    LIVE AL:            [current abstraction layer if mid-flight — what varies / decides /
@@ -238,6 +240,14 @@ pre-run cursor names that path (in NEXT STEP or OPEN GATES), so a later
    item to `[read]` without checking it this session. Where a **cross-repo pointer
    is load-bearing**, prefer removing the seam (move the artifact in; add a
    red/green check) over annotating it.
+
+   **The focus keeps what the Body's words pointed at.** When NEXT-SESSION FOCUS
+   uses the Body's own words for a topic ("the new layout", "that drawing"), quote
+   them **and** say what they referred to — a file, a drawing, an earlier turn — so
+   the next session can find it. If you cannot tell, write "referent unknown — ask".
+   A LEARN-APP cursor's focus kept the Body's words but lost what they referred to
+   (upstream mining, 2026-11-12). Related to
+   SOUL-F075 (a quote not tied to an owner turn); this does not close it.
 
    **No stale-prone numbers in WHERE WE ARE.** A count that moves without this
    session — commits unpushed, tests failing, entries pending — is not written in;

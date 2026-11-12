@@ -15,6 +15,8 @@ file left where it was; a false hit costs the owner's trust in the offer, so whe
 in doubt it does not flag. Moving a working file into project content is the
 owner's call, and project content must not link into `.ai/` — so every link this
 script repoints from a class-1 file is REPORTED, never silently kept or dropped.
+A moved path still named as plain text in a tracked file is reported too, never
+rewritten (`old_path_mentions`).
 
   scan <project> [--json]               list candidates by group (changes nothing)
   apply <project> --plan P [--dry-run]  P maps path -> move | leave | content
@@ -359,6 +361,59 @@ def link_fixes(project, moves):
     return out, warnings
 
 
+def old_path_mentions(project, moves, fixes):
+    """Report lines for each tracked text file that still names a moved path as plain
+    text — a backticked path, a source-code comment, prose. link_fixes repoints only
+    Markdown links outside code spans; GAME-WEB found the rest still naming
+    `docs/plans/` after an apply (upstream mining, 2026-11-12). REPORTED, never
+    rewritten: a mention may be history (witness.md) or need the owner's wording.
+    Only git-tracked files are read; `.ai/` and paths through a symlink (the vault's
+    `.soul` link) are skipped, and so are the moved files themselves."""
+    if not moves:
+        return []
+    r = git(project, "ls-files", "-z")
+    if r.returncode != 0:
+        return []
+    fixed = {old: text for old, _, text, _ in fixes}
+    # A hit starts at the line start, or after whitespace, a quote, a backtick, or one of
+    # ( [ < @ * _ = , { | — so `@PLAN.md` (a broken import), `**PLAN.md**` and
+    # `--plan=PLAN.md` count — optionally through `./`. Never after another `/`: a
+    # relative path such as `../PLAN.md` or `sub/PLAN.md` is not resolved, so a real
+    # stale mention written that way is NOT reported (a known limit), and the new
+    # `.ai/plans/PLAN.md` never matches its own old name. It ends before a letter,
+    # digit, `-` or `.letter`, so `x.mdx` and `x.md.bak` are other names, while a
+    # sentence's closing `.` still counts.
+    pats = [(src, re.compile(r"(?:^|(?<=[\s'\"`(\[<@*_=,{|]))(?:\./)?" + re.escape(src)
+                             + r"(?![\w-]|\.\w)"))
+            for src in sorted(moves)]
+    out = []
+    for path in sorted(set(r.stdout.split("\0")) - {""}):
+        if (path.startswith((".ai/", ".git/")) or remap(path, moves) != path
+                or not safe(project, path)):
+            continue
+        if path in fixed:
+            text = fixed[path]
+        else:
+            try:
+                with open(os.path.join(project, path), "rb") as fh:
+                    data = fh.read(2 * 1024 * 1024 + 1)
+            except OSError:
+                continue
+            if len(data) > 2 * 1024 * 1024 or b"\0" in data[:8192]:
+                continue  # binary or very large: not a text mention
+            text = data.decode("utf-8", errors="replace")
+        for n, line in enumerate(text.splitlines(), 1):
+            for src, pat in pats:
+                if pat.search(line):
+                    out.append("still names the old path: {}:{} ({}){}".format(
+                        path, n, src, " — a history store: expected, leave it"
+                        if os.path.basename(path) in STORE_FILES else ""))
+    if out:
+        out.append("(reported only, never rewritten: update by hand where the text should "
+                   "follow the move)")
+    return out
+
+
 # --- apply -------------------------------------------------------------------
 
 def apply(project, plan, dry_run):
@@ -398,6 +453,8 @@ def apply(project, plan, dry_run):
 
     fixes, warnings = link_fixes(project, moves) if moves else ([], [])
     reports = list(warnings)
+    if use_git:
+        reports += old_path_mentions(project, moves, fixes)
     for _, new_file, _, changes in fixes:
         if not new_file.startswith(".ai/"):
             for _, new_link, now in changes:

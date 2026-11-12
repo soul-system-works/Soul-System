@@ -272,6 +272,66 @@ def main():
               b"[gone](../missing.md)" in plan_md
               and "../missing.md" in out.stdout and "PLAN.md" in out.stdout, out.stdout)
 
+        # 7. Plain-text mentions of a moved path — a backticked path and a code comment —
+        # are REPORTED with file:line and never rewritten; a relinked Markdown link is not
+        # reported again, and witness.md is marked as expected (GAME-WEB, upstream mining
+        # 2026-11-12). Also reported: `./PLAN.md`, `@PLAN.md`, `**PLAN.md**`, `--plan=PLAN.md`.
+        # No hit (fresh-context reviews): `sub/PLAN.md` (another path) and the new target
+        # `.ai/plans/PLAN.md`; a longer name on either side (`mydocs/…`, `….mdx`,
+        # `….md.bak`); a tracked file under .ai/; a moved file's own lines. `../PLAN.md` is
+        # a real stale mention, but relative paths are not resolved, so it is not reported
+        # (a known limit).
+        men = os.path.join(tmp, "mentions")
+        mfiles = {
+            "docs/plans/feature-x.md": "# Feature X\nThis is docs/plans/feature-x.md.\n",
+            "PLAN.md": "# Plan\nSee PLAN.md and docs/plans/feature-x.md\n",
+            "CLAUDE.md": "@PLAN.md\nRead **PLAN.md**\nor ./PLAN.md\nrun x --plan=PLAN.md\n",
+            "README.md": "# P\nThe plan was `docs/plans/feature-x.md`.\n"
+                         "[link](docs/plans/feature-x.md)\n[the plan](PLAN.md)\n"
+                         "Not mydocs/plans/feature-x.md, docs/plans/feature-x.mdx or "
+                         "docs/plans/feature-x.md.bak.\nSee PLAN.md.\n",
+            "docs/guide.md": "# Guide\n[p](../PLAN.md) and ../PLAN.md\n",
+            "notes.txt": "kept in sub/PLAN.md\n",
+            "src/build.py": "import os\n# design: docs/plans/feature-x.md\n",
+            ".soul/witness.md": "# W\nWrote docs/plans/feature-x.md.\n",
+            ".ai/old/log.md": "moved docs/plans/feature-x.md and PLAN.md\n",
+        }
+        for path, text in mfiles.items():
+            full = os.path.join(men, path)
+            os.makedirs(os.path.dirname(full), exist_ok=True)
+            with open(full, "w", encoding="utf-8") as fh:
+                fh.write(text)
+        git(men, "init", "-q")
+        git(men, "add", "-A")
+        git(men, "commit", "-q", "-m", "mentions")
+        with open(os.path.join(tmp, "men-plan.json"), "w") as fh:
+            json.dump({"docs/plans/feature-x.md": "move", "PLAN.md": "move"}, fh)
+        dry = run("apply", men, "--plan", os.path.join(tmp, "men-plan.json"), "--dry-run")
+        out = run("apply", men, "--plan", os.path.join(tmp, "men-plan.json"))
+        hits = sorted(l.strip() for l in out.stdout.splitlines() if "still names" in l)
+        check("plain-text mentions reported by file:line, the witness hit marked expected; "
+              "other paths, longer names, the new target and .ai/ are no hits",
+              hits == ["still names the old path: .soul/witness.md:2 (docs/plans/feature-x.md)"
+                       " — a history store: expected, leave it",
+                       "still names the old path: CLAUDE.md:1 (PLAN.md)",
+                       "still names the old path: CLAUDE.md:2 (PLAN.md)",
+                       "still names the old path: CLAUDE.md:3 (PLAN.md)",
+                       "still names the old path: CLAUDE.md:4 (PLAN.md)",
+                       "still names the old path: README.md:2 (docs/plans/feature-x.md)",
+                       "still names the old path: README.md:6 (PLAN.md)",
+                       "still names the old path: src/build.py:2 (docs/plans/feature-x.md)"]
+              and "reported only, never rewritten" in out.stdout
+              and sorted(l.strip() for l in dry.stdout.splitlines() if "still names" in l)
+              == hits, out.stdout)
+        check("the mentions are never rewritten; only the Markdown links are repointed",
+              read(men, "src/build.py") == mfiles["src/build.py"]
+              and read(men, ".soul/witness.md") == mfiles[".soul/witness.md"]
+              and read(men, "notes.txt") == mfiles["notes.txt"]
+              and read(men, "README.md") == mfiles["README.md"].replace(
+                  "(docs/plans/feature-x.md)", "(.ai/plans/feature-x.md)").replace(
+                  "(PLAN.md)", "(.ai/plans/PLAN.md)"),
+              read(men, "README.md"))
+
     n = len(results)
     if all(results):
         print("PASS  {}/{} — scan is conservative, apply moves and reports, re-runs are no-ops"

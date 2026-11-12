@@ -149,8 +149,11 @@ def handle(data):
     own prefix rules stopped matching; see the FENCE in hooks/secret-guard.py).
     SessionStart installs the hook folder and says whether the owner's
     shell_environment_policy opt-in is present; PreToolUse on Bash re-verifies the
-    folder and gives the bypass / hook-installer notices. Nothing here rewrites,
-    allows or blocks a command.
+    folder and gives the bypass / hook-installer notices. Nothing here rewrites or
+    allows a command; the one block is the guard's refusal of `git push --all / --tags
+    / --mirror`, passed on as Codex's `permissionDecision: deny` with its reason (the
+    form in the PreToolUse output schema of codex-cli 0.163.0, read from the binary
+    2026-11-12; not run in a live Codex session).
 
     One JSON object per hook run: the guard's notice, with the adapter's skip message
     folded in if the fingerprint step fails after it.
@@ -158,8 +161,13 @@ def handle(data):
     event = data.get("hook_event_name")
     if event == "PreToolUse" and data.get("tool_name") == "Bash":
         try:
-            out = guard.pre_tool_use(data, _guard_data_dir())
-            out = {"systemMessage": out["systemMessage"]} if out else None
+            full = guard.pre_tool_use(data, _guard_data_dir())
+            out = {"systemMessage": full["systemMessage"]} if full else None
+            spec = (full or {}).get("hookSpecificOutput") or {}
+            if spec.get("permissionDecision") == "deny":
+                out["hookSpecificOutput"] = {
+                    "hookEventName": "PreToolUse", "permissionDecision": "deny",
+                    "permissionDecisionReason": spec["permissionDecisionReason"]}
         except Exception as exc:
             out = {"systemMessage": f"Soul secret guard skipped ({type(exc).__name__}) — NOT checked."}
         try:
@@ -167,7 +175,7 @@ def handle(data):
         except Exception as exc:
             if not out:
                 raise
-            out = {"systemMessage": f"{out['systemMessage']}\n{_skipped(exc)}"}
+            out["systemMessage"] = f"{out['systemMessage']}\n{_skipped(exc)}"  # a refusal stands
             code = 0
         if out:
             print(json.dumps(out))

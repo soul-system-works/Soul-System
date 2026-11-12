@@ -1056,12 +1056,21 @@ def _sync_locked(vault, gitdir, key, message):
         # A bare `git pull` fails here (the branches have diverged), and a user's
         # pull.rebase/autostash would bring back the stash sync was rebuilt to avoid;
         # index.md, which link rewrites and sync never commits, blocks a merge
-        # (third review).
+        # (third review) — but only when the server side changed it too. The discard is
+        # named only then, and only as the step after a refusal: Claude Code's auto mode
+        # refuses `checkout --` as an irreversible discard, and in both reports (GAME-WEB,
+        # SENSOR-BED, 2026-11-09/10) the plain pull merged cleanly. No merge is run here:
+        # sync only commits and pushes, or stops (the Body's ruling, SOUL-234).
+        pull = "`git -C {} pull --no-rebase --no-autostash`".format(vault)
+        if _vault_git(vault, "diff", "--quiet", "HEAD...@{u}", "--", "index.md").returncode:
+            how = ("{}; if git refuses because of index.md, run `git -C {} checkout -- "
+                   "index.md` and pull again — index.md is regenerated, so its local copy "
+                   "can go".format(pull, vault))
+        else:
+            how = pull
         raise _not_pushed("the vault's server has newer commits. Merge them by hand when no "
-                          "other session is writing in the vault (`git -C {v} checkout -- "
-                          "index.md && git -C {v} pull --no-rebase --no-autostash`; "
-                          "index.md is regenerated, so its local copy can go), then run "
-                          "`vault.py index {v}` and sync again".format(v=vault))
+                          "other session is writing in the vault ({}), then run "
+                          "`vault.py index {}` and sync again".format(how, vault))
     r = _vault_git(vault, "push", "-q", remote, "HEAD:" + merge)
     if r.returncode != 0:
         raise _not_pushed("git push was refused: {}".format(r.stderr.strip()))

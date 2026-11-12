@@ -48,7 +48,7 @@ in a subfolder of a Soul repo:
 
 `PreToolUse` on Bash re-checks the folder before every command (a couple of dozen small
 reads). If a wrapper was changed or the folder is gone, it reinstalls it and says so in
-one line. It also gives two warn-only notices (below).
+one line. It also gives two warn-only notices, and refuses a push of every ref (below).
 
 ### Codex — opt-in
 
@@ -73,7 +73,10 @@ it. It applies to every Codex session, Soul project or not; outside Soul repos t
 wrappers only run the repo's own hooks. Untested inside a live Codex session; the fence
 checks that these three variables arm git. Without the opt-in, Codex's SessionStart
 context says "NOT armed under Codex" and prints the snippet. Codex's `PreToolUse` gives
-the same notices as Claude Code's, and never rewrites, allows or blocks a command.
+the same notices as Claude Code's and never rewrites or allows a command. It blocks one
+thing, as Claude Code's does: a push of every ref (below), passed to Codex as
+`permissionDecision: deny`. That form is in the hook output schema inside codex-cli
+0.163.0 (read 2026-11-12); it has not been run in a live Codex session.
 
 **The opt-in is unconditional.** git, under Codex, then looks for hooks only in that
 folder, in every repo. If the folder is gone (plugin data wiped, or the plugin
@@ -331,6 +334,40 @@ every check time out) — gets "Soul secret guard: this command bypasses git hoo
 `PreToolUse` (both hosts). It is a warning on the command text; it cannot block, and it
 can fire on a message that merely mentions such a flag.
 
+**A push of every ref is refused.** `git push` (or `git.exe push`) with `--all`,
+`--branches` (git's other name for `--all`), `--tags` or `--mirror` is refused by
+`PreToolUse` (both hosts) in a Soul project. git also takes any unique start of an
+option, so `--al`, `--b`, `--ta` and `--m` (and longer starts) are refused too; `--a` and
+`--t` are not, because git itself rejects them as ambiguous (checked by real pushes to a
+temp repo, git 2.53, 2026-11-12). The message names the by-name forms:
+`git push origin <branch>`, and for a tag `git push origin refs/tags/vX.Y.Z`. git hands
+the `pre-push` hook only the refs, never the flag, so git's own check cannot tell such a
+push apart. A ref pushed by mistake to a public remote cannot be taken back (mind item
+6(d)), and this repo's own `git push --tags` made a private tag public (SOUL-208). The
+owner chose to block, not warn (2026-11-12). `--follow-tags`, `--no-tags`, `--atomic`,
+`--thin` and `git fetch --tags` are not refused.
+
+It reads the command text. The bypass notice can afford a false hit, since it only
+warns; a false hit here blocks the command. So only git at a command position counts —
+`git`, `git.exe` or a path ending in `/git` (`/usr/bin/git`):
+
+- where: the start of the command, or after `;`, `&&`, `||`, `|`, `&`, `(`, `$(` or a
+  newline;
+- after any of: `VAR=value`; the shell words `then`, `do`, `else`, `if`, `elif`,
+  `while`, `until`, `{`, `!`; and the wrappers `time`, `env`, `nice` (`-n N`),
+  `nohup`, `timeout N`, `command`, `exec`, `sudo`, `xargs`, given without options;
+- with any global options before `push`, quoted values included
+  (`git -C "$repo" push`, `git.exe -C 'D:\x' push`, `git -c k='a b' push`,
+  `git --git-dir p push`). A backslash-newline counts as a space.
+
+Inside quotes, `;`, `&`, `|`, `(`, `)`, newlines and backticks are text, so a quoted
+or Markdown-style mention passes: ``grep '`git push --tags`' file``,
+`git commit -m "refuse every-ref pushes (git push --all, --tags)"`, a `gh pr create
+--body` text. Still refused, though only text: a heredoc body line that starts with
+`git push --tags`, and a trailing comment such as `git push origin main # not --tags`.
+The message gives the way out: write the text to a file with the editor or Write tool
+(not a shell heredoc) and use `git commit -F <file>`, or reword it.
+
 ## Not covered
 
 - Commits and pushes after any of the bypasses above: a bypass is **visible, not
@@ -377,6 +414,25 @@ can fire on a message that merely mentions such a flag.
   panel): they do not get the env file.
 - Windows-side `git.exe` started from WSL: Linux environment variables reach Windows
   programs only through `WSLENV`, which the guard does not set.
+- **`/soul-init`'s hand hooks under Windows git.** A WSL project pushed with Windows git
+  (`git.exe`, Git for Windows) runs the hand `pre-push` in Git for Windows' shell, which
+  cannot run the WSL guard. The hook then says "Windows git cannot run the WSL guard —
+  this git pre-push is NOT checked" (a hand commit made with Windows git says the same
+  for its hook). Before, it told the owner to re-run `/soul-init`, which repairs
+  nothing: from WSL the hook's path is fine (MODEL-LIB, 2026-11-10; on that machine
+  networked git goes through Windows git, so every push there was unchecked). A bridge
+  through `wsl.exe` is untried: whether the working folder, git's input and gitleaks
+  come through intact is unknown. It waits for a reproduction on such a machine.
+- **Pushes of every ref the refusal does not see:**
+  - a push run outside an AI session (a terminal, a script, an IDE);
+  - a push inside another shell's text (`bash -c 'git push --tags'`), inside backticks
+    (`` x=`git push --tags` ``), or inside a double-quoted `"$(…)"`;
+  - a wrapper given options: `sudo -u x git …`, `env -i git …`, `timeout -k 5 60 git …`;
+  - a refspec glob such as `git push origin 'refs/*:refs/*'` or `'refs/tags/*'`, which
+    sends as much as `--mirror` or `--tags`;
+  - a remote configured with `mirror = true` or a `remote.<name>.push` refspec: a plain
+    `git push backup` then sends them;
+  - a git alias, or a built-up command (`cmd=git; $cmd push --tags`).
 - Claude Code commands run in PowerShell: per the hooks docs, PowerShell copies only plain
   assignments from the env file and never runs it, so this shell is not applied.
 - A repo's own `reference-transaction` and `post-index-change` hooks, inside AI sessions.

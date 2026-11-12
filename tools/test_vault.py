@@ -237,22 +237,54 @@ def sync_cases(tmp, env):
           r.returncode == 0 and "already on the server" in r.stdout
           and "NOT PUSHED" not in r.stderr, r.stdout + r.stderr)
 
-    # PULL — the merge the NOT PUSHED line names actually works (index.md dirty)
+    # PULL — the merge the NOT PUSHED line names actually works (index.md dirty, and the
+    #        server changed it too): the pull is named first, the discard only as the step
+    #        after git refuses over index.md
+    pull = lambda v: git(v, "-c", "pull.rebase=true", "-c", "rebase.autostash=true", "pull",
+                         "-q", "--no-rebase", "--no-autostash", "--no-edit")
     p, v, bare, clone = sync_fixture(tmp, env, "PULL")
     remote_commit(clone, "index.md", "# index from the other machine\n")
     write(os.path.join(v, "index.md"), "# regenerated here\n")
     write(os.path.join(p, ".soul", "witness.md"), "# W\nPULL\n")
     r = run(env, "sync", p)
     line = r.stderr
-    ok = r.returncode == 2 and "--no-rebase --no-autostash" in line
+    at = lambda s: line.find(s)
+    ok = (r.returncode == 2 and -1 < at("--no-rebase --no-autostash")
+          < at("checkout -- index.md"))
+    m0 = pull(v)
     m1 = git(v, "checkout", "--", "index.md")
-    m2 = git(v, "-c", "pull.rebase=true", "-c", "rebase.autostash=true", "pull", "-q",
-             "--no-rebase", "--no-autostash", "--no-edit")
+    m2 = pull(v)
     r2 = run(env, "sync", p)
-    check("PULL: the named merge works on diverged branches with a dirty index.md, then "
-          "sync pushes", ok and m1.returncode == 0 and m2.returncode == 0
+    check("PULL: the named pull is refused over index.md, the named discard then lets it "
+          "merge on diverged branches, then sync pushes", ok and m0.returncode != 0
+          and "index.md" in m0.stderr and m1.returncode == 0 and m2.returncode == 0
           and r2.returncode == 0 and "pushed" in r2.stdout
           and git(v, "stash", "list").stdout == "", line + m2.stderr + r2.stdout + r2.stderr)
+
+    # PULL-ELSEWHERE — the server changed another file, index.md is dirty here: the line
+    #        names the pull alone (no discard: auto mode refuses `checkout --`, GAME-WEB and
+    #        SENSOR-BED 2026-11-09/10), and that command alone merges and keeps index.md
+    p, v, bare, clone = sync_fixture(tmp, env, "PULL-ELSEWHERE")
+    remote_commit(clone, os.path.join("projects", "far", "soul", "witness.md"), "# far\n")
+    write(os.path.join(v, "index.md"), "# regenerated here\n")
+    write(os.path.join(p, ".soul", "witness.md"), "# W\nPE\n")
+    r = run(env, "sync", p)
+    line = r.stderr
+    named = re.findall(r"`(git -C \S+ [^`]*)`", line)
+    m = (subprocess.run(["git", "-c", "pull.rebase=true", "-c", "rebase.autostash=true"]
+                        + named[0].split()[1:], capture_output=True, text=True, env=_GIT_ENV,
+                        stdin=subprocess.DEVNULL)
+         if len(named) == 1 else None)
+    r2 = run(env, "sync", p)
+    check("PULL-ELSEWHERE: the line names only the pull, no checkout; it merges with "
+          "index.md dirty and kept; the next sync pushes", r.returncode == 2
+          and "checkout" not in line and len(named) == 1 and "pull --no-rebase "
+          "--no-autostash" in named[0] and m is not None and m.returncode == 0
+          and read(os.path.join(v, "index.md")) == "# regenerated here\n"
+          and r2.returncode == 0 and "pushed" in r2.stdout
+          and git(bare, "show", "main:projects/syncer/" + mine).stdout == "# W\nPE\n"
+          and git(v, "stash", "list").stdout == "",
+          line + (m.stderr if m else "") + r2.stdout + r2.stderr)
 
     # A refused push (the server's hook says no): exit 2
     p, v, bare, clone = sync_fixture(tmp, env, "refused")

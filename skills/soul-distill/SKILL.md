@@ -293,6 +293,21 @@ Then the signal is the first accumulation that would fill one (see /soul-init's
    - This governs the *review* only; the deployed `mind.md` format (step 7) is
      unchanged.
 
+   **A Mind nothing imports is not live.** Ask `init-status.py`, do not search for
+   the line yourself: run `python3 <root>/tools/init-status.py status . --json` and
+   read its `mind` item. It reads the `@` lines of `CLAUDE.md`, `.claude/CLAUDE.md`,
+   `AGENTS.md` and `CLAUDE.local.md` (not imports nested inside them), resolves each
+   relative to the file it sits in, and reports a `mind.md` nothing loads as a
+   `repair` whose detail names the line and the file. It reads only a `mind.md` that
+   exists, so for a first Mind run it again right after the file is written. When it
+   reports that repair — for a first Mind, expect it — the Body's yes covers two
+   writes: `mind.md` and that import line, placed by `/soul-init`'s `mind` rule (right
+   after the contract import, relative to the file it goes into, in `CLAUDE.local.md`
+   when the wiring is there). Say so in the draft's one-line summary ("first Mind: the
+   yes also adds `@.soul/mind.md` to CLAUDE.md"). Step 8 used to stop at the draft and
+   the yes; CAPTURE-RIG's note was that a first Mind is not live until imported
+   (upstream mining, 2026-11-12).
+
 ## Retirement (Steward / never-always-on)
 
 - The Mind carries `Last distilled` so decay is visible.

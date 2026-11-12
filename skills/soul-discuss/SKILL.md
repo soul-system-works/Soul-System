@@ -1,6 +1,6 @@
 ---
 name: soul-discuss
-description: Explore an idea or topic with the Body as a knowledgeable coworker, not a yes-man — offer a clarify round when the idea is thin, set rivals beside it, give the strongest objection before the pros, scan a few cited sources, hold a stated lean unless a new fact or argument arrives, and close each round with a block the idea's entry can keep. Run it when the Body asks for it, on an idea entry or a general topic. Otherwise only propose it, and run it on the Body's yes: when the Body brings a new idea to explore, or moves to build an idea that has not been discussed.
+description: "Explore an idea or topic with the Body as a knowledgeable coworker, not a yes-man — offer a clarify round when the idea is thin, set rivals beside it, give the strongest objection before the pros, scan a few cited sources, hold a stated lean unless a new fact or argument arrives, and close each round with a block the idea's entry can keep. Run it when the Body asks for it, on an idea entry or a general topic. Otherwise only propose it, and run it on the Body's yes: when the Body brings a new idea to explore, or moves to build an idea that has not been discussed."
 ---
 
 # /soul-discuss — contest the idea so it can mature

@@ -97,6 +97,10 @@ source of truth; this loads them and continues.
    and SENSOR-VIEW found a resume blind to what landed after its cursor (mining
    pass 2, SOUL-202).
 
+   If NEXT-SESSION FOCUS says "referent unknown — ask", ask the Body that one
+   narrow question — what the quoted words referred to — before any wider one
+   (`/soul-handoff` step 3; LEARN-APP, upstream mining 2026-11-12).
+
    If the cursor says an unattended run was started and results have landed since,
    suggest `/soul-debrief` once, in one line; do not run it (SOUL-I086).
 3. **Restate, in 2–3 lines:** where we are · the live design frame (if any) · the
