@@ -9630,5 +9630,9 @@ CONSEQUENCE:  Sessions in SENSOR-BED would read and write the stale copy until i
               link is repaired. Which copy is current is the Body's call; the
               recommendation given was the vault copy, repaired from that project's
               own session. Nothing was changed in either copy beyond the stamp.
-STATUS:       Open.
+STATUS:       Closed 2026-11-12. The Body: "vault, this project is being used on
+              another machine at this time which is making the vault changes". The
+              vault copy is current; this machine's project folder is the stale one.
+              The stamp was committed alone (`commit --only`) and pushed; the server
+              had not moved. The local `.soul` folder was left as it is.
 ```
