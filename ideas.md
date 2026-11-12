@@ -3296,5 +3296,7 @@ RAW:       A lighter start for someone new to Soul, and /soul-init improved agai
            interface, built v3.6.0), SOUL-I016 (a noisy first run), SOUL-I081 (the
            clean-up step), SOUL-I050 (default register), SOUL-I091 ROUND 2. Mind item 8:
            a five-minute floor file tied Soul on quality and is cheaper.
+NOTES:     2026-11-12 — asked which note the Body meant, the Body: "yes those all cover my
+           soul-init note" (SOUL-I090, I082, I016, I081).
 STATUS:    Raw
 ```
