@@ -3075,6 +3075,11 @@ NOTES:     2026-11-12, mining pass 4 (SOUL-235): SKILL-KIT's notes bear on this.
            (that note, held until a firing test shows a miss). A vault place for
            retired material (`projects/<key>/notes/`) keeps retired skills
            findable rather than deleted.
+DISCUSSED: round 1, 2026-11-12, together with SOUL-I089 — see its DISCUSSED
+           block (the Body's answers, options, lean). For this idea: part (c),
+           a channel from projects to the prototype-skills repo, gets its own
+           round (the Body: "own round").
+STATUS:    Maturing
 ```
 
 ```
@@ -3104,7 +3109,43 @@ WHY:       MODEL-LIB's upstream note 2026-11-11: /soul-next said "distill due" t
            trigger is human" (A022), so discuss before building; (c) is the piece
            most likely to earn its place. Shares SOUL-I087's question (a periodic
            prompt). Mining pass 4 (SOUL-235).
-STATUS:    Raw
+DISCUSSED: round 1, 2026-11-12, with SOUL-I087 (one round for both).
+           Body's answers: (a) stale Mind, (b) stale cursor, (c) prototype skills
+           not improved cost most ("a, b, and c"); "this isn't about reminders
+           necessarily (especially a and b) its that i get reminders buti have to
+           continueal stop and do it or we have long running sessions that may need
+           update througout. it's annoying to have to update them and i rarlely if
+           ever do anything but accept the mind/handoffs as created"; lessons stay
+           in projects: "i think so"; autonomy: "agree except the mind might have a
+           behavior like witnesses where when engouh witnesses pile up it
+           automatically revisits and lets you know in case you want to edit";
+           cadence by count, not calendar: "agreed".
+           Reframe: not reminders — remove the stop; act, then tell, with an
+           opt-out (as A031 did for captures).
+           Options weighed: the status quo nudges (/soul-next "distill due") · the
+           model acting on its own · hook-driven (a Stop hook's "block" with a
+           reason; context added at session start after a compaction) · a
+           draft-only Mind (keeps the stop) · a skills channel beside upstream.md.
+           Strongest objection: the Mind loads into every session; an unattended
+           rewrite that drops or bends an item changes every later session unseen.
+           The Body's review caught a wrong cut once (SOUL-118, 2026-05-28); every
+           distill since 2026-10-19 was accepted as written.
+           Sources: code.claude.com/docs/en/hooks (fetched 2026-11-12: Stop
+           `decision: "block"` + `reason` keeps the model working; PreCompact stdout
+           becomes summary instructions; SessionStart `compact` adds context; no hook
+           writes a file through the model); SOUL-118; SOUL-A031; MODEL-LIB's
+           upstream note 2026-11-11.
+           Lean: (b) build — a staleness-gated check, plus a line after a
+           compaction. (a) build, narrowed — at the growth threshold, apply minor
+           changes as their own commit with a one-line notice and one-command undo;
+           hold cuts. Needs an amendment (the contract says "the owner confirms").
+           (c) a skills channel beside upstream.md, mined like it; usage counts with
+           the passes; no automatic skill edits — its own round.
+           Deeper research: not worth it; a trial in one busy project settles it.
+           Next step: the Body accepted the block; "draft note that there could be
+           some severity on the mind changes that could help avoid major oopsies"
+           → SOUL-A032 drafted (amendments/proposed/). (c): "own round".
+STATUS:    Maturing
 ```
 
 ```
