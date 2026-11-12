@@ -3265,5 +3265,36 @@ NOTES:     2026-11-12, after round 1, the Body widens the aim: "essentially i fe
            short scan so far; a deeper pass proposed (how others organize cross-project
            AI work and knowledge, evidence such homes help or are abandoned, the
            lightest day-one version).
+ROUND 2:   2026-11-12 — after research (working file .ai/research/2026-11-12-home-vault.md,
+           spot-checked: arXiv 2602.11988 says context files "do not generally improve
+           task success rates" and raise cost "by over 20% on average"). Findings: pull
+           works, push does not (cost; stale carried lessons are trusted; Claude Code's
+           session messaging never counts as the owner's consent and a session must not
+           change its instructions because another asked); no standing agent needed.
+           Paths: leave the vault as storage · a pull-only home · push/standing agent.
+           The Body chose the pull-only home ("agree"): an inbox of destination-tagged
+           lessons (today's upstream.md notes, tagged soul / skills / blog), a home
+           CLAUDE.md, room for cross-project work (investigations, ideas, outside
+           knowledge, quotes); a session opened there when wanted, proposing for the
+           Body's yes; nothing from it loads into project sessions. Skills fit as the
+           home's skills pass (I087 part (c)). Newcomers: no vault on day one — split out
+           as SOUL-I092 (the Body: "yes").
 STATUS:    Maturing
+```
+
+```
+ID:        SOUL-I092
+WHEN:      2026-11-12
+RAW:       A lighter start for someone new to Soul, and /soul-init improved again. From
+           the SOUL-I091 research: day one should need no vault — one project, a short
+           instruction file holding only what Claude cannot see, a test command; the
+           vault and the home offered later, once a second project and a first lesson
+           worth sharing exist. The Body: "yes i think that is kindof how we have it BUT
+           the whole soul-init process needs to be improved again which i think i have
+           made a note about".
+           Related: SOUL-I090 (decisions as one grilling round), SOUL-I082 (the init
+           interface, built v3.6.0), SOUL-I016 (a noisy first run), SOUL-I081 (the
+           clean-up step), SOUL-I050 (default register), SOUL-I091 ROUND 2. Mind item 8:
+           a five-minute floor file tied Soul on quality and is cheaper.
+STATUS:    Raw
 ```
