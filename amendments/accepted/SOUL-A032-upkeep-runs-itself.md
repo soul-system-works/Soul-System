@@ -1,4 +1,4 @@
-AMENDMENT ID:    SOUL-A032 (PROPOSED — not accepted; drafted 2026-11-12 for the Body)
+AMENDMENT ID:    SOUL-A032
 DATE:            2026-11-12
 WITNESS IDS:     SOUL-235 (mining pass 4: MODEL-LIB's upstream note 2026-11-11, the
                  problem and the Body's words there); SOUL-118 (the one recorded case
@@ -133,12 +133,13 @@ long session.
    how large the working context is), with a fixed step (about 50,000 tokens) — plus
    always after a summary. It measures what a lost context would lose, the same for a
    session that commits often and one that never does. (Whether every host records
-   the context size per turn is to be confirmed while building.) Awaiting the Body.
+   the context size per turn is to be confirmed while building.) The Body: "yes".
 3. The opt-out — the Body: "ok, in soul-init? or elsewhere?" Proposed: one key in
    `.soul/init.md` (where `/soul-init` already keeps the owner's answers, one dated
    line per key, and the hooks can read it), asked once by `/soul-init`; a project
    with no answer gets the default (on), and the first notice says how to turn it
-   off. Awaiting the Body.
+   off. The Body: "yes".
 4. First trial — the Body: "into release".
 
-STATUS:          Proposed 2026-11-12. Not accepted; nothing built.
+STATUS:          Accepted 2026-11-12 by the Body (all four open questions answered
+                 above). To be built on a branch for the next release; not yet built.
