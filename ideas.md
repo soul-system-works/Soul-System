@@ -3254,5 +3254,16 @@ DISCUSSED: round 1, 2026-11-12, with SOUL-I087 part (c).
            settles more than reading.
            Next step: a picture — a draft home CLAUDE.md for the vault and a sample
            destination-tagged note — before any build plan.
+NOTES:     2026-11-12, after round 1, the Body widens the aim: "essentially i feel like
+           i kind of you the soul-system repo as a stand in for it. and don't currently
+           have a good place to do cross project investigations, ideation,
+           organization, knowledge capture, or outside project knowledge capture,
+           quotes capture, etc. etc. by doing this i am hoping that there becomes a
+           sensible solution for someoone using the soul-system to really get started
+           with using ai and projects effectively without huge overhead of other".
+           Asked whether the idea had been critically evaluated or researched: only a
+           short scan so far; a deeper pass proposed (how others organize cross-project
+           AI work and knowledge, evidence such homes help or are abandoned, the
+           lightest day-one version).
 STATUS:    Maturing
 ```
