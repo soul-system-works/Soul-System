@@ -3164,3 +3164,33 @@ WHY:       The Body: "i think several dcisions as one grilling may make sense fo
            questions were answered without trouble the same day.
 STATUS:    Raw
 ```
+
+```
+ID:        SOUL-I091
+WHEN:      2026-11-12
+RAW:       The Body: "i have another idea that i think does integrate/work with, i
+           think, the skills revisit and matures the soul-vault idea. it improves the
+           soul-vault and then the soul-vault becomes a place i have a "home" agent.
+           then could then be the way to help integrate learnings, keep and improve
+           skills, agents, claude files, etc. here is a link to a recent blog that i'd
+           like you to include in the idea note that we will review and evaluate:
+           https://www.aihero.dev/the-home-repo-pattern"
+           (The post, read 2026-11-12, page last updated that day, no author shown:
+           one "Home Repo" holds your skills, AGENTS.md and shared docs (standards,
+           glossary, system-wide decisions, an optional small wiki, later a CLI); you
+           run the agent from it, and its AGENTS.md points to your other repos, which
+           keep their own code, history and remotes ("Code stays where it is, and each
+           repo keeps its history, remote and issue tracker."). A setup prompt
+           inventories the repos, asks decisions in numbered rounds, stays read-only
+           until the plan is approved, and moves shared or duplicated material home on
+           new branches. It does not describe an ongoing flow of lessons between repos.
+           Scale notes: about 20 repos works; around 400, one file per business area;
+           thousands, a skills marketplace. A user folder such as ~/.claude/skills is
+           called a stopgap.)
+           Related: SOUL-I087 (keep the prototype skills improved and used; its part (c),
+           a channel from projects to the skills repo, has its own round pending);
+           SOUL-I089 / SOUL-A032 (upkeep runs itself); SOUL-I090 (decisions as one
+           grilling round — the post's setup asks in numbered rounds); SOUL-I081 and
+           docs/adr/0001-soul-vault.md (the vault; its `projects/<key>/notes/` folder).
+STATUS:    Raw
+```
