@@ -26,8 +26,9 @@ wants the lay of the land). Not a deep philosophy dump — point to depth, don't
    else; every session, the completion gate fires by itself and the AI records what a
    later session could not re-derive, naming each entry in one line (the Body says no
    to strike one; silence keeps it; only the Body promotes a `finding`); over time
-   the AI proposes `/soul-distill` when the record has grown, and the Body curates
-   the draft.
+   the handoff cursor and `/soul-distill` run by themselves when they are due — small
+   Mind changes apply with a one-line notice, and a cut or a changed rule waits for
+   the Body's yes (`upkeep: off` in `.soul/init.md` turns this off).
 
 3. **The commands.** Read `skills/` at runtime and list each `soul-*/SKILL.md` with a one-line
    "when it fires" (the first sentence of its `description:`, ~100 char cap) — so this can't

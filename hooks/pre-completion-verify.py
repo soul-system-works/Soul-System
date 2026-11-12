@@ -228,7 +228,7 @@ def _read_verdict(transcript_path: str):
                 and (records[i].get("message") or {}).get("role") == "user"):
             mark = i
             break
-        if _is_real_user_turn(records[i]):
+        if _is_real_user_turn(records[i]) and not _is_hook_feedback(records[i]):
             return None  # a newer user turn: the checklist is not what this stop answers
     if mark is None:
         return None
@@ -238,6 +238,21 @@ def _read_verdict(transcript_path: str):
         for b in _content(r) if isinstance(b, dict) and b.get("type") == "text"
     )
     return _classify_reply(reply)
+
+
+def _is_hook_feedback(record) -> bool:
+    """Another Stop hook's block, recorded as a meta user message "Stop hook feedback:…".
+
+    Skipped only by _read_verdict, never by _scan, so when the gate fires is unchanged.
+    The upkeep hook (hooks/upkeep.py, SOUL-A032) can block in the same stop as the
+    gate; its feedback record, landing after the checklist, read as a newer user turn
+    and the verdict event was lost (fresh-context review of the A032 build, 2026-11-12;
+    the record shape seen in a live `claude -p` trial). Fence: hooks/test_verdict.py.
+    """
+    if not record.get("isMeta"):
+        return False
+    return any(b.get("text", "").lstrip().startswith("Stop hook feedback")
+               for b in _content(record) if isinstance(b, dict) and b.get("type") == "text")
 
 
 def _classify_reply(reply: str) -> str:

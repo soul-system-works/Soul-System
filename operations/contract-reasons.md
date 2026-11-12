@@ -76,6 +76,29 @@ stale-rule quiz where Soul still builds before asking, or sessions that stop on
 choices that were not the owner's; rule 1 — a re-run of chain R where Soul handoffs
 still lose the incidents, or where records fill with stories the owner never told.
 
+**The Stores paragraph's Upkeep sentence (SOUL-A032, 2026-11-12).** It said
+`/soul-distill` was "proposed when the record has grown; the owner confirms" (A022).
+In MODEL-LIB (upstream note, 2026-11-11; SOUL-235) `/soul-next` said "distill due"
+two days running and nothing ran; meanwhile one Mind item stopped holding, and the
+handoff cursor stayed a day stale through a full day of work and a summary. The
+owner: "i get reminders buti have to continueal stop and do it … i rarlely if ever
+do anything but accept the mind/handoffs as created", and in this repo every distill
+since 2026-10-19 was accepted as drafted. So the distill now runs itself and grades
+each change: minor ones (a new item, new evidence, a fixed citation, a rewording
+that keeps the rule) apply and the owner is told in one line, with the undo; a cut,
+a changed rule, a dropped incident or a merge waits for the owner's yes. The brake
+on the grade is a script, `tools/mind-guard.py`: the item count must not fall and
+every record id the old Mind cites must still be cited, or the whole change waits —
+the model's own grade can be wrong in the flattering direction. The held class
+exists because of SOUL-118, the recorded case where the owner's review of a Mind
+change reversed a cut. The handoff cursor refreshes itself the same way, when about
+50,000 tokens of conversation or a summary have passed since it was written
+(`hooks/upkeep.py`; the owner chose that over a commit count). The owner can turn
+both off with one answer, `upkeep: off` in `.soul/init.md`. The owner saw the
+sentence and answered "accept". **What would make it wrong:** a change graded minor
+that in fact bends an item's meaning — a rewording the script cannot see. No such
+case is known; none is claimed.
+
 ## The v2 wording, kept whole
 
 (Where the text below says "sessions need only this page", it means the contract,

@@ -1,6 +1,6 @@
 ---
 name: soul-distill
-description: Refresh the project's Mind — compress the accumulated record (witness + findings + ideas + amendments) into mind.md as the slim form (A021) — this project's unguessables only, the things a later session cannot re-derive. Produces a draft for curation; never auto-commits. The Distiller's instrument. Use when the Body asks, OR propose it proactively when the record has grown materially since the Last-distilled stamp (~15+ new witness entries, or any finding closure / accepted amendment) — ask first, run on the Body's yes (A022).
+description: Refresh the project's Mind — compress the accumulated record (witness + findings + ideas + amendments) into mind.md as the slim form (A021) — this project's unguessables only, the things a later session cannot re-derive. The Distiller's instrument. Use when the Body asks, OR run it unasked at the growth signal (~15+ new witness entries since the Last-distilled stamp, or a finding closed or an amendment accepted), checked when the handoff cursor refreshes, at most once a day. Grades every change — minor ones (a new item, new evidence, a fixed citation, a rewording that keeps the rule) are committed alone with a one-line notice and the undo; major ones (a cut, a changed rule, a dropped incident, a merge) wait in .ai/distill/ for the Body's yes, and tools/mind-guard.py is the brake (A032). With upkeep off in .soul/init.md, propose it and wait instead.
 ---
 
 # /soul-distill — refresh the Mind
@@ -27,11 +27,17 @@ Tier 2 evidence: Mind-only reasoning was ~41% cheaper than full-record on
 doctrinal questions; arms disagreed on obligation-shaped questions exactly where
 the residual lives.
 
-**Model-proposable, Body-confirmed (A022).** The original manual-fire-only stance
-deferred automation "until the manual cadence proves insufficient" — the Body's
-v2.0 review declared it so ("not clear WHEN I should use these"). The model now
-watches a simple growth signal and PROPOSES; the Body's yes is still the trigger,
-and the draft-for-curation / never-auto-commit discipline is unchanged.
+**Runs itself, graded by severity (A032, 2026-11-12).** A022 let the model notice
+the growth signal and propose; the Body's yes was the trigger. In MODEL-LIB
+`/soul-next` said "distill due" two days running and nothing ran, and the Body
+accepts drafts as written: "i rarlely if ever do anything but accept the
+mind/handoffs as created". So it now runs at the growth signal and grades each
+change (step 8): minor ones apply on their own and the Body is told in one line,
+with the undo; major ones wait for the Body's yes. A022's own reason stays — an
+unchecked rewrite can drop a curated item — so every cut and every changed rule
+still waits, and a script (`tools/mind-guard.py`) checks what the model's grade
+cannot. SOUL-118, where the Body's insistence on a test reversed a cut, is why cuts
+stay held.
 
 **The growth signal:** material record activity since the `Last distilled` stamp
 in `mind.md` — as a guideline, ~15+ new witness entries, or any finding closure
@@ -41,10 +47,23 @@ Then the signal is the first accumulation that would fill one (see /soul-init's
 
 ## What to do
 
-1. **Confirm the trigger.** Either the Body invoked this, or you are proposing:
-   state the signal plainly ("N witness entries and M finding closures since the
-   last distill — want me to refresh the Mind?") and WAIT for the yes. No yes,
-   no distill. The cadence is still the Body's; only the noticing moved.
+1. **When it runs.**
+   - **The Body asks:** run it now. Step 8's grading still applies; the Body is
+     there, so show the held changes at once.
+   - **By itself:** at the growth signal, checked when the handoff cursor refreshes
+     (`/soul-handoff`, step 1c), at most once a calendar day — a session cannot see
+     the one before it, so the date is the test. It already ran today if the `Last
+     distilled` stamp is today, or `.ai/distill/` holds a `mind-held-<today>.md` or a
+     `mind-declined-<today>.md`: skip it then. No question first; the notice comes
+     after (step 8).
+   - **A declined change is not proposed again** unless record entries written after
+     the `mind-declined-<date>.md` that holds it bear on it. Read the declined files
+     before drafting, and leave out what the Body already said no to — otherwise the
+     next refresh re-proposes the same change every day.
+   - **Upkeep off** — `.soul/init.md` holds `upkeep: off` (the owner's opt-out,
+     asked once by `/soul-init`): never run it by itself. Propose instead — state the
+     signal ("N witness entries and M finding closures since the last distill — want
+     me to refresh the Mind?") and wait for the yes, as before A032.
 
 2. **Read the project's record AND the existing Mind.** Pull from the project root:
    - `witness.md` (tail at minimum; full if recent distill is stale)
@@ -254,24 +273,75 @@ Then the signal is the first accumulation that would fill one (see /soul-init's
    distill added two items (2 and 5) and cut one — 6 → 7 items, 69 → 76 lines
    (commit 9d1aa6d) — and a live registry doc's "mind 5(c)" silently pointed at
    the wrong item (SOUL-202); PLANT-BOP and NAV-TOOL reported the same defect.
-   Prefer appending new items and keeping existing numbers over renumbering. If a
+   Prefer appending new items and keeping existing numbers over renumbering — a
+   renumbering is a major change, because `tools/mind-guard.py` checks each item by
+   its number (step 8). If a
    cut or reorder does renumber, search for citations of the old numbers ("mind
    N", "Mind #N", "item N", "rule N") with a plain `grep -rn` over the working
    tree — not `git grep`, which skips gitignored files, and the motivating hit was
    in a gitignored registry file. List each hit, with what it should now point at,
    in the draft's notes for the Body — never in the Mind text itself.
 
-8. **Present the draft for curation — delta-first, gap-only, never commit.**
-   The Body curates and commits; do not auto-commit (the curation is the earning).
+8. **Grade every change; apply the minor ones, hold the major ones (A032).**
    **Write the draft to `.ai/`, never in place** — e.g.
    `.ai/distill/mind-draft-<date>.md`. `mind.md` is imported, so a draft written
    into it is live next session whether or not anyone commits (NAV-TOOL,
-   SOUL-202); it replaces `mind.md` only on the Body's yes. **`.ai/` ignored first:**
+   SOUL-202); only the minor changes reach `mind.md`, as below. **`.ai/` ignored first:**
    run `git check-ignore -q .ai/x`; if it is not ignored, add `.ai/` to
    `.git/info/exclude` (as `tools/dispatch.py` does) and say so in one line. In a
    public repo, write nothing there until it is ignored (mining pass 3, SOUL-234).
-   The review surface must make the *load-bearing question per entry* cheap to
-   judge — the Body cannot weigh a draft buried in passing-check prose (the
+
+   - **Grade each change** against the prior `mind.md`. When unsure, it is major.
+     - **Minor — applied on its own:** a new item; new evidence or a new incident
+       added to an item; a citation fixed; a rewording that keeps the item's rule,
+       numbers and incident; wrapping and spacing.
+     - **Major — held for the Body:** cutting an item or part of one; changing what
+       an item tells a session to do (a rule reversed or loosened, a number
+       changed); dropping an incident or record id from an item (an item without
+       its incident gets reinterpreted — F053/A020); merging two items; any change
+       to an item the Body wrote or marked as theirs; the Mind growing past its line
+       cap (step 4's 120, or the cap the Body set). A first Mind is major too: it
+       adds an always-on file and an import line in the Body's `CLAUDE.md` (below).
+   - **Run the brake before applying anything.** Write the minor-only version (the
+     prior Mind plus the minor changes alone) to `.ai/distill/mind-minor-<date>.md`
+     and run `python3 <root>/tools/mind-guard.py <mind path> .ai/distill/mind-minor-<date>.md`
+     (`<root>` is two levels above this skill's base directory; `<mind path>` is the
+     Mind's real path — `mind.md` or `.soul/mind.md`, wherever it lives). **Any exit
+     but 0 makes every change major**, whatever the grade: apply nothing. Exit 1 is a
+     failed check; exit 2 means it could not read a file — usually the wrong Mind
+     path; fix the path and run it again. The script checks, item by item, that every
+     old item number still exists and still cites every record id it cited (the
+     `**Last distilled:**` stamp is not checked). It cannot see a rewording that
+     bends a meaning, so the grade still matters.
+   - **Apply the minor changes as their own commit.** Copy the prior Mind to
+     `.ai/distill/mind-before-<date>.md`, copy the minor-only version over the Mind,
+     then by where the Mind lives:
+     - **Tracked in this repo:** `git commit -m "mind: auto-distill (minor) — <what
+       changed>" -- <mind path>` — that path only, nothing else in the commit. Undo:
+       `git revert <sha>`.
+     - **In a vault** (`.soul` is a link): `python3 <root>/tools/vault.py sync . -m
+       "mind: auto-distill (minor) — <what changed>"`. Sync commits this project's
+       whole vault folder, so a revert could take other files with it; the undo is
+       `cp .ai/distill/mind-before-<date>.md .soul/mind.md` and `vault.py sync .` again.
+     - **Not in git** (an ignored record): nothing to commit; the undo is the same `cp`.
+
+     Then one line to the Body: *"Mind refreshed: <what changed> — say no to undo
+     (`git revert <sha>`)"*, with the vault or untracked undo in its place. The first
+     such line in a project that has no `upkeep:` answer adds "to turn this off:
+     /soul-init revisit upkeep".
+   - **Hold the major changes.** Save the full draft as
+     `.ai/distill/mind-held-<date>.md` — the name `/soul-next` looks for — and say one
+     line to the Body: *"Mind: N changes wait for your yes — <short names>, in
+     .ai/distill/mind-held-<date>.md"*. Nothing major is applied until the Body says
+     yes; on the yes, apply and commit it the same way, then delete the held file. On
+     a no, leave the Mind as it is and rename the held file to
+     `.ai/distill/mind-declined-<date>.md`, with one line at its top naming what was
+     declined: step 1 reads it, so the same change is not proposed again. With both
+     present, the minor ones apply and the major ones wait.
+
+   **When the Body reviews the held changes** — at once when the Body ran this, or
+   later on request — the review surface must make the *load-bearing question per
+   entry* cheap to judge — the Body cannot weigh a draft buried in passing-check prose (the
    I037 pain). Apply the compact, gap-only discipline the completion gate
    already adopted (SOUL-055: "expand to the failing check only on a real gap;
    do not recite passing checks"):
@@ -291,7 +361,7 @@ Then the signal is the first accumulation that would fill one (see /soul-init's
      `Shrinkage: clean (lines 69→76 · items 6→7) · Guards: clean · Diagnostics: 1 flag →
      <flagged question + honest answer>`. A passing check is not recited.
    - This governs the *review* only; the deployed `mind.md` format (step 7) is
-     unchanged.
+     unchanged. The minor changes need no review; their one-line notice is enough.
 
    **A Mind nothing imports is not live.** Ask `init-status.py`, do not search for
    the line yourself: run `python3 <root>/tools/init-status.py status . --json` and
@@ -300,8 +370,8 @@ Then the signal is the first accumulation that would fill one (see /soul-init's
    relative to the file it sits in, and reports a `mind.md` nothing loads as a
    `repair` whose detail names the line and the file. It reads only a `mind.md` that
    exists, so for a first Mind run it again right after the file is written. When it
-   reports that repair — for a first Mind, expect it — the Body's yes covers two
-   writes: `mind.md` and that import line, placed by `/soul-init`'s `mind` rule (right
+   reports that repair — for a first Mind, expect it; a first Mind is always held —
+   the Body's yes covers two writes: `mind.md` and that import line, placed by `/soul-init`'s `mind` rule (right
    after the contract import, relative to the file it goes into, in `CLAUDE.local.md`
    when the wiring is there). Say so in the draft's one-line summary ("first Mind: the
    yes also adds `@.soul/mind.md` to CLAUDE.md"). Step 8 used to stop at the draft and
@@ -325,10 +395,14 @@ Then the signal is the first accumulation that would fill one (see /soul-init's
 
 ## What not to do
 
-- **Do not run without the Body's yes.** Proposing on the growth signal is
-  encouraged (A022); running before the Body answers is forbidden. Never
-  schedule or hook this — the proposal is conversational, the trigger is human.
-- **Do not auto-commit.** Draft for curation; the Body owns the commit.
+- **Do not apply a major change without the Body's yes.** Cuts, changed rules,
+  dropped incidents, merges, the Body's own items and a first Mind wait as a draft
+  (step 8). A failing `mind-guard.py` makes the whole change major. With
+  `upkeep: off`, do not run by itself at all — propose and wait (step 1).
+- **Do not put anything else in the Mind's commit.** In a repo, the minor commit
+  holds the Mind only, so `git revert` touches nothing else. A vault-linked Mind is
+  the exception: `vault.py sync` commits the project's whole vault folder, so its
+  undo is the copy back from `mind-before-<date>.md` (step 8), never a revert.
 - **Do not let the Mind grow unexamined.** Growth is allowed when every new entry
   passes the tests; report it in lines and items (the growth check, step 4).
 - **Do not manufacture entries to fill a shape.** The slim form has no buckets to
@@ -375,7 +449,12 @@ ten weeks and five of five consumer projects had followed it.
 **Amended:** 2026-10-19 (mining pass 2, SOUL-202) — the budget becomes a target with
 a Body-owned cap (F066); growth reported in lines and items; executable anchors
 re-checked; renumbering and draft location.
-**Status:** active — MVP; model-proposed on the growth signal since SOUL-A022
-(2026-06-12; the manual-fire-only deferral discharged by the Body's v2.0 review).
+**Amended:** 2026-11-12 (unreleased, SOUL-A032) — runs itself at the growth signal,
+checked when the cursor refreshes; each change graded, minor ones committed alone with
+a one-line notice and the undo, major ones held; `tools/mind-guard.py` the brake; the
+`upkeep: off` opt-out.
+**Status:** active — MVP; model-proposed on the growth signal from SOUL-A022
+(2026-06-12; the manual-fire-only deferral discharged by the Body's v2.0 review);
+runs itself, graded, from SOUL-A032 (2026-11-12).
 `/soul-mind` viewer, cross-project synthesis, and reproduction-fidelity
 automation remain deferred.

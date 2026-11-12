@@ -31,7 +31,7 @@ Values the skill records, per key (the option `value` fields in QUESTIONS):
   public yes|no · names none|listed · hand-hooks yes|no ·
   history-scan `clean <sha12>`|`findings <sha12>`|`triaged <sha12>`|declined ·
   stage prototype|pre-release|released|not-now · line-endings yes|no ·
-  existing-store use|no.  `layout` keeps its own list (.soul/layout.json); `mind` has
+  existing-store use|no · upkeep on|off.  `layout` keeps its own list (.soul/layout.json); `mind` has
   no answer, only a repair. An extras question with one member is yes|no; the skill
   records the member's own value (history-scan: `declined` for no).
 """
@@ -59,7 +59,7 @@ ANSWERS = os.path.join(".soul", "init.md")
 HEADER = ("# /soul-init's remembered answers (tools/init-status.py).\n"
           "# Delete a line, or run `init-status.py revisit`, to be asked again.\n")
 KEYS = ("import", "vault-link", "sidecar", "record", "public", "names", "hand-hooks",
-        "history-scan", "stage", "layout", "line-endings", "mind", "existing-store")
+        "history-scan", "stage", "layout", "line-endings", "mind", "existing-store", "upkeep")
 RECORDABLE = tuple(k for k in KEYS if k not in ("layout", "mind"))
 # CLAUDE.local.md: the gitignored local file; a project going public keeps its wiring
 # there, and /soul-init then writes there, never into a tracked CLAUDE.md (mining pass 3,
@@ -72,7 +72,7 @@ HOOK_MARK = "Soul System secret check"
 # too (v3.6.0); kept here so an older plugin copy's scan cannot flag them.
 LAYOUT_SKIP = (".soul/init.md", ".soul/private-names.txt")
 EXTRAS = ("hand-hooks", "history-scan", "line-endings")
-MAIN = ("record", "stage", "names")
+MAIN = ("record", "stage", "names", "upkeep")
 SINGLE = ("vault-link", "import", "existing-store", "layout", "sidecar")
 SIDECAR_FILES = ("handoff.md", "private-names.txt")  # what makes .soul/ worth a sidecar
 
@@ -175,6 +175,21 @@ QUESTIONS = {
                             "containing one gets a warning"},
         ],
         "public_note": " This repo is public — a name committed here is public.",
+    },
+    # Asked once; no answer means on, the default the owner chose (SOUL-A032, open
+    # question 3). hooks/upkeep.py reads the same line, so `off` silences the hook too.
+    "upkeep": {
+        "group": "main", "multi": False,
+        "text": "Should the Soul keep its notes up to date on its own?",
+        "options": [
+            {"value": "on", "label": "Yes, on its own",
+             "description": "refreshes the handoff note in long sessions and after a "
+                            "summary, and makes small Mind updates; tells you in one line "
+                            "each time, and a no undoes it"},
+            {"value": "off", "label": "No, I'll ask",
+             "description": "nothing runs by itself; /soul-next reminds you, and you run "
+                            "/soul-handoff and /soul-distill"},
+        ],
     },
     "extras": {
         "group": "extras", "multi": True,
@@ -356,7 +371,7 @@ VALUES = {
     "record": ("git", "local", "vault"),
     "public": ("yes", "no"), "names": ("none", "listed"), "hand-hooks": ("yes", "no"),
     "stage": ("prototype", "pre-release", "released", "not-now"),
-    "line-endings": ("yes", "no"), "existing-store": ("use", "no"),
+    "line-endings": ("yes", "no"), "existing-store": ("use", "no"), "upkeep": ("on", "off"),
 }
 # `triaged <sha>`: every hit was read and none is a real secret. Without it a scan whose
 # only hit was a false match stayed "findings", and a later session told the owner the
@@ -977,6 +992,21 @@ def check_existing_store(c):
     return it
 
 
+def check_upkeep(c):
+    # Read as hooks/upkeep.py reads it: stripped, lower-cased, on/off only. Anything
+    # else is not understood: asked again here, and the hook stays on.
+    rec = c["answers"].get("upkeep")
+    value = rec[0].strip().lower() if rec else None
+    if value in VALUES["upkeep"]:
+        return _item("upkeep", "none", value, rec[1], "recorded",
+                     "Upkeep runs on its own." if value == "on"
+                     else "Upkeep is off: /soul-next reminds; nothing runs by itself.")
+    if rec:
+        return _item("upkeep", "ask", detail="The recorded value {!r} is not understood; "
+                     "until it is answered, upkeep stays on.".format(rec[0]))
+    return _item("upkeep", "ask", detail="Not asked yet; until then it is on.")
+
+
 # ---------------------------------------------------------------- questions and rounds
 
 def render_question(key, public=None, vault=None, path=None, n=None, members=()):
@@ -1021,7 +1051,7 @@ ASKABLE = tuple(k for k in KEYS if k in QUESTIONS) + EXTRAS
 # (import, vault-link, existing-store, layout) are asked only when the files call for
 # it — forcing them asks about something that is not there (a second import line).
 FORCEABLE = ("record", "public", "names", "hand-hooks", "history-scan", "stage",
-             "line-endings")
+             "line-endings", "upkeep")
 
 
 def status(project, force=()):
@@ -1035,6 +1065,7 @@ def status(project, force=()):
         "history-scan": check_history_scan(c), "stage": check_stage(c),
         "layout": check_layout(c), "line-endings": check_line_endings(c),
         "mind": check_mind(c), "existing-store": check_existing_store(c),
+        "upkeep": check_upkeep(c),
     }
     # --ask: the owner's way back to a question an inferred or recorded answer settled.
     # A repair or a stop stays what it is; a scan that cannot run is not offered.

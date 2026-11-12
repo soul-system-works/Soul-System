@@ -64,7 +64,8 @@ append_system_prompt: |
   **Stores** — this project's, never the Soul System repo's: `witness.md`
   (append-only, sequential IDs), `ideas.md`, `upstream.md`, `mind.md` — in `.soul/` or
   the project root (detect, never assume). Forward view: `/soul-next`. Upkeep:
-  `/soul-distill`, proposed when the record has grown; the owner confirms.
+  `/soul-distill` runs itself when the record has grown; it applies minor changes and
+  tells the owner, and holds a cut or a changed rule for the owner's yes.
 
   **Working files** — plans, drafts, review output, scratch — go in `.ai/` (safe to
   delete), never in `docs/`, the root or source folders. Promoting one to project content
