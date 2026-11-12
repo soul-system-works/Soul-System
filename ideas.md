@@ -3079,6 +3079,10 @@ DISCUSSED: round 1, 2026-11-12, together with SOUL-I089 — see its DISCUSSED
            block (the Body's answers, options, lean). For this idea: part (c),
            a channel from projects to the prototype-skills repo, gets its own
            round (the Body: "own round").
+ROUND 2:   2026-11-12 — part (c) discussed together with SOUL-I091; see its
+           DISCUSSED block. Lean: lesson notes name a destination (skills among
+           them); a home pass run from the vault collects skill notes and proposes
+           promotions and retirements with usage counts.
 STATUS:    Maturing
 ```
 
@@ -3201,5 +3205,54 @@ NOTES:     2026-11-12, the Body adds: "add to the idea the possbility of leaving
            a possible carrier for a standing home agent. Mind item 11: long-lived
            processes are cut by reboots and the memory reaper; a power cut stopped
            this session's reviewer on 2026-11-12.)
-STATUS:    Raw
+DISCUSSED: round 1, 2026-11-12, with SOUL-I087 part (c).
+           Body's answers: (1) lessons get stuck with the Body as the router — "yes
+           and this also carries over to my blog repo"; (2) "if it makes it work
+           better then bring togehter else the skills could aslo submodule to the
+           vault so it can be more naturally managed by the home agent"; (3)
+           "coordinate with teh blog agent, coordinate with the soul-system agent to
+           improve the soul-system, help manage skills improvement and improve usageo
+           fskills somehow, removeing/obsoletng old skills or creating better skills
+           that cross projects so skills and agents dont get project locked unless
+           they are supposed to be"; (4) "i could typically start a session with the
+           agent and have it just sit there or just start when needed … perhaps it
+           can be an ollama agent so its knowledge stays local but maybe not"; (5)
+           "when i create a vault with the soul-system i can then have it setup to for
+           usage … it would not be the orchestrating agent across projects i think.
+           most my projects are unrelated in application though they may share
+           skills/ideas".
+           Reframe: a librarian and router for cross-project knowledge, living in the
+           vault — not an orchestrator of project work.
+           Options: status quo (mining in Soul-System, the Body routes the rest) · a
+           home agent in the vault · notes that name a destination, collected by each
+           destination's own session · skills merged, submoduled or pointed to ·
+           standing vs on demand · Claude vs a local Ollama model.
+           Strongest objection: messages between sessions carry no authority, so
+           decisions still return to the Body; a standing agent adds a process to keep
+           alive, another writer in the shared vault (mind item 12) and another hop
+           between the Body and a quote (SOUL-F075) — overhead if routing works
+           without it.
+           Sources: aihero.dev/the-home-repo-pattern; docs/adr/0001-soul-vault.md and
+           the vault's layout (private; projects/, machine/, human/, index.md); the
+           skills repo (public; a plugin marketplace installed over SSH;
+           global/CLAUDE.md a hand-kept copy of the global file); this session's tools
+           for messaging other local sessions; SOUL-230; I083 (pending).
+           Lean: (1) the vault is the home — a home CLAUDE.md holding the job and
+           pointers (Soul-System, the skills repo, the blog repo, index.md); any
+           session started there is the home agent; offered when a vault is created.
+           (2) routing before agent — upstream-style notes name a destination (soul /
+           skills / blog …); a home pass collects them, proposes skill promotions and
+           retirements with usage counts, and leaves Soul notes to Soul-System's
+           mining (answers I087's part (c)). (3) the skills repo stays its own repo,
+           reached by pointer and folder access — the Body: "ok so if it doesn't
+           matter then id keep the skills repo as is" (private would have been
+           possible; merging fails on distribution: the marketplace would clone the
+           whole vault, from a host WSL cannot reach; a submodule adds pointer churn).
+           (4) messages from projects, started on demand; decisions return to the
+           Body. (5) Ollama later, after I083's Qwen results.
+           Deeper research: not yet; a week's trial of a home session in the vault
+           settles more than reading.
+           Next step: a picture — a draft home CLAUDE.md for the vault and a sample
+           destination-tagged note — before any build plan.
+STATUS:    Maturing
 ```
