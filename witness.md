@@ -9599,5 +9599,36 @@ CONSEQUENCE:  The fixes go on a branch for v3.11.1; the notes are stamped once
               skill failing to trigger. Mind 6(e) cites SOUL-182 for the `--tags`
               publication; the record holding it is SOUL-208 (fix at the next
               distill).
+STATUS:       Closed 2026-11-12. v3.11.1 released (main and tag pushed on the
+              Body's "yes"). The Body accepted the guard FENCE's amended text naming
+              the push refusal as its one exception ("ok"). The refusal took three
+              fresh-context review rounds: each found new ways to type the same push
+              or new false refusals (release row). All 14 notes stamped; stamps
+              committed and pushed in GAME-WEB, CAPTURE-RIG, MODEL-LIB and SKILL-KIT
+              ("yes commit and push"); LEARN-APP's left for its own next sync (another
+              session had an uncommitted edit in that vault folder); SENSOR-BED's
+              see SOUL-236.
+```
+
+```
+ID:           SOUL-236
+WHEN:         2026-11-12 / Soul-System session, stamping mining pass 4
+WHERE:        SENSOR-BED's project folder and its vault folder
+              (projects/<key>/soul); tools/vault.py sync / check;
+              tools/upstream-status.py --stamp
+WHAT:         `vault.py sync <SENSOR-BED's folder>` refused: ".soul is not a working
+              link into a vault". `vault.py check` reported TWO COPIES. The project's
+              `.soul` is a real folder dated 2026-10-29 (witness about 77 KB, no
+              `### ` upstream notes); the vault copy was written through 2026-11-11
+              (witness about 190 KB, 4 upstream notes). The project's git was 108
+              commits ahead of its server and 29 behind, with uncommitted changes.
+              upstream-status reads the vault copy, so the stamp went there, and it
+              sits uncommitted. Also: `--stamp` takes a folder path, not the project
+              name `--detail` prints; the names failed with "no upstream.md under".
+TYPE:         observation
+CONSEQUENCE:  Sessions in SENSOR-BED would read and write the stale copy until its
+              link is repaired. Which copy is current is the Body's call; the
+              recommendation given was the vault copy, repaired from that project's
+              own session. Nothing was changed in either copy beyond the stamp.
 STATUS:       Open.
 ```
