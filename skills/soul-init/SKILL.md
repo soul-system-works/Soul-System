@@ -113,8 +113,10 @@ or to report a problem. The tool calls already show the work.
       plan and `record` refuses; a local record would be a second copy). Say so; the
       next run asks again.
    2. **The plan**, when `plan` is not null. Print `plan.text` as it is — it is
-      Markdown (bold names, the chosen setting as inline code), so never inside a code
-      block. When the plan has a
+      Markdown (bold names, the chosen setting as inline code; after Modify setup a
+      changed setting is followed by a one-line `diff` block, "+   changed from …",
+      which is what draws it green — keep its fence lines), so never inside a code
+      block of your own. When the plan has a
       line-endings line whose count is above 0, print `python3 <root>/tools/eol.py
       check .`'s list of files first — some may need Windows line endings on purpose
       (`.eml`, `.ics` fixtures). Then show `plan.screen` in ONE `AskUserQuestion` call;

@@ -1371,9 +1371,19 @@ def _one_of(labels):
     return labels[0] if len(labels) == 1 else ", ".join(labels[:-1]) + ", or " + labels[-1]
 
 
-def _plan_item(name, phrase, setting=None, head=None):
+# A setting the owner changed under Modify setup gets a line saying what it was (the
+# owner, 2026-11-13: "a visual queue that their modification was selected ... can that
+# changed be some other color besides white or blue?"). Markdown here has one accent
+# colour, so the line is a one-line `diff` block: its "+" line is drawn green where code
+# colouring is on, and as plain text where it is off. The owner picked it from three
+# previews in the box. The two fence lines are not drawn, so they do not count against
+# the box's height.
+CHANGED = "```diff\n+   changed from {}\n```"
+
+
+def _plan_item(name, phrase, setting=None, head=None, was=None):
     """One item of the plan: a bold name with what it is, then the setting on an arrow
-    line with its first words as inline code (see WIDTH)."""
+    line with its first words as inline code (see WIDTH), then CHANGED when it was."""
     out = _wrap("{} \u2014 {}".format(name, phrase), "", "    ")
     out[0] = out[0].replace(name, "**{}**".format(name), 1)
     if setting:
@@ -1382,6 +1392,8 @@ def _plan_item(name, phrase, setting=None, head=None):
         if head and arrow[0][4:].startswith(head):
             arrow[0] = "  \u2192 `{}`{}".format(head, arrow[0][4 + len(head):])
         out += arrow
+    if was:
+        out += CHANGED.format(was).split("\n")
     return out
 
 
@@ -1397,7 +1409,8 @@ def plan_text(lines):
             out += _plan_item(ln["name"], ln["short"],
                               "you choose, in the question with this plan", "you choose")
         else:
-            out += _plan_item(ln["name"], ln["short"], d["text"], d.get("head"))
+            out += _plan_item(ln["name"], ln["short"], d["text"], d.get("head"),
+                              d.get("was"))
     if off:
         out += _plan_item("Not set up", ", ".join(ln["name"][0].lower() + ln["name"][1:]
                                                   for ln in off))
@@ -1420,8 +1433,11 @@ def build_plan(c, found, public, keys, choose, extras):
             in_go = public == "no" and rec is None
         else:
             value, in_go = rec or p["default"], True
+        was = None  # the setting a --choose replaced, for the plan's "changed from" line
         if key in choose:
             modified = modified or choose[key] != value
+            if value is not None and choose[key] != value:
+                was = _head(key, value)
             value, in_go = choose[key], True
         default = None
         if value is not None:
@@ -1431,7 +1447,7 @@ def build_plan(c, found, public, keys, choose, extras):
             if key == "names" and public == "yes":  # today's note, on the line itself
                 note += QUESTIONS["names"]["public_note"]
             default = {"value": value, "text": _says(c, key, value)[1] + note,
-                       "head": _head(key, value)}
+                       "head": _head(key, value), "was": was}
             if in_go and key == "history-scan" and value == "yes":
                 todo.append(key)
             elif in_go:
@@ -1760,7 +1776,8 @@ def print_text(st):
     if plan:  # the plan and its one dialog, where the main and extras rounds used to be
         print("\nThe plan")
         for ln in plan["text"].splitlines():
-            print("  " + ln if ln else "")
+            if not ln.startswith("```"):  # the fences of a "changed from" line
+                print("  " + ln if ln else "")
         for q in plan["screen"]:
             print("\n  [{}] {}".format(q["key"], q["text"]))
             for j, o in enumerate(q["options"]):

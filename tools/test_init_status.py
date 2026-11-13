@@ -1279,10 +1279,35 @@ def plan_checks(tmp, env, envl, envv, vroot, mod):
           and "(2 files change; adds rule file)" in flat["crlf"], flat)
     # The box cuts what does not fit: 27 lines showed "3 lines hidden" at the owner's
     # first trial (2026-11-13).
-    n_fresh = len(texts["fresh"].splitlines())
-    n_most = max(len(t.splitlines()) for t in texts.values())
-    check("43 a fresh project's plan is 12 lines, and no plan here is over 16",
-          n_fresh == 12 and n_most <= 16, (n_fresh, n_most))
+    def shown(t):  # the lines the box draws: a code block's fence lines are not drawn
+        return [x for x in t.splitlines() if not x.startswith("```")]
+    n_fresh = len(shown(texts["fresh"]))
+    n_most = max(len(shown(t)) for t in texts.values())
+    check("43 a fresh project's plan is 12 lines, and no plan here is over 18",
+          n_fresh == 12 and n_most <= 18, (n_fresh, n_most))
+    # A setting changed under Modify setup carries a green "changed from" line: a one-line
+    # diff block right under it, naming what the plan showed before (the owner's pick).
+    t_ch = plan_of(envl, pf, "--choose", "stage=prototype", "--choose", "upkeep=off",
+                   "--choose", "names=none", "--choose", "record=vault")[1]
+    ch = t_ch.get("text", "").splitlines()
+    def after(prefix):
+        i = next((n for n, x in enumerate(ch) if x.startswith(prefix)), None)
+        return ch[i + 1:i + 4] if i is not None else None
+    check("43 a changed setting is followed by its 'changed from' line, as a diff block",
+          after("  \u2192 `Prototype`") == ["```diff", "+   changed from Not now", "```"]
+          and after("  \u2192 `Off`") == ["```diff", "+   changed from On", "```"],
+          t_ch.get("text"))
+    check("43 no 'changed from' line for a setting chosen as it was, for a record that had "
+          "no suggestion, or in a plan nothing was changed in",
+          t_ch.get("text", "").count("changed from") == 2
+          and lines_of(t_ch)["names"]["default"]["was"] is None
+          and lines_of(t_ch)["record"]["default"]["was"] is None
+          and "```" not in texts["fresh"] and "changed from" not in texts["fresh"],
+          t_ch.get("text"))
+    r_txt = run(envl, "status", pf, "--choose", "stage=prototype")
+    check("43 the text output shows the 'changed from' line without its fences",
+          "+   changed from Not now" in r_txt.stdout and "```" not in r_txt.stdout,
+          r_txt.stdout)
 
     # 44 — the explanation page: generated, committed, never the version number
     r = run(env, "doc", "--check")
