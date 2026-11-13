@@ -3432,7 +3432,10 @@ ROUND 2:   2026-11-13 — the Body checked every choice by hand in a document (C
 STATUS:    Built in v3.13.0 (2026-11-13): /soul-init shows the setup as a plan first.
            The Body ran the live trials and picked the plan, explanation and
            "changed from" layouts. What is untested: the 3.13.0 row of
-           SYSTEM-VERSION.md.
+           SYSTEM-VERSION.md. The Claude Doc "Soul-Init Setup Choices" named above
+           was deleted on 2026-11-13 by the session, on the Body's word ("up to you
+           if we should still have it"): its four comments had been answered in
+           chat, and docs/setup-choices.md, generated from the tool, replaces it.
 ```
 
 ```
