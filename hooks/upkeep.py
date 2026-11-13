@@ -69,7 +69,10 @@ import re
 import sys
 import tempfile
 
-GROWTH_TOKENS = 50000  # the owner's "about 50,000 tokens" (A032, open question 2)
+# The owner's step, for every project (SOUL-239): "increase to 100k as the default, not
+# just this project". He chose 50,000 in A032 (open question 2) and raised it after a
+# session it stopped three times.
+GROWTH_TOKENS = 100000
 CURSOR = os.path.join(".soul", "handoff.md")
 ANSWERS = os.path.join(".soul", "init.md")  # tools/init-status.py's answers file
 _WRITE_TOOLS = {"Write", "Edit", "MultiEdit"}
@@ -210,7 +213,7 @@ def _reason(why, tokens, answer):
             .format(tokens // 1000))
     text = ("{} The handoff cursor (.soul/handoff.md) is stale: {}. Refresh it now with "
             "/soul-handoff (it runs on its own here; no need to ask), tell the owner in one "
-            "line, then stop.".format(_MARK, what))
+            "line that starts with \"\u2600  \", then stop.".format(_MARK, what))
     if answer is None:
         text += (" The owner has not chosen yet whether upkeep runs on its own: add to "
                  "that line \"to turn this off: /soul-init revisit upkeep\".")
@@ -252,7 +255,8 @@ def compact(data):
         "additionalContext": (
             "{} A summary just happened. Before other work, re-read .soul/handoff.md "
             "(contract rule 6), then refresh it with /soul-handoff (it runs on its own "
-            "here) and tell the owner in one line.".format(_MARK)),
+            "here) and tell the owner in one line that starts with \"\u2600  \"."
+            .format(_MARK)),
     }}
 
 

@@ -46,8 +46,9 @@ one prompt, the additions as one line. The preset supplies the defaults and the 
 changes only what differs. Plain words — the owner may never have heard of the Soul.
 
 **How to ask it.** The stage comes first — as the argument, or from the opening
-selection a bare `/soul-stage` shows (`/soul-init` asks the same choice with the same
-descriptions, from `tools/init-status.py`, and hands a chosen stage here) — so
+selection a bare `/soul-stage` shows (`/soul-init` offers the same choice with the same
+descriptions on its setup plan, from `tools/init-status.py`, and hands a chosen stage
+here) — so
 the screen asks the two facts through the harness's question prompt (`AskUserQuestion`)
 whenever that tool is available — one call, two questions, the recommended option
 first: question 1 as *Nothing* / *Not sure yet* (the list itself comes through the
@@ -196,8 +197,8 @@ is invisible to the model by design, so the always-on block has to carry them.
    block): skip steps 2 and 3. The block takes the preset's defaults — relied on from
    outside: prototype `nothing — nothing is promised`, pre-release `not known yet —
    confirm before changing any public surface`; next stage when: `not known yet`;
-   owner's additions: none — then steps 4 and 5 as usual. `/soul-init` asks its
-   questions in one or two rounds and a fresh project should not get three more here
+   owner's additions: none — then steps 4 and 5 as usual. `/soul-init` shows its whole
+   setup as one plan and a fresh project should not get three more questions here
    (the v3.6.0 live trial, 2026-10-26). *Released* always gets the screen: its list
    of what outsiders rely on has no default.
 2. **Ask the screen** (the prompt, or the prose fallback) for a new or changed stage:

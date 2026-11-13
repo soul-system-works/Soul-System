@@ -10,11 +10,19 @@ disable-model-invocation: true
 following this workflow. Its Codex procedures replace Claude-specific loading,
 instruction-file, tool, and invocation mechanics; the shared workflow follows.
 
-Every run is the same three moves: **status** (what is set), **questions** (only
-decisions never answered), then **carrying out** the answers and the repairs (what
-broke on this machine, fixed from answers already given). A fresh project gets a few short rounds; a
-project already set up usually gets none. `tools/init-status.py` works out the
-state and holds the question wording; this skill carries out the answers.
+Every run is the same three moves: **status** (what is set), **the plan** (every
+decision never answered, shown at once with what Soul would do), then **carrying out**
+the answers and the repairs (what broke on this machine, fixed from answers already
+given). A fresh project gets one dialog; a project already set up usually gets none.
+`tools/init-status.py` works out the state and holds every word the owner is shown;
+this skill carries out the answers.
+
+*Why a plan first* (SOUL-I092, the owner, 2026-11-12): "a person should be presented
+with reasonable options and they should understand where their choices will lead and
+not have to guess on when the setup will end." Until v3.13.0 a fresh project met three
+picker screens, the vault's questions appeared only after it was picked, and the owner
+asked twice what the "public" question did. So the whole setup is shown before anything
+is written, every line says what the thing is, and the end is always the plan.
 
 *Why this shape* (SOUL-I082, the owner, 2026-10-26): "it does the work correctly,
 but the options that the user has to specify are not clear. Sometimes they seem kind
@@ -78,8 +86,9 @@ or to report a problem. The tool calls already show the work.
    (e.g. moving a git record into the vault).
 
 1. **Status.** Run `python3 <root>/tools/init-status.py status . --json`. Its
-   `items` (each with an `action`: none · repair · ask · stop) and `rounds` ARE the
-   plan. Do not work the state out yourself, and ask nothing that is not in its list.
+   `items` (each with an `action`: none · repair · ask · stop), its `rounds` and its
+   `plan` ARE the plan. Do not work the state out yourself, and ask nothing that is
+   not in them.
 
 2. **Stop items first.** Show each one's `detail` and end the run there: TWO COPIES
    (which record is current is the owner's call — do not scaffold or link until they
@@ -87,27 +96,69 @@ or to report a problem. The tool calls already show the work.
    at a missing folder (clone the vault there first — scaffolding would make a second
    record the vault then refuses).
 
-3. **Questions, round by round**, in `rounds` order — one `AskUserQuestion` call per
-   round (up to four questions). Show each question's `text`, and each option's
-   `label` and `description`, **word for word**; add "(Recommended)" only to the
-   option at index `recommended` (null: none); `multi: true` allows several. Never
-   reword, add or drop an option (one exception: `vault-link` below). After a
-   single-question round (`vault-link`, `import`, `existing-store`, `public`,
-   `sidecar`), record the answer and run `status` again before the next round — those
-   answers change the later questions (a public repo changes the record and names
-   wording). *Link it* is carried out at once (link, then record `link`), and so is
-   `sidecar`'s *Move it to the vault* (link, then record `move`); the new status may list
-   repairs from answers the vault already holds; they join step 4. **`vault-link`
-   *Not now* ends the run**: the vault holds this project's record, so until it is
-   linked nothing else can be set up here (the tool lists no other round and `record`
-   refuses; a local record would be a second copy). Say so; the next run asks again.
-   Without the prompt tool (`claude -p`), list the questions and stop — never guess
-   an answer.
+3. **Questions — hold every answer until the owner says go.** Nothing is recorded
+   and nothing is written before that; the dialog's own words promise it. Show every
+   question's `text` and every option's `label`, `description` and `preview` **word
+   for word**; add "(Recommended)" only to the option at index `recommended` (null:
+   none); `multi: true` allows several. Never reword, add or drop an option.
+   1. **`rounds`, in order**, one `AskUserQuestion` call each: the single questions
+      whose answer shapes the setup (`vault-link`, `import`, `existing-store`,
+      `sidecar`, `layout`) and any key the owner asked to revisit (step 0). Hold the
+      answers. Two of them are orders, not answers, and are carried out at once:
+      `vault-link` *Link it* (link, then record `link`) and `sidecar`'s *Move it to the
+      vault* (the vault steps below, then record `move`); run `status` again after
+      either — it may list repairs from answers the vault already holds, and they join
+      step 4. **`vault-link` *Not now* ends the run**: the vault holds this project's
+      record, so until it is linked nothing else can be set up here (the tool gives no
+      plan and `record` refuses; a local record would be a second copy). Say so; the
+      next run asks again.
+   2. **The plan**, when `plan` is not null. Print `plan.text` as it is — it is
+      Markdown (bold names, the chosen setting as inline code; after Modify setup a
+      changed setting is followed by a one-line `diff` block, "+   changed from …",
+      which is what draws it green — keep its fence lines), so never inside a code
+      block of your own. When the plan has a
+      line-endings line whose count is above 0, print `python3 <root>/tools/eol.py
+      check .`'s list of files first — some may need Windows line endings on purpose
+      (`.eml`, `.ics` fixtures). Then show `plan.screen` in ONE `AskUserQuestion` call;
+      the plan rides in the first option's preview, so it stays in view while the
+      owner chooses (seen in a live mock, 2026-11-12). That box is small — about the
+      terminal's height less 26 lines — and cuts the rest with "N lines hidden", so
+      the tool keeps the plan to two short lines an item (the owner's first trial,
+      2026-11-13: "i also see a \"3 lines hidden\" message"); the copy printed in
+      chat is the one a short terminal can always read.
+      - `use` → go. Record the held single answers, then each `plan.go` pair, then
+        the record answer **last** — the one given in this dialog, which overrides a
+        `record` pair in `plan.go`. `plan.todo` (the history scan) is carried out in
+        step 4.
+      - `modify` → ask `plan.change_rounds`, one call per round; hold the answers; run
+        `status . --json --choose KEY=VALUE` once with every held answer (a safety
+        check ticked is `yes`, unticked `no`; the record answer too, when it was
+        given), and show the new plan the same way. Its first option now reads "Use
+        this setup".
+      - `explain` → print `python3 <root>/tools/init-status.py explain .` as it is
+        — Markdown again (an icon and a bold name for each item, a bullet for each
+        choice), never inside a code block and never reflowed into paragraphs — and
+        `plan.more` (the link, and the same page's path on this machine), then show
+        the plan again.
+      - `not-now` → record nothing and write nothing; say "Nothing was set up. Run
+        /soul-init again when you are ready." and stop.
+
+      A record answer given beside `modify` or `explain` is kept with `--choose
+      record=<value>`, so it is not asked twice.
+   3. **Record = vault:** the two vault steps (below) come now, before anything is
+      carried out. *Cancel* there returns to the plan with the record line waiting.
+   4. **After go:** *Type them* (names) asks for the names, and *Released* (stage)
+      continues in `/soul-stage`, both as before.
+
+   With no plan and only `rounds` (a set-up project asked one thing), the answer is
+   the go: record it and carry it out. Without the prompt tool (`claude -p`), print
+   `plan.text` and each question with its options, and stop — never guess an answer.
 
 4. **Carry out the repairs and answers, in this order**, recording each answer with
-   `python3 <root>/tools/init-status.py record . <key> <value>` (the option's
-   `value`; an extras member ticked is `yes`, unticked `no`; the history scan is
-   recorded as `clean <sha12>`, `findings <sha12>`, `triaged <sha12>` or `declined`).
+   `python3 <root>/tools/init-status.py record . <key> <value>` (`plan.go`'s pairs
+   exactly as given; for a question from `rounds`, the option's `value`; the history
+   scan is recorded after it runs, as `clean <sha12>`, `findings <sha12>` or
+   `triaged <sha12>`, and as `declined` when it was not chosen).
    A `no` is final until `revisit`; `layout` keeps its own list. Mechanics are in the
    next section.
    1. **Line endings first** (a yes, or a repair), while nothing else has touched
@@ -137,6 +188,11 @@ or to report a problem. The tool calls already show the work.
    installed, a commit with its hash). Nothing changed: "All set — nothing changed."
    and stop; do not list the checks that passed (the gap-only rule, SOUL-055). Then
    only the notes that ask something of the owner, one line each:
+   - after "Use default setup": what was taken by default (the stage left unset, no
+     private names, upkeep on, line endings fixed, hooks and the history scan not set
+     up — only the ones that applied), and that `/soul-init revisit <key>` changes any;
+   - a vault with no remote: `vault.py sync .` printed `NOT PUSHED` — the vault is one
+     copy on this disk until it has a private remote;
    - the import is pinned to a plugin version (the version-pin guard);
    - `CLAUDE.md` itself is gitignored: a fresh clone loads no contract — a choice,
      not a gap; let the owner confirm;
@@ -186,15 +242,22 @@ and ask before writing there.
 - *vault*: no `.gitignore` lines; the vault move (below) hides the link in
   `.git/info/exclude`, which never leaves this machine.
 
-**`public`** — asked only when `gh` cannot tell (no remote, not GitHub) and the
-record or names question needs it; it changes their wording. The old step said
-"otherwise ask the Body" (SOUL-202).
+**Visibility** is read, never asked (v3.13.0). The tool takes GitHub's answer when the
+repo has a GitHub remote, or a `public:` line an older run recorded. The question it
+replaced wrote nothing and was not understood — the owner asked twice what it did
+(SOUL-I092) — so its meaning now sits on the record options: the git option says who
+can read the log. In a repo known to be private the tool suggests git; otherwise it
+suggests nothing and the record line waits. This reverses "repo visibility before the
+tracking question" (mining pass 2, SOUL-202); what that rule guarded — a question that
+once argued only for tracking — is kept by the git option's wording.
 
 Why the record question is asked, never assumed: a record outside git exists in one copy, on one
 disk, with no history, and does not travel when the repo is cloned or used from a
 second machine; two of six adopting projects had their record gitignored, one by
-drift, in a plugin that gets submoduled (2026-08-20 retrospective). In a public
-repo the question says a tracked record is public and recommends nothing — the
+drift, in a plugin that gets submoduled (2026-08-20 retrospective). So the plan never
+fills this line in by itself unless the repo is known to be private: with the repo
+public, or its visibility unknown, the git option says a tracked record can be read by
+whoever can read the repo, nothing is suggested, and the line waits for an answer — the
 question once argued only for tracking (MODEL-TEST's note, SOUL-202).
 
 **Tracking is a `.gitignore` edit, never a file move.** A record untracked because
@@ -220,31 +283,47 @@ scaffolding them produced 0 artifacts across 6 projects in 3+ months (2026-08-20
 docs/ideas.md — append there.`) instead of an empty store. MODEL-TEST's
 `docs/ideas.md` was missed once and a second store scaffolded (SOUL-202).
 
-**`vault-link`** and the vault move. A vault is one private git repo holding every
-project's record, each reached by a `.soul` link (SOUL-I079, [ADR
-0001](../../docs/adr/0001-soul-vault.md)). Re-link (*Link it*, or a BROKEN repair):
-`python3 <root>/tools/vault.py link . --key <key> --label <the label in its
-project.md>`. The move (*In your Soul vault*) is carried out late in step 4 —
-after the stage entry and the names file are written into the local record, so they
-move with it — but its questions come first:
-- **Label**, asked straight after the vault answer, before anything else is done —
-  *public* (anyone may read it), *private* (yours), *confidential* (someone else's
-  material, e.g. an employer's or client's — the owner decides whether a personal
-  vault may hold it), *restricted* (never in the vault; the tool refuses it). On
-  *restricted*, say so and ask the record question again with the vault option left
-  out — the one change to a question this skill allows.
-- **What it contributes to** — free-form tags, may be empty.
-- **Key** — the project's folder in the vault; default the repo's name. The key,
-  not the path, names the folder, so it survives the project moving.
-- **Private paths**, asked once: anything else private to move with the record —
-  plans, reviews, research folders (a project going public)? Each named path is passed
-  as `--also <path> …`, relative to the project; it lands in the vault's `soul/` at the
-  same path, copied, hash-compared and only then removed here, like the record. Paths
-  outside the project or inside `.git` are refused (SOUL-I081's narrow case, mining
-  pass 3, SOUL-234).
+**`vault-link`** and the vault steps. A vault is one private git repo that can hold
+many projects' records, each reached by a `.soul` link (SOUL-I079, [ADR
+0001](../../docs/adr/0001-soul-vault.md)). **The project's link is the record of which
+vault it uses; the machine file names only the default vault offered next time.** The
+owner, 2026-11-13: "we ask if they want a vault and which. they specify or take the
+default. that's it right? it is then recorded in the links where the vault is for that
+project. soul-system doesn't need to know about any others?" There are no labels and
+nothing is refused: three of the four old labels changed nothing, and whose material
+may go where is the owner's judgment, not the tool's (SOUL-I092 round 2). Re-link
+(*Link it*, or a BROKEN repair): `python3 <root>/tools/vault.py link . --key <key>`.
 
-Run `vault.py link . --key <key> --label <label> --contributes <tags> [--also <path>
-…] --dry-run`, show its lines, and on the owner's yes run it without `--dry-run`. It moves a
+The move (*In a private vault*) is two steps, asked before anything is carried out.
+The move itself runs late in step 4 — after the stage entry and the names file are
+written into the local record, so they move with it:
+1. **Which vault** — `plan.followups["vault-which"]`, word for word. *Use {path}* is
+   `plan.vault_default.path`; *Somewhere else* asks for the folder. When the chosen
+   folder holds no vault yet (no `vault.md`), make one: `python3 <root>/tools/vault.py
+   init <folder>`, adding `--register` when this machine names no default vault
+   (`plan.vault_default.registered` is false). Relay each line it prints. If it says
+   the folder was not made a git repo (it sits inside another repo, or git is
+   missing), that vault cannot be synced: say so and ask this question again.
+2. **Confirm** — run `vault.py link . --key <the repo's name> --vault <folder>
+   --dry-run`, show its lines, then ask `plan.followups["vault-confirm"]`, its text
+   taken from `template` with `{path}` replaced by the folder and nothing else changed.
+   - *Add tags, then move*: ask for the tags (comma-separated), add `--tags`, and show
+     the dry run again: it lists the tags as they will be written, in Obsidian's own
+     form (spaces become hyphens). A refused tag is relayed word for word and asked
+     again.
+   - *Also move other private folders*: ask for the paths — plans, reviews, research
+     folders (a project going public). Each is passed as `--also <path> …`, relative to
+     the project; it lands in the vault's `soul/` at the same path, copied,
+     hash-compared and only then removed here, like the record. Paths outside the
+     project or inside `.git` are refused (SOUL-I081's narrow case, mining pass 3,
+     SOUL-234). Show the dry run again.
+   - *Cancel*: nothing moves; back to the plan.
+
+   On *Move it*, step 4 runs the same command without `--dry-run`. The key — the
+   repo's name — names the project's folder in the vault, so it survives the project
+   moving; the dry run shows it. No label, key or remote is asked.
+
+The move, when it runs: it moves a
 root-layout record into `.soul/` first and repoints a `@mind.md` import; copies
 `.soul/` into `<vault>/projects/<key>/soul/` and compares every hash; replaces
 `.soul/` with a link and compares again. On WSL with the project on a Windows drive
@@ -275,8 +354,8 @@ owner. Exit 4: the lock is held — a running sync, so try again later; or it "l
 stale", and its line names the file to remove once the owner has checked no git runs
 in the vault.
 **`link` refuses** (exit 2): the record stayed where it was — every check runs before
-anything changes, and a failed compare rolls the move back. Ask the record question
-again without the vault; a record must never be left neither tracked nor ignored,
+anything changes, and a failed compare rolls the move back. Return to the plan with
+the record line waiting again; a record must never be left neither tracked nor ignored,
 where one `git add -A` commits it. **Exit 5:** the record moved and is linked, but an
 `--also` path did not; its lines name each one and why, and it is back where it was —
 report them, and do not ask the record question again.
@@ -286,10 +365,9 @@ and a `.soul/` beside them holding `handoff.md` or `private-names.txt` exists on
 this disk, with this machine's vault present and holding nothing for the project.
 No option is recommended: whether it moves is the owner's call. *Move it to
 the vault* moves `.soul/` alone; the root record stays tracked (SOUL-223, [ADR
-0001](../../docs/adr/0001-soul-vault.md)). Ask label, contributes and key exactly as
-for the vault move, run `vault.py link . --key <key> --label <label> --contributes
-<tags> --sidecar --dry-run`, show its lines, and on the owner's yes run it without
-`--dry-run`. Record `move` only after the link succeeds (like `vault-link`). *Keep
+0001](../../docs/adr/0001-soul-vault.md)). Run the two vault steps exactly as for the
+vault move, adding `--sidecar` to both `link` calls (the dry run, then the real one
+on *Move it*). Record `move` only after the link succeeds (like `vault-link`). *Keep
 it here* is recorded `keep` and is final until `/soul-init revisit sidecar`.
 
 **`names`** — *Type them*: write the names, one per line (`Name => TOKEN` suggests
@@ -373,7 +451,7 @@ consecutive days (2026-08-24/25), into two files, in two wordings.
 
 **`upkeep`** — nothing to carry out but the answer (`on` or `off`). *On*, which is
 also what a project that was never asked gets: the session refreshes the handoff
-cursor by itself when it goes stale — about 50,000 tokens of conversation, or a
+cursor by itself when it goes stale — about 100,000 tokens of conversation, or a
 summary, since it was last written (`hooks/upkeep.py` notices) — and `/soul-distill`
 runs by itself at its growth signal, applying small Mind changes and holding big ones
 for the owner. Each tells the owner in one line, and a no undoes it. *Off*: neither
@@ -402,9 +480,11 @@ rewrites: relay them; hits in `witness.md` are history, expected and left alone.
 **`line-endings`** — the problem: a Windows git or Sourcetree with
 `core.autocrlf=true` checks files out with Windows line endings; WSL git sees every
 one as modified, `git add -A` commits them, and tools that write Unix endings leave
-files with both. Before asking, show `eol.py check .`'s list of files committed with
-CRLF — some may need CRLF on purpose (`.eml`, `.ics` fixtures), and the fix stores
-them LF. On yes, run `python3 <root>/tools/eol.py fix <repo>` for each repo the
+files with both. The fix is part of the default setup whenever the repo lacks the
+rule file, and the plan's line says how many files it would change. When that number
+is above 0, show `eol.py check .`'s list of files committed with CRLF before the plan
+(step 3) — some may need CRLF on purpose (`.eml`, `.ics` fixtures), and the fix stores
+them LF. When it is in the setup (`line-endings yes`), run `python3 <root>/tools/eol.py fix <repo>` for each repo the
 tool's detail names (`Needs it: project`, `vault` or `both`), show its output and
 commit in that repo with the line it suggests (in the vault, commit its `index.md`
 change first — `vault.py sync` never commits it; these commits are plain git, outside
@@ -430,8 +510,9 @@ contract import, **relative to the file the line goes into**: from a root
 
 - Do not ask a setup decision the tool did not list, reword one, or answer one for
   the owner. The follow-ups this skill names are not new decisions: the vault's
-  label, tags, key and private paths, the layout groups, and putting a tracked-file repair to the
-  owner. Do not re-ask a recorded answer — `revisit` is the owner's way back.
+  folder, tags and private paths, the names themselves, the layout groups, and putting
+  a tracked-file repair to the owner. Do not record or write anything before the owner
+  chooses to go (step 3). Do not re-ask a recorded answer — `revisit` is the owner's way back.
 - Do not copy Soul doctrine (the contract, the philosophy) into the project; it is
   referenced by import so it stays current. The empty record scaffold is not a copy.
 - Beyond the import line and the record, write project content only where an answer
@@ -462,5 +543,9 @@ in `.soul/init.md`, a `no` final until `revisit`; the register question dropped.
 **Amended:** 2026-11-06 (v3.11.0, mining pass 3, SOUL-234) — `vault.py sync` and
 `link --also`; wiring in `CLAUDE.local.md`; `triaged` history scans; the hand pre-push
 chains to Git LFS and a merged hook keeps its other lines; `.ai/` ignored by `layout`.
-**Amended:** 2026-11-12 (unreleased, SOUL-A032) — the `upkeep` answer: on unless the
+**Amended:** 2026-11-12 (v3.12.0, SOUL-A032) — the `upkeep` answer: on unless the
 owner says off, asked once.
+**Amended:** 2026-11-13 (v3.13.0, SOUL-I092) — a plan first: one dialog with the whole
+setup (use, modify, explain, not now), answers held until go; the public question
+dropped; the vault as two steps with no labels, a new vault made here, tags in
+Obsidian's form (SOUL-I090 weighed one written round and did not take it).

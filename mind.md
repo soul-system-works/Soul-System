@@ -43,9 +43,9 @@ book (`philosophy/the-soul.md`); everything else regenerates from the record.
    arm folder and read the other arms' code and the hidden-test output (SOUL-230).
    **Soul's own upkeep hook steers a headless run** (v3.12.0, SOUL-A032): under
    `claude -p` in a Soul project with a handoff cursor it blocks the stop once per
-   ~50,000 tokens, and the run's final result text becomes the refresh line, not
-   the answer. An arm records `upkeep: off` in `.soul/init.md` or runs without
-   the plugin.
+   ~100,000 tokens (50,000 before v3.13.0, SOUL-239), and its final result text is
+   the refresh line, not the answer. An arm records `upkeep: off` in
+   `.soul/init.md` or runs without the plugin.
 
 4. **The fabrication axis** (SOUL-164): given bare rules, a doctrine-free session
    INVENTED incident history for its records ("a reviewer conflated the two" —

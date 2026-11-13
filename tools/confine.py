@@ -8,7 +8,8 @@ must not run it with the host's own powers. Two helpers, stdlib only:
                                holds (messaging socket and token, session id, API
                                keys, GH_TOKEN, GIT_CONFIG_*, SOUL_GUARD_*, routing)
                                reaches the child unless named in `extra`
-  confine_argv(argv, workdir)  argv wrapped in bubblewrap: the whole filesystem
+  confine_argv(argv, workdir, project=None)
+                               argv wrapped in bubblewrap: the whole filesystem
                                read-only except `workdir` (its .git and .soul kept
                                read-only) and a private /tmp, no network, the
                                secret folders hidden; None when it
@@ -40,36 +41,71 @@ def clean_env(extra=None):
     return env
 
 
+def _vault_tool():
+    """tools/vault.py, loaded by path, not by `import vault`: a caller loaded through
+    importlib has no tools/ on sys.path, and a failed import here would silently leave
+    the vault readable. Raises when it cannot load."""
+    spec = importlib.util.spec_from_file_location("soul_vault",
+                                                  os.path.join(_HERE, "vault.py"))
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
 def registered_vault():
-    """The vault folder this machine registered (tools/vault.py), or None. Loaded by
-    path, not by `import vault`: a caller loaded through importlib has no tools/ on
-    sys.path, and a failed import here would silently leave the vault readable."""
+    """The vault folder this machine registered (tools/vault.py), or None."""
     try:
-        spec = importlib.util.spec_from_file_location("soul_vault",
-                                                      os.path.join(_HERE, "vault.py"))
-        mod = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(mod)
-        v = mod.registered_vault()
+        v = _vault_tool().registered_vault()
     except Exception:
         return None
     return os.path.realpath(os.path.expanduser(v)) if v else None
 
 
-def secret_paths():
-    """SECRET_DIRS under this HOME and the registered vault, as real paths."""
+def linked_vaults(workdir):
+    """The vaults that a `.soul` link in `workdir`, or in any folder above it, points
+    into, as real paths. A project may link to a vault that is not the registered one,
+    and that vault holds other projects' records too (SOUL-I092). Folders above count
+    because dispatch's worktrees sit in <project>/.ai/worktrees/, and git keeps the
+    .soul link out of a worktree."""
+    try:
+        tool = _vault_tool()
+    except Exception:
+        return []
+    out, d = [], os.path.realpath(workdir)
+    while True:
+        v = tool.linked_vault(d)
+        if v and os.path.realpath(v) not in out:
+            out.append(os.path.realpath(v))
+        parent = os.path.dirname(d)
+        if parent == d:
+            return out
+        d = parent
+
+
+def secret_paths(workdir=None, project=None):
+    """SECRET_DIRS under this HOME, the registered vault and the vaults the .soul links
+    of the work folder, and of the project when the caller knows it, point into — as
+    real paths. The project counts on its own: a work folder outside it (a review's
+    --workdir) has no link above it, and walking from there alone left the project's
+    vault readable (the review of v3.13.0)."""
     home = os.path.expanduser("~")
     out = [os.path.realpath(os.path.join(home, d)) for d in SECRET_DIRS]
-    v = registered_vault()
-    if v:
-        out.append(v)
+    linked = []
+    for start in (workdir, project):
+        if start:
+            linked += linked_vaults(start)
+    for v in [registered_vault()] + linked:
+        if v and v not in out:
+            out.append(v)
     return out
 
 
-def confine_argv(argv, workdir, which=shutil.which, platform=None):
+def confine_argv(argv, workdir, which=shutil.which, platform=None, project=None):
     """`argv` under bubblewrap with only `workdir` (and a fresh /tmp) writable, no
-    network, and every existing secret folder covered by an empty tmpfs. None when
-    it cannot confine: the caller decides whether to skip or refuse, never to run
-    the check bare in its place."""
+    network, and every existing secret folder covered by an empty tmpfs (`project`,
+    when given, adds the vault its .soul links into: secret_paths). None when it
+    cannot confine: the caller decides whether to skip or refuse, never to run the
+    check bare in its place."""
     if not (platform or sys.platform).startswith("linux"):
         return None
     bwrap = which("bwrap")
@@ -89,7 +125,7 @@ def confine_argv(argv, workdir, which=shutil.which, platform=None):
         target = os.path.realpath(os.path.join(workdir, name))
         if target.startswith(workdir + os.sep) and os.path.exists(target):
             cmd += ["--ro-bind", target, target]
-    for d in secret_paths():
+    for d in secret_paths(workdir, project):
         if os.path.isdir(d):
             cmd += ["--tmpfs", d]
     # The host session's sockets live here (cc-socks: Claude Code's messaging socket,

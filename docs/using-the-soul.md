@@ -11,12 +11,16 @@ verify hook trust and operation before relying on automatic completion reminders
 
 ## Day one
 
-Run `/soul-init` in your project. The first time, it asks where the record lives
-(in git is the default), how settled the project is (prototype, pre-release,
-released, or *Not now*, which means "treat it as released") and whether any names
-must stay out of the repo, then offers a few safety checks in one list. It writes
-one import line into your `CLAUDE.md`, creates two empty record files,
-`.soul/ideas.md` and `.soul/witness.md`, and keeps your answers in `.soul/init.md`.
+Run `/soul-init` in your project. The first time, it shows the whole setup it would
+make as one plan, before it writes anything: each line says what the thing is and what
+Soul would do. One question waits for you — where Soul's log of the project's decisions
+and ideas lives (in the repo's git, in a private vault, or only on this machine) — and
+then you choose *Use default setup*, *Modify setup*, *Explain a line* or *Not now*. The
+defaults leave the stage unset (treated as released), list no private names, keep
+upkeep on and fix line endings; *Modify setup* changes any of them. Each choice is
+explained in [Setup choices](setup-choices.md). On go, it writes one import line into
+your `CLAUDE.md`, creates two empty record files, `.soul/ideas.md` and
+`.soul/witness.md`, and keeps your answers in `.soul/init.md`.
 Running it again asks only what is new. To change an answer, name it:
 `/soul-init revisit record` (or `stage`, `names`, …) asks that question again. If your project already keeps its record at its root, it stays there; both
 layouts work. Automated runs (`claude -p`) do not load the rules by import: pass them
@@ -50,11 +54,11 @@ That's the install. There is no new workflow to learn — start working.
   verified can't be called done; the session must name exactly what is unrun.
 - In a long session, or after the conversation is summarised, the AI **refreshes the
   handoff note** (`.soul/handoff.md`) by itself and says so in one line — "cursor
-  refreshed (about 60k tokens since the last)". It does this once about 50,000
+  refreshed (about 110k tokens since the last)". It does this once about 100,000
   tokens of conversation, or a summary, have passed since the note was last written
   (Claude Code only; under Codex the AI does it without the reminder). This also
   happens in headless runs (`claude -p`): a long scripted run is stopped once per
-  50,000 tokens to refresh the note, and its final answer becomes the "cursor
+  100,000 tokens to refresh the note, and its final answer becomes the "cursor
   refreshed" line. For a run that must not be steered — a measurement, a scripted
   pipeline — set `upkeep: off`, or run it without the plugin.
 
@@ -93,9 +97,9 @@ cited it. A change you say no to is not proposed again unless new entries bear o
 it. A first Mind always waits for you. Many projects never need
 one; the first draft arriving is how you find out yours does.
 
-**Turning upkeep off.** `/soul-init` asks once whether the handoff note and the
-Mind should keep themselves up to date (the answer is kept as `upkeep:` in
-`.soul/init.md`; not asked yet means on). Off: nothing runs by itself, and
+**Turning upkeep off.** `/soul-init`'s plan shows whether the handoff note and the
+Mind keep themselves up to date; the default is on, and *Modify setup* turns it off
+(the answer is kept as `upkeep:` in `.soul/init.md`; no answer yet means on). Off: nothing runs by itself, and
 `/soul-next` reminds you instead. Change it with `/soul-init revisit upkeep`.
 
 **Declaring a stage.** When the project's situation changes — the first outside
@@ -149,12 +153,18 @@ a `.gitattributes` rule so the repo decides, not each machine
 **Keeping every record in one private place.** A Soul vault is one private git repo
 that holds the record of every project, each in its own folder; the project keeps a
 `.soul` link into it, so the commands work as before (the next session asks once
-to load files from outside the project — approve it). Make the repo (private) and clone it
-— on WSL, onto a Windows drive — then run
-`python3 <soul-system>/tools/vault.py init <clone> --register` once per machine.
-From then on `/soul-init` offers "in the vault" beside "in git" and "local". A
-`restricted` project never goes in. A new computer: clone the vault to the same
-place, then `/soul-init` in each project re-links its record. Why and how:
+to load files from outside the project — approve it). Choose *In a private vault* in
+`/soul-init`: it asks which vault — `soul-vault` in your home folder by default (on WSL
+with the project on a Windows drive, on that drive), or a folder you name — makes it
+there as a git repo if it is not there yet, shows what will move, and moves the record
+on your yes. The first vault made becomes the machine's default; a project can link to
+any vault, and its link is what says which. Tags you give are written as Obsidian
+tags, so the vault reads as an Obsidian vault. A new vault has no remote: add a private
+one (`git remote add origin <url>` in the vault) so it is more than one copy on this
+disk. To make a vault by hand: `python3 <soul-system>/tools/vault.py init <folder>
+--register`. A new computer: clone the vault to the same place, then `/soul-init` in
+each project re-links its record; a record kept in a vault other than the default is
+found only when you name that vault again. Why and how:
 [ADR 0001](adr/0001-soul-vault.md).
 
 ## Going deeper

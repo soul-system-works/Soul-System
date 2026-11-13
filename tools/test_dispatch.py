@@ -755,6 +755,7 @@ def main():
     effort_cases(w)
     build_verify_cases(w, gitonly)
     review_fix_cases()
+    linked_vault_case()
 
     shutil.rmtree(tmp, ignore_errors=True)
     docs()
@@ -1218,6 +1219,56 @@ def review_fix_cases():
     shutil.rmtree(w.tmp, ignore_errors=True)
 
 
+def linked_vault_case():
+    """26 — a project linked into a second vault, not the registered one (a project may
+    link to any vault: SOUL-I092): a Claude worker may not read either vault, and the
+    confined selection check hides both — else a worker reads every other project's
+    record in the second vault."""
+    w = World(tempfile.mkdtemp(prefix="soul-dispatch-vault-"))
+    reg, v2 = os.path.join(w.tmp, "vault-a"), os.path.join(w.tmp, "vault-b")
+    for v in (reg, v2):
+        write(os.path.join(v, "vault.md"), "# vault\n")
+    write(os.path.join(v2, "projects", "proj", "soul", "witness.md"), "# W\n")
+    write(os.path.join(v2, "projects", "other", "soul", "witness.md"), "# another's\n")
+    os.symlink(os.path.join(v2, "projects", "proj", "soul"), os.path.join(w.proj, ".soul"))
+    with open(os.path.join(w.proj, ".git", "info", "exclude"), "a") as f:
+        f.write(".soul\n")
+    xdg = os.path.join(w.tmp, "xdg")
+    write(os.path.join(xdg, "soul", "vault"), reg + "\n")
+    w.roles("| implementer | claude | sonnet | |")
+    w.script({"write": {"app.txt": "FIXED\n"}})
+    r, res = w.run("lv1", env=w.env(XDG_CONFIG_HOME=xdg))
+    calls = w.calls()
+    argv = calls[0]["argv"] if calls else []
+    deny = json.loads(after(argv, "--settings") or "{}").get("permissions", {}).get("deny", [])
+    want = ["Read(/{}/**)".format(os.path.realpath(p)) for p in (reg, v2)]
+    check("a project linked into a second vault: the Claude worker may read neither vault",
+          r.returncode == 0 and all(x in deny for x in want), (r.stderr, want, deny))
+    wraps = w.wraps()
+    bwargv = wraps[0]["argv"] if wraps else []
+    hidden = [bwargv[i + 1] for i, a in enumerate(bwargv[:-1]) if a == "--tmpfs"]
+    check("a project linked into a second vault: the confined check hides both vaults",
+          all(os.path.realpath(p) in hidden for p in (reg, v2)), hidden)
+    # R2 (review of v3.13.0): a reviewer reading a --workdir OUTSIDE the project has no
+    # .soul link above it; the project's own link still puts its vault on the deny list.
+    outside = os.path.join(w.tmp, "elsewhere", "candidate")
+    os.makedirs(outside)
+    diff = os.path.join(w.tmp, "change.diff")
+    write(diff, "--- a/app.txt\n+++ b/app.txt\n@@\n-BUG\n+FIXED\n")
+    w.roles("| reviewer | claude | opus | |")
+    w.script({"say": "NO FINDINGS"})
+    r = w.dispatch("review", "--role", "reviewer", "--brief", w.brief, "--diff", diff,
+                   "--run-id", "lv2", "--workdir", outside, env=w.env(XDG_CONFIG_HOME=xdg))
+    calls = w.calls()
+    argv = calls[0]["argv"] if calls else []
+    deny = json.loads(after(argv, "--settings") or "{}").get("permissions", {}).get("deny", [])
+    check("review --workdir outside a project linked into a second vault: the reviewer "
+          "may read neither vault", r.returncode == 0 and len(calls) == 1
+          and os.path.realpath(calls[0]["cwd"]) == os.path.realpath(outside)
+          and all(x in deny for x in want), (r.stderr, want, deny))
+    shutil.rmtree(w.tmp, ignore_errors=True)
+
+
 def section(text, start, end):
     """The text from the line holding `start` up to the next line holding `end`."""
     i = text.find(start)
@@ -1316,7 +1367,7 @@ def docs():
           "--check" in helptext and "only Bash" not in helptext
           and "pick the winner" in helptext, helptext)
     check("worker_command has no unused check parameter",
-          "def worker_command(row, workdir, mode, last_file=None)" in tool, "")
+          "def worker_command(row, workdir, mode, last_file=None, project=None)" in tool, "")
     head = tool[:tool.find('"""', tool.find('"""') + 3)]
     check("module docstring lists review --workdir and clean --family",
           "--workdir" in section(head, "review ", "clean ") and "--family" in head, head)

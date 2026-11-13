@@ -7,16 +7,20 @@ hidden by one — `hand-hooks: yes` recorded on one machine reads `repair` where
 hooks are missing, and `record: local` reads `repair` while the record is tracked.
 `status` never writes; `record` keeps every line it does not own. Each run controls
 PATH (git only, plus a fake `gitleaks` when the scan should be offered), sets
-SOUL_INIT_NO_GH=1 so `gh` is never called (no network), and points XDG_CONFIG_HOME
-at the temp dir so this machine's real vault file is never read.
+SOUL_INIT_NO_GH=1 so `gh` is never called (no network), and points HOME and
+XDG_CONFIG_HOME at temp folders so this machine's real vault file is never read and
+no `~/soul-vault` is ever seen or made. The WSL drive rule is checked in-process with a
+made-up drive letter, never against a real /mnt/<drive>/.
 
 Run: python3 tools/test_init_status.py  (exit 0 = PASS)
 """
 
 import datetime
+import hashlib
 import importlib.util
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -121,6 +125,10 @@ def main():
             write(os.path.join(b, "gitleaks"), "#!/bin/sh\nexit 0\n")
             os.chmod(os.path.join(b, "gitleaks"), 0o755)
         bins[kind] = b
+    # HOME too: the plan's default vault is ~/soul-vault, and git runs see the same HOME.
+    os.makedirs(os.path.join(tmp, "home-base"))
+    _GIT_ENV.update(HOME=os.path.join(tmp, "home-base"),
+                    XDG_CONFIG_HOME=os.path.join(tmp, "config"))
     base = dict(_GIT_ENV, XDG_CONFIG_HOME=os.path.join(tmp, "config"), SOUL_INIT_NO_GH="1")
     env = dict(base, PATH=bins["plain"])      # no gitleaks, no gh
     envl = dict(base, PATH=bins["leaks"])     # a gitleaks on PATH (never run by status)
@@ -131,11 +139,14 @@ def main():
     check("fresh: fresh is true", st["fresh"] is True, st)
     check("fresh: import is a repair, not a question", by["import"]["action"] == "repair",
           by.get("import"))
-    check("fresh: record, stage, names, upkeep asked in one main round",
-          ["record", "stage", "names", "upkeep"] in st["rounds"]
+    # v3.13.0: the main set is plan lines, not a round; their pickers stay for Modify setup
+    check("fresh: record, stage, names, upkeep are plan lines, not a round",
+          st["rounds"] == []
+          and [ln["key"] for ln in (st.get("plan") or {}).get("lines", [])][:4]
+          == ["record", "stage", "names", "upkeep"]
           and all(by[k]["question"]["group"] == "main"
                   for k in ("record", "stage", "names", "upkeep")),
-          st["rounds"])
+          (st["rounds"], st.get("plan")))
     check("fresh: no layout item", "layout" not in by)
     check("fresh, no gitleaks: extras = hand-hooks + line-endings",
           by["extras"]["members"] == ["hand-hooks", "line-endings"]
@@ -144,16 +155,29 @@ def main():
     check("fresh: extras members carry no question of their own",
           all(by[k]["question"] is None and by[k]["group"] == "extras"
               for k in ("hand-hooks", "line-endings")))
-    check("fresh: rounds end with extras", st["rounds"][-1] == ["extras"], st["rounds"])
+    check("fresh: the extras picker is a change round of the plan, not a round",
+          (st.get("plan") or {}).get("change_rounds", [[]])[-1] == ["extras"]
+          and ["extras"] not in st["rounds"], (st["rounds"], st.get("plan")))
     q = by["extras"]["question"]
     check("extras: only the line-endings fix is recommended (hooks, scan are offers)",
           q["recommended"] is not None
           and q["options"][q["recommended"]]["key"] == "line-endings", q)
     q = by["record"]["question"]
-    check("record question: fixed wording, no vault option without a vault",
-          q["text"] == "Where should this project's record (its decision log and ideas) live?"
-          and [o["label"] for o in q["options"]] == ["In this repo's git", "Only on this machine"]
-          and q["recommended"] == 0, q)
+    check("record question: fixed wording, three options with no vault, nothing recommended "
+          "while visibility is unknown",
+          q["text"] == "Where should Soul's log of this project's decisions and ideas live?"
+          and [(o["value"], o["label"], o["description"]) for o in q["options"]] == [
+              ("git", "In this repo's git",
+               "Travels with the code and is backed up with it. Whoever can read the repo "
+               "can read the log: if the repo is public, or becomes public, so is the log."),
+              ("vault", "In a private vault",
+               "A separate private repo of yours that can hold the logs of all your "
+               "projects. This project keeps only a link; nothing of the log is committed "
+               "here. Adds 2 steps: which vault, then a yes to the move."),
+              ("local", "Only on this machine",
+               "In this folder, ignored by git. Never published, but one copy and no "
+               "backup.")]
+          and q["recommended"] is None, q)
     check("record detail: visibility unknown", "public is unknown" in by["record"]["detail"],
           by["record"]["detail"])
     st, by = status(envl, p1)
@@ -378,7 +402,7 @@ def main():
           by.get("vault-link", {}).get("action") == "ask" and st["rounds"][0] == ["vault-link"],
           (by.get("vault-link"), st["rounds"]))
     check("a vault named: the record question offers it",
-          "In your Soul vault" in [o["label"] for o in by["record"]["question"]["options"]],
+          "In a private vault" in [o["label"] for o in by["record"]["question"]["options"]],
           by["record"]["question"])
 
     # 14 — the public wording (rendered directly: status itself never calls gh here)
@@ -386,10 +410,13 @@ def main():
     mod = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(mod)
     q = mod.render_question("record", public="yes", vault=None)
-    check("public repo: record warns, nothing recommended",
-          q["options"][0]["description"] == mod.QUESTIONS["record"]["public_description"]
-          and "public, anyone can read it" in q["options"][0]["description"]
-          and q["recommended"] is None, q)
+    qn = mod.render_question("record", public="no", vault=None)
+    check("public repo: the git option's one text warns, nothing recommended; a private "
+          "repo recommends git",
+          q["options"][0]["description"] == qn["options"][0]["description"]
+          and "if the repo is public, or becomes public, so is the log"
+          in q["options"][0]["description"]
+          and q["recommended"] is None and qn["recommended"] == 0, (q, qn))
     q = mod.render_question("names", public="yes")
     check("public repo: names question says so",
           q["text"].endswith(" This repo is public — a name committed here is public."), q)
@@ -444,25 +471,29 @@ def main():
           and q["multi"] is False and q["recommended"] is None
           and by["extras"]["members"] == ["history-scan"], q)
 
-    # 19 — unknown visibility is asked, alone, before the main round; recorded wins
+    # 19 — visibility is a fact, never a question (v3.13.0, SOUL-I092): unknown stays
+    #      unknown and is not asked; a recorded answer is still read; --ask public is
+    #      ignored with the usual warning
     st, by = status(env, p1)
     pub = by["public"]
-    check("unknown visibility: public asked in its own round before the main round",
-          pub["action"] == "ask" and ["public"] in st["rounds"]
-          and st["rounds"].index(["public"]) < st["rounds"].index(["record", "stage", "names", "upkeep"])
-          and pub["question"]["text"] == "Is this repo public, or will it be?"
-          and pub["question"]["options"] == mod.QUESTIONS["public"]["options"]
-          and [(o["value"], o["label"]) for o in pub["question"]["options"]]
-          == [("yes", "Yes"), ("no", "No")]
-          and all(o["description"].startswith("nothing is written")
-                  for o in pub["question"]["options"])
-          and pub["question"]["recommended"] is None, (pub, st["rounds"]))
+    check("unknown visibility: public is not asked, has no question, and is in no round",
+          pub["action"] == "none" and pub["value"] is None and pub["question"] is None
+          and "public" not in sum(st["rounds"], [])
+          and "public" not in mod.QUESTIONS and "public" not in mod.FORCEABLE,
+          (pub, st["rounds"]))
     p19 = repo(tmp, "pubrec", {"README.md": "x\n"})
-    run(env, "record", p19, "public", "no")
+    r19 = run(env, "record", p19, "public", "no")
     st, by = status(env, p19)
-    check("recorded public: none, from the record, not asked", by["public"]["action"] == "none"
-          and by["public"]["source"] == "recorded" and ["public"] not in st["rounds"],
-          by["public"])
+    check("recorded public: still accepted, none, from the record, not asked",
+          r19.returncode == 0 and by["public"]["action"] == "none"
+          and by["public"]["source"] == "recorded" and by["public"]["value"] == "no"
+          and ["public"] not in st["rounds"], by["public"])
+    r = run(env, "status", p19, "--ask", "public")
+    check("--ask public: ignored with the warning", r.returncode == 0
+          and "--ask ignores public" in r.stderr, r.stderr)
+    r = run(env, "revisit", p19, "public")
+    check("revisit public forgets it", r.returncode == 0 and "removed: public:" in r.stdout,
+          r.stdout)
 
     # 20 — a recorded record answer never hides the real state
     p20 = repo(tmp, "reclocal", {"CLAUDE.md": IMPORT, ".soul/witness.md": "# W\n"})
@@ -609,8 +640,9 @@ def main():
     r = run(envl, "status", p2, "--json", "--ask", "record")
     st = json.loads(r.stdout) if r.returncode == 0 else {"items": [], "rounds": []}
     by = {i["key"]: i for i in st["items"]}
-    check("--ask record with unknown visibility: public asked first",
-          by.get("public", {}).get("action") == "ask" and ["public"] in st["rounds"],
+    check("--ask record with unknown visibility: record asked as a picker, public not asked",
+          by.get("public", {}).get("action") == "none" and ["record"] in st["rounds"]
+          and "public" not in sum(st["rounds"], []),
           (by.get("public"), st.get("rounds")))
 
     # 29 — found in the live trial: an answer recorded this run, not yet carried out,
@@ -896,9 +928,522 @@ def main():
           by["upkeep"]["action"] == "ask" and "not understood" in by["upkeep"]["detail"]
           and hook.upkeep_answer(p35) != "off", (by["upkeep"], hook.upkeep_answer(p35)))
 
+    plan_checks(tmp, env, envl, envv, vroot, mod)
     shutil.rmtree(tmp, ignore_errors=True)
     print("\n{} failure(s)".format(len(FAILS)) if FAILS else "\nALL PASS")
     return 1 if FAILS else 0
+
+
+def plan_of(env, project, *extra):
+    """(status JSON, its plan or {}, the run) for `status --json` with extra args."""
+    r = run(env, "status", project, "--json", *extra)
+    try:
+        st = json.loads(r.stdout)
+    except ValueError:
+        st = {"items": [], "rounds": [], "_err": r.stderr}
+    return st, st.get("plan") or {}, r
+
+
+def lines_of(plan):
+    return {ln["key"]: ln for ln in plan.get("lines", [])}
+
+
+def go_keys(plan):
+    return [k for k, _ in plan.get("go", [])]
+
+
+def also_fixes(plan):
+    """The plan text's "Also fixes" line ("Also sets up" on a fresh project) with its
+    wrapped continuation, flattened."""
+    out, on = [], False
+    for ln in plan.get("text", "").splitlines():
+        if ln.startswith(("**Also fixes** \u2014", "**Also sets up** \u2014")):
+            on = True
+        elif on and not ln.startswith("  "):
+            break
+        if on:
+            out.append(ln)
+    return " ".join(" ".join(out).split())
+
+
+def tree_hash(root):
+    """Every file under root (the .git folder included), path and bytes."""
+    h = hashlib.sha256()
+    for dirpath, dirs, files in os.walk(root):
+        dirs.sort()
+        for f in sorted(files):
+            p = os.path.join(dirpath, f)
+            h.update(os.path.relpath(p, root).encode() + b"\0")
+            with open(p, "rb") as fh:
+                h.update(fh.read() + b"\0")
+    return h.hexdigest()
+
+
+def plan_checks(tmp, env, envl, envv, vroot, mod):
+    """v3.13.0 (SOUL-I092): one plan with defaults and one dialog, instead of the rounds."""
+    home = env["HOME"]
+    meanings = {
+        "record": "Soul's log of this project's decisions and ideas.",
+        "stage": "How careful to be about breaking things.",
+        "names": "Names that must never be committed (clients, employers, people).",
+        "upkeep": "Soul's handoff note and project notes, kept current.",
+        "line-endings": "Windows and Linux tools end lines differently, so files can show as "
+                        "changed when they are not.",
+        "hand-hooks": "Checks commits you make outside Claude for secrets.",
+        "history-scan": "Looks through past commits for leaked secrets, once."}
+
+    # 36 — a fresh project, no remote: a plan, no public question, the record waits
+    pf = repo(tmp, "plan-fresh", {"README.md": "x\n"})
+    st, plan, _ = plan_of(envl, pf)
+    lines = lines_of(plan)
+    screen = plan.get("screen", [])
+    rq = next((q for q in screen if q.get("key") == "record"), {})
+    nq = screen[-1] if screen else {}
+    check("36 fresh: a plan; the dialog is the record question then the next step, and no "
+          "public question anywhere",
+          bool(plan) and [q.get("key") for q in screen] == ["record", "next"]
+          and "public" not in sum(st["rounds"], []), (st["rounds"], screen))
+    check("36 fresh: the record waits, recommends nothing, offers three options, is not in go",
+          lines.get("record", {}).get("waits") is True and "recommended" in rq
+          and rq["recommended"] is None
+          and [o["value"] for o in rq.get("options", [])] == ["git", "vault", "local"]
+          and "record" not in go_keys(plan), (lines.get("record"), rq, plan.get("go")))
+    check("36 fresh: every line in order, each with its fixed meaning",
+          [k for k in lines if k != "repairs"] == list(meanings)
+          and all(lines[k]["meaning"] == m for k, m in meanings.items()),
+          plan.get("lines"))
+    # The plan box is small (init-status.py, WIDTH), so the text carries a short phrase for
+    # each thing; the full meaning is on the line and in the explanation.
+    shorts = {"Record": "Soul's log of decisions and ideas",
+              "Stage": "how careful to be about breaking things",
+              "Private names": "names that must never be committed",
+              "Upkeep": "handoff note and project notes, kept current",
+              "Line endings": "Windows and Linux end lines differently",
+              "Not set up": "hand-commit hooks, history scan"}
+    check("36 fresh: the text says what each line is, under a bold name",
+          all("**{}** \u2014 {}".format(n, ph) in plan.get("text", "").splitlines()
+              for n, ph in shorts.items()), plan.get("text"))
+    check("36 fresh: the chosen setting is marked, on an arrow line under its name",
+          "  \u2192 `you choose`, in the question with this plan" in plan.get("text", "")
+          and "  \u2192 `Not now`: nothing written; treated as released"
+          in plan.get("text", "").splitlines(), plan.get("text"))
+    check("36 fresh: the next-step question, word for word, the plan in the first preview",
+          nq.get("text") == "Here is the rest of the setup I'd make. Nothing is written until "
+                            "you say go. What next?"
+          and [(o["value"], o["label"], o["description"]) for o in nq.get("options", [])] == [
+              ("use", "Use default setup", "Writes the setup shown in the plan."),
+              ("modify", "Modify setup", "Opens stage, private names, upkeep and the safety "
+                                         "checks, then shows the plan again."),
+              ("explain", "Explain a line", "What every line means, with its choices; then this "
+                                            "plan again."),
+              ("not-now", "Not now", "Nothing is written. Run /soul-init again when you are "
+                                     "ready.")]
+          and nq["options"][0].get("preview") == plan.get("text")
+          and nq.get("multi") is False and plan.get("modified") is False, nq)
+    check("36 fresh: change rounds are today's pickers for stage, names, upkeep, extras",
+          plan.get("change_rounds") == [["stage", "names", "upkeep"], ["extras"]],
+          plan.get("change_rounds"))
+    cur = re.search(r"Current: \*\*([^*]+)\*\*",
+                    read(os.path.join(_ROOT, "SYSTEM-VERSION.md"))).group(1)
+    check("36 fresh: more points at the page, at this release's tag, and at the local copy",
+          plan.get("more") == {
+              "url": "https://github.com/soul-system-works/Soul-System/blob/v{}/docs/"
+                     "setup-choices.md".format(cur),
+              "path": os.path.join(_ROOT, "docs", "setup-choices.md")}, plan.get("more"))
+
+    # 37 — the vault: offered whether or not one is registered; the default differs
+    pv = repo(tmp, "plan-vaulted", {"README.md": "x\n"})
+    _, plan_n, _ = plan_of(env, pv)
+    _, plan_v, _ = plan_of(envv, pv)
+    opts = lambda pl: [o["value"] for q in pl.get("screen", []) if q.get("key") == "record"
+                       for o in q["options"]]
+    check("37 the vault option is offered with and without a registered vault",
+          "vault" in opts(plan_n) and "vault" in opts(plan_v), (opts(plan_n), opts(plan_v)))
+    check("37 vault_default: ~/soul-vault (new) with none registered; the registered one "
+          "otherwise; nothing made",
+          plan_n.get("vault_default") == {"path": os.path.join(home, "soul-vault"),
+                                           "exists": False, "registered": False}
+          and plan_v.get("vault_default") == {"path": vroot, "exists": True,
+                                              "registered": True}
+          and not os.path.exists(os.path.join(home, "soul-vault")),
+          (plan_n.get("vault_default"), plan_v.get("vault_default")))
+    which = lambda pl: [(o["value"], o["description"]) for o in
+                        pl.get("followups", {}).get("vault-which", {}).get("options", [])]
+    check("37 vault-which: a new vault is made and becomes the default; an existing one is "
+          "named as yours",
+          which(plan_n) == [("default", "Made now: a new private git repo in that folder. It "
+                                        "becomes this machine's default vault."),
+                            ("other", "Type the folder; a vault is made there if there is "
+                                      "none.")]
+          and which(plan_v)[:1] == [("default", "Your default vault.")]
+          and plan_v["followups"]["vault-which"]["text"]
+          == "Which vault should hold this project's log?"
+          and plan_v["followups"]["vault-which"]["recommended"] == 0,
+          (which(plan_n), which(plan_v)))
+    conf = plan_v.get("followups", {}).get("vault-confirm", {})
+    check("37 vault-confirm: fixed wording, four options",
+          conf.get("text") == "Move this project's log into the vault at {}?".format(vroot)
+          and [(o["value"], o["label"]) for o in conf.get("options", [])] == [
+              ("move", "Move it"), ("tags", "Add tags, then move"),
+              ("also", "Also move other private folders"), ("cancel", "Cancel")], conf)
+    # The WSL drive rule, in-process with a made-up drive letter: the CLI refuses a
+    # project folder that does not exist, and a real drive may hold a real vault.
+    letter = next(x for x in "qzyxwvutsrponmlkjihgfeb" if not os.path.exists("/mnt/" + x))
+    proj = "/mnt/{}/proj".format(letter)
+    keep = {k: os.environ.get(k) for k in ("SOUL_VAULT_FORCE_WSL", "HOME", "XDG_CONFIG_HOME")}
+    vp = getattr(mod, "vault_plan", lambda p: {})
+    try:
+        os.environ.update(SOUL_VAULT_FORCE_WSL="1", HOME=home,
+                          XDG_CONFIG_HOME=os.path.join(tmp, "config"))
+        none_reg = vp(proj)
+        os.environ["XDG_CONFIG_HOME"] = os.path.join(tmp, "config-v")  # names vroot
+        passed = vp(proj)
+        os.environ["SOUL_VAULT_FORCE_WSL"] = "0"
+        not_wsl = vp(proj)
+    finally:
+        for k, v in keep.items():
+            if v is None:
+                os.environ.pop(k, None)
+            else:
+                os.environ[k] = v
+    drive_vault = "/mnt/{}/soul-vault".format(letter)
+    pdesc = [o["description"] for o in passed.get("followups", {}).get("vault-which", {})
+             .get("options", []) if o["value"] == "default"]
+    check("37 WSL, project on a Windows drive: the default vault is on that drive; a "
+          "registered vault off the drive is passed over, and the option says so",
+          none_reg.get("vault_default") == {"path": drive_vault, "exists": False,
+                                            "registered": False}
+          and passed.get("vault_default") == {"path": drive_vault, "exists": False,
+                                              "registered": False}
+          and len(pdesc) == 1 and vroot in pdesc[0]
+          and not_wsl.get("vault_default") == {"path": vroot, "exists": True,
+                                               "registered": True},
+          (none_reg, passed.get("vault_default"), pdesc, not_wsl.get("vault_default")))
+
+    # 38 — a recorded visibility: private recommends git (and puts it in go); public does not
+    pp = repo(tmp, "plan-private", {"README.md": "x\n"})
+    run(env, "record", pp, "public", "no")
+    _, plan, _ = plan_of(env, pp)
+    rq = next((q for q in plan.get("screen", []) if q.get("key") == "record"), {})
+    check("38 recorded public: no → git recommended and in go",
+          rq.get("recommended") == 0 and ["record", "git"] in plan.get("go", []),
+          (rq, plan.get("go")))
+    pq = repo(tmp, "plan-public", {"README.md": "x\n"})
+    run(env, "record", pq, "public", "yes")
+    _, plan, _ = plan_of(env, pq)
+    rq = next((q for q in plan.get("screen", []) if q.get("key") == "record"), {})
+    check("38 recorded public: yes → nothing recommended, record not in go",
+          bool(rq) and rq.get("recommended") is None and "record" not in go_keys(plan),
+          (rq, plan.get("go")))
+
+    # 39 — go holds exactly the defaults; recorded and carried out, nothing is left to ask
+    pg = repo(tmp, "plan-go", {"README.md": "x\n"})
+    _, plan, _ = plan_of(env, pg)
+    _, plan_l, _ = plan_of(envl, pg)
+    want = [["stage", "not-now"], ["names", "none"], ["upkeep", "on"],
+            ["line-endings", "yes"], ["hand-hooks", "no"]]
+    check("39 go holds exactly the default pairs (history-scan declined only where the scan "
+          "can run)", plan.get("go") == want and plan.get("todo") == []
+          and plan_l.get("go") == want + [["history-scan", "declined"]],
+          (plan.get("go"), plan_l.get("go")))
+    for k, v in want + [["record", "git"]]:
+        run(env, "record", pg, k, v)
+    st, plan, _ = plan_of(env, pg)
+    check("39 recorded, line-endings fix not yet done: only that line remains, its default "
+          "the recorded yes", [k for k in lines_of(plan) if k != "repairs"] == ["line-endings"]
+          and plan["lines"][0]["default"]["value"] == "yes", plan.get("lines"))
+    rf = subprocess.run([sys.executable, os.path.join(_HERE, "eol.py"), "fix", pg],
+                        capture_output=True, text=True, env=env)
+    rc = git(pg, "commit", "-qm", "line endings")
+    st, plan, _ = plan_of(env, pg)
+    check("39 after the line-endings fix and its commit: plan null, nothing to ask",
+          rf.returncode == 0 and rc.returncode == 0 and "plan" in st and st["plan"] is None
+          and st["rounds"] == [], (rf.stdout + rf.stderr, rc.stderr, st.get("rounds"),
+                                   st.get("plan")))
+
+    # 40 — --choose renders a change before anything is recorded
+    _, plan, _ = plan_of(env, pf, "--choose", "stage=prototype")
+    nq = (plan.get("screen") or [{}])[-1]
+    check("40 --choose stage=prototype: the line, go and modified change; Use this setup",
+          lines_of(plan).get("stage", {}).get("default", {}).get("value") == "prototype"
+          and ["stage", "prototype"] in plan.get("go", [])
+          and ["stage", "not-now"] not in plan.get("go", [])
+          and plan.get("modified") is True
+          and nq.get("options", [{}])[0].get("label") == "Use this setup",
+          (plan.get("lines"), plan.get("go"), nq))
+    _, plan, _ = plan_of(env, pf, "--choose", "record=local")
+    check("40 --choose record=local: in go, the record no longer waits or asks",
+          ["record", "local"] in plan.get("go", [])
+          and lines_of(plan).get("record", {}).get("waits") is False
+          and [q.get("key") for q in plan.get("screen", [])] == ["next"], plan.get("screen"))
+    _, plan, _ = plan_of(envl, pf, "--choose", "history-scan=yes")
+    check("40 --choose history-scan=yes: in todo, not in go",
+          plan.get("todo") == ["history-scan"] and "history-scan" not in go_keys(plan),
+          (plan.get("todo"), plan.get("go")))
+    bad = [run(env, "status", pf, "--json", "--choose", a).returncode
+           for a in ("import=add", "stage=beta", "stage", "names=")]
+    check("40 --choose with a bad key or value: exit 2", bad == [2, 2, 2, 2], bad)
+
+    # 41 — a forced key is a picker, never a plan line; a recorded answer is never replaced
+    pu = repo(tmp, "plan-upkeep-off", {"README.md": "x\n"})
+    run(env, "record", pu, "upkeep", "off")
+    st, plan, _ = plan_of(env, pu, "--ask", "upkeep")
+    check("41 --ask upkeep, upkeep off recorded: a picker in rounds, not a plan line, no "
+          "default over it", bool(plan) and ["upkeep"] in st["rounds"]
+          and "upkeep" not in lines_of(plan) and "upkeep" not in go_keys(plan),
+          (st["rounds"], plan.get("go")))
+    pn = repo(tmp, "plan-names", {"README.md": "x\n"})
+    run(env, "record", pn, "names", "listed")
+    run(env, "record", pn, "stage", "prototype")
+    _, plan, _ = plan_of(env, pn)
+    ln = lines_of(plan)
+    check("41 names listed and a stage recorded, files missing: the defaults are the recorded "
+          "answers, said so", ln.get("names", {}).get("default", {}).get("value") == "listed"
+          and ln.get("stage", {}).get("default", {}).get("value") == "prototype"
+          and ["names", "listed"] in plan.get("go", [])
+          and ["stage", "prototype"] in plan.get("go", [])
+          and "earlier answer" in ln["names"]["default"]["text"],
+          (plan.get("lines"), plan.get("go")))
+
+    # 42 — no plan while the vault's record waits for its link; none when all is set
+    write(os.path.join(vroot, "projects", "clone3", "soul", "witness.md"), "# W\n")
+    p42 = repo(tmp, "clone3", {"README.md": "x\n"})
+    st, _, _ = plan_of(envv, p42)
+    check("42 vault-link asked, not broken: plan null, the re-link alone",
+          "plan" in st and st["plan"] is None and st["rounds"] == [["vault-link"]],
+          (st.get("plan"), st["rounds"]))
+    ps = set_up(tmp, "plan-setup")
+    st, _, _ = plan_of(envl, ps)
+    check("42 a project already set up: plan null", "plan" in st and st["plan"] is None,
+          st.get("plan"))
+    ph = repo(tmp, "plan-half", {"README.md": "x\n"})
+    write(os.path.join(ph, ".soul", "init.md"), "stage:         not-now      2026-11-13\n"
+          "names:         none         2026-11-13\n")
+    _, plan, _ = plan_of(env, ph)
+    check("42 half answered: only the unanswered lines",
+          [k for k in lines_of(plan) if k != "repairs"]
+          == ["record", "upkeep", "line-endings", "hand-hooks"]
+          and not {"stage", "names"} & set(go_keys(plan)), plan.get("lines"))
+
+    # 42b — each of the seven repairs is named on the "Also fixes" line
+    def fixture(name, files, answers=""):
+        p = repo(tmp, name, files)
+        if answers:
+            write(os.path.join(p, ".soul", "init.md"), answers)
+        return p
+    fx = [("the Soul line in CLAUDE.md", env, fixture("fix-import", {"README.md": "x\n"})),
+          ("hand-commit hooks", env,
+           fixture("fix-hooks", {"CLAUDE.md": IMPORT, ".soul/witness.md": "# W\n"},
+                   "hand-hooks:    yes          2026-10-23\n")),
+          ("the project-notes import", env,
+           fixture("fix-mind", {"CLAUDE.md": IMPORT, ".soul/witness.md": "# W\n",
+                                ".soul/mind.md": "# M\n"})),
+          ("the record's git state", env,
+           fixture("fix-record", {"CLAUDE.md": IMPORT, ".soul/witness.md": "# W\n"},
+                   "record:        local        2026-10-26\n"))]
+    pe = fixture("fix-eol", {"CLAUDE.md": IMPORT, ".gitattributes": RULES, "a.txt": "one\n"})
+    write(os.path.join(pe, "a.txt"), b"one\r\n", mode="wb")
+    fx.append(("line endings", env, pe))
+    write(os.path.join(vroot, "projects", "fix-link", "soul", "witness.md"), "# W\n")
+    pl = fixture("fix-link", {"README.md": "x\n"})
+    os.symlink(os.path.join(tmp, "old-vault2", "projects", "fix-link", "soul"),
+               os.path.join(pl, ".soul"))
+    fx.append(("the link to the vault", envv, pl))
+    pst = fixture("fix-store", {"CLAUDE.md": IMPORT, "docs/ideas.md": "# I\n"})
+    run(env, "record", pst, "existing-store", "use")
+    fx.append(("the pointer to your existing record", env, pst))
+    missing = []
+    for words, env_, p in fx:
+        line = also_fixes(plan_of(env_, p)[1])
+        if words not in line:
+            missing.append((words, line))
+    check("42b each repair is named in everyday words on the 'Also fixes' line", not missing,
+          missing)
+
+    # 43 — the text fits the dialog's preview box; line endings carry a file count
+    pc = repo(tmp, "plan-crlf", {"a.txt": "one\r\ntwo\r\n", "b.txt": "x\r\n", "c.txt": "lf\n"})
+    texts = {}
+    for name, env_, p, extra in (("fresh", envl, pf, ()), ("crlf", env, pc, ()),
+                                 ("half", env, ph, ()), ("vault", envv, pv, ()),
+                                 ("chosen", envl, pf, ("--choose", "hand-hooks=yes",
+                                                       "--choose", "history-scan=yes",
+                                                       "--choose", "names=listed"))):
+        texts[name] = plan_of(env_, p, *extra)[1].get("text", "")
+    wide = [(n, ln) for n, t in texts.items() for ln in t.splitlines()
+            if len(ln.replace("**", "").replace("`", "")) > 58]
+    check("43 every line of plan.text shows at most 58 columns", all(texts.values())
+          and not wide, wide or texts)
+    flat = {n: " ".join(t.split()) for n, t in texts.items()}
+    check("43 the line-endings line carries the count of files that change",
+          "(0 files change; adds rule file)" in flat["fresh"]
+          and "(2 files change; adds rule file)" in flat["crlf"], flat)
+    # The box cuts what does not fit: 27 lines showed "3 lines hidden" at the owner's
+    # first trial (2026-11-13).
+    def shown(t):  # the lines the box draws: a code block's fence lines are not drawn
+        return [x for x in t.splitlines() if not x.startswith("```")]
+    n_fresh = len(shown(texts["fresh"]))
+    n_most = max(len(shown(t)) for t in texts.values())
+    check("43 a fresh project's plan is 12 lines, and no plan here is over 18",
+          n_fresh == 12 and n_most <= 18, (n_fresh, n_most))
+    # A setting changed under Modify setup carries a green "changed from" line: a one-line
+    # diff block right under it, naming what the plan showed before (the owner's pick).
+    t_ch = plan_of(envl, pf, "--choose", "stage=prototype", "--choose", "upkeep=off",
+                   "--choose", "names=none", "--choose", "record=vault")[1]
+    ch = t_ch.get("text", "").splitlines()
+    def after(prefix):
+        i = next((n for n, x in enumerate(ch) if x.startswith(prefix)), None)
+        return ch[i + 1:i + 4] if i is not None else None
+    check("43 a changed setting is followed by its 'changed from' line, as a diff block",
+          after("  \u2192 `Prototype`") == ["```diff", "+   changed from Not now", "```"]
+          and after("  \u2192 `Off`") == ["```diff", "+   changed from On", "```"],
+          t_ch.get("text"))
+    check("43 no 'changed from' line for a setting chosen as it was, for a record that had "
+          "no suggestion, or in a plan nothing was changed in",
+          t_ch.get("text", "").count("changed from") == 2
+          and lines_of(t_ch)["names"]["default"]["was"] is None
+          and lines_of(t_ch)["record"]["default"]["was"] is None
+          and "```" not in texts["fresh"] and "changed from" not in texts["fresh"],
+          t_ch.get("text"))
+    r_txt = run(envl, "status", pf, "--choose", "stage=prototype")
+    check("43 the text output shows the 'changed from' line without its fences",
+          "+   changed from Not now" in r_txt.stdout and "```" not in r_txt.stdout,
+          r_txt.stdout)
+
+    # 44 — the explanation page: generated, committed, never the version number
+    r = run(env, "doc", "--check")
+    check("44 doc --check passes on the committed page", r.returncode == 0,
+          r.stdout + r.stderr)
+    r = run(env, "doc")
+    page = os.path.join(_ROOT, "docs", "setup-choices.md")
+    check("44 doc prints the committed page, without the version number",
+          r.returncode == 0 and os.path.isfile(page) and r.stdout == read(page)
+          and cur not in r.stdout, r.stderr)
+    cp = os.path.join(tmp, "doc-copy")
+    for rel in ("tools/init-status.py", "tools/eol.py", "tools/vault.py",
+                "docs/setup-choices.md"):
+        if os.path.isfile(os.path.join(_ROOT, rel)):
+            write(os.path.join(cp, rel), read(os.path.join(_ROOT, rel)))
+    tool_cp = os.path.join(cp, "tools", "init-status.py")
+    ctl = subprocess.run([sys.executable, tool_cp, "doc", "--check"], capture_output=True,
+                         text=True, env=env)
+    write(tool_cp, read(tool_cp).replace("How careful to be about breaking things.",
+                                         "How careful to be when breaking things."))
+    chg = subprocess.run([sys.executable, tool_cp, "doc", "--check"], capture_output=True,
+                         text=True, env=env)
+    check("44 doc --check fails after a wording change (passes on the unchanged copy)",
+          ctl.returncode == 0 and chg.returncode == 1, (ctl.returncode, chg.returncode,
+                                                         chg.stdout + chg.stderr))
+
+    # 45 — explain, the text output, and status writing nothing (--choose included)
+    r = run(env, "explain", pf)
+    check("45 explain: Markdown, an icon and a bold name per item, a bullet per choice",
+          "\U0001F6A6 **Stage** \u2014 " + meanings["stage"] in r.stdout.splitlines()
+          and "- **Not now** (default): Writes nothing; treated as released until you choose."
+          in r.stdout.splitlines()
+          and "- Change it later: `/soul-init revisit stage`" in r.stdout.splitlines()
+          and "\U0001F527 **Also sets up** \u2014 with no question:" in r.stdout.splitlines()
+          and "\n\n\U0001F512 **Private names** \u2014 " in r.stdout, r.stdout)
+    check("45 explain: a block per plan line, each naming its revisit",
+          r.returncode == 0
+          and all("/soul-init revisit {}".format(k) in r.stdout
+                  for k in ("record", "stage", "names", "upkeep", "line-endings", "hand-hooks"))
+          and "revisit history-scan" not in r.stdout, r.stdout + r.stderr)
+    r = run(env, "status", pf)
+    check("45 status text: the plan and the four choices, no 'To ask'",
+          r.returncode == 0 and "Use default setup" in r.stdout and "Not now" in r.stdout
+          and "**Stage** \u2014 how careful to be about breaking things" in r.stdout
+          and "To ask" not in r.stdout, r.stdout)
+    before = tree_hash(pf)
+    rs = [plan_of(env, pf)[2], plan_of(env, pf, "--choose", "stage=prototype")[2],
+          plan_of(envl, pf, "--choose", "history-scan=yes", "--choose", "record=vault")[2],
+          run(env, "status", pf), run(env, "explain", pf)]
+    check("45 status (with --choose too) and explain leave the project byte-identical",
+          all(x.returncode == 0 for x in rs) and tree_hash(pf) == before
+          and not os.path.exists(os.path.join(pf, ".soul")),
+          [(x.returncode, x.stderr[-200:]) for x in rs])
+
+    # 46 — the review of v3.13.0: the fixes asked for (R3, R7, R8, R9, R11)
+    # R3: a typed folder gets the confirm question too: the sentence with {path} left in.
+    conf = plan_of(envv, pv)[1].get("followups", {}).get("vault-confirm", {})
+    check("46 R3 vault-confirm carries the template for a typed folder; text stays rendered",
+          conf.get("template") == "Move this project's log into the vault at {path}?"
+          and conf.get("text") == "Move this project's log into the vault at {}?".format(vroot),
+          conf)
+    # R7: only the record waits, so Modify setup has nothing to open: it is left out.
+    po = repo(tmp, "plan-only-record", {"CLAUDE.md": IMPORT, ".gitattributes": RULES})
+    write(os.path.join(po, ".soul", "init.md"),
+          "stage:         not-now      2026-11-01\nnames:         none         2026-11-01\n"
+          "upkeep:        on           2026-11-01\nhand-hooks:    no           2026-11-01\n"
+          "history-scan:  declined     2026-11-01\n")
+    _, plan, _ = plan_of(envl, po)
+    nq = (plan.get("screen") or [{}])[-1]
+    check("46 R7 only the record waits: no change rounds, and no Modify setup option",
+          [k for k in lines_of(plan) if k != "repairs"] == ["record"]
+          and plan.get("change_rounds") == []
+          and [o["value"] for o in nq.get("options", [])] == ["use", "explain", "not-now"],
+          (plan.get("lines"), plan.get("change_rounds"), nq))
+    # ... and "Not set up" says Modify setup can add them only when it can: with line
+    # endings forced (--ask), the extras are asked as a picker, not under Modify setup.
+    _, plan_f, _ = plan_of(envl, pf, "--ask", "line-endings")
+    t_free, t_forced = texts["fresh"], plan_f.get("text", "")
+    # Since the short plan (2026-11-13) the line names what is not set up and never
+    # points at Modify setup, so it cannot point there wrongly.
+    check("46 R7 'Not set up' never points at Modify setup",
+          "**Not set up** \u2014 hand-commit hooks, history scan" in t_free
+          and "Modify setup" not in t_free
+          and plan_f.get("change_rounds") == [["stage", "names", "upkeep"]]
+          and "**Not set up** \u2014 " in t_forced and "Modify setup" not in t_forced,
+          (plan_f.get("change_rounds"), t_forced))
+    # R8: a recorded value the tool does not understand: the line says so and shows the
+    # default that replaces it.
+    pw = repo(tmp, "plan-not-understood", {"README.md": "x\n"})
+    write(os.path.join(pw, ".soul", "init.md"), "stage:         Prototype    2026-11-01\n"
+          "upkeep:        maybe        2026-11-01\n")
+    _, plan, _ = plan_of(env, pw)
+    ln = lines_of(plan)
+    st_t = ln.get("stage", {}).get("default") or {}
+    up_t = ln.get("upkeep", {}).get("default") or {}
+    check("46 R8 an answer not understood: the line says so, with the default replacing it",
+          st_t.get("value") == "not-now" and up_t.get("value") == "on"
+          and st_t.get("text", "").startswith("Not now: nothing written")
+          and 'Your earlier answer "Prototype" was not understood' in st_t.get("text", "")
+          and 'Your earlier answer "maybe" was not understood' in up_t.get("text", "")
+          and ["stage", "not-now"] in plan.get("go", []), (st_t, up_t, plan.get("go")))
+    # R9: in a repo known to be public, the Private names line carries today's note.
+    _, plan, _ = plan_of(env, pq)
+    nm = lines_of(plan).get("names", {}).get("default") or {}
+    _, plan_p, _ = plan_of(env, pp)
+    check("46 R9 public repo: the names line carries the public note, default still none",
+          nm.get("value") == "none" and nm.get("text", "").endswith(
+              "This repo is public \u2014 a name committed here is public.")
+          and "public" not in (lines_of(plan_p).get("names", {}).get("default") or {})
+          .get("text", "x public"), (nm, lines_of(plan_p).get("names")))
+    # R11: the wording.
+    st, plan, _ = plan_of(envl, pf)
+    by = {i["key"]: i for i in st.get("items", [])}
+    ex_opts = by.get("extras", {}).get("question", {}).get("options", [])
+    up_opts = by.get("upkeep", {}).get("question", {}).get("options", [])
+    check("46 R11 the line-endings option and the upkeep option, reworded",
+          "Make line endings the same on Windows and Linux" in [o["label"] for o in ex_opts]
+          and up_opts and "makes small updates to the project notes"
+          in up_opts[0]["description"] and "Mind" not in up_opts[0]["description"],
+          (ex_opts, up_opts))
+    fresh_lines = plan.get("text", "").splitlines()
+    fix_lines = plan_of(env, fx[0][2])[1].get("text", "").splitlines()
+    fix_lines2 = plan_of(env, fx[1][2])[1].get("text", "").splitlines()
+    check("46 R11 a fresh project's plan says 'Also sets up', any other 'Also fixes'",
+          any(x.startswith("**Also sets up** \u2014") for x in fresh_lines)
+          and not any(x.startswith("**Also fixes** \u2014") for x in fresh_lines)
+          and any(x.startswith("**Also fixes** \u2014") for x in fix_lines2)
+          and not any(x.startswith("**Also sets up** \u2014") for x in fix_lines2),
+          (fresh_lines, fix_lines, fix_lines2))
+    page = " ".join(run(env, "doc").stdout.split())
+    check("46 R11 the page names every step the setup can add, and what revisit forgets",
+          "a private vault adds two steps" in page
+          and "typing private names or choosing Released adds one" in page
+          and "the one exception" not in page
+          and "every remembered answer is forgotten; answers Soul reads from the project's "
+              "files stay" in page and "every answer is asked again" not in page, page[-900:])
 
 
 if __name__ == "__main__":
