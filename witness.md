@@ -9659,3 +9659,35 @@ CONSEQUENCE:  Same lesson as mind item 11 (reboot, memory reaper), now with a po
               standing home agent (SOUL-I091) was weighed against the same risk.
 STATUS:       Closed.
 ```
+
+```
+ID:           SOUL-238
+WHEN:         2026-11-12 ~18:00 EST / Soul-System session, during a /soul-discuss
+              round on /soul-init
+WHERE:        hooks/upkeep.py (Stop hook) -> /soul-handoff step 1c -> /soul-distill
+              (plugin 3.12.0); mind.md; tools/mind-guard.py;
+              .ai/distill/mind-held-2026-11-12.md
+WHAT:         The first /soul-distill a model ran by itself (SOUL-A032). The upkeep
+              hook blocked a stop (about 55k tokens since the cursor); the handoff's
+              step 1c found the Mind due (A032 accepted after the 2026-11-06 stamp)
+              and ran the distill with no question first. Four changes were drafted:
+              item 3 (the upkeep hook steers a `claude -p` run), 6(e) (citations),
+              11 (the power cut, SOUL-237), 12 (pull first, v3.11.1). Lines 154 ->
+              163, items 12 -> 12. mind-guard passed the full draft (exit 0). Nothing
+              was applied: each change adds lines to a Mind already over the
+              120-line cap, and the number the Body raised the cap to on 2026-10-26
+              is not in the record (the stamp says only that it was raised). All four
+              are held for the Body. Also read at the source: no witness entry says
+              a `--tags` push published archive/video-pipeline; commit cebc03e's
+              message does, SOUL-208 records the tag as public since 2026-08-26, and
+              SOUL-182 holds the explicit-refspec rule. SOUL-235 named SOUL-208
+              alone as "the record holding it".
+TYPE:         witness (live run)
+CONSEQUENCE:  The 3.12.0 row's "Unrun: no model has run the self-distill path" is
+              run in part: the trigger, the grading and the held file. Unrun still:
+              a minor change applied and committed by itself, the declined file,
+              the vault undo by copy. With a Mind over its cap and no recorded cap
+              number, a self-run distill applies nothing unless a change adds no
+              line.
+STATUS:       Open — the four held changes and the cap's number wait for the Body.
+```
