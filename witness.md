@@ -9717,5 +9717,7 @@ CONSEQUENCE:  The step becomes about 100,000 tokens for every project (the plugi
               the constant and its reason in hooks/upkeep.py, hooks/test_upkeep.py, and
               the files that state "50,000" (the handoff and init skills, the user
               guide, contract-reasons). Planned with v3.13.0.
-STATUS:       Open — not built.
+STATUS:       Closed 2026-11-13 — built in v3.13.0 (commit 24c1414): the step is
+              100,000 tokens; hooks/test_upkeep.py passes. No session has yet run
+              to the new step under the released plugin.
 ```

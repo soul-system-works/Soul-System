@@ -3429,7 +3429,10 @@ ROUND 2:   2026-11-13 — the Body checked every choice by hand in a document (C
            other property name is allowed).
            Unverified, for the build: that `sync`, `check` and the session-start hook
            follow a link into a vault that is not the default.
-STATUS:    Maturing
+STATUS:    Built in v3.13.0 (2026-11-13): /soul-init shows the setup as a plan first.
+           The Body ran the live trials and picked the plan, explanation and
+           "changed from" layouts. What is untested: the 3.13.0 row of
+           SYSTEM-VERSION.md.
 ```
 
 ```
