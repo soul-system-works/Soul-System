@@ -41,6 +41,11 @@ book (`philosophy/the-soul.md`); everything else regenerates from the record.
    isolation is not filesystem isolation:** an arm that runs shell commands needs an
    OS-level jail (bwrap, built per session). On 2 of 8 SWE tasks local Qwen left its
    arm folder and read the other arms' code and the hidden-test output (SOUL-230).
+   **Soul's own upkeep hook steers a headless run** (v3.12.0, SOUL-A032): under
+   `claude -p` in a Soul project with a handoff cursor it blocks the stop once per
+   ~50,000 tokens, and the run's final result text becomes the refresh line, not
+   the answer. An arm records `upkeep: off` in `.soul/init.md` or runs without
+   the plugin.
 
 4. **The fabrication axis** (SOUL-164): given bare rules, a doctrine-free session
    INVENTED incident history for its records ("a reviewer conflated the two" —
@@ -82,9 +87,10 @@ book (`philosophy/the-soul.md`); everything else regenerates from the record.
    piped exit code, which reported "fetchable" by testing `head`. SOUL-175
    recorded three SHAs as unfetchable; all three still fetched three months
    later, and its local tag re-adoption had not taken either (SOUL-178).
-   (e) Push a release tag by explicit refspec, `refs/tags/vX.Y.Z` — NEVER `--tags`,
-   which published the private `archive/video-pipeline` ref (SOUL-182); a branch
-   sharing the tag's name made a bare `git push origin v3.3.0` fail (SOUL-216).
+   (e) Push a release tag by explicit refspec, `refs/tags/vX.Y.Z` (SOUL-182) — NEVER
+   `--tags`, which published the private `archive/video-pipeline` ref (commit
+   cebc03e; public since, SOUL-208); a branch sharing the tag's name made a bare
+   `git push origin v3.3.0` fail (SOUL-216).
 
 7. **Transcript-measurement traps** (SOUL-173 — each returned a plausible WRONG
    number in one session). Count the TURN, not the text block: one turn emits
@@ -133,22 +139,25 @@ book (`philosophy/the-soul.md`); everything else regenerates from the record.
     never in /tmp or the session scratchpad. The I083 R queue was cut off twice: a
     reboot killed the shell and emptied /tmp (taking the scratchpad script), then
     Claude Code's memory-pressure reaper killed it while another project held about
-    42 of 62 GB (SOUL-231). The detached A×3 queue ran uncut (SOUL-232).
+    42 of 62 GB (SOUL-231). The detached A×3 queue ran uncut (SOUL-232). A power
+    cut on 2026-11-12 emptied /tmp again (a reviewer's probes) and nearly took build
+    state held only in the conversation (SOUL-237).
 
 12. **The soul vault is one working tree that several live sessions write at
     once.** Each leaves uncommitted edits in its own `projects/<key>/`. Never stash,
     rebase, reset or `pull --rebase --autostash` there, and never commit beyond your
     own folder. Commit with `tools/vault.py sync`; take the server's commits with
-    `git -C <vault> pull --no-rebase --no-autostash` (drop a dirty `index.md`
-    first); when git refuses because another session is mid-commit, retry, never
-    force. Three reviews of 3.11.0 reproduced conflict markers committed into
+    `git -C <vault> pull --no-rebase --no-autostash`, dropping a dirty `index.md`
+    only if git then refuses over it (v3.11.1: the plain pull was enough, SOUL-235);
+    when git refuses because another session is mid-commit, retry, never force.
+    Three reviews of 3.11.0 reproduced conflict markers committed into
     another project's record, edits stranded in a stash and a mid-run write lost,
     all from an autostash design (SOUL-234); a hand merge here was refused while
     another session committed, and went through on retry (2026-11-06).
 
 ---
-**Last distilled:** 2026-11-06 against SOUL-234 / A031 / I087 / F075 / v3.11.0 (delta
-window SOUL-225→234, I083–I087, A031, F075, v3.7.0–v3.11.0; prior form at commit
-86a7f48). Changed: items 3 (an OS-level jail), 6(c) (scan at write time, as its own
-command; quotes are a surface). Added: 11 (detached queues), 12 (the shared vault).
-Nothing cut. Over the 120 cap the Body raised on 2026-10-26.
+**Last distilled:** 2026-11-12 against SOUL-237 / A032 / I092 / F075 / v3.12.0 (delta
+window SOUL-235→237, I088–I092, A032, v3.11.1–v3.12.0; prior form at commit
+213fac4). Changed: items 3 (the upkeep hook under `claude -p`), 6(e) (citations),
+11 (the power cut), 12 (pull first). Nothing added or cut. Over the 120 cap the
+Body raised on 2026-10-26.
