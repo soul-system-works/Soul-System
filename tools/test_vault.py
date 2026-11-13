@@ -1,9 +1,10 @@
 """Behaviour test for tools/vault.py (the Soul vault, SOUL-I079).
 
 FENCE: a record is never lost or silently unwired. The move must leave every file
-readable through the link with the same bytes; a `restricted` project and a second
-record for a key the vault already holds are refused with nothing changed; a broken
-link is reported, never silent (it turns the completion gate off and git stays quiet).
+readable through the link with the same bytes; a second record for a key the vault
+already holds is refused with nothing changed; a broken link is reported, never silent
+(it turns the completion gate off and git stays quiet). Labels are no longer a rule
+(the owner, 2026-11-13, SOUL-I092): none is needed and none is refused.
 Junctions are not exercised here (the fixtures live on the Linux filesystem); the
 live junction check is a throwaway run under /mnt/d (recorded with the 3.4.0 release).
 
@@ -354,26 +355,108 @@ def sync_cases(tmp, env):
           r.returncode == 4 and "looks stale" in r.stderr and "remove " + lock in r.stderr
           and os.path.exists(lock), r.stderr)
 
+def second_vault_cases(tmp, env, registered):
+    """A project may link to any vault, not only the machine's default (the owner,
+    2026-11-13, SOUL-I092): check, session-start and sync follow its .soul link into a
+    second vault, and link allows that vault in the project's local settings. Regression
+    checks — true before the change that dropped labels."""
+    p, v, bare, clone = sync_fixture(tmp, env, "second")
+    reg_head = git(registered, "rev-parse", "HEAD").stdout.strip()
+    rv = os.path.realpath(v)
+    st = json.loads(run(env, "check", p, "--json").stdout or "{}")
+    check("second vault: check follows the link there", st.get("state") == "linked"
+          and os.path.realpath(st.get("target") or "/").startswith(rv + os.sep), json.dumps(st))
+    out = json.loads(run(env, "session-start", stdin=json.dumps({"cwd": p})).stdout or "{}")
+    ctx = out.get("hookSpecificOutput", {}).get("additionalContext", "")
+    check("second vault: session-start names it", "lives in the vault" in ctx
+          and os.path.join(v, "projects", "syncer", "soul") in ctx
+          and "systemMessage" not in out, json.dumps(out))
+    sl = json.load(open(os.path.join(p, ".claude", "settings.local.json")))
+    check("second vault: link allowed it in .claude/settings.local.json",
+          rv in sl["permissions"]["additionalDirectories"], json.dumps(sl))
+    write(os.path.join(p, ".soul", "witness.md"), "# W\nSECOND\n")
+    r = run(env, "sync", p)
+    check("second vault: sync commits and pushes there, the default vault untouched",
+          r.returncode == 0 and "pushed" in r.stdout
+          and "SECOND" in git(bare, "show", "main:projects/syncer/soul/witness.md").stdout
+          and git(registered, "rev-parse", "HEAD").stdout.strip() == reg_head
+          and not os.path.exists(os.path.join(registered, "projects", "syncer")),
+          r.stdout + r.stderr)
+
+
 def main():
     tmp = tempfile.mkdtemp(prefix="soul-vault-test-")
     env = dict(_GIT_ENV, XDG_CONFIG_HOME=os.path.join(tmp, "config"), SOUL_VAULT_FORCE_WSL="0")
     vault = os.path.join(tmp, "vault")
 
-    # 1 — init scaffolds, never overwrites, registers one vault per machine
+    # 1 — init scaffolds, never overwrites, registers one default vault per machine
     r = run(env, "init", vault, "--register")
     check("init scaffolds", r.returncode == 0 and all(os.path.exists(os.path.join(vault, f))
           for f in ("vault.md", ".gitignore", "index.md", "projects")), r.stderr)
     ga = os.path.join(vault, ".gitattributes")
     check("init writes the line-ending rule", os.path.isfile(ga)
           and "* text=auto eol=lf" in read(ga))
+    check("init makes a new vault a git repo on main, the scaffold as its one commit",
+          git(vault, "symbolic-ref", "--short", "HEAD").stdout.strip() == "main"
+          and git(vault, "rev-list", "--count", "HEAD").stdout.strip() == "1"
+          and git(vault, "status", "--porcelain").stdout == ""
+          and os.path.realpath(git(vault, "rev-parse", "--show-toplevel").stdout.strip())
+          == os.path.realpath(vault), r.stdout + git(vault, "status", "--porcelain").stdout)
     write(os.path.join(vault, "vault.md"), "# mine\n")
     r = run(env, "init", vault, "--register")
     check("init never overwrites", r.returncode == 0 and read(os.path.join(vault, "vault.md")) == "# mine\n")
+    check("init again on its own repo: no new commit",
+          git(vault, "rev-list", "--count", "HEAD").stdout.strip() == "1", r.stdout)
     check("where names the vault", run(env, "where").stdout.strip() == vault)
     other = os.path.join(tmp, "other-vault")
     r = run(env, "init", other, "--register")
-    check("a second vault on one machine is refused", r.returncode == 2
+    check("a second default vault on one machine is refused, before anything is written",
+          r.returncode == 2 and "one default vault per machine" in r.stderr
+          and not os.path.exists(other)
           and read(os.path.join(tmp, "config", "soul", "vault")).strip() == vault, r.stderr)
+
+    # 1b — init and git: a folder inside another repo is left alone and said so; an
+    #      existing repo is never re-initialised or committed in; no git identity leaves
+    #      the repo made with no commit, and says so
+    outer = os.path.join(tmp, "outer")
+    os.makedirs(outer)
+    git(outer, "init", "-q", "-b", "main")
+    write(os.path.join(outer, "f.txt"), "x\n")
+    git(outer, "add", "f.txt")
+    git(outer, "commit", "-qm", "outer")
+    inner = os.path.join(outer, "soul-vault")
+    r = run(env, "init", inner)
+    check("init inside another repo: scaffolded, no repo of its own, one line says it "
+          "cannot be synced, the outer repo uncommitted", r.returncode == 0
+          and os.path.isfile(os.path.join(inner, "vault.md"))
+          and not os.path.exists(os.path.join(inner, ".git"))
+          and "cannot be synced" in r.stdout
+          and git(outer, "rev-list", "--count", "HEAD").stdout.strip() == "1", r.stdout + r.stderr)
+    own = os.path.join(tmp, "own-repo")
+    os.makedirs(own)
+    git(own, "init", "-q", "-b", "trunk")
+    write(os.path.join(own, "README.md"), "mine\n")
+    git(own, "add", "README.md")
+    git(own, "commit", "-qm", "theirs")
+    head0 = git(own, "rev-parse", "HEAD").stdout.strip()
+    r = run(env, "init", own)
+    check("init on an existing repo: scaffold added, never re-initialised or committed",
+          r.returncode == 0 and os.path.isfile(os.path.join(own, "vault.md"))
+          and git(own, "rev-parse", "HEAD").stdout.strip() == head0
+          and git(own, "symbolic-ref", "--short", "HEAD").stdout.strip() == "trunk"
+          and git(own, "rev-list", "--count", "HEAD").stdout.strip() == "1"
+          and "?? vault.md" in git(own, "status", "--porcelain").stdout,
+          r.stdout + git(own, "status", "--porcelain").stdout)
+    noid_env = {k: v for k, v in env.items()
+                if not k.startswith(("GIT_AUTHOR_", "GIT_COMMITTER_")) and k != "EMAIL"}
+    noid_env.update(GIT_CONFIG_COUNT="1", GIT_CONFIG_KEY_0="user.useConfigOnly",
+                    GIT_CONFIG_VALUE_0="true")
+    noid = os.path.join(tmp, "noid-vault")
+    r = run(noid_env, "init", noid)
+    check("init with no git identity: a repo with no commit, one line says so, exit 0",
+          r.returncode == 0 and os.path.isdir(os.path.join(noid, ".git"))
+          and git(noid, "rev-parse", "--verify", "-q", "HEAD").returncode != 0
+          and "no first commit" in r.stdout, r.stdout + r.stderr)
 
     # 2 — .soul layout, untracked record: moved, same bytes through the link, wired
     files = {".soul/witness.md": "# W\nSOUL-1\n", ".soul/ideas.md": "# I\n",
@@ -394,8 +477,9 @@ def main():
               if rel.startswith(".soul/")))
     check("no parked copy left behind", not os.path.exists(soul + ".vault-moving"))
     pm = read(os.path.join(vault, "projects", "alpha", "project.md"))
-    check("project.md carries label, tags, remote", "label: private" in pm
-          and "contributes: [soul, tools]" in pm and "remote: git@example.com:me/alpha.git" in pm, pm)
+    check("project.md carries label, tags (--contributes, in Obsidian's list form), remote",
+          "label: private" in pm and "\ntags:\n  - soul\n  - tools\n" in pm
+          and "contributes" not in pm and "remote: git@example.com:me/alpha.git" in pm, pm)
     st = json.load(open(os.path.join(a, ".claude", "settings.local.json")))
     check("vault allowed, other settings kept",
           os.path.realpath(vault) in st["permissions"]["additionalDirectories"]
@@ -423,12 +507,38 @@ def main():
     check("still-tracked record named for the owner", "STILL TRACKED" in r.stdout
           and "witness.md" in r.stdout, r.stdout)
 
+    # 3b — labels are no longer a rule (the owner, 2026-11-13, SOUL-I092): none needed,
+    #      none refused; a given one is still written. Tags in Obsidian's own form.
+    nl = project(tmp, "unlabelled", {".soul/witness.md": "# W\n"})
+    r = run(env, "link", nl, "--key", "unlabelled")
+    upm = os.path.join(vault, "projects", "unlabelled", "project.md")
+    check("a link with no label succeeds and writes no label: line", r.returncode == 0
+          and os.path.islink(os.path.join(nl, ".soul")) and os.path.isfile(upm)
+          and "label:" not in read(upm) and "tags:" not in read(upm),
+          r.stdout + r.stderr + (read(upm) if os.path.isfile(upm) else ""))
+    rs = project(tmp, "restricted-ok", {".soul/witness.md": "# W\n"})
+    r = run(env, "link", rs, "--key", "restricted-ok", "--label", "restricted")
+    rpm = os.path.join(vault, "projects", "restricted-ok", "project.md")
+    check("--label restricted is no longer refused; the label is written as given",
+          r.returncode == 0 and os.path.islink(os.path.join(rs, ".soul"))
+          and os.path.isfile(rpm) and "\nlabel: restricted\n" in read(rpm), r.stdout + r.stderr)
+    tg = project(tmp, "tagged", {".soul/witness.md": "# W\n"})
+    r = run(env, "link", tg, "--key", "tagged", "--tags", "#First Tag, second/nested,")
+    tpm = os.path.join(vault, "projects", "tagged", "project.md")
+    check("--tags: a list in Obsidian's form, '#' dropped, spaces made hyphens",
+          r.returncode == 0 and os.path.isfile(tpm)
+          and "\ntags:\n  - First-Tag\n  - second/nested\nremote:" in read(tpm),
+          r.stdout + r.stderr + (read(tpm) if os.path.isfile(tpm) else ""))
+    bt = project(tmp, "badtag", {".soul/witness.md": "# W\n"})
+    for bad in ("2026", "ok,#"):
+        r = run(env, "link", bt, "--key", "badtag", "--tags", bad)
+        check("a tag that is all digits or empty ({!r}) is refused, naming Obsidian's rule, "
+              "nothing changed".format(bad), r.returncode == 2 and "Obsidian" in r.stderr
+              and not os.path.islink(os.path.join(bt, ".soul"))
+              and not os.path.exists(os.path.join(vault, "projects", "badtag")), r.stderr)
+
     # 4 — refusals change nothing
     c = project(tmp, "gamma", {".soul/witness.md": "# W\n"})
-    r = run(env, "link", c, "--key", "gamma", "--label", "restricted")
-    check("restricted refused, nothing changed", r.returncode == 2 and not os.path.islink(
-          os.path.join(c, ".soul")) and not os.path.exists(os.path.join(vault, "projects", "gamma")),
-          r.stderr)
     r = run(env, "link", c, "--key", "alpha", "--label", "private")
     check("a second record for a held key refused", r.returncode == 2
           and os.path.isdir(os.path.join(c, ".soul")) and not os.path.islink(os.path.join(c, ".soul")),
@@ -537,8 +647,9 @@ def main():
     check("where: none named exits 1",
           run(dict(env, XDG_CONFIG_HOME=os.path.join(tmp, "config3")), "where").returncode == 1)
 
-    # 5e — the index: one row per project, latest witness, hand-added non-Soul projects
-    #      listed, restricted never
+    # 5e — the index: one row per project.md, latest witness, hand-added non-Soul projects
+    #      listed; whatever the label says, or none (labels are no longer a rule); tags
+    #      from `tags:`, else an old `contributes:`
     write(os.path.join(vault, "projects", "notes", "project.md"),
           "---\nkey: notes\nlabel: private\ncontributes: [research]\n---\n")
     write(os.path.join(vault, "projects", "secret", "project.md"),
@@ -546,16 +657,28 @@ def main():
     write(os.path.join(vault, "projects", "secret2", "project.md"),
           "---\nkey: secret2\nlabel: \"Restricted\"\n---\n")
     write(os.path.join(vault, "projects", "nolabel", "project.md"), "---\nkey: nolabel\n---\n")
+    write(os.path.join(vault, "projects", "both", "project.md"),
+          "---\nkey: both\ntags:\n  - new-tag\n  - \"quoted\"\ncontributes: [old]\n---\n")
+    write(os.path.join(vault, "projects", "bare", "soul", "witness.md"), "# no project.md\n")
     write(os.path.join(target, "witness.md"), "# W\nID:           SOUL-7\nWHEN:         2026-10-22 / x\n")
     r = run(env, "index")
     idx = read(os.path.join(vault, "index.md"))
+    check("index: columns Project, Tags, Soul, Latest witness — no Label column",
+          "| Project | Tags | Soul | Latest witness |\n|---|---|---|---|\n" in idx
+          and "Label" not in idx, idx)
     check("index lists vaulted projects with their latest witness",
-          "| [alpha](projects/alpha/project.md) | private | soul, tools | yes | SOUL-7 (2026-10-22) |" in idx
+          "| [alpha](projects/alpha/project.md) | soul, tools | yes | SOUL-7 (2026-10-22) |" in idx
           and "[beta]" in idx and "[delta]" in idx, idx)
-    check("index lists a hand-added project with no record",
-          "| [notes](projects/notes/project.md) | private | research | no | — |" in idx, idx)
-    check("index never lists a restricted or unlabelled project", "secret" not in idx
-          and "nolabel" not in idx and "casey" not in idx and "4 left out" in r.stdout, r.stdout)
+    check("index lists a hand-added project with no record (an old contributes: line)",
+          "| [notes](projects/notes/project.md) | research | no | — |" in idx, idx)
+    check("index reads back an Obsidian tags list; tags: wins over contributes:",
+          "| [tagged](projects/tagged/project.md) | First-Tag, second/nested | yes | — |" in idx
+          and "| [both](projects/both/project.md) | new-tag, quoted | no | — |" in idx, idx)
+    check("index lists every project.md whatever its label, or none; nothing left out",
+          all("[{0}](projects/{0}/project.md)".format(k) in idx
+              for k in ("secret", "secret2", "nolabel", "casey", "unlabelled", "restricted-ok"))
+          and "left out" not in r.stdout, r.stdout + idx)
+    check("index skips a soul/ folder with no project.md", "[bare]" not in idx, idx)
 
     # 5f — witness logs written as dated headings: the cell shows the date, never the
     #      title; whichever entry form comes last wins
@@ -572,10 +695,10 @@ def main():
     r = run(env, "index")
     idx = read(os.path.join(vault, "index.md"))
     check("a dated heading shows just the date",
-          "| [heady](projects/heady/project.md) | private |  | yes | 2026-10-23 |" in idx
+          "| [heady](projects/heady/project.md) |  | yes | 2026-10-23 |" in idx
           and "second machine" not in idx, idx)
     check("a hyphen after the date counts too", "| yes | 2026-10-24 |" in idx, idx)
-    check("a heading after an ID entry wins", "id-then-heading/project.md) | private |  | yes "
+    check("a heading after an ID entry wins", "id-then-heading/project.md) |  | yes "
           "| 2026-10-25 |" in idx and "SOUL-8" not in idx, idx)
     check("an ID entry after a heading wins", "| yes | SOUL-9 (2026-10-26) |" in idx, idx)
     check("an ID with no date shows the ID", "| yes | SOUL-10 |" in idx, idx)
@@ -611,20 +734,24 @@ def main():
 
     # 5h — index.md is written with the STORED copy's line ending, so a CRLF checkout
     #      of an LF commit does not stay modified; not a git repo, or untracked → LF
-    path = os.path.join(vault, "index.md")
+    nogit = os.path.join(tmp, "vault-nogit")
+    run(env, "init", nogit)
+    shutil.rmtree(os.path.join(nogit, ".git"), ignore_errors=True)  # not a git repo
+    run(env, "index", nogit)
+    path = os.path.join(nogit, "index.md")
     crlf = open(path, "rb").read().replace(b"\n", b"\r\n")
     with open(path, "wb") as fh:
         fh.write(crlf)
-    run(env, "index")
+    run(env, "index", nogit)
     after = open(path, "rb").read()
     check("not a git repo: a CRLF index.md is rewritten LF",
-          b"\r" not in after and after == crlf.replace(b"\r\n", b"\n"), repr(after[:80]))
+          b"\r" in crlf and b"\r" not in after and after == crlf.replace(b"\r\n", b"\n"),
+          repr(after[:80]))
     v2 = os.path.join(tmp, "vault-git")
     run(env, "init", v2)
-    os.remove(os.path.join(v2, ".gitattributes"))  # a vault made before the rule
+    git(v2, "rm", "-q", ".gitattributes")  # a vault made before the rule
     p2 = os.path.join(v2, "index.md")
     run(env, "index", v2)
-    git(v2, "init", "-q")
     git(v2, "-c", "core.autocrlf=false", "add", "index.md")
     git(v2, "commit", "-qm", "lf")
     lf = open(p2, "rb").read()
@@ -873,9 +1000,9 @@ def main():
     r = run(env, "index")
     idx = read(os.path.join(vault, "index.md"))
     check("index: a sidecar row says its witness is in the project",
-          "| [zeta](projects/zeta/project.md) | private |  | yes | in the project |" in idx, idx)
+          "| [zeta](projects/zeta/project.md) |  | yes | in the project |" in idx, idx)
     check("index: a non-sidecar row with no witness still shows —",
-          "| [notes](projects/notes/project.md) | private | research | no | — |" in idx, idx)
+          "| [notes](projects/notes/project.md) | research | no | — |" in idx, idx)
 
     # 10 — sync: commits only projects/<key>/, leaves other sessions' dirty files alone,
     #      refuses while the lock is held (never breaks it), pushes when the server has
@@ -945,9 +1072,25 @@ def main():
           and read(other_w) == "# other\nuncommitted, another session's\n"
           and git(vs, "status", "--porcelain", "--", "scratch.md").stdout.startswith("A "),
           r.stdout + r.stderr + git(vs, "status", "--porcelain").stdout)
-    r = run(env, "sync", a)
-    check("sync on a vault that is not a git repo: refused", r.returncode == 2
-          and "not a git repo" in r.stderr, r.stderr)
+    # A vault inside another repo's work tree (1b) is not a git repo of its own
+    ip = project(tmp, "in-outer", {".soul/witness.md": "# W\n"})
+    run(env, "link", ip, "--key", "in-outer", "--vault", inner)
+    r = run(env, "sync", ip)
+    check("sync on a vault that is not a git repo of its own: refused", r.returncode == 2
+          and "not a git repo" in r.stderr
+          and git(outer, "rev-list", "--count", "HEAD").stdout.strip() == "1", r.stderr)
+    # A vault made a moment ago by init (no git by hand): sync commits there, and says
+    # NOT PUSHED because it has no upstream yet
+    fresh = os.path.join(tmp, "vault-fresh")
+    run(env, "init", fresh)
+    fp = project(tmp, "fresh-proj", {".soul/witness.md": "# W\nFRESH\n"})
+    run(env, "link", fp, "--key", "fresh-proj", "--vault", fresh)
+    r = run(env, "sync", fp)
+    check("sync in a vault init made a moment ago: committed, exit 2, NOT PUSHED (no "
+          "upstream)", r.returncode == 2 and "NOT PUSHED" in r.stderr and "no upstream" in r.stderr
+          and "FRESH" in git(fresh, "show", "HEAD:projects/fresh-proj/soul/witness.md").stdout
+          and git(fresh, "rev-list", "--count", "HEAD").stdout.strip() == "2",
+          r.stdout + r.stderr)
     r = run(env, "sync", plain)
     check("sync with no .soul link: refused", r.returncode == 2 and "nothing to sync" in r.stderr,
           r.stderr)
@@ -1093,6 +1236,7 @@ def main():
               and read(os.path.join(gp, "research", "locked.md")) == "locked\n", r.stdout + r.stderr)
 
     sync_cases(tmp, env)
+    second_vault_cases(tmp, env, vault)
 
     shutil.rmtree(tmp, ignore_errors=True)
     print("\n{} failure(s)".format(len(FAILS)) if FAILS else "\nALL PASS")

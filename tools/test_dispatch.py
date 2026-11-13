@@ -755,6 +755,7 @@ def main():
     effort_cases(w)
     build_verify_cases(w, gitonly)
     review_fix_cases()
+    linked_vault_case()
 
     shutil.rmtree(tmp, ignore_errors=True)
     docs()
@@ -1215,6 +1216,39 @@ def review_fix_cases():
     check("clean runs no hook of the checkout, and still deletes the branch",
           live and not os.path.exists(sentinel) and "1 branch(es)" in r.stdout,
           (live, r.stdout + r.stderr))
+    shutil.rmtree(w.tmp, ignore_errors=True)
+
+
+def linked_vault_case():
+    """26 — a project linked into a second vault, not the registered one (a project may
+    link to any vault: SOUL-I092): a Claude worker may not read either vault, and the
+    confined selection check hides both — else a worker reads every other project's
+    record in the second vault."""
+    w = World(tempfile.mkdtemp(prefix="soul-dispatch-vault-"))
+    reg, v2 = os.path.join(w.tmp, "vault-a"), os.path.join(w.tmp, "vault-b")
+    for v in (reg, v2):
+        write(os.path.join(v, "vault.md"), "# vault\n")
+    write(os.path.join(v2, "projects", "proj", "soul", "witness.md"), "# W\n")
+    write(os.path.join(v2, "projects", "other", "soul", "witness.md"), "# another's\n")
+    os.symlink(os.path.join(v2, "projects", "proj", "soul"), os.path.join(w.proj, ".soul"))
+    with open(os.path.join(w.proj, ".git", "info", "exclude"), "a") as f:
+        f.write(".soul\n")
+    xdg = os.path.join(w.tmp, "xdg")
+    write(os.path.join(xdg, "soul", "vault"), reg + "\n")
+    w.roles("| implementer | claude | sonnet | |")
+    w.script({"write": {"app.txt": "FIXED\n"}})
+    r, res = w.run("lv1", env=w.env(XDG_CONFIG_HOME=xdg))
+    calls = w.calls()
+    argv = calls[0]["argv"] if calls else []
+    deny = json.loads(after(argv, "--settings") or "{}").get("permissions", {}).get("deny", [])
+    want = ["Read(/{}/**)".format(os.path.realpath(p)) for p in (reg, v2)]
+    check("a project linked into a second vault: the Claude worker may read neither vault",
+          r.returncode == 0 and all(x in deny for x in want), (r.stderr, want, deny))
+    wraps = w.wraps()
+    bwargv = wraps[0]["argv"] if wraps else []
+    hidden = [bwargv[i + 1] for i, a in enumerate(bwargv[:-1]) if a == "--tmpfs"]
+    check("a project linked into a second vault: the confined check hides both vaults",
+          all(os.path.realpath(p) in hidden for p in (reg, v2)), hidden)
     shutil.rmtree(w.tmp, ignore_errors=True)
 
 

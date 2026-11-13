@@ -420,14 +420,16 @@ def claude_md_excludes(workdir):
     return list(dict.fromkeys(paths))
 
 
-def secret_dirs():
+def secret_dirs(workdir=None):
     """Folders a Claude worker may not read: credentials and the owner's private
     record (confine.SECRET_DIRS, the list the confined checks hide too). The sandbox
     limits writes and network, but reads are wide by default. `~/x` and
     `//abs/path` are Claude Code's permission-rule spellings."""
     out = ["~/" + d for d in confine.SECRET_DIRS]
-    v = confine.registered_vault()  # the vault holds every vaulted project's record
-    if v:
+    # A vault holds every vaulted project's record: the registered one, and the one
+    # the project's .soul links into when that is another (SOUL-I092).
+    vaults = [confine.registered_vault()] + (confine.linked_vaults(workdir) if workdir else [])
+    for v in dict.fromkeys(v for v in vaults if v):
         out.append("/" + v)
     return out
 
@@ -503,7 +505,8 @@ def worker_command(row, workdir, mode, last_file=None):
                     "sandbox": {"enabled": True, "failIfUnavailable": True,
                                 "autoAllowBashIfSandboxed": True,
                                 "allowUnsandboxedCommands": False},
-                    "permissions": {"deny": ["Read({}/**)".format(p) for p in secret_dirs()]}}
+                    "permissions": {"deny": ["Read({}/**)".format(p)
+                                             for p in secret_dirs(workdir)]}}
         return cmd + ["--setting-sources", "", "--strict-mcp-config",
                       "--settings", json.dumps(settings)]
     # codex / codex-ollama. Step 1 probe, 2026-10-27: without these flags `codex exec`

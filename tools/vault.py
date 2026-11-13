@@ -2,18 +2,20 @@
 """Keep a project's Soul record in the machine's vault, reached by a `.soul` link.
 
 A vault is one private git repo of Obsidian folders, one folder per project:
-`projects/<key>/project.md` (label, contributes, remote) and `projects/<key>/soul/`
-(the record). The project's `.soul` becomes a link to that `soul/` folder, so the
-completion gate, the Mind import and every skill keep finding `.soul/` where they
-always did (SOUL-I079; decision: docs/adr/0001-soul-vault.md). /soul-init drives
-this helper; the helper does the mechanical parts.
+`projects/<key>/project.md` (tags, remote) and `projects/<key>/soul/` (the record).
+The project's `.soul` becomes a link to that `soul/` folder, so the completion gate,
+the Mind import and every skill keep finding `.soul/` where they always did
+(SOUL-I079; decision: docs/adr/0001-soul-vault.md). /soul-init drives this helper;
+the helper does the mechanical parts.
 
-  init <dir> [--name N] [--register]     scaffold a vault (never overwrites); --register
+  init <dir> [--name N] [--register]     scaffold a vault (never overwrites) and, when
+                                         the folder is in no git repo, make it one with
+                                         the scaffold as its first commit; --register
                                          names it in this machine's vault file
   where                                  the vault this machine's file names (exit 1:
                                          none named; 3: named but not there yet)
-  link <project> --key K --label L       move the record into the vault and link it,
-       [--contributes a,b] [--vault DIR]  or re-link a record the vault already holds
+  link <project> --key K [--tags a,b]    move the record into the vault and link it,
+       [--vault DIR] [--label L]          or re-link a record the vault already holds
        [--dry-run] [--sidecar]            (a new machine after cloning the vault);
        [--also PATH ...]                  --also moves named private paths with it, into
                                          soul/<same path>, copy-compare-delete (exit 5:
@@ -45,9 +47,14 @@ each other's edits nor run git over each other. It touches nothing else in that 
 pushes only when the server has not moved; otherwise it stops and says so (see `sync`).
 KNOWN LIMIT: git run by hand in the vault does not take the lock.
 
-One vault per machine: the machine file ($XDG_CONFIG_HOME or ~/.config, then
-soul/vault) holds one line, the vault's folder. The boundary is where the vault
-lives, so the one label rule is enforced here: `restricted` is refused.
+One default vault per machine: the machine file ($XDG_CONFIG_HOME or ~/.config, then
+soul/vault) holds one line, the vault `link` uses when no --vault is given. A project
+may link to any vault; its `.soul` link is the record of which, and check, sync and
+session-start follow the link. No label is needed or refused (the owner, 2026-11-13,
+SOUL-I092: "we ask if they want a vault and which. they specify or take the default.
+that's it"); a given `--label` is still written, for older callers. Tags are written
+in Obsidian's own form, a `tags:` list ("i don't want our own style if we can help
+it"); `--contributes` is the old name of `--tags`.
 
 What the link test (2026-10-22, I079 LINK TEST) made non-negotiable, each kept below:
 - On WSL with the project on a Windows drive the link is a junction (`mklink /J`):
@@ -117,11 +124,10 @@ def is_vault(path):
 
 VAULT_MD = """# Soul vault — {name}
 
-One private git repo; one folder per project: `projects/<key>/project.md` (label,
-contributes, remote) and `projects/<key>/soul/` (that project's Soul record, which
-the project reaches through its `.soul` link).
+One private git repo; one folder per project: `projects/<key>/project.md` (tags,
+remote) and `projects/<key>/soul/` (that project's Soul record, which the project
+reaches through its `.soul` link). Tags are Obsidian's `tags:` list.
 
-Labels: public, private, confidential. A `restricted` project never goes in.
 The vault counts as kept only once it is pushed.
 """
 
@@ -149,6 +155,13 @@ def init(path, name=None, register=False):
         sys.path.insert(0, _HERE)
     from eol import RULES as EOL_RULES  # the vault's .gitattributes
     path = os.path.abspath(os.path.expanduser(path))
+    # Refused before anything is written: it once scaffolded the folder first.
+    current = registered_vault() if register else None
+    if current and os.path.realpath(current) != os.path.realpath(path):
+        raise VaultError("this machine already names a default vault ({}) — one default "
+                         "vault per machine; a project can still link to this one with "
+                         "`link --vault`. Edit {} by hand to change the default; nothing "
+                         "written".format(current, machine_file()))
     os.makedirs(os.path.join(path, "projects"), exist_ok=True)
     made = []
     for rel, text in (("vault.md", VAULT_MD.format(name=name or os.path.basename(path))),
@@ -162,17 +175,53 @@ def init(path, name=None, register=False):
             made.append(rel)
     print("vault at {}: {}".format(path, "created " + ", ".join(made) if made
                                    else "already scaffolded, nothing written"))
+    _init_git(path)
     if register:
-        current = registered_vault()
-        if current and os.path.realpath(current) != os.path.realpath(path):
-            raise VaultError("this machine already names a vault ({}) — one vault per "
-                             "machine; edit {} by hand to change it".format(current, machine_file()))
         if not current:
             os.makedirs(os.path.dirname(machine_file()), exist_ok=True)
             with open(machine_file(), "w", encoding="utf-8") as f:
                 f.write(path + "\n")
         print("registered in {}".format(machine_file()))
     return 0
+
+
+SCAFFOLD = ("vault.md", ".gitignore", "index.md", ".gitattributes", "projects/.gitkeep")
+
+
+def _init_git(path):
+    """Make a new vault a git repo, the scaffold its first commit: `sync` needs a repo of
+    its own, and a vault made by init alone could not be synced until someone ran git by
+    hand (v3.13.0, SOUL-I092). Only the scaffold is committed, never other files already
+    in the folder. A folder that is already its own repo is never re-initialised or
+    committed in; one inside another repo's work tree is left as it is (sync refuses
+    it, so it is said here). Each outcome is one line; none is an error."""
+    try:
+        top = subprocess.run(["git", "-C", path, "rev-parse", "--show-toplevel"],
+                             capture_output=True, text=True)
+    except OSError:
+        print("git was not found — the vault is not a git repo yet, so it cannot be synced")
+        return
+    if top.returncode == 0:
+        if os.path.realpath(top.stdout.strip()) != os.path.realpath(path):
+            print("note: {} is inside another git repo ({}) — a vault inside another repo "
+                  "cannot be synced; make it a folder outside any repo".format(
+                      path, top.stdout.strip()))
+        return
+    r = _vault_git(path, "init", "-q", "-b", "main")
+    if r.returncode != 0:
+        print("git init failed ({}) — the vault is not a git repo yet, so it cannot be "
+              "synced".format((r.stdout + r.stderr).strip()))
+        return
+    r = _vault_git(path, "add", "--", *SCAFFOLD)
+    if r.returncode == 0:
+        r = _vault_git(path, "commit", "-q", "-m", "vault: scaffold (vault.py init)")
+    if r.returncode != 0:
+        print("made it a git repo on branch main, but there is no first commit yet: git "
+              "commit failed ({}) — set git's user.name and user.email, then commit the "
+              "scaffold by hand".format(" ".join((r.stdout + r.stderr).split())[:200]))
+        return
+    print("made it a git repo on branch main, the scaffold its first commit (no remote "
+          "yet: sync says NOT PUSHED until one is set)")
 
 
 # ---------------------------------------------------------------- helpers
@@ -205,11 +254,18 @@ def _frontmatter(path):
     except (OSError, UnicodeError):
         return {}
     m = re.match(r"^---\n(.*?)\n---", text, re.S)
-    out = {}
+    out, last = {}, None
     for line in (m.group(1).splitlines() if m else []):
+        # A YAML list under an empty `key:` (Obsidian's `tags:`) reads as a Python list;
+        # every other value stays the string after the colon.
+        item = re.match(r"^\s*-\s+(.*)$", line)
+        if item and last is not None and (out[last] == "" or isinstance(out[last], list)):
+            out[last] = (out[last] or []) + [item.group(1).strip().strip("\"'")]
+            continue
         k, sep, v = line.partition(":")
         if sep:
-            out[k.strip()] = v.strip()
+            last = k.strip()
+            out[last] = v.strip()
     return out
 
 
@@ -613,14 +669,32 @@ ALSO_PARTIAL_EXIT = 5
 
 # ---------------------------------------------------------------- link
 
-def link(project, key, label, contributes=(), vault=None, dry_run=False, sidecar=False,
+def tag_list(tags):
+    """Typed tags in Obsidian's form: a leading `#` dropped, inner spaces made hyphens.
+    Raises on a tag Obsidian would not take (obsidian.md/help/tags, checked 2026-11-13):
+    empty, or digits only. Blank items (a trailing comma) are skipped."""
+    out = []
+    for raw in tags:
+        if not raw.strip():
+            continue
+        t = re.sub(r"\s+", "-", raw.strip().lstrip("#").strip())
+        if not t or t.isdigit():
+            raise VaultError("tag {!r}: Obsidian needs at least one character that is not "
+                             "a number (and no spaces; a slash nests) — nothing changed"
+                             .format(raw.strip()))
+        out.append(t)
+    return out
+
+
+def link(project, key, label=None, tags=(), vault=None, dry_run=False, sidecar=False,
          also=()):
     project = os.path.realpath(project)
-    if label not in LABELS:
+    # No label is needed and none is refused: the vault a project links to is the
+    # project's choice, and its .soul link records which (SOUL-I092). A given label is
+    # still written, for older callers.
+    if label is not None and label not in LABELS:
         raise VaultError("unknown label {!r} — one of {}".format(label, ", ".join(LABELS)))
-    if label == "restricted":
-        raise VaultError("a restricted project never goes in a vault — its record stays "
-                         "in the project (local or in git)")
+    tags = tag_list(tags)
     if not KEY_RE.match(key or ""):
         raise VaultError("key {!r}: letters, digits, '.', '_', '-' only".format(key))
     vault = vault or registered_vault()
@@ -779,11 +853,12 @@ def link(project, key, label, contributes=(), vault=None, dry_run=False, sidecar
         if not dry_run:
             remote = re.sub(r"^([a-z+]+://)[^@/]+@", r"\1", _remote(project) or "")
             with open(pm, "w", encoding="utf-8") as f:
-                f.write("---\nkey: {}\nlabel: {}\ncontributes: [{}]\nremote: {}\nsoul: true\n"
-                        "{}---\n\n# {}\n".format(key, label, ", ".join(contributes), remote,
-                                               "sidecar: true\n" if sidecar else "", key))
+                f.write("---\nkey: {}\n{}{}remote: {}\nsoul: true\n{}---\n\n# {}\n".format(
+                    key, "label: {}\n".format(label) if label else "",
+                    "tags:\n" + "".join("  - {}\n".format(t) for t in tags) if tags else "",
+                    remote, "sidecar: true\n" if sidecar else "", key))
     else:
-        if _frontmatter(pm).get("label") not in (None, label):
+        if label and _frontmatter(pm).get("label") not in (None, label):
             print("note: {} says label {} — kept; edit it there to change it"
                   .format(pm, _frontmatter(pm).get("label")))
         if sidecar and not _is_sidecar(home):
@@ -858,33 +933,33 @@ def _latest_witness(path):
 
 
 def index(vault):
-    """Rewrite <vault>/index.md: one row per projects/<key>/project.md. A hand-added
-    project with no soul/ folder is listed too; a restricted one never is."""
+    """Rewrite <vault>/index.md: one row per projects/<key>/project.md, whatever its
+    label says, or none (labels are no longer a rule: SOUL-I092). A hand-added project
+    with no soul/ folder is listed too; a soul/ folder with no project.md is not. Tags
+    come from `tags:` (Obsidian's list, or `[a, b]`), else an old `contributes:`."""
     vault = os.path.realpath(os.path.expanduser(vault))
     if not is_vault(vault):
         raise VaultError("{} is not a vault (no vault.md)".format(vault))
     cell = lambda v: (v or "").replace("|", "\\|")
-    rows, skipped = [], 0
+    rows = []
     projects = os.path.join(vault, "projects")
     for key in sorted(os.listdir(projects)) if os.path.isdir(projects) else []:
-        fm = _frontmatter(os.path.join(projects, key, "project.md"))
-        if not fm:
+        pm = os.path.join(projects, key, "project.md")
+        if not os.path.isfile(pm):
             continue
-        label = fm.get("label", "").strip("\"'[] ").lower()
-        if label not in ("public", "private", "confidential"):  # restricted, or unreadable
-            skipped += 1
-            continue
+        fm = _frontmatter(pm)
+        tags = fm.get("tags") if "tags" in fm else fm.get("contributes", "")
+        tags = ", ".join(tags) if isinstance(tags, list) else tags.strip("[]")
         soul = os.path.join(projects, key, "soul")
         wid, when = _latest_witness(os.path.join(soul, "witness.md"))
-        rows.append("| [{0}](projects/{0}/project.md) | {1} | {2} | {3} | {4} |".format(
-            key, label, cell(fm.get("contributes", "").strip("[]")),
-            "yes" if os.path.isdir(soul) else "no",
+        rows.append("| [{0}](projects/{0}/project.md) | {1} | {2} | {3} |".format(
+            key, cell(tags), "yes" if os.path.isdir(soul) else "no",
             # A sidecar's witness is tracked at the project root, out of the vault's sight.
             "in the project" if _is_sidecar(os.path.join(projects, key)) else
             "{} ({})".format(wid, when) if wid and when else (wid or when or "—")))
     text = ("# Projects\n\nGenerated by `tools/vault.py index` — not written by hand.\n\n"
-            + ("| Project | Label | Contributes to | Soul | Latest witness |\n"
-               "|---|---|---|---|---|\n" + "\n".join(rows) + "\n" if rows
+            + ("| Project | Tags | Soul | Latest witness |\n"
+               "|---|---|---|---|\n" + "\n".join(rows) + "\n" if rows
                else "No projects yet.\n"))
     path = os.path.join(vault, "index.md")
     # Match the STORED copy's line ending, not the working copy's: on a CRLF checkout
@@ -898,9 +973,7 @@ def index(vault):
         crlf = False
     with open(path, "w", encoding="utf-8", newline="\r\n" if crlf else "\n") as f:
         f.write(text)
-    print("index.md: {} project(s){}".format(len(rows), ", {} left out (restricted or no "
-                                             "public/private/confidential label)"
-                                             .format(skipped) if skipped else ""))
+    print("index.md: {} project(s)".format(len(rows)))
     return 0
 
 
@@ -926,6 +999,22 @@ def _sync_target(project):
         raise VaultError(".soul links to {}, which is not <vault>/projects/<key>/soul"
                          .format(os.path.realpath(soul)))
     return vault, os.path.basename(home)
+
+
+def linked_vault(project):
+    """The vault a project's `.soul` link points into (<vault>/projects/<key>/soul, a
+    vault.md at <vault>), or None. It need not be the machine's default vault, so
+    confine.py and dispatch.py hide this one from workers as well (SOUL-I092)."""
+    soul = os.path.join(project, ".soul")
+    if not os.path.islink(soul):
+        return None
+    target = os.path.realpath(soul)
+    vault = os.path.dirname(os.path.dirname(os.path.dirname(target)))
+    if (os.path.basename(target) != "soul"
+            or os.path.basename(os.path.dirname(os.path.dirname(target))) != "projects"
+            or not is_vault(vault)):
+        return None
+    return vault
 
 
 def _lock_holder(path):
@@ -1154,7 +1243,8 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest="cmd", required=True)
-    i = sub.add_parser("init", help="scaffold a vault (never overwrites)")
+    i = sub.add_parser("init", help="scaffold a vault (never overwrites) and make it a "
+                                    "git repo")
     i.add_argument("dir")
     i.add_argument("--name")
     i.add_argument("--register", action="store_true", help="name it in this machine's file")
@@ -1162,8 +1252,11 @@ def main():
     ln = sub.add_parser("link", help="move the record into the vault and link it")
     ln.add_argument("project")
     ln.add_argument("--key", required=True)
-    ln.add_argument("--label", required=True, choices=LABELS)
-    ln.add_argument("--contributes", default="", help="comma-separated tags")
+    ln.add_argument("--label", choices=LABELS,
+                    help="optional; written to project.md as given (no rule rests on it)")
+    ln.add_argument("--tags", "--contributes", dest="tags", default="",
+                    help="comma-separated tags, written as Obsidian's `tags:` list; a "
+                         "leading # is dropped and spaces become hyphens")
     ln.add_argument("--vault", help="default: the machine file's vault")
     ln.add_argument("--dry-run", action="store_true")
     ln.add_argument("--also", nargs="+", default=[], metavar="PATH",
@@ -1214,9 +1307,8 @@ def main():
         if args.cmd == "sync":
             return sync(args.project, args.message)
         if args.cmd == "link":
-            tags = [t.strip() for t in args.contributes.split(",") if t.strip()]
-            return link(args.project, args.key, args.label, tags, args.vault, args.dry_run,
-                        args.sidecar, args.also)
+            return link(args.project, args.key, args.label, args.tags.split(","), args.vault,
+                        args.dry_run, args.sidecar, args.also)
         st = check(args.project)
         print(json.dumps(st) if args.json else (check_line(st) or "not linked"))
         return 1 if st["state"] in ("broken", "two-copies") else 0

@@ -5,8 +5,9 @@ FENCE: a check runs code a worker wrote, so it must not run with the host's powe
 LC_*, TERM, TMPDIR, SHELL, OLLAMA_HOST) plus what the caller names — never the
 host session's socket, token, session id, API keys or git config. `confine_argv`
 wraps a command in bubblewrap with only the work folder and a private /tmp
-writable, no network, and every existing secret folder (and the registered vault)
-hidden; where it cannot confine it returns None, never a bare command.
+writable, no network, and every existing secret folder (and the registered vault, and
+the vault the project's `.soul` links into) hidden; where it cannot confine it returns
+None, never a bare command.
 
 The argv cases use an injected `which`, so they need no bubblewrap. When `bwrap` is
 on this machine, one real case runs a check that tries to write outside its folder,
@@ -158,6 +159,28 @@ def main():
           and a1.index(rro + "/.git") > a1.index("--bind"), a1)
     check("confine_argv: a worktree's .git file bound read-only; a .soul symlink outside not",
           [rwt + "/.git"] * 2 in pairs(a2) and len(pairs(a2)) == 2, a2)
+    check("confine_argv: a .soul link not into <vault>/projects/<key>/soul hides nothing more",
+          opt(a2, "--tmpfs") == opt(a1, "--tmpfs"), (opt(a1, "--tmpfs"), opt(a2, "--tmpfs")))
+
+    # 3b — a project linked into a SECOND vault (not the registered one): that vault is
+    # hidden too, from the project folder and from a worktree under it (.ai/worktrees/,
+    # which git keeps the .soul link out of)
+    v2 = os.path.join(tmp, "vault2")
+    os.makedirs(os.path.join(v2, "projects", "me", "soul"))
+    open(os.path.join(v2, "vault.md"), "w").close()
+    proj2 = os.path.join(tmp, "proj2")
+    wt2 = os.path.join(proj2, ".ai", "worktrees", "r1-1")
+    os.makedirs(wt2)
+    os.symlink(os.path.join(v2, "projects", "me", "soul"), os.path.join(proj2, ".soul"))
+    with Env({"HOME": home, "PATH": "/usr/bin"}):
+        b1 = c.confine_argv(["true"], proj2, which=lambda n: "/x/bwrap", platform="linux")
+        b2 = c.confine_argv(["true"], wt2, which=lambda n: "/x/bwrap", platform="linux")
+    rv2 = os.path.realpath(v2)
+    check("confine_argv: the vault the project's .soul links into is hidden, with the "
+          "registered one", rv2 in opt(b1, "--tmpfs") and os.path.realpath(vault) in opt(b1, "--tmpfs"),
+          opt(b1, "--tmpfs"))
+    check("confine_argv: ...and from a worktree under the project", rv2 in opt(b2, "--tmpfs"),
+          opt(b2, "--tmpfs"))
 
     shutil.rmtree(tmp, ignore_errors=True)
 
@@ -251,6 +274,31 @@ def real_case(c):
                       seen.stdout + seen.stderr)
             check("real bwrap: nothing written outside the work folder",
                   not os.path.exists(os.path.join(tmp, "outside.txt")))
+            # A worktree of a project linked into a second vault: another project's
+            # record in that vault is readable unconfined (control), not confined
+            v2 = os.path.join(tmp, "vault2")
+            other = os.path.join(v2, "projects", "other", "soul", "witness.md")
+            os.makedirs(os.path.dirname(other))
+            os.makedirs(os.path.join(v2, "projects", "me", "soul"))
+            open(os.path.join(v2, "vault.md"), "w").close()
+            with open(other, "w") as f:
+                f.write("SECRET-SENTINEL\n")
+            proj2 = os.path.join(tmp, "proj2")
+            wt2 = os.path.join(proj2, ".ai", "worktrees", "r1-1")
+            os.makedirs(wt2)
+            os.symlink(os.path.join(v2, "projects", "me", "soul"), os.path.join(proj2, ".soul"))
+            shutil.copy(probe, wt2)
+            cmd = [sys.executable, os.path.join(wt2, "probe.py"), "read", other]
+            free = subprocess.run(cmd, cwd=wt2, env=env, capture_output=True, text=True,
+                                  timeout=30)
+            boxed = subprocess.run(c.confine_argv(cmd, wt2), cwd=wt2, env=env,
+                                   capture_output=True, text=True, timeout=30)
+            check("real bwrap: another project's record in the linked second vault is "
+                  "readable unconfined (control)", free.returncode == 0,
+                  free.stdout + free.stderr)
+            check("real bwrap: ...and unreadable confined, from a worktree of the project",
+                  boxed.returncode != 0 and "SECRET" not in boxed.stdout,
+                  boxed.stdout + boxed.stderr)
     finally:
         listener.close()
         shutil.rmtree(tmp, ignore_errors=True)
