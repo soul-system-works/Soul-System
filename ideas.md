@@ -3379,5 +3379,78 @@ DISCUSSED: round 1, 2026-11-12, the five ideas together (review page: artifact
            Deeper research: not worth it; a mock run settles more.
            Next step: a live mock of the C3 screen in a real session (nothing set
            up), then the Body's go for a build plan.
+NOTES:     2026-11-12 — the live mock ran in this session: one dialog holding the
+           record question (three options), then Go / Change something / Explain a
+           line / Not now with the plan in the Go option's preview box, then a check
+           question. Asked whether the whole plan could be read in the box beside Go,
+           the Body: "Yes, all of it". One run; which screen (terminal or the remote
+           device) is not known. The Body then: "Plan it" — a build plan follows as a
+           working file (.ai/plans/).
+ROUND 2:   2026-11-13 — the Body checked every choice by hand in a document (Claude
+           Doc "Soul-Init Setup Choices", artifact 7qnzcYxbznnnoVq4JhzZGu, private) and
+           left four comments; the docs connection was down, so they were answered in
+           chat. Rulings, in the Body's words:
+           Line endings are Windows and Linux in general, not WSL only — "yes"; and
+           they stay in the defaults — "i think line endings would be added by
+           default" (the tool offers the fix whenever the rule file is missing, so a
+           default setup adds it on most fresh projects).
+           The default vault is suggested by name and place (`soul-vault` in the home
+           folder) — "yes". Option labels: "Use default setup" and "Modify setup".
+           Vault labels go. The Body: "what fundamentally changes for each optiopn
+           (private/public/confidential) in the vault? should we instead just rely on
+           people themselves to manage and stop making distinctions? if someone wants
+           to keep things separate then they could have multiple vaults or a single
+           one." Read from the code: a label is written to the project's file in the
+           vault and shown in the index; no tool behaves differently for public,
+           private or confidential; only `restricted` is refused. The Body's own vault
+           held 15 projects (9 public, 4 private, 2 confidential), all handled alike.
+           Then: "we ask if they want a vault and which. they specify or take the
+           default. that's it right? it is then recorded in the links where the vault
+           is for that project. soul-system doesn't need to know about any others?
+           mining is something a dev of soul-system does not a normal user typically.
+           when the mining occurs i presume we would ask, maybe that is where a
+           vault/project label gets used." The session had warned that several vaults
+           meant a list of vaults per machine; it moved on the Body's point that the
+           project's link already records which vault it uses. Result: the vault path
+           is two steps — which vault (the default, or a named folder; made if absent),
+           then a confirm showing what moves; no label, no refusal; the machine file
+           names only the default vault. Consequence: the link is not committed, so a
+           fresh clone or a second machine finds a record only in the default vault.
+           Reverses docs/adr/0001-soul-vault.md decision 3 (labels) and softens
+           decision 1 to "one default vault per machine; a project may link to any".
+           Tags stay, as an optional field on the confirm: "if tags are used in
+           obsidian style vaults it still may be useful to help a user categorize
+           their projects" (13 of the Body's 15 projects carry tags). And: "these
+           vaults i think should adopt obsidian style - that is essentially a
+           standard. i don't want our own style if we can help it" — so tags are
+           written as Obsidian's own `tags:` list, not the `contributes:` line; checked
+           at obsidian.md/help/properties and /help/tags (default properties are tags,
+           aliases, cssclasses; tags are a YAML list; no spaces; a slash nests; any
+           other property name is allowed).
+           Unverified, for the build: that `sync`, `check` and the session-start hook
+           follow a link into a vault that is not the default.
 STATUS:    Maturing
+```
+
+```
+ID:        SOUL-I093
+WHEN:      2026-11-12
+RAW:       The Body, on being asked for the Mind's line cap: "to avoid the mind always
+           needing to grow for long projects or arbitrarily cutting itself to try to
+           force limit. Is there something that things should graduate too like an
+           agent or a skill? That's an open question I've wondered about for A while"
+           (Context: this repo's Mind is 163 lines against a 120-line cap whose raised
+           number was never recorded; the first self-run refresh applied nothing for
+           that reason, SOUL-238. /soul-distill today offers two moves for a full
+           Mind: cut a whole item, or the Body raises the cap.)
+NOTES:     A first sketch, the session's, not discussed: an item needed only at a
+           recognisable moment could leave the always-on file for a place that moment
+           loads — code that enforces it (mind 6(e)'s `--tags` rule is refused by the
+           guard since v3.11.1), a skill or an agent for the situation (the
+           measurement items 3, 7, 8, 10), or a note at the code site — and only
+           items with no predictable moment (the calibration leans) stay. Unmeasured:
+           whether a moved item still reaches the session when it is needed.
+           Related: SOUL-I087 (skills kept improved and used), SOUL-I091 (the home),
+           SOUL-A021 (the slim Mind), SOUL-F066 (the budget as a target).
+STATUS:    Raw
 ```
