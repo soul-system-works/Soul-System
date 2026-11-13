@@ -12,7 +12,7 @@ When you run `/soul-init` in a project, Soul shows the whole setup it would make
 4. The dialog asks: "Here is the rest of the setup I'd make. Nothing is written until you say go. What next?"
    - **Use default setup**: Writes the setup shown in the plan.
    - **Modify setup**: Opens stage, private names, upkeep and the safety checks, then shows the plan again.
-   - **Explain a line**: A short paragraph on every line, then this plan again.
+   - **Explain a line**: What every line means, with its choices; then this plan again.
    - **Not now**: Nothing is written. Run /soul-init again when you are ready.
 5. After **Modify setup** the plan is shown again with your changes, and the first choice reads **Use this setup**.
 

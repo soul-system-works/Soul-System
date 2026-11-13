@@ -1084,82 +1084,97 @@ FORCEABLE = ("record", "names", "hand-hooks", "history-scan", "stage", "line-end
 # have to guess on when the setup will end."
 PLAN_KEYS = ("record", "stage", "names", "upkeep", "line-endings", "hand-hooks",
              "history-scan")
-WIDTH = 66  # plan.text is shown in the dialog's preview box
+# plan.text is shown in the dialog's preview box, which is small: it shows about
+# (terminal rows - 26) lines and (columns - 38) characters a line, and cuts the rest with
+# "N lines hidden" (Claude Code 2.1.325, read from its code on 2026-11-13; the owner's
+# first trial showed 27 lines with "3 lines hidden"). So the plan is two short lines an
+# item. It is Markdown, in the box and in chat: a bold name and the chosen setting as
+# inline code, which is what gets a colour (the owner, at the trial: "can each section
+# have color or something? hard to differentiate descrtipon from section").
+WIDTH = 58
 EARLIER = " Your earlier answer."
 # A recorded value the tool does not read (`stage: Prototype`, `upkeep: maybe`): the line
 # shows the default that replaces it, and says why (the review of v3.13.0).
 NOT_UNDERSTOOD = " Your earlier answer \"{}\" was not understood; this replaces it."
 # Per key: the line's name, what the thing is (the owner's fixed meanings), the default
 # setup's value, and per value: (label, what the plan says it does, what it adds).
+# In "what the plan says", the words before "|" name the setting: the plan colours them.
+# "short" is the plan's phrase for the thing, "icon" starts its explanation.
 SHORT_BLOCK = "a short rules block in CLAUDE.md"
 PLAN = {
     "record": {
-        "name": "Record", "meaning": "Soul's log of this project's decisions and ideas.",
+        "name": "Record", "short": "Soul's log of decisions and ideas", "icon": "📒",
+        "meaning": "Soul's log of this project's decisions and ideas.",
         "default": None,
         "values": {
-            "git": ("In this repo's git", "In this repo's git, committed with the code.",
+            "git": ("In this repo's git", "In this repo's git|, committed with the code.",
                     "a .soul/ folder, committed"),
-            "vault": ("In a private vault", "In a private vault; only a link is kept here.",
+            "vault": ("In a private vault", "In a private vault|; only a link is kept here.",
                       "2 steps: which vault, then a yes to the move"),
-            "local": ("Only on this machine", "Only on this machine, ignored by git.",
+            "local": ("Only on this machine", "Only on this machine|, ignored by git.",
                       "a .soul/ folder that git ignores"),
         },
         "more": "Nothing is suggested unless the repo is known to be private (GitHub says "
                 "so, or an earlier answer did); then In this repo's git is suggested.",
     },
     "stage": {
-        "name": "Stage", "meaning": "How careful to be about breaking things.",
+        "name": "Stage", "short": "how careful to be about breaking things", "icon": "🚦",
+        "meaning": "How careful to be about breaking things.",
         "default": "not-now",
         "values": {
-            "not-now": ("Not now", "Not now: nothing is written; treated as released.",
+            "not-now": ("Not now", "Not now|: nothing written; treated as released.",
                         None),
-            "prototype": ("Prototype", "Prototype: " + SHORT_BLOCK + ".", SHORT_BLOCK),
-            "pre-release": ("Pre-release", "Pre-release: " + SHORT_BLOCK + ".", SHORT_BLOCK),
-            "released": ("Released", "Released: " + SHORT_BLOCK + ".", SHORT_BLOCK),
+            "prototype": ("Prototype", "Prototype|: " + SHORT_BLOCK + ".", SHORT_BLOCK),
+            "pre-release": ("Pre-release", "Pre-release|: " + SHORT_BLOCK + ".", SHORT_BLOCK),
+            "released": ("Released", "Released|: " + SHORT_BLOCK + ".", SHORT_BLOCK),
         },
         "more": "Any choice but Not now writes a short rules block into CLAUDE.md.",
     },
     "names": {
-        "name": "Private names",
+        "name": "Private names", "short": "names that must never be committed",
+        "icon": "🔒",
         "meaning": "Names that must never be committed (clients, employers, people).",
         "default": "none",
         "values": {
-            "none": ("None", "None beyond your global list.", None),
-            "listed": ("Type them", "Typed by you, kept in .soul/, never committed.",
+            "none": ("None", "None| beyond your global list.", None),
+            "listed": ("Type them", "Typed| by you, kept in .soul/, never committed.",
                        "1 step: you type the names"),
         },
         "more": "",
     },
     "upkeep": {
-        "name": "Upkeep", "meaning": "Soul's handoff note and project notes, kept current.",
+        "name": "Upkeep", "short": "handoff note and project notes, kept current", "icon": "🔄",
+        "meaning": "Soul's handoff note and project notes, kept current.",
         "default": "on",
         "values": {
-            "on": ("On", "On: refreshed on their own; one line says so each time.", None),
-            "off": ("Off", "Off: nothing runs by itself; you run them.", None),
+            "on": ("On", "On|: refreshed on their own; one line says so each time.", None),
+            "off": ("Off", "Off|: nothing runs by itself; you run them.", None),
         },
         "more": "",
     },
     # In the defaults (the owner, 2026-11-13: "i think line endings would be added by
     # default"); offered whenever the rule file is missing, so most fresh projects get it.
     "line-endings": {
-        "name": "Line endings",
+        "name": "Line endings", "short": "Windows and Linux end lines differently",
+        "icon": "📄",
         "meaning": "Windows and Linux tools end lines differently, so files can show as "
                    "changed when they are not.",
         "default": "yes",
         "values": {
-            "yes": ("Fix them", "Fixed, as one commit ({count}).", "one commit"),
-            "no": ("Leave them", "Left as they are; not asked again.", None),
+            "yes": ("Fix them", "Fixed| in one commit ({count}).", "one commit"),
+            "no": ("Leave them", "Left| as they are; not asked again.", None),
         },
         "more": "Offered when the rule file is missing or a file was committed with "
                 "Windows line endings.",
     },
     "hand-hooks": {
-        "name": "Hand-commit hooks",
+        "name": "Hand-commit hooks", "short": "checks commits you make outside Claude",
+        "icon": "🔐",
         "meaning": "Checks commits you make outside Claude for secrets.",
         "default": "no",
         "values": {
-            "no": ("Not set up", "Not set up.", None),
-            "yes": ("Set them up", "Set up: three scripts in .git/hooks, never committed.",
+            "no": ("Not set up", "Not set up|.", None),
+            "yes": ("Set them up", "Set up|: three scripts in .git/hooks, never committed.",
                     "three scripts in .git/hooks"),
         },
         "more": "",
@@ -1167,12 +1182,13 @@ PLAN = {
     # `yes` is a --choose-only value meaning "run the scan": what is recorded is its
     # outcome (`clean <sha>` ...), after it runs, so it is a todo, never a `go` pair.
     "history-scan": {
-        "name": "History scan",
+        "name": "History scan", "short": "checks past commits for leaked secrets",
+        "icon": "🔍",
         "meaning": "Looks through past commits for leaked secrets, once.",
         "default": "declined",
         "values": {
-            "declined": ("Not run", "Not run.", None),
-            "yes": ("Run it now", "Run now: reads past commits and changes nothing.",
+            "declined": ("Not run", "Not run|.", None),
+            "yes": ("Run it now", "Run now|: reads past commits and changes nothing.",
                     "a scan now"),
         },
         "more": "Offered only when gitleaks is installed.",
@@ -1210,7 +1226,8 @@ NEXT_OPTIONS = (
     ("use", "Use default setup", "Writes the setup shown in the plan."),
     ("modify", "Modify setup", "Opens stage, private names, upkeep and the safety checks, "
                                "then shows the plan again."),
-    ("explain", "Explain a line", "A short paragraph on every line, then this plan again."),
+    ("explain", "Explain a line", "What every line means, with its choices; then this "
+                                  "plan again."),
     ("not-now", "Not now", "Nothing is written. Run /soul-init again when you are ready."),
 )
 USE_MODIFIED = "Use this setup"
@@ -1314,16 +1331,22 @@ def _more():
 def _says(c, key, value):
     """(label, what the plan says it does, what it adds) for one value of a line."""
     label, says, adds = PLAN[key]["values"][value]
+    says = says.replace("|", "", 1)
     if key == "line-endings" and value == "yes":
         e = c.get("eol") or {"files": 0, "adds_rule": True, "repos": 1}
         n = e["files"]
         count = "{} file{} change{}".format(n, "" if n == 1 else "s", "s" if n == 1 else "")
         if e["adds_rule"]:
-            count += "; adds the rule file"
+            count += "; adds rule file"
         says = says.format(count=count)
         if e["repos"] > 1:
-            says = says.replace("as one commit", "as one commit in each repo")
+            says = says.replace("in one commit", "in one commit per repo")
     return label, says, adds
+
+
+def _head(key, value):
+    """The words that name a setting, at the start of what the plan says about it."""
+    return PLAN[key]["values"][value][1].partition("|")[0]
 
 
 def _recorded_value(c, key):
@@ -1348,32 +1371,39 @@ def _one_of(labels):
     return labels[0] if len(labels) == 1 else ", ".join(labels[:-1]) + ", or " + labels[-1]
 
 
-def plan_text(lines, can_add=True):
-    """can_add: an extras round exists, so Modify setup can add the "Not set up" lines."""
-    out = ["The setup Soul would make here:", ""]
+def _plan_item(name, phrase, setting=None, head=None):
+    """One item of the plan: a bold name with what it is, then the setting on an arrow
+    line with its first words as inline code (see WIDTH)."""
+    out = _wrap("{} \u2014 {}".format(name, phrase), "", "    ")
+    out[0] = out[0].replace(name, "**{}**".format(name), 1)
+    if setting:
+        arrow = _wrap(setting[:-1] if setting.endswith(".") else setting,
+                      "  \u2192 ", "    ")
+        if head and arrow[0][4:].startswith(head):
+            arrow[0] = "  \u2192 `{}`{}".format(head, arrow[0][4 + len(head):])
+        out += arrow
+    return out
+
+
+def plan_text(lines):
+    out = []
     off = [ln for ln in lines if ln["default"]
            and OFF_BY_DEFAULT.get(ln["key"]) == ln["default"]["value"]]
     for ln in lines:
         if ln in off or ln["key"] == "repairs":
             continue
-        out += _wrap("{}: {}".format(ln["name"], ln["meaning"]))
         d = ln["default"]
         if d is None:
-            out += _wrap("You choose, in the question with this plan: {}.".format(
-                _one_of([o["label"] for o in ln["others"]])), "  ", "  ")
-            continue
-        out += _wrap(d["text"], "  ", "  ")
-        if ln["others"]:
-            out += _wrap("Or: {}.".format(", ".join(o["label"] for o in ln["others"])),
-                         "  ", "  ")
+            out += _plan_item(ln["name"], ln["short"],
+                              "you choose, in the question with this plan", "you choose")
+        else:
+            out += _plan_item(ln["name"], ln["short"], d["text"], d.get("head"))
     if off:
-        out.append("Not set up (Modify setup can add them):" if can_add else "Not set up:")
-        for ln in off:
-            out += _wrap("{}: {}".format(ln["name"], ln["meaning"]), "  ", "    ")
+        out += _plan_item("Not set up", ", ".join(ln["name"][0].lower() + ln["name"][1:]
+                                                  for ln in off))
     for ln in lines:
         if ln["key"] == "repairs":
-            out += _wrap("{}: {}.".format(ln["name"], ln["default"]["text"]))
-    out += ["", "Explain a line gives a short paragraph on each."]
+            out += _plan_item(ln["name"], ln["default"]["text"])
     return "\n".join(out)
 
 
@@ -1400,7 +1430,8 @@ def build_plan(c, found, public, keys, choose, extras):
                     NOT_UNDERSTOOD.format(raw[0]) if raw and rec is None else "")
             if key == "names" and public == "yes":  # today's note, on the line itself
                 note += QUESTIONS["names"]["public_note"]
-            default = {"value": value, "text": _says(c, key, value)[1] + note}
+            default = {"value": value, "text": _says(c, key, value)[1] + note,
+                       "head": _head(key, value)}
             if in_go and key == "history-scan" and value == "yes":
                 todo.append(key)
             elif in_go:
@@ -1411,6 +1442,7 @@ def build_plan(c, found, public, keys, choose, extras):
                 label, _, adds = _says(c, key, v)
                 others.append({"value": v, "label": label, "adds": adds})
         lines.append({"key": key, "name": p["name"], "meaning": p["meaning"],
+                      "short": p["short"],
                       "waits": key == "record" and key not in choose,
                       "default": default, "others": others})
     fixes = [(k, words) for k, words, _ in REPAIRS
@@ -1428,7 +1460,7 @@ def build_plan(c, found, public, keys, choose, extras):
     by = {ln["key"]: ln for ln in lines}
     main = [k for k in ("stage", "names", "upkeep") if k in by]
     change_rounds = ([main] if main else []) + ([["extras"]] if extras else [])
-    text = plan_text(lines, can_add=bool(extras))
+    text = plan_text(lines)
     changeable = main + ([k for k in EXTRAS if k in by] if extras else [])
     more = _more()
     opts = []
@@ -1445,7 +1477,7 @@ def build_plan(c, found, public, keys, choose, extras):
                 + ["  {}: {}".format(by[k]["name"], PLAN[k]["values"][
                     by[k]["default"]["value"]][0]) for k in changeable])
         elif value == "explain":
-            o["preview"] = "\n".join(["A short paragraph on each line, then the plan again.",
+            o["preview"] = "\n".join(["What every line means, with its choices; then the plan again.",
                                       "The same, with more: " + more["url"],
                                       "On this machine: " + more["path"]])
         opts.append(o)
@@ -1485,27 +1517,34 @@ def explain_parts(key):
             "more": p["more"], "revisit": "/soul-init revisit {}".format(key)}
 
 
-def explain_paragraph(key):
+def explain_block(key):
+    """One item's explanation, as Markdown: an icon and a bold name, then a bullet for
+    each choice (the owner, at the trial: "needs better formatting or just an icon for
+    each item. the white runs together")."""
     e = explain_parts(key)
-    parts = ["{}: {}".format(e["name"], e["meaning"])]
-    parts += ["{}: {}".format(label, desc) for label, desc in e["options"]]
+    out = ["{} **{}** \u2014 {}".format(PLAN[key]["icon"], e["name"], e["meaning"])]
+    for label, desc in e["options"]:
+        base, dflt, _ = label.partition(" (the default)")
+        out.append("- **{}**{}: {}".format(base, " (default)" if dflt else "", desc))
     if e["more"]:
-        parts.append(e["more"])
-    parts.append("To change it later, run {}.".format(e["revisit"]))
-    return " ".join(parts)
+        out.append("- " + e["more"])
+    out.append("- Change it later: `{}`".format(e["revisit"]))
+    return "\n".join(out)
 
 
-def repairs_paragraph(keys):
-    return "Also fixes, with no question: " + " ".join(
-        "{}: {}".format(_sentence(words)[:-1], why) for k, words, why in REPAIRS if k in keys)
+def repairs_block(name, keys):
+    out = ["\U0001F527 **{}** \u2014 with no question:".format(name)]
+    out += ["- **{}**: {}".format(_sentence(words)[:-1], why)
+            for k, words, why in REPAIRS if k in keys]
+    return "\n".join(out)
 
 
 def explain_text(st):
     plan = st.get("plan")
     if not plan:
         return "Nothing here waits for an answer, so there is no plan to explain.\n"
-    out = [repairs_paragraph(ln["default"]["value"]) if ln["key"] == "repairs"
-           else explain_paragraph(ln["key"]) for ln in plan["lines"]]
+    out = [repairs_block(ln["name"], ln["default"]["value"]) if ln["key"] == "repairs"
+           else explain_block(ln["key"]) for ln in plan["lines"]]
     return "\n\n".join(out) + "\n"
 
 

@@ -112,12 +112,18 @@ or to report a problem. The tool calls already show the work.
       record, so until it is linked nothing else can be set up here (the tool gives no
       plan and `record` refuses; a local record would be a second copy). Say so; the
       next run asks again.
-   2. **The plan**, when `plan` is not null. Print `plan.text`. When the plan has a
+   2. **The plan**, when `plan` is not null. Print `plan.text` as it is — it is
+      Markdown (bold names, the chosen setting as inline code), so never inside a code
+      block. When the plan has a
       line-endings line whose count is above 0, print `python3 <root>/tools/eol.py
       check .`'s list of files first — some may need Windows line endings on purpose
       (`.eml`, `.ics` fixtures). Then show `plan.screen` in ONE `AskUserQuestion` call;
       the plan rides in the first option's preview, so it stays in view while the
-      owner chooses (seen in a live mock, 2026-11-12).
+      owner chooses (seen in a live mock, 2026-11-12). That box is small — about the
+      terminal's height less 26 lines — and cuts the rest with "N lines hidden", so
+      the tool keeps the plan to two short lines an item (the owner's first trial,
+      2026-11-13: "i also see a \"3 lines hidden\" message"); the copy printed in
+      chat is the one a short terminal can always read.
       - `use` → go. Record the held single answers, then each `plan.go` pair, then
         the record answer **last** — the one given in this dialog, which overrides a
         `record` pair in `plan.go`. `plan.todo` (the history scan) is carried out in
@@ -127,7 +133,9 @@ or to report a problem. The tool calls already show the work.
         check ticked is `yes`, unticked `no`; the record answer too, when it was
         given), and show the new plan the same way. Its first option now reads "Use
         this setup".
-      - `explain` → print `python3 <root>/tools/init-status.py explain .` and
+      - `explain` → print `python3 <root>/tools/init-status.py explain .` as it is
+        — Markdown again (an icon and a bold name for each item, a bullet for each
+        choice), never inside a code block and never reflowed into paragraphs — and
         `plan.more` (the link, and the same page's path on this machine), then show
         the plan again.
       - `not-now` → record nothing and write nothing; say "Nothing was set up. Run

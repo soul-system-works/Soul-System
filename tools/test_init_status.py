@@ -957,7 +957,7 @@ def also_fixes(plan):
     wrapped continuation, flattened."""
     out, on = [], False
     for ln in plan.get("text", "").splitlines():
-        if ln.startswith(("Also fixes:", "Also sets up:")):
+        if ln.startswith(("**Also fixes** \u2014", "**Also sets up** \u2014")):
             on = True
         elif on and not ln.startswith("  "):
             break
@@ -1012,9 +1012,21 @@ def plan_checks(tmp, env, envl, envv, vroot, mod):
           [k for k in lines if k != "repairs"] == list(meanings)
           and all(lines[k]["meaning"] == m for k, m in meanings.items()),
           plan.get("lines"))
-    check("36 fresh: the text says what each line is (every meaning is in it)",
-          all(m in " ".join(plan.get("text", "").split()) for m in meanings.values()),
-          plan.get("text"))
+    # The plan box is small (init-status.py, WIDTH), so the text carries a short phrase for
+    # each thing; the full meaning is on the line and in the explanation.
+    shorts = {"Record": "Soul's log of decisions and ideas",
+              "Stage": "how careful to be about breaking things",
+              "Private names": "names that must never be committed",
+              "Upkeep": "handoff note and project notes, kept current",
+              "Line endings": "Windows and Linux end lines differently",
+              "Not set up": "hand-commit hooks, history scan"}
+    check("36 fresh: the text says what each line is, under a bold name",
+          all("**{}** \u2014 {}".format(n, ph) in plan.get("text", "").splitlines()
+              for n, ph in shorts.items()), plan.get("text"))
+    check("36 fresh: the chosen setting is marked, on an arrow line under its name",
+          "  \u2192 `you choose`, in the question with this plan" in plan.get("text", "")
+          and "  \u2192 `Not now`: nothing written; treated as released"
+          in plan.get("text", "").splitlines(), plan.get("text"))
     check("36 fresh: the next-step question, word for word, the plan in the first preview",
           nq.get("text") == "Here is the rest of the setup I'd make. Nothing is written until "
                             "you say go. What next?"
@@ -1022,7 +1034,7 @@ def plan_checks(tmp, env, envl, envv, vroot, mod):
               ("use", "Use default setup", "Writes the setup shown in the plan."),
               ("modify", "Modify setup", "Opens stage, private names, upkeep and the safety "
                                          "checks, then shows the plan again."),
-              ("explain", "Explain a line", "A short paragraph on every line, then this "
+              ("explain", "Explain a line", "What every line means, with its choices; then this "
                                             "plan again."),
               ("not-now", "Not now", "Nothing is written. Run /soul-init again when you are "
                                      "ready.")]
@@ -1257,15 +1269,20 @@ def plan_checks(tmp, env, envl, envv, vroot, mod):
                                                        "--choose", "history-scan=yes",
                                                        "--choose", "names=listed"))):
         texts[name] = plan_of(env_, p, *extra)[1].get("text", "")
-    wide = [(n, ln) for n, t in texts.items() for ln in t.splitlines() if len(ln) > 66]
-    check("43 every line of plan.text is at most 66 columns", all(texts.values()) and not wide,
-          wide or texts)
+    wide = [(n, ln) for n, t in texts.items() for ln in t.splitlines()
+            if len(ln.replace("**", "").replace("`", "")) > 58]
+    check("43 every line of plan.text shows at most 58 columns", all(texts.values())
+          and not wide, wide or texts)
     flat = {n: " ".join(t.split()) for n, t in texts.items()}
     check("43 the line-endings line carries the count of files that change",
-          "(0 files change; adds the rule file)" in flat["fresh"]
-          and "(2 files change; adds the rule file)" in flat["crlf"], flat)
+          "(0 files change; adds rule file)" in flat["fresh"]
+          and "(2 files change; adds rule file)" in flat["crlf"], flat)
+    # The box cuts what does not fit: 27 lines showed "3 lines hidden" at the owner's
+    # first trial (2026-11-13).
     n_fresh = len(texts["fresh"].splitlines())
-    check("43 a fresh project's plan is about 30 lines", 20 <= n_fresh <= 34, n_fresh)
+    n_most = max(len(t.splitlines()) for t in texts.values())
+    check("43 a fresh project's plan is 12 lines, and no plan here is over 16",
+          n_fresh == 12 and n_most <= 16, (n_fresh, n_most))
 
     # 44 — the explanation page: generated, committed, never the version number
     r = run(env, "doc", "--check")
@@ -1294,7 +1311,14 @@ def plan_checks(tmp, env, envl, envv, vroot, mod):
 
     # 45 — explain, the text output, and status writing nothing (--choose included)
     r = run(env, "explain", pf)
-    check("45 explain: a paragraph per plan line, each naming its revisit",
+    check("45 explain: Markdown, an icon and a bold name per item, a bullet per choice",
+          "\U0001F6A6 **Stage** \u2014 " + meanings["stage"] in r.stdout.splitlines()
+          and "- **Not now** (default): Writes nothing; treated as released until you choose."
+          in r.stdout.splitlines()
+          and "- Change it later: `/soul-init revisit stage`" in r.stdout.splitlines()
+          and "\U0001F527 **Also sets up** \u2014 with no question:" in r.stdout.splitlines()
+          and "\n\n\U0001F512 **Private names** \u2014 " in r.stdout, r.stdout)
+    check("45 explain: a block per plan line, each naming its revisit",
           r.returncode == 0
           and all("/soul-init revisit {}".format(k) in r.stdout
                   for k in ("record", "stage", "names", "upkeep", "line-endings", "hand-hooks"))
@@ -1302,7 +1326,8 @@ def plan_checks(tmp, env, envl, envv, vroot, mod):
     r = run(env, "status", pf)
     check("45 status text: the plan and the four choices, no 'To ask'",
           r.returncode == 0 and "Use default setup" in r.stdout and "Not now" in r.stdout
-          and meanings["stage"] in r.stdout and "To ask" not in r.stdout, r.stdout)
+          and "**Stage** \u2014 how careful to be about breaking things" in r.stdout
+          and "To ask" not in r.stdout, r.stdout)
     before = tree_hash(pf)
     rs = [plan_of(env, pf)[2], plan_of(env, pf, "--choose", "stage=prototype")[2],
           plan_of(envl, pf, "--choose", "history-scan=yes", "--choose", "record=vault")[2],
@@ -1336,10 +1361,13 @@ def plan_checks(tmp, env, envl, envv, vroot, mod):
     # endings forced (--ask), the extras are asked as a picker, not under Modify setup.
     _, plan_f, _ = plan_of(envl, pf, "--ask", "line-endings")
     t_free, t_forced = texts["fresh"], plan_f.get("text", "")
-    check("46 R7 'Not set up' names Modify setup only when an extras round exists",
-          "Not set up (Modify setup can add them):" in t_free
+    # Since the short plan (2026-11-13) the line names what is not set up and never
+    # points at Modify setup, so it cannot point there wrongly.
+    check("46 R7 'Not set up' never points at Modify setup",
+          "**Not set up** \u2014 hand-commit hooks, history scan" in t_free
+          and "Modify setup" not in t_free
           and plan_f.get("change_rounds") == [["stage", "names", "upkeep"]]
-          and "Not set up:" in t_forced and "Modify setup can add" not in t_forced,
+          and "**Not set up** \u2014 " in t_forced and "Modify setup" not in t_forced,
           (plan_f.get("change_rounds"), t_forced))
     # R8: a recorded value the tool does not understand: the line says so and shows the
     # default that replaces it.
@@ -1352,7 +1380,7 @@ def plan_checks(tmp, env, envl, envv, vroot, mod):
     up_t = ln.get("upkeep", {}).get("default") or {}
     check("46 R8 an answer not understood: the line says so, with the default replacing it",
           st_t.get("value") == "not-now" and up_t.get("value") == "on"
-          and st_t.get("text", "").startswith("Not now: nothing is written")
+          and st_t.get("text", "").startswith("Not now: nothing written")
           and 'Your earlier answer "Prototype" was not understood' in st_t.get("text", "")
           and 'Your earlier answer "maybe" was not understood' in up_t.get("text", "")
           and ["stage", "not-now"] in plan.get("go", []), (st_t, up_t, plan.get("go")))
@@ -1378,11 +1406,11 @@ def plan_checks(tmp, env, envl, envv, vroot, mod):
     fresh_lines = plan.get("text", "").splitlines()
     fix_lines = plan_of(env, fx[0][2])[1].get("text", "").splitlines()
     fix_lines2 = plan_of(env, fx[1][2])[1].get("text", "").splitlines()
-    check("46 R11 a fresh project's plan says 'Also sets up:', any other 'Also fixes:'",
-          any(x.startswith("Also sets up:") for x in fresh_lines)
-          and not any(x.startswith("Also fixes:") for x in fresh_lines)
-          and any(x.startswith("Also fixes:") for x in fix_lines2)
-          and not any(x.startswith("Also sets up:") for x in fix_lines2),
+    check("46 R11 a fresh project's plan says 'Also sets up', any other 'Also fixes'",
+          any(x.startswith("**Also sets up** \u2014") for x in fresh_lines)
+          and not any(x.startswith("**Also fixes** \u2014") for x in fresh_lines)
+          and any(x.startswith("**Also fixes** \u2014") for x in fix_lines2)
+          and not any(x.startswith("**Also sets up** \u2014") for x in fix_lines2),
           (fresh_lines, fix_lines, fix_lines2))
     page = " ".join(run(env, "doc").stdout.split())
     check("46 R11 the page names every step the setup can add, and what revisit forgets",
