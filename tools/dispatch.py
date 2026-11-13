@@ -420,15 +420,20 @@ def claude_md_excludes(workdir):
     return list(dict.fromkeys(paths))
 
 
-def secret_dirs(workdir=None):
+def secret_dirs(workdir=None, project=None):
     """Folders a Claude worker may not read: credentials and the owner's private
     record (confine.SECRET_DIRS, the list the confined checks hide too). The sandbox
     limits writes and network, but reads are wide by default. `~/x` and
     `//abs/path` are Claude Code's permission-rule spellings."""
     out = ["~/" + d for d in confine.SECRET_DIRS]
     # A vault holds every vaulted project's record: the registered one, and the one
-    # the project's .soul links into when that is another (SOUL-I092).
-    vaults = [confine.registered_vault()] + (confine.linked_vaults(workdir) if workdir else [])
+    # the project's .soul links into when that is another (SOUL-I092) — found from
+    # the work folder and from the project: a review's --workdir outside the project
+    # has no link above it (the review of v3.13.0).
+    vaults = [confine.registered_vault()]
+    for start in (workdir, project):
+        if start:
+            vaults += confine.linked_vaults(start)
     for v in dict.fromkeys(v for v in vaults if v):
         out.append("/" + v)
     return out
@@ -465,8 +470,9 @@ def worker_env(harness):
     return confine.clean_env()
 
 
-def worker_command(row, workdir, mode, last_file=None):
-    """argv for one worker. mode "run" may edit `workdir`; "review" only reads it."""
+def worker_command(row, workdir, mode, last_file=None, project=None):
+    """argv for one worker. mode "run" may edit `workdir`; "review" only reads it.
+    `project`, when known, adds the vault its .soul links into to the deny list."""
     harness, model = row["harness"], row["model"]
     if harness in ("claude", "claude-ollama"):
         if mode == "run":
@@ -506,7 +512,7 @@ def worker_command(row, workdir, mode, last_file=None):
                                 "autoAllowBashIfSandboxed": True,
                                 "allowUnsandboxedCommands": False},
                     "permissions": {"deny": ["Read({}/**)".format(p)
-                                             for p in secret_dirs(workdir)]}}
+                                             for p in secret_dirs(workdir, project)]}}
         return cmd + ["--setting-sources", "", "--strict-mcp-config",
                       "--settings", json.dumps(settings)]
     # codex / codex-ollama. Step 1 probe, 2026-10-27: without these flags `codex exec`
@@ -889,7 +895,7 @@ def run_tries(project, role, row, brief, check, base, run_id, workflow):
         gitargs = worktree_git(project, worktree)
         stem = os.path.join(run_dir, "try-{}".format(i))
         last = stem + ".last.txt"
-        code, wall = run_process(worker_command(row, worktree, "run", last),
+        code, wall = run_process(worker_command(row, worktree, "run", last, project=project),
                                  worktree, worker_env(row["harness"]), prompt,
                                  stem + ".log", stem + ".stderr", row["timeout"])
         tokens_in, tokens_out, _ = read_output(row["harness"], stem + ".log", last)
@@ -899,7 +905,8 @@ def run_tries(project, role, row, brief, check, base, run_id, workflow):
         check_rc = None
         if check and confinable:  # for selection only: the recorder re-runs it
             check_rc, _ = run_process(
-                confine.confine_argv(["/bin/sh", "-c", check], worktree), worktree,
+                confine.confine_argv(["/bin/sh", "-c", check], worktree, project=project),
+                worktree,
                 confine.clean_env(), "", stem + ".check.log", None, row["timeout"])
         tries.append({"try": i, "worktree": worktree, "branch": branch, "exit": code,
                       "wall_s": wall, "tokens_in": tokens_in, "tokens_out": tokens_out,
@@ -976,7 +983,8 @@ def review_all(project, role, rows, workdir, brief, diff, run_id, workflow):
     for j, row in enumerate(rows, 1):  # each reviewer once, not a ladder
         stem = os.path.join(run_dir, "review-{}-{}".format(j, row["harness"]))
         last = stem + ".last.txt"
-        code, wall = run_process(worker_command(row, workdir, "review", last_file=last),
+        code, wall = run_process(worker_command(row, workdir, "review", last_file=last,
+                                                project=project),
                                  workdir, worker_env(row["harness"]), prompt,
                                  stem + ".log", stem + ".stderr", row["timeout"])
         tokens_in, tokens_out, text = read_output(row["harness"], stem + ".log", last)

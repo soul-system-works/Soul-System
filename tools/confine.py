@@ -8,7 +8,8 @@ must not run it with the host's own powers. Two helpers, stdlib only:
                                holds (messaging socket and token, session id, API
                                keys, GH_TOKEN, GIT_CONFIG_*, SOUL_GUARD_*, routing)
                                reaches the child unless named in `extra`
-  confine_argv(argv, workdir)  argv wrapped in bubblewrap: the whole filesystem
+  confine_argv(argv, workdir, project=None)
+                               argv wrapped in bubblewrap: the whole filesystem
                                read-only except `workdir` (its .git and .soul kept
                                read-only) and a private /tmp, no network, the
                                secret folders hidden; None when it
@@ -81,22 +82,30 @@ def linked_vaults(workdir):
         d = parent
 
 
-def secret_paths(workdir=None):
-    """SECRET_DIRS under this HOME, the registered vault and, given a work folder, the
-    vaults its .soul links point into — as real paths."""
+def secret_paths(workdir=None, project=None):
+    """SECRET_DIRS under this HOME, the registered vault and the vaults the .soul links
+    of the work folder, and of the project when the caller knows it, point into — as
+    real paths. The project counts on its own: a work folder outside it (a review's
+    --workdir) has no link above it, and walking from there alone left the project's
+    vault readable (the review of v3.13.0)."""
     home = os.path.expanduser("~")
     out = [os.path.realpath(os.path.join(home, d)) for d in SECRET_DIRS]
-    for v in [registered_vault()] + (linked_vaults(workdir) if workdir else []):
+    linked = []
+    for start in (workdir, project):
+        if start:
+            linked += linked_vaults(start)
+    for v in [registered_vault()] + linked:
         if v and v not in out:
             out.append(v)
     return out
 
 
-def confine_argv(argv, workdir, which=shutil.which, platform=None):
+def confine_argv(argv, workdir, which=shutil.which, platform=None, project=None):
     """`argv` under bubblewrap with only `workdir` (and a fresh /tmp) writable, no
-    network, and every existing secret folder covered by an empty tmpfs. None when
-    it cannot confine: the caller decides whether to skip or refuse, never to run
-    the check bare in its place."""
+    network, and every existing secret folder covered by an empty tmpfs (`project`,
+    when given, adds the vault its .soul links into: secret_paths). None when it
+    cannot confine: the caller decides whether to skip or refuse, never to run the
+    check bare in its place."""
     if not (platform or sys.platform).startswith("linux"):
         return None
     bwrap = which("bwrap")
@@ -116,7 +125,7 @@ def confine_argv(argv, workdir, which=shutil.which, platform=None):
         target = os.path.realpath(os.path.join(workdir, name))
         if target.startswith(workdir + os.sep) and os.path.exists(target):
             cmd += ["--ro-bind", target, target]
-    for d in secret_paths(workdir):
+    for d in secret_paths(workdir, project):
         if os.path.isdir(d):
             cmd += ["--tmpfs", d]
     # The host session's sockets live here (cc-socks: Claude Code's messaging socket,

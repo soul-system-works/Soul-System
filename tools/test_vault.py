@@ -447,6 +447,11 @@ def main():
           and git(own, "rev-list", "--count", "HEAD").stdout.strip() == "1"
           and "?? vault.md" in git(own, "status", "--porcelain").stdout,
           r.stdout + git(own, "status", "--porcelain").stdout)
+    # R4 (review of v3.13.0): on a folder that is already its own repo the scaffold is
+    # left uncommitted, and one line says so; a second init that writes nothing is quiet.
+    check("init on an existing repo: one line says the scaffold was not committed",
+          "own-repo is already a git repo" in r.stdout and "not committed" in r.stdout
+          and "not committed" not in run(env, "init", own).stdout, r.stdout)
     noid_env = {k: v for k, v in env.items()
                 if not k.startswith(("GIT_AUTHOR_", "GIT_COMMITTER_")) and k != "EMAIL"}
     noid_env.update(GIT_CONFIG_COUNT="1", GIT_CONFIG_KEY_0="user.useConfigOnly",
@@ -457,6 +462,24 @@ def main():
           r.returncode == 0 and os.path.isdir(os.path.join(noid, ".git"))
           and git(noid, "rev-parse", "--verify", "-q", "HEAD").returncode != 0
           and "no first commit" in r.stdout, r.stdout + r.stderr)
+    # R5: a `git add` that fails for a reason other than the identity is named as such
+    # (here a .gitignore already in the folder ignores index.md), never as "set user.name".
+    ign = os.path.join(tmp, "ignoring-vault")
+    write(os.path.join(ign, ".gitignore"), "index.md\n")
+    r = run(env, "init", ign)
+    check("init where git add fails: the line names git add and its reason, not the "
+          "identity, exit 0", r.returncode == 0 and "git add failed" in r.stdout
+          and "ignored" in r.stdout and "user.name" not in r.stdout, r.stdout + r.stderr)
+    # R12: only the scaffold is committed, never other files already in the folder.
+    full = os.path.join(tmp, "full-vault")
+    write(os.path.join(full, "notes", "private.txt"), "mine\n")
+    write(os.path.join(full, "loose.md"), "x\n")
+    r = run(env, "init", full)
+    check("init on a folder with other files: the first commit holds only the scaffold",
+          sorted(git(full, "ls-files").stdout.split()) == sorted(
+              [".gitattributes", ".gitignore", "index.md", "projects/.gitkeep", "vault.md"])
+          and "?? loose.md" in git(full, "status", "--porcelain").stdout,
+          r.stdout + git(full, "ls-files").stdout)
 
     # 2 — .soul layout, untracked record: moved, same bytes through the link, wired
     files = {".soul/witness.md": "# W\nSOUL-1\n", ".soul/ideas.md": "# I\n",
@@ -536,6 +559,35 @@ def main():
               "nothing changed".format(bad), r.returncode == 2 and "Obsidian" in r.stderr
               and not os.path.islink(os.path.join(bt, ".soul"))
               and not os.path.exists(os.path.join(vault, "projects", "badtag")), r.stderr)
+    # R1 (review of v3.13.0): only letters (any script), digits, _ - / — anything else
+    # once wrote front matter a YAML reader rejects whole (`*star`, `[open`).
+    for bad in ("*star", "[open", "x:", "a: b", "a|b", "1.5", 'q"x', "~"):
+        r = run(env, "link", bt, "--key", "badtag", "--tags", "ok," + bad)
+        check("a tag with a character Obsidian does not take ({!r}) is refused, naming its "
+              "rule, nothing changed".format(bad), r.returncode == 2
+              and "Obsidian" in r.stderr and "nothing changed" in r.stderr
+              and not os.path.islink(os.path.join(bt, ".soul"))
+              and not os.path.exists(os.path.join(vault, "projects", "badtag")), r.stderr)
+    yw = project(tmp, "yamlword", {".soul/witness.md": "# W\n"})
+    r = run(env, "link", yw, "--key", "yamlword", "--tags", "True,null,ok,v\u00e4der,n/2")
+    ypm = os.path.join(vault, "projects", "yamlword", "project.md")
+    check("a tag that is a bare YAML word is written in double quotes; letters of any "
+          "script and a nesting slash are kept",
+          r.returncode == 0 and os.path.isfile(ypm) and '\ntags:\n  - "True"\n  - "null"\n'
+          '  - ok\n  - v\u00e4der\n  - n/2\nremote:' in read(ypm),
+          r.stdout + r.stderr + (read(ypm) if os.path.isfile(ypm) else ""))
+    # R10: the dry run shows the tags it would write; tags given for a project.md the
+    # vault already holds are not written, and one line says so.
+    dr = project(tmp, "dryrun", {".soul/witness.md": "# W\n"})
+    r = run(env, "link", dr, "--key", "dryrun", "--tags", "one,two words", "--dry-run")
+    check("dry run: the tags that would be written are shown",
+          r.returncode == 0 and "tags: one, two-words" in r.stdout
+          and not os.path.exists(os.path.join(vault, "projects", "dryrun")), r.stdout + r.stderr)
+    before = read(tpm)
+    r = run(env, "link", tg, "--key", "tagged", "--tags", "later")
+    check("tags for a project.md the vault already holds: not written, one line says so",
+          r.returncode == 0 and read(tpm) == before and "tags not written" in r.stdout,
+          r.stdout + r.stderr)
 
     # 4 — refusals change nothing
     c = project(tmp, "gamma", {".soul/witness.md": "# W\n"})
@@ -660,6 +712,26 @@ def main():
     write(os.path.join(vault, "projects", "both", "project.md"),
           "---\nkey: both\ntags:\n  - new-tag\n  - \"quoted\"\ncontributes: [old]\n---\n")
     write(os.path.join(vault, "projects", "bare", "soul", "witness.md"), "# no project.md\n")
+    # R12: a project.md with no front matter is still a project.
+    write(os.path.join(vault, "projects", "nofm", "project.md"), "# just a note\n")
+    # R6: a hand-written list under remote: or sidecar: is not a list to the tools (only
+    # tags: and contributes: are); it once crashed check, index and status.
+    write(os.path.join(vault, "projects", "listremote", "project.md"),
+          "---\nkey: listremote\nremote:\n  - https://example.invalid/a/b.git\nsoul: true\n---\n")
+    os.makedirs(os.path.join(vault, "projects", "listremote", "soul"))
+    write(os.path.join(vault, "projects", "listside", "project.md"),
+          "---\nkey: listside\nsidecar:\n  - true\nremote: \n---\n")
+    # (c, gamma, is not linked: check compares it with every project.md in the vault.)
+    r = run(env, "check", c)
+    check("a list under remote: in another project.md: check still runs",
+          r.returncode == 0 and "Traceback" not in r.stderr, r.stdout + r.stderr)
+    out = run(env, "session-start", stdin=json.dumps({"cwd": c})).stdout
+    check("... and so does session-start (no 'check skipped' line)", "skipped" not in out, out)
+    r = subprocess.run([sys.executable, os.path.join(os.path.dirname(_TOOL), "init-status.py"),
+                        "status", c, "--json"], capture_output=True, text=True,
+                       env=dict(env, HOME=os.path.join(tmp, "home"), SOUL_INIT_NO_GH="1"))
+    check("... and init-status status still runs", r.returncode == 0
+          and "Traceback" not in r.stderr, r.stderr[-400:])
     write(os.path.join(target, "witness.md"), "# W\nID:           SOUL-7\nWHEN:         2026-10-22 / x\n")
     r = run(env, "index")
     idx = read(os.path.join(vault, "index.md"))
@@ -679,6 +751,11 @@ def main():
               for k in ("secret", "secret2", "nolabel", "casey", "unlabelled", "restricted-ok"))
           and "left out" not in r.stdout, r.stdout + idx)
     check("index skips a soul/ folder with no project.md", "[bare]" not in idx, idx)
+    check("index lists a project.md with no front matter",
+          "| [nofm](projects/nofm/project.md) |  | no | — |" in idx, idx)
+    check("index runs with a list under remote: or sidecar:; neither reads as a sidecar",
+          r.returncode == 0 and "| [listremote](projects/listremote/project.md) |  | yes | — |"
+          in idx and "| [listside](projects/listside/project.md) |  | no | — |" in idx, idx)
 
     # 5f — witness logs written as dated headings: the cell shows the date, never the
     #      title; whichever entry form comes last wins

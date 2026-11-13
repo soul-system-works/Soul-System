@@ -201,7 +201,8 @@ QUESTIONS = {
         "options": [
             {"value": "on", "label": "Yes, on its own",
              "description": "refreshes the handoff note in long sessions and after a "
-                            "summary, and makes small Mind updates; tells you in one line "
+                            "summary, and makes small updates to the project notes; tells "
+                            "you in one line "
                             "each time, and a no undoes it"},
             {"value": "off", "label": "No, I'll ask",
              "description": "nothing runs by itself; /soul-next reminds you, and you run "
@@ -221,7 +222,7 @@ QUESTIONS = {
                              "description": "runs gitleaks over past commits and shows what "
                                             "it finds; changes nothing"},
             "line-endings": {"key": "line-endings",
-                             "label": "Make line endings the same on Windows and WSL",
+                             "label": "Make line endings the same on Windows and Linux",
                              "description": "adds .gitattributes and converts files to Unix "
                                             "line endings, as one commit"},
         },
@@ -1085,6 +1086,9 @@ PLAN_KEYS = ("record", "stage", "names", "upkeep", "line-endings", "hand-hooks",
              "history-scan")
 WIDTH = 66  # plan.text is shown in the dialog's preview box
 EARLIER = " Your earlier answer."
+# A recorded value the tool does not read (`stage: Prototype`, `upkeep: maybe`): the line
+# shows the default that replaces it, and says why (the review of v3.13.0).
+NOT_UNDERSTOOD = " Your earlier answer \"{}\" was not understood; this replaces it."
 # Per key: the line's name, what the thing is (the owner's fixed meanings), the default
 # setup's value, and per value: (label, what the plan says it does, what it adds).
 SHORT_BLOCK = "a short rules block in CLAUDE.md"
@@ -1289,7 +1293,10 @@ def vault_plan(project):
                           "description": desc},
                          dict(zip(("value", "label", "description"), VAULT_OTHER))],
              "multi": False, "group": "vault", "recommended": 0}
+    # `template`: the same sentence with {path} left in, for a folder the owner types
+    # ("Somewhere else"); `text` is rendered for the default (the review of v3.13.0).
     confirm = {"key": "vault-confirm", "text": VAULT_CONFIRM.format(path=_display(path)),
+               "template": VAULT_CONFIRM,
                "options": [dict(zip(("value", "label", "description"), o))
                            for o in VAULT_CONFIRM_OPTIONS],
                "multi": False, "group": "vault", "recommended": None}
@@ -1341,7 +1348,8 @@ def _one_of(labels):
     return labels[0] if len(labels) == 1 else ", ".join(labels[:-1]) + ", or " + labels[-1]
 
 
-def plan_text(lines):
+def plan_text(lines, can_add=True):
+    """can_add: an extras round exists, so Modify setup can add the "Not set up" lines."""
     out = ["The setup Soul would make here:", ""]
     off = [ln for ln in lines if ln["default"]
            and OFF_BY_DEFAULT.get(ln["key"]) == ln["default"]["value"]]
@@ -1359,12 +1367,12 @@ def plan_text(lines):
             out += _wrap("Or: {}.".format(", ".join(o["label"] for o in ln["others"])),
                          "  ", "  ")
     if off:
-        out.append("Not set up (Modify setup can add them):")
+        out.append("Not set up (Modify setup can add them):" if can_add else "Not set up:")
         for ln in off:
             out += _wrap("{}: {}".format(ln["name"], ln["meaning"]), "  ", "    ")
     for ln in lines:
         if ln["key"] == "repairs":
-            out += _wrap("Also fixes: {}.".format(ln["default"]["text"]))
+            out += _wrap("{}: {}.".format(ln["name"], ln["default"]["text"]))
     out += ["", "Explain a line gives a short paragraph on each."]
     return "\n".join(out)
 
@@ -1387,8 +1395,12 @@ def build_plan(c, found, public, keys, choose, extras):
             value, in_go = choose[key], True
         default = None
         if value is not None:
-            default = {"value": value, "text": _says(c, key, value)[1]
-                       + (EARLIER if rec is not None and value == rec else "")}
+            raw = c["answers"].get(key)
+            note = (EARLIER if rec is not None and value == rec else
+                    NOT_UNDERSTOOD.format(raw[0]) if raw and rec is None else "")
+            if key == "names" and public == "yes":  # today's note, on the line itself
+                note += QUESTIONS["names"]["public_note"]
+            default = {"value": value, "text": _says(c, key, value)[1] + note}
             if in_go and key == "history-scan" and value == "yes":
                 todo.append(key)
             elif in_go:
@@ -1404,21 +1416,25 @@ def build_plan(c, found, public, keys, choose, extras):
     fixes = [(k, words) for k, words, _ in REPAIRS
              if found.get(k) and found[k]["action"] == "repair"]
     if fixes:
-        lines.append({"key": "repairs", "name": "Also fixes",
+        # On a fresh project these are first-time steps, not fixes (the review of v3.13.0).
+        lines.append({"key": "repairs",
+                      "name": "Also sets up" if c["fresh"] else "Also fixes",
                       "meaning": "What follows from earlier answers or from the files "
                                  "here, with no question.",
                       "waits": False,
                       "default": {"value": [k for k, _ in fixes],
                                   "text": ", ".join(w for _, w in fixes)},
                       "others": []})
-    text = plan_text(lines)
     by = {ln["key"]: ln for ln in lines}
     main = [k for k in ("stage", "names", "upkeep") if k in by]
     change_rounds = ([main] if main else []) + ([["extras"]] if extras else [])
+    text = plan_text(lines, can_add=bool(extras))
     changeable = main + ([k for k in EXTRAS if k in by] if extras else [])
     more = _more()
     opts = []
     for value, label, desc in NEXT_OPTIONS:
+        if value == "modify" and not change_rounds:  # nothing for it to open
+            continue
         o = {"value": value, "label": label, "description": desc}
         if value == "use":
             o["label"] = USE_MODIFIED if modified else label
@@ -1520,8 +1536,9 @@ def doc_text():
     out += [
         "5. After **Modify setup** the plan is shown again with your changes, and the "
         "first choice reads **{}**.".format(USE_MODIFIED), "",
-        "Nothing is written until you choose that first option. The setup then ends; the "
-        "one exception is a private vault, which adds two steps (see below).", "",
+        "Nothing is written until you choose that first option. The setup then ends, with "
+        "three exceptions: a private vault adds two steps (see below); typing private names "
+        "or choosing Released adds one.", "",
         "## Where Soul's log lives", "",
         "> " + QUESTIONS["record"]["text"], "",
     ]
@@ -1541,7 +1558,8 @@ def doc_text():
         "the plan lists them under \"Not set up\", and **Modify setup** can add them.", "",
         "## Also fixes", "",
         "Some things need no question: they follow from answers already given, or from "
-        "what Soul finds in the project. The plan names them on its \"Also fixes\" line.",
+        "what Soul finds in the project. The plan names them on its \"Also fixes\" line "
+        "(\"Also sets up\" in a project new to Soul).",
         "",
     ]
     out += ["- **{}**: {}".format(_sentence(words)[:-1], why) for _, words, why in REPAIRS]
@@ -1568,7 +1586,8 @@ def doc_text():
         "", "## Changing an answer later", "",
         "Each answer is one dated line in `.soul/init.md`. To be asked again, run "
         "`/soul-init revisit <setting>` (for example `/soul-init revisit stage`); with "
-        "no setting named, every answer is asked again.",
+        "no setting named, every remembered answer is forgotten; answers Soul reads from "
+        "the project's files stay.",
     ]
     return "\n".join(out) + "\n"
 

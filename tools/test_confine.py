@@ -182,6 +182,20 @@ def main():
     check("confine_argv: ...and from a worktree under the project", rv2 in opt(b2, "--tmpfs"),
           opt(b2, "--tmpfs"))
 
+    # 3c — R2 (review of v3.13.0): a work folder OUTSIDE the project (a review's
+    # --workdir) has no .soul link above it; given the project, the vault that project
+    # links into is hidden all the same. The control shows the walk alone misses it.
+    outside = os.path.join(tmp, "elsewhere", "candidate")
+    os.makedirs(outside)
+    with Env({"HOME": home, "PATH": "/usr/bin"}):
+        o0 = c.confine_argv(["true"], outside, which=lambda n: "/x/bwrap", platform="linux")
+        o1 = c.confine_argv(["true"], outside, which=lambda n: "/x/bwrap", platform="linux",
+                            project=proj2)
+    check("confine_argv: a work folder outside the project, given the project: the vault "
+          "it links into is hidden (not found from the work folder alone)",
+          rv2 in opt(o1, "--tmpfs") and rv2 not in opt(o0, "--tmpfs")
+          and opt(o1, "--bind") == [os.path.realpath(outside)], (opt(o0, "--tmpfs"), o1))
+
     shutil.rmtree(tmp, ignore_errors=True)
 
     # 4 — real confinement, when bubblewrap is here

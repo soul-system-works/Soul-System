@@ -296,7 +296,9 @@ def record(args, ap):
         # The check runs code a worker wrote (the 2026-10-27 review of v3.7.0): under
         # bubblewrap with the allowlisted environment, or not at all — never bare.
         c = _confine()
-        argv = c.confine_argv(["/bin/sh", "-c", args.check], cwd)
+        # The project too, not only --cwd: a check folder outside the project has no
+        # .soul link above it, and the project's vault stayed readable (v3.13.0 review).
+        argv = c.confine_argv(["/bin/sh", "-c", args.check], cwd, project=project)
         if argv is None:
             print("error: --confine needs bubblewrap (`bwrap`) on Linux — install it "
                   "(e.g. `sudo apt install bubblewrap`); nothing run, nothing recorded",

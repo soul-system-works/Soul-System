@@ -16,7 +16,7 @@ When you run `/soul-init` in a project, Soul shows the whole setup it would make
    - **Not now**: Nothing is written. Run /soul-init again when you are ready.
 5. After **Modify setup** the plan is shown again with your changes, and the first choice reads **Use this setup**.
 
-Nothing is written until you choose that first option. The setup then ends; the one exception is a private vault, which adds two steps (see below).
+Nothing is written until you choose that first option. The setup then ends, with three exceptions: a private vault adds two steps (see below); typing private names or choosing Released adds one.
 
 ## Where Soul's log lives
 
@@ -58,7 +58,7 @@ To change it later, run `/soul-init revisit names`.
 
 Soul's handoff note and project notes, kept current.
 
-- **Yes, on its own (the default)**: Refreshes the handoff note in long sessions and after a summary, and makes small Mind updates; tells you in one line each time, and a no undoes it.
+- **Yes, on its own (the default)**: Refreshes the handoff note in long sessions and after a summary, and makes small updates to the project notes; tells you in one line each time, and a no undoes it.
 - **No, I'll ask**: Nothing runs by itself; /soul-next reminds you, and you run /soul-handoff and /soul-distill.
 
 To change it later, run `/soul-init revisit upkeep`.
@@ -67,7 +67,7 @@ To change it later, run `/soul-init revisit upkeep`.
 
 Windows and Linux tools end lines differently, so files can show as changed when they are not.
 
-- **Make line endings the same on Windows and WSL (the default)**: Adds .gitattributes and converts files to Unix line endings, as one commit.
+- **Make line endings the same on Windows and Linux (the default)**: Adds .gitattributes and converts files to Unix line endings, as one commit.
 - **No**: Nothing changes, and this is not asked again.
 
 Offered when the rule file is missing or a file was committed with Windows line endings.
@@ -98,7 +98,7 @@ Hand-commit hooks and the history scan are not set up by the default setup; the 
 
 ## Also fixes
 
-Some things need no question: they follow from answers already given, or from what Soul finds in the project. The plan names them on its "Also fixes" line.
+Some things need no question: they follow from answers already given, or from what Soul finds in the project. The plan names them on its "Also fixes" line ("Also sets up" in a project new to Soul).
 
 - **The Soul line in CLAUDE.md**: The one line that loads Soul's rules is added to CLAUDE.md (made if missing), or pointed at where Soul is now.
 - **Hand-commit hooks**: Hooks you chose before are put back, or pointed at where Soul is now.
@@ -130,4 +130,4 @@ Soul then shows what would move, moving nothing yet, and asks (with the folder y
 
 ## Changing an answer later
 
-Each answer is one dated line in `.soul/init.md`. To be asked again, run `/soul-init revisit <setting>` (for example `/soul-init revisit stage`); with no setting named, every answer is asked again.
+Each answer is one dated line in `.soul/init.md`. To be asked again, run `/soul-init revisit <setting>` (for example `/soul-init revisit stage`); with no setting named, every remembered answer is forgotten; answers Soul reads from the project's files stay.

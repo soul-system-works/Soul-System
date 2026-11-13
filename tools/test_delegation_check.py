@@ -645,6 +645,30 @@ class DelegationCheck(unittest.TestCase):
         self.assertIs(ev["data"]["check"]["passed"], True)
         self.assertEqual(ev["data"]["check"]["tail"], "confined ok")
 
+    def test_confine_hides_the_vault_the_project_links_into(self):
+        # R2 (review of v3.13.0): the check runs in a folder outside the project (no
+        # .soul link above it); the vault the --project's .soul links into, which holds
+        # other projects' records, is hidden all the same.
+        wrap = self.fake_bwrap()
+        v2 = os.path.join(self.tmp, "vault2")
+        os.makedirs(os.path.join(v2, "projects", "me", "soul"))
+        os.makedirs(os.path.join(v2, "projects", "other", "soul"))
+        open(os.path.join(v2, "vault.md"), "w").close()
+        proj = os.path.join(self.tmp, "proj")
+        os.makedirs(proj)
+        os.symlink(os.path.join(v2, "projects", "me", "soul"), os.path.join(proj, ".soul"))
+        work = os.path.join(self.tmp, "elsewhere", "work")
+        os.makedirs(work)
+        env = dict(self.env, PATH=wrap + os.pathsep + self.env.get("PATH", ""),
+                   HOME=os.path.join(self.tmp, "home"),
+                   XDG_CONFIG_HOME=os.path.join(self.tmp, "xdg"))
+        out = self.record("echo ok", "--confine", "--cwd", work, "--project", proj, env=env)
+        self.assertEqual(out.returncode, 0, out.stdout + out.stderr)
+        with open(self.wraplog) as fh:
+            argv = json.load(fh)["argv"]
+        hidden = [argv[i + 1] for i, a in enumerate(argv[:-1]) if a == "--tmpfs"]
+        self.assertIn(os.path.realpath(v2), hidden)
+
     def test_confine_without_bwrap_refuses_and_records_nothing(self):
         empty = os.path.join(self.tmp, "no-bwrap")
         os.makedirs(empty)

@@ -79,6 +79,7 @@ import socket
 import subprocess
 import sys
 import time
+import unicodedata
 
 _HERE = os.path.dirname(os.path.abspath(__file__))
 
@@ -175,7 +176,7 @@ def init(path, name=None, register=False):
             made.append(rel)
     print("vault at {}: {}".format(path, "created " + ", ".join(made) if made
                                    else "already scaffolded, nothing written"))
-    _init_git(path)
+    _init_git(path, made)
     if register:
         if not current:
             os.makedirs(os.path.dirname(machine_file()), exist_ok=True)
@@ -188,13 +189,14 @@ def init(path, name=None, register=False):
 SCAFFOLD = ("vault.md", ".gitignore", "index.md", ".gitattributes", "projects/.gitkeep")
 
 
-def _init_git(path):
+def _init_git(path, made=()):
     """Make a new vault a git repo, the scaffold its first commit: `sync` needs a repo of
     its own, and a vault made by init alone could not be synced until someone ran git by
     hand (v3.13.0, SOUL-I092). Only the scaffold is committed, never other files already
     in the folder. A folder that is already its own repo is never re-initialised or
-    committed in; one inside another repo's work tree is left as it is (sync refuses
-    it, so it is said here). Each outcome is one line; none is an error."""
+    committed in (when scaffold files were added there, one line says they are not
+    committed); one inside another repo's work tree is left as it is (sync refuses it,
+    so it is said here). Each outcome is one line; none is an error."""
     try:
         top = subprocess.run(["git", "-C", path, "rev-parse", "--show-toplevel"],
                              capture_output=True, text=True)
@@ -206,6 +208,10 @@ def _init_git(path):
             print("note: {} is inside another git repo ({}) — a vault inside another repo "
                   "cannot be synced; make it a folder outside any repo".format(
                       path, top.stdout.strip()))
+        elif made:
+            print("note: {} is already a git repo — the scaffold files added ({}) were not "
+                  "committed; commit them there when you are ready".format(
+                      path, ", ".join(made)))
         return
     r = _vault_git(path, "init", "-q", "-b", "main")
     if r.returncode != 0:
@@ -213,8 +219,12 @@ def _init_git(path):
               "synced".format((r.stdout + r.stderr).strip()))
         return
     r = _vault_git(path, "add", "--", *SCAFFOLD)
-    if r.returncode == 0:
-        r = _vault_git(path, "commit", "-q", "-m", "vault: scaffold (vault.py init)")
+    if r.returncode != 0:  # e.g. a .gitignore already here ignores a scaffold file
+        print("made it a git repo on branch main, but there is no first commit yet: git "
+              "add failed ({}) — commit the scaffold by hand".format(
+                  " ".join((r.stdout + r.stderr).split())[:200]))
+        return
+    r = _vault_git(path, "commit", "-q", "-m", "vault: scaffold (vault.py init)")
     if r.returncode != 0:
         print("made it a git repo on branch main, but there is no first commit yet: git "
               "commit failed ({}) — set git's user.name and user.email, then commit the "
@@ -248,6 +258,9 @@ def _norm_remote(url):
     return host + "/" + path
 
 
+LIST_KEYS = ("tags", "contributes")
+
+
 def _frontmatter(path):
     try:
         text = open(path, encoding="utf-8").read()
@@ -256,11 +269,14 @@ def _frontmatter(path):
     m = re.match(r"^---\n(.*?)\n---", text, re.S)
     out, last = {}, None
     for line in (m.group(1).splitlines() if m else []):
-        # A YAML list under an empty `key:` (Obsidian's `tags:`) reads as a Python list;
-        # every other value stays the string after the colon.
+        # A YAML list under an empty `tags:` (Obsidian's form) or `contributes:` reads as
+        # a Python list; every other value stays the string after the colon. A list
+        # under any other key (a hand-edited `remote:`) is not read: callers expect a
+        # string there, and one once crashed check, index and status (review, v3.13.0).
         item = re.match(r"^\s*-\s+(.*)$", line)
         if item and last is not None and (out[last] == "" or isinstance(out[last], list)):
-            out[last] = (out[last] or []) + [item.group(1).strip().strip("\"'")]
+            if last in LIST_KEYS:
+                out[last] = (out[last] or []) + [item.group(1).strip().strip("\"'")]
             continue
         k, sep, v = line.partition(":")
         if sep:
@@ -669,21 +685,38 @@ ALSO_PARTIAL_EXIT = 5
 
 # ---------------------------------------------------------------- link
 
+# YAML reads these bare words as booleans or null, not text: a tag spelled so is
+# written in double quotes (any case; `~` cannot pass tag_list, listed for completeness).
+YAML_WORDS = ("true", "false", "null", "yes", "no", "on", "off", "~")
+
+
+def _tag_char(ch):
+    """Letters of any script (with their combining marks), digits, `_`, `-`, `/`."""
+    return ch.isalnum() or ch in "_-/" or unicodedata.category(ch).startswith("M")
+
+
 def tag_list(tags):
     """Typed tags in Obsidian's form: a leading `#` dropped, inner spaces made hyphens.
     Raises on a tag Obsidian would not take (obsidian.md/help/tags, checked 2026-11-13):
-    empty, or digits only. Blank items (a trailing comma) are skipped."""
+    empty, digits only, or any character but letters, digits, `_`, `-` and `/` — such a
+    character (`*star`, `[open`) once wrote front matter a YAML reader rejects whole
+    (review of v3.13.0). Blank items (a trailing comma) are skipped."""
     out = []
     for raw in tags:
         if not raw.strip():
             continue
         t = re.sub(r"\s+", "-", raw.strip().lstrip("#").strip())
-        if not t or t.isdigit():
-            raise VaultError("tag {!r}: Obsidian needs at least one character that is not "
-                             "a number (and no spaces; a slash nests) — nothing changed"
+        if not t or t.isdigit() or not all(_tag_char(ch) for ch in t):
+            raise VaultError("tag {!r}: Obsidian takes only letters, digits, '_', '-' and "
+                             "'/' (a slash nests; spaces become hyphens), with at least one "
+                             "character that is not a number — nothing changed"
                              .format(raw.strip()))
         out.append(t)
     return out
+
+
+def _tag_yaml(tag):
+    return '"{}"'.format(tag) if tag.lower() in YAML_WORDS else tag
 
 
 def link(project, key, label=None, tags=(), vault=None, dry_run=False, sidecar=False,
@@ -849,15 +882,19 @@ def link(project, key, label=None, tags=(), vault=None, dry_run=False, sidecar=F
 
     pm = os.path.join(home, "project.md")
     if not os.path.exists(pm):
-        say("write {}", pm)
+        say("write {}{}", pm, " with tags: " + ", ".join(tags) if tags else "")
         if not dry_run:
             remote = re.sub(r"^([a-z+]+://)[^@/]+@", r"\1", _remote(project) or "")
             with open(pm, "w", encoding="utf-8") as f:
                 f.write("---\nkey: {}\n{}{}remote: {}\nsoul: true\n{}---\n\n# {}\n".format(
                     key, "label: {}\n".format(label) if label else "",
-                    "tags:\n" + "".join("  - {}\n".format(t) for t in tags) if tags else "",
+                    "tags:\n" + "".join("  - {}\n".format(_tag_yaml(t)) for t in tags)
+                    if tags else "",
                     remote, "sidecar: true\n" if sidecar else "", key))
     else:
+        if tags:
+            print("note: {} already exists — tags not written; edit its tags: list there "
+                  "to change them".format(pm))
         if label and _frontmatter(pm).get("label") not in (None, label):
             print("note: {} says label {} — kept; edit it there to change it"
                   .format(pm, _frontmatter(pm).get("label")))

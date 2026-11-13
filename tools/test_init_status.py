@@ -953,10 +953,11 @@ def go_keys(plan):
 
 
 def also_fixes(plan):
-    """The plan text's "Also fixes" line with its wrapped continuation, flattened."""
+    """The plan text's "Also fixes" line ("Also sets up" on a fresh project) with its
+    wrapped continuation, flattened."""
     out, on = [], False
     for ln in plan.get("text", "").splitlines():
-        if ln.startswith("Also fixes:"):
+        if ln.startswith(("Also fixes:", "Also sets up:")):
             on = True
         elif on and not ln.startswith("  "):
             break
@@ -1310,6 +1311,86 @@ def plan_checks(tmp, env, envl, envv, vroot, mod):
           all(x.returncode == 0 for x in rs) and tree_hash(pf) == before
           and not os.path.exists(os.path.join(pf, ".soul")),
           [(x.returncode, x.stderr[-200:]) for x in rs])
+
+    # 46 — the review of v3.13.0: the fixes asked for (R3, R7, R8, R9, R11)
+    # R3: a typed folder gets the confirm question too: the sentence with {path} left in.
+    conf = plan_of(envv, pv)[1].get("followups", {}).get("vault-confirm", {})
+    check("46 R3 vault-confirm carries the template for a typed folder; text stays rendered",
+          conf.get("template") == "Move this project's log into the vault at {path}?"
+          and conf.get("text") == "Move this project's log into the vault at {}?".format(vroot),
+          conf)
+    # R7: only the record waits, so Modify setup has nothing to open: it is left out.
+    po = repo(tmp, "plan-only-record", {"CLAUDE.md": IMPORT, ".gitattributes": RULES})
+    write(os.path.join(po, ".soul", "init.md"),
+          "stage:         not-now      2026-11-01\nnames:         none         2026-11-01\n"
+          "upkeep:        on           2026-11-01\nhand-hooks:    no           2026-11-01\n"
+          "history-scan:  declined     2026-11-01\n")
+    _, plan, _ = plan_of(envl, po)
+    nq = (plan.get("screen") or [{}])[-1]
+    check("46 R7 only the record waits: no change rounds, and no Modify setup option",
+          [k for k in lines_of(plan) if k != "repairs"] == ["record"]
+          and plan.get("change_rounds") == []
+          and [o["value"] for o in nq.get("options", [])] == ["use", "explain", "not-now"],
+          (plan.get("lines"), plan.get("change_rounds"), nq))
+    # ... and "Not set up" says Modify setup can add them only when it can: with line
+    # endings forced (--ask), the extras are asked as a picker, not under Modify setup.
+    _, plan_f, _ = plan_of(envl, pf, "--ask", "line-endings")
+    t_free, t_forced = texts["fresh"], plan_f.get("text", "")
+    check("46 R7 'Not set up' names Modify setup only when an extras round exists",
+          "Not set up (Modify setup can add them):" in t_free
+          and plan_f.get("change_rounds") == [["stage", "names", "upkeep"]]
+          and "Not set up:" in t_forced and "Modify setup can add" not in t_forced,
+          (plan_f.get("change_rounds"), t_forced))
+    # R8: a recorded value the tool does not understand: the line says so and shows the
+    # default that replaces it.
+    pw = repo(tmp, "plan-not-understood", {"README.md": "x\n"})
+    write(os.path.join(pw, ".soul", "init.md"), "stage:         Prototype    2026-11-01\n"
+          "upkeep:        maybe        2026-11-01\n")
+    _, plan, _ = plan_of(env, pw)
+    ln = lines_of(plan)
+    st_t = ln.get("stage", {}).get("default") or {}
+    up_t = ln.get("upkeep", {}).get("default") or {}
+    check("46 R8 an answer not understood: the line says so, with the default replacing it",
+          st_t.get("value") == "not-now" and up_t.get("value") == "on"
+          and st_t.get("text", "").startswith("Not now: nothing is written")
+          and 'Your earlier answer "Prototype" was not understood' in st_t.get("text", "")
+          and 'Your earlier answer "maybe" was not understood' in up_t.get("text", "")
+          and ["stage", "not-now"] in plan.get("go", []), (st_t, up_t, plan.get("go")))
+    # R9: in a repo known to be public, the Private names line carries today's note.
+    _, plan, _ = plan_of(env, pq)
+    nm = lines_of(plan).get("names", {}).get("default") or {}
+    _, plan_p, _ = plan_of(env, pp)
+    check("46 R9 public repo: the names line carries the public note, default still none",
+          nm.get("value") == "none" and nm.get("text", "").endswith(
+              "This repo is public \u2014 a name committed here is public.")
+          and "public" not in (lines_of(plan_p).get("names", {}).get("default") or {})
+          .get("text", "x public"), (nm, lines_of(plan_p).get("names")))
+    # R11: the wording.
+    st, plan, _ = plan_of(envl, pf)
+    by = {i["key"]: i for i in st.get("items", [])}
+    ex_opts = by.get("extras", {}).get("question", {}).get("options", [])
+    up_opts = by.get("upkeep", {}).get("question", {}).get("options", [])
+    check("46 R11 the line-endings option and the upkeep option, reworded",
+          "Make line endings the same on Windows and Linux" in [o["label"] for o in ex_opts]
+          and up_opts and "makes small updates to the project notes"
+          in up_opts[0]["description"] and "Mind" not in up_opts[0]["description"],
+          (ex_opts, up_opts))
+    fresh_lines = plan.get("text", "").splitlines()
+    fix_lines = plan_of(env, fx[0][2])[1].get("text", "").splitlines()
+    fix_lines2 = plan_of(env, fx[1][2])[1].get("text", "").splitlines()
+    check("46 R11 a fresh project's plan says 'Also sets up:', any other 'Also fixes:'",
+          any(x.startswith("Also sets up:") for x in fresh_lines)
+          and not any(x.startswith("Also fixes:") for x in fresh_lines)
+          and any(x.startswith("Also fixes:") for x in fix_lines2)
+          and not any(x.startswith("Also sets up:") for x in fix_lines2),
+          (fresh_lines, fix_lines, fix_lines2))
+    page = " ".join(run(env, "doc").stdout.split())
+    check("46 R11 the page names every step the setup can add, and what revisit forgets",
+          "a private vault adds two steps" in page
+          and "typing private names or choosing Released adds one" in page
+          and "the one exception" not in page
+          and "every remembered answer is forgotten; answers Soul reads from the project's "
+              "files stay" in page and "every answer is asked again" not in page, page[-900:])
 
 
 if __name__ == "__main__":
