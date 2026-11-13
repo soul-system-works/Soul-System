@@ -9689,5 +9689,33 @@ CONSEQUENCE:  The 3.12.0 row's "Unrun: no model has run the self-distill path" i
               the vault undo by copy. With a Mind over its cap and no recorded cap
               number, a self-run distill applies nothing unless a change adds no
               line.
-STATUS:       Open — the four held changes and the cap's number wait for the Body.
+STATUS:       Closed 2026-11-12. The Body: "yes" — the four changes applied as one
+              commit (69429bb), the held file deleted. No cap number was given; the
+              Body asked instead where Mind items could graduate to (SOUL-I093).
+```
+
+```
+ID:           SOUL-239
+WHEN:         2026-11-13 / Soul-System session, during the /soul-init rework discussion
+WHERE:        hooks/upkeep.py (GROWTH_TOKENS = 50000); SOUL-A032; .soul/handoff.md
+WHAT:         The Body: "as an aside, i'm thinking we should increase the handoff
+              frequency from 50k to maybe 100k. let me know what you think of that and
+              why". Put to the Body: in this session the upkeep hook stopped the work
+              three times (at about 55k, 52k and 63k tokens), each a rewrite of a note
+              of about 120 lines, a vault save and an extra turn while the Body waited
+              on a discussion answer; the round, the build plan and the choices
+              document were already on disk each time; loaded skill texts count
+              toward the step; a summary still triggers a refresh whatever the number;
+              against it, a crash can lose up to twice as much unrecorded conversation
+              (SOUL-237). The token cost of the refreshes was not measured; the
+              evidence is one session. One of the three stops came from the hook not
+              seeing a cursor edited through Bash (the 3.12.0 row's known limit). The
+              Body: "increase to 100k as the default, not just this project".
+TYPE:         witness (Body decision)
+CONSEQUENCE:  The step becomes about 100,000 tokens for every project (the plugin's
+              default), replacing the 50,000 the Body chose in SOUL-A032. To change:
+              the constant and its reason in hooks/upkeep.py, hooks/test_upkeep.py, and
+              the files that state "50,000" (the handoff and init skills, the user
+              guide, contract-reasons). Planned with v3.13.0.
+STATUS:       Open — not built.
 ```
