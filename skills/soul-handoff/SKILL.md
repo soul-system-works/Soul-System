@@ -288,11 +288,20 @@ pre-run cursor names that path (in NEXT STEP or OPEN GATES), so a later
    consistency. A vague handoff is the named cause of duplicated work and gaps.
 5. Report that the cursor was written and remind the Body that the next session
    should read `.soul/handoff.md` first. A run that started itself says one line
-   instead — *"cursor refreshed (about 60k tokens since the last)"* or *"cursor
+   instead — *"☀ cursor refreshed (about 110k tokens since the last)"* or *"☀ cursor
    refreshed (a summary happened)"* — adds "to turn this off: /soul-init revisit
    upkeep" when the hook's reason asked for it, and goes back to the work. **Then name the `NEW ENTRIES` in one
-   line** — *"Added THERMAL-231, THERMAL-I086 — say no to strike any."* No question;
+   line** — *"☀ Added THERMAL-231, THERMAL-I086 — say no to strike any."* No question;
    silence keeps them. A "no" is recorded the way `/soul-capture` says (*Who fires this*).
+
+   **The sun mark.** `☀ ` (U+2600 and a space) starts every line that reports
+   something the Soul did on its own — this refresh, a Mind refresh or its held
+   changes (`/soul-distill` step 8), a capture the model started (`/soul-capture`) —
+   and nothing else, so those lines can be told at a glance from an answer to what
+   was asked. The Body, 2026-11-13: "when the soul-system does some auto thign like
+   update the mind or soul-handoff is there a little sun symbol that can preceed it?"
+   A line the Body asked for (a `/soul-handoff` they typed, a witness entry they
+   dictated) carries no mark.
 
 ## What not to do
 

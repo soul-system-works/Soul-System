@@ -325,13 +325,15 @@ Then the signal is the first accumulation that would fill one (see /soul-init's
        `cp .ai/distill/mind-before-<date>.md .soul/mind.md` and `vault.py sync .` again.
      - **Not in git** (an ignored record): nothing to commit; the undo is the same `cp`.
 
-     Then one line to the Body: *"Mind refreshed: <what changed> — say no to undo
-     (`git revert <sha>`)"*, with the vault or untracked undo in its place. The first
+     Then one line to the Body: *"☀ Mind refreshed: <what changed> — say no to undo
+     (`git revert <sha>`)"*, with the vault or untracked undo in its place (`☀ ` marks
+     a line about something the Soul did on its own: `/soul-handoff` step 5; a distill
+     the Body asked for carries no mark). The first
      such line in a project that has no `upkeep:` answer adds "to turn this off:
      /soul-init revisit upkeep".
    - **Hold the major changes.** Save the full draft as
      `.ai/distill/mind-held-<date>.md` — the name `/soul-next` looks for — and say one
-     line to the Body: *"Mind: N changes wait for your yes — <short names>, in
+     line to the Body: *"☀ Mind: N changes wait for your yes — <short names>, in
      .ai/distill/mind-held-<date>.md"*. Nothing major is applied until the Body says
      yes; on the yes, apply and commit it the same way, then delete the held file. On
      a no, leave the Mind as it is and rename the held file to

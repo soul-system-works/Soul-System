@@ -110,8 +110,9 @@ source of truth; this loads them and continues.
    current design frame" rather than "the LIVE AL"; plain language throughout.
 
    **Then name the cursor's `NEW ENTRIES` in one line**, if it lists any — every
-   entry the model added last session: *"Last session added THERMAL-231,
-   THERMAL-I086 — say no to strike any."* No question; they are already
+   entry the model added last session: *"☀ Last session added THERMAL-231,
+   THERMAL-I086 — say no to strike any."* (`☀ ` marks a line about something the
+   Soul did on its own: `/soul-handoff` step 5.) No question; they are already
    accepted, and silence keeps them. A no → the entry stays and says so, corrected
    forward: a witness entry's `STATUS` records the no; an idea gets
    `— declined by the Body <date>` appended (`/soul-capture`, *Who fires this*).

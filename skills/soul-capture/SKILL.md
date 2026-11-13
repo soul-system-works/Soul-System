@@ -38,8 +38,10 @@ caught it, SOUL-163/164) — under these limits:
   and wait, and do not ask. This holds whether or not the Body is there. A
   witness entry the Body types is appended at once too, and shown in full
   (witness step 5).
-- **Say so in one short line** in the reply that appended it, e.g. *"Added
+- **Say so in one short line** in the reply that appended it, e.g. *"☀ Added
   THERMAL-231 to witness.md — say no to strike it."* No question; silence keeps it.
+  The `☀ ` mark starts a line about something the Soul did on its own
+  (`/soul-handoff` step 5); an entry the Body typed carries none.
   `/soul-handoff` lists it again in the cursor's `NEW ENTRIES`.
 - **On the Body's no, the entry stays and is marked declined** — the record is
   append-only, corrected forward:
@@ -142,7 +144,7 @@ at once; a Body-typed one is shown in full afterwards (step 5).
      entry> — say no to strike it, or tell me what to change."* A change is made the
      way the record allows: in an entry just appended this session, edit it; later,
      correct it forward.
-   - **Model-started:** name it in one line with the opt-out — *"Added THERMAL-231
+   - **Model-started:** name it in one line with the opt-out — *"☀ Added THERMAL-231
      to witness.md — say no to strike it"* (*Who fires this*).
 
    *Why no draft step (2026-11-05, v3.9.1):* v3.9.0 kept a go / edit / cancel draft
