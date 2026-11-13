@@ -213,7 +213,7 @@ def _reason(why, tokens, answer):
             .format(tokens // 1000))
     text = ("{} The handoff cursor (.soul/handoff.md) is stale: {}. Refresh it now with "
             "/soul-handoff (it runs on its own here; no need to ask), tell the owner in one "
-            "line that starts with \"\u2600 \", then stop.".format(_MARK, what))
+            "line that starts with \"\u2600  \", then stop.".format(_MARK, what))
     if answer is None:
         text += (" The owner has not chosen yet whether upkeep runs on its own: add to "
                  "that line \"to turn this off: /soul-init revisit upkeep\".")
@@ -255,7 +255,7 @@ def compact(data):
         "additionalContext": (
             "{} A summary just happened. Before other work, re-read .soul/handoff.md "
             "(contract rule 6), then refresh it with /soul-handoff (it runs on its own "
-            "here) and tell the owner in one line that starts with \"\u2600 \"."
+            "here) and tell the owner in one line that starts with \"\u2600  \"."
             .format(_MARK)),
     }}
 

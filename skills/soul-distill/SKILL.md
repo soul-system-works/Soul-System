@@ -325,15 +325,15 @@ Then the signal is the first accumulation that would fill one (see /soul-init's
        `cp .ai/distill/mind-before-<date>.md .soul/mind.md` and `vault.py sync .` again.
      - **Not in git** (an ignored record): nothing to commit; the undo is the same `cp`.
 
-     Then one line to the Body: *"☀ Mind refreshed: <what changed> — say no to undo
-     (`git revert <sha>`)"*, with the vault or untracked undo in its place (`☀ ` marks
+     Then one line to the Body: *"☀  Mind refreshed: <what changed> — say no to undo
+     (`git revert <sha>`)"*, with the vault or untracked undo in its place (`☀  ` marks
      a line about something the Soul did on its own: `/soul-handoff` step 5; a distill
      the Body asked for carries no mark). The first
      such line in a project that has no `upkeep:` answer adds "to turn this off:
      /soul-init revisit upkeep".
    - **Hold the major changes.** Save the full draft as
      `.ai/distill/mind-held-<date>.md` — the name `/soul-next` looks for — and say one
-     line to the Body: *"☀ Mind: N changes wait for your yes — <short names>, in
+     line to the Body: *"☀  Mind: N changes wait for your yes — <short names>, in
      .ai/distill/mind-held-<date>.md"*. Nothing major is applied until the Body says
      yes; on the yes, apply and commit it the same way, then delete the held file. On
      a no, leave the Mind as it is and rename the held file to
@@ -460,4 +460,4 @@ a one-line notice and the undo, major ones held; `tools/mind-guard.py` the brake
 runs itself, graded, from SOUL-A032 (2026-11-12).
 `/soul-mind` viewer, cross-project synthesis, and reproduction-fidelity
 automation remain deferred.
-**Amended:** 2026-11-13 (v3.13.0) — `☀ ` starts the two lines a self-run distill says.
+**Amended:** 2026-11-13 (v3.13.0) — `☀  ` starts the two lines a self-run distill says.

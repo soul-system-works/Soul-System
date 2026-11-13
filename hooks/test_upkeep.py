@@ -118,7 +118,7 @@ class Upkeep(unittest.TestCase):
         self.assertIn("/soul-handoff", out["reason"])
         self.assertIn("about 101k tokens", out["reason"])
         # The owner's sun mark starts a line about what Soul did on its own (SOUL-239).
-        self.assertIn('in one line that starts with "\u2600 "', out["reason"])
+        self.assertIn('in one line that starts with "\u2600  "', out["reason"])
         # The next turn ignores the block and stops again: no second block ...
         self.add(user(), size(START + 110000))
         self.assertIsNone(self.run_hook())
@@ -251,7 +251,7 @@ class Upkeep(unittest.TestCase):
         self.assertEqual(out["hookSpecificOutput"]["hookEventName"], "SessionStart")
         self.assertIn("re-read .soul/handoff.md", ctx)
         self.assertIn("/soul-handoff", ctx)
-        self.assertIn('in one line that starts with "\u2600 "', ctx)
+        self.assertIn('in one line that starts with "\u2600  "', ctx)
 
     def test_compact_start_silent_when_off_or_no_cursor(self):
         self.answer("upkeep:       off          2026-11-12")
