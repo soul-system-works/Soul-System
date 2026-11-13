@@ -2876,6 +2876,8 @@ DISCUSSED: (2026-10-26) Options: do nothing · stored answers · doctor-style
            recorded "no" is not re-asked (/soul-init revisit reopens); fixed
            wording; tools/init-status.py works out the state. Deeper research:
            not worth it. The Body took the five proposed calls (2026-10-26).
+NOTES:     2026-11-12 — how the questions are shown is reopened in SOUL-I092's round 1
+           (a plan first). The answers file and the re-run rule built here stay.
 STATUS:    Built — v3.6.0 (2026-10-26; live trials SOUL-221).
 ```
 
@@ -3166,7 +3168,10 @@ WHY:       The Body: "i think several dcisions as one grilling may make sense fo
            behind each of the answers rather than your picker". Not a contract
            rule (SOUL-235, ruling 4). Counter-evidence: /soul-init's fixed single
            questions were answered without trouble the same day.
-STATUS:    Raw
+DISCUSSED: round 1, 2026-11-12, together with SOUL-I092 — see its DISCUSSED block.
+           For this idea: one written round was weighed (option D) and not taken;
+           the Body's lean is a plan shown first, then Go / Change something.
+STATUS:    Maturing
 ```
 
 ```
@@ -3298,5 +3303,81 @@ RAW:       A lighter start for someone new to Soul, and /soul-init improved agai
            a five-minute floor file tied Soul on quality and is cheaper.
 NOTES:     2026-11-12 — asked which note the Body meant, the Body: "yes those all cover my
            soul-init note" (SOUL-I090, I082, I016, I081).
-STATUS:    Raw
+DISCUSSED: round 1, 2026-11-12, the five ideas together (review page: artifact
+           McGXVNW2oU1wa5iX7uLn6Z, private; working file
+           .ai/review/soul-init-setup-options.html).
+           Found first: a fresh project with no remote is asked 6 questions on three
+           picker screens (public; record, stage, names, upkeep; three safety ticks),
+           and the vault adds label, tags, key, private paths and a yes. Only three
+           answers change later questions: public (the wording and recommendation of
+           record and names), record = vault, stage = released. The vault option is
+           already hidden on a machine with no vault.
+           Body's answers to the clarify round: (1) a first run still asks too much —
+           "yes"; (2) who it is for — "i don't know if i like the divisions you name
+           but essentially a person should be presented with reasonable options and
+           they should understand where their choices will lead and not have to guess
+           on when the setup will end. it should be clear, maybe there is a decision
+           tree type approach?"; (3) one written round — "not necesarily one written
+           round as, like the grilling skill, some answers effect otherones unless we
+           think there is an elegant way to show the options in a single round";
+           (4) defaults taken unasked — "possibly, not sure"; (5) drop I016 unless
+           seen lately, keep I081's parked `.ai/` half out — "ok"; (6) why it matters
+           — "sort of, see #2".
+           Reframe: not how few questions, but whether a person can see the whole
+           setup before it starts — the options, where each leads, where it ends.
+           Options weighed: A today's three picker screens · B a map and a step count
+           first, then the same questions · C the recommended setup shown as a plan,
+           then Go / Change something · D one written round with the branches drawn
+           as "if" lines.
+           Strongest objection (to C): the record question was made asked, never
+           assumed, on evidence — two of six adopting projects had their record left
+           out of git, one by drift (2026-08-20) — and a one-word Go is weaker consent
+           than answering it.
+           Sources (a short search, some reached only through summaries):
+           nextjs.org/docs/app/api-reference/cli/create-next-app (recommended defaults
+           or customize); design.visa.com/patterns/wizard/usage (branching wizards);
+           design-system.service.gov.uk/patterns/question-pages and
+           designsystem.gov.scot/patterns/check-answers (one question at a time, then
+           a summary to change); nngroup.com/articles/wizards; clig.dev and
+           PatternFly's CLI handbook (visible defaults).
+           Lean: C with B's branch notes inside the plan. Would move to B if a trial
+           shows a surprised Go, or the plan outgrows one screen.
+           The Body: "i lean c. it looks more like if we add more options they will
+           naturally fit in. my only concern is someone being able to understand what
+           each option means including the public or not". Second draft: each plan
+           line says what the thing is before what is done; a choice "Explain a
+           line". The Body: "that new is better. maybe there is some doc/html in the
+           github a person can link to for more explanation if needed if that is ok
+           to do in plugins? also, again i still don't understand what public or not
+           actually does. is it the vault, commit to project, or dont track in
+           project? also, having a vault should be an option to create it if it
+           doesn't exist". Third draft (C3): no separate public question — its meaning
+           sits on the three record options (in git: whoever can read the repo can
+           read the log; a private vault; only this machine), and the record line
+           waits for an answer unless GitHub reports the repo private; "In a private
+           vault" is offered even with no vault on the machine (`vault.py init`
+           exists; /soul-init never offered it); a link to a per-choice page at the
+           release tag, the same file "Explain a line" reads from the plugin.
+           C3 reverses two decisions, both put to the Body: "repo visibility before
+           the tracking question" (mining pass 2, SOUL-202), and SOUL-I091 ROUND 2's
+           "no vault on day one", which becomes "never the suggested answer on day
+           one, but offered". Asked whether C3 reads clearly and both reversals are
+           wanted, and whether to write this round here, the Body: "Yes and yes".
+           What we may be missing: (1) the picker can cover text printed before it,
+           so the plan may not be on screen when Go is asked — the plan may have to
+           ride in the picker's preview pane or be answered by a typed reply; only a
+           live mock shows which. (2) A Go also accepts "line endings fixed, as one
+           commit", a change to the person's files; the line must say how many.
+           (3) Making a vault from /soul-init has never been run, and it is the
+           heaviest branch (a second repo, a remote, on WSL the Windows-drive rule,
+           the outside-files dialog). (4) The per-choice page is one more copy of the
+           wording; generate it from init-status.py and test that they match.
+           (5) Projects that already recorded `public:`; re-runs with repair lines;
+           `claude -p` and Codex, which have no picker. Cannot be undone: a record
+           committed to a public repo and pushed (mind 6d) — why the record line
+           never fills itself in when the repo is public or unknown.
+           Deeper research: not worth it; a mock run settles more.
+           Next step: a live mock of the C3 screen in a real session (nothing set
+           up), then the Body's go for a build plan.
+STATUS:    Maturing
 ```
