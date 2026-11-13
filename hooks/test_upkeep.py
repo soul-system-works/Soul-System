@@ -4,7 +4,7 @@ FENCE: the hook is silent unless the cursor is stale, and blocks once per stalen
 F063 and mind item 5: a Stop hook that fired on every turn was the reason the
 completion gate's regex was narrowed, and a hook that nags gets switched off. So a
 fresh cursor, `stop_hook_active`, `upkeep: off`, a non-Soul project and a project with
-no cursor yet must all print nothing; a stale cursor (about 50,000 tokens of new
+no cursor yet must all print nothing; a stale cursor (about 100,000 tokens of new
 conversation, or a summary) blocks once and not again until it is stale again.
 
 Each case writes a fake transcript with the field names a real Claude Code transcript
@@ -106,41 +106,44 @@ class Upkeep(unittest.TestCase):
     # ------------------------------------------------------------- the Stop check
 
     def test_fresh_cursor_is_silent(self):
+        # 99k after the write: just under the step, so a lower step would block here.
         self.add(user(), size(START), size(START + 5000, write=self.cursor), user(),
-                 size(START + 40000))
+                 size(START + 104000))
         self.assertIsNone(self.run_hook())
 
     def test_growth_blocks_once(self):
-        self.add(user(), size(START, write=self.cursor), user(), size(START + 51000))
+        self.add(user(), size(START, write=self.cursor), user(), size(START + 101000))
         out = self.run_hook()
         self.assertEqual(out["decision"], "block")
         self.assertIn("/soul-handoff", out["reason"])
-        self.assertIn("about 51k tokens", out["reason"])
+        self.assertIn("about 101k tokens", out["reason"])
+        # The owner's sun mark starts a line about what Soul did on its own (SOUL-239).
+        self.assertIn('in one line that starts with "\u2600 "', out["reason"])
         # The next turn ignores the block and stops again: no second block ...
-        self.add(user(), size(START + 60000))
+        self.add(user(), size(START + 110000))
         self.assertIsNone(self.run_hook())
-        # ... until another 50,000 tokens have passed.
-        self.add(user(), size(START + 112000))
+        # ... until another 100,000 tokens have passed.
+        self.add(user(), size(START + 202000))
         self.assertEqual(self.run_hook()["decision"], "block")
 
     def test_growth_counts_from_the_cursor_write(self):
-        # 49k after the write is fresh, even though the session is 140k past its start.
-        self.add(user(), size(START), size(START + 90000, write=self.cursor), user(),
-                 size(START + 139000))
+        # 99k after the write is fresh, even though the session is 249k past its start.
+        self.add(user(), size(START), size(START + 150000, write=self.cursor), user(),
+                 size(START + 249000))
         self.assertIsNone(self.run_hook())
 
     def test_stop_hook_active_is_silent(self):
-        self.add(user(), size(START, write=self.cursor), user(), size(START + 90000))
+        self.add(user(), size(START, write=self.cursor), user(), size(START + 110000))
         self.assertIsNone(self.run_hook(active=True))
 
     def test_upkeep_off_is_silent(self):
         self.answer("upkeep:       off          2026-11-12")
-        self.add(user(), size(START, write=self.cursor), user(), size(START + 90000))
+        self.add(user(), size(START, write=self.cursor), user(), size(START + 110000))
         self.assertIsNone(self.run_hook())
 
     def test_upkeep_value_is_read_like_init_status(self):
         # `OFF` is off; `no` is not an answer init-status understands, so it stays on.
-        self.add(user(), size(START, write=self.cursor), user(), size(START + 90000))
+        self.add(user(), size(START, write=self.cursor), user(), size(START + 110000))
         self.answer("upkeep:       OFF          2026-11-12")
         self.assertIsNone(self.run_hook())
         self.answer("upkeep:       no           2026-11-12")
@@ -149,7 +152,7 @@ class Upkeep(unittest.TestCase):
     def test_no_block_when_the_block_cannot_be_remembered(self):
         # Unremembered, a block would come back every turn (F063): make the state file
         # unwritable — a folder in its place — and the hook must stay silent.
-        self.add(user(), size(START, write=self.cursor), user(), size(START + 90000))
+        self.add(user(), size(START, write=self.cursor), user(), size(START + 110000))
         self.assertEqual(self.run_hook()["decision"], "block")
         state = [os.path.join(self.tmp, n) for n in os.listdir(self.tmp)
                  if n.startswith("soul-upkeep-")]
@@ -160,11 +163,12 @@ class Upkeep(unittest.TestCase):
 
     def test_replies_without_a_reading_are_skipped(self):
         # A zero reading first would make the whole start-up load count as growth ...
-        self.add(user(), zero(), size(START), user(), size(START + 40000))
+        # (99k of growth: the start-up load on top would pass the step.)
+        self.add(user(), zero(), size(START), user(), size(START + 99000))
         self.assertIsNone(self.run_hook())
         # ... and a zero reading last would hide real growth.
         self.records = []
-        self.add(user(), size(START, write=self.cursor), user(), size(START + 60000), zero())
+        self.add(user(), size(START, write=self.cursor), user(), size(START + 110000), zero())
         self.assertEqual(self.run_hook()["decision"], "block")
 
     def test_malformed_input_fails_open(self):
@@ -172,13 +176,13 @@ class Upkeep(unittest.TestCase):
             self.assertIsNone(self.run_hook(raw=raw), raw)
         with open(self.transcript, "w") as f:  # garbage lines around a stale reading
             f.write("{broken\n" + json.dumps(size(START, write=self.cursor)) + "\n\x00\n"
-                    + json.dumps(size(START + 90000)) + "\n")
+                    + json.dumps(size(START + 110000)) + "\n")
         self.assertEqual(self.run_hook()["decision"], "block")
 
     def test_turn_off_hint_only_until_answered(self):
-        self.add(user(), size(START, write=self.cursor), user(), size(START + 90000))
+        self.add(user(), size(START, write=self.cursor), user(), size(START + 110000))
         self.assertIn("/soul-init revisit upkeep", self.run_hook()["reason"])
-        self.add(user(), size(START + 150000))
+        self.add(user(), size(START + 220000))
         self.answer("upkeep:       on           2026-11-12")
         out = self.run_hook()
         self.assertEqual(out["decision"], "block")
@@ -186,12 +190,12 @@ class Upkeep(unittest.TestCase):
 
     def test_non_soul_project_is_silent(self):
         other = self.make_project("plain", soul=False)
-        self.add(user(), size(START), user(), size(START + 90000))
+        self.add(user(), size(START), user(), size(START + 110000))
         self.assertIsNone(self.run_hook(cwd=other))
 
     def test_no_cursor_yet_is_silent(self):
         bare = self.make_project("new", cursor=False)
-        self.add(user(), size(START), user(), size(START + 90000), compact())
+        self.add(user(), size(START), user(), size(START + 110000), compact())
         self.assertIsNone(self.run_hook(cwd=bare))
 
     def test_summary_since_the_write_is_stale(self):
@@ -209,9 +213,9 @@ class Upkeep(unittest.TestCase):
     def test_cursor_from_an_earlier_session_counts_from_session_start(self):
         # No write in this transcript: growth is measured from the first reading,
         # so the start-up load is not counted as conversation.
-        self.add(user(), size(START), user(), size(START + 45000))
+        self.add(user(), size(START), user(), size(START + 99000))
         self.assertIsNone(self.run_hook())
-        self.add(user(), size(START + 55000))
+        self.add(user(), size(START + 101000))
         self.assertEqual(self.run_hook()["decision"], "block")
 
     def test_subagent_records_are_not_counted(self):
@@ -234,8 +238,9 @@ class Upkeep(unittest.TestCase):
         for path in (os.path.join(linked, ".soul", "handoff.md"),
                      os.path.join(vault, "handoff.md")):
             self.records = []
-            self.add(user(), size(START), size(START + 60000, write=path), user(),
-                     size(START + 70000))
+            # 120k past the session's start: a write that did not count would block.
+            self.add(user(), size(START), size(START + 110000, write=path), user(),
+                     size(START + 120000))
             self.assertIsNone(self.run_hook(cwd=linked), path)
 
     # ------------------------------------------------------------- after a summary
@@ -246,6 +251,7 @@ class Upkeep(unittest.TestCase):
         self.assertEqual(out["hookSpecificOutput"]["hookEventName"], "SessionStart")
         self.assertIn("re-read .soul/handoff.md", ctx)
         self.assertIn("/soul-handoff", ctx)
+        self.assertIn('in one line that starts with "\u2600 "', ctx)
 
     def test_compact_start_silent_when_off_or_no_cursor(self):
         self.answer("upkeep:       off          2026-11-12")

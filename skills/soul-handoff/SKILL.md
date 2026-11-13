@@ -27,7 +27,7 @@ takes with it everything not yet flushed (PLANT-BOP's upstream note; mining pass
 SOUL-202).
 
 **When it runs itself (SOUL-A032).** The session runs this unasked — no question
-first — when the cursor is stale: about 50,000 tokens of new conversation since it
+first — when the cursor is stale: about 100,000 tokens of new conversation since it
 was last written, or a summary (compaction) since. Soul's hooks notice: a Stop hook
 (`hooks/upkeep.py`) blocks the stop once and asks for the refresh, and after a
 summary the session-start line says to re-read the cursor and refresh it first. A
@@ -40,7 +40,7 @@ below, then reports in step 5.
 
 **Headless runs too.** The Stop check fires under `claude -p` (seen in a live trial,
 2026-11-12; the amendment had guessed hooks might not). A long headless run in a Soul
-project with a cursor is blocked once per 50,000 tokens, and its final result text
+project with a cursor is blocked once per 100,000 tokens, and its final result text
 becomes the refresh line, not the run's answer. A measurement arm or scripted run that
 must not be steered: record `upkeep: off`, or run without the plugin —
 `tools/dispatch.py` starts its workers with `--setting-sources ""`, which skips the
@@ -346,6 +346,6 @@ decisions log for `/soul-debrief`; POINTERS gains the newest debrief.
 **Amended:** 2026-11-06 (v3.11.0, mining pass 3, SOUL-234) — a vault-linked cursor is
 checked in the vault and committed with `vault.py sync`.
 **Amended:** 2026-11-12 (unreleased, SOUL-A032) — runs itself when the cursor is stale
-(about 50,000 tokens, or a summary, since the last write; `hooks/upkeep.py`), and checks
+(about 100,000 tokens, or a summary, since the last write; `hooks/upkeep.py`), and checks
 whether the Mind is due (step 1c).
 **Adopted:** 2026-05-21. **Status:** active.

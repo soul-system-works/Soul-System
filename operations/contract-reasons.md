@@ -92,7 +92,7 @@ every record id the old Mind cites must still be cited, or the whole change wait
 the model's own grade can be wrong in the flattering direction. The held class
 exists because of SOUL-118, the recorded case where the owner's review of a Mind
 change reversed a cut. The handoff cursor refreshes itself the same way, when about
-50,000 tokens of conversation or a summary have passed since it was written
+100,000 tokens of conversation or a summary have passed since it was written
 (`hooks/upkeep.py`; the owner chose that over a commit count). The owner can turn
 both off with one answer, `upkeep: off` in `.soul/init.md`. The owner saw the
 sentence and answered "accept". **What would make it wrong:** a change graded minor

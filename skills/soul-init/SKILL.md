@@ -373,7 +373,7 @@ consecutive days (2026-08-24/25), into two files, in two wordings.
 
 **`upkeep`** — nothing to carry out but the answer (`on` or `off`). *On*, which is
 also what a project that was never asked gets: the session refreshes the handoff
-cursor by itself when it goes stale — about 50,000 tokens of conversation, or a
+cursor by itself when it goes stale — about 100,000 tokens of conversation, or a
 summary, since it was last written (`hooks/upkeep.py` notices) — and `/soul-distill`
 runs by itself at its growth signal, applying small Mind changes and holding big ones
 for the owner. Each tells the owner in one line, and a no undoes it. *Off*: neither
