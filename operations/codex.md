@@ -62,9 +62,11 @@ It still references doctrine live; it never copies doctrine into the project.
    nothing. Show that output, ask for consent (end your turn), and only then run
    `... wire --project <project-root>`. Quote paths as shell arguments. It appends or refreshes a marked live-reference
    block; it does not scaffold or move records, edit ignores, or configure trust.
-4. Follow the shared steps 0–6 (`tools/init-status.py`: status → questions →
+4. Follow the shared steps 0–6 (`tools/init-status.py`: status → the plan →
    carrying out, answers kept in `.soul/init.md`, so a project set up from Claude Code
-   is not asked again here). Two items differ: **skip `import`** (the managed block
+   is not asked again here). The plan is printed as text (`plan.text`, then each
+   question with its options, word for word) and the owner answers in a message;
+   nothing is recorded before that answer. Two items differ: **skip `import`** (the managed block
    from step 3 is Codex's import; the helper's `status` checks it) and **skip
    `mind`** (step 5 below). A chosen stage is written to the project policy file in
    place of the project's `CLAUDE.md`. Keep the record at its existing location.

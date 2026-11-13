@@ -266,3 +266,4 @@ are appended accepted with an opt-out; the unconfirmed mark and the ratify step 
 retired; a witness entry the Body types keeps its draft step (SOUL-I085).
 **Amended:** 2026-11-05 (v3.9.1, SOUL-A031) — the Body-typed witness draft step goes
 too: the entry is appended at once and shown in full with the opt-out. **Adopted:** 2026-06-08. **Status:** active.
+**Amended:** 2026-11-13 (v3.13.0) — `☀ ` starts the notice of an entry the model started.

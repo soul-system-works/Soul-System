@@ -150,3 +150,4 @@ retired, so step 3 names the cursor's `NEW ENTRIES` in one line instead of askin
 (SOUL-I085). **Amended:** 2026-11-05 (unreleased, SOUL-I086) — step 2 suggests
 `/soul-debrief` once when an unattended run has results since the cursor.
 **Adopted:** 2026-05-21. **Status:** active.
+**Amended:** 2026-11-13 (v3.13.0) — `☀ ` starts the line naming the cursor's `NEW ENTRIES`.

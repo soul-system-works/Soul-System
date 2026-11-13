@@ -460,3 +460,4 @@ a one-line notice and the undo, major ones held; `tools/mind-guard.py` the brake
 runs itself, graded, from SOUL-A032 (2026-11-12).
 `/soul-mind` viewer, cross-project synthesis, and reproduction-fidelity
 automation remain deferred.
+**Amended:** 2026-11-13 (v3.13.0) — `☀ ` starts the two lines a self-run distill says.

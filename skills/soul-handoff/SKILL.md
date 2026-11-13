@@ -349,3 +349,4 @@ checked in the vault and committed with `vault.py sync`.
 (about 100,000 tokens, or a summary, since the last write; `hooks/upkeep.py`), and checks
 whether the Mind is due (step 1c).
 **Adopted:** 2026-05-21. **Status:** active.
+**Amended:** 2026-11-13 (v3.13.0, SOUL-239) — the step is about 100,000 tokens; `☀ ` starts every line about something the Soul did on its own.

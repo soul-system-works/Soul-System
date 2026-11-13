@@ -16,20 +16,49 @@ the issue".
 
 ## Decision
 
-1. **One vault per machine.** A vault is a private git repo of Obsidian folders:
-   `projects/<key>/project.md` (label, contributes, remote) and
-   `projects/<key>/soul/` (the record). A one-line machine file names it. The
-   Body: "i don't want an overengineered system". Other folders beside `soul/` in
-   `projects/<key>/` — such as `notes/` for material retired from a project — are
-   the owner's: `vault.py sync` commits them, no tool reads them, and they carry
-   the project's label (upstream mining, 2026-11-12; SKILL-KIT's note).
+1. **One default vault per machine; a project may link to any vault.** A vault is
+   a private git repo of Obsidian folders: `projects/<key>/project.md` (tags, remote)
+   and `projects/<key>/soul/` (the record). A one-line machine file names the
+   default vault, the one `/soul-init` offers next time. The project's `.soul` link
+   is the record of which vault that project uses, so no tool keeps a list of vaults
+   or searches several. The Body: "i don't want an overengineered system". Other
+   folders beside `soul/` in `projects/<key>/` — such as `notes/` for material
+   retired from a project — are the owner's: `vault.py sync` commits them and no
+   tool reads them (upstream mining, 2026-11-12; SKILL-KIT's note).
+   *Changed 2026-11-13 (v3.13.0, SOUL-I092 round 2).* Until then this read "One
+   vault per machine", and `/soul-init` offered a vault only where one already
+   existed. The Body: "we ask if they want a vault and which. they specify or take
+   the default. that's it right? it is then recorded in the links where the vault is
+   for that project. soul-system doesn't need to know about any others?" `check`,
+   `sync` and the session-start line already followed the link; `vault.py init` now
+   makes a new vault a git repo, and `/soul-init` can make one. What follows from the
+   link not being committed: a fresh clone or a second machine finds a record by
+   itself only in the default vault; for any other vault the person names it again.
+   Confined workers are denied the default vault and the vault their project links
+   into (`tools/confine.py`, `tools/dispatch.py`).
 2. **The project keeps a `.soul` link into the vault**, so everything that finds
    `.soul/` today keeps working: the completion gate, the Mind import and every
    skill. The vault is a third answer in `/soul-init`; local and in-git stay.
-3. **Labels:** public, private, confidential, restricted. The one rule enforced is
-   that `restricted` never goes in a vault. The boundary is where the vault lives:
-   a closed system's vault stays on that system, so no level or read-down code is
-   needed.
+3. **No labels; tags in Obsidian's own form.** *Changed 2026-11-13 (v3.13.0,
+   SOUL-I092 round 2).* Until then a project carried a label — public, private,
+   confidential or restricted — and the one rule enforced was that `restricted`
+   never went in a vault. Read from the code, a label was written to `project.md`
+   and shown in the index, and no tool behaved differently for three of the four;
+   the Body's own vault held 15 projects under three labels, all handled alike. The
+   Body: "should we instead just rely on people themselves to manage and stop making
+   distinctions? if someone wants to keep things separate then they could have
+   multiple vaults or a single one." So nothing is asked and nothing is refused;
+   whose material may go where is the owner's judgment, and keeping things apart is
+   done by which vault a project goes in. An existing `label:` line is left as it
+   is and read by nothing. The boundary is still where the vault lives: a closed
+   system's vault stays on that system.
+   Tags replace the free-form `contributes:` line and are written as Obsidian's
+   `tags:` list. The Body: "these vaults i think should adopt obsidian style - that
+   is essentially a standard. i don't want our own style if we can help it."
+   Obsidian's rules hold (obsidian.md/help/tags, read 2026-11-13): letters, digits,
+   `_`, `-` and `/`; no spaces; not all digits. An older `contributes:` line still
+   reads; no file is rewritten. Where Obsidian has its own form for something the
+   vault writes, the vault uses it.
 4. **The key, not the path, names the vault folder.** A project is matched by its
    git remote; the folder name is used only when neither side has a remote.
 
@@ -124,7 +153,11 @@ there.
   tested; Codex was not.
 - A Claude Code change that treats a junctioned folder as inside the project. The
   allowed-directory step would then be unneeded but harmless.
-- The Body ends up wanting a second vault on one machine (decision 1).
+- The Body ends up wanting a second vault on one machine (decision 1). *It
+  happened, 2026-11-13:* decision 1 now allows it, by the link and with no list of
+  vaults. What would make the new form wrong: a tool that must find a project's
+  record without its link (a fresh clone, the upstream mining pass) looking only in
+  the default vault and missing one kept elsewhere.
 - macOS was not tested. There the link is a plain symlink, and the allowed-folder
   and import-approval steps are assumed to carry over — that is unverified.
 
