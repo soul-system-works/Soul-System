@@ -1,8 +1,17 @@
 # Reference Index
 
-The Archivist's manifest — one line per reference (like `MEMORY.md`). Bibliographic
-core lives in `references.json` (CSL-JSON); provenance + what-it-grounds live in each
-per-slug sidecar. See `operations/reference-repository.md` for the format.
+One line per saved source (like `MEMORY.md`). A claim that rests on outside work cites
+a saved reference here, not a memory. The format every entry follows:
+
+- `references.json` — the source's bibliographic record in CSL-JSON (the citation
+  format Zotero and Pandoc read), keyed by a short slug `id`.
+- `<id>.md` — a sidecar with the same slug. Front matter: `id`, `csl:
+  references.json#<id>`, `access` (e.g. `public`), `retrieved` (date), `file` (a local
+  copy's path, or `none`), `grounds` (the record IDs that cite it), optional
+  `key-values` (each value with `defines`, `status` — `secondary-reading` until checked
+  against the source itself — and `locus`), and `related`. Then a few lines on what
+  the source is and what it does and does not establish.
+- A line below, linking the sidecar.
 
 First entries: the SOUL-I017 deep-dive prior-art pass (SOUL-060), all four verified
 against the arXiv primary source on 2026-05-22.
