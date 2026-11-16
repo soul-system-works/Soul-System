@@ -3460,3 +3460,21 @@ NOTES:     A first sketch, the session's, not discussed: an item needed only at 
            SOUL-A021 (the slim Mind), SOUL-F066 (the budget as a target).
 STATUS:    Raw
 ```
+
+```
+ID:        SOUL-I094
+WHEN:      2026-11-16
+RAW:       The Body: "whenever the handoff runs it shows all the changes in the
+           terminal. is that required or can it be collapsed or something so it
+           doesnn't fill the terminal with a bunch of space when the user doesn't
+           generally read it"
+NOTES:     Checked against Claude Code's docs the same day: nothing lets a plugin
+           hide one tool call's display (`suppressOutput` is documented as having no
+           effect); every way of writing the cursor shows its text, since the content
+           passes through a tool call. Owner-side: `/focus` (one-line tool summaries
+           with diffstats; persists; how it draws a Write is not documented, unrun)
+           and ctrl+o for detail. Soul-side: a tighter cursor cap than ~150 lines
+           (step 2's size check) would shrink every refresh. Unmeasured: how long
+           cursors run across projects.
+STATUS:    Raw
+```
