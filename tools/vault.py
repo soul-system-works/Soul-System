@@ -54,7 +54,7 @@ session-start follow the link. No label is needed or refused (the owner, 2026-11
 SOUL-I092: "we ask if they want a vault and which. they specify or take the default.
 that's it"); a given `--label` is still written, for older callers. Tags are written
 in Obsidian's own form, a `tags:` list ("i don't want our own style if we can help
-it"); `--contributes` is the old name of `--tags`.
+it"); an old `contributes:` line is still read.
 
 What the link test (2026-10-22, I079 LINK TEST) made non-negotiable, each kept below:
 - On WSL with the project on a Windows drive the link is a junction (`mklink /J`):
@@ -1291,7 +1291,7 @@ def main():
     ln.add_argument("--key", required=True)
     ln.add_argument("--label", choices=LABELS,
                     help="optional; written to project.md as given (no rule rests on it)")
-    ln.add_argument("--tags", "--contributes", dest="tags", default="",
+    ln.add_argument("--tags", dest="tags", default="",
                     help="comma-separated tags, written as Obsidian's `tags:` list; a "
                          "leading # is dropped and spaces become hyphens")
     ln.add_argument("--vault", help="default: the machine file's vault")
