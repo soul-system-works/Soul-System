@@ -41,7 +41,7 @@ across sessions; this reconciles it with reality and emits a tiered next-options
 
 2b. **Upstream backlog — Soul System repo ONLY.** The guard is `findings/open/`
    **and** `operations/CLAUDE.md` **and** `SYSTEM-VERSION.md`, all at the repo root —
-   the same predicate `tools/upstream-migrate.py` uses. Do not weaken it to "the
+   the same predicate as `is_source_repo` in `hooks/secret-guard.py`. Do not weaken it to "the
    witness log uses `SOUL-###`": seven adopting projects still carry an empty
    `findings/open/`, and two of them cite upstream `SOUL-###` ids in their own
    witness logs, so that pair reads TRUE outside this repo (measured 2026-08-28).
