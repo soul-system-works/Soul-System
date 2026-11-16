@@ -403,9 +403,9 @@ def main():
     # 6 — timeout kills the worker's process group
     w.roles("| implementer | claude | sonnet | timeout=1 |")
     w.script({"sleep": 3, "write": {"late.txt": "outlived the timeout\n"}})
-    t0 = time.time()
+    t0 = time.monotonic()
     r, res = w.run("t1")
-    took = time.time() - t0
+    took = time.monotonic() - t0
     t = (res or {}).get("tries", [{}])[0]
     time.sleep(3.5)
     check("timeout: exit recorded as \"timeout\", no winner",
@@ -1286,8 +1286,8 @@ def signal_case():
                              "--project", w.proj], stdout=subprocess.PIPE,
                             stderr=subprocess.PIPE, text=True, env=w.env(), cwd=w.tmp)
     started = os.path.join(w.wt("k1", 1), "started.txt")
-    deadline = time.time() + 30
-    while not os.path.exists(started) and time.time() < deadline and proc.poll() is None:
+    deadline = time.monotonic() + 30
+    while not os.path.exists(started) and time.monotonic() < deadline and proc.poll() is None:
         time.sleep(0.05)
     check("signal: the worker started before the signal", os.path.exists(started))
     proc.send_signal(signal.SIGTERM)
