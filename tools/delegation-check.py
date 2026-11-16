@@ -59,6 +59,7 @@ that promise. On Windows the tool refuses to run (exit 2).
 """
 
 import argparse
+import importlib.util
 import json
 import os
 import re
@@ -78,16 +79,22 @@ ROLE_RE = re.compile(r"^[A-Za-z][A-Za-z0-9_-]*$")
 TAIL_MAX = 300
 TAIL_READ = 65536  # bytes read from the end of the output file for the tail
 STORES = ("witness.md", os.path.join(".soul", "witness.md"))
-SIGNALS = tuple(getattr(signal, n) for n in ("SIGTERM", "SIGINT", "SIGHUP")
-                if hasattr(signal, n))
 
 
-class Killed(Exception):
-    """The recorder got a termination signal while the check ran."""
+def _confine():
+    """tools/confine.py, loaded by path (this file is itself loaded by path)."""
+    spec = importlib.util.spec_from_file_location(
+        "confine", os.path.join(os.path.dirname(os.path.abspath(__file__)), "confine.py"))
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
 
-    def __init__(self, signum):
-        super().__init__(signum)
-        self.signum = signum
+
+# Loaded once, at start: the signal handling lives there (record()'s finally restores
+# the previous handlers), and `except Killed` must catch the class _on_signal raises.
+_CONFINE = _confine()
+SIGNALS, Killed = _CONFINE.SIGNALS, _CONFINE.Killed
+_kill_group, _on_signal = _CONFINE._kill_group, _CONFINE._on_signal
 
 
 def _walk_up(start):
@@ -171,35 +178,10 @@ def last_line(output):
     return ""
 
 
-def _kill_group(pgid):
-    try:
-        os.killpg(pgid, signal.SIGKILL)
-    except OSError:
-        pass  # group already empty
-
-
-def _on_signal(signum, frame):
-    # Ignore further signals first: a second SIGTERM must not interrupt the cleanup
-    # this exception starts. record()'s finally restores the previous handlers.
-    for s in SIGNALS:
-        signal.signal(s, signal.SIG_IGN)
-    raise Killed(signum)
-
-
 def _unblock_in_child():
     # The parent blocks SIGNALS around Popen; a signal mask survives fork and exec,
     # so the check must start with them unblocked or it could not be stopped by them.
     signal.pthread_sigmask(signal.SIG_UNBLOCK, SIGNALS)
-
-
-def _confine():
-    """tools/confine.py, loaded by path (this file is itself loaded by path)."""
-    import importlib.util
-    spec = importlib.util.spec_from_file_location(
-        "confine", os.path.join(os.path.dirname(os.path.abspath(__file__)), "confine.py"))
-    mod = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(mod)
-    return mod
 
 
 def run_check(command, cwd, timeout, confined=None):
@@ -295,7 +277,7 @@ def record(args, ap):
     if args.confine:
         # The check runs code a worker wrote (the 2026-10-27 review of v3.7.0): under
         # bubblewrap with the allowlisted environment, or not at all — never bare.
-        c = _confine()
+        c = _CONFINE
         # The project too, not only --cwd: a check folder outside the project has no
         # .soul link above it, and the project's vault stayed readable (v3.13.0 review).
         argv = c.confine_argv(["/bin/sh", "-c", args.check], cwd, project=project)

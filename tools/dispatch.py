@@ -66,6 +66,7 @@ _HERE = os.path.dirname(os.path.abspath(__file__))
 if _HERE not in sys.path:
     sys.path.insert(0, _HERE)
 import confine  # noqa: E402  (tools/confine.py — allowlisted env, bubblewrap)
+from confine import SIGNALS, Killed, _kill_group, _on_signal  # noqa: E402
 
 HARNESSES = ("claude", "claude-ollama", "codex", "codex-ollama")
 SETTINGS = ("rung", "n", "timeout", "effort")
@@ -96,8 +97,6 @@ CLAUDE_MD_NAMES = ("CLAUDE.md", "CLAUDE.local.md", os.path.join(".claude", "CLAU
 WALK_SKIP = (".git", "node_modules", ".venv", "venv", "__pycache__")
 OLLAMA_URL = "http://localhost:11434"
 RUN_ID = re.compile(r"[A-Za-z0-9][A-Za-z0-9._-]*\Z")
-SIGNALS = tuple(getattr(signal, n) for n in ("SIGTERM", "SIGINT", "SIGHUP")
-                if hasattr(signal, n))
 
 WORKER_RULES = """
 
@@ -136,14 +135,6 @@ class RolesError(Exception):
 
 class UsageError(Exception):
     """A request dispatch refuses before any worker starts (exit 2)."""
-
-
-class Killed(Exception):
-    """dispatch got a termination signal while a worker or check ran."""
-
-    def __init__(self, signum):
-        super().__init__(signum)
-        self.signum = signum
 
 
 # ---------------------------------------------------------------- roles table
@@ -589,13 +580,6 @@ def read_output(harness, log_path, last_file):
 
 # ---------------------------------------------------------------- processes
 
-def _kill_group(pgid):
-    try:
-        os.killpg(pgid, signal.SIGKILL)
-    except OSError:
-        pass  # group already empty
-
-
 def run_process(cmd, cwd, env, stdin_text, log_path, err_path, timeout):
     """Run `cmd` in its own process group; return (exit code | "timeout", wall_s).
 
@@ -626,12 +610,6 @@ def run_process(cmd, cwd, env, stdin_text, log_path, err_path, timeout):
             if err:
                 err.close()
     return code, round(time.monotonic() - t0, 1)
-
-
-def _on_signal(signum, frame):
-    for s in SIGNALS:
-        signal.signal(s, signal.SIG_IGN)  # a second signal must not cut the cleanup
-    raise Killed(signum)
 
 
 def git(cwd, *args):
