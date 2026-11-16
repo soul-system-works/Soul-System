@@ -9743,7 +9743,8 @@ CONSEQUENCE:  The public repo keeps what a user needs now; history docs leave it
               tracked PDF are deleted (the blog holds the published versions).
               Records that cite these files by path resolve only in the vault and
               git history from then on.
-STATUS:       Open — the move is the next cleanup batch.
+STATUS:       Closed 2026-11-16 — released in v3.13.1 (merge 390eeeb): the files are
+              in the vault (hash-checked) and gone from the repo.
 ```
 
 ```
@@ -9767,5 +9768,6 @@ CONSEQUENCE:  A measured claim in the public repo now carries no evidence a read
               can open from the repo; the evidence lives on the blog and in the
               vault archive. A later link from the repo to the blog, or from a post
               to a file path in a repo, needs a reason this rule's exception covers.
-STATUS:       Open — the blog post is published by the Body before the branch merges.
+STATUS:       Closed 2026-11-16 — the blog post went live (aebf302) before v3.13.1
+              was pushed.
 ```
