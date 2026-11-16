@@ -9721,3 +9721,27 @@ STATUS:       Closed 2026-11-13 — built in v3.13.0 (commit 24c1414): the step 
               100,000 tokens; hooks/test_upkeep.py passes. No session has yet run
               to the new step under the released plugin.
 ```
+
+```
+ID:           SOUL-240
+WHEN:         2026-11-16 / Soul-System session, cleanup audit (.ai/cleanup/CLEANUP.md)
+WHERE:        docs/archive/, docs/specs/ (seven retired specs), docs/study/ (paper.md,
+              tex/, the blog copies), docs/tested-skills-catalog.md
+WHAT:         Asked about the audit's old-docs items, the Body: "archived seems like
+              we don't need them and they can go to the soul-vault or be removed",
+              and "i don't think we should try to preserve all history in the user
+              facing project". The blog copies: "blog has the authoritative once
+              published and changes go there when needed". The paper: "likewise this
+              can probably go to the soul-archive or removed". Soul-Studio: "a
+              prototype project that we don't use (or shouldn't be)" — its hashes of
+              skill files are no longer a constraint on edits.
+TYPE:         witness (Body decision)
+CONSEQUENCE:  The public repo keeps what a user needs now; history docs leave it.
+              The session chose the vault over deletion (easier to undo): the
+              archive, the retired specs and both paper sources move to
+              soul-vault/projects/soul-system/archive/; the blog copies and the
+              tracked PDF are deleted (the blog holds the published versions).
+              Records that cite these files by path resolve only in the vault and
+              git history from then on.
+STATUS:       Open — the move is the next cleanup batch.
+```
