@@ -32,6 +32,7 @@ Run: python3 tools/test_dispatch.py  (exit 0 = PASS)
 import json
 import os
 import shutil
+import signal
 import subprocess
 import sys
 import tempfile
@@ -756,6 +757,7 @@ def main():
     build_verify_cases(w, gitonly)
     review_fix_cases()
     linked_vault_case()
+    signal_case()
 
     shutil.rmtree(tmp, ignore_errors=True)
     docs()
@@ -1266,6 +1268,37 @@ def linked_vault_case():
           "may read neither vault", r.returncode == 0 and len(calls) == 1
           and os.path.realpath(calls[0]["cwd"]) == os.path.realpath(outside)
           and all(x in deny for x in want), (r.stderr, want, deny))
+    shutil.rmtree(w.tmp, ignore_errors=True)
+
+
+def signal_case():
+    """27 — SIGTERM to dispatch stops the worker's whole group, and dispatch exits 128 +
+    the signal with its own message. dispatch takes Killed and _on_signal from
+    tools/confine.py (cleanup item 13): a Killed class of its own would not catch the
+    one confine's _on_signal raises (a traceback, exit 1), and without the handler the
+    signal ends dispatch outright and leaves the worker running."""
+    w = World(tempfile.mkdtemp(prefix="soul-dispatch-signal-"))
+    w.roles("| implementer | claude | sonnet | |")
+    w.script({"early": {"started.txt": "worker running\n"}, "sleep": 3,
+              "write": {"late.txt": "outlived dispatch\n"}})
+    proc = subprocess.Popen([sys.executable, _TOOL, "run", "--role", "implementer",
+                             "--brief", w.brief, "--check", CHECK, "--run-id", "k1",
+                             "--project", w.proj], stdout=subprocess.PIPE,
+                            stderr=subprocess.PIPE, text=True, env=w.env(), cwd=w.tmp)
+    started = os.path.join(w.wt("k1", 1), "started.txt")
+    deadline = time.time() + 30
+    while not os.path.exists(started) and time.time() < deadline and proc.poll() is None:
+        time.sleep(0.05)
+    check("signal: the worker started before the signal", os.path.exists(started))
+    proc.send_signal(signal.SIGTERM)
+    _, err = proc.communicate(timeout=30)
+    time.sleep(3.5)
+    check("signal: SIGTERM makes dispatch exit 128+15 and say the worker was stopped",
+          proc.returncode == 128 + signal.SIGTERM
+          and "killed by signal {} — worker stopped".format(int(signal.SIGTERM)) in err,
+          (proc.returncode, err[-600:]))
+    check("signal: the worker did not outlive dispatch",
+          not os.path.exists(os.path.join(w.wt("k1", 1), "late.txt")))
     shutil.rmtree(w.tmp, ignore_errors=True)
 
 
