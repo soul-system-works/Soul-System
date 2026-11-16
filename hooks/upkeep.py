@@ -44,8 +44,10 @@ Silent, always, when:
     and mind item 5 are the reason: a Stop hook that fires every turn gets switched off.
     If that file cannot be written, the hook does not block at all: an unremembered
     block would come back every turn, the same F063 shape. The file sits in a per-user
-    0700 folder; a folder another user could write is not trusted, reads as no state,
-    and the hook still blocks (unremembered) rather than be silenced through it;
+    0700 folder in the temp folder; a folder another user could write is not trusted,
+    and the file moves to ${XDG_CACHE_HOME:-~/.cache}/soul-upkeep (same check) rather
+    than let another user silence the block through it. Only when both folders fail is
+    there nowhere to remember, and then the hook does not block (F063);
   - anything fails: fail open, exit 0, nothing printed.
 
 This hook is separate from the completion gate (hooks/pre-completion-verify.py), which
@@ -186,17 +188,9 @@ def staleness(events, since_line=-1):
     return ("growth" if grown >= GROWTH_TOKENS else None), max(grown, 0), last_line
 
 
-def _state_dir():
-    """A per-user 0700 folder in the temp folder, or None when it cannot be trusted.
-
-    The remembered block used to be $TMPDIR/soul-upkeep-<hash>, a name any local user
-    could compute and create first: a planted line number, or a file this user cannot
-    write, silenced the hook's one block. Found in the 2026-11-16 cleanup audit; no
-    incident. Same check as hooks/secret-guard.py's _state_dir. Native Windows has no
-    getuid, and its temp folder is already per-user, so it keeps the plain folder."""
-    if not hasattr(os, "getuid"):
-        return tempfile.gettempdir()
-    d = os.path.join(tempfile.gettempdir(), "soul-upkeep-{}".format(os.getuid()))
+def _trusted_dir(d):
+    """d, made 0700 if missing, when it is a real folder owned by this user with no
+    group or other bits; else None. Same check as hooks/secret-guard.py's _state_dir."""
     try:
         os.makedirs(d, mode=0o700, exist_ok=True)
         st = os.lstat(d)
@@ -208,8 +202,31 @@ def _state_dir():
         return None
 
 
+def _state_dir():
+    """Where the remembered block lives: a per-user 0700 folder in the temp folder;
+    if that one cannot be trusted, ${XDG_CACHE_HOME:-~/.cache}/soul-upkeep under the
+    same check; None when neither can, and then the hook does not block (F063).
+
+    The remembered block used to be $TMPDIR/soul-upkeep-<hash>, a name any local user
+    could compute and create first: a planted line number, or a file this user cannot
+    write, silenced the hook's one block. A per-user temp folder another user made
+    first (or one on a filesystem without Unix modes) fails the check; the home cache
+    keeps the block remembered there instead of nagging every turn or going silent.
+    Found in the 2026-11-16 cleanup audit; no incident. Native Windows has no getuid,
+    and its temp folder is already per-user, so it keeps the plain folder."""
+    if not hasattr(os, "getuid"):
+        return tempfile.gettempdir()
+    d = _trusted_dir(os.path.join(tempfile.gettempdir(),
+                                  "soul-upkeep-{}".format(os.getuid())))
+    if d is not None:
+        return d
+    cache = os.environ.get("XDG_CACHE_HOME") or os.path.join(
+        os.path.expanduser("~"), ".cache")
+    return _trusted_dir(os.path.join(cache, "soul-upkeep"))
+
+
 def _state_path(transcript_path):
-    """None when the state folder cannot be trusted: then there is no state."""
+    """None when no state folder can be trusted: then nothing can be remembered."""
     d = _state_dir()
     if d is None:
         return None
@@ -272,11 +289,8 @@ def stop(data):
     state = _state_path(transcript)
     events = read_transcript(transcript, cwd, os.path.realpath(os.path.join(cwd, CURSOR)))
     why, tokens, last_line = staleness(events, _read_state(state))
-    if not why:
-        return None
-    # An untrusted state folder (state None) blocks unremembered: silence is what a
-    # folder another user made would buy. Our own folder failing a write does not.
-    if state is not None and not _write_state(state, last_line):
+    # No trusted folder (state None) or a failed write: nowhere to remember the block.
+    if not why or state is None or not _write_state(state, last_line):
         return None  # unremembered, it would block again every turn (F063)
     return {"decision": "block", "reason": _reason(why, tokens, upkeep_answer(cwd))}
 
