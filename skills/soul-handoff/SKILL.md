@@ -30,7 +30,10 @@ SOUL-202).
 first — when the cursor is stale: about 100,000 tokens of new conversation since it
 was last written, or a summary (compaction) since. Soul's hooks notice: a Stop hook
 (`hooks/upkeep.py`) blocks the stop once and asks for the refresh, and after a
-summary the session-start line says to re-read the cursor and refresh it first. A
+summary the session-start line says to re-read the cursor. A summary counts only when
+at least half the step or 50,000 tokens, whichever is higher, came between the last
+write and the summary: one minutes after a refresh asked for a second with almost
+nothing new (an adopting project's upstream note, 2026-11-16). A
 count of commits was not used: "some agents/processes commit a lot and others not so
 much" (the Body). It stays quiet in a project with no cursor yet, and when
 `.soul/init.md` holds `upkeep: off` (the owner's opt-out, asked once by
@@ -61,7 +64,7 @@ pre-run cursor names that path (in NEXT STEP or OPEN GATES), so a later
      not captured in `ideas.md` (minimal)? Capture it through `/soul-capture`
      (id scan, re-read-verify): **append it at once, with no mark — it counts as
      accepted** (*Who fires this* there). Do not hold it for a go: this step usually
-     runs as the Body leaves, and the cursor is replaced wholesale, so a held draft
+     runs as the Body leaves, and the cursor's old content is replaced, so a held draft
      is discarded (F065).
    - **List every entry the model added this session** — mentioned in chat already
      or not, the ones just added here included — in the cursor's `NEW ENTRIES` field
@@ -146,8 +149,13 @@ pre-run cursor names that path (in NEXT STEP or OPEN GATES), so a later
    `upkeep: off` (then name it as due in step 5 instead). It applies its minor
    changes and holds its major ones; its one line joins step 5's report, and held
    changes go in OPEN GATES.
-2. **Write `.soul/handoff.md` — REPLACING the previous cursor, not appending to it**
-   (create `.soul/` if missing):
+2. **Update `.soul/handoff.md` in place — one cursor, never appended to** (create
+   `.soul/` if missing). Edit only the fields that changed (the Edit tool); rewrite the
+   whole file with Write only when most of it changes or there is no cursor yet. Either
+   way the result is one current cursor: a stale line is replaced or removed, never
+   kept beside its successor. A full rewrite each time re-typed about 100 unchanged
+   lines and the cursor grew 132 → 146 lines in a day (an adopting project's upstream
+   note, 2026-11-16), and it fills the owner's terminal (SOUL-I094):
    ```
    # Handoff cursor — [date]
    NEXT-SESSION FOCUS: [from the argument, if given; the Body's own words for a topic
@@ -279,7 +287,11 @@ pre-run cursor names that path (in NEXT STEP or OPEN GATES), so a later
    should read `.soul/handoff.md` first. A run that started itself says one line
    instead — *"☀  cursor refreshed (about 110k tokens since the last)"* or *"☀  cursor
    refreshed (a summary happened)"* — adds "to turn this off: /soul-init revisit
-   upkeep" when the hook's reason asked for it, and goes back to the work. **Then name the `NEW ENTRIES` in one
+   upkeep" when the hook's reason asked for it. The reply before the refresh stays the
+   answer: do not restate, shorten or replace it. If the refresh interrupted work in
+   progress, go back to it after the line (the hook's text and this step say the same
+   since 3.13.2; before, "then stop" and "goes back to the work" disagreed, and twice
+   the answer the owner was waiting for became the one line). **Then name the `NEW ENTRIES` in one
    line** — *"☀  Added THERMAL-231, THERMAL-I086 — say no to strike any."* No question;
    silence keeps them. A "no" is recorded the way `/soul-capture` says (*Who fires this*).
 

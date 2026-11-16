@@ -260,11 +260,32 @@ class Upkeep(unittest.TestCase):
         self.assertIsNone(self.run_hook(cwd=bare))
 
     def test_summary_since_the_write_is_stale(self):
-        self.add(user(), size(START, write=self.cursor), user(), size(START + 20000),
+        self.add(user(), size(START, write=self.cursor), user(), size(START + 60000),
                  compact(), user("summary"), size(32000))
         out = self.run_hook()
         self.assertEqual(out["decision"], "block")
         self.assertIn("summary", out["reason"])
+
+    def test_summary_soon_after_a_write_is_not_stale(self):
+        # Under SUMMARY_GAP (max(half the step, 50,000)) of work between the write and the
+        # summary: no second refresh (an adopting project's upstream note, 2026-11-16).
+        self.add(user(), size(START, write=self.cursor), user(), size(START + 20000),
+                 compact(), user("summary"), size(32000))
+        self.assertIsNone(self.run_hook())
+
+    def test_growth_still_counts_across_an_ignored_summary(self):
+        # 40k before the summary (ignored) + 70k after it = 110k: the step is reached.
+        self.add(user(), size(START, write=self.cursor), user(), size(START + 40000),
+                 compact(), user("summary"), size(30000), user(), size(100000))
+        out = self.run_hook()
+        self.assertEqual(out["decision"], "block")
+        self.assertNotIn("summary", out["reason"])
+
+    def test_reason_keeps_the_reply_as_the_answer(self):
+        self.add(user(), size(START, write=self.cursor), user(), size(START + 120000))
+        out = self.run_hook()
+        self.assertIn("stays the answer", out["reason"])
+        self.assertNotIn("then stop", out["reason"])
 
     def test_refresh_after_summary_is_fresh(self):
         self.add(user(), size(START, write=self.cursor), compact(), user("summary"),
@@ -311,8 +332,7 @@ class Upkeep(unittest.TestCase):
         ctx = out["hookSpecificOutput"]["additionalContext"]
         self.assertEqual(out["hookSpecificOutput"]["hookEventName"], "SessionStart")
         self.assertIn("re-read .soul/handoff.md", ctx)
-        self.assertIn("/soul-handoff", ctx)
-        self.assertIn('in one line that starts with "\u2600  "', ctx)
+        self.assertIn("only when the Stop check asks", ctx)
 
     def test_compact_start_silent_when_off_or_no_cursor(self):
         self.answer("upkeep:       off          2026-11-12")
