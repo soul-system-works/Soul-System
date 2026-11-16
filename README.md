@@ -73,8 +73,7 @@ quality tied whether a session had the Soul, a careful `CLAUDE.md`, or a
 five-minute one. What changes is what carries between sessions.
 A decision written in the record stopped a later session from undoing it (5 of 5
 sessions without the record drifted, 0 of 5 with it), and the strongest model
-drifted too when the record was missing. Method, results and what is still open:
-[`docs/study/`](docs/study/06-bounds-and-open-questions.md).
+drifted too when the record was missing (a pre-registered study, June 2026).
 
 ## Codex (preview)
 
