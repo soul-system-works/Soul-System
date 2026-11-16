@@ -281,6 +281,20 @@ class Upkeep(unittest.TestCase):
         self.assertEqual(out["decision"], "block")
         self.assertNotIn("summary", out["reason"])
 
+    def test_summary_exactly_at_the_gap_is_stale(self):
+        self.add(user(), size(START, write=self.cursor), user(), size(START + 50000),
+                 compact(), user("summary"), size(32000))
+        self.assertEqual(self.run_hook()["decision"], "block")
+
+    def test_two_summaries_sum_their_work(self):
+        # 30k before the first summary (ignored) + 25k before the second = 55k: stale.
+        self.add(user(), size(START, write=self.cursor), user(), size(START + 30000),
+                 compact(), user("summary"), size(30000), user(), size(55000),
+                 compact(), user("summary"), size(30000))
+        out = self.run_hook()
+        self.assertEqual(out["decision"], "block")
+        self.assertIn("summary", out["reason"])
+
     def test_reason_keeps_the_reply_as_the_answer(self):
         self.add(user(), size(START, write=self.cursor), user(), size(START + 120000))
         out = self.run_hook()

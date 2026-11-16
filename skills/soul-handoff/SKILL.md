@@ -153,7 +153,9 @@ pre-run cursor names that path (in NEXT STEP or OPEN GATES), so a later
    `.soul/` if missing). Edit only the fields that changed (the Edit tool); rewrite the
    whole file with Write only when most of it changes or there is no cursor yet. Either
    way the result is one current cursor: a stale line is replaced or removed, never
-   kept beside its successor. A full rewrite each time re-typed about 100 unchanged
+   kept beside its successor. Every run rewrites the header date and `NEW ENTRIES`
+   (this run's entries, or "none" — an old list left in place would be announced
+   again), and re-marks every pointer `[read]` or `[inherited]`. A full rewrite each time re-typed about 100 unchanged
    lines and the cursor grew 132 → 146 lines in a day (an adopting project's upstream
    note, 2026-11-16), and it fills the owner's terminal (SOUL-I094):
    ```
