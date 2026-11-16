@@ -342,14 +342,17 @@ if line endings were a yes, fix and commit there too.
 vault's server has not moved. It touches nothing else in the shared vault folder, where
 other sessions keep uncommitted edits; two sessions once ran git there in the same
 second (mining pass 3, SOUL-234). It does not commit `index.md`, which each machine
-regenerates. Exit 2 with `NOT PUSHED`: the commit is safe here, but not on the server —
-its line says why (no upstream, a refused push, or the server has newer commits).
-Merging those is a deliberate step, the owner's or this session's when no other
-session is writing in the vault (the command its line names — not a bare `git pull`,
-which fails on diverged branches), then sync again; tell the
-owner. Exit 4: the lock is held — a running sync, so try again later; or it "looks
-stale", and its line names the file to remove once the owner has checked no git runs
-in the vault.
+regenerates.
+**What sync's exit means** (same text in `/soul-init` and `/soul-handoff`). Exit 0: on
+the server ("already on the server; this vault's copy is behind" too). Exit 2,
+`NOT PUSHED`: committed in the vault, safe on this machine, not on the server — say
+why (its line names it). Merging the server's commits is a deliberate step — the
+Body's, or a session's when no other session is writing in the vault, with the
+commands that line names (not a bare `git pull`: it fails on diverged branches) — then
+sync again. Exit 4: a running sync holds the lock — nothing is committed; say so, and
+sync again once it finishes. Or the lock "looks stale" — give the Body its removal
+step word for word (remove that file once they have checked no git runs in the
+vault); never remove it yourself.
 **`link` refuses** (exit 2): the record stayed where it was — every check runs before
 anything changes, and a failed compare rolls the move back. Return to the plan with
 the record line waiting again; a record must never be left neither tracked nor ignored

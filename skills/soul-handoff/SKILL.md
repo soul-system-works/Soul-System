@@ -182,16 +182,19 @@ pre-run cursor names that path (in NEXT STEP or OPEN GATES), so a later
      cursor, run `python3 <root>/tools/vault.py sync .` (`<root>` is two levels above
      this skill's base directory): it commits only this project's vault folder, under
      the vault's lock, and pushes only when the vault's server has not moved. Say in
-     one line what it printed. Exit 2 with `NOT PUSHED`: the cursor is committed in
-     the vault, safe on this machine, but not on the server — say why (its line names
-     it). If the server has newer commits, merging them is a deliberate step — the
-     Body's, or a session's when no other session is writing in the vault, with the
-     command that line names — not part of the handoff. "Already on the server; this
-     vault's copy is behind" (exit 0) means the cursor is safe on the server. Exit 4: a running sync holds the lock — the cursor stays uncommitted,
-     say so; or the lock "looks stale" — give the Body its removal step word for word
-     (remove that file once they have checked no git runs in the vault), and do not
-     remove it yourself. Three adopting projects and this repo hit the error (mining
-     pass 3, SOUL-233/234).
+     one line what it printed.
+     **What sync's exit means** (same text in `/soul-init` and `/soul-handoff`). Exit 0:
+     on the server ("already on the server; this vault's copy is behind" too). Exit 2,
+     `NOT PUSHED`: committed in the vault, safe on this machine, not on the server —
+     say why (its line names it). Merging the server's commits is a deliberate step —
+     the Body's, or a session's when no other session is writing in the vault, with
+     the commands that line names (not a bare `git pull`: it fails on diverged
+     branches) — then sync again. Exit 4: a running sync holds the lock — nothing is
+     committed; say so, and sync again once it finishes. Or the lock "looks stale" —
+     give the Body its removal step word for word (remove that file once they have
+     checked no git runs in the vault); never remove it yourself.
+     The merge is not part of the handoff. Three adopting projects and this repo hit
+     the error (mining pass 3, SOUL-233/234).
    - **No link:** run `git check-ignore -v .soul/handoff.md` — one call that sees
      `.gitignore`, `.git/info/exclude` and the global excludes alike (F068 defect 3);
      then one of these two:
