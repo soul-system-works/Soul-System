@@ -30,8 +30,9 @@ wants the lay of the land). Not a deep philosophy dump — point to depth, don't
    Mind changes apply with a one-line notice, and a cut or a changed rule waits for
    the Body's yes (`upkeep: off` in `.soul/init.md` turns this off).
 
-3. **The commands.** Read `skills/*/SKILL.md` at run time and list each one by the
-   `name:` in its frontmatter, with a one-line "when it fires" (the first sentence of
+3. **The commands.** Read `soul-*/SKILL.md` in the folder one level above this skill's
+   base directory (the installed plugin's `skills/`, not the project's) at run time,
+   and list each one by the `name:` in its frontmatter, with a one-line "when it fires" (the first sentence of
    its `description:`, ~100 char cap). (The `/soul-*` instruments are Claude Code
    **skills**, invoked by name — `/soul-capture`, etc.)
 

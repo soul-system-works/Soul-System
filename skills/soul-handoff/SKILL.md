@@ -184,12 +184,13 @@ pre-run cursor names that path (in NEXT STEP or OPEN GATES), so a later
      the vault's lock, and pushes only when the vault's server has not moved. Say in
      one line what it printed.
      **What sync's exit means** (same text in `/soul-init` and `/soul-handoff`). Exit 0:
-     on the server ("already on the server; this vault's copy is behind" too). Exit 2,
-     `NOT PUSHED`: committed in the vault, safe on this machine, not on the server —
-     say why (its line names it). Merging the server's commits is a deliberate step —
-     the Body's, or a session's when no other session is writing in the vault, with
-     the commands that line names (not a bare `git pull`: it fails on diverged
-     branches) — then sync again. Exit 4: a running sync holds the lock — nothing is
+     on the server ("already on the server; this vault's copy is behind" too). Exit 2
+     with `NOT PUSHED`: committed in the vault, safe on this machine, not on the
+     server — say why (its line names it). If the server has newer commits, merging
+     them is a deliberate step — the Body's, or a session's when no other session is
+     writing in the vault, with the commands that line names (not a bare `git pull`:
+     it fails on diverged branches) — then sync again. Any other exit 2 (no `NOT
+     PUSHED` in its line): nothing was committed; report its line. Exit 4: a running sync holds the lock — nothing is
      committed; say so, and sync again once it finishes. Or the lock "looks stale" —
      give the Body its removal step word for word (remove that file once they have
      checked no git runs in the vault); never remove it yourself.
