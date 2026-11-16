@@ -219,13 +219,10 @@ Then the signal is the first accumulation that would fill one (see /soul-init's
      erosion-audit): "never X" at the site plus a test that fails if broken
      survives compression 30/30; prose rationale erodes. When a distilled entry
      can point at an executable fence, point at it.
-   - **Imperative, loophole-free residuals** (SOUL-128/129): "unless / except /
-     when appropriate" is the gap a frontier model walks through with an invented
-     reconciling fact; terseness is the gap a weak model reverts through.
-   - **Anti-prior facts are partly incompressible** (F045/A018): keep the
-     incident and the explicit negation, or leave the fact un-distilled — and
-     NEVER fabricate an incident to give a bare rule force (the fabrication
-     axis, SOUL-164: that is the model's own failure mode, not a technique).
+   - **Imperative, loophole-free residuals; anti-prior facts partly
+     incompressible** — the force-stripped guard (step 5). And NEVER fabricate an
+     incident to give a bare rule force (the fabrication axis, SOUL-164: that is
+     the model's own failure mode, not a technique).
 
 6. **Run the three diagnostic self-test questions** on the draft:
 
@@ -398,16 +395,6 @@ Then the signal is the first accumulation that would fill one (see /soul-init's
 
 ## What not to do
 
-- **Do not apply a major change without the Body's yes.** Cuts, changed rules,
-  dropped incidents, merges, the Body's own items and a first Mind wait as a draft
-  (step 8). A failing `mind-guard.py` makes the whole change major. With
-  `upkeep: off`, do not run by itself at all — propose and wait (step 1).
-- **Do not put anything else in the Mind's commit.** In a repo, the minor commit
-  holds the Mind only, so `git revert` touches nothing else. A vault-linked Mind is
-  the exception: `vault.py sync` commits the project's whole vault folder, so its
-  undo is the copy back from `mind-before-<date>.md` (step 8), never a revert.
-- **Do not let the Mind grow unexamined.** Growth is allowed when every new entry
-  passes the tests; report it in lines and items (the growth check, step 4).
 - **Do not manufacture entries to fill a shape.** The slim form has no buckets to
   fill, so there is nothing to force-fit; honesty about what doesn't compress
   is part of the discipline (SOUL-I026 failure mode #2).
@@ -415,23 +402,16 @@ Then the signal is the first accumulation that would fill one (see /soul-init's
   either, retire it.
 - **Do not capture obligations as rules.** Doctrine vs obligation is the
   load-bearing boundary (Tier 2 evidence).
-- **Do not chase lines, and do not silently pass the cap.** ≈80 target (a review
-  trigger), 80–120 acceptable with whole-entry cuts only, over 120 the Body's call
-  — the same numbers step 4 states. This line said ≤200/≤300 until 2026-08-28: v2.1.1
+- **Do not chase lines, and do not silently pass the cap** — the budget is step 4's,
+  stated only there. This line said ≤200/≤300 until 2026-08-28: v2.1.1
   re-anchored the budget away from the retired pre-2.0 seed in one place and missed
   this one, so the skill offered two budgets and a session obeying this list passed a
   200-line Mind, the exact artifact A021's slim switch exists to prevent (found by
   fresh-context review while reviewing SOUL-F066, which is about the same budget and
   did not notice the second copy).
-- **Do not merge entries to make the budget.** Cut whole entries instead. Merging is
-  the folding SOUL-F055 measured at 5-of-5 → 1-of-5 activation, so the intuitive way
-  to save lines is the one move known to switch the Mind off. SOUL-F066's other half,
-  accepted by the Body 2026-10-19 (SOUL-202): when force and budget conflict, force
-  wins — cut whole entries that fail the tests, or the Body raises the cap out loud.
-- **Do not recite passing checks or re-show unchanged entries.** Present the
-  delta + a load-bearing verdict per changed entry; surface only flagged
-  checks — the SOUL-055 gap-only discipline applied to the Mind's review
-  (step 8). Reciting clean checks is the I037 ceremony cost.
+- **Do not merge entries to make the budget** (step 4). Merging is the folding
+  SOUL-F055 measured at 5-of-5 → 1-of-5 activation, so the intuitive way to save
+  lines is the one move known to switch the Mind off.
 
 ---
 
