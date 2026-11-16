@@ -169,15 +169,15 @@ init had created. The store was never a project store; the scaffold said otherwi
 
 ### STEP 0 — WHICH REPO ARE YOU IN? Answer this before step 1.
 
-`findings/open/` exists **only** in the Soul System repo. Decide once, here:
+Some adopting projects also carry an empty `findings/open/`, so check all three files
+below. Decide once, here:
 
-- **In the Soul System repo** (this repo's own `witness.md` uses `SOUL-###`, and
-  `findings/open/` exists on disk): run steps 1–7 as written.
+- **In the Soul System repo** (`findings/open/` **and** `operations/CLAUDE.md`
+  **and** `SYSTEM-VERSION.md`, all at the repo root): run steps 1–7 as written.
 - **In any other project:** apply the entry test first — **name the file in the
-  Soul System that would change** (the contract `operations/CLAUDE.md`, one of the
-  `skills/*/SKILL.md`, a doc in `operations/` or `docs/`, a `tools/*` helper, or
-  the hook `hooks/pre-completion-verify.py`; your `CLAUDE.md`
-  imports from the installed plugin, so you can read them).
+  Soul System that would change**, exactly as `/soul-handoff` step 1b spells it out
+  (`../soul-handoff/SKILL.md`: the files that count, and its two cautions). This
+  branch routes to the same store, so it uses the same test.
 
   - **You can name one:** run steps 1–3 to draft the finding, then **STOP at step
     3**. Do NOT scan for an id, do NOT assign one, do NOT create `findings/`.
@@ -196,11 +196,6 @@ init had created. The store was never a project store; the scaffold said otherwi
     branch must not append to `witness.md` by itself), `mind.md` at the next `/soul-distill` for a
     convention, a proposed line in the project's `CLAUDE.md` for a standing rule —
     and let the Body choose.
-
-  *Scope of the measurement:* on the first mining pass, 12 of 47 parked notes (26%)
-  named no Soul file. All 47 arrived through `/soul-handoff`'s upstream field, not
-  through this skill — this branch inherits the test because it routes to the same
-  store, not because it was measured here.
 
 Why this branch is spelled out rather than left to judgment: without it, a session
 in a domain project follows the numbered steps literally, finds no `findings/`
@@ -247,23 +242,4 @@ part (ID, format, placement) — it does NOT graduate on its own.
 
 ---
 
-**Source:** Merged at the Cut (→1.0) from `/soul-idea` (SOUL-I-inbox), `/soul-witness`
-(SOUL-I029), `/soul-finding` (SOUL-I024) into one mode-dispatched command. The friction
-differential (Mind contrast case; I024) is preserved by mode, not by command count. Carries
-the I027 re-read-verify protocol. Model-proposable for idea/witness since
-SOUL-A022 (2026-06-12; the Body's v2.0 review — "not clear WHEN").
-**Amended:** 2026-08-28 (v2.3.1) — STEP 0 gains the name-the-file
-entry test and an explicit refusal to self-downgrade the Body's `finding` call.
-**Amended:** 2026-10-19 (mining pass 2, SOUL-202) — F065 ruled: with the Body
-away, an idea/witness capture is appended marked `unconfirmed — owner to ratify`
-instead of held, and the next `/soul-handoff` lists it in the cursor.
-**Amended:** 2026-10-19 (v2.8.1, SOUL-204) — the witness example writes the mark
-with the dash `/soul-handoff` scans for, not a comma.
-**Amended:** 2026-10-21 (v2.10.1, SOUL-208) — finding mode's step 7, the upstream
-reminder, deleted: its condition (a reference project) is never true where STEP 0
-lets it run. **Amended:** 2026-11-05 (v3.9.0, SOUL-A031) — model-initiated captures
-are appended accepted with an opt-out; the unconfirmed mark and the ratify step are
-retired; a witness entry the Body types keeps its draft step (SOUL-I085).
-**Amended:** 2026-11-05 (v3.9.1, SOUL-A031) — the Body-typed witness draft step goes
-too: the entry is appended at once and shown in full with the opt-out. **Adopted:** 2026-06-08. **Status:** active.
-**Amended:** 2026-11-13 (v3.13.0) — `☀  ` starts the notice of an entry the model started.
+History and the reasons behind changes: [HISTORY.md](HISTORY.md).

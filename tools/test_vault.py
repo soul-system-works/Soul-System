@@ -489,7 +489,7 @@ def main():
     a = project(tmp, "alpha", files, remote="git@example.com:me/alpha.git")
     git(a, "add", "README.md", "CLAUDE.md")
     git(a, "commit", "-qm", "init")
-    r = run(env, "link", a, "--key", "alpha", "--label", "private", "--contributes", "soul,tools")
+    r = run(env, "link", a, "--key", "alpha", "--label", "private", "--tags", "soul,tools")
     soul = os.path.join(a, ".soul")
     target = os.path.join(vault, "projects", "alpha", "soul")
     check("link succeeds", r.returncode == 0, r.stderr + r.stdout)
@@ -500,7 +500,7 @@ def main():
               if rel.startswith(".soul/")))
     check("no parked copy left behind", not os.path.exists(soul + ".vault-moving"))
     pm = read(os.path.join(vault, "projects", "alpha", "project.md"))
-    check("project.md carries label, tags (--contributes, in Obsidian's list form), remote",
+    check("project.md carries label, tags (in Obsidian's list form), remote",
           "label: private" in pm and "\ntags:\n  - soul\n  - tools\n" in pm
           and "contributes" not in pm and "remote: git@example.com:me/alpha.git" in pm, pm)
     st = json.load(open(os.path.join(a, ".claude", "settings.local.json")))

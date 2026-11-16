@@ -119,7 +119,7 @@ or to report a problem. The tool calls already show the work.
       block of your own. When the plan has a
       line-endings line whose count is above 0, print `python3 <root>/tools/eol.py
       check .`'s list of files first — some may need Windows line endings on purpose
-      (`.eml`, `.ics` fixtures). Then show `plan.screen` in ONE `AskUserQuestion` call;
+      (`.eml`, `.ics` fixtures), and the fix stores them LF. Then show `plan.screen` in ONE `AskUserQuestion` call;
       the plan rides in the first option's preview, so it stays in view while the
       owner chooses (seen in a live mock, 2026-11-12). That box is small — about the
       terminal's height less 26 lines — and cuts the rest with "N lines hidden", so
@@ -236,8 +236,7 @@ and ask before writing there.
   .soul/handoff.md
   .soul/events.jsonl
   ```
-  then commit the record files and `.gitignore` (the owner chose git; a record that
-  is neither committed nor ignored is one `git add -A` from an accidental commit).
+  then commit the record files and `.gitignore` (step 4's one commit).
 - *local*: ignore the whole directory, `.soul/`.
 - *vault*: no `.gitignore` lines; the vault move (below) hides the link in
   `.git/info/exclude`, which never leaves this machine.
@@ -245,20 +244,18 @@ and ask before writing there.
 **Visibility** is read, never asked (v3.13.0). The tool takes GitHub's answer when the
 repo has a GitHub remote, or a `public:` line an older run recorded. The question it
 replaced wrote nothing and was not understood — the owner asked twice what it did
-(SOUL-I092) — so its meaning now sits on the record options: the git option says who
-can read the log. In a repo known to be private the tool suggests git; otherwise it
-suggests nothing and the record line waits. This reverses "repo visibility before the
-tracking question" (mining pass 2, SOUL-202); what that rule guarded — a question that
-once argued only for tracking — is kept by the git option's wording.
+(SOUL-I092) — so its meaning now sits on the record options: the git option says a
+tracked record can be read by whoever can read the repo.
 
 Why the record question is asked, never assumed: a record outside git exists in one copy, on one
 disk, with no history, and does not travel when the repo is cloned or used from a
 second machine; two of six adopting projects had their record gitignored, one by
 drift, in a plugin that gets submoduled (2026-08-20 retrospective). So the plan never
-fills this line in by itself unless the repo is known to be private: with the repo
-public, or its visibility unknown, the git option says a tracked record can be read by
-whoever can read the repo, nothing is suggested, and the line waits for an answer — the
-question once argued only for tracking (MODEL-TEST's note, SOUL-202).
+fills this line in by itself unless the repo is known to be private (then the tool
+suggests git): with the repo public, or its visibility unknown, nothing is suggested
+and the line waits for an answer. This reverses "repo visibility before the tracking
+question" (mining pass 2, SOUL-202); what that rule guarded — a question that once
+argued only for tracking (MODEL-TEST's note) — is kept by the git option's wording.
 
 **Tracking is a `.gitignore` edit, never a file move.** A record untracked because
 a broad `.soul/` rule swept it up is fixed by narrowing that rule and committing the
@@ -345,18 +342,22 @@ if line endings were a yes, fix and commit there too.
 vault's server has not moved. It touches nothing else in the shared vault folder, where
 other sessions keep uncommitted edits; two sessions once ran git there in the same
 second (mining pass 3, SOUL-234). It does not commit `index.md`, which each machine
-regenerates. Exit 2 with `NOT PUSHED`: the commit is safe here, but not on the server —
-its line says why (no upstream, a refused push, or the server has newer commits).
-Merging those is a deliberate step, the owner's or this session's when no other
-session is writing in the vault (the command its line names — not a bare `git pull`,
-which fails on diverged branches), then sync again; tell the
-owner. Exit 4: the lock is held — a running sync, so try again later; or it "looks
-stale", and its line names the file to remove once the owner has checked no git runs
-in the vault.
+regenerates.
+**What sync's exit means** (same text in `/soul-init` and `/soul-handoff`). Exit 0: on
+the server ("already on the server; this vault's copy is behind" too). Exit 2 with
+`NOT PUSHED`: committed in the vault, safe on this machine, not on the server — say
+why (its line names it). If the server has newer commits, merging them is a
+deliberate step — the Body's, or a session's when no other session is writing in the
+vault, with the commands that line names (not a bare `git pull`: it fails on diverged
+branches) — then sync again. Any other exit 2 (no `NOT PUSHED` in its line): nothing
+was committed; report its line. Exit 4: a running sync holds the lock — nothing is committed; say so, and
+sync again once it finishes. Or the lock "looks stale" — give the Body its removal
+step word for word (remove that file once they have checked no git runs in the
+vault); never remove it yourself.
 **`link` refuses** (exit 2): the record stayed where it was — every check runs before
 anything changes, and a failed compare rolls the move back. Return to the plan with
-the record line waiting again; a record must never be left neither tracked nor ignored,
-where one `git add -A` commits it. **Exit 5:** the record moved and is linked, but an
+the record line waiting again; a record must never be left neither tracked nor ignored
+(step 4's one commit says why). **Exit 5:** the record moved and is linked, but an
 `--also` path did not; its lines name each one and why, and it is back where it was —
 report them, and do not ask the record question again.
 
@@ -481,10 +482,8 @@ rewrites: relay them; hits in `witness.md` are history, expected and left alone.
 `core.autocrlf=true` checks files out with Windows line endings; WSL git sees every
 one as modified, `git add -A` commits them, and tools that write Unix endings leave
 files with both. The fix is part of the default setup whenever the repo lacks the
-rule file, and the plan's line says how many files it would change. When that number
-is above 0, show `eol.py check .`'s list of files committed with CRLF before the plan
-(step 3) — some may need CRLF on purpose (`.eml`, `.ics` fixtures), and the fix stores
-them LF. When it is in the setup (`line-endings yes`), run `python3 <root>/tools/eol.py fix <repo>` for each repo the
+rule file, and the plan's line says how many files it would change (above 0, step 3
+lists them first). When it is in the setup (`line-endings yes`), run `python3 <root>/tools/eol.py fix <repo>` for each repo the
 tool's detail names (`Needs it: project`, `vault` or `both`), show its output and
 commit in that repo with the line it suggests (in the vault, commit its `index.md`
 change first — `vault.py sync` never commits it; these commits are plain git, outside
@@ -523,29 +522,4 @@ contract import, **relative to the file the line goes into**: from a root
 
 ---
 
-**Source:** Built by the Artificer as the Soul System's bootstrap command (the
-`@import` installer). Brought into the repo under [[SOUL-F029]]; the root derives
-from the skill's own location since SOUL-A022. **Adopted:** 2026-05-19
-(repo-canonical 2026-05-22). **Status:** active.
-**Amended:** 2026-10-19 (mining pass 2, SOUL-202) — repo visibility before the
-tracking question; an existing store outside root/`.soul/`; the Mind import relative
-to the importing file (F068).
-**Amended:** 2026-10-20 (v2.10.0, SOUL-I070) — the experimental secret guard:
-private names, optional hand-commit hooks (own hooks directory, never overwriting,
-failing open loudly), the history sweep, push-protection status.
-**Amended:** 2026-10-22 (v3.4.0, SOUL-I079) — the vault: check, re-link, the third
-record answer, the move.
-**Amended:** 2026-10-26 (v3.5.0, SOUL-218/219) — line endings (`tools/eol.py`); the
-outside-files dialog in the bottom line.
-**Amended:** 2026-10-26 (v3.6.0, SOUL-I082, SOUL-A030) — rebuilt as status →
-questions → carrying out over `tools/init-status.py`: fixed wording, answers remembered
-in `.soul/init.md`, a `no` final until `revisit`; the register question dropped.
-**Amended:** 2026-11-06 (v3.11.0, mining pass 3, SOUL-234) — `vault.py sync` and
-`link --also`; wiring in `CLAUDE.local.md`; `triaged` history scans; the hand pre-push
-chains to Git LFS and a merged hook keeps its other lines; `.ai/` ignored by `layout`.
-**Amended:** 2026-11-12 (v3.12.0, SOUL-A032) — the `upkeep` answer: on unless the
-owner says off, asked once.
-**Amended:** 2026-11-13 (v3.13.0, SOUL-I092) — a plan first: one dialog with the whole
-setup (use, modify, explain, not now), answers held until go; the public question
-dropped; the vault as two steps with no labels, a new vault made here, tags in
-Obsidian's form (SOUL-I090 weighed one written round and did not take it).
+History and the reasons behind changes: [HISTORY.md](HISTORY.md).

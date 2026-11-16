@@ -97,7 +97,8 @@ pre-run cursor names that path (in NEXT STEP or OPEN GATES), so a later
    from the installed plugin, and the rest of it sits beside that path: the contract
    `operations/CLAUDE.md`, every `skills/*/SKILL.md`, a doc in `operations/` or
    `docs/` (witness-log format, completion gate, …), a `tools/*` helper, and the
-   hook `hooks/pre-completion-verify.py`. Name one of those, or it is not upstream,
+   hooks `hooks/pre-completion-verify.py`, `upkeep.py`, `secret-guard.py` and
+   `codex.py`. Name one of those, or it is not upstream,
    however sharp the lesson. (The docs and `tools/*` entries were added after three
    notes in mining pass 2 correctly named an operations doc the old list left out —
    SOUL-202.)
@@ -181,16 +182,20 @@ pre-run cursor names that path (in NEXT STEP or OPEN GATES), so a later
      cursor, run `python3 <root>/tools/vault.py sync .` (`<root>` is two levels above
      this skill's base directory): it commits only this project's vault folder, under
      the vault's lock, and pushes only when the vault's server has not moved. Say in
-     one line what it printed. Exit 2 with `NOT PUSHED`: the cursor is committed in
-     the vault, safe on this machine, but not on the server — say why (its line names
-     it). If the server has newer commits, merging them is a deliberate step — the
-     Body's, or a session's when no other session is writing in the vault, with the
-     command that line names — not part of the handoff. "Already on the server; this
-     vault's copy is behind" (exit 0) means the cursor is safe on the server. Exit 4: a running sync holds the lock — the cursor stays uncommitted,
-     say so; or the lock "looks stale" — give the Body its removal step word for word
-     (remove that file once they have checked no git runs in the vault), and do not
-     remove it yourself. Three adopting projects and this repo hit the error (mining
-     pass 3, SOUL-233/234).
+     one line what it printed.
+     **What sync's exit means** (same text in `/soul-init` and `/soul-handoff`). Exit 0:
+     on the server ("already on the server; this vault's copy is behind" too). Exit 2
+     with `NOT PUSHED`: committed in the vault, safe on this machine, not on the
+     server — say why (its line names it). If the server has newer commits, merging
+     them is a deliberate step — the Body's, or a session's when no other session is
+     writing in the vault, with the commands that line names (not a bare `git pull`:
+     it fails on diverged branches) — then sync again. Any other exit 2 (no `NOT
+     PUSHED` in its line): nothing was committed; report its line. Exit 4: a running sync holds the lock — nothing is
+     committed; say so, and sync again once it finishes. Or the lock "looks stale" —
+     give the Body its removal step word for word (remove that file once they have
+     checked no git runs in the vault); never remove it yourself.
+     The merge is not part of the handoff. Three adopting projects and this repo hit
+     the error (mining pass 3, SOUL-233/234).
    - **No link:** run `git check-ignore -v .soul/handoff.md` — one call that sees
      `.gitignore`, `.git/info/exclude` and the global excludes alike (F068 defect 3);
      then one of these two:
@@ -227,28 +232,13 @@ pre-run cursor names that path (in NEXT STEP or OPEN GATES), so a later
    checked this session, it becomes `[read]`; otherwise it stays `[inherited]`
    (step 3).
 
-   **FIRST, the one-time upgrade check.** If the old cursor still carries an
-   `OWED UPSTREAM` field (any cursor written before v2.3.0), **move its contents
-   into `upstream.md` before writing the new one.** The new template has no such
-   field, so replacing the cursor without moving it destroys the only copy — the
-   cursor is normally gitignored (the check above). Once moved, the
-   field never comes back.
-
-   After that check, anything owed upstream is no longer in this file: it lives in
-   `upstream.md`, which is durable and append-only, so a cursor rewrite cannot
-   destroy it. That is the whole reason the field was removed (v2.3.0). The check
-   above exists because the sentence you just read is false for exactly one cursor
-   per project — the last one written under the old rule (fresh-context review,
-   2026-08-28).
-
    **Size check before writing:** if the draft exceeds ~150 lines, it is carrying
    record, not cursor. Flush the excess to `witness.md` and point at it instead.
 
    **`[inherited]` expires.** A pointer carried `[inherited]` across three
    consecutive cursors must be verified this session or dropped — say which. An
-   OPEN GATES or NEXT STEP obligation gets no three-cursor grace: it is checked in
-   the session that inherits it, or dropped (carry-forward, above; pending the
-   Body's confirmation, 2026-10-19). The marking convention (A023) names unverified
+   OPEN GATES or NEXT STEP obligation gets no three-cursor grace (carry-forward,
+   above). The marking convention (A023) names unverified
    claims but nothing made them expire, and the 472-line cursor carried fifteen of
    them, one explicitly "carried as [inherited] for several cursors and STILL
    true."
@@ -256,9 +246,8 @@ pre-run cursor names that path (in NEXT STEP or OPEN GATES), so a later
 3. **Mark provenance (A023/F061; extended past POINTERS by F067):** every POINTERS
    entry carries `[read]` — this session opened, checked or established it — or
    `[inherited]` — carried from a prior cursor or from memory, unverified. Every
-   OPEN GATES item and the NEXT STEP carry `[read]`: an inherited one is checked
-   or dropped, never carried `[inherited]` (step 2; confirmed by the
-   Body, 2026-10-19). A cursor pointer is a claim, not a fact: an
+   OPEN GATES item and the NEXT STEP carry `[read]` (step 2's carry-forward). A
+   cursor pointer is a claim, not a fact: an
    unmarked or `[inherited]` pointer once propagated a false "the ADR is not on
    disk" into a Body decision (F061; cost to check was one `ls`). The obligations
    are claims too: MODEL-TEST carried an unmarked NEXT STEP obligation forward
@@ -322,33 +311,4 @@ pre-run cursor names that path (in NEXT STEP or OPEN GATES), so a later
 
 ---
 
-**Source:** Built by the Artificer for the handoff design
-(docs/specs/2026-05-21-soul-handoff-design.md); grows only the Soul delta, leaning on
-`/compact` + the durable records (SOUL-I007). Pocock's handoff skill informed the
-"reference, don't duplicate" principle. **Amended:** SOUL-A023 (2026-07-16) — pointer
-provenance marks, from F061 (a cursor pointer propagated a false claim into a Body
-decision). **Amended:** 2026-08-28 (v2.3.0) — `OWED UPSTREAM` leaves the cursor for a
-durable `upstream.md`; the carry-forward clause, the three-cursor escalation and all
-other nagging go with it (SOUL-I062;
-`docs/specs/2026-08-28-upstream-store.md`). **Amended:** 2026-08-28 (v2.3.1) — the
-name-the-file test and the routing for what fails it, from the first mining pass
-(26% misfiled), and its routing for what fails it. **Amended:** 2026-10-19 (mining
-pass 2, SOUL-202) — F065 ruled (append marked unconfirmed; step 1 collects every
-marked entry into the new `UNCONFIRMED` field; cursor first, then show); F067's fix
-(an inherited OPEN GATES / NEXT STEP obligation is checked or dropped, pending the
-Body's confirmation; commands, not counts, in WHERE WE ARE); flush before a long unattended run;
-`git check-ignore` instead of asserting the cursor is ignored; 1b's surface gains
-`operations/*.md` and `tools/*`. **Amended:** 2026-10-21 (v2.10.1, SOUL-208) — 1b
-first checks for the Soul System repo itself, where there is no upstream (SOUL-187).
-**Amended:** 2026-11-05 (v3.9.0, SOUL-A031) — model-initiated captures are appended
-accepted with an opt-out; the unconfirmed mark and the ratify step are retired, and
-the cursor's `UNCONFIRMED` field becomes `NEW ENTRIES` (SOUL-I085).
-**Amended:** 2026-11-05 (unreleased, SOUL-I086) — a long unattended run keeps a
-decisions log for `/soul-debrief`; POINTERS gains the newest debrief.
-**Amended:** 2026-11-06 (v3.11.0, mining pass 3, SOUL-234) — a vault-linked cursor is
-checked in the vault and committed with `vault.py sync`.
-**Amended:** 2026-11-12 (unreleased, SOUL-A032) — runs itself when the cursor is stale
-(about 100,000 tokens, or a summary, since the last write; `hooks/upkeep.py`), and checks
-whether the Mind is due (step 1c).
-**Adopted:** 2026-05-21. **Status:** active.
-**Amended:** 2026-11-13 (v3.13.0, SOUL-239) — the step is about 100,000 tokens; `☀  ` starts every line about something the Soul did on its own.
+History and the reasons behind changes: [HISTORY.md](HISTORY.md).

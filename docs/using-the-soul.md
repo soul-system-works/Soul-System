@@ -5,7 +5,7 @@ plus a notebook your project keeps. This page is the whole lifecycle; every link
 goes deeper.
 
 The walkthrough below describes Claude Code. For the experimental Codex path,
-see [the Codex preview](../README.md#codex-preview-experimental) and
+see [the Codex preview](../README.md#codex-preview) and
 [host integration](../operations/codex.md); use `$soul-system:soul-*` invocation there, and
 verify hook trust and operation before relying on automatic completion reminders.
 
@@ -174,7 +174,6 @@ found only when you name that vault again. Why and how:
 | Any command in full | `skills/<name>/SKILL.md` (e.g. [`soul-capture`](../skills/soul-capture/SKILL.md), [`soul-stage`](../skills/soul-stage/SKILL.md), [`soul-distill`](../skills/soul-distill/SKILL.md), [`soul-init`](../skills/soul-init/SKILL.md)) |
 | The page the AI actually reads | [`operations/CLAUDE.md`](../operations/CLAUDE.md) |
 | Why the system is shaped this way | [`philosophy/the-soul.md`](../philosophy/the-soul.md) |
-| What it will and won't do (measured) | [`docs/study/blog-release.md`](study/blog-release.md) |
 | In a session | `/soul-help` |
 
 ---

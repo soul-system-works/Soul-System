@@ -21,11 +21,16 @@ confinement — the worker itself was sandboxed, the check that ran its code was
 
 SECRET_DIRS is the one list of folders a worker or a check may not read; dispatch.py
 spells it as Claude Code permission rules, this module as real paths to hide.
+
+SIGNALS, Killed, _kill_group and _on_signal are the signal handling dispatch.py and
+delegation-check.py share: a termination signal becomes Killed, so the caller's
+finally kills the child's process group before it exits.
 """
 
 import importlib.util
 import os
 import shutil
+import signal
 import sys
 
 ENV_KEEP = ("PATH", "HOME", "USER", "LOGNAME", "LANG", "TERM", "TMPDIR", "SHELL",
@@ -136,3 +141,36 @@ def confine_argv(argv, workdir, which=shutil.which, platform=None, project=None)
     if os.path.isdir(run_user):
         cmd += ["--tmpfs", run_user]
     return cmd + list(argv)
+
+
+# ---------------------------------------------------------------- signals
+# Shared by dispatch.py and delegation-check.py. Each `except Killed` must catch the
+# class its _on_signal raises, so each caller takes all four names from one loaded
+# copy of this module.
+
+SIGNALS = tuple(getattr(signal, n) for n in ("SIGTERM", "SIGINT", "SIGHUP")
+                if hasattr(signal, n))
+
+
+class Killed(Exception):
+    """A termination signal arrived while a worker or check ran."""
+
+    def __init__(self, signum):
+        super().__init__(signum)
+        self.signum = signum
+
+
+def _kill_group(pgid):
+    try:
+        os.killpg(pgid, signal.SIGKILL)
+    except OSError:
+        pass  # group already empty
+
+
+def _on_signal(signum, frame):
+    # Ignore further signals first: a second SIGTERM must not interrupt the cleanup
+    # this exception starts. delegation-check's record() restores the previous handlers
+    # in its finally; dispatch's main() leaves them in place until the process exits.
+    for s in SIGNALS:
+        signal.signal(s, signal.SIG_IGN)
+    raise Killed(signum)

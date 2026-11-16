@@ -30,21 +30,11 @@ wants the lay of the land). Not a deep philosophy dump — point to depth, don't
    Mind changes apply with a one-line notice, and a cut or a changed rule waits for
    the Body's yes (`upkeep: off` in `.soul/init.md` turns this off).
 
-3. **The commands.** Read `skills/` at runtime and list each `soul-*/SKILL.md` with a one-line
-   "when it fires" (the first sentence of its `description:`, ~100 char cap) — so this can't
-   drift from what's on disk. (The `/soul-*` instruments are Claude Code **skills**; invoked
-   the same way — `/soul-capture`, etc.) The core is: `soul-init` (set up a project), `soul-stage` (declare the
-   development stage — what may be broken, what must be kept), `soul-capture
-   <idea|witness|finding>` (write to the record), `soul-handoff` / `soul-resume`
-   (continuity across sessions), `soul-explain` (describe the present; `council`
-   mode for a multi-lens read), `soul-discuss` (contest an idea so it can mature —
-   rivals, the strongest objection, a short cited scan, a held lean), `soul-next`
-   (what to do next), `soul-debrief` (catch up on a long or unattended run — one
-   page per debrief, experimental), `soul-distill`
-   (refresh the Mind), `soul-prompt` (rewrite a rough prompt into a project-informed
-   one), `soul-workflow` (other models build or review; this session re-runs
-   each check, weighs the reviews and records the result), and `soul-migrate` (move a project
-   to another computer — what git does not carry, in one zip).
+3. **The commands.** Read `soul-*/SKILL.md` in the folder one level above this skill's
+   base directory (the installed plugin's `skills/`, not the project's) at run time,
+   and list each one by the `name:` in its frontmatter, with a one-line "when it fires" (the first sentence of
+   its `description:`, ~100 char cap). (The `/soul-*` instruments are Claude Code
+   **skills**, invoked by name — `/soul-capture`, etc.)
 
 4. **Where the record lives:** `witness.md` (observations, append-only) · `findings/`
    (earned patterns) · `ideas.md` (forward possibilities) · `amendments/` (doctrine
@@ -61,6 +51,4 @@ Keep it skimmable. Quiet and clear (SOUL-I008) — an intro, not a manual.
 
 ---
 
-**Source:** Built by the Artificer for SOUL-I015 as a command roster; reframed at the Cut
-(→1.0, 2026-06-08) into a Soul-System intro / onboarding entry point. Generates the command
-list from the live directory so it cannot drift. **Status:** active.
+History and the reasons behind changes: [HISTORY.md](HISTORY.md).

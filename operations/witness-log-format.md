@@ -35,13 +35,15 @@ WHAT:         [factual description. Two sentences maximum. No interpretation.
 TYPE:         [one of the following]
                 - Failure Mode        [name the specific failure mode if known]
                 - Obligation Skipped  [name which obligation]
-                - Felt Wrong          [unresolved — something noticed, not yet named]
+                - Felt Wrong          [unresolved — something noticed, not yet named;
+                                       leave it Open until it resolves or is named]
                 - Unnamed Tension     [two forces in conflict, not yet resolved]
                 - Universe Contradiction [assumption met reality and lost]
-                - Multiverse Signal   [evidence the assumed Universe may be wrong]
+                - Multiverse Signal   [evidence the assumed Universe may be wrong;
+                                       stop and convene the Council at once]
                 - Council Note        [observation for a specific Council role]
 CONSEQUENCE:  [damage before named / cost of correction / or: unresolved]
-STATUS:       [Open / Resolved / Escalated to Council]
+STATUS:       [Open / Resolved / Escalated to Council / Declined by the Body <date>]
 ```
 
 ---
@@ -117,43 +119,10 @@ STATUS:       Escalated to Council
 
 ---
 
-## Entry Types — Reference
-
-| Type | Who Acts On It |
-|---|---|
-| Failure Mode | Council — Prophet, Guardian |
-| Obligation Skipped | Guardian, Judge |
-| Felt Wrong | Leave open until it resolves or is named |
-| Unnamed Tension | Council — Revelator, Skeptic |
-| Universe Contradiction | Emissary, Panel of Experts |
-| Multiverse Signal | Judge — stop and convene Council immediately |
-| Council Note | Address to the specific role by name |
-
----
-
-## Council Note Format
-
-When a Witness entry is specifically addressed to a Council role,
-add the role name to the WHERE field and a direct address in WHAT.
-
-```
-ID:           THERMAL-006
-WHEN:         2026-05-16 / Session 3
-WHERE:        [Cartographer] — ThermalSystem domain boundary
-WHAT:         Fluid thermal behavior has appeared at the edge of current scope.
-              Current map covers solid body heat transfer only. Boundary not yet mapped.
-TYPE:         Council Note — Cartographer
-CONSEQUENCE:  Unknown. May require Multiverse assessment.
-STATUS:       Open
-```
-
----
-
 ## Log Hygiene
 
-The Archivist maintains the log. The Archaeologist reviews it periodically.
-The Guardian watches for patterns — the same WHERE appearing repeatedly,
-the same TYPE recurring, Obligations Skipped under the same conditions.
+Patterns are the signal: the same WHERE appearing repeatedly, the same TYPE
+recurring, Obligations Skipped under the same conditions.
 
 **Entries are never deleted.** Resolved entries are marked Resolved, not removed.
 The record of what went wrong and how it was corrected is as valuable
@@ -175,7 +144,8 @@ This does not license "ask the Body to look." When a capture tool exists — a h
 
 ## Log Location and Lifecycle
 
-The active witness log lives at the project root as `witness.md`. One file,
+The active witness log is `witness.md`, at the project root or in `.soul/` (where
+`/soul-init` scaffolds it). One file,
 append-only, chronological. Entries are added, never modified (except `STATUS`
 updates).
 A history rewrite that changes commit SHAs the log cites gets one appended map
@@ -183,7 +153,7 @@ entry (old → new SHA); earlier citations resolve through it and are never edit
 
 The log moves through three phases. Cadence is project-dependent — never time-fixed.
 
-**Active** — `witness.md` at project root. Append-only. Recent context.
+**Active** — `witness.md`. Append-only. Recent context.
 
 **Archived** — `witness/<name>.md`. Triggered when the Steward judges the active
 log impedes navigation, or when a natural phase ends (milestone, release,

@@ -10,7 +10,7 @@
     {
       "name": "soul-system",
       "source": "./",
-      "description": "The /soul-* commands and the pre-completion verification hook (the Stop gate). Run /soul-init to wire the project contract (operations/CLAUDE.md) into your project's CLAUDE.md via @import."
+      "description": "The /soul-* commands, the pre-completion verification hook (the Stop gate), and an experimental secret guard on git commit/push (credentials block, private names warn; needs gitleaks and git 2.31+). Run /soul-init to wire the project contract (operations/CLAUDE.md) into your project's CLAUDE.md via @import."
     }
   ]
 }

@@ -1066,7 +1066,6 @@ def render_question(key, public=None, vault=None, path=None, n=None, members=())
             "recommended": rec}
 
 
-ASKABLE = tuple(k for k in KEYS if k in QUESTIONS) + EXTRAS
 # Keys --ask may force: a choice the owner can sensibly make again. The rest
 # (import, vault-link, existing-store, layout) are asked only when the files call for
 # it — forcing them asks about something that is not there (a second import line).
@@ -1364,11 +1363,6 @@ def _recorded_value(c, key):
 def _wrap(text, first="", rest="  "):
     return textwrap.wrap(text, WIDTH, initial_indent=first, subsequent_indent=rest,
                          break_long_words=False, break_on_hyphens=False)
-
-
-def _one_of(labels):
-    labels = [lb[0].lower() + lb[1:] for lb in labels]
-    return labels[0] if len(labels) == 1 else ", ".join(labels[:-1]) + ", or " + labels[-1]
 
 
 # A setting the owner changed under Modify setup gets a line saying what it was (the

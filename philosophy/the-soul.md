@@ -86,7 +86,7 @@ sessions begin with no memory.
 
 That split is not a retreat; it is a measured result. A program of pre-registered
 twin-chain experiments (June 2026; the corpus lives in the `soul-benchmark`
-repository and `docs/study/`) found that the frontier model had absorbed this
+repository) found that the frontier model had absorbed this
 philosophy's working core: given even a bare counter-default rule, sessions under a
 250-word ordinary contract held it under pressure, rebuilt "never do X" warnings at
 the code sites, and wrote tests that fail if the rule is broken — unprompted, at the
@@ -743,6 +743,6 @@ The Soul lives because it remains humble before what it does not yet know.
 ---
 
 *The Soul — the human-facing book since 2.0 (A021). The AI's page is
-`operations/CLAUDE.md`; the evidence is in `docs/study/` and the `soul-benchmark`
+`operations/CLAUDE.md`; the evidence is in the `soul-benchmark`
 repository; the record of how this document changed is in `amendments/` and
 `witness.md`.*

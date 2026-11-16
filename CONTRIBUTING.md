@@ -17,7 +17,7 @@ from real use — not through good intentions, clever reasoning, or enthusiasm.
 | Findings | `findings/open/` | Earned graduations from witness — patterns worth naming. Standard format (`SOUL-F###`). Scaffold via `/soul-capture finding`. |
 | Proposed Amendments | `amendments/proposed/` | A change to a canonical document, supported by Witness log evidence. Answer the three Amendment Questions (`operations/amendment-process.md`). |
 | Hooks | `hooks/` | Automatic trigger definitions, tested in a real run. |
-| Tested skills | (catalog) | The curated which-skill-when catalog — **deferred to a post-1.0 fast-follow** (see `docs/tested-skills-catalog.md`); populated when a verified success earns the first entry. (`skills/` itself now holds the Soul's own `/soul-*` instruments.) |
+| Tested skills | (catalog) | The curated which-skill-when catalog — **deferred to a post-1.0 fast-follow** (see idea SOUL-I043 in `ideas.md`); populated when a verified success earns the first entry. (`skills/` itself now holds the Soul's own `/soul-*` instruments.) |
 
 Suggestions based on reasoning alone — however compelling — are not evidence.
 
@@ -66,7 +66,6 @@ That means:
 
 ## First Contribution
 
-If this is your first run, submit a registry entry and one or two findings
-before attempting a proposed amendment. These have lower friction and help
-you learn the contribution process — and the Cartographer needs the registry
-to map where the system has been used.
+If this is your first run, submit one or two findings before attempting a
+proposed amendment. They have lower friction and help you learn the
+contribution process.

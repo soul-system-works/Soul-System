@@ -25,10 +25,8 @@ Arguments (optional): `<since>` (a date, commit, witness id, or "this session");
    run's start if the run ended with `/soul-handoff`). None (a fresh clone): ask the
    Body for `<since>`; do not guess. State the scope as commit and time ranges. An
    empty scope from the first three gets one line and no page; from the cursor, ask.
-   **`.ai/` ignored first**, before any file is written there (`INDEX.md` too): run
-   `git check-ignore -q .ai/x`; if it is not ignored, add `.ai/` to
-   `.git/info/exclude` (as `tools/dispatch.py` does) and say so in one line. In a
-   public repo, write nothing there until it is ignored (mining pass 3, SOUL-234).
+   **`.ai/` ignored first**, before any file is written there (`INDEX.md` too): the
+   check and fix in `/soul-distill` step 8 (`../soul-distill/SKILL.md`).
 2. **Gather the sources**, most trusted first: the files the run wrote (results,
    metrics, logs, images, the code at its commits); records added in scope (witness,
    ideas, plan changes, `git log <range>`); the decisions log at
@@ -156,16 +154,4 @@ item. `/soul-handoff` asks a long unattended run to keep the decisions log.
 
 ---
 
-**Source:** SOUL-I086 (discussed 2026-11-05): a slim version of a draft written in
-CAPTURE-RIG and tried there once, after a long unattended run (2026-11-05). There
-the fact sheet caught a wrong number that had also reached a ratified record, and
-the trial notes record 15 findings from the independent check (a caption for
-something the image did not show, overclaimed checks, questions not the owner's).
-**Status:** experimental. The draft was tried once, on CAPTURE-RIG; this slim version
-was first run on 2026-11-05, on the Sonnet half of SOUL-I083 round 2. The fact sheet
-held every number; the independent check caught 6 real defects (one a misread
-field, the rest overstated claims); links to published files failed and step 8 now
-shows originals in the page. Second run, CAPTURE-RIG (2026-11-06, plugin 3.10.0): the
-owner found the page confusing (seven dense items); its main result, a 3D model, had
-never been opened by a person and the page did not say so; and the fact sheet misread
-a printed count. Steps 3, 4, 6 and 13 changed in 3.10.1.
+History and the reasons behind changes: [HISTORY.md](HISTORY.md).
