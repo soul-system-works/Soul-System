@@ -110,6 +110,13 @@ from prose to agents.** Bounds: one breadth-coverage task; depth-bottleneck task
 | [`07-longitudinal.md`](07-longitudinal.md) | Does a self-accumulated record prevent drift across sessions? — the decision-moving result; a fact-carrying win that does **not** dissolve at the frontier (measured at both capabilities) |
 | [`08-longitudinal-preference.md`](08-longitudinal-preference.md) | The sibling probe: does the carry hold for an arbitrary *convention*, not just a fact? — yes, it persists at the frontier too; the reframe from *fact-vs-preference* to **derivable-vs-unguessable** |
 | [`data/`](data/) | Consolidated result tables |
+| [`paper.md`](paper.md) | The write-up as a paper — does a meta-doctrine system change model behaviour, or just make it legible? A self-ablation study under equal compute |
+| [`tex/`](tex/) | The paper's LaTeX source (`tex/ablation/main.tex`) and its built PDF |
+| [`figures/`](figures/) | The calibration-gradient figure and the script that regenerates it |
+| [`blog.md`](blog.md) | Blog post: "I gave an AI a philosophy, then tried to prove it was useless" |
+| [`blog-efficacy.md`](blog-efficacy.md) | Blog post: "I built the best opponent I could for my AI philosophy. We tied." |
+| [`blog-release.md`](blog-release.md) | Blog post: the Soul System 2.0 release announcement |
+| [`2026-06-v1-eval/`](2026-06-v1-eval/) | The v1.0 evaluation study (2026-06-09 → 10): its final summary and its log |
 
 ## Reproducibility note
 
