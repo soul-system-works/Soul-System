@@ -3478,3 +3478,23 @@ NOTES:     Checked against Claude Code's docs the same day: nothing lets a plugi
            cursors run across projects.
 STATUS:    Raw
 ```
+
+```
+ID:        SOUL-I095
+WHEN:      2026-11-16
+RAW:       An adopting project's upstream note (another computer; the Body passed it
+           on as a Downloads file), "the upkeep hook over one long day": eleven cursor
+           refreshes in one working day; the hook's "then stop" against the skill's
+           "goes back to the work" (twice the owner's awaited reply became the one sun
+           line); a summary minutes after a refresh asked for another; the session's
+           own summary carried more than the cursor inside one session — the cursor's
+           value was the flush it forces and the copy a new session reads; a full
+           rewrite re-typed ~100 unchanged lines and grew 132 -> 146 lines in a day.
+NOTES:     Three of the four points built the same day as v3.13.2 (the Body: yes to
+           each; the summary gap is "1/2 of the refresh trigger or 50k, whichever is
+           higher"). Open: the observation that inside one session the summary beats
+           the cursor (whether the in-session refresh is worth its cost at all);
+           growth after a summary that was itself a block start is under-counted
+           (pre-existing, review 2026-11-16). Related: SOUL-I094, SOUL-A032.
+STATUS:    Built in part (v3.13.2)
+```
