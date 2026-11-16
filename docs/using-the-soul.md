@@ -5,7 +5,7 @@ plus a notebook your project keeps. This page is the whole lifecycle; every link
 goes deeper.
 
 The walkthrough below describes Claude Code. For the experimental Codex path,
-see [the Codex preview](../README.md#codex-preview-experimental) and
+see [the Codex preview](../README.md#codex-preview) and
 [host integration](../operations/codex.md); use `$soul-system:soul-*` invocation there, and
 verify hook trust and operation before relying on automatic completion reminders.
 

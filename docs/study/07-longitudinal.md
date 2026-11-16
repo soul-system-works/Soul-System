@@ -177,7 +177,7 @@ the draft headline "naive distillation is dangerous" was itself an overclaim, ca
 running the real instrument before writing it down. (2) But even a *faithful* distillation
 leaves **2/5** frontier fabrications: a terse true "non-idempotent" lacks the stopping-power
 of the incident that made it concrete. The lesson is precise and lands on the Mind's own
-design ([SOUL-F045](../../findings/open/SOUL-F045-compression-strips-anchoring-force-frontier-fabricates.md)):
+design ([SOUL-F045](../../findings/closed/SOUL-F045-compression-strips-anchoring-force-of-anti-prior-facts.md)):
 **distill rules freely, but a fact that *contradicts a strong model prior* is partly
 incompressible — preserve its force (the incident, the explicit negation), not just its
 proposition.** It is a measured instance of `mind.md`'s "incompressible residual." (Raw arms:
@@ -271,7 +271,7 @@ through. (Raw arms: `.soul/experiments/2026-06-04-longitudinal-antiprior2/`.)
 
 **Raw arms:** `.soul/experiments/2026-05-29-longitudinal-drift-v2/` (v2, this result) and
 `.soul/experiments/2026-05-29-longitudinal-drift/` (v1, mechanism-validation + the C2 lesson).
-Design: [`docs/specs/2026-05-29-longitudinal-harness-design.md`](../specs/2026-05-29-longitudinal-harness-design.md).
+Design: [`docs/archive/specs/2026-05-29-longitudinal-harness-design.md`](../archive/specs/2026-05-29-longitudinal-harness-design.md).
 
 ## The same payoff, observed on the project's own history
 

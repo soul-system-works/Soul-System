@@ -131,4 +131,4 @@ durable value is precisely the unguessable it carries forward.
 
 **Raw arms:** `.soul/experiments/2026-06-04-longitudinal-preference/` (floorcheck/ + s1/s2/s3
 + filler + arms + manifest). Shares the harness and design of
-[`07`](07-longitudinal.md) / [`docs/specs/2026-05-29-longitudinal-harness-design.md`](../specs/2026-05-29-longitudinal-harness-design.md).
+[`07`](07-longitudinal.md) / [`docs/archive/specs/2026-05-29-longitudinal-harness-design.md`](../archive/specs/2026-05-29-longitudinal-harness-design.md).

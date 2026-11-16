@@ -555,7 +555,7 @@ projects are treated as released: nothing is broken without asking you.
 - [ ] **Step 3: using-the-soul, table** — in the "Any command in full" row, add `soul-stage` to the examples:
 
 ```markdown
-| Any command in full | `skills/<name>/SKILL.md` (e.g. [`soul-capture`](../skills/soul-capture/SKILL.md), [`soul-stage`](../skills/soul-stage/SKILL.md), [`soul-distill`](../skills/soul-distill/SKILL.md), [`soul-init`](../skills/soul-init/SKILL.md)) |
+| Any command in full | `skills/<name>/SKILL.md` (e.g. [`soul-capture`](../../skills/soul-capture/SKILL.md), [`soul-stage`](../../skills/soul-stage/SKILL.md), [`soul-distill`](../../skills/soul-distill/SKILL.md), [`soul-init`](../../skills/soul-init/SKILL.md)) |
 ```
 
 - [ ] **Step 4: README lines 47–48** — replace

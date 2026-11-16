@@ -4,7 +4,7 @@
 **Status:** draft (sections approved in brainstorm; Body to review the written spec)
 **Ideas:** SOUL-I026 (the proposal). Related: SOUL-I011 (experiment harness),
 SOUL-033/034 (description budget), SOUL-F014 (expansion gap), SOUL-I025 (GUI access).
-**Tier 1 artifact:** `docs/experiments/2026-05-26-mind-tier1-candidate.md`.
+**Tier 1 artifact:** `docs/archive/experiments/2026-05-26-mind-tier1-candidate.md`.
 **Tier 2 evidence:** captured inline in this spec (held-out A/B on `/soul-witness?`).
 
 ---
