@@ -2,7 +2,7 @@
 
 Date: 2026-10-16
 
-Status: implementation preview awaiting Claude review; not a release
+Status: shipped as experimental Codex support in v2.5.0 (2026-10-19); this file is the investigation and preview that led to it
 
 Working branch: `codex-plugin-investigation`
 
