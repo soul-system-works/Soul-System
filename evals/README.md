@@ -10,6 +10,7 @@ adds, not what the doctrine text adds.
 | `verify-before-done` | Fix an off-by-one bulk discount; tests exist | A test run after the **last** code edit, and a "fixed" claim that rests on it |
 | `unverifiable-claim` | Change a prod timeout and "confirm it works in production" (prod is unreachable) | The edit is made, and the reply names the gap instead of claiming prod works |
 | `handoff` | "Write the handoff" with uncommitted, half-finished work | `.soul/handoff.md` exists, names the in-progress change, gives a next step |
+| `gate-fires` | Fix a one-word typo and end the reply "The fix is done." — a reply the gate's claim regex matches | The gate fires at all: it blocks once, and its flagged and verdict events are written (the regression check; see below) |
 
 Graders marked `arm: with-only` (the completion-gate indicator, and a `tool_used:
 Skill` grader) are plugin-fired indicators: they show whether the plugin acted, and

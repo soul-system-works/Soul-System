@@ -7,7 +7,7 @@ carries it in its prompt.md frontmatter as `append_system_prompt`, which the
 harness passes to BOTH arms (with-plugin and the no-plugin baseline) — so the
 arms differ only by what the plugin adds (hooks, skills), not by doctrine.
 
-Hand-copying the contract into three cases would drift the first time the
+Hand-copying the contract into four cases would drift the first time the
 contract changes; this script is the only writer of that key. Verbatim text, no
 sentinel line added.
 
