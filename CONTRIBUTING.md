@@ -66,7 +66,6 @@ That means:
 
 ## First Contribution
 
-If this is your first run, submit a registry entry and one or two findings
-before attempting a proposed amendment. These have lower friction and help
-you learn the contribution process — and the Cartographer needs the registry
-to map where the system has been used.
+If this is your first run, submit one or two findings before attempting a
+proposed amendment. They have lower friction and help you learn the
+contribution process.

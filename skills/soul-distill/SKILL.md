@@ -42,8 +42,7 @@ stay held.
 **The growth signal:** material record activity since the `Last distilled` stamp
 in `mind.md` — as a guideline, ~15+ new witness entries, or any finding closure
 or accepted amendment. Event-anchored, not calendar-anchored. No `mind.md` yet?
-Then the signal is the first accumulation that would fill one (see /soul-init's
-"the Mind is earned" note).
+Then the signal is the first accumulation that would fill one.
 
 ## What to do
 
@@ -133,8 +132,8 @@ Then the signal is the first accumulation that would fill one (see /soul-init's
        them or raises the cap out loud. When force and budget conflict, force
        wins; the cap is the Body's to move, not the session's.
 
-     Why a target at all: the contract is ~75 lines and this repo's own Mind is
-     ~69 (re-anchored 2026-08-20); the old pre-2.0 200/300 cap let a 239-line,
+     Why a target at all: it was anchored to the size of the contract and of this
+     repo's own Mind (2026-08-20); the old pre-2.0 200/300 cap let a 239-line,
      20 KB project Mind pass unflagged; and unnecessary always-on text is a
      *correctness* cost, not merely a token cost (F055, step 5b). Why not a gate:
      the old "cut, do not request an exception" left the precedence unstated, and

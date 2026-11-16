@@ -18,7 +18,7 @@ that workflow; they do not change the contract's obligations.
   Codex listed the options and carried on, picking the recommended answers itself,
   including the git-tracking choice that `/soul-init` says cannot be defaulted.
   `AskUserQuestion` is a Claude tool name, not a requirement to call it in Codex.
-- For **local Register and Stage policy**, read existing project `CLAUDE.md` if
+- For **local Stage policy**, read existing project `CLAUDE.md` if
   present. This keeps one policy when Claude and Codex share a project. Otherwise
   use root `AGENTS.override.md` if non-empty, else root `AGENTS.md`. This is the
   **project policy file** for the shared skill's read/write instructions. Never
@@ -118,8 +118,8 @@ shared rule that an inherited pointer is a claim to verify.
 
 ## Other host-sensitive workflows
 
-- **soul-stage / soul-next:** use the project policy file for Register, Stage,
-  Phase, and placement. In an `AGENTS.md` policy file insert a new stage after the
+- **soul-stage / soul-next:** use the project policy file for Stage, Phase,
+  and placement. In an `AGENTS.md` policy file insert a new stage after the
   managed block or Register line; preserve the managed block itself. A stage is
   shared project policy, not a separate Codex-only stage.
 - **soul-distill:** read the actual store layout rather than assuming root files;
