@@ -169,7 +169,8 @@ def _kill_group(pgid):
 
 def _on_signal(signum, frame):
     # Ignore further signals first: a second SIGTERM must not interrupt the cleanup
-    # this exception starts. The caller's finally restores the previous handlers.
+    # this exception starts. delegation-check's record() restores the previous handlers
+    # in its finally; dispatch's main() leaves them in place until the process exits.
     for s in SIGNALS:
         signal.signal(s, signal.SIG_IGN)
     raise Killed(signum)

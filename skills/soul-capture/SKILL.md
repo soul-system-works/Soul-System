@@ -169,7 +169,8 @@ init had created. The store was never a project store; the scaffold said otherwi
 
 ### STEP 0 — WHICH REPO ARE YOU IN? Answer this before step 1.
 
-`findings/open/` exists **only** in the Soul System repo. Decide once, here:
+Some adopting projects also carry an empty `findings/open/`, so check all three files
+below. Decide once, here:
 
 - **In the Soul System repo** (`findings/open/` **and** `operations/CLAUDE.md`
   **and** `SYSTEM-VERSION.md`, all at the repo root): run steps 1–7 as written.
