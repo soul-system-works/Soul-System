@@ -32,11 +32,6 @@ system is appended to an `upstream.md` file beside your other records. That file
 created the first time there is something to put in it — if your project never has
 one, you will never see it, and nothing will ask you about it.
 
-**Upgrading from before v2.3.0?** Earlier versions kept these notes in an `OWED
-UPSTREAM` field inside `.soul/handoff.md`. The first `/soul-handoff` after the upgrade
-moves that field's contents into `upstream.md` before replacing the cursor. If you want
-to check it by hand first, the field is in your current `.soul/handoff.md`.
-
 That's the install. There is no new workflow to learn — start working.
 
 ## Every session
