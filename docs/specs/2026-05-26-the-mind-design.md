@@ -4,7 +4,7 @@
 **Status:** shipped as `/soul-distill` and `mind.md` in v0.5.0 (2026-05-26); the Mind now takes the slim form (SOUL-A021, v2.0.0), so this file is the original design
 **Ideas:** SOUL-I026 (the proposal). Related: SOUL-I011 (experiment harness),
 SOUL-033/034 (description budget), SOUL-F014 (expansion gap), SOUL-I025 (GUI access).
-**Tier 1 artifact:** `docs/archive/experiments/2026-05-26-mind-tier1-candidate.md`.
+**Tier 1 artifact:** `2026-05-26-mind-tier1-candidate.md` (design history, since moved out of this repo).
 **Tier 2 evidence:** captured inline in this spec (held-out A/B on `/soul-witness?`).
 
 ---

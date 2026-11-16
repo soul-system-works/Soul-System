@@ -437,7 +437,7 @@ Then the signal is the first accumulation that would fill one (see /soul-init's
 
 **Source:** Built by the Artificer + Architect from the SOUL-I026 brainstorm
 (spec: `docs/specs/2026-05-26-the-mind-design.md`, plan:
-`docs/archive/plans/2026-05-26-the-mind-implementation.md`). Necessity established
+`2026-05-26-the-mind-implementation.md`, since moved out of this repo). Necessity established
 before instrument: Tier 1 (hand-crafted candidate, 218 lines) + Tier 2 (held-out
 A/B on `/soul-witness?`; Mind-only arm ~41% cheaper, arms disagreed on
 direction — the disagreement is the evidence for the lens-layer architecture).

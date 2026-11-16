@@ -75,7 +75,7 @@ The strongest plausible benefit is preserving unusual constraints, decisions,
 and unfinished work across sessions and across tools. Small disposable tasks may
 not justify the capture, approval, and record-maintenance overhead.
 
-The repository's [study write-up](../study/blog-release.md) reports no code-quality
+The project's published study write-up reports no code-quality
 advantage over a short conventional contract in its tested builds, and identifies
 other vendors as unmeasured. Those are the authors' reported results; the raw
 experimental corpus was not independently audited in this investigation. They
