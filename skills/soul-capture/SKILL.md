@@ -171,8 +171,8 @@ init had created. The store was never a project store; the scaffold said otherwi
 
 `findings/open/` exists **only** in the Soul System repo. Decide once, here:
 
-- **In the Soul System repo** (this repo's own `witness.md` uses `SOUL-###`, and
-  `findings/open/` exists on disk): run steps 1–7 as written.
+- **In the Soul System repo** (`findings/open/` **and** `operations/CLAUDE.md`
+  **and** `SYSTEM-VERSION.md`, all at the repo root): run steps 1–7 as written.
 - **In any other project:** apply the entry test first — **name the file in the
   Soul System that would change** (the contract `operations/CLAUDE.md`, one of the
   `skills/*/SKILL.md`, a doc in `operations/` or `docs/`, a `tools/*` helper, or
