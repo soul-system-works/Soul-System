@@ -5,10 +5,12 @@ Two modes, both Claude Code only:
 
   upkeep.py              Stop hook. When the cursor (.soul/handoff.md) is stale, block
                          the stop once with {"decision": "block", "reason": ...}: the
-                         reason asks the session to refresh it with /soul-handoff, then
-                         stop. Silent otherwise.
+                         reason asks the session to refresh it with /soul-handoff and say
+                         so in one line; the reply before it stays the answer. Silent
+                         otherwise.
   upkeep.py --compact    SessionStart hook, matcher `compact`. One line of context: a
-                         summary just happened, re-read the cursor and refresh it first.
+                         summary just happened, re-read the cursor (the Stop check decides
+                         whether it also needs a refresh).
 
 Stale means one of these happened since the cursor was last written:
   - the working context grew by GROWTH_TOKENS or more. The size is read from the
@@ -17,7 +19,11 @@ Stale means one of these happened since the cursor was last written:
     records are skipped (mind item 7). The owner chose a size step over a commit count:
     "some agents/processes commit a lot and others not so much" (SOUL-I089, open
     question 2 of A032). Records with no usage, or a zero total, are skipped.
-  - a summary (compaction): a {"type": "system", "subtype": "compact_boundary"} record.
+  - a summary (compaction): a {"type": "system", "subtype": "compact_boundary"} record,
+    when at least SUMMARY_GAP tokens of work came between the cursor write and the
+    summary. A summary minutes after a fresh refresh asked for a second one with almost
+    nothing new (an adopting project's upstream note, 2026-11-16); the owner set the
+    gap: half the refresh step or 50,000 tokens, whichever is higher.
 
 "Last written" is the newest Write / Edit / MultiEdit tool call in THIS transcript whose
 file_path resolves to the cursor. No clocks are read: the WSL clock can pause, so a file's
@@ -78,6 +84,7 @@ import tempfile
 # just this project". He chose 50,000 in A032 (open question 2) and raised it after a
 # session it stopped three times.
 GROWTH_TOKENS = 100000
+SUMMARY_GAP = max(GROWTH_TOKENS // 2, 50000)  # see the docstring: a summary soon after a write
 CURSOR = os.path.join(".soul", "handoff.md")
 ANSWERS = os.path.join(".soul", "init.md")  # tools/init-status.py's answers file
 _WRITE_TOOLS = {"Write", "Edit", "MultiEdit"}
@@ -177,15 +184,26 @@ def staleness(events, since_line=-1):
             start = n
     after = [e for e in events if e[1] > start]
     last_line = events[-1][1] if events else -1
-    if any(kind == "compact" for kind, _, _ in after):
-        return "compact", 0, last_line
     sizes = [e for e in events if e[0] != "compact"]
-    if not sizes:
-        return None, 0, last_line
     before = [e for e in sizes if e[1] <= start]
-    base = before[-1][2] if before else sizes[0][2]
-    grown = sizes[-1][2] - base
-    return ("growth" if grown >= GROWTH_TOKENS else None), max(grown, 0), last_line
+    base = before[-1][2] if before else (sizes[0][2] if sizes else None)
+    # Growth is summed per stretch between summaries: a summary shrinks the context, so
+    # the readings after it start low again.
+    done, seg, latest = 0, base, base
+    for kind, _, tok in after:
+        if kind == "compact":
+            grown = done + (max(latest - seg, 0) if seg is not None else 0)
+            if grown >= SUMMARY_GAP:
+                return "compact", 0, last_line
+            done, seg, latest = grown, None, None
+            continue
+        if seg is None:
+            seg = tok
+        latest = tok
+    if base is None and not done and seg is None:
+        return None, 0, last_line
+    grown = done + (max(latest - seg, 0) if seg is not None else 0)
+    return ("growth" if grown >= GROWTH_TOKENS else None), grown, last_line
 
 
 def _trusted_dir(d):
@@ -261,7 +279,8 @@ def _reason(why, tokens, answer):
             .format(tokens // 1000))
     text = ("{} The handoff cursor (.soul/handoff.md) is stale: {}. Refresh it now with "
             "/soul-handoff (it runs on its own here; no need to ask), tell the owner in one "
-            "line that starts with \"\u2600  \", then stop.".format(_MARK, what))
+            "line that starts with \"\u2600  \". Your reply before this stays the answer: "
+            "do not restate, shorten or replace it.".format(_MARK, what))
     if answer is None:
         text += (" The owner has not chosen yet whether upkeep runs on its own: add to "
                  "that line \"to turn this off: /soul-init revisit upkeep\".")
@@ -303,8 +322,8 @@ def compact(data):
         "hookEventName": "SessionStart",
         "additionalContext": (
             "{} A summary just happened. Before other work, re-read .soul/handoff.md "
-            "(contract rule 6), then refresh it with /soul-handoff (it runs on its own "
-            "here) and tell the owner in one line that starts with \"\u2600  \"."
+            "(contract rule 6). Refresh it with /soul-handoff only when the Stop check asks "
+            "(it does when enough work came between its last write and the summary)."
             .format(_MARK)),
     }}
 
