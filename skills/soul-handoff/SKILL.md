@@ -97,7 +97,8 @@ pre-run cursor names that path (in NEXT STEP or OPEN GATES), so a later
    from the installed plugin, and the rest of it sits beside that path: the contract
    `operations/CLAUDE.md`, every `skills/*/SKILL.md`, a doc in `operations/` or
    `docs/` (witness-log format, completion gate, …), a `tools/*` helper, and the
-   hook `hooks/pre-completion-verify.py`. Name one of those, or it is not upstream,
+   hooks `hooks/pre-completion-verify.py`, `upkeep.py`, `secret-guard.py` and
+   `codex.py`. Name one of those, or it is not upstream,
    however sharp the lesson. (The docs and `tools/*` entries were added after three
    notes in mining pass 2 correctly named an operations doc the old list left out —
    SOUL-202.)
@@ -247,8 +248,8 @@ pre-run cursor names that path (in NEXT STEP or OPEN GATES), so a later
    **`[inherited]` expires.** A pointer carried `[inherited]` across three
    consecutive cursors must be verified this session or dropped — say which. An
    OPEN GATES or NEXT STEP obligation gets no three-cursor grace: it is checked in
-   the session that inherits it, or dropped (carry-forward, above; pending the
-   Body's confirmation, 2026-10-19). The marking convention (A023) names unverified
+   the session that inherits it, or dropped (carry-forward, above; confirmed by
+   the Body, 2026-10-19). The marking convention (A023) names unverified
    claims but nothing made them expire, and the 472-line cursor carried fifteen of
    them, one explicitly "carried as [inherited] for several cursors and STILL
    true."
@@ -343,11 +344,11 @@ first checks for the Soul System repo itself, where there is no upstream (SOUL-1
 **Amended:** 2026-11-05 (v3.9.0, SOUL-A031) — model-initiated captures are appended
 accepted with an opt-out; the unconfirmed mark and the ratify step are retired, and
 the cursor's `UNCONFIRMED` field becomes `NEW ENTRIES` (SOUL-I085).
-**Amended:** 2026-11-05 (unreleased, SOUL-I086) — a long unattended run keeps a
+**Amended:** 2026-11-05 (v3.10.0, SOUL-I086) — a long unattended run keeps a
 decisions log for `/soul-debrief`; POINTERS gains the newest debrief.
 **Amended:** 2026-11-06 (v3.11.0, mining pass 3, SOUL-234) — a vault-linked cursor is
 checked in the vault and committed with `vault.py sync`.
-**Amended:** 2026-11-12 (unreleased, SOUL-A032) — runs itself when the cursor is stale
+**Amended:** 2026-11-12 (v3.12.0, SOUL-A032) — runs itself when the cursor is stale
 (about 100,000 tokens, or a summary, since the last write; `hooks/upkeep.py`), and checks
 whether the Mind is due (step 1c).
 **Adopted:** 2026-05-21. **Status:** active.

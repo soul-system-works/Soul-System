@@ -147,7 +147,7 @@ landed after the cursor; step 3 puts the cursor's `UNCONFIRMED` ids to the Body
 check. **Amended:** 2026-11-05 (v3.9.0, SOUL-A031) — model-initiated captures are
 appended accepted with an opt-out; the unconfirmed mark and the ratify step are
 retired, so step 3 names the cursor's `NEW ENTRIES` in one line instead of asking
-(SOUL-I085). **Amended:** 2026-11-05 (unreleased, SOUL-I086) — step 2 suggests
+(SOUL-I085). **Amended:** 2026-11-05 (v3.10.0, SOUL-I086) — step 2 suggests
 `/soul-debrief` once when an unattended run has results since the cursor.
 **Adopted:** 2026-05-21. **Status:** active.
 **Amended:** 2026-11-13 (v3.13.0) — `☀  ` starts the line naming the cursor's `NEW ENTRIES`.

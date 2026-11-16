@@ -176,8 +176,9 @@ init had created. The store was never a project store; the scaffold said otherwi
 - **In any other project:** apply the entry test first — **name the file in the
   Soul System that would change** (the contract `operations/CLAUDE.md`, one of the
   `skills/*/SKILL.md`, a doc in `operations/` or `docs/`, a `tools/*` helper, or
-  the hook `hooks/pre-completion-verify.py`; your `CLAUDE.md`
-  imports from the installed plugin, so you can read them).
+  one of the hooks `hooks/pre-completion-verify.py`, `upkeep.py`, `secret-guard.py`
+  or `codex.py`; your `CLAUDE.md` imports from the installed plugin, so you can read
+  them).
 
   - **You can name one:** run steps 1–3 to draft the finding, then **STOP at step
     3**. Do NOT scan for an id, do NOT assign one, do NOT create `findings/`.

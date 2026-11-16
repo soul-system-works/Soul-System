@@ -65,7 +65,8 @@ Then the signal is the first accumulation that would fill one (see /soul-init's
      signal ("N witness entries and M finding closures since the last distill — want
      me to refresh the Mind?") and wait for the yes, as before A032.
 
-2. **Read the project's record AND the existing Mind.** Pull from the project root:
+2. **Read the project's record AND the existing Mind.** Pull from the project root or
+   `.soul/`, wherever the stores are:
    - `witness.md` (tail at minimum; full if recent distill is stale)
    - `ideas.md` (full)
    - `findings/open/` + `findings/closed/` and `amendments/accepted/` — **Soul
@@ -451,7 +452,7 @@ ten weeks and five of five consumer projects had followed it.
 **Amended:** 2026-10-19 (mining pass 2, SOUL-202) — the budget becomes a target with
 a Body-owned cap (F066); growth reported in lines and items; executable anchors
 re-checked; renumbering and draft location.
-**Amended:** 2026-11-12 (unreleased, SOUL-A032) — runs itself at the growth signal,
+**Amended:** 2026-11-12 (v3.12.0, SOUL-A032) — runs itself at the growth signal,
 checked when the cursor refreshes; each change graded, minor ones committed alone with
 a one-line notice and the undo, major ones held; `tools/mind-guard.py` the brake; the
 `upkeep: off` opt-out.
