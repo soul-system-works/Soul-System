@@ -16,6 +16,7 @@ touches the machine's temp folder.
 Run: python3 -B -m unittest discover -s hooks -p 'test_upkeep.py' -v
 """
 
+import hashlib
 import json
 import os
 import shutil
@@ -154,12 +155,41 @@ class Upkeep(unittest.TestCase):
         # unwritable — a folder in its place — and the hook must stay silent.
         self.add(user(), size(START, write=self.cursor), user(), size(START + 110000))
         self.assertEqual(self.run_hook()["decision"], "block")
-        state = [os.path.join(self.tmp, n) for n in os.listdir(self.tmp)
-                 if n.startswith("soul-upkeep-")]
-        self.assertEqual(len(state), 1, os.listdir(self.tmp))
+        folder = os.path.join(self.tmp, "soul-upkeep-{}".format(os.getuid()))
+        state = [os.path.join(folder, n) for n in os.listdir(folder)]
+        self.assertEqual(len(state), 1, os.listdir(folder))
         os.remove(state[0])
         os.mkdir(state[0])
         self.assertIsNone(self.run_hook())
+
+    def test_state_planted_in_the_shared_temp_folder_is_ignored(self):
+        # Another local user can create a file in the shared temp folder first. The
+        # remembered block once lived there by a name anyone could compute; a planted
+        # line number past the end of the transcript silenced the block.
+        self.add(user(), size(START, write=self.cursor), user(), size(START + 110000))
+        h = hashlib.sha1(os.path.abspath(self.transcript).encode("utf-8")).hexdigest()[:12]
+        with open(os.path.join(self.tmp, "soul-upkeep-" + h), "w") as f:
+            f.write("999999999")
+        self.assertEqual(self.run_hook()["decision"], "block")
+
+    def test_untrusted_state_folder_reads_as_no_state(self):
+        # The per-user folder exists but others may write it (as if another user made
+        # it first): its contents are not trusted, so the hook blocks as if it had no
+        # state and remembers nothing there. Unremembered, it blocks again — loud, not
+        # silenced.
+        folder = os.path.join(self.tmp, "soul-upkeep-{}".format(os.getuid()))
+        os.mkdir(folder)
+        os.chmod(folder, 0o777)
+        h = hashlib.sha1(os.path.abspath(self.transcript).encode("utf-8")).hexdigest()[:12]
+        planted = os.path.join(folder, "soul-upkeep-" + h)
+        with open(planted, "w") as f:
+            f.write("999999999")
+        self.add(user(), size(START, write=self.cursor), user(), size(START + 110000))
+        self.assertEqual(self.run_hook()["decision"], "block")
+        self.assertEqual(self.run_hook()["decision"], "block")
+        self.assertEqual(os.listdir(folder), [os.path.basename(planted)])
+        with open(planted) as f:
+            self.assertEqual(f.read(), "999999999")
 
     def test_replies_without_a_reading_are_skipped(self):
         # A zero reading first would make the whole start-up load count as growth ...

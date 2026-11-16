@@ -43,7 +43,9 @@ Silent, always, when:
     come back every turn — only after another GROWTH_TOKENS or another summary. F063
     and mind item 5 are the reason: a Stop hook that fires every turn gets switched off.
     If that file cannot be written, the hook does not block at all: an unremembered
-    block would come back every turn, the same F063 shape;
+    block would come back every turn, the same F063 shape. The file sits in a per-user
+    0700 folder; a folder another user could write is not trusted, reads as no state,
+    and the hook still blocks (unremembered) rather than be silenced through it;
   - anything fails: fail open, exit 0, nothing printed.
 
 This hook is separate from the completion gate (hooks/pre-completion-verify.py), which
@@ -66,6 +68,7 @@ import importlib.util
 import json
 import os
 import re
+import stat
 import sys
 import tempfile
 
@@ -183,12 +186,40 @@ def staleness(events, since_line=-1):
     return ("growth" if grown >= GROWTH_TOKENS else None), max(grown, 0), last_line
 
 
+def _state_dir():
+    """A per-user 0700 folder in the temp folder, or None when it cannot be trusted.
+
+    The remembered block used to be $TMPDIR/soul-upkeep-<hash>, a name any local user
+    could compute and create first: a planted line number, or a file this user cannot
+    write, silenced the hook's one block. Found in the 2026-11-16 cleanup audit; no
+    incident. Same check as hooks/secret-guard.py's _state_dir. Native Windows has no
+    getuid, and its temp folder is already per-user, so it keeps the plain folder."""
+    if not hasattr(os, "getuid"):
+        return tempfile.gettempdir()
+    d = os.path.join(tempfile.gettempdir(), "soul-upkeep-{}".format(os.getuid()))
+    try:
+        os.makedirs(d, mode=0o700, exist_ok=True)
+        st = os.lstat(d)
+        if (not stat.S_ISDIR(st.st_mode) or st.st_uid != os.getuid()
+                or st.st_mode & 0o077):
+            return None
+        return d
+    except OSError:
+        return None
+
+
 def _state_path(transcript_path):
+    """None when the state folder cannot be trusted: then there is no state."""
+    d = _state_dir()
+    if d is None:
+        return None
     h = hashlib.sha1(os.path.abspath(transcript_path).encode("utf-8")).hexdigest()[:12]
-    return os.path.join(tempfile.gettempdir(), "soul-upkeep-{}".format(h))
+    return os.path.join(d, "soul-upkeep-{}".format(h))
 
 
 def _read_state(path):
+    if path is None:
+        return -1
     try:
         with open(path, encoding="utf-8") as fh:
             return int(fh.read().strip())
@@ -241,7 +272,11 @@ def stop(data):
     state = _state_path(transcript)
     events = read_transcript(transcript, cwd, os.path.realpath(os.path.join(cwd, CURSOR)))
     why, tokens, last_line = staleness(events, _read_state(state))
-    if not why or not _write_state(state, last_line):
+    if not why:
+        return None
+    # An untrusted state folder (state None) blocks unremembered: silence is what a
+    # folder another user made would buy. Our own folder failing a write does not.
+    if state is not None and not _write_state(state, last_line):
         return None  # unremembered, it would block again every turn (F063)
     return {"decision": "block", "reason": _reason(why, tokens, upkeep_answer(cwd))}
 
