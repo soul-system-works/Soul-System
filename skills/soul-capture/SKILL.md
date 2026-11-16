@@ -175,11 +175,9 @@ below. Decide once, here:
 - **In the Soul System repo** (`findings/open/` **and** `operations/CLAUDE.md`
   **and** `SYSTEM-VERSION.md`, all at the repo root): run steps 1–7 as written.
 - **In any other project:** apply the entry test first — **name the file in the
-  Soul System that would change** (the contract `operations/CLAUDE.md`, one of the
-  `skills/*/SKILL.md`, a doc in `operations/` or `docs/`, a `tools/*` helper, or
-  one of the hooks `hooks/pre-completion-verify.py`, `upkeep.py`, `secret-guard.py`
-  or `codex.py`; your `CLAUDE.md` imports from the installed plugin, so you can read
-  them).
+  Soul System that would change**, exactly as `/soul-handoff` step 1b spells it out
+  (`../soul-handoff/SKILL.md`: the files that count, and its two cautions). This
+  branch routes to the same store, so it uses the same test.
 
   - **You can name one:** run steps 1–3 to draft the finding, then **STOP at step
     3**. Do NOT scan for an id, do NOT assign one, do NOT create `findings/`.
@@ -198,11 +196,6 @@ below. Decide once, here:
     branch must not append to `witness.md` by itself), `mind.md` at the next `/soul-distill` for a
     convention, a proposed line in the project's `CLAUDE.md` for a standing rule —
     and let the Body choose.
-
-  *Scope of the measurement:* on the first mining pass, 12 of 47 parked notes (26%)
-  named no Soul file. All 47 arrived through `/soul-handoff`'s upstream field, not
-  through this skill — this branch inherits the test because it routes to the same
-  store, not because it was measured here.
 
 Why this branch is spelled out rather than left to judgment: without it, a session
 in a domain project follows the numbered steps literally, finds no `findings/`
