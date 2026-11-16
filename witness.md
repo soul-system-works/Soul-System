@@ -9745,3 +9745,27 @@ CONSEQUENCE:  The public repo keeps what a user needs now; history docs leave it
               git history from then on.
 STATUS:       Open — the move is the next cleanup batch.
 ```
+
+```
+ID:           SOUL-241
+WHEN:         2026-11-16 / Soul-System session, the cleanup's old-docs batch
+WHERE:        README.md:70-77, philosophy/the-soul.md:89, :746 (pointers into
+              docs/study); the blog's soul-system-ablation post (a GitHub link to
+              docs/study/data/results-tables.md)
+WHAT:         The session proposed repointing the README and the book from docs/study
+              to the published paper on the blog. The Body: "we don't want links from
+              this project to blog or blog to specific files in a project (except
+              maybe in rare circumstances)". Applied: the README and the book state
+              the result with no path (branch cleanup/mechanical-2026-11-16, f6e3492,
+              2c571b4); the blog post points at the blog's own results bundle, which
+              holds the same tables (edited, not committed or published). The 2.0
+              post's link to philosophy/the-soul.md is kept as the rare exception —
+              the book's path is stable (the session's suggestion, the Body: "go with
+              your suggestions").
+TYPE:         witness (Body decision)
+CONSEQUENCE:  A measured claim in the public repo now carries no evidence a reader
+              can open from the repo; the evidence lives on the blog and in the
+              vault archive. A later link from the repo to the blog, or from a post
+              to a file path in a repo, needs a reason this rule's exception covers.
+STATUS:       Open — the blog post is published by the Body before the branch merges.
+```
