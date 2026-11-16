@@ -73,7 +73,7 @@ quality tied whether a session had the Soul, a careful `CLAUDE.md`, or a
 five-minute one. What changes is what carries between sessions.
 A decision written in the record stopped a later session from undoing it (5 of 5
 sessions without the record drifted, 0 of 5 with it), and the strongest model
-drifted too when the record was missing (a pre-registered study, June 2026).
+drifted too when the record was missing (pre-registered experiments, May–June 2026).
 
 ## Codex (preview)
 
@@ -112,7 +112,7 @@ skills/       The /soul-* commands
 hooks/        The completion gate, the secret guard, plugin hooks
 tools/        Scripts the commands run (vault, line endings, layout, migrate)
 philosophy/   The book for people
-docs/         Specs, decisions (adr/), the study
+docs/         Specs, decisions (adr/), user guides
 witness.md, ideas.md, mind.md   This repo's own record
 amendments/, findings/          Changes to the Soul and the evidence for them
 ```
