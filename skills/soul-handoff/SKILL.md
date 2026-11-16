@@ -228,28 +228,13 @@ pre-run cursor names that path (in NEXT STEP or OPEN GATES), so a later
    checked this session, it becomes `[read]`; otherwise it stays `[inherited]`
    (step 3).
 
-   **FIRST, the one-time upgrade check.** If the old cursor still carries an
-   `OWED UPSTREAM` field (any cursor written before v2.3.0), **move its contents
-   into `upstream.md` before writing the new one.** The new template has no such
-   field, so replacing the cursor without moving it destroys the only copy — the
-   cursor is normally gitignored (the check above). Once moved, the
-   field never comes back.
-
-   After that check, anything owed upstream is no longer in this file: it lives in
-   `upstream.md`, which is durable and append-only, so a cursor rewrite cannot
-   destroy it. That is the whole reason the field was removed (v2.3.0). The check
-   above exists because the sentence you just read is false for exactly one cursor
-   per project — the last one written under the old rule (fresh-context review,
-   2026-08-28).
-
    **Size check before writing:** if the draft exceeds ~150 lines, it is carrying
    record, not cursor. Flush the excess to `witness.md` and point at it instead.
 
    **`[inherited]` expires.** A pointer carried `[inherited]` across three
    consecutive cursors must be verified this session or dropped — say which. An
-   OPEN GATES or NEXT STEP obligation gets no three-cursor grace: it is checked in
-   the session that inherits it, or dropped (carry-forward, above; confirmed by
-   the Body, 2026-10-19). The marking convention (A023) names unverified
+   OPEN GATES or NEXT STEP obligation gets no three-cursor grace (carry-forward,
+   above). The marking convention (A023) names unverified
    claims but nothing made them expire, and the 472-line cursor carried fifteen of
    them, one explicitly "carried as [inherited] for several cursors and STILL
    true."
@@ -257,9 +242,8 @@ pre-run cursor names that path (in NEXT STEP or OPEN GATES), so a later
 3. **Mark provenance (A023/F061; extended past POINTERS by F067):** every POINTERS
    entry carries `[read]` — this session opened, checked or established it — or
    `[inherited]` — carried from a prior cursor or from memory, unverified. Every
-   OPEN GATES item and the NEXT STEP carry `[read]`: an inherited one is checked
-   or dropped, never carried `[inherited]` (step 2; confirmed by the
-   Body, 2026-10-19). A cursor pointer is a claim, not a fact: an
+   OPEN GATES item and the NEXT STEP carry `[read]` (step 2's carry-forward). A
+   cursor pointer is a claim, not a fact: an
    unmarked or `[inherited]` pointer once propagated a false "the ADR is not on
    disk" into a Body decision (F061; cost to check was one `ls`). The obligations
    are claims too: MODEL-TEST carried an unmarked NEXT STEP obligation forward
