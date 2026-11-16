@@ -9771,3 +9771,24 @@ CONSEQUENCE:  A measured claim in the public repo now carries no evidence a read
 STATUS:       Closed 2026-11-16 — the blog post went live (aebf302) before v3.13.1
               was pushed.
 ```
+
+```
+ID:           SOUL-242
+WHEN:         2026-11-16 / Soul-System session, the v3.13.1 cleanup release
+WHERE:        SYSTEM-VERSION.md, the 3.13.1 row; .ai/cleanup/CLEANUP.md
+WHAT:         Mind item 2 (counts about one's own work come out generous) fired again,
+              at every stage. The audit's first draft: item 28 a "duplicate" that was a
+              deliberate list of every past template line; item 13's saving "~−17" (it
+              was −3); "nothing references" claims that missed live links (items 21–23).
+              The release row's draft: "Net 52 files removed" (52 removed, 14 added),
+              "195 lines" fewer loaded (181), and "after each of 32 commits" (the tests
+              ran per commit in two of four batches) — the session caught the last one
+              itself, a fresh-context fact check caught the first two. Each of four
+              batch reviews also found a real defect the implementer had not, among
+              them a link "fix" inside a quoted block and an upkeep design that blocked
+              every turn against F063.
+TYPE:         witness (calibration evidence)
+CONSEQUENCE:  Evidence for Mind item 2 at the next /soul-distill: the fresh-context
+              check before publishing a count still changes the published number.
+STATUS:       Closed 2026-11-16 — all corrected before release.
+```
