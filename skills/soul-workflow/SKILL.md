@@ -303,13 +303,17 @@ name: quick-fix
 description: one try at the lowest rung, the reviewers once, no repair round
 ---
 
-1. Settle the work and write the brief (build-verify steps 1–2).
-2. Dispatch `implementer`, lowest rung, one attempt, and record its check (the
-   building blocks `run` and the recorder; read the patch first).
-3. Review with `reviewer` (the building block `review`); weigh the findings
-   (build-verify step 5).
-4. No repair round: report (build-verify step 8) with the accepted findings as open
-   items for the owner to decide.
+1. Settle the work and write the brief (build-verify steps 1–2). The work must have
+   a Done-when command.
+2. Dispatch `implementer`, lowest rung, one attempt — no retry, no escalation — and
+   record its check (the building blocks `run` and the recorder with `--confine`;
+   read the patch first).
+3. Review with `reviewer` (the building block `review`); weigh each finding
+   (build-verify step 5) and record the tallies.
+4. No repair round. Apply the winner only if no finding was accepted (by hand, as
+   the building blocks say: the change from the original base, the check re-run
+   here, then `clean`); otherwise leave it on its branch. Report (build-verify
+   step 8) with any accepted findings as open items for the owner to decide.
 ```
 
 A file may leave building blocks out — no review, no repair, one attempt only — and
