@@ -194,6 +194,22 @@ def _guard_session_note(cwd):
         return f"Soul secret guard NOT armed under Codex ({type(exc).__name__})."
 
 
+def _held_note(cwd):
+    """The Mind changes soul-distill holds for the owner's yes, as Claude Code's
+    `upkeep.py --start` says them. A Codex session runs soul-distill too
+    (operations/codex.md), so a held file must reach the owner here as well: "a held
+    draft is not a question" (field report, SOUL-243). Reads no transcript. Never
+    raises: the contract context must still go out."""
+    try:
+        spec = importlib.util.spec_from_file_location("soul_upkeep", ROOT / "hooks" / "upkeep.py")
+        upkeep = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(upkeep)
+        note = upkeep.held_note(cwd)
+        return f"Tell the owner this line, as it is, in your first reply: {note}" if note else ""
+    except Exception:
+        return ""
+
+
 def _handle(data):
     cwd = data.get("cwd")
     if not isinstance(cwd, str) or not Path(cwd).is_dir() or not gate._is_soul_project(cwd):
@@ -209,6 +225,7 @@ def _handle(data):
             "tail (root or .soul/). Codex does not expand @imports. "
             "Use $soul-system:soul-resume to check stale project wiring.\n\n" + contract
             + (f"\n\n{note}" if (note := _guard_session_note(cwd)) else "")
+            + (f"\n\n{held}" if (held := _held_note(cwd)) else "")
         ))
         return 0
     if event not in ("PreToolUse", "PostToolUse", "Stop"):
