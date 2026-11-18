@@ -9792,3 +9792,31 @@ CONSEQUENCE:  Evidence for Mind item 2 at the next /soul-distill: the fresh-cont
               check before publishing a count still changes the published number.
 STATUS:       Closed 2026-11-16 — all corrected before release.
 ```
+
+```
+ID:           SOUL-243
+WHEN:         2026-11-18 / Soul-System session, after two adopters' field reports on upkeep
+WHERE:        hooks/upkeep.py (GROWTH_TOKENS), tools/vault.py sync, the handoff and distill skills
+WHAT:         A field report from a 12-hour session on 3.13.2 (the Body's other machine,
+              2026-11-18) and SOUL-I095. Asked whether 200,000 tokens is right, the
+              session said yes only together with state triggers (work started that
+              dies with the session), a length check and a content-based write count —
+              against it, a crash can lose up to 200,000 tokens of conversation (the
+              argument SOUL-239 weighed). The Body: "yes on both. go" — to 200,000 as the
+              backstop shipped with those, and to vault sync merging the server's
+              commits itself when git can do it cleanly, reporting only a real conflict.
+              The Body's examples of the noise this ends: "The shared notes store is
+              still behind its online copy → run git -C /mnt/d/soul-vault pull
+              --no-rebase --no-autostash when no session is writing there, or tell me to
+              do it". Also approved: A–H of that reply (a shell write to the cursor
+              counts; a trim check; the Mind check in the Stop hook; distill applies what
+              fits under the cap and asks about the overflow at every session start;
+              upkeep recorded as on after repeated reminders; a background-work trigger;
+              quiet private-name warnings in the vault).
+TYPE:         witness (Body decision)
+CONSEQUENCE:  Reverses part of mind item 12: a clean merge is no longer a deliberate
+              step; a conflict still is, and autostash/rebase stay banned (their
+              incidents, SOUL-234, are why). The handoff step doubles from SOUL-239's
+              100,000. Planned as v3.13.3 (.ai/plans/v3.13.3-upkeep.md).
+STATUS:       Open — building v3.13.3.
+```
