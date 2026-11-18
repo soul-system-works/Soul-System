@@ -812,9 +812,10 @@ def main():
         check(rc == 0 and "Soul secret" not in out, "SCOPE: a session folder outside the repo put it in scope")
 
         # 23b. A Soul vault is in scope from a session in another folder: a credential is
-        # blocked (I079). A listed name is NOT warned there: the vault holds those names by
-        # nature (the Body, SOUL-243: "quiet private-name warnings in the vault").
-        rv = make_repo(tmp, "rv", soul=False)
+        # blocked (I079). A listed name is NOT warned there unless gh says the vault is
+        # PUBLIC: it holds those names by nature (the Body, SOUL-243: "quiet private-name
+        # warnings in the vault"). A non-GitHub remote: visibility unknown, as for most vaults.
+        rv = make_repo(tmp, "rv", soul=False, origin="https://git.example.net/me/vault.git")
         write(rv, "vault.md", "\ufeff# My renamed vault\n")  # scoped on structure, not title
         write(rv, "projects/p/soul/w.md", f"met {NAME}\n")
         write(rv, "projects/p/soul/private-names.txt", "Somebody\n")
@@ -825,6 +826,14 @@ def main():
         rc, out, _ = sh(E, rv, f"export SOUL_GUARD_CWD='{r1}'\ngit commit -q --allow-empty -m 'for {NAME}'")
         check(rc == 0 and f'"{NAME}"' not in out and "private names" not in out,
               f"NOISE: a private name in a Soul vault's commit message warned: rc={rc} {out[-300:]!r}")
+        rvp = make_repo(tmp, "rvp", soul=False)  # a GitHub vault that gh reports PUBLIC
+        write(rvp, "vault.md", "# Vault\n")
+        write(rvp, "projects/p/soul/w.md", f"met {NAME}\n")
+        plain_git(rvp, "add", "-A")
+        rc, out, _ = sh(E, rvp, f"export SOUL_GUARD_CWD='{r1}'\ngit commit -q -m 'for {NAME}'")
+        check(rc == 0 and "a PUBLIC repo" in out and "file projects/p/soul/w.md" in out
+              and "commit message" in out,
+              f"MISS: a private name in a vault gh reports PUBLIC did not warn: rc={rc} {out[-400:]!r}")
         check("private-name list is staged" not in out and "projects/p/soul/private-names.txt" not in out,
               f"VAULT: a project's name list kept in the vault was flagged: {out[-300:]!r}")
         write(rv, "projects/p/soul/cfg.md", KEYLINE + "\n")
