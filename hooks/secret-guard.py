@@ -468,7 +468,8 @@ VAULT_LISTS = re.compile(r"^(?:projects/[^/]+/soul/private-names\.txt"
 def _kept_list(vault, path):
     """A name list this vault keeps: on commit and on push it is neither flagged nor
     scanned for the names it holds (the owner's call, v3.6.3) — a list is made of
-    names, so every commit and push of one warned. Every other vault file is scanned."""
+    names, so every commit and push of one warned. Since SOUL-243 no vault file is
+    scanned for names (git_hook_main); this still keeps the lists from being flagged."""
     return vault and bool(VAULT_LISTS.match(path or ""))
 
 
@@ -1146,6 +1147,13 @@ def git_hook_main(hook, argv, stdin_text=""):
             # Names (and the NAME-MAP redactor) first, so nothing printed after a
             # time-out or error can carry a NAME-MAP name.
             names, rep.redact = load_names(root, rep.notes)
+            if is_soul_vault(root):
+                # A vault holds the owner's private names by nature, so every vault commit
+                # and push warned (the Body, SOUL-243: "quiet private-name warnings in the
+                # vault"). Names only: credentials, stray name-list files and the
+                # NAME-MAP redactor are unchanged. Same test as tools/vault.py is_vault,
+                # plus projects/ (is_soul_vault).
+                names = None
             if hook in ("pre-commit", "pre-applypatch"):
                 check_pre_commit(rep, root, names)
             elif hook == "commit-msg":

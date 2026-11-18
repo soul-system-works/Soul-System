@@ -812,14 +812,19 @@ def main():
         check(rc == 0 and "Soul secret" not in out, "SCOPE: a session folder outside the repo put it in scope")
 
         # 23b. A Soul vault is in scope from a session in another folder: a credential is
-        # blocked and a listed name warned, as in any repo of unknown visibility (I079).
+        # blocked (I079). A listed name is NOT warned there: the vault holds those names by
+        # nature (the Body, SOUL-243: "quiet private-name warnings in the vault").
         rv = make_repo(tmp, "rv", soul=False)
         write(rv, "vault.md", "\ufeff# My renamed vault\n")  # scoped on structure, not title
         write(rv, "projects/p/soul/w.md", f"met {NAME}\n")
         write(rv, "projects/p/soul/private-names.txt", "Somebody\n")
         plain_git(rv, "add", "-A")
         rc, out, _ = sh(E, rv, f"export SOUL_GUARD_CWD='{r1}'\ngit commit -qm name")
-        check(rc == 0 and f'"{NAME}"' in out, f"VAULT: a private name in a Soul vault was not warned: rc={rc} {out[-300:]!r}")
+        check(rc == 0 and f'"{NAME}"' not in out and "private names" not in out,
+              f"NOISE: a private name in a Soul vault warned: rc={rc} {out[-300:]!r}")
+        rc, out, _ = sh(E, rv, f"export SOUL_GUARD_CWD='{r1}'\ngit commit -q --allow-empty -m 'for {NAME}'")
+        check(rc == 0 and f'"{NAME}"' not in out and "private names" not in out,
+              f"NOISE: a private name in a Soul vault's commit message warned: rc={rc} {out[-300:]!r}")
         check("private-name list is staged" not in out and "projects/p/soul/private-names.txt" not in out,
               f"VAULT: a project's name list kept in the vault was flagged: {out[-300:]!r}")
         write(rv, "projects/p/soul/cfg.md", KEYLINE + "\n")
@@ -849,9 +854,9 @@ def main():
         check(rc == 0 and "private-name list is staged" in out and all(p in out for p in kept),
               f"MISS: outside a vault, the machine list or a registry/NAME-MAP.md did not warn: {out[-400:]!r}")
 
-        # 23d. Inside a vault, the lists it keeps are not scanned for the names they hold
-        # (the owner's call, v3.6.3): a configured name in them is silent. The same name in
-        # any other vault file still warns, and outside a vault those files still warn.
+        # 23d. Inside a vault no file is scanned for names (the lists it keeps since v3.6.3,
+        # every other file since SOUL-243): a configured name is silent. Outside a vault
+        # those files still warn.
         lists = kept + ("projects/p/soul/private-names.txt",)
         for rel in lists:
             write(rv, rel, f"{NAME}\n")
@@ -862,8 +867,8 @@ def main():
         write(rv, "projects/p/soul/notes.md", f"met {NAME}\n")
         plain_git(rv, "add", "-A")
         rc, out, _ = sh(E, rv, f"export SOUL_GUARD_CWD='{r1}'\ngit commit -qm notes")
-        check(rc == 0 and f'"{NAME}"' in out and "projects/p/soul/notes.md" in out,
-              f"VAULT: a configured name in another vault file did not warn: {out[-400:]!r}")
+        check(rc == 0 and f'"{NAME}"' not in out and "private names" not in out,
+              f"NOISE: a configured name in another vault file warned: {out[-400:]!r}")
         for rel in kept:
             write(rnv, rel, f"{NAME}\n")
         plain_git(rnv, "add", "-A")
@@ -871,9 +876,9 @@ def main():
         check(rc == 0 and f'"{NAME}"' in out and all(p in out for p in kept),
               f"MISS: outside a vault, a configured name in those files did not warn: {out[-400:]!r}")
 
-        # 23e. The same on push (the owner's call, v3.6.3): a vault push whose commit changes
-        # only its kept lists is silent; one touching another vault file warns; outside a
-        # vault it warns. What is already on the remote is pushed first, without the hooks.
+        # 23e. The same on push (v3.6.3; SOUL-243): a vault push is silent whether its
+        # commit changes only the kept lists or another vault file; outside a vault it
+        # warns. What is already on the remote is pushed first, without the hooks.
         for repo_, bare_ in ((rv, os.path.join(tmp, "remote-rv.git")),
                              (rnv, os.path.join(tmp, "remote-rnv.git"))):
             subprocess.run(["git", "init", "-q", "--bare", bare_], check=True)
@@ -888,10 +893,10 @@ def main():
               f"NOISE: a vault push of only its kept name lists warned: {out[-400:]!r}")
         write(rv, "projects/p/soul/notes2.md", f"met {NAME} again\n")
         plain_git(rv, "add", "-A")
-        plain_git(rv, "commit", "-qm", "notes again")
+        plain_git(rv, "commit", "-qm", f"notes again for {NAME}")
         rc, out, _ = sh(E, rv, f"export SOUL_GUARD_CWD='{r1}'\ngit push origin main")
-        check(rc == 0 and f'"{NAME}"' in out and "projects/p/soul/notes2.md" in out,
-              f"VAULT: a vault push with the name in another file did not warn: {out[-400:]!r}")
+        check(rc == 0 and f'"{NAME}"' not in out and "private names" not in out,
+              f"NOISE: a vault push with the name in another file warned: {out[-400:]!r}")
         for rel in kept:
             write(rnv, rel, f"{NAME} => CLIENT-Z\n")
         plain_git(rnv, "add", "-A")
