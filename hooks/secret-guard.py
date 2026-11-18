@@ -468,7 +468,8 @@ VAULT_LISTS = re.compile(r"^(?:projects/[^/]+/soul/private-names\.txt"
 def _kept_list(vault, path):
     """A name list this vault keeps: on commit and on push it is neither flagged nor
     scanned for the names it holds (the owner's call, v3.6.3) — a list is made of
-    names, so every commit and push of one warned. Every other vault file is scanned."""
+    names, so every commit and push of one warned. Since SOUL-243 a vault is scanned
+    for names only when verified public (names_apply); then its lists still are not."""
     return vault and bool(VAULT_LISTS.match(path or ""))
 
 
@@ -565,6 +566,16 @@ def is_public(root, url, rep=None):
     if rep is not None:
         rep.visibility = cache[key]
     return cache[key] not in ("PRIVATE", "INTERNAL")
+
+
+def names_apply(root, url, rep):
+    """Whether this repo's text is checked for names: when it may be public (is_public).
+    A Soul vault holds the owner's private names by nature, so there it is checked only
+    when gh says PUBLIC; not known to be public, a vault commit or push is quiet (the
+    Body, SOUL-243: "quiet private-name warnings in the vault"; a verified-public vault
+    still warns, the main session's call). A vault is recognised by is_soul_vault, the
+    same marker as tools/vault.py is_vault plus projects/."""
+    return is_public(root, url, rep) and (not is_soul_vault(root) or rep.visibility == "PUBLIC")
 
 
 def _default_remote(root):
@@ -775,7 +786,7 @@ def check_pre_commit(rep, root, names):
     # kept in its vault folder (SOUL-225). Lists anywhere else in it are still flagged.
     vault = is_soul_vault(root)
     rep.files = [p for p in paths if _name_list_file(p) and not _kept_list(vault, p)]
-    if not names or not is_public(root, _remote_url(root, _default_remote(root)), rep):
+    if not names or not names_apply(root, _remote_url(root, _default_remote(root)), rep):
         return
     for p in paths:
         if not _kept_list(vault, p):
@@ -827,7 +838,7 @@ def check_commit_msg(rep, root, argv, names):
         rep.note("could not read the commit message file — the commit message was NOT checked.")
         return
     scan_messages(rep, root, [("commit message", msg)], "the commit message")
-    if names and is_public(root, _remote_url(root, _default_remote(root)), rep):
+    if names and names_apply(root, _remote_url(root, _default_remote(root)), rep):
         rep.add_name_hits(names, msg, "commit message")
 
 
@@ -1012,7 +1023,7 @@ def check_pre_push(rep, root, argv, stdin_text, names):
                   f"the messages of {what}")
     # Visibility of the repository git actually pushes to: its $2, not the fetch url.
     vis_url = url or _remote_url(root, remote)
-    if not names or not is_public(root, vis_url, rep):
+    if not names or not names_apply(root, vis_url, rep):
         return
     for sha, ae, ce, body in commits:
         short = sha[:7]

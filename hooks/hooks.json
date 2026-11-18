@@ -1,5 +1,5 @@
 {
-  "description": "Soul System \u2014 the pre-completion verification gate (SOUL-F012). Fires on Stop; self-scopes to Soul-governed projects and injects the completion checklist before a session ends after shipping. SessionStart arms the EXPERIMENTAL secret guard (SOUL-I070): it points git's core.hooksPath at the plugin's read-only hook wrappers for every git the session runs, so git itself checks each commit and push (credentials block, private names warn) and then runs the repo's own hooks; it verifies the arming and says NOT armed when it fails. PreToolUse on Bash re-verifies the wrapper folder (reinstalling it if missing or modified), notices commands that bypass git hooks or run hook installers, and refuses `git push --all / --branches / --tags / --mirror` run at a command position. SessionStart also reports a Soul vault link (SOUL-I079): one context line when `.soul` links into the vault, and a loud warning when that link is broken \u2014 a broken link turns the gate off and git stays quiet. Upkeep (SOUL-A032): a second Stop hook, hooks/upkeep.py, asks the session once to refresh the handoff cursor with /soul-handoff when about 100,000 tokens of conversation or a summary have passed since it was last written, and a SessionStart hook on `compact` says to re-read it (a summary counts as stale only after max(half the step, 50,000) tokens of work since the last write); both are silent outside Soul projects, before a first cursor exists, and when .soul/init.md says `upkeep: off`.",
+  "description": "Soul System \u2014 the pre-completion verification gate (SOUL-F012). Fires on Stop; self-scopes to Soul-governed projects and injects the completion checklist before a session ends after shipping. SessionStart arms the EXPERIMENTAL secret guard (SOUL-I070): it points git's core.hooksPath at the plugin's read-only hook wrappers for every git the session runs, so git itself checks each commit and push (credentials block, private names warn) and then runs the repo's own hooks; it verifies the arming and says NOT armed when it fails. PreToolUse on Bash re-verifies the wrapper folder (reinstalling it if missing or modified), notices commands that bypass git hooks or run hook installers, and refuses `git push --all / --branches / --tags / --mirror` run at a command position. SessionStart also reports a Soul vault link (SOUL-I079): one context line when `.soul` links into the vault, and a loud warning when that link is broken \u2014 a broken link turns the gate off and git stays quiet. Upkeep (SOUL-A032, SOUL-243): a second Stop hook, hooks/upkeep.py, blocks a stop once with one line per due reason, highest first: background work (an agent or a background command) started since the cursor was last written and still running; the cursor stale (about 200,000 tokens of conversation, or a summary after max(half the step, 50,000) tokens of work, since it was last written, by a tool or by any change to its content); the cursor over 150 lines; the Mind due (15 or more witness entries since its Last distilled date). Each fires once per cursor write, or once a day per project for length and the Mind; after three reminders with no recorded answer it records `upkeep: on` in .soul/init.md. A SessionStart hook on `compact` says to re-read the cursor, and one on `startup|resume` names Mind changes that soul-distill holds for the owner's yes (.ai/distill/mind-held-*.md). All are silent outside Soul projects and when .soul/init.md says `upkeep: off`; the Stop and `compact` hooks also before a first cursor exists.",
   "hooks": {
     "SessionStart": [
       {
@@ -12,6 +12,16 @@
           {
             "type": "command",
             "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/tools/vault.py\" session-start",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "matcher": "startup|resume",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/upkeep.py\" --start",
             "timeout": 10
           }
         ]

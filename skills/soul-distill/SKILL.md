@@ -297,7 +297,13 @@ Then the signal is the first accumulation that would fill one.
        changed); dropping an incident or record id from an item (an item without
        its incident gets reinterpreted — F053/A020); merging two items; any change
        to an item the Body wrote or marked as theirs; the Mind growing past its line
-       cap (step 4's 120, or the cap the Body set). A first Mind is major too: it
+       cap (step 4's 120, or the cap the Body set) — but only the overflow: apply the
+       minor changes that fit under the cap (new evidence on existing items first,
+       then new items, strongest first) and hold just the ones that would pass it,
+       with ONE concrete question: "cut or merge these N weakest items (<names>), or
+       raise the cap to <X> lines". Holding all of them because together they passed
+       the cap kept twelve minor changes waiting a day and a half at one adopter while
+       the Mind fell 28 entries behind (field report, 2026-11-18; SOUL-243). A first Mind is major too: it
        adds an always-on file and an import line in the Body's `CLAUDE.md` (below).
    - **Run the brake before applying anything.** Write the minor-only version (the
      prior Mind plus the minor changes alone) to `.ai/distill/mind-minor-<date>.md`
@@ -329,8 +335,13 @@ Then the signal is the first accumulation that would fill one.
      such line in a project that has no `upkeep:` answer adds "to turn this off:
      /soul-init revisit upkeep".
    - **Hold the major changes.** Save the full draft as
-     `.ai/distill/mind-held-<date>.md` — the name `/soul-next` looks for — and say one
-     line to the Body: *"☀  Mind: N changes wait for your yes — <short names>, in
+     `.ai/distill/mind-held-<date>.md` — the name `/soul-next` looks for — opening with
+     a `## Changes` heading and one `- ` line per waiting change (and the cap
+     question, if any); `hooks/upkeep.py --start` counts that list and tells the Body
+     at every session start until it is answered — a held draft is a question, and it
+     reached the owner only when a session chose to raise it. A later distill folds a
+     waiting held file into its own proposal and replaces it, rather than stopping
+     behind it. Say one line to the Body: *"☀  Mind: N changes wait for your yes — <short names>, in
      .ai/distill/mind-held-<date>.md"*. Nothing major is applied until the Body says
      yes; on the yes, apply and commit it the same way, then delete the held file. On
      a no, leave the Mind as it is and rename the held file to

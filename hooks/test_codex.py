@@ -70,6 +70,19 @@ class CodexEvents(unittest.TestCase):
         self.assertIn("session-a", context)
         self.assertEqual(err, "")
 
+    def test_startup_names_held_mind_changes(self):
+        # A held draft is not a question: it reaches the owner at every session start
+        # until answered, under Codex too (SOUL-243).
+        held = self.project / ".ai" / "distill" / "mind-held-2026-11-17.md"
+        held.parent.mkdir(parents=True)
+        held.write_text("## Changes\n- cut item 4\n- merge 2 and 6\n")
+        context = json.loads(self.event("SessionStart")[1])["hookSpecificOutput"]["additionalContext"]
+        self.assertIn("☀  2 Mind changes wait for your yes: "
+                      ".ai/distill/mind-held-2026-11-17.md", context)
+        held.unlink()
+        context = json.loads(self.event("SessionStart")[1])["hookSpecificOutput"]["additionalContext"]
+        self.assertNotIn("Mind change", context)
+
     def test_ordinary_soul_word_does_not_scope(self):
         (self.project / "AGENTS.md").write_text("Soul music project.\n")
         self.assertEqual(self.event("SessionStart"), (0, "", ""))

@@ -159,10 +159,12 @@ shared rule that an inherited pointer is a claim to verify.
 - **soul-handoff:** preserve the shared cursor and provenance. When running in the
   Soul System source repo, route system lessons to its existing witness/ideas
   stores, not to an `upstream.md` aimed back at itself (known SOUL-187 gap).
-- **Upkeep (SOUL-A032) is not wired for Codex.** Claude Code's `hooks/upkeep.py`
-  measures the context from the session transcript and blocks a Stop once when the
-  cursor is stale, and a SessionStart `compact` hook asks for a refresh after a
-  summary. `hooks/codex.py` reads no transcripts by design, and where Codex records
+- **Upkeep's Stop check (SOUL-A032) is not wired for Codex.** Claude Code's
+  `hooks/upkeep.py` measures the context from the session transcript and blocks a Stop
+  once when the cursor is stale (or background work, a long cursor or a due Mind needs
+  it), and a SessionStart `compact` hook says to re-read the cursor after a summary.
+  One part is wired: at session start, `hooks/codex.py` adds the line saying Mind
+  changes wait in `.ai/distill/mind-held-*.md` (it reads no transcript). `hooks/codex.py` reads no transcripts by design, and where Codex records
   the context size, or whether it fires a hook after a summary, has not been
   checked. Under Codex, run `soul-handoff` unasked after a summary or a long
   stretch of work (it then checks whether the Mind is due), unless `.soul/init.md`

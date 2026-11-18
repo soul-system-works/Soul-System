@@ -27,10 +27,18 @@ takes with it everything not yet flushed (PLANT-BOP's upstream note; mining pass
 SOUL-202).
 
 **When it runs itself (SOUL-A032).** The session runs this unasked — no question
-first — when the cursor is stale: about 100,000 tokens of new conversation since it
+first — when the cursor is stale: about 200,000 tokens of new conversation since it
 was last written, or a summary (compaction) since. Soul's hooks notice: a Stop hook
 (`hooks/upkeep.py`) blocks the stop once and asks for the refresh, and after a
-summary the session-start line says to re-read the cursor. A summary counts only when
+summary the session-start line says to re-read the cursor. The same Stop check, in
+one block with the refresh when both are due, also asks: for one cursor line when
+background work (an agent, a background shell) was started since the cursor was last
+written and is still running — the work that dies with the session; for a trim when
+the cursor is over 150 lines (once a day); and for `/soul-distill` when the Mind is due
+(once a day; step 1c). Any write to the cursor counts, by its content, including one
+made by a script. 200,000 is the backstop behind those, not the main trigger (SOUL-243,
+from two adopters' field reports, 2026-11-16 and 2026-11-18; SOUL-239's 100,000 was
+weighed against a crash losing up to the step's worth of conversation). A summary counts only when
 at least half the step or 50,000 tokens, whichever is higher, came between the last
 write and the summary: one minutes after a refresh asked for a second with almost
 nothing new (an adopting project's upstream note, 2026-11-16). A
@@ -43,7 +51,7 @@ below, then reports in step 5.
 
 **Headless runs too.** The Stop check fires under `claude -p` (seen in a live trial,
 2026-11-12; the amendment had guessed hooks might not). A long headless run in a Soul
-project with a cursor is blocked once per 100,000 tokens, and its final result text
+project with a cursor is blocked once per 200,000 tokens, and its final result text
 becomes the refresh line, not the run's answer. A measurement arm or scripted run that
 must not be steered: record `upkeep: off`, or run without the plugin —
 `tools/dispatch.py` starts its workers with `--setting-sources ""`, which skips the
@@ -142,7 +150,9 @@ pre-run cursor names that path (in NEXT STEP or OPEN GATES), so a later
    gitignore it instead and say so. Unlike the cursor it replaced, this file can land
    in a tracked repo root, so the choice has to be made once rather than by default.
 
-1c. **Is the Mind due?** If `mind.md` exists and the record has grown past
+1c. **Is the Mind due?** (The Stop hook also says so, once a day, since 3.13.3 — a
+   session that keeps its cursor current by small edits never reached this step, and
+   one adopter's Mind fell 28 entries behind.) If `mind.md` exists and the record has grown past
    `/soul-distill`'s growth signal since its `Last distilled` stamp (about 15+ new
    witness entries, or a finding closed or an amendment accepted), run
    `/soul-distill` now — by itself, at most once a day, and not with
@@ -155,7 +165,10 @@ pre-run cursor names that path (in NEXT STEP or OPEN GATES), so a later
    way the result is one current cursor: a stale line is replaced or removed, never
    kept beside its successor. Every run rewrites the header date and `NEW ENTRIES`
    (this run's entries, or "none" — an old list left in place would be announced
-   again), and re-marks every pointer `[read]` or `[inherited]`. A full rewrite each time re-typed about 100 unchanged
+   again), and re-marks every pointer `[read]` or `[inherited]`. **A finished NEXT STEP
+   or OPEN GATES item is deleted** once its result is in a witness entry — never kept
+   as "DONE" or "for reference": 27 small edits turned one adopter's NEXT STEP into a
+   log, 147 → 208 lines (field report, 2026-11-18). A full rewrite each time re-typed about 100 unchanged
    lines and the cursor grew 132 → 146 lines in a day (an adopting project's upstream
    note, 2026-11-16), and it fills the owner's terminal (SOUL-I094):
    ```
@@ -194,13 +207,16 @@ pre-run cursor names that path (in NEXT STEP or OPEN GATES), so a later
      the vault's lock, and pushes only when the vault's server has not moved. Say in
      one line what it printed.
      **What sync's exit means** (same text in `/soul-init` and `/soul-handoff`). Exit 0:
-     on the server ("already on the server; this vault's copy is behind" too). Exit 2
-     with `NOT PUSHED`: committed in the vault, safe on this machine, not on the
-     server — say why (its line names it). If the server has newer commits, merging
-     them is a deliberate step — the Body's, or a session's when no other session is
-     writing in the vault, with the commands that line names (not a bare `git pull`:
-     it fails on diverged branches) — then sync again. Any other exit 2 (no `NOT
-     PUSHED` in its line): nothing was committed; report its line. Exit 4: a running sync holds the lock — nothing is
+     on the server, including "merged the server's N commits and pushed" — sync merges
+     the server's newer commits itself when git can do it cleanly and no file the
+     merge would change is in use (SOUL-243) — and "already on the server … not caught
+     up". Exit 2 with `NOT PUSHED`: committed in the vault, safe on this machine, not on
+     the server — say why (its line names it: a conflict, a file in use, something
+     staged, no upstream, a refused push). Then merging is a deliberate step — the
+     Body's, or a session's when no other session is writing in the vault, with the
+     commands that line names (never stash, autostash, rebase or reset: SOUL-234) —
+     then sync again. Any other exit 2 (no `NOT PUSHED` in its line): nothing was
+     committed; report its line. Exit 4: a running sync holds the lock — nothing is
      committed; say so, and sync again once it finishes. Or the lock "looks stale" —
      give the Body its removal step word for word (remove that file once they have
      checked no git runs in the vault); never remove it yourself.
@@ -243,7 +259,9 @@ pre-run cursor names that path (in NEXT STEP or OPEN GATES), so a later
    (step 3).
 
    **Size check before writing:** if the draft exceeds ~150 lines, it is carrying
-   record, not cursor. Flush the excess to `witness.md` and point at it instead.
+   record, not cursor. Flush the excess to `witness.md` and point at it instead. The
+   Stop hook asks for this trim on its own over 150 lines, once a day, since in-place
+   edits never pass through a full rewrite.
 
    **`[inherited]` expires.** A pointer carried `[inherited]` across three
    consecutive cursors must be verified this session or dropped — say which. An

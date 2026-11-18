@@ -343,14 +343,17 @@ vault's server has not moved. It touches nothing else in the shared vault folder
 other sessions keep uncommitted edits; two sessions once ran git there in the same
 second (mining pass 3, SOUL-234). It does not commit `index.md`, which each machine
 regenerates.
-**What sync's exit means** (same text in `/soul-init` and `/soul-handoff`). Exit 0: on
-the server ("already on the server; this vault's copy is behind" too). Exit 2 with
-`NOT PUSHED`: committed in the vault, safe on this machine, not on the server — say
-why (its line names it). If the server has newer commits, merging them is a
-deliberate step — the Body's, or a session's when no other session is writing in the
-vault, with the commands that line names (not a bare `git pull`: it fails on diverged
-branches) — then sync again. Any other exit 2 (no `NOT PUSHED` in its line): nothing
-was committed; report its line. Exit 4: a running sync holds the lock — nothing is committed; say so, and
+**What sync's exit means** (same text in `/soul-init` and `/soul-handoff`). Exit 0:
+on the server, including "merged the server's N commits and pushed" — sync merges
+the server's newer commits itself when git can do it cleanly and no file the
+merge would change is in use (SOUL-243) — and "already on the server … not caught
+up". Exit 2 with `NOT PUSHED`: committed in the vault, safe on this machine, not on
+the server — say why (its line names it: a conflict, a file in use, something
+staged, no upstream, a refused push). Then merging is a deliberate step — the
+Body's, or a session's when no other session is writing in the vault, with the
+commands that line names (never stash, autostash, rebase or reset: SOUL-234) —
+then sync again. Any other exit 2 (no `NOT PUSHED` in its line): nothing was
+committed; report its line. Exit 4: a running sync holds the lock — nothing is committed; say so, and
 sync again once it finishes. Or the lock "looks stale" — give the Body its removal
 step word for word (remove that file once they have checked no git runs in the
 vault); never remove it yourself.
@@ -452,12 +455,15 @@ consecutive days (2026-08-24/25), into two files, in two wordings.
 
 **`upkeep`** — nothing to carry out but the answer (`on` or `off`). *On*, which is
 also what a project that was never asked gets: the session refreshes the handoff
-cursor by itself when it goes stale — about 100,000 tokens of conversation, or a
-summary, since it was last written (`hooks/upkeep.py` notices) — and `/soul-distill`
+cursor by itself when it goes stale — about 200,000 tokens of conversation, a
+summary, or background work it does not mention (`hooks/upkeep.py` notices) — and `/soul-distill`
 runs by itself at its growth signal, applying small Mind changes and holding big ones
 for the owner. Each tells the owner in one line, and a no undoes it. *Off*: neither
 runs by itself; `/soul-next` reminds instead. To change it later: `/soul-init revisit
-upkeep`. *Why ask once:* the owner accepts the cursor and the Mind "as created" and
+upkeep`. A project never asked is recorded as `upkeep: on` after the third refresh
+line that carried the turn-off hint, and that line says so (SOUL-243: one owner saw the
+hint many times and said "continue autonomously" in words, which nothing recorded).
+*Why ask once:* the owner accepts the cursor and the Mind "as created" and
 wanted the stop gone, with a way out (SOUL-A032).
 
 **`layout`** (projects already set up) — `python3 <root>/tools/layout-cleanup.py
