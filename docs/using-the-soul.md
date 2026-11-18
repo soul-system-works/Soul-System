@@ -49,11 +49,13 @@ That's the install. There is no new workflow to learn — start working.
   verified can't be called done; the session must name exactly what is unrun.
 - In a long session, or after the conversation is summarised, the AI **refreshes the
   handoff note** (`.soul/handoff.md`) by itself and says so in one line — "cursor
-  refreshed (about 110k tokens since the last)". It does this once about 100,000
-  tokens of conversation, or a summary, have passed since the note was last written
+  refreshed (about 210k tokens since the last)". It does this once about 200,000
+  tokens of conversation, or a summary, have passed since the note was last written,
+  or sooner when background work is running that the note does not mention; it also
+  asks for a trim when the note passes 150 lines, and says when the Mind is due
   (Claude Code only; under Codex the AI does it without the reminder). This also
   happens in headless runs (`claude -p`): a long scripted run is stopped once per
-  100,000 tokens to refresh the note, and its final answer becomes the "cursor
+  200,000 tokens to refresh the note, and its final answer becomes the "cursor
   refreshed" line. For a run that must not be steered — a measurement, a scripted
   pipeline — set `upkeep: off`, or run it without the plugin.
 
