@@ -73,7 +73,8 @@ the hint then stops. The owner "answered it in words more than once ('continue
 autonomously'), but nothing records that" (field report; SOUL-243).
 
 Silent, always, when:
-  - stop_hook_active is set (this stop follows a block — never loop);
+  - stop_hook_active is set (this stop follows a block — never loop; it only stores
+    the cursor's hash, so the obeyed block's write is not seen again at the next stop);
   - the project is not Soul-governed (the completion gate's own scope test);
   - no cursor exists yet. A project that has never written one has not taken up the
     handoff; the first /soul-handoff (or /soul-init) starts it, and nagging before that
@@ -246,9 +247,11 @@ def _text(content):
 def _ended_ids(text):
     out = []
     for body in _NOTICE_RE.findall(text):
-        tid, status = _TASK_ID_RE.search(body), _STATUS_RE.search(body)
-        if tid and status and status.group(1).lower() in _ENDED:
-            out.append(tid.group(1))
+        # Claude Code's resume summary lists every task that did not finish in ONE
+        # notification (several task-ids, status stopped): each of them has ended.
+        status = _STATUS_RE.search(body)
+        if status and status.group(1).lower() in _ENDED:
+            out.extend(_TASK_ID_RE.findall(body))
     return out
 
 
@@ -550,8 +553,7 @@ def _applies(cwd):
 
 
 def stop(data):
-    if data.get("stop_hook_active"):
-        return None
+    active = bool(data.get("stop_hook_active"))
     cwd = data.get("cwd")
     if not isinstance(cwd, str) or not os.path.isdir(cwd) or not _applies(cwd):
         return None
@@ -578,6 +580,13 @@ def stop(data):
             st["written"] = end_line
         st["hash"] = digest
     write_point = max([n for k, n, _ in events if k == "write"] + [st["written"]])
+    if active:
+        # This stop follows a block: never block here (never loop). Still store the
+        # hash the obeyed block just wrote, or the next stop would see a "changed"
+        # cursor, put the write past its own turn, and miss that turn's launches and
+        # growth (review of 85bb6c4).
+        _write_state(state_path, st)
+        return None
 
     due = []
     running = background(events, write_point)
@@ -634,27 +643,26 @@ def compact(data):
 
 
 def _held_count(path):
-    """The changes a held file lists: under its first heading that names "change", the
-    top-level list items, or else its sub-headings; None when not countable."""
+    """The changes a held file lists: the top-level list items under its heading
+    `## Changes` (any case), where soul-distill writes one `- ` line per waiting
+    change; None when there is no such heading or it lists none. A looser match
+    ("change" anywhere) counted headings like "Unchanged" or "Exchange" (review of
+    85bb6c4)."""
     try:
         with open(path, encoding="utf-8", errors="replace") as fh:
             lines = fh.read().splitlines()
     except OSError:
         return None
-    level, items, subs = None, 0, 0
+    inside, items = False, 0
     for ln in lines:
-        h = re.match(r"^(#{1,6})\s+(.*)$", ln)
-        if level is None:
-            if h and "change" in h.group(2).lower():
-                level = len(h.group(1))
+        if not inside:
+            inside = bool(re.match(r"^##\s+changes\s*$", ln, re.I))
             continue
-        if h:
-            if len(h.group(1)) <= level:
-                break
-            subs += 1
-        elif re.match(r"^(?:[-*+]|\d+[.)])\s+\S", ln):
+        if re.match(r"^#{1,2}\s", ln):
+            break
+        if re.match(r"^(?:[-*+]|\d+[.)])\s+\S", ln):
             items += 1
-    return (items or subs) or None
+    return items or None
 
 
 def held_note(cwd):

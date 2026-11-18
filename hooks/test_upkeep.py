@@ -518,6 +518,33 @@ class Upkeep(unittest.TestCase):
                  size(START + 5000))
         self.assertEqual(self.run_hook()["decision"], "block")
 
+    def test_background_after_an_obeyed_block_is_reported(self):
+        # The session obeys a block: rewrites the cursor, then stops with
+        # stop_hook_active. That stop must still store the new hash, or the next normal
+        # stop sees a "changed" cursor, moves the write point past the next turn, and
+        # misses that turn's launch (review of 85bb6c4).
+        self.add(user(), size(START, write=self.cursor), user(), size(START + 210000))
+        self.assertEqual(self.run_hook()["decision"], "block")
+        with open(self.cursor, "w") as f:
+            f.write("# Handoff cursor\nrefreshed\n")
+        self.add(size(START + 212000, write=self.cursor))
+        self.assertIsNone(self.run_hook(active=True))  # never blocks there
+        self.add(user(), *launch("a9", "Long audit", START + 214000), size(START + 215000))
+        self.assertIn("add a line for it (Long audit)", self.run_hook()["reason"])
+
+    def test_one_notification_can_end_several_tasks(self):
+        # Claude Code's resume summary lists every task that did not finish in one
+        # notification: several task-ids, status stopped. Each of them has ended.
+        text = ("<task-notification>\n<task-id>a1</task-id>\n<task-id>b1</task-id>\n"
+                "<status>stopped</status>\n<summary>Background tasks didn't finish before "
+                "the previous session ended</summary>\n</task-notification>")
+        self.add(user(), size(START, write=self.cursor), *launch("a1"),
+                 *launch("b1", "Suite", START + 2000, bash=True),
+                 {"type": "user", "isSidechain": False,
+                  "message": {"role": "user", "content": text}},
+                 size(START + 5000))
+        self.assertIsNone(self.run_hook())
+
     def long_cursor(self, lines):
         with open(self.cursor, "w") as f:
             f.write("".join("- line {}\n".format(i) for i in range(lines)))
@@ -641,6 +668,14 @@ class Upkeep(unittest.TestCase):
         self.held("A full draft of the Mind, no list of changes.\n")
         self.assertIn("☀  Mind changes wait for your yes: "
                       ".ai/distill/mind-held-2026-11-17.md", self.start_line())
+
+    def test_start_counts_only_a_changes_heading(self):
+        # Only a heading that is exactly `## Changes` (any case) holds the count; the
+        # distill skill writes one `- ` line per waiting change there.
+        self.held("# Held\n\n## Unchanged items\n\n- a\n- b\n\n## Exchange notes\n- c\n")
+        self.assertIn("☀  Mind changes wait for your yes:", self.start_line())
+        self.held("# Held\n\n## CHANGES\n\n- cut item 4\n\n## Draft\n- not one\n")
+        self.assertIn("☀  1 Mind change waits for your yes:", self.start_line())
 
     def test_start_silent_without_held_file_or_when_off(self):
         self.assertIsNone(self.start_line())
