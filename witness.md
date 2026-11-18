@@ -9818,5 +9818,6 @@ CONSEQUENCE:  Reverses part of mind item 12: a clean merge is no longer a delibe
               step; a conflict still is, and autostash/rebase stay banned (their
               incidents, SOUL-234, are why). The handoff step doubles from SOUL-239's
               100,000. Planned as v3.13.3 (.ai/plans/v3.13.3-upkeep.md).
-STATUS:       Open — building v3.13.3.
+STATUS:       Closed 2026-11-18 — released in v3.13.3 (merge eb85737); two fresh reviews,
+              their defects fixed (a redacted history pushed back; a half-done merge).
 ```
