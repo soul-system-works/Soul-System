@@ -147,7 +147,6 @@ def sync_cases(tmp, env):
     remote_commit(clone, ow, "# other\nline1\nfrom machine 2\n")
     write(os.path.join(v, ow), "# other\nline1\nlocal work of session X\n")
     write(os.path.join(p, ".soul", "witness.md"), "# W\nA1\n")
-    git(v, "config", "merge.autoStash", "true")  # a user's config must not bring it back
     server, before = rev(bare, "main"), tree_bytes(v)
     r = run(env, "sync", p)
     untouched("A", v, before, r, server, bare)
@@ -171,16 +170,19 @@ def sync_cases(tmp, env):
     write(os.path.join(v, ow), "# other\nline1\nsession X: D1\n")
     hook(v, "post-rewrite", 'printf "session X: D2\\n" >> "{}"\n'.format(os.path.join(v, ow)))
     write(os.path.join(p, ".soul", "witness.md"), "# W\nB1\n")
+    git(v, "config", "merge.autoStash", "true")  # a user's config must not bring it back
+    stamp = os.stat(os.path.join(v, ow)).st_mtime_ns  # an autostash rewrites the file
     server = rev(bare, "main")
     r = run(env, "sync", p)
     parents = git(bare, "rev-list", "--parents", "-n", "1", "main").stdout.split()
     check("B: merged the server's commit and pushed: exit 0, both commits on the server",
-          r.returncode == 0 and "merged the server's 1 commits and pushed" in r.stdout
+          r.returncode == 0 and "merged the server's 1 commit and pushed" in r.stdout
           and rev(bare, "main") == rev(v) and server in parents[1:] and len(parents) == 3
           and "B1" in git(bare, "show", "main:projects/syncer/" + mine).stdout
           and git(bare, "show", "main:" + far).stdout == "# far\n", r.stdout + r.stderr)
     check("B: the uncommitted edit kept byte-for-byte, nothing stashed, no lock",
           read(os.path.join(v, ow)) == "# other\nline1\nsession X: D1\n"
+          and os.stat(os.path.join(v, ow)).st_mtime_ns == stamp
           and git(v, "stash", "list").stdout == "" and not os.path.exists(lockf(v))
           and " M " + ow.replace(os.sep, "/") in "\n" + git(v, "status", "--porcelain").stdout,
           git(v, "status", "--porcelain").stdout)
@@ -285,6 +287,107 @@ def sync_cases(tmp, env):
           and read(os.path.join(v, "projects/far/soul/witness.md")) == "# far\nmine\n",
           r.stdout + r.stderr)
 
+    # REWRITE — the server's history was rewritten (a redaction force-pushed, mind item
+    #     6(d)): the removed commit is never merged or pushed back; NOT PUSHED, nothing
+    #     changed. Both shapes: diverged, and this copy simply ahead of the rewound server.
+    for shape in ("diverged", "rewound"):
+        p, v, bare, clone = sync_fixture(tmp, env, "REWRITE-" + shape)
+        leak = "projects/other/soul/leak.md"
+        remote_commit(clone, leak, "removed later\n", msg="leak")
+        git(v, "pull", "-q", "--no-rebase")  # this machine has the commit
+        git(clone, "reset", "-q", "--hard", "HEAD~1")
+        if shape == "diverged":
+            write(os.path.join(clone, "projects/other/soul/clean.md"), "clean\n")
+            git(clone, "add", "-A")
+            git(clone, "commit", "-qm", "redacted")
+        git(clone, "push", "-q", "-f")
+        write(os.path.join(p, ".soul", "witness.md"), "# W\nRW\n")
+        server, before = rev(bare, "main"), tree_bytes(v)
+        r = run(env, "sync", p)
+        untouched("REWRITE-" + shape, v, before, r, server, bare)
+        check("REWRITE-{}: says the history was rewritten; the removed commit stays off "
+              "the server".format(shape), "rewritten" in r.stderr
+              and git(bare, "show", "main:" + leak).returncode != 0, r.stdout + r.stderr)
+        r = run(env, "sync", p)
+        check("REWRITE-{}: the next sync stops too (the fetch did not move @{{u}} past "
+              "the evidence)".format(shape), r.returncode == 2 and "rewritten" in r.stderr
+              and git(bare, "show", "main:" + leak).returncode != 0, r.stdout + r.stderr)
+
+    # HOOK / GPG — a vault hook that fails a merge commit, or signing that cannot work:
+    #     the merge commit is built without hooks or signing, so no merge is left half
+    #     done (no MERGE_HEAD, nothing staged) and the merge goes through
+    for name in ("HOOK", "GPG"):
+        p, v, bare, clone = sync_fixture(tmp, env, name)
+        remote_commit(clone, os.path.join("projects", "far", "soul", "witness.md"), "# far\n")
+        write(os.path.join(v, "projects", "syncer", mine), "# W\n{}\n".format(name))
+        git(v, "add", "-A", "projects/syncer")
+        git(v, "commit", "-qm", "this machine's commit, before the hooks or signing")
+        if name == "HOOK":
+            for h in ("pre-merge-commit", "prepare-commit-msg", "commit-msg"):
+                hook(v, h, "exit 1\n")
+        else:
+            git(v, "config", "commit.gpgSign", "true")
+            git(v, "config", "gpg.program", "false")
+        write(os.path.join(v, ow), "# other\nline1\nsession X\n")
+        server = rev(bare, "main")
+        r = run(env, "sync", p)
+        check(name + ": no merge left half done; merged and pushed, or NOT PUSHED with "
+              "nothing changed", not os.path.exists(os.path.join(v, ".git", "MERGE_HEAD"))
+              and git(v, "diff", "--cached", "--name-only").stdout == ""
+              and read(os.path.join(v, ow)) == "# other\nline1\nsession X\n"
+              and ((r.returncode == 0 and rev(bare, "main") == rev(v)
+                    and server in git(v, "rev-list", "--parents", "-n", "1", "HEAD").stdout)
+                   or (r.returncode == 2 and rev(bare, "main") == server
+                       and not os.path.exists(os.path.join(v, "projects", "far")))),
+              r.stdout + r.stderr)
+
+    # RACE — a session writes an ignored file the merge brings in, after sync's checks
+    #     and before git moves the tree (a wrapper git writes it as `merge` starts): the
+    #     session's bytes survive; NOT PUSHED, the server unchanged, no merge half done
+    wrap = os.path.join(tmp, "race-bin")
+    write(os.path.join(wrap, "git"),
+          '#!/bin/sh\nfor a in "$@"; do\n  if [ "$a" = merge ]; then\n'
+          '    mkdir -p "$(dirname "$RACE_FILE")"; printf "%s" "$RACE_TEXT" > "$RACE_FILE"; '
+          'break\n  fi\ndone\nexec "{}" "$@"\n'.format(shutil.which("git")))
+    os.chmod(os.path.join(wrap, "git"), 0o755)
+    for shape in ("diverged", "behind"):
+        p, v, bare, clone = sync_fixture(tmp, env, "RACE-" + shape)
+        ev = os.path.join("projects", "other", "soul", "events.jsonl")
+        if shape == "behind":
+            run(env, "sync", p)
+        git(clone, "pull", "-q")
+        write(os.path.join(clone, ev), "theirs\n")
+        git(clone, "add", "-f", ev)
+        git(clone, "commit", "-qm", "theirs")
+        git(clone, "push", "-q")
+        if shape == "diverged":
+            write(os.path.join(p, ".soul", "witness.md"), "# W\nRACE\n")
+        server = rev(bare, "main")
+        renv = dict(env, PATH=wrap + os.pathsep + env.get("PATH", ""),
+                    RACE_FILE=os.path.join(v, ev), RACE_TEXT="session X in the window\n")
+        r = run(renv, "sync", p)
+        check("RACE-{}: the file written in the window survives; nothing merged, no merge "
+              "half done".format(shape), read(os.path.join(v, ev)) == "session X in the window\n"
+              and rev(bare, "main") == server and rev(v) != server
+              and not os.path.exists(os.path.join(v, ".git", "MERGE_HEAD"))
+              and r.returncode == (0 if shape == "behind" else 2), r.stdout + r.stderr)
+
+    # RENAME — the server renamed a file that has an uncommitted edit here: the old path
+    #     counts as changed by the merge, so the edit is never dropped
+    p, v, bare, clone = sync_fixture(tmp, env, "RENAME")
+    git(clone, "pull", "-q")
+    git(clone, "mv", ow, "projects/other/soul/w2.md")
+    git(clone, "commit", "-qm", "ren")
+    git(clone, "push", "-q")
+    write(os.path.join(v, ow), "# other\nline1\nsession X dirty\n")
+    write(os.path.join(p, ".soul", "witness.md"), "# W\nREN\n")
+    server, before = rev(bare, "main"), tree_bytes(v)
+    r = run(env, "sync", p)
+    untouched("RENAME", v, before, r, server, bare)
+    check("RENAME: names the renamed-away path in use", "would overwrite " + ow.replace(
+        os.sep, "/") in r.stderr, r.stderr)
+
+
     # INDEX — index.md dirty here (link leaves it so) and the server changed it too:
     #         refused, the local copy kept, and the line names the discard (index.md is
     #         regenerated); after it, sync merges, pushes and regenerates index.md
@@ -301,7 +404,7 @@ def sync_cases(tmp, env):
     idx = read(os.path.join(v, "index.md"))
     check("INDEX: the named discard lets the next sync merge and push; index.md "
           "regenerated, not committed", m1 is not None and m1.returncode == 0
-          and r2.returncode == 0 and "merged the server's 1 commits and pushed" in r2.stdout
+          and r2.returncode == 0 and "merged the server's 1 commit and pushed" in r2.stdout
           and "Generated by `tools/vault.py index`" in idx and "syncer" in idx
           and git(bare, "show", "main:index.md").stdout == "# index from the other machine\n"
           and git(v, "stash", "list").stdout == "", r.stderr + r2.stdout + r2.stderr)
@@ -317,7 +420,7 @@ def sync_cases(tmp, env):
     idx = read(os.path.join(v, "index.md"))
     check("INDEX-ELSEWHERE: a dirty index.md does not block; merged and pushed; index.md "
           "regenerated with the server's project, left uncommitted",
-          r.returncode == 0 and "merged the server's 1 commits and pushed" in r.stdout
+          r.returncode == 0 and "merged the server's 1 commit and pushed" in r.stdout
           and "[far](projects/far/project.md)" in idx and "syncer" in idx
           and git(bare, "show", "main:projects/syncer/" + mine).stdout == "# W\nPE\n"
           and "index.md" in git(v, "status", "--porcelain", "--", "index.md").stdout

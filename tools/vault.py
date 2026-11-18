@@ -1021,6 +1021,7 @@ def index(vault):
 # ---------------------------------------------------------------- sync
 
 LOCK_NAME = "soul-sync.lock"
+SERVER_REF = "refs/soul-sync/server"  # the server's branch as sync last fetched it
 LOCKED_EXIT = 4
 
 
@@ -1100,7 +1101,8 @@ def sync(project, message=None):
     broken (exit 4) and its message says whether it looks stale. A killed sync leaves
     only that file — git's own children finish and clean up their own locks.
     Two sessions once ran git in the vault in the same second (mining pass 3, SOUL-234).
-    KNOWN LIMIT: git run by hand in the vault does not take the lock."""
+    KNOWN LIMIT: git run by hand in the vault does not take the lock, and a `git fetch`
+    by hand after the server's history was rewritten clears sync's rewrite check."""
     vault, key = _sync_target(project)
     gd = _vault_git(vault, "rev-parse", "--absolute-git-dir")
     top = _vault_git(vault, "rev-parse", "--show-toplevel").stdout.strip()
@@ -1164,22 +1166,45 @@ def _sync_locked(vault, gitdir, key, message):
         raise _not_pushed("the vault's branch has no upstream — the vault counts as kept "
                           "only once it is pushed (set one with `git -C {} push -u <remote> "
                           "{}`)".format(vault, branch or "<branch>"))
-    r = _vault_git(vault, "fetch", "-q", remote)
-    if r.returncode != 0:
-        raise _not_pushed("git fetch from {} failed: {}".format(remote, r.stderr.strip()))
-    up = _vault_git(vault, "rev-parse", "--verify", "-q", "@{u}")
-    if up.returncode != 0 or not up.stdout.strip():
+    # The server's branch is fetched into a ref of sync's own, and the remote-tracking
+    # ref (@{u}) moves to it only once the server's history still holds what this vault
+    # fetched last. A rewritten history (a redaction force-pushed: mind item 6(d)) would
+    # otherwise be merged and pushed straight back, and a plain fetch would move @{u}
+    # past the evidence, so the next sync would do it anyway (review of v3.13.3).
+    tracking = _vault_git(vault, "for-each-ref", "--format=%(upstream)",
+                          "refs/heads/" + branch).stdout.strip()
+    old = (_vault_git(vault, "rev-parse", "--verify", "-q", tracking + "^{commit}")
+           .stdout.strip() if tracking else "")
+    r = _vault_git(vault, "fetch", "-q", "--no-write-fetch-head", "--refmap=", remote,
+                   "+{}:{}".format(merge, SERVER_REF))
+    if r.returncode != 0 and "couldn't find remote ref" in r.stderr:
         raise _not_pushed("the server has no branch {} on {} — push it by hand once you "
                           "have checked the remote (`git -C {} push {} {}`)".format(
                               merge, remote, vault, remote, branch))
-    up = up.stdout.strip()
+    if r.returncode != 0:
+        raise _not_pushed("git fetch from {} failed: {}".format(remote, r.stderr.strip()))
+    up = _vault_git(vault, "rev-parse", "--verify", "-q", SERVER_REF).stdout.strip()
+    if not up:
+        raise _not_pushed("the fetched server branch {} could not be read".format(merge))
+    if old and old != up and _vault_git(
+            vault, "merge-base", "--is-ancestor", old, up).returncode != 0:
+        raise _not_pushed(
+            "the server's history was rewritten: its {} no longer holds commit {}, which "
+            "this vault fetched before (a redaction?). Nothing merged or pushed — that "
+            "would bring the removed commits back. This vault still holds them; decide by "
+            "hand, when no other session is writing, what to keep (`git -C {} log {}..{}` "
+            "lists them), then `git -C {} fetch {}` and sync again".format(
+                merge, old[:7], vault, up[:7], old[:7], vault, remote))
+    if tracking and old != up:
+        _vault_git(vault, "update-ref", "-m", "soul sync: fetched", tracking, up,
+                   *([old] if old else []))
     head = _vault_git(vault, "rev-parse", "HEAD").stdout.strip()
     if up == head:
         print("up to date with the server")
         return 0
     if _vault_git(vault, "merge-base", "--is-ancestor", up, head).returncode != 0:
         # The server has commits this vault lacks (behind, or diverged).
-        return _merge_server(vault, gitdir, remote, merge, head, up)
+        return _merge_server(vault, remote, merge, head, up)
     r = _vault_git(vault, "push", "-q", remote, "HEAD:" + merge)
     if r.returncode != 0:
         raise _not_pushed("git push was refused: {}".format(r.stderr.strip()))
@@ -1215,7 +1240,8 @@ def _in_use(vault, tree):
     if staged:
         return ("something is staged in the vault ({}) — git merges only with nothing "
                 "staged; sync again once it is committed".format(", ".join(staged[:5])))
-    changed = [c for c in _vault_git(vault, "diff", "--name-only", "-z", "HEAD", tree)
+    changed = [c for c in _vault_git(vault, "diff", "--name-only", "--no-renames", "-z",
+                                     "HEAD", tree)
                .stdout.split("\0") if c]
     status = _status_paths(vault)
     busy = []
@@ -1235,14 +1261,22 @@ def _in_use(vault, tree):
     return why + "; sync again when that work is committed"
 
 
-def _merge_server(vault, gitdir, remote, merge, head, up):
+def _commits(n):
+    return "1 commit" if n == "1" else "{} commits".format(n)
+
+
+def _merge_server(vault, remote, merge, head, up):
     """Merge the server's commits when git can do it cleanly, then push (SOUL-243: the
     Body, "yes on both. go" — sync merges the server's commits itself when git can do
     it cleanly and reports only a real conflict). The merge is checked first in memory
     (`merge-tree --write-tree`: a conflict exits 1 and touches no file), then against
-    the files in use here, and only then run as a plain `git merge --no-autostash`.
-    Autostash, stash, rebase, reset and `merge --abort` stay banned: they are what lost
-    data in the 3.11.0 reviews (SOUL-234; mind item 12). A refusal changes nothing."""
+    the files in use here. The merge commit is built from that tree with `commit-tree`
+    — no hooks, no signing, no MERGE_HEAD, so a failing vault hook or gpg can never
+    leave a half-done merge in the shared tree (review of v3.13.3) — and the tree moves
+    to it only by `merge --ff-only --no-overwrite-ignore`, which refuses over any file
+    in use, an ignored one written since the check included, and changes nothing when
+    it refuses. Autostash, stash, rebase, reset and `merge --abort` stay banned: they
+    are what lost data in the 3.11.0 reviews (SOUL-234; mind item 12)."""
     n = _vault_git(vault, "rev-list", "--count", "HEAD.." + up).stdout.strip() or "?"
     behind = _vault_git(vault, "merge-base", "--is-ancestor", head, up).returncode == 0
     by_hand = "`git -C {} pull --no-rebase --no-autostash`".format(vault)
@@ -1256,8 +1290,8 @@ def _merge_server(vault, gitdir, remote, merge, head, up):
         if behind:
             # Everything here is already on the server; only this copy is behind. Not a
             # NOT PUSHED: that told the owner a pushed cursor was unsafe (third review).
-            print("already on the server; this vault's copy is {} commit(s) behind it and "
-                  "was not caught up: {}".format(n, why))
+            print("already on the server; this vault's copy is {} behind it and was not "
+                  "caught up: {}".format(_commits(n), why))
             return 0
         raise _not_pushed(why)
 
@@ -1265,27 +1299,28 @@ def _merge_server(vault, gitdir, remote, merge, head, up):
                     "HEAD", up)
     if mt.returncode == 1:
         files = [f for f in mt.stdout.splitlines()[1:] if f]
-        return stop("the vault's server has {} commit(s) that conflict with this vault's "
-                    "(both changed {}). Merge them by hand when no other session is writing "
-                    "in the vault ({}), then run `vault.py index {}` and sync again".format(
-                        n, ", ".join(files[:5]) or "the same files", by_hand, vault))
+        return stop("the vault's server has {} that conflict with this vault's (both "
+                    "changed {}). Merge them by hand when no other session is writing in "
+                    "the vault ({}), then run `vault.py index {}` and sync again".format(
+                        _commits(n), ", ".join(files[:5]) or "the same files", by_hand, vault))
     if mt.returncode != 0 or not mt.stdout.strip():
         return stop("git merge-tree failed: {}".format((mt.stderr or mt.stdout).strip()))
-    why = _in_use(vault, mt.stdout.split()[0])
+    tree = mt.stdout.split()[0]
+    why = _in_use(vault, tree)
     if why:
         return stop(why)
-    r = _vault_git(vault, "merge", "-q", "--no-edit", "--no-autostash",
-                   "--no-overwrite-ignore", "--ff", "-m",
-                   "soul: sync merges the server's {} commit(s)".format(n), up)
+    target = up
+    if not behind:
+        c = _vault_git(vault, "commit-tree", "--no-gpg-sign", tree, "-p", "HEAD", "-p", up,
+                       "-m", "soul: sync merges the server's {}".format(_commits(n)))
+        if c.returncode != 0 or not c.stdout.strip():
+            return stop("git could not build the merge commit, nothing changed: {}".format(
+                (c.stderr or c.stdout).strip()))
+        target = c.stdout.strip()
+    r = _vault_git(vault, "merge", "-q", "--ff-only", "--no-autostash",
+                   "--no-overwrite-ignore", target)
     if r.returncode != 0:
-        if os.path.exists(os.path.join(gitdir, "MERGE_HEAD")):
-            # A hook or a late check stopped it after the files were written; aborting
-            # could undo a write made since, so it is left to a person.
-            raise _not_pushed("git merge stopped partway ({}); the merge is in progress in "
-                              "the vault — finish it (`git -C {} commit`) or abort it by "
-                              "hand when no other session is writing".format(
-                                  (r.stderr or r.stdout).strip(), vault))
-        return stop("git refused the merge, nothing changed: {}".format(
+        return stop("git refused to move the vault to the merge, nothing changed: {}".format(
             (r.stderr or r.stdout).strip()))
     try:  # regenerated, never committed — as `link` leaves it
         with contextlib.redirect_stdout(io.StringIO()):
@@ -1293,15 +1328,14 @@ def _merge_server(vault, gitdir, remote, merge, head, up):
     except (OSError, VaultError) as exc:
         print("index.md not regenerated ({}): run `vault.py index {}`".format(exc, vault))
     if behind:
-        print("caught up with the server's {} commit(s); nothing here to push".format(n))
+        print("caught up with the server's {}; nothing here to push".format(_commits(n)))
         return 0
     r = _vault_git(vault, "push", "-q", remote, "HEAD:" + merge)
     if r.returncode != 0:
-        raise _not_pushed("merged the server's {} commit(s) here, but git push was refused: "
-                          "{}".format(n, r.stderr.strip()))
-    print("merged the server's {} commits and pushed".format(n))
+        raise _not_pushed("merged the server's {} here, but git push was refused: "
+                          "{}".format(_commits(n), r.stderr.strip()))
+    print("merged the server's {} and pushed".format(_commits(n)))
     return 0
-
 
 # ---------------------------------------------------------------- check / hook
 
