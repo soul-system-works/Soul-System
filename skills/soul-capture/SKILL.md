@@ -47,9 +47,8 @@ caught it, SOUL-163/164) — under these limits:
   append-only, corrected forward:
   - **Witness entry:** its `STATUS` says `Declined by the Body <date>`
     (`STATUS` is the one field an entry may change).
-  - **Idea:** a captured idea has no `STATUS` (`/soul-discuss` may add one
-    later), so `— declined by the Body <date>` is appended after the idea's line
-    (or its entry, in a heading-per-entry file).
+  - **Idea:** its `STATUS` line becomes `STATUS:    Declined — by the Body <date>`
+    (an older idea with no `STATUS` line gets one).
 
 *Why opt-out (SOUL-A031, from SOUL-I085):* this used to be opt-in. The Body had to
 confirm each entry the model started — a "go" before it was appended, or, when the
@@ -103,6 +102,24 @@ line with the opt-out (*Who fires this*).
   increment.
 - **Permanent handle**: a closed, resolved or struck-through entry keeps its id
   forever, ids are never reused, and nothing is ever renumbered.
+
+**The state — one line per idea,** written `STATUS:    Raw` at capture:
+
+    STATUS:    <word>[ — <date or note>]
+
+- Five words: **Raw** and **Maturing** are open, **Parked** waits, **Built** and
+  **Declined** are closed. A partly built idea stays `Maturing — built in part (…)`.
+- On a line of its own, inside the idea (indented under a list item is fine). When
+  the state changes, edit that line in place; never add a second one.
+- `python3 <root>/tools/ideas-status.py .` (`<root>` is two levels above this
+  skill's base directory) prints the open ideas and flags any idea with no state, a
+  word outside the five, or two `STATUS` lines.
+
+*Why (SOUL-I096):* a captured idea used to have no state. In MODEL-LIB's store, 73
+ideas, 2 carried a `STATUS` line and 41 gave no sign of open or done; its cursor
+carried 6 ideas as `[inherited]` that no session had re-checked. That owner's worry,
+asking about moving to an issue tracker: "it is really to make sure you don't forget
+our work".
 
 Nothing else is specified. Heading-per-entry and bold-bullet-per-entry are both
 fine — match whatever the file already does.

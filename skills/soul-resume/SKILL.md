@@ -86,7 +86,9 @@ source of truth; this loads them and continues.
    skip. The pointer most in need of resolution is exactly the one that doesn't resolve.
    Treat `[inherited]` pointers, OPEN GATES and NEXT STEP items (and any unmarked ones
    from older cursors) as claims to verify before repeating them to the Body — a cursor
-   entry is a claim, not a fact (F067).
+   entry is a claim, not a fact (F067). For the ideas pointer, run
+   `python3 <root>/tools/ideas-status.py .`: an id the cursor names that it shows
+   closed or parked, say so; leave its flags to `/soul-next` (SOUL-I096).
 
    **Then list what landed after the cursor** — `git log --since=<cursor date>
    --oneline`, plus record entries (witness, ideas) newer than the cursor's witness
@@ -114,8 +116,8 @@ source of truth; this loads them and continues.
    THERMAL-I086 — say no to strike any."* (`☀  ` marks a line about something the
    Soul did on its own: `/soul-handoff` step 5.) No question; they are already
    accepted, and silence keeps them. A no → the entry stays and says so, corrected
-   forward: a witness entry's `STATUS` records the no; an idea gets
-   `— declined by the Body <date>` appended (`/soul-capture`, *Who fires this*).
+   forward: the entry's `STATUS` records the no — for an idea,
+   `STATUS:    Declined — by the Body <date>` (`/soul-capture`, *Who fires this*).
 
    *Older records:* a cursor written before v3.9.0 may carry an `UNCONFIRMED` field
    instead. Its ids are treated as accepted: name them the same one-line way. This
