@@ -160,6 +160,15 @@ class IdeasStatus(unittest.TestCase):
         # The ` · ` separator is dropped from the title too.
         self.assertEqual(rep["open"][1]["title"], "Keep open work findable")
 
+    def test_list_item_with_title_inside_the_bold(self):
+        # A real store writes `- **CODE-I010 — Title.**`: the separator sits inside
+        # the bold. It must still be an idea, or the whole store reads as empty.
+        rep = self.report("- **PLANT-I010 — Two pumps in series.** More text.\n"
+                          "  STATUS:    Raw\n"
+                          "- **PLANT-I011 · A second one**\n  STATUS:    Built\n")
+        self.assertEqual(self.counts(rep), ([("PLANT-I010", "Raw")], [], {"Built": 1, "Declined": 0}))
+        self.assertEqual(rep["open"][0]["title"], "Two pumps in series. More text.")
+
     def test_heading_shapes(self):
         rep = self.report(HEADING)
         self.assertEqual(self.counts(rep), (

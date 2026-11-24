@@ -29,7 +29,7 @@ What counts:
     (SOUL-I096, MODEL-LIB-I005, PLANT-I001).
   - An idea starts at one of three shapes, all in real stores: a field block line
     `ID:  <id>` (found inside ``` fences too, where this repo keeps them); an
-    unindented list item `- **<id>**` and its text; a `##`, `###` or `####` heading
+    unindented list item `- **<id>**` and its text (or `- **<id> — title**`); a `##`, `###` or `####` heading
     `<id>` and its title. List items and headings inside a fence are not ideas.
   - An idea runs to the next idea start or the next markdown heading outside a
     fence, whichever comes first. Text before the first idea (the store's header,
@@ -49,7 +49,8 @@ import sys
 ID = r"[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)*-I\d+"
 SEP = r"\s*(?:[—–·:|]|-(?=\s))?\s*"
 FIELD_START_RE = re.compile(r"^ID:\s+(" + ID + r")\b")
-LIST_START_RE = re.compile(r"^-\s+\*\*(" + ID + r")\*\*" + SEP + r"(.*)$")
+# `- **<id>** — title` or `- **<id> — title**`: both occur in real stores.
+LIST_START_RE = re.compile(r"^-\s+\*\*(" + ID + r")\b(?:\*\*)?" + SEP + r"(.*)$")
 HEAD_START_RE = re.compile(r"^#{2,4}\s+(" + ID + r")\b" + SEP + r"(.*)$")
 HEADING_RE = re.compile(r"^#{1,6}(\s|$)")
 FENCE_RE = re.compile(r"^\s*```")
