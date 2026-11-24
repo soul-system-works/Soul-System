@@ -3498,3 +3498,27 @@ NOTES:     Three of the four points built the same day as v3.13.2 (the Body: yes
            (pre-existing, review 2026-11-16). Related: SOUL-I094, SOUL-A032.
 STATUS:    Built in part (v3.13.2)
 ```
+
+```
+ID:        SOUL-I096
+WHEN:      2026-11-24
+RAW:       From the MODEL-LIB session, approved by its owner: give each idea an
+           open/done state and add a printed open-ideas list, so open work is not lost
+           in a long ideas store. That owner's reason, for considering GitHub Issues:
+           "it is really to make sure you don't forget our work". They stayed local and
+           said: "if this is something we need to work with the soul-system dev agent
+           to fix/improve the way it works". Measured there: 73 ideas, 169 KB; 2 carry
+           a STATUS line, 41 give no sign of open or done; the last cursor carried 6
+           `[inherited]` ideas that no session had re-checked. Same problem here: 96
+           ideas, about 20 different STATUS spellings. Full note: MODEL-LIB's
+           upstream.md, "2026-11-24 — ideas have no open/done state".
+NOTES:     The Body, 2026-11-24: take it as the next release; the state words are
+           Raw / Maturing / Built / Parked / Declined (open: Raw, Maturing; waiting:
+           Parked; closed: Built, Declined). Line `STATUS:    <word>[ — <note>]`;
+           partly built = Maturing with a note. MODEL-LIB is backfilling to this
+           format and is not building its own script. Files: skills/soul-capture
+           ("a captured idea has no STATUS"), soul-next step 1, soul-resume,
+           soul-handoff, a new tools/ideas-status.py. Undecided: the area grouping;
+           migrating this repo's own ~20 spellings.
+STATUS:    Maturing
+```
