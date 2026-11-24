@@ -87,8 +87,11 @@ source of truth; this loads them and continues.
    Treat `[inherited]` pointers, OPEN GATES and NEXT STEP items (and any unmarked ones
    from older cursors) as claims to verify before repeating them to the Body — a cursor
    entry is a claim, not a fact (F067). For the ideas pointer, run
-   `python3 <root>/tools/ideas-status.py .`: an id the cursor names that it shows
-   closed or parked, say so; leave its flags to `/soul-next` (SOUL-I096).
+   `python3 <root>/tools/ideas-status.py .` (`<root>` is two levels above this skill's base directory): for an id the cursor
+   names that it does not list as open, read the entry and say what it is now —
+   parked, closed, or not found; leave its flags to `/soul-next` (SOUL-I096).
+   If it finds no entries or cannot read the store (another layout, or a
+   one-line pointer to the real file), read the store as before.
 
    **Then list what landed after the cursor** — `git log --since=<cursor date>
    --oneline`, plus record entries (witness, ideas) newer than the cursor's witness

@@ -18,8 +18,10 @@ across sessions; this reconciles it with reality and emits a tiered next-options
 
 1. **Reconcile the tracker with reality.** Read the durable forward stores — the open
    ideas (run `python3 <root>/tools/ideas-status.py .`, `<root>` two levels above this
-   skill's base directory, and read the entries you will list; ideas it shows closed
-   are done), the `witness.md` tail (recent state), `findings/open/` (open
+   skill's base directory, and read the entries you will list; it lists open and
+   parked ideas only, closed ones as a count. If it finds no entries or cannot read the store (another layout, or a
+   one-line pointer to the real file), read the store as before.),
+   the `witness.md` tail (recent state), `findings/open/` (open
    questions — Soul System repo only; domain projects have none),
    and `.soul/handoff.md` if present. Update or prune the harness task list so it reflects
    active work, not a stale snapshot.

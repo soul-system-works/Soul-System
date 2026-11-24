@@ -32,7 +32,9 @@ What counts:
     unindented list item `- **<id>**` and its text (or `- **<id> — title**`); a `##`, `###` or `####` heading
     `<id>` and its title. List items and headings inside a fence are not ideas.
   - An idea runs to the next idea start or the next markdown heading outside a
-    fence, whichever comes first. Text before the first idea (the store's header,
+    fence, whichever comes first; a list-item idea also ends at the next unindented
+    list item (an un-numbered item's STATUS is not its). A range line
+    `- **X-I001..I008 …**` is a summary, not an idea. Text before the first idea (the store's header,
     a `STATUS: Raw | Maturing | …` template) belongs to no idea and is ignored.
   - No state line: NO STATE. Two or more: reported, and the first one counts.
   - The title shown: for a heading or list item, the text after the id and its
@@ -50,7 +52,9 @@ ID = r"[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)*-I\d+"
 SEP = r"\s*(?:[—–·:|]|-(?=\s))?\s*"
 FIELD_START_RE = re.compile(r"^ID:\s+(" + ID + r")\b")
 # `- **<id>** — title` or `- **<id> — title**`: both occur in real stores.
-LIST_START_RE = re.compile(r"^-\s+\*\*(" + ID + r")\b(?:\*\*)?" + SEP + r"(.*)$")
+# `(?!\.\.)`: `- **X-I001..I008 — all shipped**` is a range summary, not idea X-I001.
+LIST_START_RE = re.compile(r"^-\s+\*\*(" + ID + r")\b(?!\.\.)(?:\*\*)?" + SEP + r"(.*)$")
+LIST_ITEM_RE = re.compile(r"^(?:[-*+]|\d+[.)])\s")
 HEAD_START_RE = re.compile(r"^#{2,4}\s+(" + ID + r")\b" + SEP + r"(.*)$")
 HEADING_RE = re.compile(r"^#{1,6}(\s|$)")
 FENCE_RE = re.compile(r"^\s*```")
@@ -97,13 +101,18 @@ def ideas(text):
         start = None if fenced else (LIST_START_RE.match(ln) or HEAD_START_RE.match(ln))
         if start:
             cur = {"id": start.group(1), "title": start.group(2), "states": [],
-                   "lines": []}
+                   "lines": [], "list": bool(LIST_START_RE.match(ln))}
             out.append(cur)
             continue
         if not fenced and HEADING_RE.match(ln):
             cur = None
             continue
         if cur is None:
+            continue
+        if cur.get("list") and not fenced and LIST_ITEM_RE.match(ln):
+            # A list idea is one item: the next unindented item, numbered or not,
+            # ends it, so an un-numbered item's STATUS is not counted for it.
+            cur = None
             continue
         m = STATUS_RE.match(ln)
         if m:
@@ -112,6 +121,7 @@ def ideas(text):
             cur["lines"].append(ln)
     for idea in out:
         lines = idea.pop("lines")
+        idea.pop("list", None)
         idea["title"] = _clean(idea["title"] if idea["title"] is not None
                                else _field_title(lines))
     return out

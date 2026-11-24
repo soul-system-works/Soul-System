@@ -169,6 +169,22 @@ class IdeasStatus(unittest.TestCase):
         self.assertEqual(self.counts(rep), ([("PLANT-I010", "Raw")], [], {"Built": 1, "Declined": 0}))
         self.assertEqual(rep["open"][0]["title"], "Two pumps in series. More text.")
 
+    def test_list_idea_ends_at_the_next_list_item(self):
+        # An un-numbered item's STATUS must not close the numbered idea above it
+        # (fresh review F2: PLANT-I001 vanished from the open list, unflagged).
+        rep = self.report("- **PLANT-I001** — older, never given a state\n"
+                          "- **An un-numbered item**\n  STATUS: Built — 2026-10-01\n"
+                          "- **PLANT-I002** — Newer\n  STATUS:    Raw\n")
+        self.assertEqual(rep["no_state"], ["PLANT-I001"])
+        self.assertEqual(rep["closed_counts"]["Built"], 0)
+
+    def test_range_summary_is_not_an_idea(self):
+        # `- **X-I001..I008 — all shipped**` is a summary, not idea X-I001 (review F3).
+        rep = self.report("- **PLANT-I001..I008 — all eight shipped**\n"
+                          "- **PLANT-I001** — the real one\n  STATUS:    Built\n")
+        self.assertEqual(rep["no_state"], [])
+        self.assertEqual((rep["open"], rep["closed_counts"]["Built"]), ([], 1))
+
     def test_heading_shapes(self):
         rep = self.report(HEADING)
         self.assertEqual(self.counts(rep), (

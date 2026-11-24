@@ -87,11 +87,11 @@ repo's own record is the target.
 
 Near-zero ceremony. Append the Body's forward-looking possibility to `ideas.md`
 with a fresh id. Minimal at capture; enrich later. Jot it, confirm the ID, done.
-No interview, no scaffolding beyond the ID + a one-line title. Ideas are cheap by
+No interview, no scaffolding beyond the ID, a one-line title and `STATUS:    Raw`. Ideas are cheap by
 design (Rule 7). An idea the model starts is appended the same way, then named in one
 line with the opt-out (*Who fires this*).
 
-**The id rule — three lines, and they are the whole format:**
+**The id rule — three lines:**
 
 - Form is `<PROJECTCODE>-I###`, where `<PROJECTCODE>` is the same code the
   project's witness log uses (`THERMAL-001` → `THERMAL-I001`). If the project has no
@@ -109,20 +109,23 @@ line with the opt-out (*Who fires this*).
 
 - Five words: **Raw** and **Maturing** are open, **Parked** waits, **Built** and
   **Declined** are closed. A partly built idea stays `Maturing — built in part (…)`.
-- On a line of its own, inside the idea (indented under a list item is fine). When
-  the state changes, edit that line in place; never add a second one.
+- On a line of its own, inside the idea: indented under a list item, or under the
+  heading above any sub-heading. When the state changes, edit that line in place;
+  never add a second one.
 - `python3 <root>/tools/ideas-status.py .` (`<root>` is two levels above this
   skill's base directory) prints the open ideas and flags any idea with no state, a
-  word outside the five, or two `STATUS` lines.
+  word outside the five, or two `STATUS` lines. It reads an idea that starts at an
+  `ID:` line, a `- **<id>**` list item or a `##`–`####` heading with the id.
 
-*Why (SOUL-I096):* a captured idea used to have no state. In MODEL-LIB's store, 73
-ideas, 2 carried a `STATUS` line and 41 gave no sign of open or done; its cursor
-carried 6 ideas as `[inherited]` that no session had re-checked. That owner's worry,
+*Why (SOUL-I096):* a captured idea used to have no state. In MODEL-LIB's store of 73
+ideas, none had a `STATUS` line of its own (fresh review, 2026-11-24, from the vault
+history), and its cursor carried 6 ideas as `[inherited]` that no session had
+re-checked. That owner's worry,
 asking about moving to an issue tracker: "it is really to make sure you don't forget
 our work".
 
-Nothing else is specified. Heading-per-entry and bold-bullet-per-entry are both
-fine — match whatever the file already does.
+Nothing else is specified. Heading-per-entry, bold-bullet-per-entry and `ID:` field
+blocks are all fine — match whatever the file already does.
 
 *Why only this much:* six adopting projects produced four id schemes and two
 layouts. The layout variation cost nothing measurable; the id variation cost one
