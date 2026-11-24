@@ -16,8 +16,12 @@ across sessions; this reconciles it with reality and emits a tiered next-options
 
 ## What to do
 
-1. **Reconcile the tracker with reality.** Read the durable forward stores — `ideas.md`
-   (ripe ideas), the `witness.md` tail (recent state), `findings/open/` (open
+1. **Reconcile the tracker with reality.** Read the durable forward stores — the open
+   ideas (run `python3 <root>/tools/ideas-status.py .`, `<root>` two levels above this
+   skill's base directory, and read the entries you will list; it lists open and
+   parked ideas only, closed ones as a count. If it finds no entries or cannot read the store (another layout, or a
+   one-line pointer to the real file), read the store as before.),
+   the `witness.md` tail (recent state), `findings/open/` (open
    questions — Soul System repo only; domain projects have none),
    and `.soul/handoff.md` if present. Update or prune the harness task list so it reflects
    active work, not a stale snapshot.
@@ -73,9 +77,11 @@ across sessions; this reconciles it with reality and emits a tiered next-options
    Each item **points at its durable source** (idea ID, finding ID, spec) — do not copy the
    content in.
    An idea listed under Now or Next whose `STATUS` is `Raw`, or that has no
-   `STATUS:` line (ideas captured by `/soul-capture` have none), gets
-   ` — not discussed yet; /soul-discuss first?` appended. `/soul-discuss` sets
-   `STATUS: Maturing` when a discussion is kept (SOUL-I078).
+   `STATUS:` line, gets ` — not discussed yet; /soul-discuss first?` appended.
+   `/soul-discuss` sets `STATUS: Maturing` when a discussion is kept (SOUL-I078).
+   If the tool flagged ideas (no state, a word outside the five, two `STATUS`
+   lines), one Next-tier line: *"N ideas need a state word → set them (ids)"* —
+   the words are `/soul-capture`'s; keep an old word in the note (SOUL-I096).
 
 4. **Tag by value/effort** where it helps. Keep it skimmable.
 

@@ -68,6 +68,11 @@ pre-run cursor names that path (in NEXT STEP or OPEN GATES), so a later
 
 1. **Flush volatile → durable** (the real work — do this first):
    - Is the current abstraction layer recorded in a spec/ADR? If it is live and unwritten, record it.
+   - An idea built, parked or declined this session? Edit its `STATUS` line in
+     place (`/soul-capture`'s five words, SOUL-I096). Then run
+     `python3 <root>/tools/ideas-status.py .` (`<root>` is two levels above this
+     skill's base directory): the cursor's ripe ideas come from its open list; if it
+     finds no entries, read the store as before.
    - Any witness-worthy moment this session not yet in `witness.md`? Any new idea
      not captured in `ideas.md` (minimal)? Capture it through `/soul-capture`
      (id scan, re-read-verify): **append it at once, with no mark — it counts as
@@ -186,7 +191,8 @@ pre-run cursor names that path (in NEXT STEP or OPEN GATES), so a later
                         else "none"]
    POINTERS (reference, do not duplicate; mark provenance on every entry):
      - witness tail:   last entries in witness.md ([ids]) [read]
-     - ideas:          ideas.md ([ripe ids]) [read]
+     - ideas:          ideas.md ([ripe ids], each listed open by the ideas-status
+                       tool) [read]
      - tasks:          [open task ids / subjects] [read|inherited]
      - specs/ADRs:     [relevant paths] [read|inherited]
      - debrief:        newest line of .ai/debriefs/INDEX.md, if any [read]
