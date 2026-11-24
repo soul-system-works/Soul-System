@@ -6,10 +6,13 @@ they arise. The forward twin of `witness.md`: the Witness records what happened
 
 An idea is raw, pre-Council, and unprioritized. It is **not** a Finding. When an
 idea earns it, it **graduates** into a Finding (`SOUL-F###`) / Amendment / work,
-and its `STATUS` is marked `Graduated`. Ideas are never deleted — `Dropped` ones
-stay on the record.
+and its `STATUS` is marked `Built`. Ideas are never deleted — `Declined` ones
+stay on the record. Every idea has one `STATUS` line with one of five words: Raw and
+Maturing are open, Parked waits, Built and Declined are closed (SOUL-I096; older
+words were mapped on 2026-11-24 and kept after the dash). `python3
+tools/ideas-status.py ideas.md` prints the open ones.
 
-Capture with `/soul-idea <text>` (or append by hand). Minimal at capture; enrich
+Capture with `/soul-capture idea <text>` (or append by hand). Minimal at capture; enrich
 later as the idea matures.
 
 Tended by the **Archivist**. Worked by the **Prophet** (trajectory / ripeness),
@@ -25,7 +28,7 @@ Minimal at capture:
 ID:        [CODE]-I###          e.g. SOUL-I001
 WHEN:      [date captured]
 IDEA:      [one line — the raw thought]
-STATUS:    Raw | Maturing | Graduated [to <ID>] | Dropped
+STATUS:    Raw | Maturing | Parked | Built | Declined [ — <note>]
 ```
 
 Enrichment fields accrue later, all optional:
@@ -129,7 +132,7 @@ IDEA:      the-soul.md is large (~500 lines) and is @-imported into the always-l
            seed, so Claude Code shows the "large CLAUDE.md may impact performance"
            warning at every session start. Keep the philosophy present without paying
            the full-file context cost each session.
-STATUS:    Graduated [to SOUL-034 — C-lite: dropped the @-import, added role lenses]
+STATUS:    Built — Graduated [to SOUL-034 — C-lite: dropped the @-import, added role lenses]
 WHY:       The seed (operations/CLAUDE.md) was designed to BE the compressed,
            always-loaded layer — it literally says "this is a seed, not the full
            philosophy; when in doubt consult the-soul.md." But line 11
@@ -155,7 +158,7 @@ IDEA:      Smartly handle context limits as a first-class Soul-System concern �
            disciplined handoff/continuation when a session nears its context ceiling,
            preserving the live abstraction layer, open gates, and witness tail so the
            next session resumes without re-derivation.
-STATUS:    Graduated [to SOUL-042 / /soul-handoff — grow-own thin handoff command]
+STATUS:    Built — Graduated [to SOUL-042 / /soul-handoff — grow-own thin handoff command]
 WHY:       Context exhaustion is exactly when the Soul System should pay off most —
            the accumulated structure is what survives a handoff — yet today handoff
            is ad hoc. A disciplined handoff is the moment the "good ratchet" proves
@@ -177,7 +180,7 @@ WHEN:      2026-05-21
 IDEA:      Reduce terminal-output noise from Soul instruments (gate messages, Stop
            hook output, role announcements) so the actual project work stays legible
            — without compromising the behavior the instruments provide.
-STATUS:    Graduated [to SOUL-037/038 — Tier-1: hook precision + terse output + event emission]
+STATUS:    Built — Graduated [to SOUL-037/038 — Tier-1: hook precision + terse output + event emission]
 WHY:       Gate info + hook output currently crowd out the work-in-progress; signal
            is lost in ceremony and the noise costs tokens. The "Naming Roles in the
            Moment" doctrine already warns against ceremony — this is its operational/
@@ -272,7 +275,7 @@ WHEN:      2026-05-21
 IDEA:      A /soul-explain command: on demand, DESCRIBE what is going on / what was
            just shared — a read-only explanatory lens that explains without deciding,
            re-planning, or emitting new suggestions.
-STATUS:    Graduated [to /soul-explain — commands/soul-explain.md, 2026-05-21]
+STATUS:    Built — Graduated [to /soul-explain — commands/soul-explain.md, 2026-05-21]
 WHY:       Makes an implicit behavior explicitly invokable. Two pulls: (a) system
            verbosity (SOUL-I008) — sometimes the Body wants a clean description without
            gate ceremony or role announcements; (b) clarification-drift — the failure
@@ -295,7 +298,7 @@ WHEN:      2026-05-21
 IDEA:      A /soul-tasks command: ensure the task tracker is current, then quickly share
            a TIERED list of likely next options (now / next / later, or by value/effort)
            — the forward-momentum view on demand.
-STATUS:    Graduated [to /soul-tasks — commands/soul-tasks.md, 2026-05-21]
+STATUS:    Built — Graduated [to /soul-tasks — commands/soul-tasks.md, 2026-05-21]
 WHY:       The operational instrument for SOUL-I010 / [[proactive-next-steps]]: the Body
            shouldn't have to ASK for next steps, and the harness task list goes stale
            across sessions (it did this very session — the resume found it empty). A
@@ -320,7 +323,7 @@ IDEA:      A routine that syncs reference-project (dogfood) Soul-meta findings
            projects don't strand. Either a doc-convention (every project's CLAUDE.md
            mandates a closing Finding + non-optional upstreaming) or a /soul-harvest
            command that sweeps known project paths for ungathered items.
-STATUS:    Graduated [partial — 2026-05-22, SOUL-057. Capture-side lever taken: a
+STATUS:    Maturing — Graduated [partial — 2026-05-22, SOUL-057. Capture-side lever taken: a
            reference-project obligation (closing Finding + non-optional upstreaming)
            added to the seed. Harvest-side /soul-harvest still DEFERRED until the
            doc-convention proves insufficient (default simplicity).]
@@ -351,7 +354,7 @@ IDEA:      A /soul-help escape hatch for when the user is lost — "I don't know
            note. When things are very fuzzy, it orients and gets the user going:
            activates likely next steps/actions and presents the most-relevant
            information succinctly and clearly.
-STATUS:    Built [2026-05-26, via SOUL-067 → 0.4.6]. MVP shipped as a roster: lists
+STATUS:    Built — [2026-05-26, via SOUL-067 → 0.4.6]. MVP shipped as a roster: lists
            every /soul-* command by reading commands/ at runtime + one-line summary
            each + pointers to philosophy/findings/ideas/witness. The "lost-user
            orient" half (activate next steps, surface most-relevant context) is
@@ -386,7 +389,7 @@ IDEA:      The Soul System should help AUTOMATE identifying + creating PROJECT-S
            run tools effectively. Over time, grab e.g. a "dymola skill" that accelerates
            the work and builds a coherent codebase. May lead toward tool-specific
            skillsets / MCP.
-STATUS:    Graduated [to /soul-skill — commands/soul-skill.md, 2026-05-22, SOUL-061]
+STATUS:    Built — Graduated [to /soul-skill — commands/soul-skill.md, 2026-05-22, SOUL-061]
 NOTES:     Body: too often a new session/project forgets how to do these things; an
            organically-grown skillset would be a boon. Some tools adopt AI directly (the
            skill becomes lean over time); others (e.g. Dymola) may never get AI
@@ -429,7 +432,7 @@ IDEA:      Improve the UX of what the Body actually has to read and do. Two obse
            at the END is of minimal use to the BODY (maybe useful in some scenarios, not
            others) and BURIES the actual ask — the Body keeps scrolling above the hook to
            find what was wanted and the context, even when it is repeated at the bottom.
-STATUS:    Graduated [to SOUL-055 — compact, ask-first completion gate (hook _checklist + completion-gate.md align); 2026-05-22]
+STATUS:    Built — Graduated [to SOUL-055 — compact, ask-first completion gate (hook _checklist + completion-gate.md align); 2026-05-22]
 NOTES:     Candidates: surface the actual ask / next-step in a consistent, easy-to-find
            place (top, or clearly delimited), not buried by the gate reply; make the gate
            output AI-facing / collapsible or terser for the user; per-scenario verbosity.
@@ -545,7 +548,7 @@ WHEN:      2026-05-22
 IDEA:      A /soul-finding capture command — a low-ceremony way for projects (and
            the Soul repo itself) to record a Finding, parallel to /soul-idea for
            ideas. Open: does it help or is it unnecessary?
-STATUS:    Built [2026-05-26, via SOUL-067 → 0.4.6]. Shipped as a SCAFFOLDER (the
+STATUS:    Built — [2026-05-26, via SOUL-067 → 0.4.6]. Shipped as a SCAFFOLDER (the
            asymmetry resolved per the original NOTES): the Body decides graduation;
            the command does the mechanical work — confirm Body's call, gather inputs,
            re-read-verify ID via the SOUL-I027 protocol, write to findings/open/, flag
@@ -671,7 +674,7 @@ IDEA:      The durable records (witness.md, ideas.md, findings/) assume a SINGLE
            session can silently clobber another's witness entry on save. Need a
            concurrency model — at minimum a collision DETECTOR, ideally a
            protocol that lets parallel agents share the record safely.
-STATUS:    Partially delivered [2026-05-26, via SOUL-067 → 0.4.6]. Option (4) —
+STATUS:    Maturing — Partially delivered [2026-05-26, via SOUL-067 → 0.4.6]. Option (4) —
            detect-only re-read-verify-before-write protocol — landed in the two
            commands that auto-number IDs: /soul-finding (new; baked in from
            creation) and /soul-idea (back-ported). The protocol: just before
@@ -763,7 +766,7 @@ IDEA:      A /soul-witness slash command — append an observation to witness.md
            → witness entry. The cheap-capture twin of /soul-idea but pointed at
            the BACKWARD record (what happened) rather than the FORWARD inbox
            (what might).
-STATUS:    Graduated [to /soul-witness — commands/soul-witness.md, 2026-05-26].
+STATUS:    Built — Graduated [to /soul-witness — commands/soul-witness.md, 2026-05-26].
            Shape: hybrid (frictionless input, scaffolded output, draft-shown-
            before-write). Adopts I027 re-read-verify protocol from day one.
            Symlinked to ~/.claude/commands/ per F029.
@@ -805,7 +808,7 @@ IDEA:      A /soul-council slash command — force a Council convening on
            demand. The Body invokes when they want the system to deliberate,
            investigate, weigh a decision across roles, rather than the
            default lighter-weight reasoning. "Convene the council on X."
-STATUS:    Graduated [2026-05-26 — specced at docs/specs/2026-05-26-soul-council-design.md;
+STATUS:    Built — Graduated [2026-05-26 — specced at docs/specs/2026-05-26-soul-council-design.md;
            built at commands/soul-council.md (symlinked to ~/.claude/commands/soul-council.md);
            dogfooded three times informally in the same session before formal
            build (SOUL-077 semi-autonomous question convening, Cartographer
@@ -857,7 +860,7 @@ IDEA:      Council role observability — over the course of a project the Body
            we go, or silent for weeks?). Possibly tied to an opt-in metric
            system that tracks role invocations and pairs with the visual /
            GUI direction.
-STATUS:    Graduated 2026-05-26 — shipped as /soul-roles
+STATUS:    Built — Graduated 2026-05-26 — shipped as /soul-roles
            (commands/soul-roles.md, 177 lines; symlinked at
            ~/.claude/commands/soul-roles.md). Spec at
            docs/specs/2026-05-26-soul-roles-design.md (Built). Witness
@@ -913,7 +916,7 @@ IDEA:      /soul-explain could accept depth/style flags (e.g. --plain, --eli5,
            --depth=low/med/high, --no-jargon) so the Body can specify the kind
            of explanation wanted, instead of getting the default which often
            defaults to lingo-heavy.
-STATUS:    Graduated 2026-05-27 — flags added to commands/soul-explain.md.
+STATUS:    Built — Graduated 2026-05-27 — flags added to commands/soul-explain.md.
            Minimal coherent set shipped: --depth=low|medium|high, --no-jargon,
            --eli5 (preset: --depth=low + --no-jargon + analogies). Skipped
            --audience and --scope per default-simplicity; add later if pulled
@@ -941,7 +944,7 @@ IDEA:      Session-start expansion-silence glance — possible /soul-handoff
            Cartographer named at SOUL-085 council convening (the unmapped
            territory between contraction-default and explicit /soul-council
            invocation).
-STATUS:    Trending-redundant (2026-05-28, SOUL-105) — the path-(b) CHEAP
+STATUS:    Declined — Trending-redundant (2026-05-28, SOUL-105) — the path-(b) CHEAP
            EXPERIMENT fired: the "silent roles" glance line ran in the
            2026-05-27 handoff cursor and was surfaced at /soul-resume. Body
            verdict: it did NOT change perceived value of the cursor. N=1 →
@@ -1046,7 +1049,7 @@ IDEA:      BMAD Researcher beat — ~1-session pass reading BMAD method's
            and writing a finding on structural composition fit with seed
            §External Skills and Tools. NOT a full BMAD dogfood; just the
            read + structural-fit finding.
-STATUS:    Discharged (2026-05-27, SOUL-098→101; status corrected
+STATUS:    Built — Discharged (2026-05-27, SOUL-098→101; status corrected
            2026-05-28, SOUL-105) — the Researcher beat ran; output
            [[SOUL-F041]] is now CLOSED via [[SOUL-A016]] (accepted at
            SOUL-101), which rewrote seed §External Skills "Soul wraps;
@@ -1104,7 +1107,7 @@ IDEA:      Deployment strategy convergence — decide the "right" way for
            keep current single-install-per-machine + @-import?). Today's
            model is single-install + @-import + hardcoded absolute paths;
            the install.sh legacy snapshot model is stale at v0.3.0.
-STATUS:    Deferred-by-design — Body explicitly named this as "the final
+STATUS:    Parked — Deferred-by-design — Body explicitly named this as "the final
            step before public release so people can properly get and use
            the system." NOT a current beat. The deferral is intentional;
            premature convergence would lock in choices before the system
@@ -1180,7 +1183,7 @@ IDEA:      The /soul-distill ↔ mind interaction is too abstract for the Body
            witness drift indicator?), AND (b) a review surface that surfaces
            the LOAD-BEARING question per candidate rule rather than burying
            it in self-test prose.
-STATUS:    Graduated [partial — 2026-05-28, SOUL-106]. Sub-problem (b)
+STATUS:    Maturing — Graduated [partial — 2026-05-28, SOUL-106]. Sub-problem (b)
            review surface SHIPPED: /soul-distill step 8 now presents
            delta-only (new/changed entries vs the prior mind.md, unchanged
            collapsed) + a load-bearing verdict per entry + gap-only checks —
@@ -1234,7 +1237,7 @@ IDEA:      Audit doctrine surfaces for month-scale time references that don't
            event count. This is a Mind-rule-shaped question if it ripens
            (candidate rule: "Project-internal cadence is event-anchored, not
            calendar-anchored").
-STATUS:    Graduated 2026-05-27 — Body picked the **two-clock model** (d).
+STATUS:    Built — Graduated 2026-05-27 — Body picked the **two-clock model** (d).
            Audit at execution time surfaced 2 additional sites beyond the
            original 5, for 7 total. Classification + edits:
 
@@ -1311,7 +1314,7 @@ IDEA:      The baseline-BREAKING regime test — the one experiment that could
            ablate roles/gates with/without. If a role supplies substance or
            reliability the broken baseline lacks → A017's value-locus is regime-
            specific and shifts back toward substance where the baseline breaks.
-STATUS:    In progress — TWO probes done (2026-05-28). (1) Weaker-model arm
+STATUS:    Maturing — In progress — TWO probes done (2026-05-28). (1) Weaker-model arm
            ([[SOUL-110]]): substance returns NARROWLY on a broken baseline
            (integration-dependent, partial; single lenses form-only; HR2 anchoring
            C1-survived). (2) Generalisation to a 2nd discipline ([[SOUL-111]],
@@ -1393,7 +1396,7 @@ IDEA:      Instrument-value axis — are the /soul-* commands & the record syste
            NOT behaviour-lifting; legibility's payoff is cross-session (for the next
            session / second reader), so THIS is where it should cash out. Opened by
            the Body after the I041 capstone.
-STATUS:    In progress — FOUR probes done: handoff/resume ([[SOUL-116]]), recall +
+STATUS:    Maturing — In progress — FOUR probes done: handoff/resume ([[SOUL-116]]), recall +
            verify ([[SOUL-117]]), distill/Mind ([[SOUL-118]]), and agentic-roles
            ([[SOUL-119]], 2026-05-29). The agentic-roles probe answered the Body's
            MATURITY confound: built as dedicated subagents (not prose), Soul roles
@@ -1469,6 +1472,7 @@ DEVELOP:   First test = the skill-routing probe [[SOUL-I044]]. RESULT ([[SOUL-12
            seed's "External Skills and Tools / Surface when…" table, [[SOUL-I011]]
            (token economics / RAG-MCP always-on degradation past ~10), and the
            "never always-on" budget rule (Mind rule 5).
+STATUS:    Maturing — state added 2026-11-24; its first test, SOUL-I044, ran (SOUL-120)
 ```
 
 ```
@@ -1511,6 +1515,7 @@ RESULT:    DONE 2026-05-29 ([[SOUL-120]]). oracle vs budgeted-pick2 at Haiku = 5
            NEXT (open): does a BUILT router approach the oracle ceiling better than the
            model's own pick? (oracle = perfect-routing upper bound.) Tool-skills +
            multi-task/longitudinal what+when still untested.
+STATUS:    Built — the probe ran (SOUL-120); its NEXT line is open. State added 2026-11-24
 ```
 
 ```
@@ -1771,7 +1776,7 @@ WHAT:      THE BENCHMARK-CARRIED EFFICACY PROGRAM — answer "is the Soul actual
              not publication-grade.
            Full pre-registration spec (docs/specs/) written and locked before the first
            chain; the program does not start until the Body opens it.
-STATUS:    Closed — program ran 2026-06-10 (spec LOCKED, 3 chains + base-rate mining);
+STATUS:    Built — Closed — program ran 2026-06-10 (spec LOCKED, 3 chains + base-rate mining);
            locked rule self-conflicted on the observed ties-at-ceiling + cost outcome;
            Body verdict 2026-06-11: SLIM, PROVISIONAL (witness SOUL-162; rendered
            section in the program VERDICT file). Floor discriminator
@@ -1957,7 +1962,7 @@ IDEA:      Amend /soul-distill to match A021. Step 7 still prescribes the
            a slim Mind BY CONSTRUCTION — the slim form deliberately leaves
            doctrine in the contract, so the test asks the Mind to carry what
            A021 moved out.
-STATUS:    CLOSED 2026-08-20 — both halves. /soul-distill switched to the slim
+STATUS:    Built — CLOSED 2026-08-20 — both halves. /soul-distill switched to the slim
            form (v2.1.0) and the reproduction-coherence self-test rewritten to
            judge the contract+Mind pair rather than the Mind alone. The skill
            cited this closure before the entry recorded it; fresh-context review
@@ -2209,7 +2214,7 @@ RAW:       Use a probe-and-propose loop (Google's Harness², arXiv 2610.14224)
 SHAPE:     Parked. The prerequisite is a probe set — a `claude plugin eval`
            suite with honest WITH / WITHOUT deltas. No loop until that suite
            exists and its deltas are non-zero somewhere.
-STATUS:    Parked.
+STATUS:    Parked
 WHY:       The Soul System is a harness layer, so a harness optimizer fits it in
            principle. Research by an adopting project (2026-10-19) judged
            Harness² "borrow ideas", not a component to adopt.
@@ -2353,7 +2358,7 @@ SHAPE:     Deferred by the Body. For the 2026-10 machine move each project recor
            what it depends on BY NAME and the arrival check confirms those exist;
            global state moves by hand from a checklist. Build this only if that
            hand move proves heavy or error-prone — record the effort as evidence.
-STATUS:    Deferred — Body-captured.
+STATUS:    Parked — Deferred — Body-captured.
 ```
 
 ```
@@ -2986,7 +2991,7 @@ DISCUSSED: (2026-10-30, round 1) Options: stay on Opus 5.5 · Opus at higher eff
            Lean: keep Opus 5.5 as global default and workflow orchestrator; switch to
            Fable by hand only when Opus is stuck; re-ask at each model release. The
            Body: "i wasn't having issues just wondering ... no test required."
-STATUS:    Resolved — stay on Opus 5.5; no test (the Body, 2026-10-30).
+STATUS:    Declined — Resolved — stay on Opus 5.5; no test (the Body, 2026-10-30).
 ```
 
 ```
@@ -3000,7 +3005,7 @@ RAW:       The Body: "that i have to "ratify" something all the time. i hate it.
            /soul-capture appends model-initiated entries with it when the Body may be
            away, and /soul-handoff lists them in the cursor's UNCONFIRMED field. It
            applies to ideas as well as witness entries.)
-STATUS:    Built in v3.9.0 (SOUL-A031) — the Body chose opt-out for every
+STATUS:    Built — in v3.9.0 (SOUL-A031) — the Body chose opt-out for every
            model-started capture; a witness entry the Body types keeps its draft
            step (2026-11-05).
 ```
@@ -3044,7 +3049,7 @@ DISCUSSED: (2026-11-05, round 1) Options: do nothing (bottom lines + /soul-expla
            there are other optoins and some debriefs may need or want some thing
            interactive. not sure what artifact skill already handles so of course
            we need to play within what is reasonable".
-STATUS:    Built in v3.10.0 (2026-11-06). Tested once, on the Sonnet half of I083
+STATUS:    Built — in v3.10.0 (2026-11-06). Tested once, on the Sonnet half of I083
            round 2 (page in .ai/debriefs/INDEX.md); the Body's fixes from that test
            (originals open in the page, Markdown shown formatted) are in the skill.
            Second run in CAPTURE-RIG (its upstream notes, 2026-11-06): the page
@@ -3429,7 +3434,7 @@ ROUND 2:   2026-11-13 — the Body checked every choice by hand in a document (C
            other property name is allowed).
            Unverified, for the build: that `sync`, `check` and the session-start hook
            follow a link into a vault that is not the default.
-STATUS:    Built in v3.13.0 (2026-11-13): /soul-init shows the setup as a plan first.
+STATUS:    Built — in v3.13.0 (2026-11-13): /soul-init shows the setup as a plan first.
            The Body ran the live trials and picked the plan, explanation and
            "changed from" layouts. What is untested: the 3.13.0 row of
            SYSTEM-VERSION.md. The Claude Doc "Soul-Init Setup Choices" named above
@@ -3496,7 +3501,7 @@ NOTES:     Three of the four points built the same day as v3.13.2 (the Body: yes
            the cursor (whether the in-session refresh is worth its cost at all);
            growth after a summary that was itself a block start is under-counted
            (pre-existing, review 2026-11-16). Related: SOUL-I094, SOUL-A032.
-STATUS:    Built in part (v3.13.2)
+STATUS:    Maturing — built in part (v3.13.2)
 ```
 
 ```
@@ -3520,5 +3525,5 @@ NOTES:     The Body, 2026-11-24: take it as the next release; the state words ar
            ("a captured idea has no STATUS"), soul-next step 1, soul-resume,
            soul-handoff, a new tools/ideas-status.py. Undecided: the area grouping;
            migrating this repo's own ~20 spellings.
-STATUS:    Maturing
+STATUS:    Built — v3.14.0 (2026-11-24); this store migrated the same day
 ```
